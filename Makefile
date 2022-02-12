@@ -27,7 +27,9 @@ PACKAGE_ROOT=${MODULE_ROOT}/${PACKAGE_NAME}
 PACKAGE_ID=${PACKAGE_ROOT}
 PACKAGES=\
 	${PACKAGE_ID} \
-	${PACKAGE_ID}/obj
+	${PACKAGE_ID}/obj \
+	${PACKAGE_ID}/plugins \
+	${PACKAGE_ID}/plugins/mysql
 
 
 .PHONY: version clean
