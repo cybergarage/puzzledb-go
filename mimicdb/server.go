@@ -15,6 +15,7 @@
 package mimicdb
 
 import (
+	"github.com/cybergarage/mimicdb/mimicdb/errors"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins"
 )
 
@@ -33,7 +34,7 @@ func NewServer() *Server {
 // Start starts the server.
 func (server *Server) Start() error {
 	if err := server.Services.Start(); err != nil {
-		return err
+		return errors.Wrap(err)
 	}
 
 	return nil
@@ -42,7 +43,7 @@ func (server *Server) Start() error {
 // Stop stops the server.
 func (server *Server) Stop() error {
 	if err := server.Services.Stop(); err != nil {
-		return err
+		return errors.Wrap(err)
 	}
 
 	return nil
