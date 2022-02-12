@@ -40,7 +40,10 @@ format:
 vet: format
 	go vet ${PACKAGE_ROOT}
 
-test:
+lint: format
+	golangci-lint run ${SOURCE_ROOT}
+
+test: lint
 	go test -v -cover -timeout 60s ${PACKAGES}
 
 clean:
