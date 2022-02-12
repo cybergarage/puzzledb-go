@@ -14,22 +14,36 @@
 
 package mimicdb
 
+import (
+	"github.com/cybergarage/mimicdb/mimicdb/plugins"
+)
+
 // Server represents a server instance.
 type Server struct {
+	*plugins.Services
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
-	server := &Server{}
-	return server
+	return &Server{
+		Services: plugins.NewServices(),
+	}
 }
 
 // Start starts the server.
 func (server *Server) Start() error {
+	if err := server.Services.Start(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 // Stop stops the server.
 func (server *Server) Stop() error {
+	if err := server.Services.Stop(); err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -14,10 +14,16 @@
 
 package plugins
 
-// Service represents a plugin service.
-type Service interface {
-	// Start starts the service
-	Start() error
-	// Stop stops the service
-	Stop() error
+import (
+	"testing"
+)
+
+func TestNewService(t *testing.T) {
+	srvs := NewServices()
+	if err := srvs.Start(); err != nil {
+		t.Error(err)
+	}
+	if err := srvs.Stop(); err != nil {
+		t.Error(err)
+	}
 }

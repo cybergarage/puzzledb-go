@@ -15,4 +15,35 @@
 package plugins
 
 // Service represents a plugin services.
-type Services = []Service
+type Services struct {
+	services []Service
+}
+
+// NewService returns a new MySQL service instance.
+func NewServices() *Services {
+	return &Services{
+		services: []Service{},
+	}
+
+}
+
+// Start starts all services.
+func (srvs *Services) Start() error {
+	for _, srv := range srvs.services {
+		if err := srv.Start(); err != nil {
+			srvs.Stop()
+			return err
+		}
+	}
+	return nil
+}
+
+// Stop stops all services.
+func (srvs Services) Stop() error {
+	for _, srv := range srvs.services {
+		if err := srv.Stop(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
