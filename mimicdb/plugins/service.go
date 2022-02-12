@@ -19,5 +19,5 @@ type Service interface {
 	// Start starts the service
 	Start() error
 	// Stop stops the service
-	Start() error
+	Stop() error
 }
