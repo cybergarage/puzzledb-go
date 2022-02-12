@@ -27,6 +27,11 @@ func NewServices() *Services {
 
 }
 
+// Add adds a service.
+func (srvs *Services) Add(srv Service) {
+	srvs.services = append(srvs.services, srv)
+}
+
 // Start starts all services.
 func (srvs *Services) Start() error {
 	for _, srv := range srvs.services {
