@@ -29,7 +29,8 @@ PACKAGES=\
 	${PACKAGE_ID} \
 	${PACKAGE_ID}/obj \
 	${PACKAGE_ID}/plugins \
-	${PACKAGE_ID}/plugins/query/mysql
+	${PACKAGE_ID}/plugins/query/mysql \
+	${PACKAGE_ID}/plugins/store/memdb
 
 
 .PHONY: version clean
