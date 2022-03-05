@@ -16,8 +16,8 @@ package mimicdb
 
 // Store represents a store interface.
 type Store interface {
-	// Store opens the specified store.
-	Store(name string) error
+	// Open opens the specified store.
+	Open(name string) error
 	// Transact opens a transaction.
 	Transact() (Transaction, error)
 	// Close closes this store.
