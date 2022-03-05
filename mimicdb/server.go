@@ -17,6 +17,7 @@ package mimicdb
 import (
 	"github.com/cybergarage/mimicdb/mimicdb/errors"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins"
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/mysql"
 )
 
 // Server represents a server instance.
@@ -26,9 +27,13 @@ type Server struct {
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
-	return &Server{
+	server := &Server{
 		Services: plugins.NewServices(),
 	}
+
+	server.loadPlugins()
+
+	return server
 }
 
 // Start starts the server.
@@ -47,4 +52,8 @@ func (server *Server) Stop() error {
 	}
 
 	return nil
+}
+
+func (server *Server) loadPlugins() {
+	server.Services.Add(mysql.NewService())
 }
