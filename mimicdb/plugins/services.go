@@ -19,7 +19,7 @@ type Services struct {
 	services []Service
 }
 
-// NewService returns a new MySQL service instance.
+// NewServices returns a new services instance.
 func NewServices() *Services {
 	return &Services{
 		services: []Service{},
