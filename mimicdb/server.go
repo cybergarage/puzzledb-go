@@ -17,7 +17,7 @@ package mimicdb
 import (
 	"github.com/cybergarage/mimicdb/mimicdb/errors"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/mysql"
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/query/mysql"
 )
 
 // Server represents a server instance.
