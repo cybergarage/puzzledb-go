@@ -15,6 +15,7 @@
 package memdb
 
 import (
+	"github.com/cybergarage/mimicdb/mimicdb"
 	"github.com/hashicorp/go-memdb"
 )
 
@@ -35,12 +36,46 @@ func New() *Memdb {
 	}
 }
 
+// Open opens the specified store.
+func (db *Memdb) Open(name string) error {
+	schema := &memdb.DBSchema{
+		Tables: map[string]*memdb.TableSchema{
+			"document": &memdb.TableSchema{
+				Name: "document",
+				Indexes: map[string]*memdb.IndexSchema{
+					"id": &memdb.IndexSchema{
+						Name:    "id",
+						Unique:  true,
+						Indexer: &memdb.StringFieldIndex{Field: "Key"},
+					},
+				},
+			},
+		},
+	}
+	var err error
+	db.MemDB, err = memdb.NewMemDB(schema)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Transact opens a transaction.
+func (db *Memdb) Transact() (mimicdb.Transaction, error) {
+	return nil, nil
+}
+
+// Close closes this store.
+func (db *Memdb) Close() error {
+	return nil
+}
+
 // Start starts this memdb.
-func (srvs *Memdb) Start() error {
+func (db *Memdb) Start() error {
 	return nil
 }
 
 // Stop stops this memdb.
-func (srvs Memdb) Stop() error {
+func (db Memdb) Stop() error {
 	return nil
 }

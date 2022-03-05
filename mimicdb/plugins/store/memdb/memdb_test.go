@@ -23,6 +23,12 @@ func TestMemDB(t *testing.T) {
 	if err := memdb.Start(); err != nil {
 		t.Error(err)
 	}
+	if err := memdb.Open("testdb"); err != nil {
+		t.Error(err)
+	}
+	if err := memdb.Close(); err != nil {
+		t.Error(err)
+	}
 	if err := memdb.Stop(); err != nil {
 		t.Error(err)
 	}
