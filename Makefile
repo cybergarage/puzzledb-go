@@ -29,7 +29,7 @@ PACKAGES=\
 	${PACKAGE_ID} \
 	${PACKAGE_ID}/obj \
 	${PACKAGE_ID}/plugins \
-	${PACKAGE_ID}/plugins/mysql
+	${PACKAGE_ID}/plugins/query/mysql
 
 
 .PHONY: version clean
