@@ -16,11 +16,13 @@ package memdb
 
 import (
 	"github.com/cybergarage/mimicdb/mimicdb/errors"
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
 	"github.com/hashicorp/go-memdb"
 )
 
 // Memdb represents a Memdb instance.
 type Memdb struct {
+	store.Store
 	*memdb.MemDB
 }
 
@@ -61,7 +63,7 @@ func (db *Memdb) Open(name string) error {
 }
 
 // Transact opens a transaction.
-func (db *Memdb) Transact() (mimicdb.Transaction, error) {
+func (db *Memdb) Transact() (store.Transaction, error) {
 	if db.MemDB == nil {
 		return nil, errors.DatabaseNotFound
 	}

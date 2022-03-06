@@ -12,23 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package plugins
+package memdb
 
-// Store represents a store interface.
-type Store interface {
-	Service
-	// Open opens the specified store.
-	Open(name string) error
-	// Transact opens a transaction.
-	Transact() (Transaction, error)
-	// Close closes this store.
-	Close() error
+import (
+	"testing"
+
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
+)
+
+func TestStores(t *testing.T) {
+	stores := []store.Store{
+		NewStore(),
+	}
+
+	for _, store := range stores {
+		testStore(t, store)
+	}
 }
 
-// Transaction represents a transaction interface.
-type Transaction interface {
-	// Commit commits this transaction.
-	Commit() error
-	// Cancel cancels this transaction.
-	Cancel() error
+func testStore(t *testing.T, store store.Store) {
+	if err := store.Start(); err != nil {
+		t.Error(err)
+	}
+	if err := store.Open("testdb"); err != nil {
+		t.Error(err)
+	}
+	if err := store.Close(); err != nil {
+		t.Error(err)
+	}
+	if err := store.Stop(); err != nil {
+		t.Error(err)
+	}
 }
