@@ -12,24 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package plugins
 
-import (
-	"testing"
-)
+// Store represents a store interface.
+type Store interface {
+	Service
+	// Open opens the specified store.
+	Open(name string) error
+	// Transact opens a transaction.
+	Transact() (Transaction, error)
+	// Close closes this store.
+	Close() error
+}
 
-func TestMemDB(t *testing.T) {
-	memdb := NewStore()
-	if err := memdb.Start(); err != nil {
-		t.Error(err)
-	}
-	if err := memdb.Open("testdb"); err != nil {
-		t.Error(err)
-	}
-	if err := memdb.Close(); err != nil {
-		t.Error(err)
-	}
-	if err := memdb.Stop(); err != nil {
-		t.Error(err)
-	}
+// Transaction represents a transaction interface.
+type Transaction interface {
+	// Commit commits this transaction.
+	Commit() error
+	// Cancel cancels this transaction.
+	Cancel() error
 }
