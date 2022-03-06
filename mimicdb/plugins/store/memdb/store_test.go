@@ -19,7 +19,7 @@ import (
 )
 
 func TestMemDB(t *testing.T) {
-	memdb := New()
+	memdb := NewStore()
 	if err := memdb.Start(); err != nil {
 		t.Error(err)
 	}
