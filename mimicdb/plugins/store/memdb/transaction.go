@@ -12,23 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package plugins
+package memdb
 
-// Store represents a store interface.
-type Store interface {
-	Service
-	// Open opens the specified store.
-	Open(name string) error
-	// Transact opens a transaction.
-	Transact() (Transaction, error)
-	// Close closes this store.
-	Close() error
+import (
+	"github.com/hashicorp/go-memdb"
+)
+
+// Memdb represents a Memdb instance.
+type Transaction struct {
+	*memdb.Txn
 }
 
-// Transaction represents a transaction interface.
-type Transaction interface {
-	// Commit commits this transaction.
-	Commit() error
-	// Cancel cancels this transaction.
-	Cancel() error
+func newTransaction(txn *memdb.Txn) *Transaction {
+	return &Transaction{
+		Txn: txn,
+	}
+}
+
+// Commit commits this transaction.
+func (txn *Transaction) Commit() error {
+	txn.Txn.Commit()
+	return nil
+}
+
+// Cancel cancels this transaction.
+func (txn *Transaction) Cancel() error {
+	txn.Txn.Abort()
+	return nil
 }

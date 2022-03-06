@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package plugins
+package memdb
 
 import (
 	"testing"
 
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/store/memdb"
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
 )
 
 func TestStores(t *testing.T) {
-	stores := []mimicdb.Store{
-		memdb.NewStore(),
+	stores := []store.Store{
+		NewStore(),
 	}
 
 	for _, store := range stores {
@@ -30,7 +30,7 @@ func TestStores(t *testing.T) {
 	}
 }
 
-func testStore(t *testing.T, store mimicdb.Store) {
+func testStore(t *testing.T, store store.Store) {
 	if err := store.Start(); err != nil {
 		t.Error(err)
 	}
