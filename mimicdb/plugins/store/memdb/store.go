@@ -15,7 +15,6 @@
 package memdb
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb"
 	"github.com/cybergarage/mimicdb/mimicdb/errors"
 	"github.com/hashicorp/go-memdb"
 )
@@ -66,7 +65,7 @@ func (db *Memdb) Transact() (mimicdb.Transaction, error) {
 	if db.MemDB == nil {
 		return nil, errors.DatabaseNotFound
 	}
-	return nil, nil
+	return newTransaction(db.MemDB.Txn(true)), nil
 }
 
 // Close closes this store.

@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mimicdb
+package plugins
 
 // Store represents a store interface.
 type Store interface {
+	Service
 	// Open opens the specified store.
 	Open(name string) error
 	// Transact opens a transaction.

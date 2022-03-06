@@ -12,24 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package plugins
 
 import (
 	"testing"
+
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/store/memdb"
 )
 
-func TestMemDB(t *testing.T) {
-	memdb := NewStore()
-	if err := memdb.Start(); err != nil {
+func TestStores(t *testing.T) {
+	stores := []mimicdb.Store{
+		memdb.NewStore(),
+	}
+
+	for _, store := range stores {
+		testStore(t, store)
+	}
+}
+
+func testStore(t *testing.T, store mimicdb.Store) {
+	if err := store.Start(); err != nil {
 		t.Error(err)
 	}
-	if err := memdb.Open("testdb"); err != nil {
+	if err := store.Open("testdb"); err != nil {
 		t.Error(err)
 	}
-	if err := memdb.Close(); err != nil {
+	if err := store.Close(); err != nil {
 		t.Error(err)
 	}
-	if err := memdb.Stop(); err != nil {
+	if err := store.Stop(); err != nil {
 		t.Error(err)
 	}
 }
