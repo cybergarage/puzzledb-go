@@ -36,3 +36,9 @@ type Transaction interface {
 	// Cancel cancels this transaction.
 	Cancel() error
 }
+
+// Object represents a store object.
+type Object struct {
+	Key   []byte
+	Value []byte
+}
