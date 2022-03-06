@@ -19,6 +19,6 @@ import (
 )
 
 // Wrap is a sufar function of Errorf("%w").
-func Wrap(err error) error {
-	return fmt.Errorf("%w", err)
+func Wrap(err error, msg string) error {
+	return fmt.Errorf("%s (%w)", msg, err)
 }
