@@ -31,13 +31,15 @@ type Store interface {
 
 // Transaction represents a transaction interface.
 type Transaction interface {
+	// Insert inserts a key-value object.
+	Insert(obj *Object) error
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
 	Cancel() error
 }
 
-// Object represents a store object.
+// Object represents a key-value object.
 type Object struct {
 	Key   []byte
 	Value []byte
