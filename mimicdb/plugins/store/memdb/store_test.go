@@ -15,9 +15,15 @@
 package memdb
 
 import (
+	"encoding/binary"
+	"math/rand"
 	"testing"
 
 	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
+)
+
+const (
+	testKeyCount = 100
 )
 
 func TestStores(t *testing.T) {
@@ -37,6 +43,37 @@ func testStore(t *testing.T, store store.Store) {
 	if err := store.Open("testdb"); err != nil {
 		t.Error(err)
 	}
+
+	keys := make([][]byte, testKeyCount)
+	vals := make([][]byte, testKeyCount)
+	for n := 0; n < testKeyCount; n++ {
+		keys[n] = make([]byte, 8)
+		binary.LittleEndian.PutUint64(keys[n], rand.Uint64())
+		vals[n] = make([]byte, 8)
+		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
+	}
+
+	for n, key := range keys {
+		tx, err := store.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		val := vals[n]
+		obj := &Object{
+			Key:   key,
+			Value: val,
+		}
+		if err := tx.Insert(obj); err != nil {
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
 	if err := store.Close(); err != nil {
 		t.Error(err)
 	}

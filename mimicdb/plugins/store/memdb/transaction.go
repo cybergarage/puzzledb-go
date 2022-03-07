@@ -15,11 +15,13 @@
 package memdb
 
 import (
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
 	"github.com/hashicorp/go-memdb"
 )
 
 // Memdb represents a Memdb instance.
 type Transaction struct {
+	store.Transaction
 	*memdb.Txn
 }
 
@@ -27,6 +29,11 @@ func newTransaction(txn *memdb.Txn) *Transaction {
 	return &Transaction{
 		Txn: txn,
 	}
+}
+
+// Insert inserts a key-value object.
+func (txn *Transaction) Insert(obj *store.Object) error {
+	return txn.Txn.Insert(tableName, obj)
 }
 
 // Commit commits this transaction.

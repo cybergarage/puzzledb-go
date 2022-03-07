@@ -20,6 +20,13 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
+const (
+	tableName = "document"
+)
+
+// Object represents a key-value object.
+type Object = store.Object
+
 // Memdb represents a Memdb instance.
 type Memdb struct {
 	store.Store
@@ -42,8 +49,8 @@ func NewStore() *Memdb {
 func (db *Memdb) Open(name string) error {
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
-			"document": &memdb.TableSchema{
-				Name: "document",
+			tableName: &memdb.TableSchema{
+				Name: tableName,
 				Indexes: map[string]*memdb.IndexSchema{
 					"id": &memdb.IndexSchema{
 						Name:    "id",
