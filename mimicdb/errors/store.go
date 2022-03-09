@@ -19,4 +19,5 @@ import "errors"
 var (
 	StoreError       = errors.New("Store error")
 	DatabaseNotFound = Wrapf(StoreError, "Database not found")
+	ObjectNotFound   = Wrapf(StoreError, "Object not found")
 )
