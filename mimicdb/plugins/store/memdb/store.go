@@ -21,11 +21,16 @@ import (
 )
 
 const (
-	tableName = "document"
+	tableName    = "document"
+	idFieldName  = "id"
+	keyFieldName = "Key"
 )
 
 // Object represents a key-value object.
 type Object = store.Object
+
+// Key represents an object key.
+type Key = store.Key
 
 // Memdb represents a Memdb instance.
 type Memdb struct {
@@ -52,8 +57,8 @@ func (db *Memdb) Open(name string) error {
 			tableName: &memdb.TableSchema{
 				Name: tableName,
 				Indexes: map[string]*memdb.IndexSchema{
-					"id": &memdb.IndexSchema{
-						Name:    "id",
+					idFieldName: &memdb.IndexSchema{
+						Name:    idFieldName,
 						Unique:  true,
 						Indexer: &memdb.StringFieldIndex{Field: "Key"},
 					},

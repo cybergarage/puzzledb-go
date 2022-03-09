@@ -15,6 +15,7 @@
 package memdb
 
 import (
+	"bytes"
 	"encoding/binary"
 	"math/rand"
 	"testing"
@@ -53,6 +54,8 @@ func testStore(t *testing.T, store store.Store) {
 		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
 	}
 
+	// Insert test
+
 	for n, key := range keys {
 		tx, err := store.Transact(true)
 		if err != nil {
@@ -69,6 +72,28 @@ func testStore(t *testing.T, store store.Store) {
 			break
 		}
 		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Select test
+
+	for n, key := range keys {
+		tx, err := store.Transact(false)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		obj, err := tx.Select(key)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		if bytes.Compare(obj.Value, vals[n]) != 0 {
+			t.Errorf("%s != %s", obj.Value, vals[n])
+		}
+		if err := tx.Cancel(); err != nil {
 			t.Error(err)
 			break
 		}
