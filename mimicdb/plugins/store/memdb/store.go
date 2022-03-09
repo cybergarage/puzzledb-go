@@ -70,11 +70,11 @@ func (db *Memdb) Open(name string) error {
 }
 
 // Transact opens a transaction.
-func (db *Memdb) Transact() (store.Transaction, error) {
+func (db *Memdb) Transact(write bool) (store.Transaction, error) {
 	if db.MemDB == nil {
 		return nil, errors.DatabaseNotFound
 	}
-	return newTransaction(db.MemDB.Txn(true)), nil
+	return newTransaction(db.MemDB.Txn(write)), nil
 }
 
 // Close closes this store.

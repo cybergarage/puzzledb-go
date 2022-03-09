@@ -24,7 +24,7 @@ type Store interface {
 	// Open opens the specified store.
 	Open(name string) error
 	// Transact opens a transaction.
-	Transact() (Transaction, error)
+	Transact(write bool) (Transaction, error)
 	// Close closes this store.
 	Close() error
 }
