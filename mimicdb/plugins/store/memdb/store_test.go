@@ -54,7 +54,7 @@ func testStore(t *testing.T, store store.Store) {
 	}
 
 	for n, key := range keys {
-		tx, err := store.Transact()
+		tx, err := store.Transact(true)
 		if err != nil {
 			t.Error(err)
 			break
