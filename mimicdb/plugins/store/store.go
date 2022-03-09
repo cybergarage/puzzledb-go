@@ -29,6 +29,9 @@ type Store interface {
 	Close() error
 }
 
+// Key represents an object key.
+type Key = []byte
+
 // Transaction represents a transaction interface.
 type Transaction interface {
 	// Insert inserts a key-value object.
@@ -41,6 +44,6 @@ type Transaction interface {
 
 // Object represents a key-value object.
 type Object struct {
-	Key   []byte
+	Key   Key
 	Value []byte
 }
