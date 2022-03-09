@@ -15,6 +15,7 @@
 package memdb
 
 import (
+	"github.com/cybergarage/mimicdb/mimicdb/errors"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
 	"github.com/hashicorp/go-memdb"
 )
@@ -31,9 +32,22 @@ func newTransaction(txn *memdb.Txn) *Transaction {
 	}
 }
 
-// Insert inserts a key-value object.
+// Insert puts a key-value object.
 func (txn *Transaction) Insert(obj *store.Object) error {
 	return txn.Txn.Insert(tableName, obj)
+}
+
+// Select gets an key-value object of the specified key.
+func (txn *Transaction) Select(key Key) (*Object, error) {
+	it, err := txn.Get(tableName, idFieldName, key)
+	if err != nil {
+		return nil, err
+	}
+	obj := it.Next()
+	if obj == nil {
+		return nil, errors.ObjectNotFound
+	}
+	return obj.(*Object), nil
 }
 
 // Commit commits this transaction.

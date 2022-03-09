@@ -34,8 +34,10 @@ type Key = []byte
 
 // Transaction represents a transaction interface.
 type Transaction interface {
-	// Insert inserts a key-value object.
+	// Insert puts a key-value object.
 	Insert(obj *Object) error
+	// Select gets an key-value object of the specified key.
+	Select(key Key) (*Object, error)
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
