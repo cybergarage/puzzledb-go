@@ -39,7 +39,7 @@ func (txn *Transaction) Insert(obj *store.Object) error {
 
 // Select gets an key-value object of the specified key.
 func (txn *Transaction) Select(key Key) (*Object, error) {
-	it, err := txn.Get(tableName, idFieldName, key)
+	it, err := txn.Get(tableName, idFieldName, string(key))
 	if err != nil {
 		return nil, err
 	}
