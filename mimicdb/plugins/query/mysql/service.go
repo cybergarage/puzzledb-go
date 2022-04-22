@@ -14,22 +14,35 @@
 
 package mysql
 
+import (
+	"github.com/cybergarage/go-mysql/mysql"
+)
+
 // Service represents a MySQL service instance.
 type Service struct {
+	*mysql.Server
 }
 
 // NewService returns a new MySQL service instance.
 func NewService() *Service {
-	srv := &Service{}
+	srv := &Service{
+		Server: mysql.NewServer(),
+	}
 	return srv
 }
 
 // Start starts the Service.
 func (srv *Service) Start() error {
+	if err := srv.Server.Start(); err != nil {
+		return err
+	}
 	return nil
 }
 
 // Stop stops the Service.
 func (srv *Service) Stop() error {
+	if err := srv.Server.Stop(); err != nil {
+		return err
+	}
 	return nil
 }
