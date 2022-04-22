@@ -30,7 +30,7 @@ type Store interface {
 }
 
 // Key represents an object key.
-type Key = []byte
+type Key = string
 
 // Transaction represents a transaction interface.
 type Transaction interface {

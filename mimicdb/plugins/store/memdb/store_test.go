@@ -64,7 +64,7 @@ func testStore(t *testing.T, store store.Store) {
 		}
 		val := vals[n]
 		obj := &Object{
-			Key:   key,
+			Key:   string(key),
 			Value: val,
 		}
 		if err := tx.Insert(obj); err != nil {
@@ -85,7 +85,7 @@ func testStore(t *testing.T, store store.Store) {
 			t.Error(err)
 			break
 		}
-		obj, err := tx.Select(key)
+		obj, err := tx.Select(string(key))
 		if err != nil {
 			t.Error(err)
 			break
