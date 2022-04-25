@@ -19,7 +19,7 @@ import (
 )
 
 func TestNewService(t *testing.T) {
-	srv := NewService()
+	srv := NewServiceWithStore(nil)
 
 	err := srv.Start()
 	if err != nil {
