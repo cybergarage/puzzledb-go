@@ -16,22 +16,25 @@ package mysql
 
 import (
 	"github.com/cybergarage/go-mysql/mysql"
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
 )
 
-// Service represents a MySQL service instance.
+// Service represents a new MySQL service instance.
 type Service struct {
 	*mysql.Server
+	store.Store
 }
 
-// NewService returns a new MySQL service instance.
-func NewService() *Service {
+// NewServiceWithStore returns a new MySQL service instance with the specified store.
+func NewServiceWithStore(store store.Store) *Service {
 	srv := &Service{
 		Server: mysql.NewServer(),
+		Store:  store,
 	}
 	return srv
 }
 
-// Start starts the Service.
+// Start starts the service.
 func (srv *Service) Start() error {
 	if err := srv.Server.Start(); err != nil {
 		return err
@@ -39,7 +42,7 @@ func (srv *Service) Start() error {
 	return nil
 }
 
-// Stop stops the Service.
+// Stop stops the service.
 func (srv *Service) Stop() error {
 	if err := srv.Server.Stop(); err != nil {
 		return err
