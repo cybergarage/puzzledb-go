@@ -21,16 +21,21 @@ import (
 
 // Service represents a new MySQL service instance.
 type Service struct {
+	*mysql.BaseExecutor
 	*mysql.Server
 	store.Store
+	Databases
 }
 
-// NewServiceWithStore returns a new MySQL service instance with the specified store.
+// NewServiceWithStore returns a new MySQL service instance with the specified　Store.
 func NewServiceWithStore(store store.Store) *Service {
 	srv := &Service{
-		Server: mysql.NewServer(),
-		Store:  store,
+		BaseExecutor: mysql.NewBaseExecutor(),
+		Server:       mysql.NewServer(),
+		Store:        store,
+		Databases:    NewDatabases(),
 	}
+	srv.Server.SetQueryExecutor(srv)
 	return srv
 }
 
