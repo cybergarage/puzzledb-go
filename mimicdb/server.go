@@ -18,6 +18,7 @@ import (
 	"github.com/cybergarage/mimicdb/mimicdb/errors"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins/query/mysql"
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/store/memdb"
 )
 
 // Server represents a server instance.
@@ -31,7 +32,7 @@ func NewServer() *Server {
 		Services: plugins.NewServices(),
 	}
 
-	server.loadPlugins()
+	server.LoadPlugins()
 
 	return server
 }
@@ -54,6 +55,10 @@ func (server *Server) Stop() error {
 	return nil
 }
 
-func (server *Server) loadPlugins() {
-	server.Services.Add(mysql.NewService())
+// LoadPlugins loads default plugin services.
+func (server *Server) LoadPlugins() {
+	store := memdb.NewStore()
+	server.Services.Add(store)
+
+	server.Services.Add(mysql.NewServiceWithStore(store))
 }
