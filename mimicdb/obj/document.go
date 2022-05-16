@@ -14,10 +14,14 @@
 
 package obj
 
-// Object represents an object instance.
-type Object Dictionary
+// Document represents a ocument instance.
+type Document struct {
+	Dictionary
+}
 
-// NewObject returns an object instance.
-func NewObject() Object {
-	return Object{}
+// NewDocument returns a document instance.
+func NewDocument() *Document {
+	return &Document{
+		Dictionary: NewDictionary(),
+	}
 }

@@ -18,6 +18,6 @@ import (
 	"testing"
 )
 
-func TestNewObject(t *testing.T) {
-	NewObject()
+func TestNewDocument(t *testing.T) {
+	NewDocument()
 }
