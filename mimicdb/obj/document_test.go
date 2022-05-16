@@ -14,10 +14,10 @@
 
 package obj
 
-// Object represents an object instance.
-type Object Dictionary
+import (
+	"testing"
+)
 
-// NewObject returns an object instance.
-func NewObject() Object {
-	return Object{}
+func TestNewDocument(t *testing.T) {
+	NewDocument()
 }

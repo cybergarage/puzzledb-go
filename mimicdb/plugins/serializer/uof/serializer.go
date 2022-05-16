@@ -31,6 +31,7 @@ func NewSerializer() *UOF {
 
 // Encode dumps a specified object to the byte array.
 func (s *UOF) Encode(obj *obj.Object) ([]byte, error) {
+
 	return make([]byte, 0), nil
 }
 

@@ -14,10 +14,14 @@
 
 package obj
 
-import (
-	"testing"
-)
+// Document represents a ocument instance.
+type Document struct {
+	Dictionary
+}
 
-func TestNewObject(t *testing.T) {
-	NewObject()
+// NewDocument returns a document instance.
+func NewDocument() *Document {
+	return &Document{
+		Dictionary: NewDictionary(),
+	}
 }
