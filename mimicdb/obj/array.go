@@ -22,11 +22,11 @@ const (
 )
 
 // Array represents the data array.
-type Array []Data
+type Array []Object
 
 // NewArray returns an array instance.
 func NewArray() Array {
-	return make([]Data, 0)
+	return make([]Object, 0)
 }
 
 // NewArrayWithBytes returns a array instance with the specified bytes.
@@ -41,7 +41,7 @@ func NewArrayWithBytes(src []byte) (Array, []byte, error) {
 
 	array := NewArray()
 
-	var val Data
+	var val Object
 	for n := 0; n < int(nData); n++ {
 		val, src, err = NewDataWithBytes(src)
 		if err != nil {
@@ -52,7 +52,6 @@ func NewArrayWithBytes(src []byte) (Array, []byte, error) {
 
 	return array, src, nil
 }
-
 
 // GetData returns the value.
 func (array Array) GetData() interface{} {
@@ -65,7 +64,7 @@ func (array Array) Bytes() []byte {
 }
 
 // Append appends a value into the array.
-func (array Array) Append(val Data) {
+func (array Array) Append(val Object) {
 	array = append(array, val)
 }
 

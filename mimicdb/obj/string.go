@@ -64,7 +64,7 @@ func (v *String) GetValue() string {
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
-func (v *String) Equals(other Data) bool {
+func (v *String) Equals(other Object) bool {
 	if v.GetType() != other.GetType() {
 		return false
 	}

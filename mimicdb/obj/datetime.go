@@ -58,7 +58,7 @@ func (v *Datetime) GetValue() time.Time {
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
-func (v *Datetime) Equals(other Data) bool {
+func (v *Datetime) Equals(other Object) bool {
 	if v.GetType() != other.GetType() {
 		return false
 	}

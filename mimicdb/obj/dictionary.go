@@ -22,7 +22,7 @@ const (
 )
 
 // Dictionary represents a dictionary instance.
-type Dictionary map[string]Data
+type Dictionary map[string]Object
 
 // NewDictionary returns a dictionary instance.
 func NewDictionary() Dictionary {
@@ -35,7 +35,7 @@ func NewDictionaryWithBytes(src []byte) (Dictionary, []byte, error) {
 }
 
 // AddElement adds an element to the dictionary.
-func (dict Dictionary) AddElement(key string, data Data) {
+func (dict Dictionary) AddElement(key string, data Object) {
 	dict[key] = data
 }
 
@@ -49,7 +49,7 @@ func (dict Dictionary) GetElementKeys() []string {
 }
 
 // GetElementData returns a element of the specified key.
-func (dict Dictionary) GetElementData(key string) (Data, bool) {
+func (dict Dictionary) GetElementData(key string) (Object, bool) {
 	data, ok := dict[key]
 	return data, ok
 }
@@ -105,7 +105,7 @@ func ReadDictionaryBytes(src []byte) (Dictionary, []byte, error) {
 	dict := Dictionary{}
 
 	var key string
-	var val Data
+	var val Object
 	for n := 0; n < int(nMap); n++ {
 		key, src, err = ReadStringBytes(src)
 		if err != nil {

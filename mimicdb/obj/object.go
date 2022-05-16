@@ -19,7 +19,7 @@ type Object interface {
 	// GetData returns the value.
 	GetData() interface{}
 	// Equals returns true when the specified value is the same as this value, otherwise false.
-	Equals(other Data) bool
+	Equals(other Object) bool
 	// Bytes returns the binary representation.
 	Bytes() []byte
 }
