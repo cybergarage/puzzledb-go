@@ -14,29 +14,12 @@
 
 package obj
 
-import (
-	"testing"
-	"time"
-)
-
-func TestNewDataWithValues(t *testing.T) {
-	testValues := []interface{}{
-		nil,
-		true,
-		"a",
-		int(123),
-		int16(123),
-		int32(123),
-		int64(123),
-		float32(1.0),
-		float64(1.0),
-		time.Now(),
-		[]byte("a"),
-	}
-	for _, testVal := range testValues {
-		_, err := NewDataWithValue(testVal)
-		if err != nil {
-			t.Error(err)
-		}
-	}
+// Object represents a primitive data.
+type Object interface {
+	// GetData returns the value.
+	GetData() interface{}
+	// Equals returns true when the specified value is the same as this value, otherwise false.
+	Equals(other Data) bool
+	// Bytes returns the binary representation.
+	Bytes() []byte
 }
