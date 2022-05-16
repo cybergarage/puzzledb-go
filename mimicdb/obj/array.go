@@ -53,10 +53,6 @@ func NewArrayWithBytes(src []byte) (Array, []byte, error) {
 	return array, src, nil
 }
 
-// GetType returns the primitive type.
-func (array Array) GetType() Type {
-	return ARRAY
-}
 
 // GetData returns the value.
 func (array Array) GetData() interface{} {

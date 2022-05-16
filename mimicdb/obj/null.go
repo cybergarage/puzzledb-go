@@ -34,11 +34,6 @@ func NewNullWithBytes(src []byte) (*Null, []byte, error) {
 	return NewNull(), src, nil
 }
 
-// GetType returns the primitive type.
-func (v *Null) GetType() Type {
-	return NULL
-}
-
 // GetData returns the value.
 func (v *Null) GetData() interface{} {
 	return nil

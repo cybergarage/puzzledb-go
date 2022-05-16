@@ -42,11 +42,6 @@ func NewFloatWithBytes(src []byte) (*Float, []byte, error) {
 	return &Float{Value: val}, src, nil
 }
 
-// GetType returns the primitive type.
-func (v *Float) GetType() Type {
-	return FLOAT
-}
-
 // GetData returns the value.
 func (v *Float) GetData() interface{} {
 	return v.Value

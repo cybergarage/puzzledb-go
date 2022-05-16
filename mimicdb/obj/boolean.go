@@ -40,11 +40,6 @@ func NewBoolWithBytes(src []byte) (*Bool, []byte, error) {
 	return &Bool{Value: val}, src, nil
 }
 
-// GetType returns the primitive type.
-func (v *Bool) GetType() Type {
-	return BOOL
-}
-
 // GetData returns the value.
 func (v *Bool) GetData() interface{} {
 	return v.Value
