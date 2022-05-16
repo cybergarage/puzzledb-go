@@ -42,11 +42,6 @@ func NewDoubleWithBytes(src []byte) (*Double, []byte, error) {
 	return &Double{Value: val}, src, nil
 }
 
-// GetType returns the primitive type.
-func (v *Double) GetType() Type {
-	return DOUBLE
-}
-
 // GetData returns the value.
 func (v *Double) GetData() interface{} {
 	return v.Value

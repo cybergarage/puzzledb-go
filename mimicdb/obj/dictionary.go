@@ -54,11 +54,6 @@ func (dict Dictionary) GetElementData(key string) (Data, bool) {
 	return data, ok
 }
 
-// GetType returns the primitive type.
-func (dict Dictionary) GetType() Type {
-	return DICTIONARY
-}
-
 // GetData returns the value.
 func (dict Dictionary) GetData() interface{} {
 	return dict

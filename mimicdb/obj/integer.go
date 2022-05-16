@@ -40,11 +40,6 @@ func NewIntWithBytes(src []byte) (*Int, []byte, error) {
 	return &Int{Value: val}, src, nil
 }
 
-// GetType returns the primitive type.
-func (v *Int) GetType() Type {
-	return INT
-}
-
 // GetData returns the value.
 func (v *Int) GetData() interface{} {
 	return v.Value
