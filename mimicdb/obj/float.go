@@ -58,7 +58,7 @@ func (v *Float) GetValue() float32 {
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
-func (v *Float) Equals(other Data) bool {
+func (v *Float) Equals(other Object) bool {
 	if v.GetType() != other.GetType() {
 		return false
 	}

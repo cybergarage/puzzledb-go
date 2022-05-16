@@ -56,7 +56,7 @@ func (v *Int) GetValue() int32 {
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
-func (v *Int) Equals(other Data) bool {
+func (v *Int) Equals(other Object) bool {
 	if v.GetType() != other.GetType() {
 		return false
 	}
