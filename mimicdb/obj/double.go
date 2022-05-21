@@ -20,7 +20,7 @@ import (
 
 // Double represents a double value.
 type Double struct {
-	Value float64
+	value float64
 }
 
 // NewDouble returns a double instance.
@@ -29,17 +29,17 @@ func NewDouble() *Double {
 }
 
 // NewDoubleWithValue returns a double instance with the specified value.
-func NewDoubleWithValue(val float64) *Double {
-	return &Double{Value: val}
+func NewDoubleWithValue(v float64) *Double {
+	return &Double{value: v}
 }
 
 // NewDoubleWithBytes returns a double instance with the specified bytes.
 func NewDoubleWithBytes(src []byte) (*Double, []byte, error) {
-	val, src, err := ReadFloat64Bytes(src)
+	v, src, err := ReadFloat64Bytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Double{Value: val}, src, nil
+	return &Double{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -47,19 +47,19 @@ func (v *Double) Type() Type {
 	return DOUBLE
 }
 
-// GetData returns the value.
-func (v *Double) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *Double) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *Double) SetValue(value float64) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *Double) GetValue() float64 {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -67,11 +67,11 @@ func (v *Double) Equals(other Object) bool {
 	if _, ok := other.(*Double); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(float64)
+	otherValue, ok := other.Value().(float64)
 	if !ok {
 		return false
 	}
-	if v.Value != otherValue {
+	if v.value != otherValue {
 		return false
 	}
 	return true
@@ -79,7 +79,7 @@ func (v *Double) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *Double) Bytes() []byte {
-	return AppendFloat64Bytes(nil, v.Value)
+	return AppendFloat64Bytes(nil, v.value)
 }
 
 // ReadFloat64Bytes reads the specified bytes as a long Float.

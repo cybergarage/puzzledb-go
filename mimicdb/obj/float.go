@@ -20,7 +20,7 @@ import (
 
 // Float represents a float value.
 type Float struct {
-	Value float32
+	value float32
 }
 
 // NewFloat returns a float instance.
@@ -29,17 +29,17 @@ func NewFloat() *Float {
 }
 
 // NewFloatWithValue returns a float instance with the specified value.
-func NewFloatWithValue(val float32) *Float {
-	return &Float{Value: val}
+func NewFloatWithValue(v float32) *Float {
+	return &Float{value: v}
 }
 
 // NewFloatWithBytes returns a float instance with the specified bytes.
 func NewFloatWithBytes(src []byte) (*Float, []byte, error) {
-	val, src, err := ReadFloat32Bytes(src)
+	v, src, err := ReadFloat32Bytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Float{Value: val}, src, nil
+	return &Float{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -47,19 +47,19 @@ func (v *Float) Type() Type {
 	return FLOAT
 }
 
-// GetData returns the value.
-func (v *Float) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *Float) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *Float) SetValue(value float32) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *Float) GetValue() float32 {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -67,11 +67,11 @@ func (v *Float) Equals(other Object) bool {
 	if _, ok := other.(*Float); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(float32)
+	otherValue, ok := other.Value().(float32)
 	if !ok {
 		return false
 	}
-	if v.Value != otherValue {
+	if v.value != otherValue {
 		return false
 	}
 	return true
@@ -79,7 +79,7 @@ func (v *Float) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *Float) Bytes() []byte {
-	return AppendFloat32Bytes(nil, v.Value)
+	return AppendFloat32Bytes(nil, v.value)
 }
 
 // ReadFloat32Bytes reads the specified bytes as a Float.

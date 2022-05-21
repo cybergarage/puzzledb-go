@@ -37,8 +37,8 @@ func TestDoubleBytes(t *testing.T) {
 			t.Error(err)
 			continue
 		}
-		if v.Value != testVal {
-			t.Errorf("%f != %f", v.Value, testVal)
+		if v.value != testVal {
+			t.Errorf("%f != %f", v.value, testVal)
 		}
 	}
 }

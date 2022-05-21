@@ -18,7 +18,7 @@ import "fmt"
 
 // Long represents a Long value.
 type Long struct {
-	Value int64
+	value int64
 }
 
 // NewLong returns a long instance.
@@ -27,17 +27,17 @@ func NewLong() *Long {
 }
 
 // NewLongWithValue returns a long instance with the specified value.
-func NewLongWithValue(val int64) *Long {
-	return &Long{Value: val}
+func NewLongWithValue(v int64) *Long {
+	return &Long{value: v}
 }
 
 // NewLongWithBytes returns a long instance with the specified bytes.
 func NewLongWithBytes(src []byte) (*Long, []byte, error) {
-	val, src, err := ReadInt64Bytes(src)
+	v, src, err := ReadInt64Bytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Long{Value: val}, src, nil
+	return &Long{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -45,19 +45,19 @@ func (v *Long) Type() Type {
 	return LONG
 }
 
-// GetData returns the value.
-func (v *Long) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *Long) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *Long) SetValue(value int64) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *Long) GetValue() int64 {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -65,11 +65,11 @@ func (v *Long) Equals(other Object) bool {
 	if _, ok := other.(*Long); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(int64)
+	otherValue, ok := other.Value().(int64)
 	if !ok {
 		return false
 	}
-	if v.Value != otherValue {
+	if v.value != otherValue {
 		return false
 	}
 	return true
@@ -77,7 +77,7 @@ func (v *Long) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *Long) Bytes() []byte {
-	return AppendInt64Bytes(nil, v.Value)
+	return AppendInt64Bytes(nil, v.value)
 }
 
 // ReadInt64Bytes reads the specified bytes as a long integer.

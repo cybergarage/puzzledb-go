@@ -18,7 +18,7 @@ import "fmt"
 
 // Short represents a short value.
 type Short struct {
-	Value int16
+	value int16
 }
 
 // NewShort returns a short instance.
@@ -27,17 +27,17 @@ func NewShort() *Short {
 }
 
 // NewShortWithValue returns a short instance with the specified value.
-func NewShortWithValue(val int16) *Short {
-	return &Short{Value: val}
+func NewShortWithValue(v int16) *Short {
+	return &Short{value: v}
 }
 
 // NewShortWithBytes returns a short instance with the specified bytes.
 func NewShortWithBytes(src []byte) (*Short, []byte, error) {
-	val, src, err := ReadInt16Bytes(src)
+	v, src, err := ReadInt16Bytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Short{Value: val}, src, nil
+	return &Short{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -45,19 +45,19 @@ func (v *Short) Type() Type {
 	return SHORT
 }
 
-// GetData returns the value.
-func (v *Short) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *Short) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *Short) SetValue(value int16) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *Short) GetValue() int16 {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -65,11 +65,11 @@ func (v *Short) Equals(other Object) bool {
 	if _, ok := other.(*Short); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(int16)
+	otherValue, ok := other.Value().(int16)
 	if !ok {
 		return false
 	}
-	if v.Value != otherValue {
+	if v.value != otherValue {
 		return false
 	}
 	return true
@@ -77,7 +77,7 @@ func (v *Short) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *Short) Bytes() []byte {
-	return AppendInt16Bytes(nil, v.Value)
+	return AppendInt16Bytes(nil, v.value)
 }
 
 // ReadInt16Bytes reads the specified bytes as a short integer.

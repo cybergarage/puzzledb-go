@@ -26,7 +26,7 @@ const (
 
 // String represents a string value.
 type String struct {
-	Value string
+	value string
 }
 
 // NewString returns a string instance.
@@ -35,17 +35,17 @@ func NewString() *String {
 }
 
 // NewStringWithValue returns a string instance with the specified value.
-func NewStringWithValue(val string) *String {
-	return &String{Value: val}
+func NewStringWithValue(v string) *String {
+	return &String{value: v}
 }
 
 // NewStringWithBytes returns a string instance with the specified bytes.
 func NewStringWithBytes(src []byte) (*String, []byte, error) {
-	val, src, err := ReadStringBytes(src)
+	v, src, err := ReadStringBytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &String{Value: val}, src, nil
+	return &String{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -53,19 +53,19 @@ func (v *String) Type() Type {
 	return STRING
 }
 
-// GetData returns the value.
-func (v *String) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *String) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *String) SetValue(value string) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *String) GetValue() string {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -73,11 +73,11 @@ func (v *String) Equals(other Object) bool {
 	if _, ok := other.(*String); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(string)
+	otherValue, ok := other.Value().(string)
 	if !ok {
 		return false
 	}
-	if v.Value != otherValue {
+	if v.value != otherValue {
 		return false
 	}
 	return true
@@ -85,7 +85,7 @@ func (v *String) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *String) Bytes() []byte {
-	return AppendStringBytes(nil, v.Value)
+	return AppendStringBytes(nil, v.value)
 }
 
 // ReadStringBytes reads the specified bytes as a string.

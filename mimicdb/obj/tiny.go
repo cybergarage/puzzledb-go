@@ -29,17 +29,17 @@ func NewTiny() *Tiny {
 }
 
 // NewTinyWithValue returns a tiny instance with the specified value.
-func NewTinyWithValue(val int8) *Tiny {
-	return &Tiny{value: val}
+func NewTinyWithValue(v int8) *Tiny {
+	return &Tiny{value: v}
 }
 
 // NewTinyWithBytes returns a tiny instance with the specified bytes.
 func NewTinyWithBytes(src []byte) (*Tiny, []byte, error) {
-	val, src, err := ReadInt8Bytes(src)
+	v, src, err := ReadInt8Bytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Tiny{value: val}, src, nil
+	return &Tiny{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -47,8 +47,8 @@ func (v *Tiny) Type() Type {
 	return TINY
 }
 
-// GetData returns the value.
-func (v *Tiny) GetData() interface{} {
+// Value returns the object value.
+func (v *Tiny) Value() interface{} {
 	return v.value
 }
 
@@ -67,7 +67,7 @@ func (v *Tiny) Equals(other Object) bool {
 	if _, ok := other.(*Tiny); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(int8)
+	otherValue, ok := other.Value().(int8)
 	if !ok {
 		return false
 	}

@@ -41,13 +41,13 @@ func NewArrayWithBytes(src []byte) (Array, []byte, error) {
 
 	array := NewArray()
 
-	var val Object
+	var v Object
 	for n := 0; n < int(nData); n++ {
-		val, src, err = NewObjectWithBytes(src)
+		v, src, err = NewObjectWithBytes(src)
 		if err != nil {
 			return nil, nil, err
 		}
-		array = append(array, val)
+		array = append(array, v)
 	}
 
 	return array, src, nil
@@ -58,8 +58,8 @@ func (array Array) Type() Type {
 	return ARRAY
 }
 
-// GetData returns the value.
-func (array Array) GetData() interface{} {
+// Value returns the object value.
+func (array Array) Value() interface{} {
 	return array
 }
 
