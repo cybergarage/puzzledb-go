@@ -65,7 +65,7 @@ func (v *Binary) GetValue() []byte {
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
 func (v *Binary) Equals(other Object) bool {
-	if v.GetType() != other.GetType() {
+	if _, ok := other.(*Binary); !ok {
 		return false
 	}
 	otherValue, ok := other.GetData().([]byte)
