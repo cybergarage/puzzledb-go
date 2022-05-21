@@ -26,7 +26,7 @@ func TestNewArray(t *testing.T) {
 func TestArrayBytes(t *testing.T) {
 	now := time.Now()
 
-	vals := []Data{
+	objs := []Object{
 		NewBoolWithValue(true),
 		NewStringWithValue("abc"),
 		NewShortWithValue(123),
@@ -40,8 +40,8 @@ func TestArrayBytes(t *testing.T) {
 	}
 
 	array := NewArray()
-	for _, val := range vals {
-		array.Append(val)
+	for _, obj := range objs {
+		array.Append(obj)
 	}
 
 	testBytes := array.Bytes()
