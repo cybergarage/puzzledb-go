@@ -39,7 +39,7 @@ func TestDictionaryBytes(t *testing.T) {
 
 	now := time.Now()
 
-	vals := []Data{
+	objs := []Object{
 		NewBoolWithValue(true),
 		NewStringWithValue("abc"),
 		NewShortWithValue(123),
@@ -54,7 +54,7 @@ func TestDictionaryBytes(t *testing.T) {
 
 	dict := NewDictionary()
 	for n, key := range keys {
-		dict[key] = vals[n]
+		dict[key] = objs[n]
 	}
 
 	testBytes := dict.Bytes()
