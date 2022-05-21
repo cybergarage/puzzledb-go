@@ -48,6 +48,11 @@ func NewStringWithBytes(src []byte) (*String, []byte, error) {
 	return &String{Value: val}, src, nil
 }
 
+// Type returns the object type.
+func (v *String) Type() Type {
+	return STRING
+}
+
 // GetData returns the value.
 func (v *String) GetData() interface{} {
 	return v.Value

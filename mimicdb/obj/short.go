@@ -40,6 +40,11 @@ func NewShortWithBytes(src []byte) (*Short, []byte, error) {
 	return &Short{Value: val}, src, nil
 }
 
+// Type returns the object type.
+func (v *Short) Type() Type {
+	return SHORT
+}
+
 // GetData returns the value.
 func (v *Short) GetData() interface{} {
 	return v.Value

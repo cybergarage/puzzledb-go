@@ -48,6 +48,11 @@ func NewBinaryWithBytes(src []byte) (*Binary, []byte, error) {
 	return &Binary{Value: val}, src, nil
 }
 
+// Type returns the object type.
+func (v *Binary) Type() Type {
+	return BINARY
+}
+
 // GetData returns the value.
 func (v *Binary) GetData() interface{} {
 	return v.Value

@@ -40,6 +40,11 @@ func NewLongWithBytes(src []byte) (*Long, []byte, error) {
 	return &Long{Value: val}, src, nil
 }
 
+// Type returns the object type.
+func (v *Long) Type() Type {
+	return LONG
+}
+
 // GetData returns the value.
 func (v *Long) GetData() interface{} {
 	return v.Value
