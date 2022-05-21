@@ -43,7 +43,7 @@ func NewArrayWithBytes(src []byte) (Array, []byte, error) {
 
 	var val Object
 	for n := 0; n < int(nData); n++ {
-		val, src, err = NewDataWithBytes(src)
+		val, src, err = NewObjectWithBytes(src)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -69,14 +69,19 @@ func (array Array) Append(val Object) {
 }
 
 // Equals returns true when the specified array is the same as this array, otherwise false.
-func (array Array) Equals(other Array) bool {
-	nData := len(array)
-	if nData != len(other) {
+func (array Array) Equals(other Object) bool {
+	otherArray, ok := other.(Array)
+	if !ok {
 		return false
 	}
 
-	for n := 0; n < int(nData); n++ {
-		if !array[n].Equals(other[n]) {
+	arraySize := len(array)
+	if arraySize != len(otherArray) {
+		return false
+	}
+
+	for n := 0; n < int(arraySize); n++ {
+		if !array[n].Equals(otherArray[n]) {
 			return false
 		}
 	}
@@ -91,7 +96,7 @@ func AppendArrayBytes(buf []byte, array Array) []byte {
 	}
 	buf = AppendUint16Bytes(buf, uint16(nData))
 	for _, val := range array {
-		buf = AppendDataBytes(buf, val)
+		buf = AppendObjectBytes(buf, val)
 	}
 	return buf
 }
