@@ -57,7 +57,7 @@ func (v *Short) GetValue() int16 {
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
 func (v *Short) Equals(other Object) bool {
-	if v.GetType() != other.GetType() {
+	if _, ok := other.(*Short); !ok {
 		return false
 	}
 	otherValue, ok := other.GetData().(int16)

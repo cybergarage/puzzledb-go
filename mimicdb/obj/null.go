@@ -41,7 +41,7 @@ func (v *Null) GetData() interface{} {
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
 func (v *Null) Equals(other Object) bool {
-	if v.GetType() != other.GetType() {
+	if _, ok := other.(*Null); !ok {
 		return false
 	}
 	return true
