@@ -38,8 +38,8 @@ func TestShortBytes(t *testing.T) {
 			t.Error(err)
 			continue
 		}
-		if v.Value != testVal {
-			t.Errorf("%d != %d", v.Value, testVal)
+		if v.value != testVal {
+			t.Errorf("%d != %d", v.value, testVal)
 		}
 	}
 }

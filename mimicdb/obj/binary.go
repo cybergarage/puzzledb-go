@@ -26,7 +26,7 @@ const (
 
 // Binary represents a binary value.
 type Binary struct {
-	Value []byte
+	value []byte
 }
 
 // NewBinary returns a binary instance.
@@ -35,17 +35,17 @@ func NewBinary() *Binary {
 }
 
 // NewBinaryWithValue returns a binary instance with the specified value.
-func NewBinaryWithValue(val []byte) *Binary {
-	return &Binary{Value: val}
+func NewBinaryWithValue(v []byte) *Binary {
+	return &Binary{value: v}
 }
 
 // NewBinaryWithBytes returns a binary instance with the specified bytes.
 func NewBinaryWithBytes(src []byte) (*Binary, []byte, error) {
-	val, src, err := ReadBinaryBytes(src)
+	v, src, err := ReadBinaryBytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Binary{Value: val}, src, nil
+	return &Binary{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -53,19 +53,19 @@ func (v *Binary) Type() Type {
 	return BINARY
 }
 
-// GetData returns the value.
-func (v *Binary) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *Binary) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *Binary) SetValue(value []byte) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *Binary) GetValue() []byte {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -73,11 +73,11 @@ func (v *Binary) Equals(other Object) bool {
 	if _, ok := other.(*Binary); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().([]byte)
+	otherValue, ok := other.Value().([]byte)
 	if !ok {
 		return false
 	}
-	if string(v.Value) != string(otherValue) {
+	if string(v.value) != string(otherValue) {
 		return false
 	}
 	return true
@@ -85,7 +85,7 @@ func (v *Binary) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *Binary) Bytes() []byte {
-	return AppendBinaryBytes(nil, v.Value)
+	return AppendBinaryBytes(nil, v.value)
 }
 
 // ReadBinaryBytes reads the specified bytes as a string.

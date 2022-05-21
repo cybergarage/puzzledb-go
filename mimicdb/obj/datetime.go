@@ -20,7 +20,7 @@ import (
 
 // Datetime represents a datetime value.
 type Datetime struct {
-	Value time.Time
+	value time.Time
 }
 
 // NewDatetime returns a datetime.
@@ -29,17 +29,17 @@ func NewDatetime() *Datetime {
 }
 
 // NewDatetimeWithValue returns a datetime instance with the specified value.
-func NewDatetimeWithValue(val time.Time) *Datetime {
-	return &Datetime{Value: val}
+func NewDatetimeWithValue(v time.Time) *Datetime {
+	return &Datetime{value: v}
 }
 
 // NewDatetimeWithBytes returns a datetime instance with the specified bytes.
 func NewDatetimeWithBytes(src []byte) (*Datetime, []byte, error) {
-	val, src, err := ReadDatetimeBytes(src)
+	v, src, err := ReadDatetimeBytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Datetime{Value: val}, src, nil
+	return &Datetime{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -47,19 +47,19 @@ func (v *Datetime) Type() Type {
 	return DATETIME
 }
 
-// GetData returns the value.
-func (v *Datetime) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *Datetime) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *Datetime) SetValue(value time.Time) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *Datetime) GetValue() time.Time {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -67,11 +67,11 @@ func (v *Datetime) Equals(other Object) bool {
 	if _, ok := other.(*Datetime); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(time.Time)
+	otherValue, ok := other.Value().(time.Time)
 	if !ok {
 		return false
 	}
-	if v.Value != otherValue {
+	if v.value != otherValue {
 		return false
 	}
 	return true
@@ -79,16 +79,16 @@ func (v *Datetime) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *Datetime) Bytes() []byte {
-	return AppendDatetimeBytes(nil, v.Value)
+	return AppendDatetimeBytes(nil, v.value)
 }
 
 // ReadDatetimeBytes reads the specified bytes as a Float.
 func ReadDatetimeBytes(src []byte) (time.Time, []byte, error) {
-	val, src, err := ReadInt64Bytes(src)
+	v, src, err := ReadInt64Bytes(src)
 	if err != nil {
 		return time.Now(), src, err
 	}
-	return time.Unix(val, 0), src, nil
+	return time.Unix(v, 0), src, nil
 }
 
 // AppendDatetimeBytes appends a value to the specified buffer.

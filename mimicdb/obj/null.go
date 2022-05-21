@@ -39,8 +39,8 @@ func (v *Null) Type() Type {
 	return NULL
 }
 
-// GetData returns the value.
-func (v *Null) GetData() interface{} {
+// Value returns the object value.
+func (v *Null) Value() interface{} {
 	return nil
 }
 

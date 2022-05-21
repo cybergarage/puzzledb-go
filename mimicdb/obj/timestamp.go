@@ -20,7 +20,7 @@ import (
 
 // Timestamp represents a timestamp value.
 type Timestamp struct {
-	Value time.Time
+	value time.Time
 }
 
 // NewTimestamp returns a timestamp instance.
@@ -29,17 +29,17 @@ func NewTimestamp() *Timestamp {
 }
 
 // NewTimestampWithValue returns a timestamp instance with the specified value.
-func NewTimestampWithValue(val time.Time) *Timestamp {
-	return &Timestamp{Value: val}
+func NewTimestampWithValue(v time.Time) *Timestamp {
+	return &Timestamp{value: v}
 }
 
 // NewTimestampWithBytes returns a timestamp instance with the specified bytes.
 func NewTimestampWithBytes(src []byte) (*Timestamp, []byte, error) {
-	val, src, err := ReadTimestampBytes(src)
+	v, src, err := ReadTimestampBytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Timestamp{Value: val}, src, nil
+	return &Timestamp{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -47,19 +47,19 @@ func (v *Timestamp) Type() Type {
 	return TIMESTAMP
 }
 
-// GetData returns the value.
-func (v *Timestamp) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *Timestamp) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *Timestamp) SetValue(value time.Time) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *Timestamp) GetValue() time.Time {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -67,11 +67,11 @@ func (v *Timestamp) Equals(other Object) bool {
 	if _, ok := other.(*Timestamp); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(time.Time)
+	otherValue, ok := other.Value().(time.Time)
 	if !ok {
 		return false
 	}
-	if v.Value != otherValue {
+	if v.value != otherValue {
 		return false
 	}
 	return true
@@ -79,19 +79,19 @@ func (v *Timestamp) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *Timestamp) Bytes() []byte {
-	return AppendTimestampBytes(nil, v.Value)
+	return AppendTimestampBytes(nil, v.value)
 }
 
 // ReadTimestampBytes reads the specified bytes as a long Float.
 func ReadTimestampBytes(src []byte) (time.Time, []byte, error) {
-	val, src, err := ReadInt64Bytes(src)
+	v, src, err := ReadInt64Bytes(src)
 	if err != nil {
 		return time.Now(), src, err
 	}
-	return time.Unix(val/1e3, (val%1e3)*1e6), src, nil
+	return time.Unix(v/1e3, (v%1e3)*1e6), src, nil
 }
 
 // AppendTimestampBytes appends a value to the specified buffer.
-func AppendTimestampBytes(buf []byte, val time.Time) []byte {
-	return AppendInt64Bytes(buf, (val.Unix()*1000)+int64(val.Nanosecond()/1e6))
+func AppendTimestampBytes(buf []byte, v time.Time) []byte {
+	return AppendInt64Bytes(buf, (v.Unix()*1000)+int64(v.Nanosecond()/1e6))
 }

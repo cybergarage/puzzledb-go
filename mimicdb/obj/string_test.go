@@ -38,12 +38,12 @@ func TestStringBytes(t *testing.T) {
 			t.Error(err)
 			continue
 		}
-		vLen := len(v.Value)
+		vLen := len(v.value)
 		if StringMaxLen < vLen {
 			t.Errorf("%d < %d", StringMaxLen, vLen)
 		}
-		if v.Value != testVal[:vLen] {
-			t.Errorf("%s != %s", v.Value, testVal)
+		if v.value != testVal[:vLen] {
+			t.Errorf("%s != %s", v.value, testVal)
 		}
 	}
 }

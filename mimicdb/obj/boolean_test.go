@@ -34,8 +34,8 @@ func TestBoolBytes(t *testing.T) {
 			t.Error(err)
 			continue
 		}
-		if v.Value != testVal {
-			t.Errorf("%t != %t", v.Value, testVal)
+		if v.value != testVal {
+			t.Errorf("%t != %t", v.value, testVal)
 		}
 	}
 }

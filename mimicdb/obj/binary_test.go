@@ -38,12 +38,12 @@ func TestBinaryBytes(t *testing.T) {
 			t.Error(err)
 			continue
 		}
-		vLen := len(v.Value)
+		vLen := len(v.value)
 		if BinaryMaxLen < vLen {
 			t.Errorf("%d < %d", BinaryMaxLen, vLen)
 		}
-		if string(v.Value) != string(testVal[:vLen]) {
-			t.Errorf("%s != %s", string(v.Value), string(testVal[:vLen]))
+		if string(v.value) != string(testVal[:vLen]) {
+			t.Errorf("%s != %s", string(v.value), string(testVal[:vLen]))
 		}
 	}
 }

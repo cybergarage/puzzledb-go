@@ -59,8 +59,8 @@ func (dict Dictionary) GetElementData(key string) (Object, bool) {
 	return data, ok
 }
 
-// GetData returns the value.
-func (dict Dictionary) GetData() interface{} {
+// Value returns the object value.
+func (dict Dictionary) Value() interface{} {
 	return dict
 }
 
@@ -114,17 +114,17 @@ func ReadDictionaryBytes(src []byte) (Dictionary, []byte, error) {
 	dict := Dictionary{}
 
 	var key string
-	var val Object
+	var v Object
 	for n := 0; n < int(nMap); n++ {
 		key, src, err = ReadStringBytes(src)
 		if err != nil {
 			return nil, nil, err
 		}
-		val, src, err = NewObjectWithBytes(src)
+		v, src, err = NewObjectWithBytes(src)
 		if err != nil {
 			return nil, nil, err
 		}
-		dict[key] = val
+		dict[key] = v
 	}
 
 	return dict, src, nil

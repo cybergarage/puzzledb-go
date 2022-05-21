@@ -34,8 +34,8 @@ func TestDatatimeBytes(t *testing.T) {
 			t.Error(err)
 			continue
 		}
-		if v.Value != testVal {
-			t.Errorf("%v != %v", v.Value, testVal)
+		if v.value != testVal {
+			t.Errorf("%v != %v", v.value, testVal)
 		}
 	}
 }

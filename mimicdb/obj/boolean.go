@@ -18,7 +18,7 @@ import "fmt"
 
 // Bool represents a bool value.
 type Bool struct {
-	Value bool
+	value bool
 }
 
 // NewBool returns a bool instance.
@@ -27,17 +27,17 @@ func NewBool() *Bool {
 }
 
 // NewBoolWithValue returns a bool instance with the specified value.
-func NewBoolWithValue(val bool) *Bool {
-	return &Bool{Value: val}
+func NewBoolWithValue(v bool) *Bool {
+	return &Bool{value: v}
 }
 
 // NewBoolWithBytes returns a bool instance with the specified bytes.
 func NewBoolWithBytes(src []byte) (*Bool, []byte, error) {
-	val, src, err := ReadBoolBytes(src)
+	v, src, err := ReadBoolBytes(src)
 	if err != nil {
 		return nil, src, err
 	}
-	return &Bool{Value: val}, src, nil
+	return &Bool{value: v}, src, nil
 }
 
 // Type returns the object type.
@@ -45,19 +45,19 @@ func (v *Bool) Type() Type {
 	return BOOL
 }
 
-// GetData returns the value.
-func (v *Bool) GetData() interface{} {
-	return v.Value
+// Value returns the object value.
+func (v *Bool) Value() interface{} {
+	return v.value
 }
 
 // SetValue sets a specified value.
 func (v *Bool) SetValue(value bool) {
-	v.Value = value
+	v.value = value
 }
 
 // GetValue returns the stored value.
 func (v *Bool) GetValue() bool {
-	return v.Value
+	return v.value
 }
 
 // Equals returns true when the specified value is s the same as this value, otherwise false.
@@ -65,11 +65,11 @@ func (v *Bool) Equals(other Object) bool {
 	if _, ok := other.(*Bool); !ok {
 		return false
 	}
-	otherValue, ok := other.GetData().(bool)
+	otherValue, ok := other.Value().(bool)
 	if !ok {
 		return false
 	}
-	if v.Value != otherValue {
+	if v.value != otherValue {
 		return false
 	}
 	return true
@@ -77,7 +77,7 @@ func (v *Bool) Equals(other Object) bool {
 
 // Bytes returns the binary representation.
 func (v *Bool) Bytes() []byte {
-	return AppendBoolBytes(nil, v.Value)
+	return AppendBoolBytes(nil, v.value)
 }
 
 // ReadBoolBytes reads the specified bytes as a short integer.
