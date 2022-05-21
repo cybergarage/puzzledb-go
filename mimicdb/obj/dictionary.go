@@ -65,9 +65,13 @@ func (dict Dictionary) Bytes() []byte {
 }
 
 // Equals returns true when the specified dictionary is the same as this dictionary, otherwise false.
-func (dict Dictionary) Equals(other Dictionary) bool {
+func (dict Dictionary) Equals(other Object) bool {
+	otherDict, ok := other.(Dictionary)
+	if !ok {
+		return false
+	}
 	for key, val := range dict {
-		otherVal, ok := other[key]
+		otherVal, ok := otherDict[key]
 		if !ok {
 			return false
 		}
@@ -87,7 +91,7 @@ func AppendDictionaryBytes(buf []byte, dict Dictionary) []byte {
 	buf = AppendUint16Bytes(buf, uint16(nMap))
 	for key, val := range dict {
 		buf = AppendStringBytes(buf, key)
-		buf = AppendDataBytes(buf, val)
+		buf = AppendObjectBytes(buf, val)
 	}
 	return buf
 }
@@ -111,7 +115,7 @@ func ReadDictionaryBytes(src []byte) (Dictionary, []byte, error) {
 		if err != nil {
 			return nil, nil, err
 		}
-		val, src, err = NewDataWithBytes(src)
+		val, src, err = NewObjectWithBytes(src)
 		if err != nil {
 			return nil, nil, err
 		}
