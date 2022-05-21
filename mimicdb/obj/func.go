@@ -16,16 +16,7 @@ package obj
 
 import (
 	"fmt"
-	"math"
 )
-
-const (
-	// TypeMax is a max number of Type.
-	TypeMax = math.MaxUint8
-)
-
-// Type is an primitive type.
-type Type uint8
 
 // ReadInt8Bytes reads the specified bytes as a byte integer.
 func ReadInt8Bytes(src []byte) (int8, []byte, error) {
