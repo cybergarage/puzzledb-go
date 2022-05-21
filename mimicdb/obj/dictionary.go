@@ -34,6 +34,11 @@ func NewDictionaryWithBytes(src []byte) (Dictionary, []byte, error) {
 	return ReadDictionaryBytes(src)
 }
 
+// Type returns the object type.
+func (dict Dictionary) Type() Type {
+	return DICTIONARY
+}
+
 // AddElement adds an element to the dictionary.
 func (dict Dictionary) AddElement(key string, data Object) {
 	dict[key] = data

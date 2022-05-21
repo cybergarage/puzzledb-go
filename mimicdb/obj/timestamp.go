@@ -42,6 +42,11 @@ func NewTimestampWithBytes(src []byte) (*Timestamp, []byte, error) {
 	return &Timestamp{Value: val}, src, nil
 }
 
+// Type returns the object type.
+func (v *Timestamp) Type() Type {
+	return TIMESTAMP
+}
+
 // GetData returns the value.
 func (v *Timestamp) GetData() interface{} {
 	return v.Value

@@ -42,6 +42,11 @@ func NewDoubleWithBytes(src []byte) (*Double, []byte, error) {
 	return &Double{Value: val}, src, nil
 }
 
+// Type returns the object type.
+func (v *Double) Type() Type {
+	return DOUBLE
+}
+
 // GetData returns the value.
 func (v *Double) GetData() interface{} {
 	return v.Value

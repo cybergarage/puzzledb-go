@@ -42,6 +42,11 @@ func NewDatetimeWithBytes(src []byte) (*Datetime, []byte, error) {
 	return &Datetime{Value: val}, src, nil
 }
 
+// Type returns the object type.
+func (v *Datetime) Type() Type {
+	return DATETIME
+}
+
 // GetData returns the value.
 func (v *Datetime) GetData() interface{} {
 	return v.Value

@@ -42,6 +42,11 @@ func NewFloatWithBytes(src []byte) (*Float, []byte, error) {
 	return &Float{Value: val}, src, nil
 }
 
+// Type returns the object type.
+func (v *Float) Type() Type {
+	return FLOAT
+}
+
 // GetData returns the value.
 func (v *Float) GetData() interface{} {
 	return v.Value

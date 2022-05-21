@@ -53,6 +53,11 @@ func NewArrayWithBytes(src []byte) (Array, []byte, error) {
 	return array, src, nil
 }
 
+// Type returns the object type.
+func (array Array) Type() Type {
+	return ARRAY
+}
+
 // GetData returns the value.
 func (array Array) GetData() interface{} {
 	return array
