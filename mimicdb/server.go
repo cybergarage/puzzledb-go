@@ -58,7 +58,12 @@ func (server *Server) Stop() error {
 // LoadPlugins loads default plugin services.
 func (server *Server) LoadPlugins() {
 	store := memdb.NewStore()
-	server.Services.Add(store)
+	services := []plugins.Service{
+		store,
+		mysql.NewServiceWithStore(store),
+	}
 
-	server.Services.Add(mysql.NewServiceWithStore(store))
+	for _, service := range services {
+		server.Services.Add(service)
+	}
 }
