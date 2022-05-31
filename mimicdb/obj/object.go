@@ -24,7 +24,7 @@ type Object interface {
 	// Type returns the object type.
 	Type() Type
 	// Value returns the object value.
-	Value() interface{}
+	Value() any
 	// Equals returns true when the specified value is the same as this value, otherwise false.
 	Equals(other Object) bool
 	// Bytes returns the binary representation.
@@ -45,7 +45,7 @@ func NewObjectWithBytes(src []byte) (Object, []byte, error) {
 }
 
 // NewObjectWithValue creates an object from the specified golang value.
-func NewObjectWithValue(val interface{}) (Object, error) {
+func NewObjectWithValue(val any) (Object, error) {
 	switch v := val.(type) {
 	case float32:
 		return NewFloatWithValue(v), nil

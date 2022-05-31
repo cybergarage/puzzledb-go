@@ -54,7 +54,7 @@ func (v *String) Type() Type {
 }
 
 // Value returns the object value.
-func (v *String) Value() interface{} {
+func (v *String) Value() any {
 	return v.value
 }
 

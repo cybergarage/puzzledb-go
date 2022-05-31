@@ -20,7 +20,7 @@ import (
 )
 
 func TestNewObjectWithValues(t *testing.T) {
-	testValues := []interface{}{
+	testValues := []any{
 		nil,
 		true,
 		"abc",

@@ -59,7 +59,7 @@ func (array Array) Type() Type {
 }
 
 // Value returns the object value.
-func (array Array) Value() interface{} {
+func (array Array) Value() any {
 	return array
 }
 

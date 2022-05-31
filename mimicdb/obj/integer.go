@@ -46,7 +46,7 @@ func (v *Int) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Int) Value() interface{} {
+func (v *Int) Value() any {
 	return v.value
 }
 

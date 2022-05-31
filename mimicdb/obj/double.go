@@ -48,7 +48,7 @@ func (v *Double) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Double) Value() interface{} {
+func (v *Double) Value() any {
 	return v.value
 }
 

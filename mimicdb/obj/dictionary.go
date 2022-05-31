@@ -60,7 +60,7 @@ func (dict Dictionary) GetElementData(key string) (Object, bool) {
 }
 
 // Value returns the object value.
-func (dict Dictionary) Value() interface{} {
+func (dict Dictionary) Value() any {
 	return dict
 }
 

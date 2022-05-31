@@ -48,7 +48,7 @@ func (v *Tiny) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Tiny) Value() interface{} {
+func (v *Tiny) Value() any {
 	return v.value
 }
 

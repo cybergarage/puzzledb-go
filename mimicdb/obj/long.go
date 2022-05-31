@@ -46,7 +46,7 @@ func (v *Long) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Long) Value() interface{} {
+func (v *Long) Value() any {
 	return v.value
 }
 
