@@ -18,6 +18,7 @@ import (
 	"github.com/cybergarage/mimicdb/mimicdb/errors"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins/query/mysql"
+	"github.com/cybergarage/mimicdb/mimicdb/plugins/serializer/uof"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins/store/memdb"
 )
 
@@ -61,6 +62,7 @@ func (server *Server) LoadPlugins() {
 	services := []plugins.Service{
 		store,
 		mysql.NewServiceWithStore(store),
+		uof.NewSerializer(),
 	}
 
 	for _, service := range services {
