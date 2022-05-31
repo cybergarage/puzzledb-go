@@ -41,11 +41,11 @@ func NewObjectWithBytes(src []byte) (Object, []byte, error) {
 		return nil, nil, err
 	}
 
-	return NNewObjectWithTypeAndBytes(objType, src)
+	return NewObjectWithTypeAndBytes(objType, src)
 }
 
-// NNewObjectWithTypeAndBytes returns a new object from the specified obj type and bytes.
-func NNewObjectWithTypeAndBytes(objType Type, src []byte) (Object, []byte, error) {
+// NewObjectWithTypeAndBytes returns a new object from the specified obj type and bytes.
+func NewObjectWithTypeAndBytes(objType Type, src []byte) (Object, []byte, error) {
 	var err error
 
 	var obj Object
