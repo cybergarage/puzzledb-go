@@ -44,6 +44,48 @@ func NewObjectWithBytes(src []byte) (Object, []byte, error) {
 	return NewObjectWithTypeAndBytes(objType, src)
 }
 
+// NewObjectWithValue creates an object from the specified golang value.
+func NewObjectWithValue(val interface{}) (Object, error) {
+	switch v := val.(type) {
+	case float32:
+		return NewFloatWithValue(v), nil
+	case float64:
+		return NewDoubleWithValue(v), nil
+	case string:
+		return NewStringWithValue(v), nil
+	case []byte:
+		return NewBinaryWithValue(v), nil
+	case bool:
+		return NewBoolWithValue(v), nil
+	case time.Time:
+		return NewDatetimeWithValue(v), nil
+	case nil:
+		return NewNull(), nil
+	case int:
+		return NewLongWithValue(int64(v)), nil
+	case int8:
+		return NewTinyWithValue(v), nil
+	case int16:
+		return NewShortWithValue(v), nil
+	case int32:
+		return NewIntWithValue(v), nil
+	case int64:
+		return NewLongWithValue(v), nil
+	case uint:
+		return NewLongWithValue(int64(v)), nil
+	case uint8:
+		return NewShortWithValue(int16(v)), nil
+	case uint16:
+		return NewShortWithValue(int16(v)), nil
+	case uint32:
+		return NewIntWithValue(int32(v)), nil
+	case uint64:
+		return NewLongWithValue(int64(v)), nil
+	}
+
+	return nil, fmt.Errorf(errorInvalidValueType, val, val)
+}
+
 // NewObjectWithTypeAndBytes returns a new object from the specified obj type and bytes.
 func NewObjectWithTypeAndBytes(objType Type, src []byte) (Object, []byte, error) {
 	var err error
