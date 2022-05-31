@@ -46,7 +46,7 @@ func (v *Bool) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Bool) Value() interface{} {
+func (v *Bool) Value() any {
 	return v.value
 }
 

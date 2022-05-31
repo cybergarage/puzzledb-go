@@ -48,7 +48,7 @@ func (v *Datetime) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Datetime) Value() interface{} {
+func (v *Datetime) Value() any {
 	return v.value
 }
 

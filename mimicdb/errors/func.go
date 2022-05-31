@@ -24,6 +24,6 @@ func Wrap(err error) error {
 }
 
 // Wrapf is a sufar function of Errorf("%w").
-func Wrapf(err error, format string, args ...interface{}) error {
+func Wrapf(err error, format string, args ...any) error {
 	return fmt.Errorf("%s (%w)", fmt.Sprintf(format, args...), err)
 }

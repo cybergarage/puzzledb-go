@@ -40,7 +40,7 @@ func (v *Null) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Null) Value() interface{} {
+func (v *Null) Value() any {
 	return nil
 }
 

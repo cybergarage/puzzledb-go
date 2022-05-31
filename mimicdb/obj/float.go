@@ -48,7 +48,7 @@ func (v *Float) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Float) Value() interface{} {
+func (v *Float) Value() any {
 	return v.value
 }
 

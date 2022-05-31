@@ -46,7 +46,7 @@ func (v *Short) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Short) Value() interface{} {
+func (v *Short) Value() any {
 	return v.value
 }
 

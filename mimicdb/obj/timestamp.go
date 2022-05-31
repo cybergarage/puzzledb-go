@@ -48,7 +48,7 @@ func (v *Timestamp) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Timestamp) Value() interface{} {
+func (v *Timestamp) Value() any {
 	return v.value
 }
 

@@ -54,7 +54,7 @@ func (v *Binary) Type() Type {
 }
 
 // Value returns the object value.
-func (v *Binary) Value() interface{} {
+func (v *Binary) Value() any {
 	return v.value
 }
 
