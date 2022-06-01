@@ -39,3 +39,13 @@ func (s *UOF) Encode(obj *obj.Object) ([]byte, error) {
 func (s *UOF) Decode([]byte) (*obj.Object, error) {
 	return nil, nil
 }
+
+// Start starts this serializer.
+func (s *UOF) Start() error {
+	return nil
+}
+
+// Stop stops this serializer.
+func (s *UOF) Stop() error {
+	return nil
+}
