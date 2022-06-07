@@ -25,5 +25,5 @@ type Serializer interface {
 	// Encode dumps a specified object to the byte array.
 	Encode(obj *obj.Object) ([]byte, error)
 	// Decode creates an object from the specified byte array.
-	Decode([]byte) (*obj.Object, error)
+	Decode([]byte) (obj.Object, error)
 }
