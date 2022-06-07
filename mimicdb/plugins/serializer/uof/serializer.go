@@ -31,13 +31,13 @@ func NewSerializer() *UOF {
 
 // Encode dumps a specified object to the byte array.
 func (s *UOF) Encode(obj *obj.Object) ([]byte, error) {
-
 	return make([]byte, 0), nil
 }
 
 // Decode creates an object from the specified byte array.
-func (s *UOF) Decode([]byte) (*obj.Object, error) {
-	return nil, nil
+func (s *UOF) Decode(b []byte) (obj.Object, error) {
+	obj, _, err := obj.NewObjectWithBytes(b)
+	return obj, err
 }
 
 // Start starts this serializer.
