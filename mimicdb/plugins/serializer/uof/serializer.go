@@ -30,8 +30,8 @@ func NewSerializer() *UOF {
 }
 
 // Encode dumps a specified object to the byte array.
-func (s *UOF) Encode(obj *obj.Object) ([]byte, error) {
-	return make([]byte, 0), nil
+func (s *UOF) Encode(obj obj.Object) ([]byte, error) {
+	return obj.Bytes(), nil
 }
 
 // Decode creates an object from the specified byte array.
