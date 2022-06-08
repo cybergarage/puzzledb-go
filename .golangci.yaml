@@ -6,3 +6,5 @@ linters:
     - testpackage
     - gofumpt
     - nlreturn
+    - varnamelen
+    - wsl

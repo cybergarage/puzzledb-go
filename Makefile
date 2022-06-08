@@ -21,8 +21,13 @@ SHELL := bash
 PACKAGE_NAME=mimicdb
 
 MODULE_ROOT=github.com/cybergarage/mimicdb
-SOURCE_ROOT=${PACKAGE_NAME}
 PACKAGE_ROOT=${MODULE_ROOT}/${PACKAGE_NAME}
+
+SOURCE_ROOT=${PACKAGE_NAME}
+TEST_SOURCE_ROOT=${PACKAGE_NAME}test
+SOURCES=\
+	${SOURCE_ROOT} \
+	${TEST_SOURCE_ROOT}/plugins
 
 PACKAGE_ID=${PACKAGE_ROOT}
 PACKAGES=\
@@ -32,19 +37,18 @@ PACKAGES=\
 	${PACKAGE_ID}/plugins/query/mysql \
 	${PACKAGE_ID}/plugins/store/memdb
 
-
 .PHONY: version clean
 
 all: test
 
 format:
-	gofmt -w ${SOURCE_ROOT}
+	gofmt -w ${SOURCES}
 
 vet: format
 	go vet ${PACKAGE_ROOT}
 
 lint: format
-	golangci-lint run ${SOURCE_ROOT}
+	golangci-lint run ${SOURCES}
 
 test: lint
 	go test -v -cover -timeout 60s ${PACKAGES}
