@@ -8,3 +8,4 @@ linters:
     - nlreturn
     - varnamelen
     - wsl
+    - funlen
