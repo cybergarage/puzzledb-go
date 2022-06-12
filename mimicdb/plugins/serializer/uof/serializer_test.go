@@ -17,18 +17,9 @@ package uof
 import (
 	"testing"
 
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/serializer"
+	"github.com/cybergarage/mimicdb/mimicdbtest/plugins"
 )
 
-func TestSerializers(t *testing.T) {
-	serializers := []serializer.Serializer{
-		NewSerializer(),
-	}
-
-	for _, serializer := range serializers {
-		testSerializer(t, serializer)
-	}
-}
-
-func testSerializer(t *testing.T, serializers serializer.Serializer) {
+func TestSerializer(t *testing.T) {
+	plugins.SerializerTest(t, NewSerializer())
 }
