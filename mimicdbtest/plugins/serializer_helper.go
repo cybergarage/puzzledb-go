@@ -16,10 +16,55 @@ package plugins
 
 import (
 	"testing"
+	"time"
 
+	"github.com/cybergarage/mimicdb/mimicdb/obj"
 	"github.com/cybergarage/mimicdb/mimicdb/plugins/serializer"
 )
 
 func SerializerTest(t *testing.T, serializer serializer.Serializer) {
 	t.Helper()
+	SerializerArrayTest(t, serializer)
+}
+
+//nolint:gomnd
+func SerializerArrayTest(t *testing.T, serializer serializer.Serializer) {
+	t.Helper()
+
+	now := time.Now()
+	now = now.Add(time.Duration((now.Nanosecond() % 1e6)) * -1)
+
+	vals := []obj.Object{
+		obj.NewBoolWithValue(true),
+		obj.NewStringWithValue("abc"),
+		obj.NewShortWithValue(123),
+		obj.NewIntWithValue(123),
+		obj.NewLongWithValue(123),
+		obj.NewFloatWithValue(123),
+		obj.NewDoubleWithValue(123),
+		obj.NewTimestampWithValue(time.Unix(now.Unix(), int64(now.Nanosecond()))),
+		obj.NewDatetimeWithValue(time.Unix(now.Unix(), 0)),
+		obj.NewBinaryWithValue([]byte("abc")),
+	}
+
+	array := obj.NewArray()
+	for _, val := range vals {
+		array.Append(val)
+	}
+
+	testBytes, err := serializer.Encode(array)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	parsedArray, _, err := obj.NewArrayWithBytes(testBytes)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	if !array.Equals(parsedArray) {
+		t.Errorf("%v != %v", array, parsedArray)
+	}
 }
