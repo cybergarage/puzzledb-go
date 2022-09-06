@@ -17,7 +17,7 @@ package mysql
 import (
 	"sync"
 
-	"github.com/cybergarage/go-mysql/mysql/log"
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql/query"
 )
 
@@ -108,8 +108,8 @@ func (tbl *Table) String() string {
 
 // Dump outputs all row values for debug.
 func (tbl *Table) Dump() {
-	log.Debug("%s", tbl.Name())
+	log.Debugf("%s", tbl.Name())
 	for n, row := range tbl.Rows.Rows() {
-		log.Debug("[%d] %s", n, row.String())
+		log.Debugf("[%d] %s", n, row.String())
 	}
 }

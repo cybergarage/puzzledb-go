@@ -18,14 +18,14 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
-	"github.com/cybergarage/go-mysql/mysql/log"
 	"github.com/cybergarage/go-mysql/mysql/query"
 )
 
 // CreateDatabase should handle a CREATE database statement.
 func (srv *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	log.Debug("%v", stmt)
+	log.Debugf("%v", stmt)
 	dbName := stmt.Name()
 	_, ok := srv.GetDatabase(dbName)
 	if ok {
@@ -40,7 +40,7 @@ func (srv *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, stmt *
 
 // AlterDatabase should handle a ALTER database statement.
 func (srv *Service) AlterDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	log.Debug("%v", stmt)
+	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
@@ -81,7 +81,7 @@ func (srv *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt *que
 
 // AlterTable should handle a ALTER table statement.
 func (srv *Service) AlterTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	log.Debug("%v", stmt)
+	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
@@ -107,19 +107,19 @@ func (srv *Service) DropTable(ctx context.Context, conn *mysql.Conn, stmt *query
 
 // RenameTable should handle a RENAME table statement.
 func (srv *Service) RenameTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	log.Debug("%v", stmt)
+	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
 // TruncateTable should handle a TRUNCATE table statement.
 func (srv *Service) TruncateTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	log.Debug("%v", stmt)
+	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
 // Insert should handle a INSERT statement.
 func (srv *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *query.Insert) (*mysql.Result, error) {
-	log.Debug("%v", stmt)
+	log.Debugf("%v", stmt)
 	dbName := conn.Database
 	tableName := stmt.TableName()
 	table, ok := srv.GetTableWithDatabase(dbName, tableName)
@@ -143,7 +143,7 @@ func (srv *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *query.In
 
 // Update should handle a UPDATE statement.
 func (srv *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
-	log.Debug("%v", stmt)
+	log.Debugf("%v", stmt)
 
 	dbName := conn.Database
 	cond := stmt.Where
@@ -212,7 +212,7 @@ func (srv *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *query.De
 
 // Select should handle a SELECT statement.
 func (srv *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
-	log.Debug("%v", stmt)
+	log.Debugf("%v", stmt)
 
 	dbName := conn.Database
 	database, ok := srv.GetDatabase(dbName)
