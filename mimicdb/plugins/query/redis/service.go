@@ -27,24 +27,25 @@ type Service struct {
 
 // NewServiceWithStore returns a new MySQL service instance with the specified　Store.
 func NewServiceWithStore(store store.Store) *Service {
-	srv := &Service{
+	service := &Service{
 		Server: redis.NewServer(),
 		Store:  store,
 	}
-	return srv
+	service.Server.SetCommandHandler(service)
+	return service
 }
 
 // Start starts the service.
-func (srv *Service) Start() error {
-	if err := srv.Server.Start(); err != nil {
+func (service *Service) Start() error {
+	if err := service.Server.Start(); err != nil {
 		return err
 	}
 	return nil
 }
 
 // Stop stops the service.
-func (srv *Service) Stop() error {
-	if err := srv.Server.Stop(); err != nil {
+func (service *Service) Stop() error {
+	if err := service.Server.Stop(); err != nil {
 		return err
 	}
 	return nil
