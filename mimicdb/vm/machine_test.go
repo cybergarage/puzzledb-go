@@ -14,7 +14,9 @@
 
 package vm
 
-// Executoer defines a executor of the compiled object.
-type Executor interface {
-	Execute(*Object) error
+import (
+	"testing"
+)
+
+func TestMachine(t *testing.T) {
 }
