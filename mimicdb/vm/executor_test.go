@@ -14,11 +14,9 @@
 
 package vm
 
-// Machine represents a virtual machine.
-type Machine struct {
-}
+import (
+	"testing"
+)
 
-// Execute execute the specified compiled query object.
-func (m *Machine) Execute(*Object) error {
-	return nil
+func TestExecutor(t *testing.T) {
 }
