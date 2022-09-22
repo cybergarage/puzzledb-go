@@ -14,14 +14,14 @@
 
 package vm
 
-// TransactionHandler defines a transaction executor interface.
-type TransactionHandler interface {
+// TransactionExecutor defines a transaction executor interface.
+type TransactionExecutor interface {
 	Begin(*DBContext) error
 	Commit(*DBContext) error
 	RollBack(*DBContext) error
 }
 
-// QueryHandler defines a query executor interface.
-type QueryHandler interface {
-	TransactionHandler
+// Executor defines a query executor interface.
+type Executor interface {
+	TransactionExecutor
 }
