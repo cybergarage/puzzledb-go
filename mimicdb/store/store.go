@@ -14,22 +14,33 @@
 
 package store
 
-import (
-	"github.com/cybergarage/mimicdb/mimicdb/plugins"
-	"github.com/cybergarage/mimicdb/mimicdb/store"
-)
-
 // Store represents a store interface.
 type Store interface {
-	store.Store
-	plugins.Service
+	// Open opens the specified store.
+	Open(name string) error
+	// Transact opens a transaction.
+	Transact(write bool) (Transaction, error)
+	// Close closes this store.
+	Close() error
 }
 
-// Transaction represents a transaction interface.
-type Transaction = store.Transaction
-
 // Key represents an object key.
-type Key = store.Key
+type Key = string
+
+// Transaction represents a transaction interface.
+type Transaction interface {
+	// Insert puts a key-value object.
+	Insert(obj *Object) error
+	// Select gets an key-value object of the specified key.
+	Select(key Key) (*Object, error)
+	// Commit commits this transaction.
+	Commit() error
+	// Cancel cancels this transaction.
+	Cancel() error
+}
 
 // Object represents a key-value object.
-type Object = store.Object
+type Object struct {
+	Key   Key
+	Value []byte
+}
