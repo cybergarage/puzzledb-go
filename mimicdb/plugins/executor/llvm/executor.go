@@ -12,16 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vm
+package llvm
 
-import (
-	"github.com/llir/llvm/ir"
-)
+// Executor represents a virtual machine executor.
+type Executor struct {
+}
 
-// Object represents a compiled object.
-type Object = ir.Module
-
-// NewObject returns a empty compiled object.
-func NewObject() *Object {
-	return ir.NewModule()
+// Execute execute the specified compiled query object.
+func (m *Executor) Execute(*Object) error {
+	return nil
 }

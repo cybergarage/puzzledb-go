@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vm
+package llvm
 
-// Executor represents a virtual machine executor.
-type Executor struct {
-}
+import (
+	"testing"
+)
 
-// Execute execute the specified compiled query object.
-func (m *Executor) Execute(*Object) error {
-	return nil
+func TestExecutor(t *testing.T) {
 }
