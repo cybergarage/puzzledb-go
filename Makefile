@@ -33,8 +33,9 @@ PACKAGE_ID=${PACKAGE_ROOT}
 PACKAGES=\
 	${PACKAGE_ID} \
 	${PACKAGE_ID}/obj \
-	${PACKAGE_ID}/vm \
 	${PACKAGE_ID}/plugins \
+	${PACKAGE_ID}/plugins/executor \
+	${PACKAGE_ID}/plugins/executor/llvm \
 	${PACKAGE_ID}/plugins/query/mysql \
 	${PACKAGE_ID}/plugins/store/memdb
 
