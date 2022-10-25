@@ -12,16 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vm
+package llvm
 
 import (
-	"github.com/llir/llvm/ir"
+	"testing"
 )
 
-// Object represents a compiled object.
-type Object = ir.Module
-
-// NewObject returns a empty compiled object.
-func NewObject() *Object {
-	return ir.NewModule()
+func TestExecutor(t *testing.T) {
 }
