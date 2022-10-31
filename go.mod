@@ -7,7 +7,7 @@ require github.com/hashicorp/go-memdb v1.3.2
 require (
 	github.com/cybergarage/go-logger v1.3.0 // indirect
 	github.com/cybergarage/go-redis v1.1.0 // indirect
-	github.com/cybergarage/go-sqlite v0.0.0-20221025130845-a328d8d27e82 // indirect
+	github.com/cybergarage/go-sqlite v0.0.0-20221027001523-f5073641f875 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
