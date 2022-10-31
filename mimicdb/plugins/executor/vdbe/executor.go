@@ -15,16 +15,16 @@
 package vbde
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/executor"
+	"github.com/cybergarage/mimicdb/mimicdb"
 )
 
 // Executor represents a virtual machine executor.
 type Executor struct {
-	executor.Executor
+	mimicdb.Executor
 }
 
 // Execute execute the specified compiled query object.
-func (m *Executor) Execute(ctx *executor.DBContext, estmt executor.Statement) error {
+func (m *Executor) Execute(ctx *mimicdb.DBContext, estmt mimicdb.Statement) error {
 	_, ok := estmt.(*Statement)
 	if !ok {
 		return nil
