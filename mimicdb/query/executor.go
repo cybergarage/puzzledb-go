@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mimicdb
+package query
 
 // Executor represents a statement executor.
 type Executor interface {
