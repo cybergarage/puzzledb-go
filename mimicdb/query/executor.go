@@ -16,5 +16,5 @@ package query
 
 // Executor represents a statement executor.
 type Executor interface {
-	Executor(ctx *DBContext, stmt Statement)
+	Executor(ctx *DBContext, stmt Statement) (*ResultSet, error)
 }

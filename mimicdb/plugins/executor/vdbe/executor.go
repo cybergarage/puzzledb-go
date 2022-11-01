@@ -24,10 +24,10 @@ type Executor struct {
 }
 
 // Execute execute the specified compiled query object.
-func (m *Executor) Execute(ctx *query.DBContext, estmt query.Statement) error {
+func (m *Executor) Execute(ctx *query.DBContext, estmt query.Statement) (*query.ResultSet, error) {
 	_, ok := estmt.(*Statement)
 	if !ok {
-		return nil
+		return nil, nil
 	}
-	return nil
+	return nil, nil
 }
