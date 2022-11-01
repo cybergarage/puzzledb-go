@@ -15,22 +15,19 @@
 package redis
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/vm"
+	"github.com/cybergarage/mimicdb/mimicdb/query"
 )
 
 // Array represents the data array.
 type Compiler struct {
-	*vm.Object
 }
 
 // NewCompiler returns a compiler instance.
 func NewCompiler() *Compiler {
-	return &Compiler{
-		Object: vm.NewObject(),
-	}
+	return &Compiler{}
 }
 
 // Compile returns a compiled module as the specified queries.
-func (c *Compiler) Compile() *vm.Object {
-	return c.Object
+func (c *Compiler) Compile() *query.Statement {
+	return nil
 }
