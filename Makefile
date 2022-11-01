@@ -33,6 +33,8 @@ PACKAGE_ID=${PACKAGE_ROOT}
 PACKAGES=\
 	${PACKAGE_ID} \
 	${PACKAGE_ID}/obj \
+	${PACKAGE_ID}/query \
+	${PACKAGE_ID}/store \
 	${PACKAGE_ID}/plugins \
 	${PACKAGE_ID}/plugins/executor/llvm \
 	${PACKAGE_ID}/plugins/executor/vdbe \
