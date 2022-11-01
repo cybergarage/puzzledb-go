@@ -39,6 +39,7 @@ PACKAGES=\
 	${PACKAGE_ID}/plugins/executor/llvm \
 	${PACKAGE_ID}/plugins/executor/vdbe \
 	${PACKAGE_ID}/plugins/query/mysql \
+	${PACKAGE_ID}/plugins/query/redis \
 	${PACKAGE_ID}/plugins/store/memdb
 
 .PHONY: version clean
