@@ -14,46 +14,43 @@
 
 SHELL := bash
 
-#PREFIX?=$(shell pwd)
-#GOPATH:=$(shell pwd)
-#export GOPATH
+PACKAGE_NAME=puzzledb
 
-PACKAGE_NAME=mimicdb
-
-MODULE_ROOT=github.com/cybergarage/mimicdb
+MODULE_ROOT=github.com/cybergarage
 PACKAGE_ROOT=${MODULE_ROOT}/${PACKAGE_NAME}
 
-SOURCE_ROOT=${PACKAGE_NAME}
-TEST_SOURCE_ROOT=${PACKAGE_NAME}test
-SOURCES=\
-	${SOURCE_ROOT} \
-	${TEST_SOURCE_ROOT}/plugins
+SOURCE_ROOTS=\
+	obj \
+	query \
+	store \
+	server \
+	test
 
 PACKAGE_ID=${PACKAGE_ROOT}
 PACKAGES=\
-	${PACKAGE_ID} \
 	${PACKAGE_ID}/obj \
 	${PACKAGE_ID}/query \
 	${PACKAGE_ID}/store \
-	${PACKAGE_ID}/plugins \
-	${PACKAGE_ID}/plugins/executor/llvm \
-	${PACKAGE_ID}/plugins/executor/vdbe \
-	${PACKAGE_ID}/plugins/query/mysql \
-	${PACKAGE_ID}/plugins/query/redis \
-	${PACKAGE_ID}/plugins/store/memdb
+	${PACKAGE_ID}/server \
+	${PACKAGE_ID}/server/plugins \
+	${PACKAGE_ID}/server/plugins/executor/llvm \
+	${PACKAGE_ID}/server/plugins/executor/vdbe \
+	${PACKAGE_ID}/server/plugins/query/mysql \
+	${PACKAGE_ID}/server/plugins/query/redis \
+	${PACKAGE_ID}/server/plugins/store/memdb
 
-.PHONY: version clean
+.PHONY: test format vet lint clean
 
 all: test
 
 format:
-	gofmt -w ${SOURCES}
+	gofmt -w ${SOURCE_ROOTS}
 
 vet: format
 	go vet ${PACKAGE_ROOT}
 
 lint: format
-	golangci-lint run ${SOURCES}
+	golangci-lint run ${SOURCE_ROOTS}
 
 test: 
 	go test -v -cover -timeout 60s ${PACKAGES}
