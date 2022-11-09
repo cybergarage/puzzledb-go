@@ -12,22 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package redis
+package uof
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/query"
+	"testing"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/test/plugins"
 )
 
-// Array represents the data array.
-type Compiler struct {
-}
-
-// NewCompiler returns a compiler instance.
-func NewCompiler() *Compiler {
-	return &Compiler{}
-}
-
-// Compile returns a compiled module as the specified queries.
-func (c *Compiler) Compile() *query.Statement {
-	return nil
+func TestSerializer(t *testing.T) {
+	plugins.SerializerTest(t, NewSerializer())
 }

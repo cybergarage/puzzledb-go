@@ -12,14 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package uof
+package vbde
 
 import (
-	"testing"
-
-	"github.com/cybergarage/mimicdb/mimicdbtest/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/query"
 )
 
-func TestSerializer(t *testing.T) {
-	plugins.SerializerTest(t, NewSerializer())
+// Executor represents a virtual machine executor.
+type Executor struct {
+	query.Executor
+}
+
+// Execute execute the specified compiled query object.
+func (m *Executor) Execute(ctx *query.DBContext, estmt query.Statement) (*query.ResultSet, error) {
+	_, ok := estmt.(*Statement)
+	if !ok {
+		return nil, nil
+	}
+	return nil, nil
 }

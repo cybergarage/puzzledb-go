@@ -12,24 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package store
+package redis
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/plugins"
-	"github.com/cybergarage/mimicdb/mimicdb/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/query"
 )
 
-// Store represents a store interface.
-type Store interface {
-	store.Store
-	plugins.Service
+// Array represents the data array.
+type Compiler struct {
 }
 
-// Transaction represents a transaction interface.
-type Transaction = store.Transaction
+// NewCompiler returns a compiler instance.
+func NewCompiler() *Compiler {
+	return &Compiler{}
+}
 
-// Key represents an object key.
-type Key = store.Key
-
-// Object represents a key-value object.
-type Object = store.Object
+// Compile returns a compiled module as the specified queries.
+func (c *Compiler) Compile() *query.Statement {
+	return nil
+}

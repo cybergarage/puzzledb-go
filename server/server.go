@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mimicdb
+package server
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/errors"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/query/mysql"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/serializer/uof"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/store/memdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/mysql"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/serializer/uof"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/memdb"
 )
 
 // Server represents a server instance.

@@ -18,8 +18,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cybergarage/mimicdb/mimicdb/obj"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/serializer"
+	"github.com/cybergarage/puzzledb-go/puzzledb/obj"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/serializer"
 )
 
 func SerializerTest(t *testing.T, serializer serializer.Serializer) {

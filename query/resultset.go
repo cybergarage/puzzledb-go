@@ -12,24 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mimicdb
+package query
 
 import (
-	"testing"
+	"github.com/cybergarage/puzzledb-go/puzzledb/obj"
 )
 
-func TestNewServer(t *testing.T) {
-	server := NewServer()
-
-	err := server.Start()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	err = server.Stop()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+// ResultSet represents a result set which includes query execution results.
+type ResultSet interface {
+	Result
+	// Next moves the cursor forward next object from its current position.
+	Next() bool
+	// GetObject returns an object in the current position.
+	GetObject() obj.Object
 }

@@ -12,17 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package query
+package memdb
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/obj"
+	"testing"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/test/plugins"
 )
 
-// ResultSet represents a result set which includes query execution results.
-type ResultSet interface {
-	Result
-	// Next moves the cursor forward next object from its current position.
-	Next() bool
-	// GetObject returns an object in the current position.
-	GetObject() obj.Object
+const (
+	testKeyCount = 100
+)
+
+func TestStores(t *testing.T) {
+	plugins.StoreTest(t, NewStore())
 }

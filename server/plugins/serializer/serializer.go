@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vbde
+package serializer
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/obj"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 )
 
-// Executor represents a virtual machine executor.
-type Executor struct {
-	query.Executor
-}
-
-// Execute execute the specified compiled query object.
-func (m *Executor) Execute(ctx *query.DBContext, estmt query.Statement) (*query.ResultSet, error) {
-	_, ok := estmt.(*Statement)
-	if !ok {
-		return nil, nil
-	}
-	return nil, nil
+// Serializer represents a serializer interface.
+type Serializer interface {
+	plugins.Service
+	// Encode dumps a specified object to the byte array.
+	Encode(obj obj.Object) ([]byte, error)
+	// Decode creates an object from the specified byte array.
+	Decode([]byte) (obj.Object, error)
 }

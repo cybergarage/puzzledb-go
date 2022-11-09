@@ -12,18 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package store
 
 import (
-	"testing"
-
-	"github.com/cybergarage/mimicdb/mimicdbtest/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-const (
-	testKeyCount = 100
-)
-
-func TestStores(t *testing.T) {
-	plugins.StoreTest(t, NewStore())
+// Store represents a store interface.
+type Store interface {
+	store.Store
+	plugins.Service
 }
+
+// Transaction represents a transaction interface.
+type Transaction = store.Transaction
+
+// Key represents an object key.
+type Key = store.Key
+
+// Object represents a key-value object.
+type Object = store.Object
