@@ -1,4 +1,4 @@
-module github.com/cybergarage/mimicdb
+module github.com/cybergarage/puzzledb-go/puzzledb
 
 go 1.19
 
