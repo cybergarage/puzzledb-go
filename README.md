@@ -1,3 +1,3 @@
-# PuzzleDB
+![](doc/img/logo.png)
 
-PuzzleDB is a core database for multi-data models
+PuzzleDB is a cencept database for multi-data models
