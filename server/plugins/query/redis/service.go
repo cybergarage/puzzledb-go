@@ -16,7 +16,7 @@ package redis
 
 import (
 	"github.com/cybergarage/go-redis/redis"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
 )
 
 // Service represents a new MySQL service instance.

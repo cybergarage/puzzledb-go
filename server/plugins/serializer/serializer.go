@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package redis
+package serializer
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/obj"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 )
 
-// Array represents the data array.
-type Compiler struct {
-}
-
-// NewCompiler returns a compiler instance.
-func NewCompiler() *Compiler {
-	return &Compiler{}
-}
-
-// Compile returns a compiled module as the specified queries.
-func (c *Compiler) Compile() *query.Statement {
-	return nil
+// Serializer represents a serializer interface.
+type Serializer interface {
+	plugins.Service
+	// Encode dumps a specified object to the byte array.
+	Encode(obj obj.Object) ([]byte, error)
+	// Decode creates an object from the specified byte array.
+	Decode([]byte) (obj.Object, error)
 }

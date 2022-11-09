@@ -15,8 +15,8 @@
 package memdb
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/errors"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
 	"github.com/hashicorp/go-memdb"
 )
 

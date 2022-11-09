@@ -17,7 +17,7 @@ package uof
 import (
 	"testing"
 
-	"github.com/cybergarage/mimicdb/mimicdbtest/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/test/plugins"
 )
 
 func TestSerializer(t *testing.T) {

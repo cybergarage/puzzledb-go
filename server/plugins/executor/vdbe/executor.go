@@ -12,24 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package store
+package vbde
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/plugins"
-	"github.com/cybergarage/mimicdb/mimicdb/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/query"
 )
 
-// Store represents a store interface.
-type Store interface {
-	store.Store
-	plugins.Service
+// Executor represents a virtual machine executor.
+type Executor struct {
+	query.Executor
 }
 
-// Transaction represents a transaction interface.
-type Transaction = store.Transaction
-
-// Key represents an object key.
-type Key = store.Key
-
-// Object represents a key-value object.
-type Object = store.Object
+// Execute execute the specified compiled query object.
+func (m *Executor) Execute(ctx *query.DBContext, estmt query.Statement) (*query.ResultSet, error) {
+	_, ok := estmt.(*Statement)
+	if !ok {
+		return nil, nil
+	}
+	return nil, nil
+}

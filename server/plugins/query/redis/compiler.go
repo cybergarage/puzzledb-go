@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vbde
+package redis
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/query"
 )
 
-// Executor represents a virtual machine executor.
-type Executor struct {
-	query.Executor
+// Array represents the data array.
+type Compiler struct {
 }
 
-// Execute execute the specified compiled query object.
-func (m *Executor) Execute(ctx *query.DBContext, estmt query.Statement) (*query.ResultSet, error) {
-	_, ok := estmt.(*Statement)
-	if !ok {
-		return nil, nil
-	}
-	return nil, nil
+// NewCompiler returns a compiler instance.
+func NewCompiler() *Compiler {
+	return &Compiler{}
+}
+
+// Compile returns a compiled module as the specified queries.
+func (c *Compiler) Compile() *query.Statement {
+	return nil
 }

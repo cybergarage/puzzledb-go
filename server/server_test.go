@@ -12,18 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package server
 
 import (
 	"testing"
-
-	"github.com/cybergarage/mimicdb/mimicdbtest/plugins"
 )
 
-const (
-	testKeyCount = 100
-)
+func TestNewServer(t *testing.T) {
+	server := NewServer()
 
-func TestStores(t *testing.T) {
-	plugins.StoreTest(t, NewStore())
+	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }

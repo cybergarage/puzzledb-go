@@ -20,7 +20,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
 )
 
 const (

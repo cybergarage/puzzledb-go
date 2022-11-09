@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mimicdb
+package store
 
 import (
-	"testing"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-func TestNewServer(t *testing.T) {
-	server := NewServer()
-
-	err := server.Start()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	err = server.Stop()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+// Store represents a store interface.
+type Store interface {
+	store.Store
+	plugins.Service
 }
+
+// Transaction represents a transaction interface.
+type Transaction = store.Transaction
+
+// Key represents an object key.
+type Key = store.Key
+
+// Object represents a key-value object.
+type Object = store.Object

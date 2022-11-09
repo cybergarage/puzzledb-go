@@ -15,7 +15,7 @@
 package query
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/obj"
+	"github.com/cybergarage/puzzledb-go/puzzledb/obj"
 )
 
 // ResultSet represents a result set which includes query execution results.

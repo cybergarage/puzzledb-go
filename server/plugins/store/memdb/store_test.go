@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package serializer
+package memdb
 
 import (
-	"github.com/cybergarage/mimicdb/mimicdb/obj"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins"
+	"testing"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/test/plugins"
 )
 
-// Serializer represents a serializer interface.
-type Serializer interface {
-	plugins.Service
-	// Encode dumps a specified object to the byte array.
-	Encode(obj obj.Object) ([]byte, error)
-	// Decode creates an object from the specified byte array.
-	Decode([]byte) (obj.Object, error)
+const (
+	testKeyCount = 100
+)
+
+func TestStores(t *testing.T) {
+	plugins.StoreTest(t, NewStore())
 }

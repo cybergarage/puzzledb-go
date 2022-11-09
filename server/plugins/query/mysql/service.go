@@ -16,7 +16,7 @@ package mysql
 
 import (
 	"github.com/cybergarage/go-mysql/mysql"
-	"github.com/cybergarage/mimicdb/mimicdb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
 )
 
 // Service represents a new MySQL service instance.
