@@ -18,7 +18,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/mysql"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/serializer/uof"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/memdb"
 )
 
@@ -62,7 +61,6 @@ func (server *Server) LoadPlugins() {
 	services := []plugins.Service{
 		store,
 		mysql.NewServiceWithStore(store),
-		uof.NewSerializer(),
 	}
 
 	for _, service := range services {
