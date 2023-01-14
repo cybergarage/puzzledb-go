@@ -41,6 +41,37 @@ func TestServer(t *testing.T) {
 		redistest.ConnectionCommandTest(t, client)
 	})
 
+	t.Run("SET", func(t *testing.T) {
+		records := []struct {
+			key      string
+			val      string
+			expected string
+		}{
+			{"key_set", "value0", "value0"},
+			{"key_set", "value1", "value1"},
+			{"key_set", "value2", "value2"},
+		}
+
+		for _, r := range records {
+			t.Run(r.key+":"+r.val, func(t *testing.T) {
+				err := client.Set(r.key, r.val, 0).Err()
+				if err != nil {
+					t.Error(err)
+					return
+				}
+				res, err := client.Get(r.key).Result()
+				if err != nil {
+					t.Error(err)
+					return
+				}
+				if res != r.expected {
+					t.Errorf("%s != %s", res, r.expected)
+					return
+				}
+			})
+		}
+	})
+
 	err = client.Close()
 	if err != nil {
 		t.Error(err)
