@@ -12,46 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package redis
+package test
 
 import (
-	"testing"
-
-	"github.com/cybergarage/go-redis/redistest"
-	"github.com/cybergarage/puzzledb-go/puzzledb/test"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server"
 )
 
-const (
-	LocalHost = "localhost"
-)
+// Server represents an example server.
+type Server struct {
+	*server.Server
+}
 
-func TestServer(t *testing.T) {
-
-	server := test.NewServer()
-	err := server.Start()
-	if err != nil {
-		t.Error(err)
-		return
+// NewServer returns an example server instance.
+func NewServer() *Server {
+	server := &Server{
+		Server: server.NewServer(),
 	}
-
-	client := redistest.NewClient()
-	err = client.Open(LocalHost)
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	t.Run("Connection", func(t *testing.T) {
-		redistest.ConnectionCommandTest(t, client)
-	})
-
-	err = client.Close()
-	if err != nil {
-		t.Error(err)
-	}
-
-	err = server.Stop()
-	if err != nil {
-		t.Error(err)
-	}
+	return server
 }
