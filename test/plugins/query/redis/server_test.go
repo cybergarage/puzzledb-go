@@ -16,7 +16,42 @@ package redis
 
 import (
 	"testing"
+
+	"github.com/cybergarage/go-redis/redistest"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server"
+)
+
+const (
+	LocalHost = "localhost"
 )
 
 func TestServer(t *testing.T) {
+
+	server := server.NewServer()
+	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	client := redistest.NewClient()
+	err = client.Open(LocalHost)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	t.Run("Connection", func(t *testing.T) {
+		redistest.ConnectionCommandTest(t, client)
+	})
+
+	err = client.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+	}
 }
