@@ -21,10 +21,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/test"
 )
 
-const (
-	LocalHost = "localhost"
-)
-
 func TestServer(t *testing.T) {
 
 	server := test.NewServer()
@@ -35,7 +31,7 @@ func TestServer(t *testing.T) {
 	}
 
 	client := redistest.NewClient()
-	err = client.Open(LocalHost)
+	err = client.Open(server.Host)
 	if err != nil {
 		t.Error(err)
 		return

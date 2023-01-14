@@ -21,12 +21,14 @@ import (
 // Server represents an example server.
 type Server struct {
 	*server.Server
+	Host string
 }
 
 // NewServer returns an example server instance.
 func NewServer() *Server {
 	server := &Server{
 		Server: server.NewServer(),
+		Host:   LocalHost,
 	}
 	return server
 }
