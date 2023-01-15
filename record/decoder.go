@@ -12,7 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package model
+package record
 
-// Object represents a database object.
-type Object = any
+import (
+	"io"
+)
+
+// An Decoder reads encorded objects from the specified input stream.
+type Decoder interface {
+	// Decode returns the next object if available, otherwise returns an error.
+	Decode(r io.Reader) (Object, error)
+}
