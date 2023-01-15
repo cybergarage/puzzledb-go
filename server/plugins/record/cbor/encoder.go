@@ -18,6 +18,7 @@ import (
 	"io"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/record"
+)	"github.com/cybergarage/go-cbor/cbor"
 )
 
 // Encoder represents a CBOR encoder instance.
@@ -33,5 +34,6 @@ func NewEncoder() *Encoder {
 
 // Encode writes the specified object to the specified writer.
 func (enc *Encoder) Encode(w io.Writer, obj record.Object) error {
-	return nil
+	cbor := cbor.NewEncoder(w)
+	return cbor.Encode(obj)
 }
