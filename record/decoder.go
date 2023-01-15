@@ -20,6 +20,6 @@ import (
 
 // An Decoder reads encorded objects from the specified input stream.
 type Decoder interface {
-	// Decode returns the next object if available, otherwise returns an error.
+	// Decode returns the decorded object from the specified reader if available, otherwise returns an error.
 	Decode(r io.Reader) (Object, error)
 }
