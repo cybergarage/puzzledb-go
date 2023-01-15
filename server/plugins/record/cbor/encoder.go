@@ -17,8 +17,8 @@ package cbor
 import (
 	"io"
 
+	"github.com/cybergarage/go-cbor/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/record"
-)	"github.com/cybergarage/go-cbor/cbor"
 )
 
 // Encoder represents a CBOR encoder instance.
