@@ -21,6 +21,22 @@ import (
 )
 
 //nolint:gosec,cyclop
-func RecordTest(t *testing.T, encorder record.Encoder, decorder record.Decoder) {
+func SerializerTest(t *testing.T, encorder record.Encoder, decorder record.Decoder) {
 	t.Helper()
+}
+
+func TestSerializer(t *testing.T) {
+
+	serializers := []struct {
+		name     string
+		encorder record.Encoder
+		decorder record.Decoder
+		expected string
+	}{}
+
+	for _, s := range serializers {
+		t.Run(s.name, func(t *testing.T) {
+			SerializerTest(t, s.encorder, s.decorder)
+		})
+	}
 }
