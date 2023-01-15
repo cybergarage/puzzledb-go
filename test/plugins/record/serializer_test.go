@@ -18,6 +18,7 @@ import (
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/record"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/record/cbor"
 )
 
 //nolint:gosec,cyclop
@@ -26,13 +27,13 @@ func SerializerTest(t *testing.T, encorder record.Encoder, decorder record.Decod
 }
 
 func TestSerializer(t *testing.T) {
-
 	serializers := []struct {
 		name     string
 		encorder record.Encoder
 		decorder record.Decoder
-		expected string
-	}{}
+	}{
+		{"cbor", cbor.NewEncoder(), cbor.NewDecoder()},
+	}
 
 	for _, s := range serializers {
 		t.Run(s.name, func(t *testing.T) {
