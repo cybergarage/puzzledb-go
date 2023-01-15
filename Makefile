@@ -33,6 +33,7 @@ PACKAGES=\
 	${PACKAGE_ID}/store \
 	${PACKAGE_ID}/server \
 	${PACKAGE_ID}/server/plugins \
+	${PACKAGE_ID}/server/plugins/record/cbor \
 	${PACKAGE_ID}/server/plugins/executor/llvm \
 	${PACKAGE_ID}/server/plugins/executor/vdbe \
 	${PACKAGE_ID}/server/plugins/query/mysql \
