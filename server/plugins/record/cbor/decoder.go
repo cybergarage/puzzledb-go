@@ -17,6 +17,7 @@ package cbor
 import (
 	"io"
 
+	"github.com/cybergarage/go-cbor/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/record"
 )
 
@@ -33,5 +34,6 @@ func NewDecoder() *Decoder {
 
 // Decode returns the decorded object from the specified reader if available, otherwise returns an error.
 func (dec *Decoder) Decode(r io.Reader) (record.Object, error) {
-	return nil, nil
+	cbor := cbor.NewDecoder(r)
+	return cbor.Decode()
 }
