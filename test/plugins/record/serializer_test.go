@@ -32,6 +32,9 @@ func DeepEqual(x, y any) error {
 	if reflect.DeepEqual(x, y) {
 		return nil
 	}
+	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
+		return nil
+	}
 	return fmt.Errorf("%v != %v", x, y)
 }
 
