@@ -15,15 +15,77 @@
 package plugins
 
 import (
+	"bytes"
+	"fmt"
+	"math"
+	"reflect"
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/record"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/record/cbor"
 )
 
+func DeepEqual(x, y any) error {
+	if x == y {
+		return nil
+	}
+	if reflect.DeepEqual(x, y) {
+		return nil
+	}
+	return fmt.Errorf("%v != %v", x, y)
+}
+
+//nolint:gosec,cyclop
+func SerializerPrimitiveTest(t *testing.T, encorder record.Encoder, decorder record.Decoder) {
+	t.Helper()
+
+	tests := []struct {
+		name string
+		obj  any
+	}{
+		{"int", math.MaxInt},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			var w bytes.Buffer
+			err := encorder.Encode(&w, test.obj)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			r := bytes.NewReader(w.Bytes())
+			decObj, err := decorder.Decode(r)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			err = DeepEqual(decObj, test.obj)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+		})
+	}
+}
+
 //nolint:gosec,cyclop
 func SerializerTest(t *testing.T, encorder record.Encoder, decorder record.Decoder) {
 	t.Helper()
+	testFuncs := []struct {
+		name string
+		fn   func(*testing.T, record.Encoder, record.Decoder)
+	}{
+		{"primitive", SerializerPrimitiveTest},
+	}
+
+	for _, testFunc := range testFuncs {
+		t.Run(testFunc.name, func(t *testing.T) {
+			testFunc.fn(t, encorder, decorder)
+		})
+	}
 }
 
 func TestSerializer(t *testing.T) {
