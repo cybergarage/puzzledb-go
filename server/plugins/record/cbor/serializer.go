@@ -21,19 +21,25 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/record"
 )
 
-// Encoder represents a CBOR encoder instance.
-type Encoder struct {
-	record.Encoder
+// Serializer represents a CBOR erializer.
+type Serializer struct {
+	record.Serializer
 }
 
-// NewEncoder returns a new encorder instance.
-func NewEncoder() *Encoder {
-	return &Encoder{}
+// NewSerializer returns a new CBOR erializer instance.
+func NewSerializer() *Serializer {
+	return &Serializer{}
 
 }
 
 // Encode writes the specified object to the specified writer.
-func (enc *Encoder) Encode(w io.Writer, obj record.Object) error {
+func (s *Serializer) Encode(w io.Writer, obj record.Object) error {
 	cbor := cbor.NewEncoder(w)
 	return cbor.Encode(obj)
+}
+
+// Decode returns the decorded object from the specified reader if available, otherwise returns an error.
+func (s *Serializer) Decode(r io.Reader) (record.Object, error) {
+	cbor := cbor.NewDecoder(r)
+	return cbor.Decode()
 }
