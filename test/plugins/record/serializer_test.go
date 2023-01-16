@@ -39,7 +39,7 @@ func DeepEqual(x, y any) error {
 }
 
 //nolint:gosec,cyclop
-func SerializerPrimitiveTest(t *testing.T, encorder record.Encoder, decorder record.Decoder) {
+func SerializerPrimitiveTest(t *testing.T, s record.Serializer) {
 	t.Helper()
 
 	tests := []struct {
@@ -52,14 +52,14 @@ func SerializerPrimitiveTest(t *testing.T, encorder record.Encoder, decorder rec
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			var w bytes.Buffer
-			err := encorder.Encode(&w, test.obj)
+			err := s.Encode(&w, test.obj)
 			if err != nil {
 				t.Error(err)
 				return
 			}
 
 			r := bytes.NewReader(w.Bytes())
-			decObj, err := decorder.Decode(r)
+			decObj, err := s.Decode(r)
 			if err != nil {
 				t.Error(err)
 				return
@@ -75,34 +75,33 @@ func SerializerPrimitiveTest(t *testing.T, encorder record.Encoder, decorder rec
 }
 
 //nolint:gosec,cyclop
-func SerializerTest(t *testing.T, encorder record.Encoder, decorder record.Decoder) {
+func SerializerTest(t *testing.T, s record.Serializer) {
 	t.Helper()
 	testFuncs := []struct {
 		name string
-		fn   func(*testing.T, record.Encoder, record.Decoder)
+		fn   func(*testing.T, record.Serializer)
 	}{
 		{"primitive", SerializerPrimitiveTest},
 	}
 
 	for _, testFunc := range testFuncs {
 		t.Run(testFunc.name, func(t *testing.T) {
-			testFunc.fn(t, encorder, decorder)
+			testFunc.fn(t, s)
 		})
 	}
 }
 
 func TestSerializer(t *testing.T) {
 	serializers := []struct {
-		name     string
-		encorder record.Encoder
-		decorder record.Decoder
+		name       string
+		serializer record.Serializer
 	}{
-		{"cbor", cbor.NewEncoder(), cbor.NewDecoder()},
+		{"cbor", cbor.NewSerializer()},
 	}
 
 	for _, s := range serializers {
 		t.Run(s.name, func(t *testing.T) {
-			SerializerTest(t, s.encorder, s.decorder)
+			SerializerTest(t, s.serializer)
 		})
 	}
 }
