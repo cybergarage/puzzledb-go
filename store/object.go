@@ -19,3 +19,7 @@ type Object struct {
 	Key   Key
 	Value []byte
 }
+
+func (obj *Object) KeyBytes() ([]byte, error) {
+	return KeyToBytes(obj.Key)
+}
