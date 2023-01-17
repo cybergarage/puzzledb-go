@@ -15,8 +15,7 @@
 package memdb
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/hashicorp/go-memdb"
 )
 
@@ -77,7 +76,7 @@ func (db *Memdb) Open(name string) error {
 // Transact opens a transaction.
 func (db *Memdb) Transact(write bool) (store.Transaction, error) {
 	if db.MemDB == nil {
-		return nil, errors.DatabaseNotFound
+		return nil, store.DatabaseNotFound
 	}
 	return newTransaction(db.MemDB.Txn(write)), nil
 }
