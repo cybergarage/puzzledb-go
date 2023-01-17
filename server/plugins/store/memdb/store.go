@@ -37,11 +37,6 @@ type Memdb struct {
 	*memdb.MemDB
 }
 
-type document struct {
-	Key   []byte
-	Value []byte
-}
-
 // New returns a new memdb store instance.
 func NewStore() *Memdb {
 	return &Memdb{

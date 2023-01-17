@@ -19,6 +19,11 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
+type document struct {
+	Key   []byte
+	Value []byte
+}
+
 // Memdb represents a Memdb instance.
 type Transaction struct {
 	store.Transaction
