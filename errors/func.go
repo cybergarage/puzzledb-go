@@ -15,15 +15,30 @@
 package errors
 
 import (
+	"errors"
 	"fmt"
 )
 
-// Wrap is a sufar function of Errorf("%w").
+func New(text string) error {
+	return errors.New(text)
+}
+
 func Wrap(err error) error {
 	return fmt.Errorf("%w", err)
 }
 
-// Wrapf is a sufar function of Errorf("%w").
 func Wrapf(err error, format string, args ...any) error {
 	return fmt.Errorf("%s (%w)", fmt.Sprintf(format, args...), err)
+}
+
+func As(err error, target any) bool {
+	return errors.As(err, target)
+}
+
+func Is(err, target error) bool {
+	return errors.Is(err, target)
+}
+
+func Unwrap(err error) error {
+	return errors.Unwrap(err)
 }
