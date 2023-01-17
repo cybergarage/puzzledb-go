@@ -16,14 +16,15 @@ package mysql
 
 import (
 	"github.com/cybergarage/go-mysql/mysql"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Service represents a new MySQL service instance.
 type Service struct {
 	*mysql.BaseExecutor
 	*mysql.Server
-	store.Store
+	query.Service
 	Databases
 }
 
@@ -32,7 +33,7 @@ func NewServiceWithStore(store store.Store) *Service {
 	srv := &Service{
 		BaseExecutor: mysql.NewBaseExecutor(),
 		Server:       mysql.NewServer(),
-		Store:        store,
+		Service:      *query.NewService(),
 		Databases:    NewDatabases(),
 	}
 	srv.Server.SetQueryExecutor(srv)

@@ -24,6 +24,14 @@ type Service struct {
 	serializer record.Serializer
 }
 
+func NewService() *Service {
+	server := &Service{
+		store:      nil,
+		serializer: nil,
+	}
+	return server
+}
+
 func (service *Service) SetStore(store store.Store) {
 	service.store = store
 }
