@@ -25,12 +25,6 @@ const (
 	keyFieldName = "Key"
 )
 
-// Object represents a key-value object.
-type Object = store.Object
-
-// Key represents an object key.
-type Key = store.Key
-
 // Memdb represents a Memdb instance.
 type Memdb struct {
 	store.Store
