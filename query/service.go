@@ -19,8 +19,23 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// Service represents a query service interface.
-type Service interface {
-	SetStore(store.Store)
-	SerSerializer(record.Serializer)
+type Service struct {
+	store      store.Store
+	serializer record.Serializer
+}
+
+func (service *Service) SetStore(store store.Store) {
+	service.store = store
+}
+
+func (service *Service) SetSerializer(serializer record.Serializer) {
+	service.serializer = serializer
+}
+
+func (service *Service) Store() store.Store {
+	return service.store
+}
+
+func (service *Service) Serializer() record.Serializer {
+	return service.serializer
 }
