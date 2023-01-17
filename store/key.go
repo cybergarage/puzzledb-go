@@ -27,7 +27,13 @@ func KeyToBytes(key Key) ([]byte, error) {
 	for _, elem := range key {
 		switch v := elem.(type) {
 		case string:
-			keyBuf.WriteString(v)
+			if _, err := keyBuf.WriteString(v); err != nil {
+				return nil, err
+			}
+		case []byte:
+			if _, err := keyBuf.Write(v); err != nil {
+				return nil, err
+			}
 		default:
 			return nil, fmt.Errorf("%w: (%T)", KeyTypeError, elem)
 		}
