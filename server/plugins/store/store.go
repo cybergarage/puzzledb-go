@@ -19,17 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// Store represents a store interface.
-type Store interface {
+type StoreService interface {
 	store.Store
 	plugins.Service
 }
-
-// Transaction represents a transaction interface.
-type Transaction = store.Transaction
-
-// Key represents an object key.
-type Key = store.Key
-
-// Object represents a key-value object.
-type Object = store.Object

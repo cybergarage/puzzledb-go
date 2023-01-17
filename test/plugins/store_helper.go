@@ -20,7 +20,8 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
+	plugins "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 const (
@@ -29,7 +30,7 @@ const (
 )
 
 //nolint:gosec,cyclop
-func StoreTest(t *testing.T, s store.Store) {
+func StoreTest(t *testing.T, s plugins.StoreService) {
 	t.Helper()
 
 	if err := s.Start(); err != nil {
@@ -58,7 +59,7 @@ func StoreTest(t *testing.T, s store.Store) {
 		}
 		val := vals[n]
 		obj := &store.Object{
-			Key:   string(key),
+			Key:   []any{key},
 			Value: val,
 		}
 		if err := tx.Insert(obj); err != nil {
@@ -79,7 +80,7 @@ func StoreTest(t *testing.T, s store.Store) {
 			t.Error(err)
 			break
 		}
-		obj, err := tx.Select(string(key))
+		obj, err := tx.Select([]any{key})
 		if err != nil {
 			t.Error(err)
 			break

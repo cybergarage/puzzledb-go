@@ -15,8 +15,7 @@
 package memdb
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/hashicorp/go-memdb"
 )
 
@@ -39,13 +38,17 @@ func (txn *Transaction) Insert(obj *store.Object) error {
 
 // Select gets an key-value object of the specified key.
 func (txn *Transaction) Select(key Key) (*Object, error) {
-	it, err := txn.Get(tableName, idFieldName, key)
+	keyBytes, err := store.KeyToBytes(key)
+	if err != nil {
+		return nil, err
+	}
+	it, err := txn.Get(tableName, idFieldName, keyBytes)
 	if err != nil {
 		return nil, err
 	}
 	obj := it.Next()
 	if obj == nil {
-		return nil, errors.ObjectNotFound
+		return nil, store.ObjectNotFound
 	}
 	return obj.(*Object), nil
 }
