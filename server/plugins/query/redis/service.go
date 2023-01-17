@@ -16,20 +16,21 @@ package redis
 
 import (
 	"github.com/cybergarage/go-redis/redis"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Service represents a new MySQL service instance.
 type Service struct {
 	*redis.Server
-	store.Store
+	query.Service
 }
 
 // NewServiceWithStore returns a new MySQL service instance with the specified　Store.
 func NewServiceWithStore(store store.Store) *Service {
 	service := &Service{
-		Server: redis.NewServer(),
-		Store:  store,
+		Server:  redis.NewServer(),
+		Service: *query.NewService(),
 	}
 	service.Server.SetCommandHandler(service)
 	return service
