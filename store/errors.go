@@ -12,24 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package errors
+package store
 
 import (
-	"errors"
-	"testing"
+	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 )
 
-func TestStoreError(t *testing.T) {
-	errs := []error{
-		DatabaseNotFound,
-	}
-
-	for _, err := range errs {
-		if errors.Unwrap(err) != StoreError {
-			t.Error(err)
-		}
-		if !errors.Is(err, err) {
-			t.Error(err)
-		}
-	}
-}
+var (
+	StoreError       = errors.New("Store error")
+	DatabaseNotFound = errors.Wrapf(StoreError, "Database not found")
+	ObjectNotFound   = errors.Wrapf(StoreError, "Object not found")
+	KeyTypeError     = errors.New("Key type error")
+)
