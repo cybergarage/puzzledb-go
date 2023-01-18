@@ -16,63 +16,19 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
-	"github.com/hashicorp/go-memdb"
-)
-
-const (
-	tableName    = "document"
-	idFieldName  = "id"
-	keyFieldName = "Key"
 )
 
 // Memdb represents a Memdb instance.
 type Memdb struct {
 	store.Store
-	*memdb.MemDB
+	*Databases
 }
 
 // New returns a new memdb store instance.
 func NewStore() *Memdb {
 	return &Memdb{
-		MemDB: nil,
+		Databases: NewDatabases(),
 	}
-}
-
-// Open opens the specified store.
-func (db *Memdb) Open(name string) error {
-	schema := &memdb.DBSchema{
-		Tables: map[string]*memdb.TableSchema{
-			tableName: &memdb.TableSchema{
-				Name: tableName,
-				Indexes: map[string]*memdb.IndexSchema{
-					idFieldName: &memdb.IndexSchema{
-						Name:    idFieldName,
-						Unique:  true,
-						Indexer: &memdb.StringFieldIndex{Field: "Key"},
-					},
-				},
-			},
-		},
-	}
-	var err error
-	db.MemDB, err = memdb.NewMemDB(schema)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// Transact opens a transaction.
-func (db *Memdb) Transact(write bool) (store.Transaction, error) {
-	if db.MemDB == nil {
-		return nil, store.DatabaseNotFound
-	}
-	return newTransaction(db.MemDB.Txn(write)), nil
-}
-
-// Close closes this store.
-func (db *Memdb) Close() error {
-	return nil
 }
 
 // Start starts this memdb.
