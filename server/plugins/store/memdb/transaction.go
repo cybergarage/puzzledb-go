@@ -40,7 +40,7 @@ func newTransaction(txn *memdb.Txn) *Transaction {
 func (txn *Transaction) Insert(obj *store.Object) error {
 	keyBytes, err := obj.KeyBytes()
 	if err != nil {
-		return nil
+		return err
 	}
 	doc := &document{
 		Key:   string(keyBytes),
@@ -51,7 +51,11 @@ func (txn *Transaction) Insert(obj *store.Object) error {
 
 // Select gets an key-value object of the specified key.
 func (txn *Transaction) Select(key store.Key) (*store.Object, error) {
-	it, err := txn.Get(tableName, idFieldName, key)
+	keyBytes, err := store.KeyToBytes(key)
+	if err != nil {
+		return nil, err
+	}
+	it, err := txn.Get(tableName, idFieldName, string(keyBytes))
 	if err != nil {
 		return nil, err
 	}
