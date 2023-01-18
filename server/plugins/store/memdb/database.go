@@ -14,19 +14,52 @@
 
 package memdb
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	"github.com/hashicorp/go-memdb"
+)
+
 // Database represents a database.
 type Database struct {
 	ID string
+	*memdb.MemDB
 }
 
 // NewDatabaseWithID returns a new database with the specified ID.
-func NewDatabaseWithID(id string) *Database {
-	return &Database{
-		ID: id,
+func NewDatabaseWithID(id string) (*Database, error) {
+	schema := &memdb.DBSchema{
+		Tables: map[string]*memdb.TableSchema{
+			tableName: &memdb.TableSchema{
+				Name: tableName,
+				Indexes: map[string]*memdb.IndexSchema{
+					idFieldName: &memdb.IndexSchema{
+						Name:    idFieldName,
+						Unique:  true,
+						Indexer: &memdb.StringFieldIndex{Field: "Key"},
+					},
+				},
+			},
+		},
 	}
+	memDB, err := memdb.NewMemDB(schema)
+	if err != nil {
+		return nil, err
+	}
+	return &Database{
+		ID:    id,
+		MemDB: memDB,
+	}, nil
 }
 
 // Name returns the unique name.
 func (db *Database) Name() string {
 	return db.ID
+}
+
+// Transact begin a new transaction.
+func (db *Database) Transact(write bool) (store.Transaction, error) {
+	if db.MemDB == nil {
+		return nil, store.DatabaseNotFound
+	}
+	return newTransaction(db.MemDB.Txn(write)), nil
 }
