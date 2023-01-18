@@ -16,7 +16,7 @@ package store
 
 // Database represents a database interface.
 type Database interface {
-	// Name returns the unique name
+	// Name returns the unique name.
 	Name() string
 	// Transact begin a new transaction.
 	Transact(write bool) (Transaction, error)
