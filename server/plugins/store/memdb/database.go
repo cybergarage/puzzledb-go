@@ -19,6 +19,12 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
+const (
+	tableName    = "document"
+	idFieldName  = "id"
+	keyFieldName = "Key"
+)
+
 // Database represents a database.
 type Database struct {
 	ID string
