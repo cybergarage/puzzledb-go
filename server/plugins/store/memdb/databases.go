@@ -33,7 +33,7 @@ func (dbs *Databases) SetDatabase(db *Database) {
 }
 
 // GetDatabase returns the database with the specified ID.
-func (dbs *Databases) GetDatabase(id int) (*Database, bool) {
+func (dbs *Databases) GetDatabase(id string) (*Database, bool) {
 	v, ok := dbs.Load(id)
 	if !ok {
 		return nil, false
