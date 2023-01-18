@@ -16,10 +16,6 @@ package store
 
 // Store represents a store interface.
 type Store interface {
-	// Open opens the specified store.
-	Open(name string) error
-	// Transact opens a transaction.
-	Transact(write bool) (Transaction, error)
-	// Close closes this store.
-	Close() error
+	// GetDatabase retrun the specified database.
+	GetDatabase(name string) (Database, error)
 }
