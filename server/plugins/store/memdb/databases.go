@@ -14,7 +14,11 @@
 
 package memdb
 
-import "sync"
+import (
+	"sync"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+)
 
 // Databases represents a database map.
 type Databases struct {
@@ -33,11 +37,14 @@ func (dbs *Databases) SetDatabase(db *Database) {
 }
 
 // GetDatabase returns the database with the specified ID.
-func (dbs *Databases) GetDatabase(id string) (*Database, bool) {
+func (dbs *Databases) GetDatabase(id string) (store.Database, error) {
 	v, ok := dbs.Load(id)
 	if !ok {
-		return nil, false
+		return nil, store.NewDatabaseNotFoundError(id)
 	}
 	db, ok := v.(*Database)
-	return db, ok
+	if !ok {
+		return nil, store.NewDatabaseNotFoundError(id)
+	}
+	return db, nil
 }
