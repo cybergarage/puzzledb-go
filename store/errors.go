@@ -15,12 +15,18 @@
 package store
 
 import (
+	"fmt"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 )
 
 var (
 	StoreError       = errors.New("Store error")
-	DatabaseNotFound = errors.Wrapf(StoreError, "Database not found")
-	ObjectNotFound   = errors.Wrapf(StoreError, "Object not found")
+	DatabaseNotFound = errors.New("Database not found")
+	ObjectNotFound   = errors.New("Object not found")
 	KeyTypeError     = errors.New("Key type error")
 )
+
+func NewDatabaseNotFoundError(name string) error {
+	return fmt.Errorf("%w (%s)", DatabaseNotFound, name)
+}
