@@ -18,4 +18,6 @@ package store
 type Database interface {
 	// Name returns the unique name
 	Name() string
+	// Transact begin a new transaction.
+	Transact(write bool) (Transaction, error)
 }
