@@ -16,6 +16,7 @@ package server
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
+	"github.com/cybergarage/puzzledb-go/puzzledb/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/redis"
@@ -58,14 +59,21 @@ func (server *Server) Stop() error {
 
 // LoadPlugins loads default plugin services.
 func (server *Server) LoadPlugins() {
+	var services []plugins.Service
+
 	store := memdb.NewStore()
-	services := []plugins.Service{
-		store,
-		mysql.NewServiceWithStore(store),
-		redis.NewServiceWithStore(store),
+	services = append(services, store)
+
+	queryServices := []query.Service{
+		mysql.NewService(),
+		redis.NewService(),
+	}
+	for _, queryService := range queryServices {
+		queryService.SetStore(store)
+		services = append(services, queryService)
 	}
 
-	for _, service := range services {
+	for _, service := range queryServices {
 		server.Services.Add(service)
 	}
 }
