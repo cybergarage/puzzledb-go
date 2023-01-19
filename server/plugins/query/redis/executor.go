@@ -54,11 +54,15 @@ func (service *Service) Set(ctx *DBContext, key string, val string, opt redis.Se
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	return redis.NewOKMessage(), nil
 }
 
 func (service *Service) Get(ctx *DBContext, key string) (*Message, error) {
-	return nil, nil
+	_, err := service.GetDatabase(ctx.ID())
+	if err != nil {
+		return nil, err
+	}
+	return redis.NewOKMessage(), nil
 }
 
 func (service *Service) MSet(ctx *DBContext, dict map[string]string, opt redis.MSetOption) (*Message, error) {
