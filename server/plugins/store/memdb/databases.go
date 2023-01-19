@@ -31,12 +31,17 @@ func NewDatabases() *Databases {
 	}
 }
 
-// SetDatabase set a database with the specified ID.
-func (dbs *Databases) SetDatabase(db *Database) {
-	dbs.Store(db.ID, db)
+// CreateDatabase creates a new database.
+func (dbs *Databases) CreateDatabase(name string) error {
+	db, err := NewDatabaseWithID(name)
+	if err != nil {
+		return nil
+	}
+	dbs.Store(name, db)
+	return nil
 }
 
-// GetDatabase returns the database with the specified ID.
+// GetDatabase retruns the specified database.
 func (dbs *Databases) GetDatabase(id string) (store.Database, error) {
 	v, ok := dbs.Load(id)
 	if !ok {
