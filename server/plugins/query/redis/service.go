@@ -18,7 +18,7 @@ import (
 	"strconv"
 
 	"github.com/cybergarage/go-redis/redis"
-	"github.com/cybergarage/puzzledb-go/puzzledb/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
