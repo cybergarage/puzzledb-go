@@ -19,7 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-type StoreService interface {
+type Service interface {
 	store.Store
 	plugins.Service
 }
