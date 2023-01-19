@@ -23,16 +23,16 @@ import (
 type Service struct {
 	*mysql.BaseExecutor
 	*mysql.Server
-	query.Service
+	*query.BaseService
 	Databases
 }
 
 // NewService returns a new MySQL service.
-func NewService() *Service {
+func NewService() query.Service {
 	srv := &Service{
 		BaseExecutor: mysql.NewBaseExecutor(),
 		Server:       mysql.NewServer(),
-		Service:      *query.NewService(),
+		BaseService:  query.NewService(),
 		Databases:    NewDatabases(),
 	}
 	srv.Server.SetQueryExecutor(srv)
