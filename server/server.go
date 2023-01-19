@@ -20,6 +20,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/redis"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/record/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/memdb"
 )
 
@@ -44,7 +45,6 @@ func (server *Server) Start() error {
 	if err := server.Services.Start(); err != nil {
 		return errors.Wrap(err)
 	}
-
 	return nil
 }
 
@@ -64,12 +64,16 @@ func (server *Server) LoadPlugins() {
 	store := memdb.NewStore()
 	services = append(services, store)
 
+	seralizer := cbor.NewSerializer()
+	services = append(services, seralizer)
+
 	queryServices := []query.Service{
 		mysql.NewService(),
 		redis.NewService(),
 	}
 	for _, queryService := range queryServices {
 		queryService.SetStore(store)
+		queryService.SetSerializer(seralizer)
 		services = append(services, queryService)
 	}
 
