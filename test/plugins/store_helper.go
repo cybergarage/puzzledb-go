@@ -31,7 +31,7 @@ const (
 )
 
 //nolint:gosec,cyclop
-func StoreTest(t *testing.T, s plugins.StoreService) {
+func StoreTest(t *testing.T, s plugins.Service) {
 	t.Helper()
 
 	if err := s.Start(); err != nil {
