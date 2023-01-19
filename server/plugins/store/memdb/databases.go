@@ -22,6 +22,7 @@ import (
 
 // Databases represents a database map.
 type Databases struct {
+	store.Store
 	sync.Map
 }
 
@@ -37,7 +38,7 @@ func (dbs *Databases) CreateDatabase(name string) error {
 	if err != nil {
 		return nil
 	}
-	dbs.Store(name, db)
+	dbs.Map.Store(name, db)
 	return nil
 }
 
