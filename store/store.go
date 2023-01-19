@@ -16,6 +16,8 @@ package store
 
 // Store represents a store interface.
 type Store interface {
-	// GetDatabase retrun the specified database.
+	// CreateDatabase creates a new database.
+	CreateDatabase(name string) error
+	// GetDatabase retruns the specified database.
 	GetDatabase(name string) (Database, error)
 }
