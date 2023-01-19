@@ -24,7 +24,7 @@ type Memdb struct {
 }
 
 // New returns a new memdb store instance.
-func NewStore() store.StoreService {
+func NewStore() store.Service {
 	return &Memdb{
 		Databases: NewDatabases(),
 	}
