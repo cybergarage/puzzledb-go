@@ -17,7 +17,6 @@ package mysql
 import (
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/query"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Service represents a new MySQL service instance.
@@ -29,7 +28,7 @@ type Service struct {
 }
 
 // NewService returns a new MySQL service.
-func NewService(store store.Store) *Service {
+func NewService() *Service {
 	srv := &Service{
 		BaseExecutor: mysql.NewBaseExecutor(),
 		Server:       mysql.NewServer(),
