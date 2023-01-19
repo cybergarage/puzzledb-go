@@ -28,8 +28,8 @@ type Service struct {
 	Databases
 }
 
-// NewServiceWithStore returns a new MySQL service instance with the specified　Store.
-func NewServiceWithStore(store store.Store) *Service {
+// NewService returns a new MySQL service.
+func NewService(store store.Store) *Service {
 	srv := &Service{
 		BaseExecutor: mysql.NewBaseExecutor(),
 		Server:       mysql.NewServer(),
