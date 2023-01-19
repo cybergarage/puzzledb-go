@@ -22,14 +22,14 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// Service represents a new MySQL service instance.
+// Service represents a new Redis service instance.
 type Service struct {
 	*redis.Server
 	query.Service
 }
 
-// NewServiceWithStore returns a new MySQL service instance with the specified　Store.
-func NewServiceWithStore(store store.Store) *Service {
+// NewService returns a new Redis service instance.
+func NewService() *Service {
 	service := &Service{
 		Server:  redis.NewServer(),
 		Service: *query.NewService(),
