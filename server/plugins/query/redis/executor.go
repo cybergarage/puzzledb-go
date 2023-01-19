@@ -50,6 +50,10 @@ func (service *Service) TTL(ctx *DBContext, key string) (*Message, error) {
 }
 
 func (service *Service) Set(ctx *DBContext, key string, val string, opt redis.SetOption) (*Message, error) {
+	_, err := service.GetDatabase(ctx.ID())
+	if err != nil {
+		return nil, err
+	}
 	return nil, nil
 }
 
