@@ -25,14 +25,14 @@ import (
 // Service represents a new Redis service instance.
 type Service struct {
 	*redis.Server
-	query.Service
+	*query.BaseService
 }
 
 // NewService returns a new Redis service instance.
-func NewService() *Service {
+func NewService() query.Service {
 	service := &Service{
-		Server:  redis.NewServer(),
-		Service: *query.NewService(),
+		Server:      redis.NewServer(),
+		BaseService: query.NewService(),
 	}
 	service.Server.SetCommandHandler(service)
 	return service
