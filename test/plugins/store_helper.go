@@ -25,6 +25,7 @@ import (
 )
 
 const (
+	testDbName    = "testdb"
 	testKeyCount  = 100
 	testValBufMax = 8
 )
@@ -35,9 +36,16 @@ func StoreTest(t *testing.T, s plugins.StoreService) {
 
 	if err := s.Start(); err != nil {
 		t.Error(err)
+		return
 	}
-	if err := s.Open("testdb"); err != nil {
+	if err := s.CreateDatabase(testDbName); err != nil {
 		t.Error(err)
+		return
+	}
+	db, err := s.GetDatabase(testDbName)
+	if err != nil {
+		t.Error(err)
+		return
 	}
 
 	keys := make([][]byte, testKeyCount)
@@ -52,7 +60,7 @@ func StoreTest(t *testing.T, s plugins.StoreService) {
 	// Insert test
 
 	for n, key := range keys {
-		tx, err := s.Transact(true)
+		tx, err := db.Transact(true)
 		if err != nil {
 			t.Error(err)
 			break
@@ -75,7 +83,7 @@ func StoreTest(t *testing.T, s plugins.StoreService) {
 	// Select test
 
 	for n, key := range keys {
-		tx, err := s.Transact(false)
+		tx, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
 			break
@@ -94,10 +102,8 @@ func StoreTest(t *testing.T, s plugins.StoreService) {
 		}
 	}
 
-	if err := s.Close(); err != nil {
-		t.Error(err)
-	}
 	if err := s.Stop(); err != nil {
 		t.Error(err)
+		return
 	}
 }
