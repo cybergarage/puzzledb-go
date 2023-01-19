@@ -15,6 +15,8 @@
 package redis
 
 import (
+	"strconv"
+
 	"github.com/cybergarage/go-redis/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -50,4 +52,19 @@ func (service *Service) Stop() error {
 		return err
 	}
 	return nil
+}
+
+// GetDatabase returns the database with the specified ID.
+func (service *Service) GetDatabase(id int) (store.Database, error) {
+	store := service.Store()
+	name := strconv.Itoa(id)
+	db, err := store.GetDatabase(name)
+	if err == nil {
+		return db, nil
+	}
+	err = store.CreateDatabase(name)
+	if err != nil {
+		return nil, err
+	}
+	return store.GetDatabase(name)
 }
