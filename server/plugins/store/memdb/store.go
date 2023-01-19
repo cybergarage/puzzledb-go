@@ -21,12 +21,14 @@ import (
 // Memdb represents a Memdb instance.
 type Memdb struct {
 	*Databases
+	*store.BaseService
 }
 
 // New returns a new memdb store instance.
 func NewStore() store.Service {
 	return &Memdb{
-		Databases: NewDatabases(),
+		Databases:   NewDatabases(),
+		BaseService: store.NewService(),
 	}
 }
 
