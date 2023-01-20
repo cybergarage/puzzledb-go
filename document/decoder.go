@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package record
+package document
 
-// A Serializer includes Decorder and Encoder interfaces.
-type Serializer interface {
-	Decoder
-	Encoder
+import (
+	"io"
+)
+
+// An Decoder reads encorded objects from the specified input stream.
+type Decoder interface {
+	// Decode returns the decorded object from the specified reader if available, otherwise returns an error.
+	Decode(r io.Reader) (Object, error)
 }
