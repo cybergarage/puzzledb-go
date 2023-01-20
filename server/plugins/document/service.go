@@ -12,7 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package record
+package document
 
-// Object represents a database object.
-type Object = any
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
+)
+
+type Service interface {
+	plugins.Service
+	document.Serializer
+}

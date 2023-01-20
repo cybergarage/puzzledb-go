@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package record
+package document
 
-import (
-	"io"
-)
-
-// An Encoder writes the specified object to the specified output stream.
-type Encoder interface {
-	// Encode writes the specified object to the specified writer.
-	Encode(w io.Writer, obj Object) error
+// A Serializer includes Decorder and Encoder interfaces.
+type Serializer interface {
+	Decoder
+	Encoder
 }

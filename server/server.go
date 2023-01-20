@@ -17,10 +17,10 @@ package server
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/redis"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/record/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv/memdb"
 )
 
