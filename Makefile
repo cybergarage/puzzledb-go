@@ -30,6 +30,7 @@ PACKAGE_ID=${PACKAGE_ROOT}
 PACKAGES=\
 	${PACKAGE_ID}/document \
 	${PACKAGE_ID}/query \
+	${PACKAGE_ID}/store\
 	${PACKAGE_ID}/store/kv \
 	${PACKAGE_ID}/server \
 	${PACKAGE_ID}/server/plugins \
