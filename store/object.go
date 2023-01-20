@@ -17,7 +17,7 @@ package store
 // Object represents a key-value object.
 type Object struct {
 	Key   Key
-	Value []byte
+	Value any
 }
 
 func (obj *Object) KeyBytes() ([]byte, error) {
