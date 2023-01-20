@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package store
+package kv
 
 // Store represents a store interface.
 type Store interface {
