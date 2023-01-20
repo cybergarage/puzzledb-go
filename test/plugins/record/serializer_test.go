@@ -21,8 +21,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/record"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/record/cbor"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/document/cbor"
 )
 
 func DeepEqual(x, y any) error {
@@ -39,7 +39,7 @@ func DeepEqual(x, y any) error {
 }
 
 //nolint:gosec,cyclop
-func SerializerPrimitiveTest(t *testing.T, s record.Serializer) {
+func SerializerPrimitiveTest(t *testing.T, s document.Serializer) {
 	t.Helper()
 
 	tests := []struct {
@@ -75,11 +75,11 @@ func SerializerPrimitiveTest(t *testing.T, s record.Serializer) {
 }
 
 //nolint:gosec,cyclop
-func SerializerTest(t *testing.T, s record.Serializer) {
+func SerializerTest(t *testing.T, s document.Serializer) {
 	t.Helper()
 	testFuncs := []struct {
 		name string
-		fn   func(*testing.T, record.Serializer)
+		fn   func(*testing.T, document.Serializer)
 	}{
 		{"primitive", SerializerPrimitiveTest},
 	}
@@ -94,7 +94,7 @@ func SerializerTest(t *testing.T, s record.Serializer) {
 func TestSerializer(t *testing.T) {
 	serializers := []struct {
 		name       string
-		serializer record.Serializer
+		serializer document.Serializer
 	}{
 		{"cbor", cbor.NewSerializer()},
 	}

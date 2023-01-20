@@ -14,15 +14,11 @@
 
 package query
 
-import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/record"
-)
-
 // ResultSet represents a result set which includes query execution results.
 type ResultSet interface {
 	Result
 	// Next moves the cursor forward next object from its current position.
 	Next() bool
 	// GetObject returns an object in the current position.
-	GetObject() record.Object
+	GetObject() document.Object
 }

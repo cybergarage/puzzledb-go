@@ -18,13 +18,13 @@ import (
 	"io"
 
 	"github.com/cybergarage/go-cbor/cbor"
-	"github.com/cybergarage/puzzledb-go/puzzledb/record"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 )
 
 // Serializer represents a CBOR erializer.
 type Serializer struct {
-	record.Serializer
+	document.Serializer
 	plugins.Service
 }
 
@@ -35,13 +35,13 @@ func NewSerializer() *Serializer {
 }
 
 // Encode writes the specified object to the specified writer.
-func (s *Serializer) Encode(w io.Writer, obj record.Object) error {
+func (s *Serializer) Encode(w io.Writer, obj document.Object) error {
 	cbor := cbor.NewEncoder(w)
 	return cbor.Encode(obj)
 }
 
 // Decode returns the decorded object from the specified reader if available, otherwise returns an error.
-func (s *Serializer) Decode(r io.Reader) (record.Object, error) {
+func (s *Serializer) Decode(r io.Reader) (document.Object, error) {
 	cbor := cbor.NewDecoder(r)
 	return cbor.Decode()
 }

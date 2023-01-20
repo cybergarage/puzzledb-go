@@ -15,7 +15,7 @@
 package store
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/record"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -23,13 +23,13 @@ import (
 type Service interface {
 	store.Store
 	plugins.Service
-	SetSerializer(serializer record.Serializer)
-	Serializer() record.Serializer
+	SetSerializer(serializer document.Serializer)
+	Serializer() document.Serializer
 }
 
 type BaseService struct {
 	store      store.Store
-	serializer record.Serializer
+	serializer document.Serializer
 }
 
 func NewService() *BaseService {
@@ -44,7 +44,7 @@ func (service *BaseService) SetStore(store store.Store) {
 	service.store = store
 }
 
-func (service *BaseService) SetSerializer(serializer record.Serializer) {
+func (service *BaseService) SetSerializer(serializer document.Serializer) {
 	service.serializer = serializer
 }
 
@@ -52,6 +52,6 @@ func (service *BaseService) Store() store.Store {
 	return service.store
 }
 
-func (service *BaseService) Serializer() record.Serializer {
+func (service *BaseService) Serializer() document.Serializer {
 	return service.serializer
 }
