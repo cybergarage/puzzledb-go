@@ -14,6 +14,10 @@
 
 package query
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
 // ResultSet represents a result set which includes query execution results.
 type ResultSet interface {
 	Result
