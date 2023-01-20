@@ -17,6 +17,8 @@ package store
 import (
 	"bytes"
 	"fmt"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/errors"
 )
 
 // Key represents an object key.
@@ -35,7 +37,7 @@ func KeyToBytes(key Key) ([]byte, error) {
 				return nil, err
 			}
 		default:
-			return nil, fmt.Errorf("%w: (%T)", KeyTypeError, elem)
+			return nil, fmt.Errorf("%w: (%T)", errors.KeyTypeError, elem)
 		}
 	}
 	return keyBuf.Bytes(), nil
