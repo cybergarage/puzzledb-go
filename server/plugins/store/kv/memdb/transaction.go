@@ -15,6 +15,7 @@
 package memdb
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/errors"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/hashicorp/go-memdb"
 )
@@ -61,11 +62,11 @@ func (txn *Transaction) Select(key store.Key) (*store.Object, error) {
 	}
 	elem := it.Next()
 	if elem == nil {
-		return nil, store.ObjectNotFound
+		return nil, errors.ObjectNotFound
 	}
 	doc, ok := elem.(*document)
 	if !ok {
-		return nil, store.ObjectNotFound
+		return nil, errors.ObjectNotFound
 	}
 	return &store.Object{
 		Key:   key,
