@@ -20,7 +20,7 @@ MODULE_ROOT=github.com/cybergarage
 PACKAGE_ROOT=${MODULE_ROOT}/${PACKAGE_NAME}
 
 SOURCE_ROOTS=\
-	record \
+	document \
 	query \
 	store \
 	server \
@@ -28,12 +28,12 @@ SOURCE_ROOTS=\
 
 PACKAGE_ID=${PACKAGE_ROOT}
 PACKAGES=\
-	${PACKAGE_ID}/record \
+	${PACKAGE_ID}/document \
 	${PACKAGE_ID}/query \
 	${PACKAGE_ID}/store/kv \
 	${PACKAGE_ID}/server \
 	${PACKAGE_ID}/server/plugins \
-	${PACKAGE_ID}/server/plugins/record/cbor \
+	${PACKAGE_ID}/server/plugins/document/cbor \
 	${PACKAGE_ID}/server/plugins/executor/llvm \
 	${PACKAGE_ID}/server/plugins/executor/vdbe \
 	${PACKAGE_ID}/server/plugins/query/mysql \
