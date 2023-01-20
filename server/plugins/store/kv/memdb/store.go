@@ -15,7 +15,7 @@
 package memdb
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
+	store "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
 )
 
 // Memdb represents a Memdb instance.

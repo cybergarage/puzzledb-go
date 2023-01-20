@@ -17,7 +17,7 @@ package store
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/record"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 type Service interface {

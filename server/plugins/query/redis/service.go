@@ -19,7 +19,7 @@ import (
 
 	"github.com/cybergarage/go-redis/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // Service represents a new Redis service instance.
