@@ -30,7 +30,7 @@ PACKAGE_ID=${PACKAGE_ROOT}
 PACKAGES=\
 	${PACKAGE_ID}/record \
 	${PACKAGE_ID}/query \
-	${PACKAGE_ID}/store \
+	${PACKAGE_ID}/store/kv \
 	${PACKAGE_ID}/server \
 	${PACKAGE_ID}/server/plugins \
 	${PACKAGE_ID}/server/plugins/record/cbor \
@@ -38,7 +38,7 @@ PACKAGES=\
 	${PACKAGE_ID}/server/plugins/executor/vdbe \
 	${PACKAGE_ID}/server/plugins/query/mysql \
 	${PACKAGE_ID}/server/plugins/query/redis \
-	${PACKAGE_ID}/server/plugins/store/memdb
+	${PACKAGE_ID}/server/plugins/store/kv/memdb
 
 .PHONY: test format vet lint clean
 
