@@ -61,11 +61,12 @@ func (server *Server) Stop() error {
 func (server *Server) LoadPlugins() {
 	var services []plugins.Service
 
-	store := memdb.NewStore()
-	services = append(services, store)
-
 	seralizer := cbor.NewSerializer()
 	services = append(services, seralizer)
+
+	store := memdb.NewStore()
+	store.SetSerializer(seralizer)
+	services = append(services, store)
 
 	queryServices := []query.Service{
 		mysql.NewService(),
@@ -73,7 +74,6 @@ func (server *Server) LoadPlugins() {
 	}
 	for _, queryService := range queryServices {
 		queryService.SetStore(store)
-		queryService.SetSerializer(seralizer)
 		services = append(services, queryService)
 	}
 
