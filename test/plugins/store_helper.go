@@ -20,8 +20,8 @@ import (
 	"math/rand"
 	"testing"
 
-	plugins "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	plugins "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
+	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 const (
