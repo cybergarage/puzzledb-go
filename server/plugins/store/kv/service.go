@@ -12,28 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package kv
 
-import "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+)
 
-// Memdb represents a Memdb instance.
-type Memdb struct {
-	*Databases
-}
-
-// New returns a new memdb store instance.
-func NewStore() kv.Service {
-	return &Memdb{
-		Databases: NewDatabases(),
-	}
-}
-
-// Start starts this memdb.
-func (db *Memdb) Start() error {
-	return nil
-}
-
-// Stop stops this memdb.
-func (db Memdb) Stop() error {
-	return nil
+type Service interface {
+	kv.Store
+	plugins.Service
 }
