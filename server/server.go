@@ -21,7 +21,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/record/cbor"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/memdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv/memdb"
 )
 
 // Server represents a server instance.

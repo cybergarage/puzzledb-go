@@ -17,7 +17,7 @@ package memdb
 import (
 	"sync"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // Databases represents a database map.
