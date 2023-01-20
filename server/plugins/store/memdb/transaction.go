@@ -15,8 +15,6 @@
 package memdb
 
 import (
-	"bytes"
-
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/hashicorp/go-memdb"
 )
@@ -44,9 +42,6 @@ func (txn *Transaction) Insert(obj *store.Object) error {
 	if err != nil {
 		return err
 	}
-
-	var writer bytes.Buffer
-
 	doc := &document{
 		Key:   string(keyBytes),
 		Value: obj.Value,
