@@ -17,7 +17,7 @@ package store
 // Transaction represents a transaction interface.
 type Transaction interface {
 	// Insert puts a object.
-	Insert(obj *Object) error
+	Insert(key Key, obj *Object) error
 	// Select gets an object of the specified key.
 	Select(key Key) (*Object, error)
 	// Commit commits this transaction.

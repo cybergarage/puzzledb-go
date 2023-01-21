@@ -28,14 +28,14 @@ type transaction struct {
 }
 
 // Insert puts a key-value object.
-func (txn *transaction) Insert(obj *store.Object) error {
+func (txn *transaction) Insert(key store.Key, obj *store.Object) error {
 	var b bytes.Buffer
 	err := txn.Encode(&b, obj.Value)
 	if err != nil {
 		return err
 	}
 	kvObj := kv.Object{
-		Key:   obj.Key,
+		Key:   key,
 		Value: b.Bytes(),
 	}
 	return txn.kv.Insert(&kvObj)
