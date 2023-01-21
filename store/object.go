@@ -14,12 +14,5 @@
 
 package store
 
-// Object represents a key-value object.
-type Object struct {
-	Key   Key
-	Value any
-}
-
-func (obj *Object) KeyBytes() ([]byte, error) {
-	return KeyToBytes(obj.Key)
-}
+// Object represents a store object.
+type Object = any
