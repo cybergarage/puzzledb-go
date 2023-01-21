@@ -15,6 +15,8 @@
 package store
 
 import (
+	"bytes"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -27,7 +29,16 @@ type transaction struct {
 
 // Insert puts a key-value object.
 func (txn *transaction) Insert(obj *store.Object) error {
-	return nil
+	var b bytes.Buffer
+	err := txn.Encode(&b, obj.Value)
+	if err != nil {
+		return err
+	}
+	kvObj := kv.Object{
+		Key:   obj.Key,
+		Value: b.Bytes(),
+	}
+	return txn.kv.Insert(&kvObj)
 }
 
 // Select gets an key-value object of the specified key.
