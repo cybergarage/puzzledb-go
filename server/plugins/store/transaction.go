@@ -28,9 +28,9 @@ type transaction struct {
 }
 
 // Insert puts a key-value object.
-func (txn *transaction) Insert(key store.Key, obj *store.Object) error {
+func (txn *transaction) Insert(key store.Key, obj store.Object) error {
 	var b bytes.Buffer
-	err := txn.Encode(&b, obj.Value)
+	err := txn.Encode(&b, obj)
 	if err != nil {
 		return err
 	}
@@ -42,7 +42,7 @@ func (txn *transaction) Insert(key store.Key, obj *store.Object) error {
 }
 
 // Select gets an key-value object of the specified key.
-func (txn *transaction) Select(key store.Key) (*store.Object, error) {
+func (txn *transaction) Select(key store.Key) (store.Object, error) {
 	return nil, nil
 }
 
