@@ -43,7 +43,15 @@ func (txn *transaction) Insert(key store.Key, obj store.Object) error {
 
 // Select gets an key-value object of the specified key.
 func (txn *transaction) Select(key store.Key) (store.Object, error) {
-	return nil, nil
+	kvObj, err := txn.kv.Select(key)
+	if err != nil {
+		return nil, err
+	}
+	obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
+	if err != nil {
+		return nil, err
+	}
+	return obj, nil
 }
 
 // Commit commits this transaction.
