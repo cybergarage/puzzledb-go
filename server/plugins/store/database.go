@@ -16,10 +16,29 @@ package store
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 type database struct {
-	kv.Database
+	kv kv.Database
 	document.Serializer
+}
+
+// Name returns the unique name.
+func (db *database) Name() string {
+	return db.kv.Name()
+}
+
+// Transact begin a new transaction.
+func (db *database) Transact(write bool) (store.Transaction, error) {
+	kvTx, err := db.kv.Transact(write)
+	if err != nil {
+		return nil, err
+	}
+	tx := &transaction{
+		kv:         kvTx,
+		Serializer: db.Serializer,
+	}
+	return tx, nil
 }
