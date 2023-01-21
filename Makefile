@@ -40,6 +40,7 @@ PACKAGES=\
 	${PACKAGE_ID}/server/plugins/executor/vdbe \
 	${PACKAGE_ID}/server/plugins/query/mysql \
 	${PACKAGE_ID}/server/plugins/query/redis \
+	${PACKAGE_ID}/server/plugins/store \
 	${PACKAGE_ID}/server/plugins/store/kv \
 	${PACKAGE_ID}/server/plugins/store/kv/memdb
 
