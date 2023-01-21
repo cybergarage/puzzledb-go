@@ -16,23 +16,51 @@ package store
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 type Store struct {
 	Service
-	kvs kv.Store
+	kvService kv.Service
 	document.Serializer
 }
 
-func NewStoreWithKvStore(kvs kv.Store) *Store {
-	server := &Store{
-		kvs:        kvs,
+func NewStoreWithKvStore(kvs kv.Service) *Store {
+	return &Store{
+		kvService:  kvs,
 		Serializer: nil,
 	}
-	return server
 }
 
 func (store *Store) SetSerializer(serializer document.Serializer) {
 	store.Serializer = serializer
+}
+
+// CreateDatabase creates a new database.
+func (store *Store) CreateDatabase(name string) error {
+	return store.kvService.CreateDatabase(name)
+}
+
+// GetDatabase retruns the specified database.
+func (store *Store) GetDatabase(name string) (store.Database, error) {
+	kvDb, err := store.kvService.GetDatabase(name)
+	if err != nil {
+		return nil, err
+	}
+	db := &database{
+		kv:         kvDb,
+		Serializer: store.Serializer,
+	}
+	return db, nil
+}
+
+// Start starts this store.
+func (store *Store) Start() error {
+	return store.kvService.Start()
+}
+
+// Stop stops this store.
+func (store *Store) Stop() error {
+	return store.kvService.Stop()
 }
