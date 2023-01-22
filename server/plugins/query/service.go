@@ -16,7 +16,7 @@ package query
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
-	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 type Service interface {
