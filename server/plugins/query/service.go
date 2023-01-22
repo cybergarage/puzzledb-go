@@ -15,6 +15,7 @@
 package query
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -23,10 +24,13 @@ type Service interface {
 	plugins.Service
 	SetStore(store store.Store)
 	Store() store.Store
+	SetSerializer(serializer document.Serializer)
+	Serializer() document.Serializer
 }
 
 type BaseService struct {
-	store store.Store
+	store      store.Store
+	serializer document.Serializer
 }
 
 func NewService() *BaseService {
@@ -42,4 +46,12 @@ func (service *BaseService) SetStore(store store.Store) {
 
 func (service *BaseService) Store() store.Store {
 	return service.store
+}
+
+func (service *BaseService) SetSerializer(serializer document.Serializer) {
+	service.serializer = serializer
+}
+
+func (service *BaseService) Serializer() document.Serializer {
+	return service.serializer
 }
