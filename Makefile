@@ -27,6 +27,7 @@ SOURCE_ROOTS=\
 	test
 
 PACKAGE_ID=${PACKAGE_ROOT}
+
 PACKAGES=\
 	${PACKAGE_ID}/document \
 	${PACKAGE_ID}/query \
@@ -44,6 +45,10 @@ PACKAGES=\
 	${PACKAGE_ID}/server/plugins/store/kv \
 	${PACKAGE_ID}/server/plugins/store/kv/memdb
 
+TEST_PACKAGES=\
+	${PACKAGE_ID}/test/plugins/document \
+	${PACKAGE_ID}/test/plugins/query/redis
+
 .PHONY: test format vet lint clean
 
 all: test
@@ -58,7 +63,7 @@ lint: format
 	golangci-lint run ${SOURCE_ROOTS}
 
 test: 
-	go test -v -cover -timeout 60s ${PACKAGES}
+	go test -v -cover -timeout 60s ${PACKAGES} ${TEST_PACKAGES}
 
 clean:
 	go clean -i ${PACKAGES}
