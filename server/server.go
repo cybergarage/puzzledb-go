@@ -66,6 +66,7 @@ func (server *Server) LoadPlugins() {
 	services = append(services, seralizer)
 
 	store := store.NewStoreWithKvStore(memdb.NewStore())
+	store.SetSerializer(seralizer)
 	services = append(services, store)
 
 	queryServices := []query.Service{
