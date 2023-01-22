@@ -15,6 +15,8 @@
 package redis
 
 import (
+	"fmt"
+
 	"github.com/cybergarage/go-redis/redis"
 )
 
@@ -61,6 +63,15 @@ func (service *Service) Set(ctx *DBContext, key string, val string, opt redis.Se
 	}
 	err = tx.Insert([]any{key}, val)
 	if err != nil {
+		err = tx.Cancel()
+		if err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
 		return nil, err
 	}
 
@@ -68,11 +79,37 @@ func (service *Service) Set(ctx *DBContext, key string, val string, opt redis.Se
 }
 
 func (service *Service) Get(ctx *DBContext, key string) (*Message, error) {
-	_, err := service.GetDatabase(ctx.ID())
+	db, err := service.GetDatabase(ctx.ID())
 	if err != nil {
 		return nil, err
 	}
-	return redis.NewOKMessage(), nil
+
+	tx, err := db.Transact(false)
+	if err != nil {
+		return nil, err
+	}
+	obj, err := tx.Select([]any{key})
+	if err != nil {
+		err = tx.Cancel()
+		if err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return nil, err
+	}
+
+	switch v := obj.(type) {
+	case string:
+		return redis.NewBulkMessage(v), nil
+	case []byte:
+		return redis.NewBulkMessage(string(v)), nil
+	default:
+		return redis.NewBulkMessage(fmt.Sprintf("%v", v)), nil
+	}
 }
 
 func (service *Service) MSet(ctx *DBContext, dict map[string]string, opt redis.MSetOption) (*Message, error) {
