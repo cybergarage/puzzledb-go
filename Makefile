@@ -29,25 +29,14 @@ SOURCE_ROOTS=\
 PACKAGE_ID=${PACKAGE_ROOT}
 
 PACKAGES=\
-	${PACKAGE_ID}/document \
-	${PACKAGE_ID}/query \
-	${PACKAGE_ID}/store\
-	${PACKAGE_ID}/store/errors \
-	${PACKAGE_ID}/store/kv \
-	${PACKAGE_ID}/server \
-	${PACKAGE_ID}/server/plugins \
-	${PACKAGE_ID}/server/plugins/document/cbor \
-	${PACKAGE_ID}/server/plugins/executor/llvm \
-	${PACKAGE_ID}/server/plugins/executor/vdbe \
-	${PACKAGE_ID}/server/plugins/query/mysql \
-	${PACKAGE_ID}/server/plugins/query/redis \
-	${PACKAGE_ID}/server/plugins/store \
-	${PACKAGE_ID}/server/plugins/store/kv \
-	${PACKAGE_ID}/server/plugins/store/kv/memdb
+	${PACKAGE_ID}/errors/... \
+	${PACKAGE_ID}/document/... \
+	${PACKAGE_ID}/query/... \
+	${PACKAGE_ID}/store/... \
+	${PACKAGE_ID}/server/...
 
 TEST_PACKAGES=\
-	${PACKAGE_ID}/test/plugins/document \
-	${PACKAGE_ID}/test/plugins/query/redis
+	${PACKAGE_ID}/test/...
 
 .PHONY: test format vet lint clean
 
