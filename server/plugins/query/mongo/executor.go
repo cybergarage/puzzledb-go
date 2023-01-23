@@ -74,10 +74,20 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
-func (server *Service) Find(q *mongo.Query) ([]bson.Document, error) {
+func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
+	db, err := service.GetDatabase(q.Database)
+	if err != nil {
+		return nil, mongo.NewQueryError(q)
+	}
+
+	tx, err := db.Transact(true)
+	if err != nil {
+		return nil, mongo.NewQueryError(q)
+	}
+
 	foundDoc := make([]bson.Document, 0)
 
-	for _, doc := range server.documents {
+	for _, doc := range service.documents {
 		isMatched := true
 		for _, cond := range q.GetConditions() {
 			condElems, err := cond.Elements()
@@ -103,6 +113,11 @@ func (server *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 		}
 
 		foundDoc = append(foundDoc, doc)
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return nil, mongo.NewQueryError(q)
 	}
 
 	return foundDoc, nil
