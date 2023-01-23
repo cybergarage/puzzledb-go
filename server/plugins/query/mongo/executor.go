@@ -80,7 +80,7 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 		return nil, mongo.NewQueryError(q)
 	}
 
-	tx, err := db.Transact(true)
+	tx, err := db.Transact(false)
 	if err != nil {
 		return nil, mongo.NewQueryError(q)
 	}
@@ -124,7 +124,17 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 }
 
 // Update hadles OP_UPDATE and 'update' query of OP_MSG or OP_QUERY.
-func (server *Service) Update(q *mongo.Query) (int32, error) {
+func (service *Service) Update(q *mongo.Query) (int32, error) {
+	db, err := service.GetDatabase(q.Database)
+	if err != nil {
+		return 0, mongo.NewQueryError(q)
+	}
+
+	tx, err := db.Transact(true)
+	if err != nil {
+		return 0, mongo.NewQueryError(q)
+	}
+
 	nUpdated := 0
 
 	queryDocs := q.GetDocuments()
@@ -133,8 +143,8 @@ func (server *Service) Update(q *mongo.Query) (int32, error) {
 		return 0, nil
 	}
 
-	for n := (len(server.documents) - 1); 0 <= n; n-- {
-		serverDoc := server.documents[n]
+	for n := (len(service.documents) - 1); 0 <= n; n-- {
+		serverDoc := service.documents[n]
 		isMatched := true
 		for _, cond := range q.GetConditions() {
 			condElems, err := cond.Elements()
@@ -158,7 +168,7 @@ func (server *Service) Update(q *mongo.Query) (int32, error) {
 			continue
 		}
 
-		server.documents = append(server.documents[:n], server.documents[n+1:]...)
+		service.documents = append(service.documents[:n], service.documents[n+1:]...)
 
 		serverDocElems, err := serverDoc.Elements()
 		if err != nil {
@@ -191,9 +201,14 @@ func (server *Service) Update(q *mongo.Query) (int32, error) {
 			return int32(nUpdated), mongo.NewQueryError(q)
 		}
 
-		server.documents = append(server.documents, updateDoc)
+		service.documents = append(service.documents, updateDoc)
 
 		nUpdated++
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return 0, mongo.NewQueryError(q)
 	}
 
 	return int32(nUpdated), nil
