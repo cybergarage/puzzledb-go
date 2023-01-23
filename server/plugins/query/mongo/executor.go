@@ -20,7 +20,17 @@ import (
 )
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
-func (server *Service) Insert(q *mongo.Query) (int32, bool) {
+func (service *Service) Insert(q *mongo.Query) (int32, bool) {
+	db, err := service.GetDatabase(q.Database)
+	if err != nil {
+		return 0, false
+	}
+
+	tx, err := db.Transact(true)
+	if err != nil {
+		return 0, false
+	}
+
 	nInserted := int32(0)
 
 	docs := q.GetDocuments()
@@ -33,7 +43,7 @@ func (server *Service) Insert(q *mongo.Query) (int32, bool) {
 
 		isInserted := false
 
-		for _, serverDoc := range server.documents {
+		for _, serverDoc := range service.documents {
 			serverValue, err := serverDoc.LookupErr("_id")
 			if err != nil {
 				continue
@@ -45,10 +55,15 @@ func (server *Service) Insert(q *mongo.Query) (int32, bool) {
 		}
 
 		if !isInserted {
-			server.documents = append(server.documents, doc)
+			service.documents = append(service.documents, doc)
 		}
 
 		nInserted++
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return 0, false
 	}
 
 	if len(docs) != int(nInserted) {
