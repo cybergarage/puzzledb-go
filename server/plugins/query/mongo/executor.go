@@ -20,15 +20,15 @@ import (
 )
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
-func (service *Service) Insert(q *mongo.Query) (int32, bool) {
+func (service *Service) Insert(q *mongo.Query) (int32, error) {
 	db, err := service.GetDatabase(q.Database)
 	if err != nil {
-		return 0, false
+		return 0, mongo.NewQueryError(q)
 	}
 
 	tx, err := db.Transact(true)
 	if err != nil {
-		return 0, false
+		return 0, mongo.NewQueryError(q)
 	}
 
 	nInserted := int32(0)
@@ -63,18 +63,18 @@ func (service *Service) Insert(q *mongo.Query) (int32, bool) {
 
 	err = tx.Commit()
 	if err != nil {
-		return 0, false
+		return 0, mongo.NewQueryError(q)
 	}
 
 	if len(docs) != int(nInserted) {
-		return nInserted, false
+		return nInserted, mongo.NewQueryError(q)
 	}
 
-	return nInserted, true
+	return nInserted, nil
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
-func (server *Service) Find(q *mongo.Query) ([]bson.Document, bool) {
+func (server *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 	foundDoc := make([]bson.Document, 0)
 
 	for _, doc := range server.documents {
@@ -82,7 +82,7 @@ func (server *Service) Find(q *mongo.Query) ([]bson.Document, bool) {
 		for _, cond := range q.GetConditions() {
 			condElems, err := cond.Elements()
 			if err != nil {
-				return nil, false
+				return nil, mongo.NewQueryError(q)
 			}
 			for _, condElem := range condElems {
 				docValue, err := doc.LookupErr(condElem.Key())
@@ -105,17 +105,17 @@ func (server *Service) Find(q *mongo.Query) ([]bson.Document, bool) {
 		foundDoc = append(foundDoc, doc)
 	}
 
-	return foundDoc, true
+	return foundDoc, nil
 }
 
 // Update hadles OP_UPDATE and 'update' query of OP_MSG or OP_QUERY.
-func (server *Service) Update(q *mongo.Query) (int32, bool) {
+func (server *Service) Update(q *mongo.Query) (int32, error) {
 	nUpdated := 0
 
 	queryDocs := q.GetDocuments()
 	queryConds := q.GetConditions()
 	if len(queryConds) == 0 {
-		return 0, true
+		return 0, nil
 	}
 
 	for n := (len(server.documents) - 1); 0 <= n; n-- {
@@ -124,7 +124,7 @@ func (server *Service) Update(q *mongo.Query) (int32, bool) {
 		for _, cond := range q.GetConditions() {
 			condElems, err := cond.Elements()
 			if err != nil {
-				return 0, false
+				return 0, mongo.NewQueryError(q)
 			}
 			for _, condElem := range condElems {
 				serverFoundElem, err := serverDoc.LookupErr(condElem.Key())
@@ -147,7 +147,7 @@ func (server *Service) Update(q *mongo.Query) (int32, bool) {
 
 		serverDocElems, err := serverDoc.Elements()
 		if err != nil {
-			return int32(nUpdated), false
+			return int32(nUpdated), mongo.NewQueryError(q)
 		}
 
 		updateDoc := bson.StartDocument()
@@ -163,17 +163,17 @@ func (server *Service) Update(q *mongo.Query) (int32, bool) {
 			}
 			updateDoc, err = bson.AppendValueElement(updateDoc, elemKey, elemValue)
 			if err != nil {
-				return int32(nUpdated), false
+				return int32(nUpdated), mongo.NewQueryError(q)
 			}
 		}
 		updateDoc, err = bson.EndDocument(updateDoc)
 		if err != nil {
-			return int32(nUpdated), false
+			return int32(nUpdated), mongo.NewQueryError(q)
 		}
 
 		err = updateDoc.Validate()
 		if err != nil {
-			return int32(nUpdated), false
+			return int32(nUpdated), mongo.NewQueryError(q)
 		}
 
 		server.documents = append(server.documents, updateDoc)
@@ -181,18 +181,18 @@ func (server *Service) Update(q *mongo.Query) (int32, bool) {
 		nUpdated++
 	}
 
-	return int32(nUpdated), true
+	return int32(nUpdated), nil
 }
 
 // Delete hadles OP_DELETE and 'delete' query of OP_MSG or OP_QUERY.
-func (server *Service) Delete(q *mongo.Query) (int32, bool) {
+func (server *Service) Delete(q *mongo.Query) (int32, error) {
 	nDeleted := 0
 
 	queryConds := q.GetConditions()
 	if len(queryConds) == 0 {
 		nDeleted := len(server.documents)
 		server.documents = make([]bson.Document, 0)
-		return int32(nDeleted), true
+		return int32(nDeleted), nil
 	}
 
 	for n := (len(server.documents) - 1); 0 <= n; n-- {
@@ -201,7 +201,7 @@ func (server *Service) Delete(q *mongo.Query) (int32, bool) {
 		for _, cond := range q.GetConditions() {
 			condElems, err := cond.Elements()
 			if err != nil {
-				return 0, false
+				return 0, mongo.NewQueryError(q)
 			}
 			for _, condElem := range condElems {
 				docValue, err := serverDoc.LookupErr(condElem.Key())
@@ -225,5 +225,5 @@ func (server *Service) Delete(q *mongo.Query) (int32, bool) {
 		nDeleted++
 	}
 
-	return int32(nDeleted), true
+	return int32(nDeleted), nil
 }
