@@ -18,6 +18,7 @@ import (
 	"github.com/cybergarage/go-mongo/mongo"
 	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 type Service struct {
@@ -50,4 +51,18 @@ func (server *Service) MessageReceived(msg mongo.OpMessage) {
 func (server *Service) MessageRespond(msg mongo.OpMessage) {
 	// fmt.Printf("<- %s\n", msg.String())
 	// log.Hexdump(log.LevelInfo, msg.Bytes())
+}
+
+// GetDatabase returns the database with the specified name.
+func (service *Service) GetDatabase(name string) (store.Database, error) {
+	store := service.Store()
+	db, err := store.GetDatabase(name)
+	if err == nil {
+		return db, nil
+	}
+	err = store.CreateDatabase(name)
+	if err != nil {
+		return nil, err
+	}
+	return store.GetDatabase(name)
 }
