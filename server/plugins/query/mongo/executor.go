@@ -215,18 +215,28 @@ func (service *Service) Update(q *mongo.Query) (int32, error) {
 }
 
 // Delete hadles OP_DELETE and 'delete' query of OP_MSG or OP_QUERY.
-func (server *Service) Delete(q *mongo.Query) (int32, error) {
+func (service *Service) Delete(q *mongo.Query) (int32, error) {
+	db, err := service.GetDatabase(q.Database)
+	if err != nil {
+		return 0, mongo.NewQueryError(q)
+	}
+
+	tx, err := db.Transact(true)
+	if err != nil {
+		return 0, mongo.NewQueryError(q)
+	}
+
 	nDeleted := 0
 
 	queryConds := q.GetConditions()
 	if len(queryConds) == 0 {
-		nDeleted := len(server.documents)
-		server.documents = make([]bson.Document, 0)
+		nDeleted := len(service.documents)
+		service.documents = make([]bson.Document, 0)
 		return int32(nDeleted), nil
 	}
 
-	for n := (len(server.documents) - 1); 0 <= n; n-- {
-		serverDoc := server.documents[n]
+	for n := (len(service.documents) - 1); 0 <= n; n-- {
+		serverDoc := service.documents[n]
 		isMatched := true
 		for _, cond := range q.GetConditions() {
 			condElems, err := cond.Elements()
@@ -251,8 +261,13 @@ func (server *Service) Delete(q *mongo.Query) (int32, error) {
 			continue
 		}
 
-		server.documents = append(server.documents[:n], server.documents[n+1:]...)
+		service.documents = append(service.documents[:n], service.documents[n+1:]...)
 		nDeleted++
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return 0, mongo.NewQueryError(q)
 	}
 
 	return int32(nDeleted), nil
