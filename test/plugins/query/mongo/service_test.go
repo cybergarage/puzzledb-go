@@ -21,7 +21,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/test"
 )
 
-func TestServer(t *testing.T) {
+func TestService(t *testing.T) {
 	server := test.NewServer()
 	err := server.Start()
 	if err != nil {
