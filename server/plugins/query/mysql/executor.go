@@ -43,23 +43,14 @@ func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, st
 }
 
 // AlterDatabase should handle a ALTER database statement.
-func (srv *Service) AlterDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
+func (service *Service) AlterDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
 // DropDatabase should handle a DROP database statement.
-func (srv *Service) DropDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	dbName := conn.Database
-	db, ok := srv.GetDatabase(dbName)
-	if !ok {
-		return nil, fmt.Errorf(errorDatabaseNotFound, dbName)
-	}
-
-	if !srv.Databases.DropDatabase(db) {
-		return nil, fmt.Errorf("%s could not deleted", db.Name())
-	}
-
+func (service *Service) DropDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
+	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
