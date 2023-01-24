@@ -24,17 +24,21 @@ import (
 )
 
 // CreateDatabase should handle a CREATE database statement.
-func (srv *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
+func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	dbName := stmt.Name()
-	_, ok := srv.GetDatabase(dbName)
-	if ok {
+
+	store := service.Store()
+	_, err := store.GetDatabase(dbName)
+	if err != nil {
 		return mysql.NewResult(), fmt.Errorf(errorDatabaseFound, dbName)
 	}
-	err := srv.AddDatabase(NewDatabaseWithName(dbName))
+
+	err = store.CreateDatabase(dbName)
 	if err != nil {
 		return mysql.NewResult(), err
 	}
+
 	return mysql.NewResult(), nil
 }
 
