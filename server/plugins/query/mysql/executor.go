@@ -61,39 +61,25 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 }
 
 // AlterTable should handle a ALTER table statement.
-func (srv *Service) AlterTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+func (service *Service) AlterTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
 // DropTable should handle a DROP table statement.
-func (srv *Service) DropTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	dbName := conn.Database
-	db, ok := srv.GetDatabase(dbName)
-	if !ok {
-		return nil, fmt.Errorf(errorDatabaseNotFound, dbName)
-	}
-	tableName := stmt.TableName()
-	table, ok := db.GetTable(tableName)
-	if !ok {
-		return mysql.NewResult(), nil
-	}
-
-	if !db.DropTable(table) {
-		return nil, fmt.Errorf("%s could not deleted", table.TableName())
-	}
-
+func (service *Service) DropTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
 // RenameTable should handle a RENAME table statement.
-func (srv *Service) RenameTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+func (service *Service) RenameTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
 // TruncateTable should handle a TRUNCATE table statement.
-func (srv *Service) TruncateTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+func (service *Service) TruncateTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
