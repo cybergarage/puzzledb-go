@@ -24,7 +24,6 @@ type Service struct {
 	*mysql.BaseExecutor
 	*mysql.Server
 	*query.BaseService
-	Databases
 }
 
 // NewService returns a new MySQL service.
@@ -33,7 +32,6 @@ func NewService() query.Service {
 		BaseExecutor: mysql.NewBaseExecutor(),
 		Server:       mysql.NewServer(),
 		BaseService:  query.NewService(),
-		Databases:    NewDatabases(),
 	}
 	srv.Server.SetQueryExecutor(srv)
 	return srv
