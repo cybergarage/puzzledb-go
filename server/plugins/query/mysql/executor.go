@@ -55,22 +55,8 @@ func (service *Service) DropDatabase(ctx context.Context, conn *mysql.Conn, stmt
 }
 
 // CreateTable should handle a CREATE table statement.
-func (srv *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	dbName := conn.Database
-	db, ok := srv.GetDatabase(dbName)
-	if !ok {
-		return nil, fmt.Errorf(errorDatabaseNotFound, dbName)
-	}
-	tableName := stmt.TableName()
-	_, ok = db.GetTable(tableName)
-	if !ok {
-		table := NewTableWithNameAndSchema(tableName, stmt)
-		db.AddTable(table)
-	} else {
-		if !stmt.IfExists {
-			return mysql.NewResult(), fmt.Errorf(errorTableFound, dbName, tableName)
-		}
-	}
+func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+	log.Debugf("%v", stmt)
 	return mysql.NewResult(), nil
 }
 
