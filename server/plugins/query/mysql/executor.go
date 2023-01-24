@@ -85,129 +85,23 @@ func (service *Service) TruncateTable(ctx context.Context, conn *mysql.Conn, stm
 }
 
 // Insert should handle a INSERT statement.
-func (srv *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *query.Insert) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
-	dbName := conn.Database
-	tableName := stmt.TableName()
-	table, ok := srv.GetTableWithDatabase(dbName, tableName)
-	if !ok {
-		return mysql.NewResult(), fmt.Errorf(errorTableNotFound, dbName, tableName)
-	}
-
-	row, err := query.NewRowWithInsert(stmt)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := table.AddRow(row); err != nil {
-		return nil, err
-	}
-
-	table.Dump()
-
-	return mysql.NewResultWithRowsAffected(1), nil
+func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *query.Insert) (*mysql.Result, error) {
+	return mysql.NewResult(), nil
 }
 
 // Update should handle a UPDATE statement.
 func (srv *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
-
-	dbName := conn.Database
-	cond := stmt.Where
-
-	database, ok := srv.GetDatabase(dbName)
-	if !ok {
-		return nil, fmt.Errorf(errorDatabaseFound, dbName)
-	}
-
-	nEffectedRows := uint64(0)
-	for _, table := range stmt.Tables() {
-		tableName, err := table.Name()
-		if err != nil {
-			return nil, err
-		}
-		table, ok := database.GetTable(tableName)
-		if !ok {
-			return nil, fmt.Errorf(errorTableNotFound, dbName, tableName)
-		}
-
-		columns, err := stmt.Columns()
-		if err != nil {
-			return nil, err
-		}
-
-		nUpdatedRows, err := table.Update(columns, cond)
-		if err != nil {
-			return nil, err
-		}
-		nEffectedRows += uint64(nUpdatedRows)
-	}
-
-	return mysql.NewResultWithRowsAffected(nEffectedRows), nil
+	return mysql.NewResult(), nil
 }
 
 // Delete should handle a DELETE statement.
 func (srv *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *query.Delete) (*mysql.Result, error) {
-	dbName := conn.Database
-	cond := stmt.Where
-
-	database, ok := srv.GetDatabase(dbName)
-	if !ok {
-		return nil, fmt.Errorf(errorDatabaseFound, dbName)
-	}
-
-	nEffectedRows := uint64(0)
-	for _, table := range stmt.Tables() {
-		tableName, err := table.Name()
-		if err != nil {
-			return nil, err
-		}
-		table, ok := database.GetTable(tableName)
-		if !ok {
-			return nil, fmt.Errorf(errorTableNotFound, dbName, tableName)
-		}
-
-		nDeletedRows, err := table.Delete(cond)
-		if err != nil {
-			return nil, err
-		}
-		nEffectedRows += uint64(nDeletedRows)
-	}
-
-	return mysql.NewResultWithRowsAffected(nEffectedRows), nil
+	return mysql.NewResult(), nil
 }
 
 // Select should handle a SELECT statement.
 func (srv *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
-
-	dbName := conn.Database
-	database, ok := srv.GetDatabase(dbName)
-	if !ok {
-		return nil, fmt.Errorf(errorDatabaseFound, dbName)
-	}
-
-	// NOTE: Select scans only a first table
-
-	tables := stmt.From()
-	tableName, err := tables[0].Name()
-	if err != nil {
-		return nil, err
-	}
-
-	table, ok := database.GetTable(tableName)
-	if !ok {
-		// TODO: Support dummy dual table for MySQL connector 5.1.49
-		if tableName == "dual" {
-			return mysql.NewResult(), nil
-		}
-		return nil, fmt.Errorf(errorTableNotFound, dbName, tableName)
-	}
-
-	cond := stmt.Where
-	matchedRows := table.FindMatchedRows(cond)
-
-	return mysql.NewResultWithRows(database.Database, table.Schema, matchedRows)
+	return mysql.NewResult(), nil
 }
 
 // ShowDatabases should handle a SHOW DATABASES statement.
