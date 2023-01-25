@@ -48,6 +48,10 @@ func (s *schema) Elements() []store.Element {
 
 }
 
+// AddIndex adds the specified index to the schema.
+func (s *schema) AddIndex(idx store.Index) {
+}
+
 // Elements returns the schema elements.
 func (s *schema) Indexes() []store.Index {
 	return []store.Index{}
