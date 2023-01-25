@@ -17,7 +17,7 @@ package memdb
 import (
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/test/plugins"
+	kv "github.com/cybergarage/puzzledb-go/puzzledb/test/plugins/store/kv"
 )
 
 const (
@@ -25,5 +25,5 @@ const (
 )
 
 func TestStores(t *testing.T) {
-	plugins.StoreTest(t, NewStore())
+	kv.StoreTest(t, NewStore())
 }
