@@ -29,13 +29,17 @@ func NewSchema() store.Schema {
 	}
 }
 
-// Name returns the schema name.
+// SetName sets the specified name to the schema.
 func (s *schema) SetName(name string) {
 }
 
 // Name returns the schema name.
 func (s *schema) Name() string {
 	return ""
+}
+
+// AddElement adds the specified element to the schema.
+func (s *schema) AddElement(elem store.Element) {
 }
 
 // Elements returns the schema elements.
