@@ -43,6 +43,11 @@ func (db *database) Transact(write bool) (store.Transaction, error) {
 	return tx, nil
 }
 
+// CreateSchema creates a new schema.
+func (db *database) CreateSchema(schema store.Schema) error {
+	return nil
+}
+
 // GetSchema returns the specified schema.
 func (db *database) GetSchema(name string) (store.Schema, error) {
 	return nil, nil

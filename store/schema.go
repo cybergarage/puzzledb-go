@@ -50,6 +50,8 @@ type Schema interface {
 	AddElement(elem Element)
 	// Elements returns the schema elements.
 	Elements() []Element
+	// AddIndex adds the specified index to the schema.
+	AddIndex(idx Index)
 	// Elements returns the schema elements.
 	Indexes() []Index
 }
