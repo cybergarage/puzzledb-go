@@ -30,6 +30,10 @@ func NewSchema() store.Schema {
 }
 
 // Name returns the schema name.
+func (s *schema) SetName(name string) {
+}
+
+// Name returns the schema name.
 func (s *schema) Name() string {
 	return ""
 }

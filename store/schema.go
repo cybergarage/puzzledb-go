@@ -42,6 +42,8 @@ type Element interface {
 }
 
 type Schema interface {
+	// SetName sets the specified name.
+	SetName(name string)
 	// Name returns the schema name.
 	Name() string
 	// Elements returns the schema elements.
