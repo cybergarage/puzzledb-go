@@ -35,12 +35,21 @@ func NewSchema() store.Schema {
 
 // SetName sets the specified name to the schema.
 func (s *schema) SetName(name string) {
-	s.data[0] = name
+	s.data[schemaNameIdx] = name
 }
 
 // Name returns the schema name.
 func (s *schema) Name() string {
-	return ""
+	v, ok := s.data[schemaNameIdx]
+	if !ok {
+		return ""
+	}
+	switch name := v.(type) {
+	case string:
+		return name
+	default:
+		return ""
+	}
 }
 
 // AddElement adds the specified element to the schema.
