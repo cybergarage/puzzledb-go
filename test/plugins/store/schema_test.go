@@ -21,5 +21,11 @@ import (
 )
 
 func TestSchema(t *testing.T) {
-	store.NewSchema()
+	schema := store.NewSchema()
+
+	name := "name"
+	schema.SetName(name)
+	if schema.Name() != name {
+		t.Errorf("%v != %v", schema.Name(), name)
+	}
 }
