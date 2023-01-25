@@ -42,3 +42,8 @@ func (db *database) Transact(write bool) (store.Transaction, error) {
 	}
 	return tx, nil
 }
+
+// GetSchema returns the specified schema.
+func (db *database) GetSchema(name string) (store.Schema, error) {
+	return nil, nil
+}
