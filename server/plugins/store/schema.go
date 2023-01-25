@@ -18,6 +18,10 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+const (
+	schemaNameIdx = 0
+)
+
 type schema struct {
 	data map[uint8]any
 }
@@ -31,6 +35,7 @@ func NewSchema() store.Schema {
 
 // SetName sets the specified name to the schema.
 func (s *schema) SetName(name string) {
+	s.data[0] = name
 }
 
 // Name returns the schema name.
