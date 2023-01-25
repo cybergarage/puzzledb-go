@@ -18,11 +18,15 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-type schema map[int8]any
+type schema struct {
+	data map[uint8]any
+}
 
 // NewSchema returns a blank schema.
 func NewSchema() store.Schema {
-	return map[int8]any{}
+	return &schema{
+		data: map[uint8]any{},
+	}
 }
 
 // Name returns the schema name.
