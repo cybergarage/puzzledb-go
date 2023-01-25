@@ -20,4 +20,6 @@ type Database interface {
 	Name() string
 	// Transact begin a new transaction.
 	Transact(write bool) (Transaction, error)
+	// GetSchema returns the specified schema.
+	GetSchema(name string) (Schema, error)
 }
