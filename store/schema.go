@@ -42,6 +42,8 @@ type Element interface {
 }
 
 type Schema interface {
+	// Version returns the schema version.
+	Version() int
 	// SetName sets the specified name to the schema.
 	SetName(name string)
 	// Name returns the schema name.
