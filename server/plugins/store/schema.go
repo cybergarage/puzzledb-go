@@ -18,6 +18,15 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// Schema format (version 1)
+//
+// 0: uint8 - version
+// 1: string - name
+// 2: colums - map[int8]any
+//
+// colums
+//
+
 const (
 	// SchemaVersion specifies a latest schema version.
 	SchemaVersion = 1

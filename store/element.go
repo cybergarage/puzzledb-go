@@ -14,19 +14,29 @@
 
 package store
 
-type Schema interface {
-	// Version returns the schema version.
-	Version() int
-	// SetName sets the specified name to the schema.
-	SetName(name string)
-	// Name returns the schema name.
+type IndexType int
+type ElementType int
+
+const (
+	Primary IndexType = 0
+)
+
+const (
+	Int ElementType = 0
+)
+
+type Index interface {
+	// Name returns the unique name.
 	Name() string
-	// AddElement adds the specified element to the schema.
-	AddElement(elem Element)
+	// Type returns the index type.
+	Type() IndexType
 	// Elements returns the schema elements.
 	Elements() []Element
-	// AddIndex adds the specified index to the schema.
-	AddIndex(idx Index)
-	// Elements returns the schema elements.
-	Indexes() []Index
+}
+
+type Element interface {
+	// Name returns the unique name.
+	Name() string
+	// Type returns the index type.
+	Type() ElementType
 }
