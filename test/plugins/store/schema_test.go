@@ -27,9 +27,16 @@ func TestSchema(t *testing.T) {
 		t.Errorf("%v != %v", schema.Version(), store.SchemaVersion)
 	}
 
-	name := "name"
+	name := "s_name"
 	schema.SetName(name)
 	if schema.Name() != name {
 		t.Errorf("%v != %v", schema.Name(), name)
+	}
+
+	name = "e_name"
+	elem := store.NewElement()
+	elem.SetName(name)
+	if elem.Name() != name {
+		t.Errorf("%v != %v", elem.Name(), name)
 	}
 }
