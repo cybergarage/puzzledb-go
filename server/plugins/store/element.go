@@ -55,6 +55,12 @@ func (e *element) Name() string {
 	return ""
 }
 
+// SetType sets the specified type to the element.
+func (e *element) SetType(t store.ElementType) *element {
+	e.data[elementTypeIdx] = t
+	return e
+}
+
 // Type returns the index type.
 func (e *element) Type() store.ElementType {
 	return 0
