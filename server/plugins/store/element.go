@@ -52,7 +52,16 @@ func (e *element) SetName(name string) *element {
 
 // Name returns the unique name.
 func (e *element) Name() string {
-	return ""
+	v, ok := e.data[elementNameIdx]
+	if !ok {
+		return ""
+	}
+	switch name := v.(type) {
+	case string:
+		return name
+	default:
+		return ""
+	}
 }
 
 // SetType sets the specified type to the element.
