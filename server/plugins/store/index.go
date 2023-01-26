@@ -37,21 +37,51 @@ type index struct {
 }
 
 // NewIndex returns a blank index.
-func NewIndex() store.Index {
+func NewIndex() *index {
 	idx := &index{
 		data: map[uint8]any{},
 	}
 	return idx
 }
 
+// SetName sets the specified name to the index.
+func (idx *index) SetName(name string) *index {
+	idx.data[elementNameIdx] = name
+	return idx
+}
+
 // Name returns the unique name.
 func (idx *index) Name() string {
-	return ""
+	v, ok := idx.data[indexNameIdx]
+	if !ok {
+		return ""
+	}
+	switch name := v.(type) {
+	case string:
+		return name
+	default:
+		return ""
+	}
+}
+
+// SetType sets the specified type to the element.
+func (idx *index) SetType(t store.IndexType) *index {
+	idx.data[indexTypeIdx] = uint8(t)
+	return idx
 }
 
 // Type returns the index type.
 func (idx *index) Type() store.IndexType {
-	return 0
+	v, ok := idx.data[indexTypeIdx]
+	if !ok {
+		return 0
+	}
+	switch t := v.(type) {
+	case store.IndexType:
+		return store.IndexType(t)
+	default:
+		return 0
+	}
 }
 
 // Elements returns the schema elements.
