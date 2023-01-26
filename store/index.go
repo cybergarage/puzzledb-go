@@ -14,15 +14,17 @@
 
 package store
 
-type ElementType int
+type IndexType int
 
 const (
-	Int ElementType = 0
+	Primary IndexType = 0
 )
 
-type Element interface {
+type Index interface {
 	// Name returns the unique name.
 	Name() string
 	// Type returns the index type.
-	Type() ElementType
+	Type() IndexType
+	// Elements returns the schema elements.
+	Elements() []Element
 }
