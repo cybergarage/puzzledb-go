@@ -23,6 +23,10 @@ import (
 func TestSchema(t *testing.T) {
 	schema := store.NewSchema()
 
+	if schema.Version() != store.SchemaVersion {
+		t.Errorf("%v != %v", schema.Version(), store.SchemaVersion)
+	}
+
 	name := "name"
 	schema.SetName(name)
 	if schema.Name() != name {

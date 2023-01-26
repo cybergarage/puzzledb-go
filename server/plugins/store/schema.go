@@ -19,7 +19,13 @@ import (
 )
 
 const (
-	schemaNameIdx = 0
+	// SchemaVersion specifies a latest schema version.
+	SchemaVersion = 1
+)
+
+const (
+	schemaVersionIdx = 0
+	schemaNameIdx    = 1
 )
 
 type schema struct {
@@ -28,8 +34,29 @@ type schema struct {
 
 // NewSchema returns a blank schema.
 func NewSchema() store.Schema {
-	return &schema{
+	s := &schema{
 		data: map[uint8]any{},
+	}
+	s.SetVersion(SchemaVersion)
+	return s
+}
+
+// SetVersion sets the specified version to the schema.
+func (s *schema) SetVersion(ver int) {
+	s.data[schemaVersionIdx] = uint8(ver)
+}
+
+// Version returns the schema version.
+func (s *schema) Version() int {
+	v, ok := s.data[schemaVersionIdx]
+	if !ok {
+		return 0
+	}
+	switch ver := v.(type) {
+	case uint8:
+		return int(ver)
+	default:
+		return 0
 	}
 }
 
