@@ -22,9 +22,7 @@ import (
 //
 // 0: uint8 - version
 // 1: string - name
-// 2: colums - map[int8]any
-//
-// colums
+// 2: elements - []array
 //
 
 const (
@@ -33,20 +31,24 @@ const (
 )
 
 const (
-	schemaVersionIdx = 0
-	schemaNameIdx    = 1
+	schemaVersionIdx  = 0
+	schemaNameIdx     = 1
+	schemaElementsIdx = 2
 )
 
 type schema struct {
-	data map[uint8]any
+	data     map[uint8]any
+	elements []store.Element
 }
 
 // NewSchema returns a blank schema.
 func NewSchema() store.Schema {
 	s := &schema{
-		data: map[uint8]any{},
+		data:     map[uint8]any{},
+		elements: []store.Element{},
 	}
 	s.SetVersion(SchemaVersion)
+	s.data[schemaElementsIdx] = []any{}
 	return s
 }
 
@@ -90,6 +92,16 @@ func (s *schema) Name() string {
 
 // AddElement adds the specified element to the schema.
 func (s *schema) AddElement(elem store.Element) {
+	s.elements = append(s.elements, elem)
+	v, ok := s.data[schemaElementsIdx]
+	if !ok {
+		return
+	}
+	a, ok := v.([]any)
+	if !ok {
+		return
+	}
+	// s.data[schemaElementsIdx] = append(a, elem.data)
 }
 
 // Elements returns the schema elements.
