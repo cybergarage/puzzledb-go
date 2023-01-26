@@ -37,10 +37,16 @@ type element struct {
 }
 
 // NewElement returns a blank schema.
-func NewElement() store.Element {
+func NewElement() *element {
 	e := &element{
 		data: map[uint8]any{},
 	}
+	return e
+}
+
+// SetName sets the specified name to the element.
+func (e *element) SetName(name string) *element {
+	e.data[elementNameIdx] = name
 	return e
 }
 
