@@ -20,12 +20,8 @@ import (
 
 // Schema format (version 1)
 //
-// 0: uint8 - version
-// 1: string - name
-// 2: colums - map[int8]any
-//
-// colums
-//
+// 1: name - string
+// 2: type - uint8
 
 const (
 	elementNameIdx = 1
