@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package store
 
 import (
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 func TestSchema(t *testing.T) {
-	schema := store.NewSchema()
+	schema := NewSchema()
 
-	if schema.Version() != store.SchemaVersion {
-		t.Errorf("%v != %v", schema.Version(), store.SchemaVersion)
+	if schema.Version() != SchemaVersion {
+		t.Errorf("%v != %v", schema.Version(), SchemaVersion)
 	}
 
 	name := "s_name"
@@ -34,9 +34,13 @@ func TestSchema(t *testing.T) {
 	}
 
 	name = "e_name"
-	elem := store.NewElement()
+	elem := NewElement()
 	elem.SetName(name)
 	if elem.Name() != name {
 		t.Errorf("%v != %v", elem.Name(), name)
+	}
+	elem.SetType(store.Int)
+	if elem.Type() != store.Int {
+		t.Errorf("%v != %v", elem.Type(), store.Int)
 	}
 }
