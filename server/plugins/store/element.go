@@ -66,11 +66,20 @@ func (e *element) Name() string {
 
 // SetType sets the specified type to the element.
 func (e *element) SetType(t store.ElementType) *element {
-	e.data[elementTypeIdx] = t
+	e.data[elementTypeIdx] = uint8(t)
 	return e
 }
 
 // Type returns the index type.
 func (e *element) Type() store.ElementType {
-	return 0
+	v, ok := e.data[elementTypeIdx]
+	if !ok {
+		return 0
+	}
+	switch t := v.(type) {
+	case store.ElementType:
+		return store.ElementType(t)
+	default:
+		return 0
+	}
 }
