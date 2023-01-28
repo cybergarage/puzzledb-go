@@ -25,4 +25,6 @@ type Element interface {
 	Name() string
 	// Type returns the index type.
 	Type() ElementType
+	// Data returns the raw representation data in memory.
+	Data() any
 }
