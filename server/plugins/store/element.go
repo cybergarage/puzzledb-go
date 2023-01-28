@@ -20,6 +20,7 @@ import (
 
 // Schema format (version 1)
 //
+// map[uint8]any
 // 1: name - string
 // 2: type - uint8
 
