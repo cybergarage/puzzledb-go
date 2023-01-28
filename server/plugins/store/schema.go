@@ -97,7 +97,7 @@ func (s *schema) AddElement(elem store.Element) {
 	if !ok {
 		return
 	}
-	a, ok := v.([]any)
+	_, ok = v.([]any)
 	if !ok {
 		return
 	}
@@ -117,4 +117,9 @@ func (s *schema) AddIndex(idx store.Index) {
 // Elements returns the schema elements.
 func (s *schema) Indexes() []store.Index {
 	return []store.Index{}
+}
+
+// Data returns the raw representation data in memory.
+func (s *schema) Data() any {
+	return s.data
 }
