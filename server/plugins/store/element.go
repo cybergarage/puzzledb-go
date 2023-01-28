@@ -79,3 +79,8 @@ func (e *element) Type() store.ElementType {
 		return 0
 	}
 }
+
+// Data returns the raw representation data in memory.
+func (e *element) Data() any {
+	return e.data
+}
