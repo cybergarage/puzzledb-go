@@ -99,11 +99,11 @@ func (s *schema) AddElement(elem store.Element) {
 	if !ok {
 		return
 	}
-	_, ok = v.([]any)
+	a, ok := v.([]any)
 	if !ok {
 		return
 	}
-	// s.data[schemaElementsIdx] = append(a, elem.data)
+	s.data[schemaElementsIdx] = append(a, elem.Data())
 }
 
 // Elements returns the schema elements.
