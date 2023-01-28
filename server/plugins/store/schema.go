@@ -20,10 +20,12 @@ import (
 
 // Schema format (version 1)
 //
+// map[uint8]any
 // 0: uint8 - version
 // 1: string - name
-// 2: elements - []array
-//
+// 2: elements - []map[uint8]any
+//    1: name - string
+//    2: type - uint8
 
 const (
 	// SchemaVersion specifies a latest schema version.
