@@ -27,4 +27,6 @@ type Index interface {
 	Type() IndexType
 	// Elements returns the schema elements.
 	Elements() []Element
+	// Data returns the raw representation data in memory.
+	Data() any
 }
