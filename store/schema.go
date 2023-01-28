@@ -29,4 +29,6 @@ type Schema interface {
 	AddIndex(idx Index)
 	// Elements returns the schema elements.
 	Indexes() []Index
+	// Data returns the raw representation data in memory.
+	Data() any
 }
