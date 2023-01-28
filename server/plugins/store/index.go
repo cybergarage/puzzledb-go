@@ -103,3 +103,8 @@ func (idx *index) AddElement(elem store.Element) {
 func (idx *index) Elements() []store.Element {
 	return idx.elements
 }
+
+// Data returns the raw representation data in memory.
+func (idx *index) Data() any {
+	return idx.data
+}
