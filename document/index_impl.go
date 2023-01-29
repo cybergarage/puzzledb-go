@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package store
-
-import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
-)
+package document
 
 // Schema format (version 1)
 //
@@ -33,14 +29,14 @@ const (
 
 type index struct {
 	data     map[uint8]any
-	elements []store.Element
+	elements []Element
 }
 
 // NewIndex returns a blank index.
 func NewIndex() *index {
 	idx := &index{
 		data:     map[uint8]any{},
-		elements: []store.Element{},
+		elements: []Element{},
 	}
 	idx.data[indexElementsIdx] = []string{}
 	return idx
@@ -67,27 +63,27 @@ func (idx *index) Name() string {
 }
 
 // SetType sets the specified type to the element.
-func (idx *index) SetType(t store.IndexType) *index {
+func (idx *index) SetType(t IndexType) *index {
 	idx.data[indexTypeIdx] = uint8(t)
 	return idx
 }
 
 // Type returns the index type.
-func (idx *index) Type() store.IndexType {
+func (idx *index) Type() IndexType {
 	v, ok := idx.data[indexTypeIdx]
 	if !ok {
 		return 0
 	}
 	switch t := v.(type) {
-	case store.IndexType:
-		return store.IndexType(t)
+	case IndexType:
+		return IndexType(t)
 	default:
 		return 0
 	}
 }
 
 // AddElement returns the schema elements.
-func (idx *index) AddElement(elem store.Element) {
+func (idx *index) AddElement(elem Element) {
 	idx.elements = append(idx.elements, elem)
 	v, ok := idx.data[indexElementsIdx]
 	if !ok {
@@ -101,7 +97,7 @@ func (idx *index) AddElement(elem store.Element) {
 }
 
 // Elements returns the schema elements.
-func (idx *index) Elements() []store.Element {
+func (idx *index) Elements() []Element {
 	return idx.elements
 }
 
