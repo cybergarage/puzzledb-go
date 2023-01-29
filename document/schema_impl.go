@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package store
-
-import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
-)
+package document
 
 // Schema format (version 1)
 //
@@ -44,16 +40,16 @@ const (
 
 type schema struct {
 	data     map[uint8]any
-	elements []store.Element
-	indexes  []store.Index
+	elements []Element
+	indexes  []Index
 }
 
 // NewSchema returns a blank schema.
-func NewSchema() store.Schema {
+func NewSchema() Schema {
 	s := &schema{
 		data:     map[uint8]any{},
-		elements: []store.Element{},
-		indexes:  []store.Index{},
+		elements: []Element{},
+		indexes:  []Index{},
 	}
 	s.SetVersion(SchemaVersion)
 	s.data[schemaElementsIdx] = []any{}
@@ -100,7 +96,7 @@ func (s *schema) Name() string {
 }
 
 // AddElement adds the specified element to the schema.
-func (s *schema) AddElement(elem store.Element) {
+func (s *schema) AddElement(elem Element) {
 	s.elements = append(s.elements, elem)
 	v, ok := s.data[schemaElementsIdx]
 	if !ok {
@@ -114,12 +110,12 @@ func (s *schema) AddElement(elem store.Element) {
 }
 
 // Elements returns the schema elements.
-func (s *schema) Elements() []store.Element {
-	return []store.Element{}
+func (s *schema) Elements() []Element {
+	return []Element{}
 }
 
 // AddIndex adds the specified index to the schema.
-func (s *schema) AddIndex(idx store.Index) {
+func (s *schema) AddIndex(idx Index) {
 	s.indexes = append(s.indexes, idx)
 	v, ok := s.data[schemaElementsIdx]
 	if !ok {
@@ -133,8 +129,8 @@ func (s *schema) AddIndex(idx store.Index) {
 }
 
 // Elements returns the schema elements.
-func (s *schema) Indexes() []store.Index {
-	return []store.Index{}
+func (s *schema) Indexes() []Index {
+	return []Index{}
 }
 
 // Data returns the raw representation data in memory.

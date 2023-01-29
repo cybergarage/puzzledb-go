@@ -12,21 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package store
+package document
 
-type IndexType int
-
-const (
-	Primary IndexType = 0
-)
-
-type Index interface {
-	// Name returns the unique name.
+type Schema interface {
+	// Version returns the schema version.
+	Version() int
+	// SetName sets the specified name to the schema.
+	SetName(name string)
+	// Name returns the schema name.
 	Name() string
-	// Type returns the index type.
-	Type() IndexType
+	// AddElement adds the specified element to the schema.
+	AddElement(elem Element)
 	// Elements returns the schema elements.
 	Elements() []Element
+	// AddIndex adds the specified index to the schema.
+	AddIndex(idx Index)
+	// Elements returns the schema elements.
+	Indexes() []Index
 	// Data returns the raw representation data in memory.
 	Data() any
 }
