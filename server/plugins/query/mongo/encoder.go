@@ -15,8 +15,13 @@
 package mongo
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"go.mongodb.org/mongo-driver/bson/bsontype"
+	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
 // Encoder represents a BSON encoder.
@@ -30,6 +35,93 @@ func NewEncoder() *Encoder {
 }
 
 // Encode encodes the specified BSON object to a document object.
-func (s *Encoder) Encode(obj bson.Document) (document.Object, error) {
-	return nil, nil
+func (s *Encoder) Encode(bsonDoc bson.Document) (document.Object, error) {
+	obj := map[string]any{}
+	bsonElems, err := bsonDoc.Elements()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, bsonElem := range bsonElems {
+		key := bsonElem.Key()
+		bsonVal, err := bsonElem.ValueErr()
+		if err != nil {
+			return nil, err
+		}
+		data, err := documentObjectFromBSON(bsonVal)
+		if err != nil {
+			return nil, err
+		}
+		obj[key] = data
+	}
+	return obj, nil
+}
+
+func documentObjectFromBSON(bsonVal bsoncore.Value) (any, error) {
+	/* TODO: The following BSON types are not supported yet
+	   Undefined        Type = 0x06
+	   DBPointer        Type = 0x0C
+	   JavaScript       Type = 0x0D
+	   Symbol           Type = 0x0E
+	   CodeWithScope    Type = 0x0F
+	   Timestamp        Type = 0x11
+	   Decimal128       Type = 0x13
+	   MinKey           Type = 0xFF
+	   MaxKey           Type = 0x7F
+	*/
+
+	switch bsonVal.Type {
+	case bsontype.Array:
+		bsonArray := bsonVal.Array()
+		bsonElems, err := bsonArray.Values()
+		if err != nil {
+			return nil, err
+		}
+		array := []any{}
+		for _, bsonElem := range bsonElems {
+			obj, err := documentObjectFromBSON(bsonElem)
+			if err != nil {
+				return nil, err
+			}
+			array = append(array, obj)
+		}
+		return array, nil
+	case bsontype.EmbeddedDocument:
+		bsonDoc := bsonVal.Document()
+		bsonElems, err := bsonDoc.Elements()
+		if err != nil {
+			return nil, err
+		}
+		dict := map[string]any{}
+		for _, bsonElem := range bsonElems {
+			key := bsonElem.Key()
+			obj, err := documentObjectFromBSON(bsonElem.Value())
+			if err != nil {
+				return nil, err
+			}
+			dict[key] = obj
+		}
+		return dict, nil
+	case bsontype.Double:
+		return bsonVal.Double(), nil
+	case bsontype.String:
+		return bsonVal.StringValue(), nil
+	case bsontype.Binary:
+		_, bytes := bsonVal.Binary()
+		return bytes, nil
+	case bsontype.Boolean:
+		return bsonVal.Boolean(), nil
+	case bsontype.DateTime:
+		ts := bsonVal.DateTime()
+		return time.Unix(ts/1e3, ts%1e3), nil
+	case bsontype.Null:
+		return nil, nil
+	case bsontype.Int32:
+		return bsonVal.Int32(), nil
+	case bsontype.Int64:
+		return bsonVal.Int64(), nil
+	case bsontype.ObjectID:
+		return bsonVal.ObjectID().Hex(), nil
+	}
+	return nil, fmt.Errorf("unknown BSON type : %X", bsonVal.Type)
 }
