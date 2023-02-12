@@ -15,22 +15,21 @@
 package mongo
 
 import (
-	"io"
 	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// Encoder represents a CBOR erializer.
+// Encoder represents a BSON encoder.
 type Encoder struct {
 }
 
-// NewEncoder returns a new CBOR erializer instance.
+// NewEncoder returns a new BSON encoder instance.
 func NewEncoder() *Encoder {
 	return &Encoder{}
 
 }
 
-// Encode writes the specified object to the specified writer.
-func (s *Encoder) Encode(bson.Document, obj document.Object) error {
-	return nil
+// Encode encodes the specified BSON object to a document object.
+func (s *Encoder) Encode(obj bson.Document) (document.Object, error) {
+	return nil, nil
 }
