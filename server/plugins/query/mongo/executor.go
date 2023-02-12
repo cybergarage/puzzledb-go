@@ -33,10 +33,10 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 
 	nInserted := int32(0)
 
-	docs := q.GetDocuments()
-	for _, doc := range docs {
+	queryDocs := q.GetDocuments()
+	for _, queryDoc := range queryDocs {
 		// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
-		docValue, err := doc.LookupErr("_id")
+		queryDocValue, err := queryDoc.LookupErr("_id")
 		if err != nil {
 			continue
 		}
@@ -48,14 +48,14 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 			if err != nil {
 				continue
 			}
-			if serverValue.Equal(docValue) {
+			if serverValue.Equal(queryDocValue) {
 				isInserted = true
 				break
 			}
 		}
 
 		if !isInserted {
-			service.documents = append(service.documents, doc)
+			service.documents = append(service.documents, queryDoc)
 		}
 
 		nInserted++
@@ -66,7 +66,7 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 		return 0, mongo.NewQueryError(q)
 	}
 
-	if len(docs) != int(nInserted) {
+	if len(queryDocs) != int(nInserted) {
 		return nInserted, mongo.NewQueryError(q)
 	}
 
