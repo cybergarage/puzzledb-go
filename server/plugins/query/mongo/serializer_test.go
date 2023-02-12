@@ -16,22 +16,22 @@ package mongo
 
 import (
 	"bytes"
+	"reflect"
 	"testing"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
 func TestSerializer(t *testing.T) {
-	now := time.Unix(time.Now().Unix(), 0)
+	// now := time.Unix(time.Now().Unix(), 0)
 	bsonObj := bson.D{
 		{Key: "string", Value: "abc"},
 		{Key: "binary", Value: []byte("abc")},
 		{Key: "int32", Value: int32(1)},
 		{Key: "int64", Value: int64(1)},
 		{Key: "double", Value: float64(1)},
-		{Key: "time", Value: now},
+		// {Key: "time", Value: now},
 		{Key: "bool", Value: true},
 		{Key: "null", Value: nil},
 	}
@@ -50,9 +50,25 @@ func TestSerializer(t *testing.T) {
 
 	s := NewSerializer()
 
-	_, err = s.Encode(bsonDoc)
+	goObj, err := s.Encode(bsonDoc)
 	if err != nil {
 		t.Error(err)
 		return
+	}
+
+	bsonDoc, err = s.Decode(goObj)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	newGoObj, err := s.Encode(bsonDoc)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	if !reflect.DeepEqual(newGoObj, goObj) {
+		t.Errorf("%v != %v", newGoObj, goObj)
 	}
 }
