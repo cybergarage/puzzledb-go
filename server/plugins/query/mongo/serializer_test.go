@@ -15,8 +15,44 @@
 package mongo
 
 import (
+	"bytes"
 	"testing"
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
 func TestSerializer(t *testing.T) {
+	now := time.Unix(time.Now().Unix(), 0)
+	bsonObj := bson.D{
+		{Key: "string", Value: "abc"},
+		{Key: "binary", Value: []byte("abc")},
+		{Key: "int32", Value: int32(1)},
+		{Key: "int64", Value: int64(1)},
+		{Key: "double", Value: float64(1)},
+		{Key: "time", Value: now},
+		{Key: "bool", Value: true},
+		{Key: "null", Value: nil},
+	}
+
+	bsonBytes, err := bson.Marshal(bsonObj)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	bsonDoc, err := bsoncore.NewDocumentFromReader(bytes.NewReader(bsonBytes))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	s := NewSerializer()
+
+	_, err = s.Encode(bsonDoc)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }
