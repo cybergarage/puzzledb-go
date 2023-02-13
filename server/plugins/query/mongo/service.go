@@ -25,6 +25,7 @@ type Service struct {
 	*mongo.Server
 	*query.BaseService
 	documents []bson.Document
+	*Serializer
 }
 
 // NewService returns a MongoDB service instance.
@@ -33,6 +34,7 @@ func NewService() *Service {
 		Server:      mongo.NewServer(),
 		BaseService: query.NewService(),
 		documents:   make([]bson.Document, 0),
+		Serializer: NewSerializer(),
 	}
 
 	server.SetMessageListener(server)
