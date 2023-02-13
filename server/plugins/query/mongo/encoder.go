@@ -113,7 +113,7 @@ func documentObjectFromBSON(bsonVal bsoncore.Value) (any, error) {
 		return bsonVal.Boolean(), nil
 	case bsontype.DateTime:
 		ts := bsonVal.DateTime()
-		return time.Unix(ts/1e3, ts%1e3), nil
+		return time.Unix(ts, 0), nil
 	case bsontype.Null:
 		return nil, nil
 	case bsontype.Int32:
