@@ -95,7 +95,8 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 				return nil, mongo.NewQueryError(q)
 			}
 			for _, condElem := range condElems {
-				docValue, err := doc.LookupErr(condElem.Key())
+				key := condElem.Key()
+				docValue, err := doc.LookupErr(key)
 				if err != nil {
 					isMatched = false
 					break
