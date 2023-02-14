@@ -17,7 +17,8 @@ package document
 type IndexType int
 
 const (
-	Primary IndexType = 0
+	Primary   IndexType = 1
+	Secondary IndexType = 2
 )
 
 type Index interface {
