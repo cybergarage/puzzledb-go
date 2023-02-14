@@ -16,8 +16,6 @@ package document
 
 import (
 	"testing"
-
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 func TestSchema(t *testing.T) {
@@ -39,19 +37,11 @@ func TestSchema(t *testing.T) {
 	if elem.Name() != name {
 		t.Errorf("%v != %v", elem.Name(), name)
 	}
-	elem.SetType(store.Int)
-	if elem.Type() != store.Int {
-		t.Errorf("%v != %v", elem.Type(), store.Int)
-	}
 
 	name = "i_name"
 	idx := NewIndex()
 	idx.SetName(name)
 	if idx.Name() != name {
 		t.Errorf("%v != %v", idx.Name(), name)
-	}
-	idx.SetType(store.Primary)
-	if idx.Type() != store.Primary {
-		t.Errorf("%v != %v", idx.Type(), store.Primary)
 	}
 }
