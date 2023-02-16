@@ -16,10 +16,12 @@ package store
 
 // Transaction represents a transaction interface.
 type Transaction interface {
-	// InsertObject puts a object.
+	// InsertObject puts a object with the primary key.
 	InsertObject(key Key, obj Object) error
 	// SelectObject gets an object with the specified key.
 	SelectObject(key Key) (Object, error)
+	// InsertIndex puts a secondary index with the primary key.
+	InsertIndex(key Key, val Key) error
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
