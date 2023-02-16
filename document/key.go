@@ -24,6 +24,16 @@ import (
 // Key represents an unique key for a document object.
 type Key []any
 
+// NewKeyWith returns a new key from the specified key elements.
+func NewKeyWith(elems ...any) Key {
+	elemArray := make([]any, len(elems))
+	for n, elem := range elems {
+		elemArray[n] = elem
+	}
+	return elemArray
+}
+
+// Encode encodes the key to a byte array.
 func (key Key) Encode() ([]byte, error) {
 	var keyBuf bytes.Buffer
 	for _, elem := range key {
