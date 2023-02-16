@@ -88,7 +88,7 @@ func (service *Service) Get(ctx *DBContext, key string) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
-	obj, err := tx.Select([]any{key})
+	obj, err := tx.SelectObject([]any{key})
 	if err != nil {
 		err = tx.Cancel()
 		if err != nil {
