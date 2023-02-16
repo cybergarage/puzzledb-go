@@ -15,5 +15,5 @@
 package mongo
 
 const (
-	PrimaryKey = "_id"
+	ObjectID = "_id"
 )
