@@ -18,8 +18,8 @@ package store
 type Transaction interface {
 	// InsertObject puts a object.
 	InsertObject(key Key, obj Object) error
-	// Select gets an object of the specified key.
-	Select(key Key) (Object, error)
+	// SelectObject gets an object with the specified key.
+	SelectObject(key Key) (Object, error)
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
