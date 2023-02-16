@@ -37,7 +37,7 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 	queryDocs := q.GetDocuments()
 	for _, queryDoc := range queryDocs {
 		// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
-		queryDocKey, err := queryDoc.LookupErr(ObjectID)
+		queryObjID, err := queryDoc.LookupErr(ObjectID)
 		if err != nil {
 			continue
 		}
@@ -51,7 +51,7 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 			if err != nil {
 				continue
 			}
-			if serverValue.Equal(queryDocKey) {
+			if serverValue.Equal(queryObjID) {
 				isInserted = true
 				break
 			}
@@ -68,8 +68,13 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 			return 0, err
 		}
 
-		storeKey := document.NewKeyWith(q.Collection)
-		err = tx.Insert(storeKey, storeDoc)
+		storeObjID, err := DecodeBSONElement(queryObjID)
+		if err != nil {
+			return 0, err
+		}
+
+		storeKey := document.NewKeyWith(q.Collection, storeObjID)
+		err = tx.InsertObject(storeKey, storeDoc)
 		if err != nil {
 			return 0, err
 		}
