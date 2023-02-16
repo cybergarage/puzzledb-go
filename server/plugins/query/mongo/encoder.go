@@ -48,7 +48,7 @@ func (s *Encoder) Encode(bsonDoc bson.Document) (document.Object, error) {
 		if err != nil {
 			return nil, err
 		}
-		data, err := documentObjectFromBSON(bsonVal)
+		data, err := DecodeBSONElement(bsonVal)
 		if err != nil {
 			return nil, err
 		}
@@ -57,7 +57,7 @@ func (s *Encoder) Encode(bsonDoc bson.Document) (document.Object, error) {
 	return obj, nil
 }
 
-func documentObjectFromBSON(bsonVal bsoncore.Value) (any, error) {
+func DecodeBSONElement(bsonVal bsoncore.Value) (any, error) {
 	/* TODO: The following BSON types are not supported yet
 	   Undefined        Type = 0x06
 	   DBPointer        Type = 0x0C
@@ -79,7 +79,7 @@ func documentObjectFromBSON(bsonVal bsoncore.Value) (any, error) {
 		}
 		array := []any{}
 		for _, bsonElem := range bsonElems {
-			obj, err := documentObjectFromBSON(bsonElem)
+			obj, err := DecodeBSONElement(bsonElem)
 			if err != nil {
 				return nil, err
 			}
@@ -95,7 +95,7 @@ func documentObjectFromBSON(bsonVal bsoncore.Value) (any, error) {
 		dict := map[string]any{}
 		for _, bsonElem := range bsonElems {
 			key := bsonElem.Key()
-			obj, err := documentObjectFromBSON(bsonElem.Value())
+			obj, err := DecodeBSONElement(bsonElem.Value())
 			if err != nil {
 				return nil, err
 			}
