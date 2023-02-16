@@ -27,9 +27,7 @@ type Key []any
 // NewKeyWith returns a new key from the specified key elements.
 func NewKeyWith(elems ...any) Key {
 	elemArray := make([]any, len(elems))
-	for n, elem := range elems {
-		elemArray[n] = elem
-	}
+	copy(elemArray, elems)
 	return elemArray
 }
 
