@@ -27,7 +27,7 @@ type transaction struct {
 	document.Serializer
 }
 
-// InsertObject puts a object.
+// InsertObject puts a object with the primary key.
 func (txn *transaction) InsertObject(key store.Key, obj store.Object) error {
 	var b bytes.Buffer
 	err := txn.Encode(&b, obj)
@@ -39,6 +39,11 @@ func (txn *transaction) InsertObject(key store.Key, obj store.Object) error {
 		Value: b.Bytes(),
 	}
 	return txn.kv.Insert(&kvObj)
+}
+
+// InsertIndex puts a secondary index with the primary key.
+func (txn *transaction) InsertIndex(key store.Key, val store.Key) error {
+	return nil
 }
 
 // SelectObject gets an object with the specified key.
