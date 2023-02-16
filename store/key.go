@@ -14,5 +14,9 @@
 
 package store
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
 // Key represents an object key.
-type Key = []any
+type Key = document.Key
