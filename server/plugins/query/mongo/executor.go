@@ -17,6 +17,7 @@ package mongo
 import (
 	"github.com/cybergarage/go-mongo/mongo"
 	"github.com/cybergarage/go-mongo/mongo/bson"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
@@ -62,7 +63,13 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 
 		// Store version procedures
 
-		_, err = service.Encode(queryDoc)
+		storeDoc, err := service.Encode(queryDoc)
+		if err != nil {
+			return 0, err
+		}
+
+		storeKey := document.NewKeyWith(q.Collection)
+		err = tx.Insert(storeKey, storeDoc)
 		if err != nil {
 			return 0, err
 		}
