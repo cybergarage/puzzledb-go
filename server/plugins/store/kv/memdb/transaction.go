@@ -52,7 +52,7 @@ func (txn *Transaction) Insert(obj *store.Object) error {
 
 // Select gets an key-value object of the specified key.
 func (txn *Transaction) Select(key store.Key) (*store.Object, error) {
-	keyBytes, err := store.KeyToBytes(key)
+	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err
 	}
