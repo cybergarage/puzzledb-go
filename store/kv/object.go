@@ -21,5 +21,5 @@ type Object struct {
 }
 
 func (obj *Object) KeyBytes() ([]byte, error) {
-	return KeyToBytes(obj.Key)
+	return obj.Key.Encode()
 }
