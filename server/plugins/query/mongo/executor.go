@@ -36,10 +36,12 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 	queryDocs := q.GetDocuments()
 	for _, queryDoc := range queryDocs {
 		// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
-		queryDocValue, err := queryDoc.LookupErr(PrimaryKey)
+		queryDocKey, err := queryDoc.LookupErr(PrimaryKey)
 		if err != nil {
 			continue
 		}
+
+		// TODO: Remove in-memory version procedures
 
 		isInserted := false
 
@@ -48,7 +50,7 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 			if err != nil {
 				continue
 			}
-			if serverValue.Equal(queryDocValue) {
+			if serverValue.Equal(queryDocKey) {
 				isInserted = true
 				break
 			}
@@ -56,6 +58,13 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 
 		if !isInserted {
 			service.documents = append(service.documents, queryDoc)
+		}
+
+		// Store version procedures
+
+		_, err = service.Encode(queryDoc)
+		if err != nil {
+			return 0, err
 		}
 
 		nInserted++
@@ -100,6 +109,7 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 				if err != nil {
 					isMatched = false
 					break
+
 				}
 				condValue := condElem.Value()
 				if !condValue.Equal(docValue) {
