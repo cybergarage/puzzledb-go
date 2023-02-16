@@ -15,30 +15,8 @@
 package kv
 
 import (
-	"bytes"
-	"fmt"
-
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/errors"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 // Key represents an object key.
-type Key = []any
-
-func KeyToBytes(key Key) ([]byte, error) {
-	var keyBuf bytes.Buffer
-	for _, elem := range key {
-		switch v := elem.(type) {
-		case string:
-			if _, err := keyBuf.WriteString(v); err != nil {
-				return nil, err
-			}
-		case []byte:
-			if _, err := keyBuf.Write(v); err != nil {
-				return nil, err
-			}
-		default:
-			return nil, fmt.Errorf("%w: (%T)", errors.KeyTypeError, elem)
-		}
-	}
-	return keyBuf.Bytes(), nil
-}
+type Key = document.Key
