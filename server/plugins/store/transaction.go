@@ -27,8 +27,8 @@ type transaction struct {
 	document.Serializer
 }
 
-// Insert puts a key-value object.
-func (txn *transaction) Insert(key store.Key, obj store.Object) error {
+// InsertObject puts a object.
+func (txn *transaction) InsertObject(key store.Key, obj store.Object) error {
 	var b bytes.Buffer
 	err := txn.Encode(&b, obj)
 	if err != nil {
@@ -41,8 +41,8 @@ func (txn *transaction) Insert(key store.Key, obj store.Object) error {
 	return txn.kv.Insert(&kvObj)
 }
 
-// Select gets an key-value object of the specified key.
-func (txn *transaction) Select(key store.Key) (store.Object, error) {
+// SelectObject gets an object with the specified key.
+func (txn *transaction) SelectObject(key store.Key) (store.Object, error) {
 	kvObj, err := txn.kv.Select(key)
 	if err != nil {
 		return nil, err
