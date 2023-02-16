@@ -37,7 +37,7 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 	queryDocs := q.GetDocuments()
 	for _, queryDoc := range queryDocs {
 		// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
-		queryDocKey, err := queryDoc.LookupErr(PrimaryKey)
+		queryDocKey, err := queryDoc.LookupErr(ObjectID)
 		if err != nil {
 			continue
 		}
@@ -47,7 +47,7 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 		isInserted := false
 
 		for _, serverDoc := range service.documents {
-			serverValue, err := serverDoc.LookupErr(PrimaryKey)
+			serverValue, err := serverDoc.LookupErr(ObjectID)
 			if err != nil {
 				continue
 			}
