@@ -30,7 +30,7 @@ func TestKeyHeader(t *testing.T) {
 		expected expected
 	}{
 		{
-			header: NewDatabaseKeyHeader(),
+			header: DatabaseKeyHeader,
 			expected: expected{
 				tp:  DatabaseObject,
 				ver: V1,
@@ -39,16 +39,7 @@ func TestKeyHeader(t *testing.T) {
 			},
 		},
 		{
-			header: NewDatabaseKeyHeader(),
-			expected: expected{
-				tp:  DatabaseObject,
-				ver: V1,
-				doc: CBOR,
-				idx: IndexType(0),
-			},
-		},
-		{
-			header: NewSchemaKeyHeader(),
+			header: SchemaKeyHeader,
 			expected: expected{
 				tp:  SchemaObject,
 				ver: V1,
@@ -57,7 +48,16 @@ func TestKeyHeader(t *testing.T) {
 			},
 		},
 		{
-			header: NewPrimaryIndexKeyHeader(),
+			header: DocumentKeyHeader,
+			expected: expected{
+				tp:  DocumentObject,
+				ver: V1,
+				doc: CBOR,
+				idx: IndexType(0),
+			},
+		},
+		{
+			header: PrimaryIndexHeader,
 			expected: expected{
 				tp:  IndexObject,
 				ver: V1,
@@ -66,7 +66,7 @@ func TestKeyHeader(t *testing.T) {
 			},
 		},
 		{
-			header: NewSecondaryIndexKeyHeader(),
+			header: SecondaryIndexHeader,
 			expected: expected{
 				tp:  IndexObject,
 				ver: V1,
