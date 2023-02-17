@@ -23,6 +23,6 @@ type Key = document.Key
 
 // NewKeyWith returns a new key from the specified header and key elements.
 func NewKeyWith(header KeyHeader, elems ...any) Key {
-	key := []any{header}
+	key := []any{header.Bytes()}
 	return append(key, elems...)
 }
