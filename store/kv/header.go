@@ -14,5 +14,32 @@
 
 package kv
 
+type HeaderType uint8
+
+const (
+	DatabaseType = HeaderType('D')
+	SchemaType   = HeaderType('S')
+	ObjectType   = HeaderType('O')
+	IndexType    = HeaderType('I')
+)
+
+type Version uint8
+
+const (
+	V1 = Version(1)
+)
+
+type BinaryType uint8
+
+const (
+	CBOR = BinaryType(1)
+)
+
+var defaultObjectHeader = [2]uint8{uint8(ObjectType), uint8(uint8(CBOR) & uint8(V1<<4))}
+
 // Header represents a header for any keys.
 type Header [2]uint8
+
+func NewObjectHeader() Header {
+	return defaultObjectHeader
+}
