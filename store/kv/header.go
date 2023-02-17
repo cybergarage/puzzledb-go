@@ -78,3 +78,7 @@ func (header KeyHeader) DocumentType() DocumentType {
 func (header KeyHeader) IndexType() IndexType {
 	return IndexType(typeFromHeaderByte(header[1]))
 }
+
+func (header KeyHeader) Bytes() []byte {
+	return header[:]
+}
