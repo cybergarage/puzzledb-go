@@ -50,6 +50,10 @@ func vertionFromHeaderByte(b uint8) Version {
 	return Version((b >> 4) & 0x07)
 }
 
+func typeFromHeaderByte(b uint8) uint8 {
+	return (b & 0x07)
+}
+
 var latestObjectKeyHeader = [2]uint8{uint8(DocumentObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
 var latestPrimaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(PrimaryIndex) | headerByteFromVersion(V1))}
 var latestSecondaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(SecondaryIndex) | headerByteFromVersion(V1))}
@@ -61,6 +65,14 @@ func NewDocumentKeyHeader() KeyHeader {
 	return latestObjectKeyHeader
 }
 
+func (header KeyHeader) Type() HeaderType {
+	return HeaderType(header[0])
+}
+
 func (header KeyHeader) Version() Version {
 	return vertionFromHeaderByte(header[1])
+}
+
+func (header KeyHeader) IndexType() IndexType {
+	return IndexType(typeFromHeaderByte(header[1]))
 }

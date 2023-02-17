@@ -34,5 +34,8 @@ func TestObjectKeyHeader(t *testing.T) {
 		if key.header.Version() != key.expectedVersion {
 			t.Errorf("%v != %v", key.header.Version(), key.expectedVersion)
 		}
+		if key.header.Version() != key.expectedVersion {
+			t.Errorf("%v != %v", key.header.Version(), key.expectedVersion)
+		}
 	}
 }
