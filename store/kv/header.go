@@ -65,11 +65,11 @@ func NewDocumentKeyHeader() KeyHeader {
 	return latestDocumentKeyHeader
 }
 
-func NewPrimaryIndexKeyHeader(idx IndexType) KeyHeader {
+func NewPrimaryIndexKeyHeader() KeyHeader {
 	return latestPrimaryIndexHeader
 }
 
-func NewSecondaryIndexKeyHeader(idx IndexType) KeyHeader {
+func NewSecondaryIndexKeyHeader() KeyHeader {
 	return latestSecondaryIndexHeader
 }
 
