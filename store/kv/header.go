@@ -55,6 +55,7 @@ func typeFromHeaderByte(b uint8) uint8 {
 }
 
 var latestDatabaseKeyHeader = [2]uint8{uint8(DatabaseObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
+var latestSchemaKeyHeader = [2]uint8{uint8(SchemaObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
 var latestDocumentKeyHeader = [2]uint8{uint8(DocumentObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
 var latestPrimaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(PrimaryIndex) | headerByteFromVersion(V1))}
 var latestSecondaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(SecondaryIndex) | headerByteFromVersion(V1))}
@@ -64,6 +65,10 @@ type KeyHeader [2]uint8
 
 func NewDatabaseKeyHeader() KeyHeader {
 	return latestDatabaseKeyHeader
+}
+
+func NewSchemaKeyHeader() KeyHeader {
+	return latestSchemaKeyHeader
 }
 
 func NewDocumentKeyHeader() KeyHeader {
