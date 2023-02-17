@@ -19,5 +19,20 @@ import (
 )
 
 func TestObjectKeyHeader(t *testing.T) {
-	header := NewObjectKeyHeader()
+	testKeyHeaders := []struct {
+		header          KeyHeader
+		expectedType    HeaderType
+		expectedVersion Version
+	}{
+		{
+			header:          NewDocumentKeyHeader(),
+			expectedType:    DocumentObject,
+			expectedVersion: V1,
+		},
+	}
+	for _, key := range testKeyHeaders {
+		if key.header.Version() != key.expectedVersion {
+			t.Errorf("%v != %v", key.header.Version(), key.expectedVersion)
+		}
+	}
 }
