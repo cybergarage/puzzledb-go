@@ -39,9 +39,18 @@ func TestKeyHeader(t *testing.T) {
 			},
 		},
 		{
-			header: NewDocumentKeyHeader(),
+			header: NewDatabaseKeyHeader(),
 			expected: expected{
-				tp:  DocumentObject,
+				tp:  DatabaseObject,
+				ver: V1,
+				doc: CBOR,
+				idx: IndexType(0),
+			},
+		},
+		{
+			header: NewSchemaKeyHeader(),
+			expected: expected{
+				tp:  SchemaObject,
 				ver: V1,
 				doc: CBOR,
 				idx: IndexType(0),
