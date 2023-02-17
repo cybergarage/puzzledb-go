@@ -35,11 +35,32 @@ const (
 	CBOR = BinaryType(1)
 )
 
-var latestObjectKeyHeader = [2]uint8{uint8(DocumentObject), uint8(uint8(CBOR) & uint8(V1<<4))}
+type IndexType uint8
+
+const (
+	PrimaryIndex   = BinaryType(1)
+	SecondaryIndex = BinaryType(2)
+)
+
+func headerByteFromVersion(v Version) uint8 {
+	return (uint8(v<<4) & 0x70)
+}
+
+func vertionFromHeaderByte(b uint8) Version {
+	return Version((b >> 4) & 0x07)
+}
+
+var latestObjectKeyHeader = [2]uint8{uint8(DocumentObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
+var latestPrimaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(PrimaryIndex) | headerByteFromVersion(V1))}
+var latestSecondaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(SecondaryIndex) | headerByteFromVersion(V1))}
 
 // KeyHeader represents a header for any keys.
 type KeyHeader [2]uint8
 
-func NewObjectKeyHeader() KeyHeader {
+func NewDocumentKeyHeader() KeyHeader {
 	return latestObjectKeyHeader
+}
+
+func (header KeyHeader) Version() Version {
+	return vertionFromHeaderByte(header[1])
 }
