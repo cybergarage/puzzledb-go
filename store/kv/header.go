@@ -14,7 +14,7 @@
 
 package kv
 
-type HeaderType uint8
+type HeaderType byte
 
 const (
 	DatabaseObject = HeaderType('D')
@@ -29,39 +29,39 @@ const (
 	V1 = Version(1)
 )
 
-type DocumentType uint8
+type DocumentType byte
 
 const (
 	CBOR = DocumentType(1)
 )
 
-type IndexType uint8
+type IndexType byte
 
 const (
 	PrimaryIndex   = IndexType(1)
 	SecondaryIndex = IndexType(2)
 )
 
-func headerByteFromVersion(v Version) uint8 {
-	return (uint8(v<<4) & 0x70)
+func headerByteFromVersion(v Version) byte {
+	return (byte(v<<4) & 0x70)
 }
 
-func vertionFromHeaderByte(b uint8) Version {
+func vertionFromHeaderByte(b byte) Version {
 	return Version((b >> 4) & 0x07)
 }
 
-func typeFromHeaderByte(b uint8) uint8 {
+func typeFromHeaderByte(b byte) byte {
 	return (b & 0x07)
 }
 
-var DatabaseKeyHeader = [2]uint8{uint8(DatabaseObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
-var SchemaKeyHeader = [2]uint8{uint8(SchemaObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
-var DocumentKeyHeader = [2]uint8{uint8(DocumentObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
-var PrimaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(PrimaryIndex) | headerByteFromVersion(V1))}
-var SecondaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(SecondaryIndex) | headerByteFromVersion(V1))}
+var DatabaseKeyHeader = [2]byte{byte(DatabaseObject), byte(byte(CBOR) | headerByteFromVersion(V1))}
+var SchemaKeyHeader = [2]byte{byte(SchemaObject), byte(byte(CBOR) | headerByteFromVersion(V1))}
+var DocumentKeyHeader = [2]byte{byte(DocumentObject), byte(byte(CBOR) | headerByteFromVersion(V1))}
+var PrimaryIndexHeader = [2]byte{byte(IndexObject), byte(byte(PrimaryIndex) | headerByteFromVersion(V1))}
+var SecondaryIndexHeader = [2]byte{byte(IndexObject), byte(byte(SecondaryIndex) | headerByteFromVersion(V1))}
 
 // KeyHeader represents a header for any keys.
-type KeyHeader [2]uint8
+type KeyHeader [2]byte
 
 func (header KeyHeader) Type() HeaderType {
 	return HeaderType(header[0])
