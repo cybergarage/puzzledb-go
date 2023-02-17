@@ -46,8 +46,8 @@ func (txn *transaction) InsertIndex(key store.Key, val store.Key) error {
 	return nil
 }
 
-// SelectObject gets an object with the specified key.
-func (txn *transaction) SelectObject(key store.Key) (store.Object, error) {
+// SelectDocument gets a document object with the specified key.
+func (txn *transaction) SelectDocument(key store.Key) (store.Object, error) {
 	kvObj, err := txn.kv.Select(key)
 	if err != nil {
 		return nil, err
