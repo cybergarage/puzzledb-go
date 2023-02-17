@@ -20,3 +20,9 @@ import (
 
 // Key represents an object key.
 type Key = document.Key
+
+// NewKeyWith returns a new key from the specified header and key elements.
+func NewKeyWith(header KeyHeader, elems ...any) Key {
+	key := []any{header}
+	return append(key, elems...)
+}
