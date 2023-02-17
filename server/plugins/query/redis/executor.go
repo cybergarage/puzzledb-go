@@ -61,7 +61,7 @@ func (service *Service) Set(ctx *DBContext, key string, val string, opt redis.Se
 	if err != nil {
 		return nil, err
 	}
-	err = tx.InsertObject([]any{key}, val)
+	err = tx.InsertDocument([]any{key}, val)
 	if err != nil {
 		err = tx.Cancel()
 		if err != nil {

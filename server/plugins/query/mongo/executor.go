@@ -73,8 +73,8 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 			return 0, err
 		}
 
-		storeKey := document.NewKeyWith(q.Collection, storeObjID)
-		err = tx.InsertObject(storeKey, storeDoc)
+		storeKey := document.NewKeyWith(q.Database, q.Collection, storeObjID)
+		err = tx.InsertDocument(storeKey, storeDoc)
 		if err != nil {
 			return 0, err
 		}

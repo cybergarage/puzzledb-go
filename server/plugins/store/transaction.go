@@ -27,8 +27,8 @@ type transaction struct {
 	document.Serializer
 }
 
-// InsertObject puts a object with the primary key.
-func (txn *transaction) InsertObject(key store.Key, obj store.Object) error {
+// InsertDocument puts a document object with the primary key.
+func (txn *transaction) InsertDocument(key store.Key, obj store.Object) error {
 	var b bytes.Buffer
 	err := txn.Encode(&b, obj)
 	if err != nil {
