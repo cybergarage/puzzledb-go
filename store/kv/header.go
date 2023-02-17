@@ -23,7 +23,7 @@ const (
 	IndexObject    = HeaderType('I')
 )
 
-type Version uint8
+type Version byte
 
 const (
 	V1 = Version(1)
