@@ -35,7 +35,7 @@ func (txn *transaction) InsertDocument(key store.Key, obj store.Object) error {
 		return err
 	}
 	kvObj := kv.Object{
-		Key:   kv.NewKeyWith(kv.DocumentKeyHeader, key),
+		Key:   kv.NewKeyWith(kv.DocumentKeyHeader, key...),
 		Value: b.Bytes(),
 	}
 	return txn.kv.Insert(&kvObj)
