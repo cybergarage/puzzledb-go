@@ -29,17 +29,17 @@ const (
 	V1 = Version(1)
 )
 
-type BinaryType uint8
+type DocumentType uint8
 
 const (
-	CBOR = BinaryType(1)
+	CBOR = DocumentType(1)
 )
 
 type IndexType uint8
 
 const (
-	PrimaryIndex   = BinaryType(1)
-	SecondaryIndex = BinaryType(2)
+	PrimaryIndex   = IndexType(1)
+	SecondaryIndex = IndexType(2)
 )
 
 func headerByteFromVersion(v Version) uint8 {
@@ -54,7 +54,7 @@ func typeFromHeaderByte(b uint8) uint8 {
 	return (b & 0x07)
 }
 
-var latestObjectKeyHeader = [2]uint8{uint8(DocumentObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
+var latestDocumentKeyHeader = [2]uint8{uint8(DocumentObject), uint8(uint8(CBOR) | headerByteFromVersion(V1))}
 var latestPrimaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(PrimaryIndex) | headerByteFromVersion(V1))}
 var latestSecondaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(SecondaryIndex) | headerByteFromVersion(V1))}
 
@@ -62,7 +62,15 @@ var latestSecondaryIndexHeader = [2]uint8{uint8(IndexObject), uint8(uint8(Second
 type KeyHeader [2]uint8
 
 func NewDocumentKeyHeader() KeyHeader {
-	return latestObjectKeyHeader
+	return latestDocumentKeyHeader
+}
+
+func NewPrimaryIndexKeyHeader(idx IndexType) KeyHeader {
+	return latestPrimaryIndexHeader
+}
+
+func NewSecondaryIndexKeyHeader(idx IndexType) KeyHeader {
+	return latestSecondaryIndexHeader
 }
 
 func (header KeyHeader) Type() HeaderType {
@@ -71,6 +79,10 @@ func (header KeyHeader) Type() HeaderType {
 
 func (header KeyHeader) Version() Version {
 	return vertionFromHeaderByte(header[1])
+}
+
+func (header KeyHeader) DocumentType() DocumentType {
+	return DocumentType(typeFromHeaderByte(header[1]))
 }
 
 func (header KeyHeader) IndexType() IndexType {
