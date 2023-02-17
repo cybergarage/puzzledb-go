@@ -18,7 +18,7 @@ import (
 	"testing"
 )
 
-func TestObjectKeyHeader(t *testing.T) {
+func TestKeyHeader(t *testing.T) {
 	type expected struct {
 		tp  HeaderType
 		ver Version
@@ -30,12 +30,39 @@ func TestObjectKeyHeader(t *testing.T) {
 		expected expected
 	}{
 		{
+			header: NewDatabaseKeyHeader(),
+			expected: expected{
+				tp:  DatabaseObject,
+				ver: V1,
+				doc: CBOR,
+				idx: IndexType(0),
+			},
+		},
+		{
 			header: NewDocumentKeyHeader(),
 			expected: expected{
 				tp:  DocumentObject,
 				ver: V1,
-				doc: DocumentType(0),
+				doc: CBOR,
 				idx: IndexType(0),
+			},
+		},
+		{
+			header: NewPrimaryIndexKeyHeader(),
+			expected: expected{
+				tp:  IndexObject,
+				ver: V1,
+				doc: DocumentType(0),
+				idx: PrimaryIndex,
+			},
+		},
+		{
+			header: NewSecondaryIndexKeyHeader(),
+			expected: expected{
+				tp:  IndexObject,
+				ver: V1,
+				doc: DocumentType(0),
+				idx: SecondaryIndex,
 			},
 		},
 	}
