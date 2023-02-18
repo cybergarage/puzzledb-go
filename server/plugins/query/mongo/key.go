@@ -14,6 +14,17 @@
 
 package mongo
 
+import (
+	"strings"
+)
+
 const (
 	ObjectID = "_id"
 )
+
+func isPrimaryKey(name string) bool {
+	if strings.Compare(name, ObjectID) == 0 {
+		return true
+	}
+	return false
+}
