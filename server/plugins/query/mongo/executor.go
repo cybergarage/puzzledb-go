@@ -164,14 +164,14 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 		}
 		for _, condElem := range condElems {
 			key := condElem.Key()
+			val := condElem.Value()
+			idxKey := document.NewKeyWith(q.Database, q.Collection, key, val)
 			if isPrimaryKey(key) {
-				return nil, mongo.NewQueryError(q)
+				_, err = tx.SelectDocuments(idxKey)
+				if err != nil {
+					return nil, err
+				}
 			}
-			// val := condElem.Value()
-			// if !condValue.Equal(docValue) {
-			// 	isMatched = false
-			// 	break
-			// }
 		}
 	}
 
