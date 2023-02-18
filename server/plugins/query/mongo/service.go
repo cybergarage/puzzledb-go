@@ -34,7 +34,7 @@ func NewService() *Service {
 		Server:      mongo.NewServer(),
 		BaseService: query.NewService(),
 		documents:   make([]bson.Document, 0),
-		Serializer: NewSerializer(),
+		Serializer:  NewSerializer(),
 	}
 
 	server.SetMessageListener(server)
