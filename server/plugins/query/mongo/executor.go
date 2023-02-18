@@ -42,27 +42,6 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 			continue
 		}
 
-		// TODO: Remove in-memory version procedures
-
-		isInserted := false
-
-		for _, serverDoc := range service.documents {
-			serverValue, err := serverDoc.LookupErr(ObjectID)
-			if err != nil {
-				continue
-			}
-			if serverValue.Equal(queryObjID) {
-				isInserted = true
-				break
-			}
-		}
-
-		if !isInserted {
-			service.documents = append(service.documents, queryDoc)
-		}
-
-		// Store version procedures
-
 		// Insert the document with the primary key
 
 		storeDoc, err := service.Encode(queryDoc)
@@ -166,8 +145,14 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 			key := condElem.Key()
 			val := condElem.Value()
 			idxKey := document.NewKeyWith(q.Database, q.Collection, key, val)
+			// var objs []document.Object
 			if isPrimaryKey(key) {
 				_, err = tx.SelectDocuments(idxKey)
+				if err != nil {
+					return nil, err
+				}
+			} else {
+				_, err = tx.SelectDocumentsByIndex(idxKey)
 				if err != nil {
 					return nil, err
 				}
