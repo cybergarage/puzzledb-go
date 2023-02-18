@@ -123,6 +123,8 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 
 	foundDoc := make([]bson.Document, 0)
 
+	// TODO: Remove in-memory version procedures
+
 	for _, doc := range service.documents {
 		isMatched := true
 		for _, cond := range q.GetConditions() {
@@ -151,6 +153,26 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 		}
 
 		foundDoc = append(foundDoc, doc)
+	}
+
+	// Store version procedures
+
+	for _, cond := range q.GetConditions() {
+		condElems, err := cond.Elements()
+		if err != nil {
+			return nil, mongo.NewQueryError(q)
+		}
+		for _, condElem := range condElems {
+			key := condElem.Key()
+			if isPrimaryKey(key) {
+				return nil, mongo.NewQueryError(q)
+			}
+			// val := condElem.Value()
+			// if !condValue.Equal(docValue) {
+			// 	isMatched = false
+			// 	break
+			// }
+		}
 	}
 
 	err = tx.Commit()

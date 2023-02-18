@@ -88,8 +88,8 @@ func (service *Service) Get(ctx *DBContext, key string) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
-	obj, err := tx.SelectDocument([]any{key})
-	if err != nil {
+	objs, err := tx.SelectDocuments([]any{key})
+	if err != nil || len(objs) != 1 {
 		err = tx.Cancel()
 		if err != nil {
 			return nil, err
@@ -102,6 +102,7 @@ func (service *Service) Get(ctx *DBContext, key string) (*Message, error) {
 		return nil, err
 	}
 
+	obj := objs[0]
 	switch v := obj.(type) {
 	case string:
 		return redis.NewBulkMessage(v), nil
