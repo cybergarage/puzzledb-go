@@ -22,7 +22,7 @@ import (
 type Key = document.Key
 
 // NewKeyWith returns a new key from the specified header and key elements.
-func NewKeyWith(header KeyHeader, elems ...any) Key {
-	key := []any{header.Bytes()}
-	return append(key, elems...)
+func NewKeyWith(header KeyHeader, key Key) Key {
+	kvKey := []any{header.Bytes()}
+	return append(kvKey, key.Elements()...)
 }
