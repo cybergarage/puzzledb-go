@@ -49,7 +49,7 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 			return 0, err
 		}
 
-		storeObjID, err := DecodeBSONElement(queryObjID)
+		storeObjID, err := EncodeBSON(queryObjID)
 		if err != nil {
 			return 0, err
 		}
