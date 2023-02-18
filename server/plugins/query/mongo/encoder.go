@@ -24,18 +24,18 @@ import (
 	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
-// Encoder represents a BSON encoder.
-type Encoder struct {
+// BSONEncoder represents a BSON encoder.
+type BSONEncoder struct {
 }
 
-// NewEncoder returns a new BSON encoder instance.
-func NewEncoder() *Encoder {
-	return &Encoder{}
+// NewBSONEncoder returns a new BSON encoder instance.
+func NewBSONEncoder() *BSONEncoder {
+	return &BSONEncoder{}
 
 }
 
 // EncodeBSON encodes the specified BSON object to a document object.
-func (s *Encoder) EncodeBSON(bsonDoc bson.Document) (document.Object, error) {
+func (s *BSONEncoder) EncodeBSON(bsonDoc bson.Document) (document.Object, error) {
 	obj := map[string]any{}
 	bsonElems, err := bsonDoc.Elements()
 	if err != nil {
