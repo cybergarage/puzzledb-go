@@ -16,8 +16,8 @@ package kv
 
 // Transaction represents a transaction interface.
 type Transaction interface {
-	// Insert puts a key-value object.
-	Insert(obj *Object) error
+	// Set stores a key-value object. If the key already holds some value, it is overwritten
+	Set(obj *Object) error
 	// Select gets an key-value object of the specified key.
 	Select(key Key) (*Object, error)
 	// Commit commits this transaction.

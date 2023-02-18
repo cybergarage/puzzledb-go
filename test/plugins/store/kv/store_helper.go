@@ -70,7 +70,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 			Key:   []any{key},
 			Value: val,
 		}
-		if err := tx.Insert(obj); err != nil {
+		if err := tx.Set(obj); err != nil {
 			t.Error(err)
 			break
 		}
