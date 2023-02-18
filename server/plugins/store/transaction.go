@@ -41,7 +41,7 @@ func (txn *transaction) InsertDocument(key store.Key, obj store.Object) error {
 	return txn.kv.Set(&kvObj)
 }
 
-// InsertIndex puts a secondary index with the primary key.
+// InsertDocument puts a document object with the specified primary key.
 func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
 	primeryKeyBytes, err := key.Encode()
 	if err != nil {
@@ -54,17 +54,21 @@ func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
 	return txn.kv.Set(&kvObj)
 }
 
-// SelectDocument gets a document object with the specified key.
-func (txn *transaction) SelectDocument(key store.Key) (store.Object, error) {
-	kvObj, err := txn.kv.Get(kv.NewKeyWith(kv.DocumentKeyHeader, key))
+// SelectDocuments gets document objects matching the specified key.
+func (txn *transaction) SelectDocuments(key store.Key) ([]store.Object, error) {
+	kvObjs, err := txn.kv.Get(kv.NewKeyWith(kv.DocumentKeyHeader, key))
 	if err != nil {
 		return nil, err
 	}
-	obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
-	if err != nil {
-		return nil, err
+	objs := []store.Object{}
+	for _, kvObj := range kvObjs {
+		obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
+		if err != nil {
+			return nil, err
+		}
+		objs = append(objs, obj)
 	}
-	return obj, nil
+	return objs, nil
 }
 
 // Commit commits this transaction.
