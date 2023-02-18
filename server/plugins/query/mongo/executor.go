@@ -102,40 +102,6 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 
 	foundDoc := make([]bson.Document, 0)
 
-	// TODO: Remove in-memory version procedures
-
-	for _, doc := range service.documents {
-		isMatched := true
-		for _, cond := range q.GetConditions() {
-			condElems, err := cond.Elements()
-			if err != nil {
-				return nil, mongo.NewQueryError(q)
-			}
-			for _, condElem := range condElems {
-				key := condElem.Key()
-				docValue, err := doc.LookupErr(key)
-				if err != nil {
-					isMatched = false
-					break
-
-				}
-				condValue := condElem.Value()
-				if !condValue.Equal(docValue) {
-					isMatched = false
-					break
-				}
-			}
-		}
-
-		if !isMatched {
-			continue
-		}
-
-		foundDoc = append(foundDoc, doc)
-	}
-
-	// Store version procedures
-
 	for _, cond := range q.GetConditions() {
 		condElems, err := cond.Elements()
 		if err != nil {
@@ -145,18 +111,26 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 			key := condElem.Key()
 			val := condElem.Value()
 			idxKey := document.NewKeyWith(q.Database, q.Collection, key, val)
-			// var objs []document.Object
+			var objs []document.Object
 			if isPrimaryKey(key) {
-				_, err = tx.SelectDocuments(idxKey)
+				objs, err = tx.SelectDocuments(idxKey)
 				if err != nil {
 					return nil, err
 				}
 			} else {
-				_, err = tx.SelectDocumentsByIndex(idxKey)
+				objs, err = tx.SelectDocumentsByIndex(idxKey)
 				if err != nil {
 					return nil, err
 				}
 			}
+			for _, obj := range objs {
+				bsonDoc, err := DecodeBSON(obj)
+				if err != nil {
+					return nil, err
+				}
+				foundDoc = append(foundDoc, bsonDoc)
+			}
+
 		}
 	}
 
