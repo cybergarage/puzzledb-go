@@ -25,18 +25,18 @@ import (
 	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
-// Decoder represents a decorder.
-type Decoder struct {
+// BSONDecoder represents a decorder.
+type BSONDecoder struct {
 }
 
-// NewDecoder returns a new CBOR erializer instance.
-func NewDecoder() *Decoder {
-	return &Decoder{}
+// NewBSONDecoder returns a new CBOR erializer instance.
+func NewBSONDecoder() *BSONDecoder {
+	return &BSONDecoder{}
 
 }
 
 // DecodeBSON returns the decorded BSON object from the specified object.
-func (s *Decoder) DecodeBSON(obj document.Object) (bson.Document, error) {
+func (s *BSONDecoder) DecodeBSON(obj document.Object) (bson.Document, error) {
 	return DecodeBSON(obj)
 }
 
