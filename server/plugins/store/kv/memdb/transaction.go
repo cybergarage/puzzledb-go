@@ -51,7 +51,7 @@ func (txn *Transaction) Set(obj *store.Object) error {
 }
 
 // Get returns a key-value object of the specified key.
-func (txn *Transaction) Get(key store.Key) (*store.Object, error) {
+func (txn *Transaction) Get(key store.Key) ([]*store.Object, error) {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err
@@ -60,18 +60,22 @@ func (txn *Transaction) Get(key store.Key) (*store.Object, error) {
 	if err != nil {
 		return nil, err
 	}
+	objs := []*store.Object{}
 	elem := it.Next()
-	if elem == nil {
+	for elem != nil {
+		doc, ok := elem.(*document)
+		if ok {
+			objs = append(objs, &store.Object{
+				Key:   key,
+				Value: doc.Value,
+			})
+		}
+		elem = it.Next()
+	}
+	if len(objs) == 0 {
 		return nil, errors.ObjectNotFound
 	}
-	doc, ok := elem.(*document)
-	if !ok {
-		return nil, errors.ObjectNotFound
-	}
-	return &store.Object{
-		Key:   key,
-		Value: doc.Value,
-	}, nil
+	return objs, nil
 }
 
 // Remove removes the specified key-value object.
