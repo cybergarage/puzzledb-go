@@ -64,9 +64,14 @@ func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
 	if err != nil {
 		return err
 	}
+	var b bytes.Buffer
+	err = txn.Encode(&b, primeryKeyBytes)
+	if err != nil {
+		return err
+	}
 	kvObj := kv.Object{
 		Key:   kv.NewKeyWith(kv.SecondaryIndexHeader, key),
-		Value: primeryKeyBytes,
+		Value: b.Bytes(),
 	}
 	return txn.kv.Set(&kvObj)
 }
