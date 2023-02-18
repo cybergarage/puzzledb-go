@@ -16,10 +16,12 @@ package kv
 
 // Transaction represents a transaction interface.
 type Transaction interface {
-	// Set stores a key-value object. If the key already holds some value, it is overwritten
+	// Set stores a key-value object. If the key already holds some value, it is overwritten.
 	Set(obj *Object) error
-	// Get return a key-value object of the specified key.
+	// Get returns a key-value object of the specified key.
 	Get(key Key) (*Object, error)
+	// Remove removes the specified key-value object.
+	Remove(key Key) error
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
