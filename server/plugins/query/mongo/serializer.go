@@ -16,14 +16,14 @@ package mongo
 
 // A Serializer includes a BSON decorder and encoder.
 type Serializer struct {
-	*Decoder
+	*BSONDecoder
 	*BSONEncoder
 }
 
 // NewSerializer returns a new BSON serializer instance.
 func NewSerializer() *Serializer {
 	return &Serializer{
-		Decoder:     NewDecoder(),
+		BSONDecoder: NewBSONDecoder(),
 		BSONEncoder: NewBSONEncoder(),
 	}
 }
