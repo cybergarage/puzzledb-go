@@ -31,6 +31,11 @@ func NewKeyWith(elems ...any) Key {
 	return elemArray
 }
 
+// Elements returns all elements of the key.
+func (key Key) Elements() []any {
+	return key
+}
+
 // Encode encodes the key to a byte array.
 func (key Key) Encode() ([]byte, error) {
 	var keyBuf bytes.Buffer
