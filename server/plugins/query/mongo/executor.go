@@ -109,7 +109,11 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 		}
 		for _, condElem := range condElems {
 			key := condElem.Key()
-			val := condElem.Value()
+			bsonVal := condElem.Value()
+			val, err := EncodeBSON(bsonVal)
+			if err != nil {
+				return nil, err
+			}
 			idxKey := document.NewKeyWith(q.Database, q.Collection, key, val)
 			var objs []document.Object
 			if isPrimaryKey(key) {
