@@ -42,8 +42,16 @@ func (txn *transaction) InsertDocument(key store.Key, obj store.Object) error {
 }
 
 // InsertIndex puts a secondary index with the primary key.
-func (txn *transaction) InsertIndex(key store.Key, val store.Key) error {
-	return nil
+func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
+	primeryKeyBytes, err := key.Encode()
+	if err != nil {
+		return err
+	}
+	kvObj := kv.Object{
+		Key:   kv.NewKeyWith(kv.SecondaryIndexHeader, key),
+		Value: primeryKeyBytes,
+	}
+	return txn.kv.Insert(&kvObj)
 }
 
 // SelectDocument gets a document object with the specified key.
