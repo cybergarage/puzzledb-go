@@ -63,6 +63,8 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 
 		// Store version procedures
 
+		// Insert the document with the primary key
+
 		storeDoc, err := service.Encode(queryDoc)
 		if err != nil {
 			return 0, err
@@ -73,10 +75,23 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 			return 0, err
 		}
 
-		storeKey := document.NewKeyWith(q.Database, q.Collection, storeObjID)
+		storeKey := document.NewKeyWith(q.Database, q.Collection, ObjectID, storeObjID)
 		err = tx.InsertDocument(storeKey, storeDoc)
 		if err != nil {
 			return 0, err
+		}
+
+		// Insert the secondary indexes for the all elements
+
+		switch v := storeDoc.(type) {
+		case map[string]any:
+			for key, val := range v {
+				indexKey := document.NewKeyWith(q.Database, q.Collection, key, val)
+				err = tx.InsertIndex(indexKey, storeKey)
+				if err != nil {
+					return 0, err
+				}
+			}
 		}
 
 		nInserted++
