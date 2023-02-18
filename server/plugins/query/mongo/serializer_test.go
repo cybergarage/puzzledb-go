@@ -52,7 +52,7 @@ func TestSerializer(t *testing.T) {
 	s := NewSerializer()
 
 	// BSON -> Go
-	goObj, err := s.Encode(bsonDoc)
+	goObj, err := s.EncodeBSON(bsonDoc)
 	if err != nil {
 		t.Error(err)
 		return
@@ -66,7 +66,7 @@ func TestSerializer(t *testing.T) {
 	}
 
 	// BSON -> Go
-	newGoObj, err := s.Encode(bsonDoc)
+	newGoObj, err := s.EncodeBSON(bsonDoc)
 	if err != nil {
 		t.Error(err)
 		return

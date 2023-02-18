@@ -44,7 +44,7 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 
 		// Insert the document with the primary key
 
-		storeDoc, err := service.Encode(queryDoc)
+		storeDoc, err := service.EncodeBSON(queryDoc)
 		if err != nil {
 			return 0, err
 		}
