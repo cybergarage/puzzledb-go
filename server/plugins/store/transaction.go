@@ -38,7 +38,7 @@ func (txn *transaction) InsertDocument(key store.Key, obj store.Object) error {
 		Key:   kv.NewKeyWith(kv.DocumentKeyHeader, key),
 		Value: b.Bytes(),
 	}
-	return txn.kv.Insert(&kvObj)
+	return txn.kv.Set(&kvObj)
 }
 
 // InsertIndex puts a secondary index with the primary key.
@@ -51,7 +51,7 @@ func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
 		Key:   kv.NewKeyWith(kv.SecondaryIndexHeader, key),
 		Value: primeryKeyBytes,
 	}
-	return txn.kv.Insert(&kvObj)
+	return txn.kv.Set(&kvObj)
 }
 
 // SelectDocument gets a document object with the specified key.
