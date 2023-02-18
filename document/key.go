@@ -17,8 +17,6 @@ package document
 import (
 	"bytes"
 	"fmt"
-
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/errors"
 )
 
 // Key represents an unique key for a document object.
@@ -50,7 +48,9 @@ func (key Key) Encode() ([]byte, error) {
 				return nil, err
 			}
 		default:
-			return nil, fmt.Errorf("%w: (%T)", errors.KeyTypeError, elem)
+			if _, err := keyBuf.WriteString(fmt.Sprintf("%v", v)); err != nil {
+				return nil, err
+			}
 		}
 	}
 	return keyBuf.Bytes(), nil
