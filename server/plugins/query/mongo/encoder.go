@@ -34,8 +34,8 @@ func NewEncoder() *Encoder {
 
 }
 
-// Encode encodes the specified BSON object to a document object.
-func (s *Encoder) Encode(bsonDoc bson.Document) (document.Object, error) {
+// EncodeBSON encodes the specified BSON object to a document object.
+func (s *Encoder) EncodeBSON(bsonDoc bson.Document) (document.Object, error) {
 	obj := map[string]any{}
 	bsonElems, err := bsonDoc.Elements()
 	if err != nil {
