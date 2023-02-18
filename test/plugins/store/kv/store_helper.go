@@ -88,7 +88,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 			t.Error(err)
 			break
 		}
-		obj, err := tx.Select([]any{key})
+		obj, err := tx.Get([]any{key})
 		if err != nil {
 			t.Error(err)
 			break

@@ -56,7 +56,7 @@ func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
 
 // SelectDocument gets a document object with the specified key.
 func (txn *transaction) SelectDocument(key store.Key) (store.Object, error) {
-	kvObj, err := txn.kv.Select(kv.NewKeyWith(kv.DocumentKeyHeader, key))
+	kvObj, err := txn.kv.Get(kv.NewKeyWith(kv.DocumentKeyHeader, key))
 	if err != nil {
 		return nil, err
 	}

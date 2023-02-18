@@ -18,8 +18,8 @@ package kv
 type Transaction interface {
 	// Set stores a key-value object. If the key already holds some value, it is overwritten
 	Set(obj *Object) error
-	// Select gets an key-value object of the specified key.
-	Select(key Key) (*Object, error)
+	// Get return a key-value object of the specified key.
+	Get(key Key) (*Object, error)
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.

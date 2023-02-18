@@ -50,13 +50,13 @@ func (txn *Transaction) Set(obj *store.Object) error {
 	return txn.Txn.Insert(tableName, doc)
 }
 
-// Select gets an key-value object of the specified key.
-func (txn *Transaction) Select(key store.Key) (*store.Object, error) {
+// Get return a key-value object of the specified key.
+func (txn *Transaction) Get(key store.Key) (*store.Object, error) {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err
 	}
-	it, err := txn.Get(tableName, idFieldName, string(keyBytes))
+	it, err := txn.Txn.Get(tableName, idFieldName, string(keyBytes))
 	if err != nil {
 		return nil, err
 	}
