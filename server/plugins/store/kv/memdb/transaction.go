@@ -37,8 +37,8 @@ func newTransaction(txn *memdb.Txn) *Transaction {
 	}
 }
 
-// Insert puts a key-value object.
-func (txn *Transaction) Insert(obj *store.Object) error {
+// Set stores a key-value object. If the key already holds some value, it is overwritten
+func (txn *Transaction) Set(obj *store.Object) error {
 	keyBytes, err := obj.KeyBytes()
 	if err != nil {
 		return err
