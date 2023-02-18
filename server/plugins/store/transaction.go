@@ -29,14 +29,15 @@ type transaction struct {
 
 // InsertDocument puts a document object with the primary key.
 func (txn *transaction) InsertDocument(key store.Key, obj store.Object) error {
-	var b bytes.Buffer
-	err := txn.Encode(&b, obj)
+	var encObj bytes.Buffer
+	err := txn.Encode(&encObj, obj)
 	if err != nil {
 		return err
 	}
+	docKey := kv.NewKeyWith(kv.DocumentKeyHeader, key)
 	kvObj := kv.Object{
-		Key:   kv.NewKeyWith(kv.DocumentKeyHeader, key),
-		Value: b.Bytes(),
+		Key:   docKey,
+		Value: encObj.Bytes(),
 	}
 	return txn.kv.Set(&kvObj)
 }
@@ -59,26 +60,29 @@ func (txn *transaction) SelectDocuments(key store.Key) ([]store.Object, error) {
 }
 
 // InsertDocument puts a document object with the specified primary key.
-func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
-	primeryKeyBytes, err := key.Encode()
+func (txn *transaction) InsertIndex(key store.Key, prKey store.Key) error {
+	docKey := kv.NewKeyWith(kv.DocumentKeyHeader, prKey)
+	docKeyBytes, err := docKey.Encode()
 	if err != nil {
 		return err
 	}
-	var b bytes.Buffer
-	err = txn.Encode(&b, primeryKeyBytes)
+	var encDocKey bytes.Buffer
+	err = txn.Encode(&encDocKey, docKeyBytes)
 	if err != nil {
 		return err
 	}
+	idxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, key)
 	kvObj := kv.Object{
-		Key:   kv.NewKeyWith(kv.SecondaryIndexHeader, key),
-		Value: b.Bytes(),
+		Key:   idxKey,
+		Value: encDocKey.Bytes(),
 	}
 	return txn.kv.Set(&kvObj)
 }
 
 // SelectDocumentsByIndex gets document objects matching the specified index key.
 func (txn *transaction) SelectDocumentsByIndex(indexKey store.Key) ([]store.Object, error) {
-	kvIdxObjs, err := txn.kv.Get(kv.NewKeyWith(kv.SecondaryIndexHeader, indexKey))
+	idxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, indexKey)
+	kvIdxObjs, err := txn.kv.Get(idxKey)
 	if err != nil {
 		return nil, err
 	}
