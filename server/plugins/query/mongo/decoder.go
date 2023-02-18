@@ -35,8 +35,8 @@ func NewDecoder() *Decoder {
 
 }
 
-// Decode returns the decorded BSON object from the specified object.
-func (s *Decoder) Decode(obj document.Object) (bson.Document, error) {
+// DecodeBSON returns the decorded BSON object from the specified object.
+func (s *Decoder) DecodeBSON(obj document.Object) (bson.Document, error) {
 	return DecodeBSON(obj)
 }
 
@@ -50,6 +50,16 @@ func DecodeBSON(obj document.Object) (bson.Document, error) {
 			bsonDoc, err = bsonDocumentAddObject(bsonDoc, key, val)
 			if err != nil {
 				return nil, err
+			}
+		}
+	case map[any]any:
+		for key, val := range v {
+			switch vkey := key.(type) {
+			case string:
+				bsonDoc, err = bsonDocumentAddObject(bsonDoc, vkey, val)
+				if err != nil {
+					return nil, err
+				}
 			}
 		}
 	}
