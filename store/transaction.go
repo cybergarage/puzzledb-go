@@ -16,10 +16,10 @@ package store
 
 // Transaction represents a transaction interface.
 type Transaction interface {
-	// InsertDocument puts a document object with the primary key.
+	// InsertDocument puts a document object with the specified primary key.
 	InsertDocument(key Key, obj Object) error
-	// SelectDocument gets a document object with the specified key.
-	SelectDocument(key Key) (Object, error)
+	// SelectDocuments gets document objects matching the specified key.
+	SelectDocuments(key Key) ([]Object, error)
 	// InsertIndex puts a secondary index with the primary key.
 	InsertIndex(key Key, primeryKey Key) error
 	// Commit commits this transaction.
