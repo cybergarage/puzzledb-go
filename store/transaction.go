@@ -20,8 +20,10 @@ type Transaction interface {
 	InsertDocument(key Key, obj Object) error
 	// SelectDocuments gets document objects matching the specified key.
 	SelectDocuments(key Key) ([]Object, error)
+	// SelectDocumentsByIndex gets document objects matching the specified index key.
+	SelectDocumentsByIndex(indexKey Key) ([]Object, error)
 	// InsertIndex puts a secondary index with the primary key.
-	InsertIndex(key Key, primeryKey Key) error
+	InsertIndex(indexKey Key, key Key) error
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.

@@ -41,19 +41,6 @@ func (txn *transaction) InsertDocument(key store.Key, obj store.Object) error {
 	return txn.kv.Set(&kvObj)
 }
 
-// InsertDocument puts a document object with the specified primary key.
-func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
-	primeryKeyBytes, err := key.Encode()
-	if err != nil {
-		return err
-	}
-	kvObj := kv.Object{
-		Key:   kv.NewKeyWith(kv.SecondaryIndexHeader, key),
-		Value: primeryKeyBytes,
-	}
-	return txn.kv.Set(&kvObj)
-}
-
 // SelectDocuments gets document objects matching the specified key.
 func (txn *transaction) SelectDocuments(key store.Key) ([]store.Object, error) {
 	kvObjs, err := txn.kv.Get(kv.NewKeyWith(kv.DocumentKeyHeader, key))
@@ -67,6 +54,46 @@ func (txn *transaction) SelectDocuments(key store.Key) ([]store.Object, error) {
 			return nil, err
 		}
 		objs = append(objs, obj)
+	}
+	return objs, nil
+}
+
+// InsertDocument puts a document object with the specified primary key.
+func (txn *transaction) InsertIndex(key store.Key, primeryKey store.Key) error {
+	primeryKeyBytes, err := key.Encode()
+	if err != nil {
+		return err
+	}
+	kvObj := kv.Object{
+		Key:   kv.NewKeyWith(kv.SecondaryIndexHeader, key),
+		Value: primeryKeyBytes,
+	}
+	return txn.kv.Set(&kvObj)
+}
+
+// SelectDocumentsByIndex gets document objects matching the specified index key.
+func (txn *transaction) SelectDocumentsByIndex(indexKey store.Key) ([]store.Object, error) {
+	kvIdxObjs, err := txn.kv.Get(kv.NewKeyWith(kv.SecondaryIndexHeader, indexKey))
+	if err != nil {
+		return nil, err
+	}
+	objs := []store.Object{}
+	for _, kvIdxObj := range kvIdxObjs {
+		kvIdx, err := txn.Decode(bytes.NewReader(kvIdxObj.Value))
+		if err != nil {
+			return nil, err
+		}
+		kvObjs, err := txn.kv.Get([]any{kvIdx}) // kvIdx is already encoded
+		if err != nil {
+			return nil, err
+		}
+		for _, kvObj := range kvObjs {
+			obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
+			if err != nil {
+				return nil, err
+			}
+			objs = append(objs, obj)
+		}
 	}
 	return objs, nil
 }
