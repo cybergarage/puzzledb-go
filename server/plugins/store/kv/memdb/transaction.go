@@ -37,7 +37,7 @@ func newTransaction(txn *memdb.Txn) *Transaction {
 	}
 }
 
-// Set stores a key-value object. If the key already holds some value, it is overwritten
+// Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *Transaction) Set(obj *store.Object) error {
 	keyBytes, err := obj.KeyBytes()
 	if err != nil {
@@ -50,7 +50,7 @@ func (txn *Transaction) Set(obj *store.Object) error {
 	return txn.Txn.Insert(tableName, doc)
 }
 
-// Get return a key-value object of the specified key.
+// Get returns a key-value object of the specified key.
 func (txn *Transaction) Get(key store.Key) (*store.Object, error) {
 	keyBytes, err := key.Encode()
 	if err != nil {
@@ -72,6 +72,19 @@ func (txn *Transaction) Get(key store.Key) (*store.Object, error) {
 		Key:   key,
 		Value: doc.Value,
 	}, nil
+}
+
+// Remove removes the specified key-value object.
+func (txn *Transaction) Remove(key store.Key) error {
+	keyBytes, err := key.Encode()
+	if err != nil {
+		return err
+	}
+	err = txn.Txn.Delete(tableName, string(keyBytes))
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Commit commits this transaction.
