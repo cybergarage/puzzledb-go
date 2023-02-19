@@ -110,8 +110,22 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 		return nil, mongo.NewQueryError(q)
 	}
 
-	foundDoc := make([]bson.Document, 0)
+	foundDoc, err := service.findDocuments(tx, q)
+	if err != nil {
+		tx.Cancel()
+		return nil, err
+	}
 
+	err = tx.Commit()
+	if err != nil {
+		return nil, mongo.NewQueryError(q)
+	}
+
+	return foundDoc, nil
+}
+
+func (service *Service) findDocuments(tx store.Transaction, q *mongo.Query) ([]bson.Document, error) {
+	foundDocs := make([]bson.Document, 0)
 	for _, cond := range q.GetConditions() {
 		condElems, err := cond.Elements()
 		if err != nil {
@@ -142,18 +156,12 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 				if err != nil {
 					return nil, err
 				}
-				foundDoc = append(foundDoc, bsonDoc)
+				foundDocs = append(foundDocs, bsonDoc)
 			}
 
 		}
 	}
-
-	err = tx.Commit()
-	if err != nil {
-		return nil, mongo.NewQueryError(q)
-	}
-
-	return foundDoc, nil
+	return foundDocs, nil
 }
 
 // Update hadles OP_UPDATE and 'update' query of OP_MSG or OP_QUERY.
