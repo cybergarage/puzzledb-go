@@ -11,3 +11,4 @@ linters:
     - funlen
     - ireturn
     - unconvert
+    - wrapcheck
