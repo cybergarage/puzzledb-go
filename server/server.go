@@ -61,7 +61,7 @@ func (server *Server) Stop() error {
 
 // LoadPlugins loads default plugin services.
 func (server *Server) LoadPlugins() {
-	var services []plugins.Service
+	services := []plugins.Service{}
 
 	seralizer := cbor.NewSerializer()
 	services = append(services, seralizer)
