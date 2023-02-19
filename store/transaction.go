@@ -28,8 +28,8 @@ type DocumentOperation interface {
 type IndexOperation interface {
 	// InsertIndex puts a secondary index with the primary key.
 	InsertIndex(indexKey Key, key Key) error
-	// SelectDocumentsByIndex gets document objects matching the specified index key.
-	SelectDocumentsByIndex(indexKey Key) ([]Object, error)
+	// FindDocumentsByIndex gets document objects matching the specified index key.
+	FindDocumentsByIndex(indexKey Key) ([]Object, error)
 	// UpdateDocument updates a document object with the specified primary key.
 	UpdateDocument(key Key, obj Object) error
 }

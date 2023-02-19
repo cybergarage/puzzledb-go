@@ -160,7 +160,7 @@ func (service *Service) findDocumentObjects(tx store.Transaction, q *mongo.Query
 					return nil, err
 				}
 			} else {
-				objs, err = tx.SelectDocumentsByIndex(idxKey)
+				objs, err = tx.FindDocumentsByIndex(idxKey)
 				if err != nil {
 					return nil, err
 				}

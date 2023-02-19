@@ -85,8 +85,8 @@ func (txn *transaction) InsertIndex(key store.Key, prKey store.Key) error {
 	return txn.kv.Set(&kvObj)
 }
 
-// SelectDocumentsByIndex gets document objects matching the specified index key.
-func (txn *transaction) SelectDocumentsByIndex(indexKey store.Key) ([]store.Object, error) {
+// FindDocumentsByIndex gets document objects matching the specified index key.
+func (txn *transaction) FindDocumentsByIndex(indexKey store.Key) ([]store.Object, error) {
 	idxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, indexKey)
 	kvIdxObjs, err := txn.kv.Get(idxKey)
 	if err != nil {
