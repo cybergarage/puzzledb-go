@@ -15,6 +15,8 @@
 package mongo
 
 import (
+	"fmt"
+
 	"github.com/cybergarage/go-mongo/mongo"
 	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
@@ -33,15 +35,19 @@ func (service *Service) createIndexKey(tx store.Transaction, q *mongo.Query, key
 	return service.createStoreKey(tx, q, key, val)
 }
 
-func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v map[string]any) error {
-	for key, val := range v {
-		indexKey := service.createIndexKey(tx, q, key, val)
-		err := tx.InsertIndex(indexKey, docKey)
-		if err != nil {
-			return err
+func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
+	switch vmap := v.(type) {
+	case map[string]any:
+		for key, val := range vmap {
+			indexKey := service.createIndexKey(tx, q, key, val)
+			err := tx.InsertIndex(indexKey, docKey)
+			if err != nil {
+				return err
+			}
 		}
+		return nil
 	}
-	return nil
+	return fmt.Errorf("unknown index map type (%T) : %v", v, v)
 }
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
@@ -98,9 +104,9 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 
 	// Creates the secondary indexes for the all elements
 
-	switch v := doc.(type) {
-	case map[string]any:
-		service.updateDocumentIndexes(tx, q, docKey, v)
+	err = service.updateDocumentIndexes(tx, q, docKey, doc)
+	if err != nil {
+		return err
 	}
 
 	return err
@@ -236,9 +242,9 @@ func (service *Service) updateDocument(tx store.Transaction, q *mongo.Query, bso
 			if err != nil {
 				return 0, err
 			}
-			switch v := updateDoc.(type) {
-			case map[string]any:
-				service.updateDocumentIndexes(tx, q, docKey, v)
+			err = service.updateDocumentIndexes(tx, q, docKey, updateDoc)
+			if err != nil {
+				return 0, err
 			}
 		}
 
