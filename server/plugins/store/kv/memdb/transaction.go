@@ -84,7 +84,7 @@ func (txn *Transaction) Remove(key store.Key) error {
 	if err != nil {
 		return err
 	}
-	err = txn.Txn.Delete(tableName, string(keyBytes))
+	_, err = txn.Txn.DeleteAll(tableName, idFieldName, string(keyBytes))
 	if err != nil {
 		return err
 	}
