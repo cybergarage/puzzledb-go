@@ -71,7 +71,7 @@ func DecodeBSONDocument(obj document.Object) (bson.Document, error) {
 }
 
 func bsonDocumentAddObject(bsonDoc []byte, key string, obj any) ([]byte, error) {
-	bsonVal, err := bsonDocumentFromObject(obj)
+	bsonVal, err := DecodeBSONValue(obj)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func bsonDocumentAddObject(bsonDoc []byte, key string, obj any) ([]byte, error) 
 	return bsonDoc, fmt.Errorf("unknown element type : %v", bsonVal)
 }
 
-func bsonDocumentFromObject(obj any) (*bsoncore.Value, error) {
+func DecodeBSONValue(obj any) (*bsoncore.Value, error) {
 	var err error
 	switch v := obj.(type) {
 	case map[string]any:
