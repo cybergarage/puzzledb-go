@@ -14,18 +14,30 @@
 
 package store
 
-// Transaction represents a transaction interface.
-type Transaction interface {
+type DocumentOperation interface {
 	// InsertDocument puts a document object with the specified primary key.
 	InsertDocument(key Key, obj Object) error
 	// SelectDocuments gets document objects matching the specified key.
 	SelectDocuments(key Key) ([]Object, error)
+	// UpdateDocument updates a document object with the specified primary key.
+	UpdateDocument(key Key, obj Object) error
+	// RemoveDocument removes a document object with the specified primary key.
+	RemoveDocument(key Key) error
+}
+
+type IndexOperation interface {
+	// InsertIndex puts a secondary index with the primary key.
+	InsertIndex(indexKey Key, key Key) error
 	// SelectDocumentsByIndex gets document objects matching the specified index key.
 	SelectDocumentsByIndex(indexKey Key) ([]Object, error)
 	// UpdateDocument updates a document object with the specified primary key.
 	UpdateDocument(key Key, obj Object) error
-	// InsertIndex puts a secondary index with the primary key.
-	InsertIndex(indexKey Key, key Key) error
+}
+
+// Transaction represents a transaction interface.
+type Transaction interface {
+	DocumentOperation
+	IndexOperation
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
