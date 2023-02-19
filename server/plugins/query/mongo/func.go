@@ -53,3 +53,14 @@ func UpdateBSONDocument(doc bson.Document, updateDocs []bson.Document) (bson.Doc
 
 	return updatedDoc, nil
 }
+
+func LookupBSONDocumentObjectID(bsonDoc bson.Document) (any, error) {
+	// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
+
+	bsonObjID, err := bsonDoc.LookupErr(ObjectID)
+	if err != nil {
+		return nil, err
+	}
+
+	return EncodeBSONValue(bsonObjID)
+}
