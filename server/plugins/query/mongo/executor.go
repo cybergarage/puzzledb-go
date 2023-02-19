@@ -84,7 +84,7 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 	switch v := doc.(type) {
 	case map[string]any:
 		for key, val := range v {
-			indexKey := document.NewKeyWith(q.Database, q.Collection, key, val)
+			indexKey := service.createIndexKey(tx, q, key, val)
 			err = tx.InsertIndex(indexKey, docKey)
 			if err != nil {
 				return err
@@ -95,8 +95,16 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 	return err
 }
 
+func (service *Service) createStoreKey(tx store.Transaction, q *mongo.Query, key string, val any) document.Key {
+	return document.NewKeyWith(q.Database, q.Collection, key, val)
+}
+
 func (service *Service) createDocumentKey(tx store.Transaction, q *mongo.Query, objID any) document.Key {
-	return document.NewKeyWith(q.Database, q.Collection, ObjectID, objID)
+	return service.createStoreKey(tx, q, ObjectID, objID)
+}
+
+func (service *Service) createIndexKey(tx store.Transaction, q *mongo.Query, key string, val any) document.Key {
+	return service.createStoreKey(tx, q, key, val)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
@@ -139,7 +147,7 @@ func (service *Service) findDocuments(tx store.Transaction, q *mongo.Query) ([]b
 			if err != nil {
 				return nil, err
 			}
-			idxKey := document.NewKeyWith(q.Database, q.Collection, key, val)
+			idxKey := service.createStoreKey(tx, q, key, val)
 			var objs []document.Object
 			if isPrimaryKey(key) {
 				objs, err = tx.SelectDocuments(idxKey)
