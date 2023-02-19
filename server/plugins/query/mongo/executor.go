@@ -77,12 +77,6 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 }
 
 func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bsonDoc mongo.Document) error {
-	// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
-	bsonObjID, err := bsonDoc.LookupErr(ObjectID)
-	if err != nil {
-		return err
-	}
-
 	// Inserts the document with the primary key
 
 	doc, err := service.EncodeBSON(bsonDoc)
@@ -90,7 +84,7 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 		return err
 	}
 
-	objID, err := EncodeBSONValue(bsonObjID)
+	objID, err := LookupBSONDocumentObjectID(bsonDoc)
 	if err != nil {
 		return err
 	}
@@ -200,7 +194,17 @@ func (service *Service) Update(q *mongo.Query) (int32, error) {
 
 	updateDocs := q.GetDocuments()
 	for _, foundDoc := range foundDocs {
-		_, err := UpdateBSONDocument(foundDoc, updateDocs)
+		updatedDoc, err := UpdateBSONDocument(foundDoc, updateDocs)
+		if err != nil {
+			tx.Cancel()
+			return 0, err
+		}
+		objID, err := LookupBSONDocumentObjectID(updatedDoc)
+		if err != nil {
+			return 0, err
+		}
+		docKey := service.createDocumentKey(tx, q, objID)
+		err = tx.UpdateDocument(docKey, updatedDoc)
 		if err != nil {
 			tx.Cancel()
 			return 0, err
