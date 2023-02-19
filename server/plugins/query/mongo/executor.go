@@ -18,6 +18,7 @@ import (
 	"github.com/cybergarage/go-mongo/mongo"
 	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
@@ -36,43 +37,11 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 
 	queryDocs := q.GetDocuments()
 	for _, queryDoc := range queryDocs {
-		// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
-		queryObjID, err := queryDoc.LookupErr(ObjectID)
+		err = service.insertDocument(tx, q, queryDoc)
 		if err != nil {
-			continue
-		}
-
-		// Insert the document with the primary key
-
-		storeDoc, err := service.EncodeBSON(queryDoc)
-		if err != nil {
+			tx.Cancel()
 			return 0, err
 		}
-
-		storeObjID, err := EncodeBSON(queryObjID)
-		if err != nil {
-			return 0, err
-		}
-
-		storeKey := document.NewKeyWith(q.Database, q.Collection, ObjectID, storeObjID)
-		err = tx.InsertDocument(storeKey, storeDoc)
-		if err != nil {
-			return 0, err
-		}
-
-		// Insert the secondary indexes for the all elements
-
-		switch v := storeDoc.(type) {
-		case map[string]any:
-			for key, val := range v {
-				indexKey := document.NewKeyWith(q.Database, q.Collection, key, val)
-				err = tx.InsertIndex(indexKey, storeKey)
-				if err != nil {
-					return 0, err
-				}
-			}
-		}
-
 		nInserted++
 	}
 
@@ -86,6 +55,47 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 	}
 
 	return nInserted, nil
+}
+
+func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, queryDoc mongo.Document) error {
+	// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
+	queryObjID, err := queryDoc.LookupErr(ObjectID)
+	if err != nil {
+		return err
+	}
+
+	// Insert the document with the primary key
+
+	storeDoc, err := service.EncodeBSON(queryDoc)
+	if err != nil {
+		return err
+	}
+
+	storeObjID, err := EncodeBSON(queryObjID)
+	if err != nil {
+		return err
+	}
+
+	storeKey := document.NewKeyWith(q.Database, q.Collection, ObjectID, storeObjID)
+	err = tx.InsertDocument(storeKey, storeDoc)
+	if err != nil {
+		return err
+	}
+
+	// Insert the secondary indexes for the all elements
+
+	switch v := storeDoc.(type) {
+	case map[string]any:
+		for key, val := range v {
+			indexKey := document.NewKeyWith(q.Database, q.Collection, key, val)
+			err = tx.InsertIndex(indexKey, storeKey)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return err
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
