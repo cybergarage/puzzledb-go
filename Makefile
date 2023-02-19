@@ -51,7 +51,7 @@ vet: format
 lint: format
 	golangci-lint run ${SOURCE_ROOTS}
 
-test: 
+test: lint 
 	go test -v -cover -timeout 60s ${PACKAGES} ${TEST_PACKAGES}
 
 clean:
