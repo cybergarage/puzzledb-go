@@ -67,7 +67,7 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, que
 		return err
 	}
 
-	storeObjID, err := EncodeBSON(queryObjID)
+	storeObjID, err := EncodeBSONValue(queryObjID)
 	if err != nil {
 		return err
 	}
@@ -130,7 +130,7 @@ func (service *Service) findDocuments(tx store.Transaction, q *mongo.Query) ([]b
 		for _, condElem := range condElems {
 			key := condElem.Key()
 			bsonVal := condElem.Value()
-			val, err := EncodeBSON(bsonVal)
+			val, err := EncodeBSONValue(bsonVal)
 			if err != nil {
 				return nil, err
 			}
