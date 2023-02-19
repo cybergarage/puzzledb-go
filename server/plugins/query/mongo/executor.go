@@ -35,21 +35,6 @@ func (service *Service) createIndexKey(tx store.Transaction, q *mongo.Query, key
 	return service.createStoreKey(tx, q, key, val)
 }
 
-func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
-	switch vmap := v.(type) {
-	case map[string]any:
-		for key, val := range vmap {
-			indexKey := service.createIndexKey(tx, q, key, val)
-			err := tx.InsertIndex(indexKey, docKey)
-			if err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-	return fmt.Errorf("unknown index map type (%T) : %v", v, v)
-}
-
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
 func (service *Service) Insert(q *mongo.Query) (int32, error) {
 	db, err := service.GetDatabase(q.Database)
@@ -110,6 +95,21 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 	}
 
 	return err
+}
+
+func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
+	switch vmap := v.(type) {
+	case map[string]any:
+		for key, val := range vmap {
+			indexKey := service.createIndexKey(tx, q, key, val)
+			err := tx.InsertIndex(indexKey, docKey)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	return fmt.Errorf("unknown BSON object type (%T) : %v", v, v)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
@@ -327,5 +327,30 @@ func (service *Service) deleteDocument(tx store.Transaction, q *mongo.Query, bso
 
 	// TODO: Removes the secondary indexes for the all elements
 
+	doc, err := service.EncodeBSON(bsonDoc)
+	if err != nil {
+		return err
+	}
+
+	err = service.deleteDocumentIndexes(tx, q, docKey, doc)
+	if err != nil {
+		return err
+	}
+
 	return nil
+}
+
+func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
+	switch vmap := v.(type) {
+	case map[string]any:
+		for key, val := range vmap {
+			indexKey := service.createIndexKey(tx, q, key, val)
+			err := tx.RemoveIndex(indexKey)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	return fmt.Errorf("unknown BSON object type (%T) : %v", v, v)
 }
