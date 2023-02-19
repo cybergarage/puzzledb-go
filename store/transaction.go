@@ -17,8 +17,8 @@ package store
 type DocumentOperation interface {
 	// InsertDocument puts a document object with the specified primary key.
 	InsertDocument(key Key, obj Object) error
-	// SelectDocuments gets document objects matching the specified key.
-	SelectDocuments(key Key) ([]Object, error)
+	// FindDocuments gets document objects matching the specified key.
+	FindDocuments(key Key) ([]Object, error)
 	// UpdateDocument updates a document object with the specified primary key.
 	UpdateDocument(key Key, obj Object) error
 	// RemoveDocument removes a document object with the specified primary key.

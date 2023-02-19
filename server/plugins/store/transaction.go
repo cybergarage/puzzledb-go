@@ -42,8 +42,8 @@ func (txn *transaction) InsertDocument(key store.Key, obj store.Object) error {
 	return txn.kv.Set(&kvObj)
 }
 
-// SelectDocuments gets document objects matching the specified key.
-func (txn *transaction) SelectDocuments(key store.Key) ([]store.Object, error) {
+// FindDocuments gets document objects matching the specified key.
+func (txn *transaction) FindDocuments(key store.Key) ([]store.Object, error) {
 	kvObjs, err := txn.kv.Get(kv.NewKeyWith(kv.DocumentKeyHeader, key))
 	if err != nil {
 		return nil, err
