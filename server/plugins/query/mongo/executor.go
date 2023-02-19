@@ -21,6 +21,29 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+func (service *Service) createStoreKey(tx store.Transaction, q *mongo.Query, key string, val any) document.Key {
+	return document.NewKeyWith(q.Database, q.Collection, key, val)
+}
+
+func (service *Service) createDocumentKey(tx store.Transaction, q *mongo.Query, objID any) document.Key {
+	return service.createStoreKey(tx, q, ObjectID, objID)
+}
+
+func (service *Service) createIndexKey(tx store.Transaction, q *mongo.Query, key string, val any) document.Key {
+	return service.createStoreKey(tx, q, key, val)
+}
+
+func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v map[string]any) error {
+	for key, val := range v {
+		indexKey := service.createIndexKey(tx, q, key, val)
+		err := tx.InsertIndex(indexKey, docKey)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
 func (service *Service) Insert(q *mongo.Query) (int32, error) {
 	db, err := service.GetDatabase(q.Database)
@@ -60,7 +83,7 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 		return err
 	}
 
-	// Insert the document with the primary key
+	// Inserts the document with the primary key
 
 	doc, err := service.EncodeBSON(bsonDoc)
 	if err != nil {
@@ -79,32 +102,14 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 		return err
 	}
 
-	// Insert the secondary indexes for the all elements
+	// Makes the secondary indexes for the all elements
 
 	switch v := doc.(type) {
 	case map[string]any:
-		for key, val := range v {
-			indexKey := service.createIndexKey(tx, q, key, val)
-			err = tx.InsertIndex(indexKey, docKey)
-			if err != nil {
-				return err
-			}
-		}
+		service.updateDocumentIndexes(tx, q, docKey, v)
 	}
 
 	return err
-}
-
-func (service *Service) createStoreKey(tx store.Transaction, q *mongo.Query, key string, val any) document.Key {
-	return document.NewKeyWith(q.Database, q.Collection, key, val)
-}
-
-func (service *Service) createDocumentKey(tx store.Transaction, q *mongo.Query, objID any) document.Key {
-	return service.createStoreKey(tx, q, ObjectID, objID)
-}
-
-func (service *Service) createIndexKey(tx store.Transaction, q *mongo.Query, key string, val any) document.Key {
-	return service.createStoreKey(tx, q, key, val)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
