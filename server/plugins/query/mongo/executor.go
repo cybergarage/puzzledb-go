@@ -222,46 +222,52 @@ func (service *Service) Update(q *mongo.Query) (int32, error) {
 
 func (service *Service) updateDocuments(tx store.Transaction, q *mongo.Query, bsonDocs []bson.Document) (int32, error) {
 	nUpdated := 0
+	for _, bsonDoc := range bsonDocs {
+		err := service.updateDocument(tx, q, bsonDoc)
+		if err != nil {
+			return 0, err
+		}
+		nUpdated++
+	}
+	return int32(nUpdated), nil
+}
 
+func (service *Service) updateDocument(tx store.Transaction, q *mongo.Query, bsonDoc bson.Document) error {
 	// Updates the matched doucments by the query
 
 	updateBSONDocs := q.GetDocuments()
-	for _, bsonDoc := range bsonDocs {
-		updatedBSONDoc, err := UpdateBSONDocument(bsonDoc, updateBSONDocs)
-		if err != nil {
-			return 0, err
-		}
-		objID, err := LookupBSONDocumentObjectID(updatedBSONDoc)
-		if err != nil {
-			return 0, err
-		}
-		updatedDoc, err := service.EncodeBSON(updatedBSONDoc)
-		if err != nil {
-			return 0, err
-		}
-		docKey := service.createDocumentKey(tx, q, objID)
-		err = tx.UpdateDocument(docKey, updatedDoc)
-		if err != nil {
-			return 0, err
-		}
-
-		// Updates the secondary indexes for the all elements
-
-		for _, updateBSONDoc := range updateBSONDocs {
-			updateDoc, err := service.EncodeBSON(updateBSONDoc)
-			if err != nil {
-				return 0, err
-			}
-			err = service.updateDocumentIndexes(tx, q, docKey, updateDoc)
-			if err != nil {
-				return 0, err
-			}
-		}
-
-		nUpdated++
+	updatedBSONDoc, err := UpdateBSONDocument(bsonDoc, updateBSONDocs)
+	if err != nil {
+		return err
+	}
+	objID, err := LookupBSONDocumentObjectID(updatedBSONDoc)
+	if err != nil {
+		return err
+	}
+	updatedDoc, err := service.EncodeBSON(updatedBSONDoc)
+	if err != nil {
+		return err
+	}
+	docKey := service.createDocumentKey(tx, q, objID)
+	err = tx.UpdateDocument(docKey, updatedDoc)
+	if err != nil {
+		return err
 	}
 
-	return int32(nUpdated), nil
+	// Updates the secondary indexes for the all elements
+
+	for _, updateBSONDoc := range updateBSONDocs {
+		updateDoc, err := service.EncodeBSON(updateBSONDoc)
+		if err != nil {
+			return err
+		}
+		err = service.updateDocumentIndexes(tx, q, docKey, updateDoc)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Delete hadles OP_DELETE and 'delete' query of OP_MSG or OP_QUERY.
