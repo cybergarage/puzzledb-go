@@ -30,7 +30,7 @@ type element struct {
 }
 
 // NewElement returns a blank schema.
-func NewElement() *element {
+func NewElement() Element {
 	e := &element{
 		data: map[uint8]any{},
 	}
@@ -38,7 +38,7 @@ func NewElement() *element {
 }
 
 // SetName sets the specified name to the element.
-func (e *element) SetName(name string) *element {
+func (e *element) SetName(name string) Element {
 	e.data[elementNameIdx] = name
 	return e
 }
@@ -58,7 +58,7 @@ func (e *element) Name() string {
 }
 
 // SetType sets the specified type to the element.
-func (e *element) SetType(t ElementType) *element {
+func (e *element) SetType(t ElementType) Element {
 	e.data[elementTypeIdx] = uint8(t)
 	return e
 }

@@ -27,4 +27,8 @@ type Element interface {
 	Type() ElementType
 	// Data returns the raw representation data in memory.
 	Data() any
+	// SetName sets the specified name to the element.
+	SetName(name string) Element
+	// SetType sets the specified type to the element.
+	SetType(t ElementType) Element
 }
