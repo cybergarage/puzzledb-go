@@ -243,6 +243,22 @@ func (service *Service) Update(q *mongo.Query) (int32, error) {
 		nUpdated++
 	}
 
+	foundDocs, err := service.Find(q)
+	if err != nil {
+		tx.Cancel()
+		return 0, err
+	}
+
+	updateDocs := q.GetDocuments()
+	for _, foundDoc := range foundDocs {
+		_, err := UpdateBSONDocument(foundDoc, updateDocs)
+		if err != nil {
+			tx.Cancel()
+			return 0, err
+		}
+		nUpdated++
+	}
+
 	err = tx.Commit()
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
