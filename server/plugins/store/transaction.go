@@ -107,6 +107,21 @@ func (txn *transaction) SelectDocumentsByIndex(indexKey store.Key) ([]store.Obje
 	return objs, nil
 }
 
+// UpdateDocument updates a document object with the specified primary key.
+func (txn *transaction) UpdateDocument(key store.Key, obj store.Object) error {
+	var encObj bytes.Buffer
+	err := txn.Encode(&encObj, obj)
+	if err != nil {
+		return err
+	}
+	docKey := kv.NewKeyWith(kv.DocumentKeyHeader, key)
+	kvObj := kv.Object{
+		Key:   docKey,
+		Value: encObj.Bytes(),
+	}
+	return txn.kv.Set(&kvObj)
+}
+
 // Commit commits this transaction.
 func (txn *transaction) Commit() error {
 	return txn.kv.Commit()
