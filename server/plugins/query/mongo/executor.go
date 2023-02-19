@@ -190,31 +190,43 @@ func (service *Service) Update(q *mongo.Query) (int32, error) {
 		return 0, err
 	}
 
+	nUpdated, err := service.updateDocument(tx, q, foundDocs)
+	if err != nil {
+		tx.Cancel()
+		return 0, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return 0, mongo.NewQueryError(q)
+	}
+
+	return int32(nUpdated), nil
+}
+
+func (service *Service) updateDocument(tx store.Transaction, q *mongo.Query, bsonDocs []bson.Document) (int32, error) {
 	nUpdated := 0
 
 	updateDocs := q.GetDocuments()
-	for _, foundDoc := range foundDocs {
-		updatedDoc, err := UpdateBSONDocument(foundDoc, updateDocs)
+	for _, bsonDoc := range bsonDocs {
+		updatedBSONDoc, err := UpdateBSONDocument(bsonDoc, updateDocs)
 		if err != nil {
-			tx.Cancel()
 			return 0, err
 		}
-		objID, err := LookupBSONDocumentObjectID(updatedDoc)
+		objID, err := LookupBSONDocumentObjectID(updatedBSONDoc)
+		if err != nil {
+			return 0, err
+		}
+		updatedDoc, err := service.EncodeBSON(updatedBSONDoc)
 		if err != nil {
 			return 0, err
 		}
 		docKey := service.createDocumentKey(tx, q, objID)
 		err = tx.UpdateDocument(docKey, updatedDoc)
 		if err != nil {
-			tx.Cancel()
 			return 0, err
 		}
 		nUpdated++
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		return 0, mongo.NewQueryError(q)
 	}
 
 	return int32(nUpdated), nil
