@@ -37,11 +37,11 @@ func NewBSONDecoder() *BSONDecoder {
 
 // DecodeBSON returns the decorded BSON object from the specified object.
 func (s *BSONDecoder) DecodeBSON(obj document.Object) (bson.Document, error) {
-	return DecodeBSON(obj)
+	return DecodeBSONDocument(obj)
 }
 
-// DecodeBSON returns the decorded BSON object from the specified object.
-func DecodeBSON(obj document.Object) (bson.Document, error) {
+// DecodeBSONDocument returns the decorded BSON object from the specified object.
+func DecodeBSONDocument(obj document.Object) (bson.Document, error) {
 	idx, bsonDoc := bsoncore.AppendDocumentStart(nil)
 	var err error
 	switch v := obj.(type) {
