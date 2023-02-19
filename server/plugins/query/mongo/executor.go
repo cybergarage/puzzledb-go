@@ -148,7 +148,7 @@ func (service *Service) findDocuments(tx store.Transaction, q *mongo.Query) ([]b
 				}
 			}
 			for _, obj := range objs {
-				bsonDoc, err := DecodeBSON(obj)
+				bsonDoc, err := DecodeBSONDocument(obj)
 				if err != nil {
 					return nil, err
 				}
