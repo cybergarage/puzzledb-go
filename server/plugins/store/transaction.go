@@ -59,6 +59,12 @@ func (txn *transaction) SelectDocuments(key store.Key) ([]store.Object, error) {
 	return objs, nil
 }
 
+// RemoveDocument removes a document object with the specified primary key.
+func (txn *transaction) RemoveDocument(key store.Key) error {
+	docKey := kv.NewKeyWith(kv.DocumentKeyHeader, key)
+	return txn.kv.Remove(docKey)
+}
+
 // InsertDocument puts a document object with the specified primary key.
 func (txn *transaction) InsertIndex(key store.Key, prKey store.Key) error {
 	docKey := kv.NewKeyWith(kv.DocumentKeyHeader, prKey)
