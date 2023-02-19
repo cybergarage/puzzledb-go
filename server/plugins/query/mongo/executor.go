@@ -53,38 +53,39 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 	return nInserted, nil
 }
 
-func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, queryDoc mongo.Document) error {
+func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bsonDoc mongo.Document) error {
 	// See : The _id Field - Documents (https://docs.mongodb.com/manual/core/document/)
-	queryObjID, err := queryDoc.LookupErr(ObjectID)
+	bsonObjID, err := bsonDoc.LookupErr(ObjectID)
 	if err != nil {
 		return err
 	}
 
 	// Insert the document with the primary key
 
-	storeDoc, err := service.EncodeBSON(queryDoc)
+	doc, err := service.EncodeBSON(bsonDoc)
 	if err != nil {
 		return err
 	}
 
-	storeObjID, err := EncodeBSONValue(queryObjID)
+	objID, err := EncodeBSONValue(bsonObjID)
 	if err != nil {
 		return err
 	}
 
-	storeKey := document.NewKeyWith(q.Database, q.Collection, ObjectID, storeObjID)
-	err = tx.InsertDocument(storeKey, storeDoc)
+	docKey := service.createDocumentKey(tx, q, objID)
+	document.NewKeyWith(q.Database, q.Collection, ObjectID, objID)
+	err = tx.InsertDocument(docKey, doc)
 	if err != nil {
 		return err
 	}
 
 	// Insert the secondary indexes for the all elements
 
-	switch v := storeDoc.(type) {
+	switch v := doc.(type) {
 	case map[string]any:
 		for key, val := range v {
 			indexKey := document.NewKeyWith(q.Database, q.Collection, key, val)
-			err = tx.InsertIndex(indexKey, storeKey)
+			err = tx.InsertIndex(indexKey, docKey)
 			if err != nil {
 				return err
 			}
@@ -92,6 +93,10 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, que
 	}
 
 	return err
+}
+
+func (service *Service) createDocumentKey(tx store.Transaction, q *mongo.Query, objID any) document.Key {
+	return document.NewKeyWith(q.Database, q.Collection, ObjectID, objID)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
