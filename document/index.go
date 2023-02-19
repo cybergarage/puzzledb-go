@@ -28,6 +28,12 @@ type Index interface {
 	Type() IndexType
 	// Elements returns the schema elements.
 	Elements() []Element
+	// SetName sets the specified name to the index.
+	SetName(name string) Index
+	// SetType sets the specified type to the element.
+	SetType(t IndexType) Index
+	// AddElement returns the schema elements.
+	AddElement(elem Element) Index
 	// Data returns the raw representation data in memory.
 	Data() any
 }

@@ -33,7 +33,7 @@ type index struct {
 }
 
 // NewIndex returns a blank index.
-func NewIndex() *index {
+func NewIndex() Index {
 	idx := &index{
 		data:     map[uint8]any{},
 		elements: []Element{},
@@ -43,7 +43,7 @@ func NewIndex() *index {
 }
 
 // SetName sets the specified name to the index.
-func (idx *index) SetName(name string) *index {
+func (idx *index) SetName(name string) Index {
 	idx.data[elementNameIdx] = name
 	return idx
 }
@@ -63,7 +63,7 @@ func (idx *index) Name() string {
 }
 
 // SetType sets the specified type to the element.
-func (idx *index) SetType(t IndexType) *index {
+func (idx *index) SetType(t IndexType) Index {
 	idx.data[indexTypeIdx] = uint8(t)
 	return idx
 }
@@ -83,17 +83,18 @@ func (idx *index) Type() IndexType {
 }
 
 // AddElement returns the schema elements.
-func (idx *index) AddElement(elem Element) {
+func (idx *index) AddElement(elem Element) Index {
 	idx.elements = append(idx.elements, elem)
 	v, ok := idx.data[indexElementsIdx]
 	if !ok {
-		return
+		return idx
 	}
 	a, ok := v.([]string)
 	if !ok {
-		return
+		return idx
 	}
 	idx.data[indexElementsIdx] = append(a, elem.Name())
+	return idx
 }
 
 // Elements returns the schema elements.
