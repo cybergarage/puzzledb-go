@@ -172,82 +172,13 @@ func (service *Service) Update(q *mongo.Query) (int32, error) {
 		return 0, mongo.NewQueryError(q)
 	}
 
-	nUpdated := 0
-
-	queryDocs := q.GetDocuments()
-	queryConds := q.GetConditions()
-	if len(queryConds) == 0 {
-		return 0, nil
-	}
-
-	for n := (len(service.documents) - 1); 0 <= n; n-- {
-		serverDoc := service.documents[n]
-		isMatched := true
-		for _, cond := range q.GetConditions() {
-			condElems, err := cond.Elements()
-			if err != nil {
-				return 0, mongo.NewQueryError(q)
-			}
-			for _, condElem := range condElems {
-				serverFoundElem, err := serverDoc.LookupErr(condElem.Key())
-				if err != nil {
-					isMatched = false
-					break
-				}
-				if !condElem.Value().Equal(serverFoundElem) {
-					isMatched = false
-					break
-				}
-			}
-		}
-
-		if !isMatched {
-			continue
-		}
-
-		service.documents = append(service.documents[:n], service.documents[n+1:]...)
-
-		serverDocElems, err := serverDoc.Elements()
-		if err != nil {
-			return int32(nUpdated), mongo.NewQueryError(q)
-		}
-
-		updateDoc := bson.StartDocument()
-		for _, serverDocElem := range serverDocElems {
-			elemKey := serverDocElem.Key()
-			elemValue := serverDocElem.Value()
-			for _, queryDoc := range queryDocs {
-				queryValue, err := queryDoc.LookupErr(elemKey)
-				if err == nil {
-					elemValue = queryValue
-					break
-				}
-			}
-			updateDoc, err = bson.AppendValueElement(updateDoc, elemKey, elemValue)
-			if err != nil {
-				return int32(nUpdated), mongo.NewQueryError(q)
-			}
-		}
-		updateDoc, err = bson.EndDocument(updateDoc)
-		if err != nil {
-			return int32(nUpdated), mongo.NewQueryError(q)
-		}
-
-		err = updateDoc.Validate()
-		if err != nil {
-			return int32(nUpdated), mongo.NewQueryError(q)
-		}
-
-		service.documents = append(service.documents, updateDoc)
-
-		nUpdated++
-	}
-
 	foundDocs, err := service.Find(q)
 	if err != nil {
 		tx.Cancel()
 		return 0, err
 	}
+
+	nUpdated := 0
 
 	updateDocs := q.GetDocuments()
 	for _, foundDoc := range foundDocs {
