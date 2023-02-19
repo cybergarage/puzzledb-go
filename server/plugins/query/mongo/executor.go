@@ -124,7 +124,7 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 		return nil, mongo.NewQueryError(q)
 	}
 
-	foundDoc, err := service.findDocuments(tx, q)
+	foundDoc, err := service.findBSONDocuments(tx, q)
 	if err != nil {
 		tx.Cancel()
 		return nil, err
@@ -138,8 +138,8 @@ func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
 	return foundDoc, nil
 }
 
-func (service *Service) findDocuments(tx store.Transaction, q *mongo.Query) ([]bson.Document, error) {
-	foundDocs := make([]bson.Document, 0)
+func (service *Service) findDocumentObjects(tx store.Transaction, q *mongo.Query) ([]document.Object, error) {
+	matchedDocs := []document.Object{}
 	for _, cond := range q.GetConditions() {
 		condElems, err := cond.Elements()
 		if err != nil {
@@ -165,17 +165,27 @@ func (service *Service) findDocuments(tx store.Transaction, q *mongo.Query) ([]b
 					return nil, err
 				}
 			}
-			for _, obj := range objs {
-				bsonDoc, err := DecodeBSONDocument(obj)
-				if err != nil {
-					return nil, err
-				}
-				foundDocs = append(foundDocs, bsonDoc)
-			}
+			matchedDocs = append(matchedDocs, objs...)
 
 		}
 	}
-	return foundDocs, nil
+	return matchedDocs, nil
+}
+
+func (service *Service) findBSONDocuments(tx store.Transaction, q *mongo.Query) ([]bson.Document, error) {
+	docs, err := service.findDocumentObjects(tx, q)
+	if err != nil {
+		return nil, err
+	}
+	bsonDocs := []bson.Document{}
+	for _, matchedDoc := range docs {
+		bsonDoc, err := DecodeBSONDocument(matchedDoc)
+		if err != nil {
+			return nil, err
+		}
+		bsonDocs = append(bsonDocs, bsonDoc)
+	}
+	return bsonDocs, nil
 }
 
 // Update hadles OP_UPDATE and 'update' query of OP_MSG or OP_QUERY.
