@@ -70,41 +70,6 @@ func DecodeBSONDocument(obj document.Object) (bson.Document, error) {
 	return bsonDoc, nil
 }
 
-func bsonDocumentAddObject(bsonDoc []byte, key string, obj any) ([]byte, error) {
-	bsonVal, err := DecodeBSONValue(obj)
-	if err != nil {
-		return nil, err
-	}
-
-	switch bsonVal.Type {
-	case bsontype.Array:
-		return bsoncore.AppendArrayElement(bsonDoc, key, bsonVal.Array()), nil
-	case bsontype.Boolean:
-		return bsoncore.AppendBooleanElement(bsonDoc, key, bsonVal.Boolean()), nil
-	case bsontype.Int32:
-		return bsoncore.AppendInt32Element(bsonDoc, key, bsonVal.Int32()), nil
-	case bsontype.Int64:
-		return bsoncore.AppendInt64Element(bsonDoc, key, bsonVal.Int64()), nil
-	case bsontype.Double:
-		return bsoncore.AppendDoubleElement(bsonDoc, key, bsonVal.Double()), nil
-	case bsontype.String:
-		return bsoncore.AppendStringElement(bsonDoc, key, bsonVal.StringValue()), nil
-	case bsontype.EmbeddedDocument:
-		return bsoncore.AppendDocumentElement(bsonDoc, key, bsonVal.Document()), nil
-	case bsontype.ObjectID:
-		return bsoncore.AppendObjectIDElement(bsonDoc, key, bsonVal.ObjectID()), nil
-	case bsontype.DateTime:
-		return bsoncore.AppendDateTimeElement(bsonDoc, key, bsonVal.DateTime()), nil
-	case bsontype.Binary:
-		subType, binData := bsonVal.Binary()
-		return bsoncore.AppendBinaryElement(bsonDoc, key, subType, binData), nil
-	case bsontype.Null:
-		return bsoncore.AppendNullElement(bsonDoc, key), nil
-	}
-
-	return bsonDoc, fmt.Errorf("unknown element type : %v", bsonVal)
-}
-
 func DecodeBSONValue(obj any) (*bsoncore.Value, error) {
 	var err error
 	switch v := obj.(type) {
@@ -206,4 +171,39 @@ func DecodeBSONValue(obj any) (*bsoncore.Value, error) {
 	}
 
 	return nil, fmt.Errorf("unknown object type : %T", obj)
+}
+
+func bsonDocumentAddObject(bsonDoc []byte, key string, obj any) ([]byte, error) {
+	bsonVal, err := DecodeBSONValue(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	switch bsonVal.Type {
+	case bsontype.Array:
+		return bsoncore.AppendArrayElement(bsonDoc, key, bsonVal.Array()), nil
+	case bsontype.Boolean:
+		return bsoncore.AppendBooleanElement(bsonDoc, key, bsonVal.Boolean()), nil
+	case bsontype.Int32:
+		return bsoncore.AppendInt32Element(bsonDoc, key, bsonVal.Int32()), nil
+	case bsontype.Int64:
+		return bsoncore.AppendInt64Element(bsonDoc, key, bsonVal.Int64()), nil
+	case bsontype.Double:
+		return bsoncore.AppendDoubleElement(bsonDoc, key, bsonVal.Double()), nil
+	case bsontype.String:
+		return bsoncore.AppendStringElement(bsonDoc, key, bsonVal.StringValue()), nil
+	case bsontype.EmbeddedDocument:
+		return bsoncore.AppendDocumentElement(bsonDoc, key, bsonVal.Document()), nil
+	case bsontype.ObjectID:
+		return bsoncore.AppendObjectIDElement(bsonDoc, key, bsonVal.ObjectID()), nil
+	case bsontype.DateTime:
+		return bsoncore.AppendDateTimeElement(bsonDoc, key, bsonVal.DateTime()), nil
+	case bsontype.Binary:
+		subType, binData := bsonVal.Binary()
+		return bsoncore.AppendBinaryElement(bsonDoc, key, subType, binData), nil
+	case bsontype.Null:
+		return bsoncore.AppendNullElement(bsonDoc, key), nil
+	}
+
+	return bsonDoc, fmt.Errorf("unknown element type : %v", bsonVal)
 }
