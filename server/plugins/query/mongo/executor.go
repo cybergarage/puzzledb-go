@@ -96,7 +96,7 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 		return err
 	}
 
-	// Makes the secondary indexes for the all elements
+	// Creates the secondary indexes for the all elements
 
 	switch v := doc.(type) {
 	case map[string]any:
@@ -207,9 +207,11 @@ func (service *Service) Update(q *mongo.Query) (int32, error) {
 func (service *Service) updateDocument(tx store.Transaction, q *mongo.Query, bsonDocs []bson.Document) (int32, error) {
 	nUpdated := 0
 
-	updateDocs := q.GetDocuments()
+	// Updates the matched doucments by the query
+
+	updateBSONDocs := q.GetDocuments()
 	for _, bsonDoc := range bsonDocs {
-		updatedBSONDoc, err := UpdateBSONDocument(bsonDoc, updateDocs)
+		updatedBSONDoc, err := UpdateBSONDocument(bsonDoc, updateBSONDocs)
 		if err != nil {
 			return 0, err
 		}
@@ -226,6 +228,20 @@ func (service *Service) updateDocument(tx store.Transaction, q *mongo.Query, bso
 		if err != nil {
 			return 0, err
 		}
+
+		// Updates the secondary indexes for the all elements
+
+		for _, updateBSONDoc := range updateBSONDocs {
+			updateDoc, err := service.EncodeBSON(updateBSONDoc)
+			if err != nil {
+				return 0, err
+			}
+			switch v := updateDoc.(type) {
+			case map[string]any:
+				service.updateDocumentIndexes(tx, q, docKey, v)
+			}
+		}
+
 		nUpdated++
 	}
 
