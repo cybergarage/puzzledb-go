@@ -50,10 +50,6 @@ func (service *Service) Insert(q *mongo.Query) (int32, error) {
 		return 0, mongo.NewQueryError(q)
 	}
 
-	if len(queryDocs) != int(nInserted) {
-		return nInserted, mongo.NewQueryError(q)
-	}
-
 	return nInserted, nil
 }
 
