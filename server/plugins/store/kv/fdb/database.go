@@ -23,8 +23,7 @@ type Database struct {
 	ID string
 }
 
-// NewDatabaseWithID returns a new database with the specified ID.
-func NewDatabaseWithID(id string) (*Database, error) {
+func newDatabaseWithID(id string) (store.Database, error) {
 	return &Database{
 		ID: id,
 	}, nil
