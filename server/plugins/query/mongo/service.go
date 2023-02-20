@@ -16,7 +16,6 @@ package mongo
 
 import (
 	"github.com/cybergarage/go-mongo/mongo"
-	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -24,7 +23,6 @@ import (
 type Service struct {
 	*mongo.Server
 	*query.BaseService
-	documents []bson.Document
 	*Serializer
 }
 
@@ -33,7 +31,6 @@ func NewService() *Service {
 	server := &Service{
 		Server:      mongo.NewServer(),
 		BaseService: query.NewService(),
-		documents:   make([]bson.Document, 0),
 		Serializer:  NewSerializer(),
 	}
 
