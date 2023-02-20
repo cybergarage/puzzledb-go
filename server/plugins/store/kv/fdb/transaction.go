@@ -15,26 +15,26 @@
 package fdb
 
 import (
-	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // Transaction represents a transaction instance.
 type Transaction struct {
-	store.Transaction
+	kv.Transaction
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
-func (txn *Transaction) Set(obj *store.Object) error {
+func (txn *Transaction) Set(obj *kv.Object) error {
 	return nil
 }
 
-// Get returns a key-value object of the specified key.
-func (txn *Transaction) Get(key store.Key) ([]*store.Object, error) {
+// Get returns a result set of the specified key.
+func (txn *Transaction) Get(key kv.Key) (kv.ResultSet, error) {
 	return nil, nil
 }
 
 // Remove removes the specified key-value object.
-func (txn *Transaction) Remove(key store.Key) error {
+func (txn *Transaction) Remove(key kv.Key) error {
 	return nil
 }
 
