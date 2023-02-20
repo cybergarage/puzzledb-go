@@ -17,8 +17,8 @@ package store
 type DocumentOperation interface {
 	// InsertDocument puts a document object with the specified primary key.
 	InsertDocument(docKey Key, obj Object) error
-	// FindDocuments gets document objects matching the specified key.
-	FindDocuments(docKey Key) ([]Object, error)
+	// FindDocuments returns a result set matching the specified key.
+	FindDocuments(docKey Key) (ResultSet, error)
 	// UpdateDocument updates a document object with the specified primary key.
 	UpdateDocument(docKey Key, obj Object) error
 	// RemoveDocument removes a document object with the specified primary key.
@@ -30,8 +30,8 @@ type IndexOperation interface {
 	InsertIndex(idxKey Key, key Key) error
 	// RemoveIndex removes the specified secondary index.
 	RemoveIndex(idxKey Key) error
-	// FindDocumentsByIndex gets document objects matching the specified index key.
-	FindDocumentsByIndex(indexKey Key) ([]Object, error)
+	// FindDocumentsByIndex returns a result set matching the specified index key.
+	FindDocumentsByIndex(indexKey Key) (ResultSet, error)
 }
 
 // Transaction represents a transaction interface.
