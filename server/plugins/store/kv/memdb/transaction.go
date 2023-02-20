@@ -15,8 +15,7 @@
 package memdb
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/errors"
-	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/hashicorp/go-memdb"
 )
 
@@ -27,7 +26,7 @@ type document struct {
 
 // Memdb represents a Memdb instance.
 type Transaction struct {
-	store.Transaction
+	kv.Transaction
 	*memdb.Txn
 }
 
@@ -38,7 +37,7 @@ func newTransaction(txn *memdb.Txn) *Transaction {
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
-func (txn *Transaction) Set(obj *store.Object) error {
+func (txn *Transaction) Set(obj *kv.Object) error {
 	keyBytes, err := obj.KeyBytes()
 	if err != nil {
 		return err
@@ -50,8 +49,8 @@ func (txn *Transaction) Set(obj *store.Object) error {
 	return txn.Txn.Insert(tableName, doc)
 }
 
-// Get returns a key-value object of the specified key.
-func (txn *Transaction) Get(key store.Key) ([]*store.Object, error) {
+// Get returns a result set of the specified key.
+func (txn *Transaction) Get(key kv.Key) (kv.ResultSet, error) {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err
@@ -60,26 +59,11 @@ func (txn *Transaction) Get(key store.Key) ([]*store.Object, error) {
 	if err != nil {
 		return nil, err
 	}
-	objs := []*store.Object{}
-	elem := it.Next()
-	for elem != nil {
-		doc, ok := elem.(*document)
-		if ok {
-			objs = append(objs, &store.Object{
-				Key:   key,
-				Value: doc.Value,
-			})
-		}
-		elem = it.Next()
-	}
-	if len(objs) == 0 {
-		return nil, errors.ObjectNotFound
-	}
-	return objs, nil
+	return newResultSet(key, it), nil
 }
 
 // Remove removes the specified key-value object.
-func (txn *Transaction) Remove(key store.Key) error {
+func (txn *Transaction) Remove(key kv.Key) error {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return err
