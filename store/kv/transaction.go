@@ -19,7 +19,7 @@ type Transaction interface {
 	// Set stores a key-value object. If the key already holds some value, it is overwritten.
 	Set(obj *Object) error
 	// Get returns a key-value object of the specified key.
-	Get(key Key) ([]*Object, error)
+	Get(key Key) (ResultSet, error)
 	// Remove removes the specified key-value object.
 	Remove(key Key) error
 	// Commit commits this transaction.
