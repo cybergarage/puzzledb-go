@@ -14,5 +14,9 @@
 
 package store
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
 // Object represents a store object.
-type Object = any
+type Object = document.Object
