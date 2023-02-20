@@ -12,14 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package fdb
 
 import (
-	"testing"
-
-	kv "github.com/cybergarage/puzzledb-go/puzzledb/test/plugins/store/kv"
+	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-func TestStores(t *testing.T) {
-	kv.StoreTest(t, NewStore())
+// Database represents a database.
+type Database struct {
+	ID string
+}
+
+// NewDatabaseWithID returns a new database with the specified ID.
+func NewDatabaseWithID(id string) (*Database, error) {
+	return &Database{
+		ID: id,
+	}, nil
+}
+
+// Name returns the unique name.
+func (db *Database) Name() string {
+	return db.ID
+}
+
+// Transact begin a new transaction.
+func (db *Database) Transact(write bool) (store.Transaction, error) {
+	return nil, nil
 }
