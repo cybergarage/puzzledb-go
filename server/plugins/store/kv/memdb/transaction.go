@@ -24,20 +24,20 @@ type document struct {
 	Value []byte
 }
 
-// Memdb represents a Memdb instance.
-type Transaction struct {
+// transaction represents a Memdb transaction instance.
+type transaction struct {
 	kv.Transaction
 	*memdb.Txn
 }
 
-func newTransaction(txn *memdb.Txn) *Transaction {
-	return &Transaction{
+func newTransaction(txn *memdb.Txn) *transaction {
+	return &transaction{
 		Txn: txn,
 	}
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
-func (txn *Transaction) Set(obj *kv.Object) error {
+func (txn *transaction) Set(obj *kv.Object) error {
 	keyBytes, err := obj.KeyBytes()
 	if err != nil {
 		return err
@@ -50,7 +50,7 @@ func (txn *Transaction) Set(obj *kv.Object) error {
 }
 
 // Get returns a result set of the specified key.
-func (txn *Transaction) Get(key kv.Key) (kv.ResultSet, error) {
+func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (txn *Transaction) Get(key kv.Key) (kv.ResultSet, error) {
 }
 
 // Remove removes the specified key-value object.
-func (txn *Transaction) Remove(key kv.Key) error {
+func (txn *transaction) Remove(key kv.Key) error {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return err
@@ -76,13 +76,13 @@ func (txn *Transaction) Remove(key kv.Key) error {
 }
 
 // Commit commits this transaction.
-func (txn *Transaction) Commit() error {
+func (txn *transaction) Commit() error {
 	txn.Txn.Commit()
 	return nil
 }
 
 // Cancel cancels this transaction.
-func (txn *Transaction) Cancel() error {
+func (txn *transaction) Cancel() error {
 	txn.Txn.Abort()
 	return nil
 }
