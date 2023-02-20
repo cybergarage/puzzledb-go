@@ -42,21 +42,13 @@ func (txn *transaction) InsertDocument(docKey store.Key, obj store.Object) error
 	return txn.kv.Set(&kvObj)
 }
 
-// FindDocuments gets document objects matching the specified key.
-func (txn *transaction) FindDocuments(docKey store.Key) ([]store.Object, error) {
-	kvObjs, err := txn.kv.Get(kv.NewKeyWith(kv.DocumentKeyHeader, docKey))
+// FindDocuments returns a result set matching the specified key.
+func (txn *transaction) FindDocuments(docKey store.Key) (store.ResultSet, error) {
+	kvRs, err := txn.kv.Get(kv.NewKeyWith(kv.DocumentKeyHeader, docKey))
 	if err != nil {
 		return nil, err
 	}
-	objs := []store.Object{}
-	for _, kvObj := range kvObjs {
-		obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
-		if err != nil {
-			return nil, err
-		}
-		objs = append(objs, obj)
-	}
-	return objs, nil
+	return newResultSet(txn.Serializer, kvRs), nil
 }
 
 // RemoveDocument removes a document object with the specified primary key.
@@ -92,7 +84,7 @@ func (txn *transaction) RemoveIndex(idxKey store.Key) error {
 }
 
 // FindDocumentsByIndex gets document objects matching the specified index key.
-func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) ([]store.Object, error) {
+func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet, error) {
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
 	kvIdxObjs, err := txn.kv.Get(kvIdxKey)
 	if err != nil {
