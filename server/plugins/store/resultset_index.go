@@ -71,3 +71,12 @@ func (rs *indexResultSet) Next() bool {
 func (rs *indexResultSet) Object() store.Object {
 	return rs.obj
 }
+
+// Objects returns an object in the current position.
+func (rs *indexResultSet) Objects() []store.Object {
+	objs := []store.Object{}
+	for rs.Next() {
+		objs = append(objs, rs.Object())
+	}
+	return objs
+}
