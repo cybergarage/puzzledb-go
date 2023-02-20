@@ -47,9 +47,19 @@ func (rs *resultSet) Next() bool {
 		return false
 	}
 	rs.obj = obj
+	return true
 }
 
 // Object returns an object in the current position.
 func (rs *resultSet) Object() store.Object {
 	return rs.obj
+}
+
+// Objects returns an object in the current position.
+func (rs *resultSet) Objects() []store.Object {
+	objs := []store.Object{}
+	for rs.Next() {
+		objs = append(objs, rs.Object())
+	}
+	return objs
 }
