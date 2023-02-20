@@ -88,16 +88,16 @@ func StoreTest(t *testing.T, s plugins.Service) {
 			t.Error(err)
 			break
 		}
-		objs, err := tx.Get([]any{key})
+		rs, err := tx.Get([]any{key})
 		if err != nil {
 			t.Error(err)
 			break
 		}
-		if len(objs) != 1 {
-			t.Errorf("%v != 1", objs)
+		if !rs.Next() {
+			t.Errorf("%v != 1", rs)
 			break
 		}
-		obj := objs[0]
+		obj := rs.Object()
 		if !bytes.Equal(obj.Value, vals[n]) {
 			t.Errorf("%s != %s", obj.Value, vals[n])
 		}
