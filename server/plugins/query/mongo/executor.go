@@ -155,15 +155,17 @@ func (service *Service) findDocumentObjects(tx store.Transaction, q *mongo.Query
 			idxKey := service.createStoreKey(tx, q, key, val)
 			var objs []document.Object
 			if isPrimaryKey(key) {
-				objs, err = tx.FindDocuments(idxKey)
+				rs, err := tx.FindDocuments(idxKey)
 				if err != nil {
 					return nil, err
 				}
+				objs = rs.Objects()
 			} else {
-				objs, err = tx.FindDocumentsByIndex(idxKey)
+				rs, err := tx.FindDocumentsByIndex(idxKey)
 				if err != nil {
 					return nil, err
 				}
+				objs = rs.Objects()
 			}
 			matchedDocs = append(matchedDocs, objs...)
 
