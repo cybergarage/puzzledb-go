@@ -35,7 +35,7 @@ func (fdb *FoundationDB) CreateDatabase(name string) error {
 
 // GetDatabase retruns the specified database.
 func (fdb *FoundationDB) GetDatabase(id string) (store.Database, error) {
-	return nil, nil
+	return newDatabaseWithID(id), nil
 }
 
 // Start starts this memdb.

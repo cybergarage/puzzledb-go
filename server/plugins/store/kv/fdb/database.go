@@ -23,10 +23,10 @@ type Database struct {
 	ID string
 }
 
-func newDatabaseWithID(id string) (store.Database, error) {
+func newDatabaseWithID(id string) store.Database {
 	return &Database{
 		ID: id,
-	}, nil
+	}
 }
 
 // Name returns the unique name.
