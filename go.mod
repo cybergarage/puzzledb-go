@@ -5,6 +5,7 @@ go 1.19
 require github.com/hashicorp/go-memdb v1.3.2
 
 require (
+	github.com/apple/foundationdb/bindings/go v0.0.0-20230219042515-487b444da97f // indirect
 	github.com/cybergarage/go-logger v1.3.2 // indirect
 	github.com/cybergarage/go-redis v1.2.0 // indirect
 	github.com/cybergarage/go-sqlite v0.0.0-20221027001523-f5073641f875 // indirect
