@@ -86,29 +86,11 @@ func (txn *transaction) RemoveIndex(idxKey store.Key) error {
 // FindDocumentsByIndex gets document objects matching the specified index key.
 func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet, error) {
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
-	kvIdxObjs, err := txn.kv.Get(kvIdxKey)
+	kvIdxRs, err := txn.kv.Get(kvIdxKey)
 	if err != nil {
 		return nil, err
 	}
-	objs := []store.Object{}
-	for _, kvIdxObj := range kvIdxObjs {
-		kvIdx, err := txn.Decode(bytes.NewReader(kvIdxObj.Value))
-		if err != nil {
-			return nil, err
-		}
-		kvObjs, err := txn.kv.Get([]any{kvIdx}) // kvIdx is already encoded
-		if err != nil {
-			return nil, err
-		}
-		for _, kvObj := range kvObjs {
-			obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
-			if err != nil {
-				return nil, err
-			}
-			objs = append(objs, obj)
-		}
-	}
-	return objs, nil
+	return newIndexResultSet(txn, txn.Serializer, kvIdxRs), nil
 }
 
 // UpdateDocument updates a document object with the specified primary key.
