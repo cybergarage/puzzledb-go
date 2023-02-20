@@ -18,32 +18,35 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-// Transaction represents a transaction instance.
-type Transaction struct {
-	kv.Transaction
+// transaction represents a transaction instance.
+type transaction struct {
+}
+
+func newTransaction() kv.Transaction {
+	return &transaction{}
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
-func (txn *Transaction) Set(obj *kv.Object) error {
+func (txn *transaction) Set(obj *kv.Object) error {
 	return nil
 }
 
 // Get returns a result set of the specified key.
-func (txn *Transaction) Get(key kv.Key) (kv.ResultSet, error) {
+func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
 	return nil, nil
 }
 
 // Remove removes the specified key-value object.
-func (txn *Transaction) Remove(key kv.Key) error {
+func (txn *transaction) Remove(key kv.Key) error {
 	return nil
 }
 
 // Commit commits this transaction.
-func (txn *Transaction) Commit() error {
+func (txn *transaction) Commit() error {
 	return nil
 }
 
 // Cancel cancels this transaction.
-func (txn *Transaction) Cancel() error {
+func (txn *transaction) Cancel() error {
 	return nil
 }
