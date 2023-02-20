@@ -88,7 +88,16 @@ func (service *Service) Get(ctx *DBContext, key string) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
-	objs, err := tx.FindDocuments([]any{key})
+	rs, err := tx.FindDocuments([]any{key})
+	if err != nil {
+		err = tx.Cancel()
+		if err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	objs := rs.Objects()
 	if err != nil || len(objs) != 1 {
 		err = tx.Cancel()
 		if err != nil {
