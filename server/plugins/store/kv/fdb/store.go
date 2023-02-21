@@ -15,18 +15,18 @@
 package fdb
 
 import (
-	// "github.com/apple/foundationdb/bindings/go/src/fdb"
+	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // FoundationDB represents a FoundationDB instance.
 type FoundationDB struct {
+	fdb.Database
 }
 
 // New returns a new memdb store instance.
 func NewStore() store.Service {
-	// fdb.MustAPIVersion(720)
 	return &FoundationDB{}
 }
 
@@ -42,6 +42,11 @@ func (store *FoundationDB) GetDatabase(id string) (kv.Database, error) {
 
 // Start starts this memdb.
 func (store *FoundationDB) Start() error {
+	db, err := fdb.OpenDefault()
+	if err != nil {
+		return err
+	}
+	store.Database = db
 	return nil
 }
 
