@@ -20,28 +20,28 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-// FoundationDB represents a FoundationDB instance.
-type FoundationDB struct {
+// Store represents a FoundationDB store service instance.
+type Store struct {
 	fdb.Database
 }
 
 // New returns a new memdb store instance.
 func NewStore() store.Service {
-	return &FoundationDB{}
+	return &Store{}
 }
 
 // CreateDatabase creates a new database.
-func (store *FoundationDB) CreateDatabase(name string) error {
+func (store *Store) CreateDatabase(name string) error {
 	return nil
 }
 
 // GetDatabase retruns the specified database.
-func (store *FoundationDB) GetDatabase(id string) (kv.Database, error) {
+func (store *Store) GetDatabase(id string) (kv.Database, error) {
 	return newDatabaseWithID(id), nil
 }
 
 // Start starts this memdb.
-func (store *FoundationDB) Start() error {
+func (store *Store) Start() error {
 	db, err := fdb.OpenDefault()
 	if err != nil {
 		return err
@@ -51,6 +51,6 @@ func (store *FoundationDB) Start() error {
 }
 
 // Stop stops this memdb.
-func (store *FoundationDB) Stop() error {
+func (store *Store) Stop() error {
 	return nil
 }
