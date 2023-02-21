@@ -46,7 +46,7 @@ func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	tr.Get(fdb.Key(keyBytes))
+	txn.Transaction.Get(fdb.Key(keyBytes))
 	return nil, nil
 }
 
