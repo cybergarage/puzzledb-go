@@ -15,15 +15,19 @@
 package fdb
 
 import (
+	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // transaction represents a transaction instance.
 type transaction struct {
+	fdb.Transaction
 }
 
-func newTransaction() kv.Transaction {
-	return &transaction{}
+func newTransaction(txn fdb.Transaction) kv.Transaction {
+	return &transaction{
+		Transaction: txn,
+	}
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
