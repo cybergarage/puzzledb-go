@@ -39,5 +39,9 @@ func (db *Database) Name() string {
 
 // Transact begin a new transaction.
 func (db *Database) Transact(write bool) (store.Transaction, error) {
-	return nil, nil
+	txn, err := db.Database.CreateTransaction()
+	if err != nil {
+		return nil, err
+	}
+	return newTransaction(txn), nil
 }
