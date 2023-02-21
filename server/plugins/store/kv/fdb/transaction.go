@@ -71,5 +71,6 @@ func (txn *transaction) Commit() error {
 
 // Cancel cancels this transaction.
 func (txn *transaction) Cancel() error {
+	txn.Transaction.Cancel()
 	return nil
 }
