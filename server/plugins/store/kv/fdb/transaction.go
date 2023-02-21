@@ -54,7 +54,7 @@ func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
 func (txn *transaction) Remove(key kv.Key) error {
 	keyBytes, err := key.Encode()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	txn.Transaction.Clear(fdb.Key(keyBytes))
 	return nil
@@ -62,6 +62,10 @@ func (txn *transaction) Remove(key kv.Key) error {
 
 // Commit commits this transaction.
 func (txn *transaction) Commit() error {
+	err := txn.Transaction.Commit().Get()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
