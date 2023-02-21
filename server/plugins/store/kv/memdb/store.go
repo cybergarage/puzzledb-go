@@ -16,24 +16,24 @@ package memdb
 
 import store "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
 
-// Memdb represents a Memdb instance.
-type Memdb struct {
+// Store represents a Memdb store service instance.
+type Store struct {
 	*Databases
 }
 
 // New returns a new memdb store instance.
 func NewStore() store.Service {
-	return &Memdb{
+	return &Store{
 		Databases: NewDatabases(),
 	}
 }
 
 // Start starts this memdb.
-func (db *Memdb) Start() error {
+func (db *Store) Start() error {
 	return nil
 }
 
 // Stop stops this memdb.
-func (db Memdb) Stop() error {
+func (db Store) Stop() error {
 	return nil
 }
