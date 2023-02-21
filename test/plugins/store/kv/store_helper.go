@@ -101,7 +101,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		if !bytes.Equal(obj.Value, vals[n]) {
 			t.Errorf("%s != %s", obj.Value, vals[n])
 		}
-		if err := tx.Cancel(); err != nil {
+		if err := tx.Commit(); err != nil {
 			t.Error(err)
 			break
 		}
