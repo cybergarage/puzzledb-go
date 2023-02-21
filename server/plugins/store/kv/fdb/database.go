@@ -15,17 +15,20 @@
 package fdb
 
 import (
+	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // Database represents a database.
 type Database struct {
 	ID string
+	fdb.Database
 }
 
-func newDatabaseWithID(id string) store.Database {
+func newDatabaseWith(id string, db fdb.Database) store.Database {
 	return &Database{
-		ID: id,
+		ID:       id,
+		Database: db,
 	}
 }
 

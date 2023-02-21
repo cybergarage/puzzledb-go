@@ -39,7 +39,7 @@ func (store *Store) CreateDatabase(name string) error {
 
 // GetDatabase retruns the specified database.
 func (store *Store) GetDatabase(id string) (kv.Database, error) {
-	return newDatabaseWithID(id), nil
+	return newDatabaseWith(id, store.Database), nil
 }
 
 // Start starts this memdb.
