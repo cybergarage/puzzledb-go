@@ -52,6 +52,11 @@ func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
 
 // Remove removes the specified key-value object.
 func (txn *transaction) Remove(key kv.Key) error {
+	keyBytes, err := key.Encode()
+	if err != nil {
+		return nil, err
+	}
+	txn.Transaction.Clear(fdb.Key(keyBytes))
 	return nil
 }
 
