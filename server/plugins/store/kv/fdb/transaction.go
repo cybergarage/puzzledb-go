@@ -46,8 +46,8 @@ func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	txn.Transaction.Get(fdb.Key(keyBytes))
-	return nil, nil
+	fbs := txn.Transaction.Get(fdb.Key(keyBytes))
+	return newResultSet(key, fbs), nil
 }
 
 // Remove removes the specified key-value object.
