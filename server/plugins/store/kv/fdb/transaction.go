@@ -32,6 +32,11 @@ func newTransaction(txn fdb.Transaction) kv.Transaction {
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *transaction) Set(obj *kv.Object) error {
+	keyBytes, err := obj.KeyBytes()
+	if err != nil {
+		return err
+	}
+	// txn.Transaction.Set(keyBytes, obj.Value)
 	return nil
 }
 
