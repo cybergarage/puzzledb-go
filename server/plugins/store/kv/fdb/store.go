@@ -15,8 +15,9 @@
 package fdb
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
-	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	// "github.com/apple/foundationdb/bindings/go/src/fdb"
+	store "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // FoundationDB represents a FoundationDB instance.
@@ -24,26 +25,27 @@ type FoundationDB struct {
 }
 
 // New returns a new memdb store instance.
-func NewStore() kv.Service {
+func NewStore() store.Service {
+	// fdb.MustAPIVersion(720)
 	return &FoundationDB{}
 }
 
 // CreateDatabase creates a new database.
-func (fdb *FoundationDB) CreateDatabase(name string) error {
+func (store *FoundationDB) CreateDatabase(name string) error {
 	return nil
 }
 
 // GetDatabase retruns the specified database.
-func (fdb *FoundationDB) GetDatabase(id string) (store.Database, error) {
+func (store *FoundationDB) GetDatabase(id string) (kv.Database, error) {
 	return newDatabaseWithID(id), nil
 }
 
 // Start starts this memdb.
-func (fdb *FoundationDB) Start() error {
+func (store *FoundationDB) Start() error {
 	return nil
 }
 
 // Stop stops this memdb.
-func (fdb FoundationDB) Stop() error {
+func (store *FoundationDB) Stop() error {
 	return nil
 }
