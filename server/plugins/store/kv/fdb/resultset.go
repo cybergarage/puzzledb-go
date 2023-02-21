@@ -15,23 +15,42 @@
 package fdb
 
 import (
+	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // Memdb represents a Memdb instance.
 type resultSet struct {
+	kv.Key
+	fdb.FutureByteSlice
+	obj *kv.Object
 }
 
-func newResultSet() kv.ResultSet {
-	return &resultSet{}
+func newResultSet(key kv.Key, fbs fdb.FutureByteSlice) kv.ResultSet {
+	return &resultSet{
+		Key:             key,
+		FutureByteSlice: fbs,
+		obj:             nil}
 }
 
 // Next moves the cursor forward next object from its current position.
 func (rs *resultSet) Next() bool {
-	return false
+	if rs.FutureByteSlice == nil {
+		return false
+	}
+	val, err := rs.FutureByteSlice.Get()
+	if err != nil {
+		return false
+	}
+	rs.obj = &kv.Object{
+		Key:   rs.Key,
+		Value: val,
+	}
+	rs.FutureByteSlice = nil
+	return true
 }
 
 // Object returns an object in the current position.
 func (rs *resultSet) Object() *kv.Object {
-	return nil
+	return rs.obj
 }
