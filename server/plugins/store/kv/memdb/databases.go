@@ -18,12 +18,12 @@ import (
 	"sync"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/errors"
-	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // Databases represents a database map.
 type Databases struct {
-	store.Store
+	kv.Store
 	sync.Map
 }
 
@@ -44,7 +44,7 @@ func (dbs *Databases) CreateDatabase(name string) error {
 }
 
 // GetDatabase retruns the specified database.
-func (dbs *Databases) GetDatabase(id string) (store.Database, error) {
+func (dbs *Databases) GetDatabase(id string) (kv.Database, error) {
 	v, ok := dbs.Load(id)
 	if !ok {
 		return nil, errors.NewDatabaseNotFoundError(id)
