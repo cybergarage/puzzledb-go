@@ -20,6 +20,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
+var RequiredAPIVersion = 630
+
 // Store represents a FoundationDB store service instance.
 type Store struct {
 	fdb.Database
@@ -42,6 +44,10 @@ func (store *Store) GetDatabase(id string) (kv.Database, error) {
 
 // Start starts this memdb.
 func (store *Store) Start() error {
+	err := fdb.APIVersion(RequiredAPIVersion)
+	if err != nil {
+		return err
+	}
 	db, err := fdb.OpenDefault()
 	if err != nil {
 		return err
