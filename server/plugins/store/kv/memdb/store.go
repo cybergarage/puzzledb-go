@@ -14,7 +14,7 @@
 
 package memdb
 
-import "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
+import store "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
 
 // Memdb represents a Memdb instance.
 type Memdb struct {
@@ -22,7 +22,7 @@ type Memdb struct {
 }
 
 // New returns a new memdb store instance.
-func NewStore() kv.Service {
+func NewStore() store.Service {
 	return &Memdb{
 		Databases: NewDatabases(),
 	}
