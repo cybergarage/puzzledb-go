@@ -36,12 +36,17 @@ func (txn *transaction) Set(obj *kv.Object) error {
 	if err != nil {
 		return err
 	}
-	// txn.Transaction.Set(keyBytes, obj.Value)
+	txn.Transaction.Set(fdb.Key(keyBytes), obj.Value)
 	return nil
 }
 
 // Get returns a result set of the specified key.
 func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
+	keyBytes, err := key.Encode()
+	if err != nil {
+		return nil, err
+	}
+	tr.Get(fdb.Key(keyBytes))
 	return nil, nil
 }
 
