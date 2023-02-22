@@ -52,7 +52,7 @@ func (rs *resultSet) Object() *kv.Object {
 	return rs.obj
 }
 
-func (txn *transaction) get(key kv.Key) (kv.ResultSet, error) {
+func (txn *transaction) getone(key kv.Key) (kv.ResultSet, error) {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err
