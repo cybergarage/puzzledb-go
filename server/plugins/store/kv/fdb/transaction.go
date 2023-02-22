@@ -42,22 +42,7 @@ func (txn *transaction) Set(obj *kv.Object) error {
 
 // Get returns a result set of the specified key.
 func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
-	keyBytes, err := key.Encode()
-	if err != nil {
-		return nil, err
-	}
-	r := fdb.SelectorRange{
-		Begin: fdb.FirstGreaterOrEqual(fdb.Key(keyBytes)),
-		End:   fdb.FirstGreaterOrEqual(fdb.Key(keyBytes)),
-	}
-
-	ro := fdb.RangeOptions{
-		Limit:   0,
-		Mode:    fdb.StreamingModeIterator,
-		Reverse: false,
-	}
-	rs := txn.Transaction.GetRange(r, ro)
-	return newResultSet(key, rs), nil
+	return txn.getRange((key))
 }
 
 // Remove removes the specified key-value object.
