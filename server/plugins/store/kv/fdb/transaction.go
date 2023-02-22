@@ -42,7 +42,7 @@ func (txn *transaction) Set(obj *kv.Object) error {
 
 // Get returns a result set of the specified key.
 func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
-	return txn.getRange((key))
+	return txn.getone((key))
 }
 
 // Remove removes the specified key-value object.
