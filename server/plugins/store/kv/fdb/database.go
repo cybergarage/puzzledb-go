@@ -43,5 +43,9 @@ func (db *Database) Transact(write bool) (store.Transaction, error) {
 	if err != nil {
 		return nil, err
 	}
+	err = txn.Options().SetAccessSystemKeys()
+	if err != nil {
+		return nil, err
+	}
 	return newTransaction(txn), nil
 }
