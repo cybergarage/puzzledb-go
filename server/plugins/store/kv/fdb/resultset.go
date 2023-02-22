@@ -22,31 +22,32 @@ import (
 // Memdb represents a Memdb instance.
 type resultSet struct {
 	kv.Key
-	fdb.FutureByteSlice
+	fdb.RangeResult
 	obj *kv.Object
+	*fdb.RangeIterator
 }
 
-func newResultSet(key kv.Key, fbs fdb.FutureByteSlice) kv.ResultSet {
+func newResultSet(key kv.Key, rs fdb.RangeResult) kv.ResultSet {
 	return &resultSet{
-		Key:             key,
-		FutureByteSlice: fbs,
-		obj:             nil}
+		Key:           key,
+		RangeResult:   rs,
+		RangeIterator: rs.Iterator(),
+		obj:           nil}
 }
 
 // Next moves the cursor forward next object from its current position.
 func (rs *resultSet) Next() bool {
-	if rs.FutureByteSlice == nil {
+	if !rs.RangeIterator.Advance() {
 		return false
 	}
-	val, err := rs.FutureByteSlice.Get()
+	irs, err := rs.RangeIterator.Get()
 	if err != nil {
 		return false
 	}
 	rs.obj = &kv.Object{
 		Key:   rs.Key,
-		Value: val,
+		Value: irs.Value,
 	}
-	rs.FutureByteSlice = nil
 	return true
 }
 
