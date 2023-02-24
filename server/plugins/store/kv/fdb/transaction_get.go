@@ -19,7 +19,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-// Memdb represents a Memdb instance.
 type resultSet struct {
 	kv.Key
 	fdb.FutureByteSlice
@@ -33,7 +32,6 @@ func newResultSet(key kv.Key, fbs fdb.FutureByteSlice) kv.ResultSet {
 		obj:             nil}
 }
 
-// Next moves the cursor forward next object from its current position.
 func (rs *resultSet) Next() bool {
 	if rs.FutureByteSlice == nil {
 		return false
@@ -50,7 +48,15 @@ func (rs *resultSet) Next() bool {
 	return true
 }
 
-// Object returns an object in the current position.
 func (rs *resultSet) Object() *kv.Object {
 	return rs.obj
+}
+
+func (txn *transaction) getone(key kv.Key) (kv.ResultSet, error) {
+	keyBytes, err := key.Encode()
+	if err != nil {
+		return nil, err
+	}
+	fbs := txn.Transaction.Get(fdb.Key(keyBytes))
+	return newResultSet(key, fbs), nil
 }
