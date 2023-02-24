@@ -19,38 +19,54 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-// Memdb represents a Memdb instance.
-type resultSet struct {
+type rangeResultSet struct {
 	kv.Key
-	fdb.FutureByteSlice
+	fdb.RangeResult
 	obj *kv.Object
+	*fdb.RangeIterator
 }
 
-func newResultSet(key kv.Key, fbs fdb.FutureByteSlice) kv.ResultSet {
-	return &resultSet{
-		Key:             key,
-		FutureByteSlice: fbs,
-		obj:             nil}
+func newRangeResultSet(key kv.Key, rs fdb.RangeResult) kv.ResultSet {
+	return &rangeResultSet{
+		Key:           key,
+		RangeResult:   rs,
+		RangeIterator: rs.Iterator(),
+		obj:           nil}
 }
 
-// Next moves the cursor forward next object from its current position.
-func (rs *resultSet) Next() bool {
-	if rs.FutureByteSlice == nil {
+func (rs *rangeResultSet) Next() bool {
+	if !rs.RangeIterator.Advance() {
 		return false
 	}
-	val, err := rs.FutureByteSlice.Get()
+	irs, err := rs.RangeIterator.Get()
 	if err != nil {
 		return false
 	}
 	rs.obj = &kv.Object{
 		Key:   rs.Key,
-		Value: val,
+		Value: irs.Value,
 	}
-	rs.FutureByteSlice = nil
 	return true
 }
 
-// Object returns an object in the current position.
-func (rs *resultSet) Object() *kv.Object {
+func (rs *rangeResultSet) Object() *kv.Object {
 	return rs.obj
+}
+
+func (txn *transaction) getRange(key kv.Key) (kv.ResultSet, error) {
+	keyBytes, err := key.Encode()
+	if err != nil {
+		return nil, err
+	}
+	r := fdb.SelectorRange{
+		Begin: fdb.FirstGreaterOrEqual(fdb.Key(keyBytes)),
+		End:   fdb.LastLessThan(fdb.Key(keyBytes)),
+	}
+	ro := fdb.RangeOptions{
+		Limit:   0,
+		Mode:    fdb.StreamingModeIterator,
+		Reverse: false,
+	}
+	rs := txn.Transaction.GetRange(r, ro)
+	return newRangeResultSet(key, rs), nil
 }
