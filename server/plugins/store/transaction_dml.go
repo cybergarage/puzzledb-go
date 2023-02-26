@@ -15,15 +15,34 @@
 package store
 
 import (
+	"bytes"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // CreateSchema creates a new schema.
 func (txn *transaction) CreateSchema(schema store.Schema) error {
-	return nil
+	kcColKey := txn.createSchemaKey(schema)
+	var encSchema bytes.Buffer
+	err := txn.Encode(&encSchema, schema.Data())
+	if err != nil {
+		return err
+	}
+	kvObj := kv.Object{
+		Key:   kcColKey,
+		Value: encSchema.Bytes(),
+	}
+	return txn.kv.Set(&kvObj)
 }
 
 // GetSchema returns the specified schema.
 func (txn *transaction) GetSchema(name string) (store.Schema, error) {
 	return nil, nil
+}
+
+func (txn *transaction) createSchemaKey(schema store.Schema) store.Key {
+	colKey := document.NewKeyWith(txn.Database().Name(), schema.Name())
+	return kv.NewKeyWith(kv.SchemaKeyHeader, colKey)
 }
