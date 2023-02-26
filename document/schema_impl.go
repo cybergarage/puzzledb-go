@@ -57,6 +57,12 @@ func NewSchema() Schema {
 	return s
 }
 
+// NewSchemaWith creates a schema from the specified object.
+func NewSchemaWith(obj any) (Schema, error) {
+	s := NewSchema()
+	return s, nil
+}
+
 // SetVersion sets the specified version to the schema.
 func (s *schema) SetVersion(ver int) {
 	s.data[schemaVersionIdx] = uint8(ver)
