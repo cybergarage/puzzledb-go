@@ -22,16 +22,21 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
+func (txn *transaction) createSchemaKey(schema string) store.Key {
+	colKey := document.NewKeyWith(txn.Database().Name(), schema)
+	return kv.NewKeyWith(kv.SchemaKeyHeader, colKey)
+}
+
 // CreateSchema creates a new schema.
 func (txn *transaction) CreateSchema(schema store.Schema) error {
-	kcColKey := txn.createSchemaKey(schema)
+	kvSchemaKey := txn.createSchemaKey(schema.Name())
 	var encSchema bytes.Buffer
 	err := txn.Encode(&encSchema, schema.Data())
 	if err != nil {
 		return err
 	}
 	kvObj := kv.Object{
-		Key:   kcColKey,
+		Key:   kvSchemaKey,
 		Value: encSchema.Bytes(),
 	}
 	return txn.kv.Set(&kvObj)
@@ -42,7 +47,8 @@ func (txn *transaction) GetSchema(name string) (store.Schema, error) {
 	return nil, nil
 }
 
-func (txn *transaction) createSchemaKey(schema store.Schema) store.Key {
-	colKey := document.NewKeyWith(txn.Database().Name(), schema.Name())
-	return kv.NewKeyWith(kv.SchemaKeyHeader, colKey)
+// RemoveSchema removes the specified schema.
+func (txn *transaction) RemoveSchema(name string) error {
+	kvSchemaKey := txn.createSchemaKey(name)
+	return txn.kv.Remove(kvSchemaKey)
 }

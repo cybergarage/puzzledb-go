@@ -25,6 +25,8 @@ type DatabaseOperation interface {
 	CreateSchema(schema Schema) error
 	// GetSchema returns the specified schema.
 	GetSchema(name string) (Schema, error)
+	// RemoveSchema removes the specified schema.
+	RemoveSchema(name string) error
 }
 
 type DocumentOperation interface {
