@@ -17,7 +17,7 @@ package memdb
 import (
 	"sync"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/errors"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
@@ -47,11 +47,11 @@ func (dbs *Databases) CreateDatabase(name string) error {
 func (dbs *Databases) GetDatabase(id string) (kv.Database, error) {
 	v, ok := dbs.Load(id)
 	if !ok {
-		return nil, errors.NewDatabaseNotFoundError(id)
+		return nil, store.NewDatabaseNotFoundError(id)
 	}
 	db, ok := v.(*Database)
 	if !ok {
-		return nil, errors.NewDatabaseNotFoundError(id)
+		return nil, store.NewDatabaseNotFoundError(id)
 	}
 	return db, nil
 }

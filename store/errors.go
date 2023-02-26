@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package errors
+package store
 
 import (
 	"fmt"
@@ -21,12 +21,15 @@ import (
 )
 
 var (
-	StoreError       = errors.New("Store error")
-	DatabaseNotFound = errors.New("Database not found")
-	ObjectNotFound   = errors.New("Object not found")
-	KeyTypeError     = errors.New("Key type error")
+	ErrDatabaseNotFound = errors.New("database not found")
+	ErrSchemaNotFound   = errors.New("schema not found")
+	ErrObjectNotFound   = errors.New("object not found")
 )
 
 func NewDatabaseNotFoundError(name string) error {
-	return fmt.Errorf("%w (%s)", DatabaseNotFound, name)
+	return fmt.Errorf("%w (%s)", ErrDatabaseNotFound, name)
+}
+
+func NewSchemaNotFoundError(name string) error {
+	return fmt.Errorf("%w (%s)", ErrSchemaNotFound, name)
 }
