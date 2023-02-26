@@ -76,10 +76,17 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 
 	_, err = txn.GetSchema(schema.Name())
 	if err == nil {
+		txn.Cancel()
 		return mysql.NewResult(), fmt.Errorf(errSchemaFound, schema.Name())
 	}
 
 	err = txn.CreateSchema(schema)
+	if err != nil {
+		txn.Cancel()
+		return mysql.NewResult(), err
+	}
+
+	err = txn.Commit()
 	if err != nil {
 		return mysql.NewResult(), err
 	}
