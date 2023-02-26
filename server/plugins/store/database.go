@@ -36,7 +36,7 @@ func (db *database) Transact(write bool) (store.Transaction, error) {
 	if err != nil {
 		return nil, err
 	}
-	return newTransaction(kvTx, db.Serializer)
+	return newTransaction(db, kvTx, db.Serializer)
 }
 
 // CreateSchema creates a new schema.
