@@ -14,11 +14,17 @@
 
 package store
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
+type Schema = document.Schema
+
 type DatabaseOperation interface {
-	// CreateDatabase creates a database object with the specified name.
-	CreateDatabase(name string) error
-	// FindDocuments returns a result set matching the specified key.
-	GetDatabase(name string) (Database, error)
+	// CreateSchema creates a new schema.
+	CreateSchema(schema Schema) error
+	// GetSchema returns the specified schema.
+	GetSchema(name string) (Schema, error)
 }
 
 type DocumentOperation interface {
