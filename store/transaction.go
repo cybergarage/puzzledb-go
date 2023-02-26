@@ -14,6 +14,13 @@
 
 package store
 
+type DatabaseOperation interface {
+	// CreateDatabase creates a database object with the specified name.
+	CreateDatabase(name string) error
+	// FindDocuments returns a result set matching the specified key.
+	GetDatabase(name string) (Database, error)
+}
+
 type DocumentOperation interface {
 	// InsertDocument puts a document object with the specified primary key.
 	InsertDocument(docKey Key, obj Object) error
