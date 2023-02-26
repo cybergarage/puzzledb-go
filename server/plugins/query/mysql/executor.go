@@ -31,7 +31,7 @@ func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, st
 	store := service.Store()
 	_, err := store.GetDatabase(dbName)
 	if err != nil {
-		return mysql.NewResult(), fmt.Errorf(errorDatabaseFound, dbName)
+		return mysql.NewResult(), fmt.Errorf(errDatabaseFound, dbName)
 	}
 
 	err = store.CreateDatabase(dbName)
@@ -57,6 +57,33 @@ func (service *Service) DropDatabase(ctx context.Context, conn *mysql.Conn, stmt
 // CreateTable should handle a CREATE table statement.
 func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
+	store := service.Store()
+
+	db, err := store.GetDatabase(conn.Database)
+	if err != nil {
+		return mysql.NewResult(), err
+	}
+
+	schema, err := NewSchemaWith(stmt)
+	if err != nil {
+		return mysql.NewResult(), fmt.Errorf(errUnknownSchema, stmt)
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return mysql.NewResult(), err
+	}
+
+	_, err = txn.GetSchema(schema.Name())
+	if err == nil {
+		return mysql.NewResult(), fmt.Errorf(errSchemaFound, schema.Name())
+	}
+
+	err = txn.CreateSchema(schema)
+	if err != nil {
+		return mysql.NewResult(), err
+	}
+
 	return mysql.NewResult(), nil
 }
 
