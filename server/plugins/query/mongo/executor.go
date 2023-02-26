@@ -36,7 +36,7 @@ func (service *Service) createIndexKey(tx store.Transaction, q *mongo.Query, key
 }
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
-func (service *Service) Insert(q *mongo.Query) (int32, error) {
+func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) {
 	db, err := service.GetDatabase(q.Database)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
@@ -113,7 +113,7 @@ func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Que
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
-func (service *Service) Find(q *mongo.Query) ([]bson.Document, error) {
+func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document, error) {
 	db, err := service.GetDatabase(q.Database)
 	if err != nil {
 		return nil, mongo.NewQueryError(q)
@@ -191,7 +191,7 @@ func (service *Service) findDocuments(tx store.Transaction, q *mongo.Query) ([]b
 }
 
 // Update hadles OP_UPDATE and 'update' query of OP_MSG or OP_QUERY.
-func (service *Service) Update(q *mongo.Query) (int32, error) {
+func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) {
 	db, err := service.GetDatabase(q.Database)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
@@ -202,7 +202,7 @@ func (service *Service) Update(q *mongo.Query) (int32, error) {
 		return 0, mongo.NewQueryError(q)
 	}
 
-	foundDocs, err := service.Find(q)
+	foundDocs, err := service.Find(conn, q)
 	if err != nil {
 		tx.Cancel()
 		return 0, err
@@ -273,7 +273,7 @@ func (service *Service) updateDocument(tx store.Transaction, q *mongo.Query, bso
 }
 
 // Delete hadles OP_DELETE and 'delete' query of OP_MSG or OP_QUERY.
-func (service *Service) Delete(q *mongo.Query) (int32, error) {
+func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) {
 	db, err := service.GetDatabase(q.Database)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
@@ -284,7 +284,7 @@ func (service *Service) Delete(q *mongo.Query) (int32, error) {
 		return 0, mongo.NewQueryError(q)
 	}
 
-	foundDocs, err := service.Find(q)
+	foundDocs, err := service.Find(conn, q)
 	if err != nil {
 		tx.Cancel()
 		return 0, err
