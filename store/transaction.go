@@ -49,6 +49,7 @@ type IndexOperation interface {
 
 // Transaction represents a transaction interface.
 type Transaction interface {
+	DatabaseOperation
 	DocumentOperation
 	IndexOperation
 	// Commit commits this transaction.
