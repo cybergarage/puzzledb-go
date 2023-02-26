@@ -14,7 +14,14 @@
 
 package sqltest
 
-/*
+import (
+	"testing"
+
+	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/go-mysql/mysqltest/sqltest"
+	"github.com/cybergarage/puzzledb-go/puzzledb/test"
+)
+
 func TestSQLTestSuite(t *testing.T) {
 	log.SetStdoutDebugEnbled(true)
 
@@ -33,4 +40,3 @@ func TestSQLTestSuite(t *testing.T) {
 		return
 	}
 }
-*/
