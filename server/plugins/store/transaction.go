@@ -23,13 +23,20 @@ import (
 type transaction struct {
 	kv kv.Transaction
 	document.Serializer
+	db *database
 }
 
-func newTransaction(kvTx kv.Transaction, serializer document.Serializer) (store.Transaction, error) {
+func newTransaction(db *database, kvTx kv.Transaction, serializer document.Serializer) (store.Transaction, error) {
 	return &transaction{
+		db:         db,
 		kv:         kvTx,
 		Serializer: serializer,
 	}, nil
+}
+
+// Database returns the transaction database.
+func (txn *transaction) Database() store.Database {
+	return txn.db
 }
 
 // Commit commits this transaction.
