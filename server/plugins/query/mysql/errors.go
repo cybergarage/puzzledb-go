@@ -15,9 +15,10 @@
 package mysql
 
 const (
-	errorDatabaseFound       = "Database (%s) is already created"
-	errorErrDatabaseNotFound = "Database (%s) is not found"
-	errorTableNotFound       = "Table (%s.%s) is not found"
-	errorTableFound          = "Table (%s.%s) is already created"
-	errorUnknownSQLValType   = "Unknown SQLVal type : %v"
+	errDatabaseFound    = "database (%s) is already created"
+	errDatabaseNotFound = "database (%s) is not found"
+	errTableNotFound    = "table (%s.%s) is not found"
+	errTableFound       = "table (%s.%s) is already created"
+	errUnknownSchema    = "unknown schema : %v"
+	errSchemaFound      = "schema (%s) is not found"
 )
