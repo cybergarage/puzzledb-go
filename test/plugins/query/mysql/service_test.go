@@ -24,6 +24,7 @@ import (
 
 func TestSQLTestSuite(t *testing.T) {
 	log.SetStdoutDebugEnbled(true)
+
 	server := test.NewServer()
 	err := server.Start()
 	if err != nil {
