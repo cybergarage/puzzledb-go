@@ -47,11 +47,17 @@ type IndexOperation interface {
 	FindDocumentsByIndex(indexKey Key) (ResultSet, error)
 }
 
-// Transaction represents a transaction interface.
-type Transaction interface {
+type TransactionOperation interface {
 	DatabaseOperation
 	DocumentOperation
 	IndexOperation
+}
+
+// Transaction represents a transaction interface.
+type Transaction interface {
+	TransactionOperation
+	// Database returns the transaction database.
+	Database() Database
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
