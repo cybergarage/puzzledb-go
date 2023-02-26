@@ -38,13 +38,3 @@ func (db *database) Transact(write bool) (store.Transaction, error) {
 	}
 	return newTransaction(db, kvTx, db.Serializer)
 }
-
-// CreateSchema creates a new schema.
-func (db *database) CreateSchema(schema document.Schema) error {
-	return nil
-}
-
-// GetSchema returns the specified schema.
-func (db *database) GetSchema(name string) (document.Schema, error) {
-	return nil, nil
-}
