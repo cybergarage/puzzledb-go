@@ -44,7 +44,20 @@ func (txn *transaction) CreateSchema(schema store.Schema) error {
 
 // GetSchema returns the specified schema.
 func (txn *transaction) GetSchema(name string) (store.Schema, error) {
-	return nil, nil
+	kvSchemaKey := txn.createSchemaKey(name)
+	kvRs, err := txn.kv.Get(kvSchemaKey)
+	if err != nil {
+		return nil, err
+	}
+	if !kvRs.Next() {
+		return nil, store.NewSchemaNotFoundError(name)
+	}
+	kvObj := kvRs.Object()
+	obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
+	if err != nil {
+		return nil, err
+	}
+	return document.NewSchemaWith(obj)
 }
 
 // RemoveSchema removes the specified schema.
