@@ -29,7 +29,7 @@ func TestService(t *testing.T) {
 		return
 	}
 
-	mongotest.ServerTeet(t)
+	mongotest.ServerTest(t)
 
 	err = server.Stop()
 	if err != nil {
