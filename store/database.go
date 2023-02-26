@@ -14,18 +14,10 @@
 
 package store
 
-import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-)
-
 // Database represents a database interface.
 type Database interface {
 	// Name returns the unique name.
 	Name() string
 	// Transact begin a new transaction.
 	Transact(write bool) (Transaction, error)
-	// CreateSchema creates a new schema.
-	CreateSchema(schema document.Schema) error
-	// GetSchema returns the specified schema.
-	GetSchema(name string) (document.Schema, error)
 }
