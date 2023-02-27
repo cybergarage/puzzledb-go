@@ -42,6 +42,11 @@ func (store *Store) GetDatabase(id string) (kv.Database, error) {
 	return newDatabaseWith(id, store.Database), nil
 }
 
+// RemoveDatabase removes the specified database.
+func (store *Store) RemoveDatabase(name string) error {
+	return nil
+}
+
 // Start starts this memdb.
 func (store *Store) Start() error {
 	err := fdb.APIVersion(RequiredAPIVersion)
