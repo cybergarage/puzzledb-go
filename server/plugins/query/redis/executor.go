@@ -20,39 +20,39 @@ import (
 	"github.com/cybergarage/go-redis/redis"
 )
 
-type DBContext = redis.DBContext
+type Conn = redis.Conn
 type Message = redis.Message
 
-func (service *Service) Del(ctx *DBContext, keys []string) (*Message, error) {
+func (service *Service) Del(conn *Conn, keys []string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) Exists(ctx *DBContext, keys []string) (*Message, error) {
+func (service *Service) Exists(conn *Conn, keys []string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) Expire(ctx *DBContext, key string, opt redis.ExpireOption) (*Message, error) {
+func (service *Service) Expire(conn *Conn, key string, opt redis.ExpireOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) Keys(ctx *DBContext, pattern string) (*Message, error) {
+func (service *Service) Keys(conn *Conn, pattern string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) Rename(ctx *DBContext, key string, newkey string, opt redis.RenameOption) (*Message, error) {
+func (service *Service) Rename(conn *Conn, key string, newkey string, opt redis.RenameOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) Type(ctx *DBContext, key string) (*Message, error) {
+func (service *Service) Type(conn *Conn, key string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) TTL(ctx *DBContext, key string) (*Message, error) {
+func (service *Service) TTL(conn *Conn, key string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) Set(ctx *DBContext, key string, val string, opt redis.SetOption) (*Message, error) {
-	db, err := service.GetDatabase(ctx.ID())
+func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOption) (*Message, error) {
+	db, err := service.GetDatabase(conn.Database())
 	if err != nil {
 		return nil, err
 	}
@@ -78,8 +78,8 @@ func (service *Service) Set(ctx *DBContext, key string, val string, opt redis.Se
 	return redis.NewOKMessage(), nil
 }
 
-func (service *Service) Get(ctx *DBContext, key string) (*Message, error) {
-	db, err := service.GetDatabase(ctx.ID())
+func (service *Service) Get(conn *Conn, key string) (*Message, error) {
+	db, err := service.GetDatabase(conn.Database())
 	if err != nil {
 		return nil, err
 	}
@@ -122,98 +122,98 @@ func (service *Service) Get(ctx *DBContext, key string) (*Message, error) {
 	}
 }
 
-func (service *Service) MSet(ctx *DBContext, dict map[string]string, opt redis.MSetOption) (*Message, error) {
+func (service *Service) MSet(conn *Conn, dict map[string]string, opt redis.MSetOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) MGet(ctx *DBContext, keys []string) (*Message, error) {
+func (service *Service) MGet(conn *Conn, keys []string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) HDel(ctx *DBContext, key string, fields []string) (*Message, error) {
+func (service *Service) HDel(conn *Conn, key string, fields []string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) HSet(ctx *DBContext, key string, field string, val string, opt redis.HSetOption) (*Message, error) {
+func (service *Service) HSet(conn *Conn, key string, field string, val string, opt redis.HSetOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) HGet(ctx *DBContext, key string, field string) (*Message, error) {
+func (service *Service) HGet(conn *Conn, key string, field string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) HGetAll(ctx *DBContext, key string) (*Message, error) {
+func (service *Service) HGetAll(conn *Conn, key string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) HMSet(ctx *DBContext, key string, dict map[string]string) (*Message, error) {
+func (service *Service) HMSet(conn *Conn, key string, dict map[string]string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) HMGet(ctx *DBContext, key string, fields []string) (*Message, error) {
+func (service *Service) HMGet(conn *Conn, key string, fields []string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) LPush(ctx *DBContext, key string, elements []string, opt redis.PushOption) (*Message, error) {
+func (service *Service) LPush(conn *Conn, key string, elements []string, opt redis.PushOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) RPush(ctx *DBContext, key string, elements []string, opt redis.PushOption) (*Message, error) {
+func (service *Service) RPush(conn *Conn, key string, elements []string, opt redis.PushOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) LPop(ctx *DBContext, key string, count int) (*Message, error) {
+func (service *Service) LPop(conn *Conn, key string, count int) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) RPop(ctx *DBContext, key string, count int) (*Message, error) {
+func (service *Service) RPop(conn *Conn, key string, count int) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) LRange(ctx *DBContext, key string, start int, stop int) (*Message, error) {
+func (service *Service) LRange(conn *Conn, key string, start int, stop int) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) LIndex(ctx *DBContext, key string, index int) (*Message, error) {
+func (service *Service) LIndex(conn *Conn, key string, index int) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) LLen(ctx *DBContext, key string) (*Message, error) {
+func (service *Service) LLen(conn *Conn, key string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) SAdd(ctx *DBContext, key string, members []string) (*Message, error) {
+func (service *Service) SAdd(conn *Conn, key string, members []string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) SMembers(ctx *DBContext, key string) (*Message, error) {
+func (service *Service) SMembers(conn *Conn, key string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) SRem(ctx *DBContext, key string, members []string) (*Message, error) {
+func (service *Service) SRem(conn *Conn, key string, members []string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) ZAdd(ctx *DBContext, key string, members []*redis.ZSetMember, opt redis.ZAddOption) (*Message, error) {
+func (service *Service) ZAdd(conn *Conn, key string, members []*redis.ZSetMember, opt redis.ZAddOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) ZRange(ctx *DBContext, key string, start int, stop int, opt redis.ZRangeOption) (*Message, error) {
+func (service *Service) ZRange(conn *Conn, key string, start int, stop int, opt redis.ZRangeOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) ZRangeByScore(ctx *DBContext, key string, min float64, max float64, opt redis.ZRangeOption) (*Message, error) {
+func (service *Service) ZRangeByScore(conn *Conn, key string, min float64, max float64, opt redis.ZRangeOption) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) ZRem(ctx *DBContext, key string, members []string) (*Message, error) {
+func (service *Service) ZRem(conn *Conn, key string, members []string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) ZScore(ctx *DBContext, key string, member string) (*Message, error) {
+func (service *Service) ZScore(conn *Conn, key string, member string) (*Message, error) {
 	return nil, nil
 }
 
-func (service *Service) ZIncBy(ctx *DBContext, key string, inc float64, member string) (*Message, error) {
+func (service *Service) ZIncBy(conn *Conn, key string, inc float64, member string) (*Message, error) {
 	return nil, nil
 }
