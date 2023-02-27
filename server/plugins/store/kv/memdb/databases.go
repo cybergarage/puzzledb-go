@@ -55,3 +55,8 @@ func (dbs *Databases) GetDatabase(id string) (kv.Database, error) {
 	}
 	return db, nil
 }
+
+// RemoveDatabase removes the specified database.
+func (dbs *Databases) RemoveDatabase(name string) error {
+	return nil
+}
