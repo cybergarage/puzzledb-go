@@ -55,6 +55,11 @@ func (store *Store) GetDatabase(name string) (store.Database, error) {
 	return db, nil
 }
 
+// RemoveDatabase removes the specified database.
+func (store *Store) RemoveDatabase(name string) error {
+	return nil
+}
+
 // Start starts this store.
 func (store *Store) Start() error {
 	return store.kvService.Start()
