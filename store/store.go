@@ -20,4 +20,6 @@ type Store interface {
 	CreateDatabase(name string) error
 	// GetDatabase retruns the specified database.
 	GetDatabase(name string) (Database, error)
+	// RemoveDatabase removes the specified database.
+	RemoveDatabase(name string) error
 }
