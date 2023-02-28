@@ -50,7 +50,14 @@ func (service *Service) AlterDatabase(ctx context.Context, conn *mysql.Conn, stm
 
 // DropDatabase should handle a DROP database statement.
 func (service *Service) DropDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
+	dbName := stmt.Name()
+
+	store := service.Store()
+	err := store.RemoveDatabase(dbName)
+	if err != nil {
+		return mysql.NewResult(), err
+	}
+
 	return mysql.NewResult(), nil
 }
 
