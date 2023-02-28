@@ -66,7 +66,7 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 	log.Debugf("%v", stmt)
 	store := service.Store()
 
-	db, err := store.GetDatabase(conn.Database)
+	db, err := store.GetDatabase(conn.Database())
 	if err != nil {
 		return mysql.NewResult(), err
 	}
