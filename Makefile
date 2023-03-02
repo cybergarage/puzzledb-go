@@ -20,6 +20,7 @@ MODULE_ROOT=github.com/cybergarage
 PACKAGE_ROOT=${MODULE_ROOT}/${PACKAGE_NAME}
 
 SOURCE_ROOTS=\
+	coordinator \
 	document \
 	query \
 	store \
@@ -29,6 +30,7 @@ SOURCE_ROOTS=\
 PACKAGE_ID=${PACKAGE_ROOT}
 
 PACKAGES=\
+	${PACKAGE_ID}/coordinator/... \
 	${PACKAGE_ID}/errors/... \
 	${PACKAGE_ID}/document/... \
 	${PACKAGE_ID}/query/... \
