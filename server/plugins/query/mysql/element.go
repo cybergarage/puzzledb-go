@@ -27,7 +27,7 @@ func NewElementWith(col *query.ColumnDefinition) (document.Element, error) {
 	case query.Int8:
 		e.SetType(document.Int)
 	default:
-		return nil, newErrorNotSupported(col.Type.SQLType().String())
+		return nil, newErrNotSupported(col.Type.SQLType().String())
 	}
 	return e, nil
 }
