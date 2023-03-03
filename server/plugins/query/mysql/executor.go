@@ -16,7 +16,6 @@ package mysql
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
@@ -31,7 +30,7 @@ func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, st
 	store := service.Store()
 	_, err := store.GetDatabase(dbName)
 	if err == nil && !stmt.IfNotExists() {
-		return mysql.NewResult(), fmt.Errorf(errDatabaseFound, dbName)
+		return mysql.NewResult(), newErrDatabaseExist(dbName)
 	}
 
 	err = store.CreateDatabase(dbName)
