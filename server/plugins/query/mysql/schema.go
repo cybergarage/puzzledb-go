@@ -20,7 +20,22 @@ import (
 )
 
 // NewSchemaWith creates a schema from the specified schema object.
-func NewSchemaWith(obj *query.Schema) (document.Schema, error) {
+func NewSchemaWith(def *query.Schema) (document.Schema, error) {
 	s := document.NewSchema()
+	s.SetName(def.TableName())
+	for _, col := range def.GetTableSpec().Columns {
+		e, err := NewElementWith(col)
+		if err != nil {
+			return nil, err
+		}
+		s.AddElement(e)
+	}
+	for _, idx := range def.GetTableSpec().Indexes {
+		i, err := NewIndexWith(s, idx)
+		if err != nil {
+			return nil, err
+		}
+		s.AddIndex(i)
+	}
 	return s, nil
 }
