@@ -25,6 +25,8 @@ type Schema interface {
 	AddElement(elem Element)
 	// Elements returns the schema elements.
 	Elements() []Element
+	// FindElement returns the schema elements by the name.
+	FindElement(name string) (Element, error)
 	// AddIndex adds the specified index to the schema.
 	AddIndex(idx Index)
 	// Elements returns the schema elements.
