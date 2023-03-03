@@ -80,15 +80,16 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 
 	_, err = txn.GetSchema(stmt.TableName())
 	if err == nil {
+		defer txn.Cancel()
 		if stmt.GetIfNotExists() {
-			txn.Commit()
 			return mysql.NewResult(), nil
 		}
-		return mysql.NewResult(), err
+		return mysql.NewResult(), newErrSchemaExist(stmt.TableName())
 	}
 
 	schema, err := NewSchemaWith(stmt)
 	if err != nil {
+		txn.Cancel()
 		return mysql.NewResult(), err
 	}
 
