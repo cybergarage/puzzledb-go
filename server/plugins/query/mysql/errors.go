@@ -58,3 +58,7 @@ func newErrTableNotExist(target string) error {
 func newErrSchemaNotExist(target string) error {
 	return newErrNotExist(fmt.Sprintf("schema (%s)", target))
 }
+
+func newErrIndexNotSupported(target string) error {
+	return newErrNotSupported(fmt.Sprintf("index (%s)", target))
+}
