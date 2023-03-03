@@ -14,11 +14,21 @@
 
 package mysql
 
+import (
+	"errors"
+	"fmt"
+)
+
+var ErrNotSupported = errors.New("not supported")
+
 const (
 	errDatabaseFound    = "database (%s) is already created"
 	errDatabaseNotFound = "database (%s) is not found"
 	errTableNotFound    = "table (%s.%s) is not found"
 	errTableFound       = "table (%s.%s) is already created"
-	errUnknownSchema    = "unknown schema : %v"
 	errSchemaFound      = "schema (%s) is not found"
 )
+
+func newErrorNotSupported(target string) error {
+	return fmt.Errorf("%w : %v", ErrNotSupported, target)
+}
