@@ -71,20 +71,23 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 		return mysql.NewResult(), err
 	}
 
-	schema, err := NewSchemaWith(stmt)
-	if err != nil {
-		return mysql.NewResult(), fmt.Errorf(errUnknownSchema, stmt)
-	}
-
 	txn, err := db.Transact(true)
 	if err != nil {
 		return mysql.NewResult(), err
 	}
 
-	_, err = txn.GetSchema(schema.Name())
+	_, err = txn.GetSchema(stmt.TableName())
 	if err == nil {
-		txn.Cancel()
-		return mysql.NewResult(), fmt.Errorf(errSchemaFound, schema.Name())
+		if stmt.GetIfNotExists() {
+			txn.Commit()
+			return mysql.NewResult(), nil
+		}
+		return mysql.NewResult(), err
+	}
+
+	schema, err := NewSchemaWith(stmt)
+	if err != nil {
+		return mysql.NewResult(), err
 	}
 
 	err = txn.CreateSchema(schema)
