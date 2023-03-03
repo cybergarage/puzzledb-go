@@ -21,6 +21,6 @@ import (
 
 var ErrNotSupported = errors.New("not supported")
 
-func newErrorNotSupported(target string) error {
+func newErrNotSupported(target string) error {
 	return fmt.Errorf("%w : %v", ErrNotSupported, target)
 }
