@@ -144,7 +144,7 @@ func (s *schema) FindElement(name string) (Element, error) {
 			return e, nil
 		}
 	}
-	return nil, newErrorNotSupported(name)
+	return nil, newErrNotSupported(name)
 }
 
 // AddIndex adds the specified index to the schema.
