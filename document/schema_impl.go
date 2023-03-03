@@ -39,17 +39,15 @@ const (
 )
 
 type schema struct {
-	data     map[uint8]any
-	elements []Element
-	indexes  []Index
+	data    map[uint8]any
+	indexes []Index
 }
 
 // NewSchema returns a blank schema.
 func NewSchema() Schema {
 	s := &schema{
-		data:     map[uint8]any{},
-		elements: []Element{},
-		indexes:  []Index{},
+		data:    map[uint8]any{},
+		indexes: []Index{},
 	}
 	s.SetVersion(SchemaVersion)
 	s.data[schemaElementsIdx] = []any{}
@@ -101,23 +99,52 @@ func (s *schema) Name() string {
 	}
 }
 
-// AddElement adds the specified element to the schema.
-func (s *schema) AddElement(elem Element) {
-	s.elements = append(s.elements, elem)
+func (s *schema) elementMaps() ([]elementMap, bool) {
 	v, ok := s.data[schemaElementsIdx]
 	if !ok {
-		return
+		return nil, false
 	}
-	a, ok := v.([]any)
+	ems, ok := v.([]elementMap)
+	if !ok {
+		return nil, false
+	}
+	return ems, true
+}
+
+// AddElement adds the specified element to the schema.
+func (s *schema) AddElement(elem Element) {
+	ems, ok := s.elementMaps()
 	if !ok {
 		return
 	}
-	s.data[schemaElementsIdx] = append(a, elem.Data())
+	em, ok := elem.Data().(elementMap)
+	if !ok {
+		return
+	}
+	s.data[schemaElementsIdx] = append(ems, em)
 }
 
 // Elements returns the schema elements.
 func (s *schema) Elements() []Element {
-	return []Element{}
+	es := []Element{}
+	ems, ok := s.elementMaps()
+	if ok {
+		for _, em := range ems {
+			es = append(es, newElementWith(em))
+		}
+	}
+	return es
+}
+
+// FindElement returns the schema elements by the name.
+func (s *schema) FindElement(name string) (Element, error) {
+	es := s.Elements()
+	for _, e := range es {
+		if e.Name() == name {
+			return e, nil
+		}
+	}
+	return nil, newErrorNotSupported(name)
 }
 
 // AddIndex adds the specified index to the schema.
