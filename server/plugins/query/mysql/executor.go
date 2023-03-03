@@ -29,7 +29,10 @@ func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, st
 
 	store := service.Store()
 	_, err := store.GetDatabase(dbName)
-	if err == nil && !stmt.IfNotExists() {
+	if err == nil {
+		if stmt.IfNotExists() {
+			return mysql.NewResult(), nil
+		}
 		return mysql.NewResult(), newErrDatabaseExist(dbName)
 	}
 
