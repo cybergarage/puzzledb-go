@@ -22,7 +22,7 @@ package document
 // 2: elements - []map[uint8]any
 //    1: name - string
 //    2: type - uint8
-// 3: elements - []map[uint8]any
+// 3: indexes - []map[uint8]any
 //    1: name - string
 //    2: type - uint8
 
@@ -63,7 +63,7 @@ func NewSchemaWith(obj any) (Schema, error) {
 
 // SetVersion sets the specified version to the schema.
 func (s *schema) SetVersion(ver int) {
-	s.data[schemaVersionIdx] = uint8(ver)
+	s.data[schemaVersionIdx] = ver
 }
 
 // Version returns the schema version.
@@ -73,7 +73,7 @@ func (s *schema) Version() int {
 		return 0
 	}
 	switch ver := v.(type) {
-	case uint8:
+	case int:
 		return int(ver)
 	default:
 		return 0
