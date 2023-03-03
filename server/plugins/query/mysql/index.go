@@ -21,12 +21,27 @@ import (
 
 // NewIndexWith creates an element from the specified coulumn object.
 func NewIndexWith(s document.Schema, def *query.IndexDefinition) (document.Index, error) {
-	i := document.NewIndex()
+	if def.Info.Spatial || def.Info.Fulltext {
+		return nil, newErrIndexNotSupported(def.Info.Type)
+	}
+
+	idx := document.NewIndex()
+
+	idx.SetName(def.Info.Name.Lowered())
+
+	if def.Info.Primary {
+		idx.SetType(document.Primary)
+	} else {
+		idx.SetType(document.Secondary)
+	}
+
 	for _, col := range def.Columns {
-		_, err := s.FindElement(col.Column.String())
+		elem, err := s.FindElement(col.Column.String())
 		if err != nil {
 			return nil, err
 		}
+		idx.AddElement(elem)
 	}
-	return i, nil
+
+	return idx, nil
 }
