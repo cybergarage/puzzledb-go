@@ -19,16 +19,42 @@ import (
 	"fmt"
 )
 
+var ErrExist = errors.New("exist")
+var ErrNotExist = errors.New("not exist")
 var ErrNotSupported = errors.New("not supported")
 
-const (
-	errDatabaseFound    = "database (%s) is already created"
-	errDatabaseNotFound = "database (%s) is not found"
-	errTableNotFound    = "table (%s.%s) is not found"
-	errTableFound       = "table (%s.%s) is already created"
-	errSchemaFound      = "schema (%s) is not found"
-)
+func newErrNotSupported(target string) error {
+	return fmt.Errorf("%v is %w", target, ErrNotSupported)
+}
 
-func newErrorNotSupported(target string) error {
-	return fmt.Errorf("%w : %v", ErrNotSupported, target)
+func newErrExist(target string) error {
+	return fmt.Errorf("%v is %w", target, ErrExist)
+}
+
+func newErrNotExist(target string) error {
+	return fmt.Errorf("%v is %w", target, ErrNotExist)
+}
+
+func newErrDatabaseExist(target string) error {
+	return newErrExist(fmt.Sprintf("database (%s)", target))
+}
+
+func newErrTableExist(target string) error {
+	return newErrExist(fmt.Sprintf("table (%s)", target))
+}
+
+func newErrSchemaExist(target string) error {
+	return newErrExist(fmt.Sprintf("schema (%s)", target))
+}
+
+func newErrDatabaseNotExist(target string) error {
+	return newErrNotExist(fmt.Sprintf("database (%s)", target))
+}
+
+func newErrTableNotExist(target string) error {
+	return newErrNotExist(fmt.Sprintf("table (%s)", target))
+}
+
+func newErrSchemaNotExist(target string) error {
+	return newErrNotExist(fmt.Sprintf("schema (%s)", target))
 }
