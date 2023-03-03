@@ -25,14 +25,23 @@ const (
 	elementTypeIdx = 2
 )
 
+type elementMap = map[uint8]any
+
 type element struct {
-	data map[uint8]any
+	data elementMap
 }
 
-// NewElement returns a blank schema.
+// NewElement returns a blank element.
 func NewElement() Element {
 	e := &element{
-		data: map[uint8]any{},
+		data: elementMap{},
+	}
+	return e
+}
+
+func newElementWith(em elementMap) Element {
+	e := &element{
+		data: em,
 	}
 	return e
 }
