@@ -41,7 +41,7 @@ vet: format
 lint: format
 	golangci-lint run ${PKG_SRC_ROOT}/... ${TEST_SRC_ROOT}/...
 
-test:
+test: lint
 	go test -v -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
 clean:
