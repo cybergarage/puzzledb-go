@@ -17,7 +17,7 @@ package fdb
 import (
 	"testing"
 
-	kv "github.com/cybergarage/puzzledb-go/puzzledb/test/plugins/store/kv"
+	kv "github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
 )
 
 func TestStores(t *testing.T) {

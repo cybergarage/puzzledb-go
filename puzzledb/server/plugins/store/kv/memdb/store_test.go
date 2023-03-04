@@ -12,28 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mongo
+package memdb
 
 import (
 	"testing"
 
-	"github.com/cybergarage/go-mongo/mongotest"
-	"github.com/cybergarage/puzzledb-go/puzzledb/test"
+	kv "github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
 )
 
-func TestService(t *testing.T) {
-	server := test.NewServer()
-	err := server.Start()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	mongotest.ServerTest(t)
-
-	err = server.Stop()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+func TestStores(t *testing.T) {
+	kv.StoreTest(t, NewStore())
 }

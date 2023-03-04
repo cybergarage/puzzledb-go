@@ -1,4 +1,4 @@
-// Copyright (C) 2020 PuzzleDB Contributors.
+// Copyright (C) 2022 PuzzleDB Contributors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,45 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package document
+package mongo
 
 import (
-	"reflect"
-	"strconv"
 	"testing"
-	"time"
+
+	"github.com/cybergarage/go-mongo/mongotest"
+	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-var elementTypes = []ElementType{
-	Int8,
-	Int16,
-	Int32,
-	Int64,
-	String,
-	Binary,
-	Float32,
-	Float64,
-	DateTime,
-	Bool,
-}
-
-func TestSchema(t *testing.T) {
-	now := time.Now()
-
-	s1 := NewSchema()
-	s1.SetName(now.String())
-	for n, et := range elementTypes {
-		e := NewElement().SetName(strconv.Itoa(n)).SetType(et)
-		s1.AddElement(e)
-	}
-
-	s2, err := NewSchemaWith(s1.Data())
+func TestService(t *testing.T) {
+	server := test.NewServer()
+	err := server.Start()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	if !reflect.DeepEqual(s1.Data(), s2.Data()) {
-		t.Errorf("%v !=%v", s1, s2)
+	mongotest.ServerTest(t)
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+		return
 	}
 }

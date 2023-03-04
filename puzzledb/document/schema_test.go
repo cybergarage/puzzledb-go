@@ -12,31 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package sqltest
+package document
 
 import (
+	"reflect"
+	"strconv"
 	"testing"
-
-	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/go-mysql/mysqltest/sqltest"
-	"github.com/cybergarage/puzzledb-go/puzzledb/test"
+	"time"
 )
 
-func TestSQLTestSuite(t *testing.T) {
-	log.SetStdoutDebugEnbled(true)
+var elementTypes = []ElementType{
+	Int8,
+	Int16,
+	Int32,
+	Int64,
+	String,
+	Binary,
+	Float32,
+	Float64,
+	DateTime,
+	Bool,
+}
 
-	server := test.NewServer()
-	err := server.Start()
+func TestSchema(t *testing.T) {
+	now := time.Now()
+
+	s1 := NewSchema()
+	s1.SetName(now.String())
+	for n, et := range elementTypes {
+		e := NewElement().SetName(strconv.Itoa(n)).SetType(et)
+		s1.AddElement(e)
+	}
+
+	s2, err := NewSchemaWith(s1.Data())
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	sqltest.RunSQLTestSuite(t)
-
-	err = server.Stop()
-	if err != nil {
-		t.Error(err)
-		return
+	if reflect.DeepEqual(s1.Data(), s2.Data()) {
+		t.Errorf("%v !=%v", s1, s2)
 	}
 }

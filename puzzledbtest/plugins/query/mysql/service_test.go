@@ -1,4 +1,4 @@
-// Copyright (C) 2022 PuzzleDB Contributors.
+// Copyright (C) 2020 PuzzleDB Contributors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package sqltest
 
 import (
 	"testing"
 
-	kv "github.com/cybergarage/puzzledb-go/puzzledb/test/plugins/store/kv"
+	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/go-mysql/mysqltest/sqltest"
+	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestStores(t *testing.T) {
-	kv.StoreTest(t, NewStore())
+func TestSQLTestSuite(t *testing.T) {
+	log.SetStdoutDebugEnbled(true)
+
+	server := test.NewServer()
+	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	sqltest.RunSQLTestSuite(t)
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }
