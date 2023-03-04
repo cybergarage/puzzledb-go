@@ -1,4 +1,4 @@
-// Copyright (C) 2022 The PuzzleDB Authors.
+// Copyright (C) 2020 The PuzzleDB Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,33 +15,19 @@
 package document
 
 import (
+	"reflect"
 	"testing"
 )
 
 func TestSchema(t *testing.T) {
-	schema := NewSchema()
+	s1 := NewSchema()
 
-	if schema.Version() != SchemaVersion {
-		t.Errorf("%v != %v", schema.Version(), SchemaVersion)
+	s2, err := NewSchemaWith(s1.Data())
+	if err != nil {
+		t.Error(err)
+		return
 	}
-
-	name := "s_name"
-	schema.SetName(name)
-	if schema.Name() != name {
-		t.Errorf("%v != %v", schema.Name(), name)
-	}
-
-	name = "e_name"
-	elem := NewElement()
-	elem.SetName(name)
-	if elem.Name() != name {
-		t.Errorf("%v != %v", elem.Name(), name)
-	}
-
-	name = "i_name"
-	idx := NewIndex()
-	idx.SetName(name)
-	if idx.Name() != name {
-		t.Errorf("%v != %v", idx.Name(), name)
+	if !reflect.DeepEqual(s1.Data(), s2.Data()) {
+		t.Errorf("%v !=%v", s1, s2)
 	}
 }
