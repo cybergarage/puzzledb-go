@@ -30,8 +30,8 @@ const (
 	String ElementType = 0x30
 	Blob   ElementType = 0x31
 	// 0x40 Floating-point.
-	Float  ElementType = 0x40
-	Double ElementType = 0x41
+	Float32 ElementType = 0x40
+	Float64 ElementType = 0x41
 	// 0x70 Special.
 	DateTime ElementType = 0x70
 	Bool     ElementType = 0x71
