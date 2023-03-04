@@ -22,11 +22,10 @@ const (
 	Array ElementType = 0x10
 	Map   ElementType = 0x11
 	// 0x20 Integer.
-	Int   ElementType = 0x20
-	Int8  ElementType = 0x21
-	Int16 ElementType = 0x22
-	Int32 ElementType = 0x23
-	Int64 ElementType = 0x24
+	Int8  ElementType = 0x20
+	Int16 ElementType = 0x21
+	Int32 ElementType = 0x22
+	Int64 ElementType = 0x23
 	// 0x30 String.
 	String ElementType = 0x30
 	Blob   ElementType = 0x31
