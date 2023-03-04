@@ -38,7 +38,7 @@ func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, st
 
 	err = store.CreateDatabase(dbName)
 	if err != nil {
-		return mysql.NewResult(), err
+		return nil, err
 	}
 
 	return mysql.NewResult(), nil
@@ -57,7 +57,7 @@ func (service *Service) DropDatabase(ctx context.Context, conn *mysql.Conn, stmt
 	store := service.Store()
 	err := store.RemoveDatabase(dbName)
 	if err != nil {
-		return mysql.NewResult(), err
+		return nil, err
 	}
 
 	return mysql.NewResult(), nil
@@ -70,12 +70,12 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 
 	db, err := store.GetDatabase(conn.Database())
 	if err != nil {
-		return mysql.NewResult(), err
+		return nil, err
 	}
 
 	txn, err := db.Transact(true)
 	if err != nil {
-		return mysql.NewResult(), err
+		return nil, err
 	}
 
 	_, err = txn.GetSchema(stmt.TableName())
@@ -90,18 +90,18 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 	schema, err := NewSchemaWith(stmt)
 	if err != nil {
 		txn.Cancel()
-		return mysql.NewResult(), err
+		return nil, err
 	}
 
 	err = txn.CreateSchema(schema)
 	if err != nil {
 		txn.Cancel()
-		return mysql.NewResult(), err
+		return nil, err
 	}
 
 	err = txn.Commit()
 	if err != nil {
-		return mysql.NewResult(), err
+		return nil, err
 	}
 
 	return mysql.NewResult(), nil
