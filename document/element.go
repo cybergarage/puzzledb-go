@@ -37,8 +37,6 @@ const (
 	Bool     ElementType = 0x71
 )
 
-var elementTypes = []ElementType{}
-
 type Element interface {
 	// Name returns the unique name.
 	Name() string
