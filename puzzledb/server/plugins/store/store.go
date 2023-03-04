@@ -44,12 +44,12 @@ func (store *Store) CreateDatabase(name string) error {
 
 // GetDatabase retruns the specified database.
 func (store *Store) GetDatabase(name string) (store.Database, error) {
-	kvDb, err := store.kvService.GetDatabase(name)
+	kvDB, err := store.kvService.GetDatabase(name)
 	if err != nil {
 		return nil, err
 	}
 	db := &database{
-		kv:         kvDb,
+		kv:         kvDB,
 		Serializer: store.Serializer,
 	}
 	return db, nil
