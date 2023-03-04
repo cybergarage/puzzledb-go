@@ -16,17 +16,23 @@ package document
 
 import (
 	"reflect"
+	"strconv"
 	"testing"
 )
 
 func TestSchema(t *testing.T) {
 	s1 := NewSchema()
+	for n, et := range elementTypes {
+		e := NewElement().SetName(strconv.Itoa(n)).SetType(et)
+		s1.AddElement(e)
+	}
 
 	s2, err := NewSchemaWith(s1.Data())
 	if err != nil {
 		t.Error(err)
 		return
 	}
+
 	if !reflect.DeepEqual(s1.Data(), s2.Data()) {
 		t.Errorf("%v !=%v", s1, s2)
 	}
