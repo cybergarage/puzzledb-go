@@ -1,4 +1,4 @@
-// Copyright (C) 2022 The PuzzleDB Authors.
+// Copyright (C) 2020 The PuzzleDB Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mongo
+package sqltest
 
 import (
 	"testing"
 
-	"github.com/cybergarage/go-mongo/mongotest"
-	"github.com/cybergarage/puzzledb-go/puzzledb/test"
+	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/go-mysql/mysqltest/sqltest"
+	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestService(t *testing.T) {
+func TestSQLTestSuite(t *testing.T) {
+	log.SetStdoutDebugEnbled(true)
+
 	server := test.NewServer()
 	err := server.Start()
 	if err != nil {
@@ -29,7 +32,7 @@ func TestService(t *testing.T) {
 		return
 	}
 
-	mongotest.ServerTest(t)
+	sqltest.RunSQLTestSuite(t)
 
 	err = server.Stop()
 	if err != nil {

@@ -1,4 +1,4 @@
-// Copyright (C) 2020 The PuzzleDB Authors.
+// Copyright (C) 2022 The PuzzleDB Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,31 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package sqltest
+package fdb
 
 import (
 	"testing"
 
-	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/go-mysql/mysqltest/sqltest"
-	"github.com/cybergarage/puzzledb-go/puzzledb/test"
+	kv "github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
 )
 
-func TestSQLTestSuite(t *testing.T) {
-	log.SetStdoutDebugEnbled(true)
-
-	server := test.NewServer()
-	err := server.Start()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	sqltest.RunSQLTestSuite(t)
-
-	err = server.Stop()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+func TestStores(t *testing.T) {
+	kv.StoreTest(t, NewStore())
 }

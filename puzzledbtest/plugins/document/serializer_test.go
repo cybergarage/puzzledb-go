@@ -21,8 +21,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/document/cbor"
+	"github.com/cybergarage/puzzledb-go/puzzledbdocument"
+	"github.com/cybergarage/puzzledb-go/puzzledbserver/plugins/document/cbor"
 )
 
 func DeepEqual(x, y any) error {

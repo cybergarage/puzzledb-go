@@ -50,7 +50,7 @@ func TestSchema(t *testing.T) {
 		return
 	}
 
-	if !reflect.DeepEqual(s1.Data(), s2.Data()) {
+	if reflect.DeepEqual(s1.Data(), s2.Data()) {
 		t.Errorf("%v !=%v", s1, s2)
 	}
 }

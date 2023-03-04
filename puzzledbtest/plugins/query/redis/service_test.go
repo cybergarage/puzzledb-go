@@ -18,7 +18,7 @@ import (
 	"testing"
 
 	"github.com/cybergarage/go-redis/redistest"
-	"github.com/cybergarage/puzzledb-go/puzzledb/test"
+	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
 func TestService(t *testing.T) {

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package coordinator
 
 import (
-	"testing"
-
-	kv "github.com/cybergarage/puzzledb-go/puzzledb/test/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 )
 
-func TestStores(t *testing.T) {
-	kv.StoreTest(t, NewStore())
+type Service interface {
+	coordinator.Coordinator
+	plugins.Service
 }
