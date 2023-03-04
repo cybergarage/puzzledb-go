@@ -1,4 +1,4 @@
-module github.com/cybergarage/puzzledb-go/puzzledb
+module github.com/cybergarage/puzzledb-go
 
 go 1.20
 
