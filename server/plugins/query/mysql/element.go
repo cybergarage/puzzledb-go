@@ -25,7 +25,21 @@ func NewElementWith(col *query.ColumnDefinition) (document.Element, error) {
 	e.SetName(col.Name.String())
 	switch col.Type.SQLType() {
 	case query.Int8:
-		e.SetType(document.Int)
+		e.SetType(document.Int8)
+	case query.Int16:
+		e.SetType(document.Int16)
+	case query.Int32:
+		e.SetType(document.Int32)
+	case query.Int64:
+		e.SetType(document.Int64)
+	case query.Float32:
+		e.SetType(document.Float32)
+	case query.Float64:
+		e.SetType(document.Float64)
+	case query.Text, query.VarChar:
+		e.SetType(document.String)
+	case query.Blob:
+		e.SetType(document.Binary)
 	default:
 		return nil, newErrNotSupported(col.Type.SQLType().String())
 	}
