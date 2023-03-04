@@ -19,23 +19,12 @@ PKG_NAME=puzzledb
 MODULE_ROOT=github.com/cybergarage/puzzledb-go
 
 PKG_SRC_ROOT=${PKG_NAME}
-PKG_SRC_ROOTS=\
-	${PKG_SRC_ROOT}/coordinator \
-	${PKG_SRC_ROOT}/document \
-	${PKG_SRC_ROOT}/errors \
-	${PKG_SRC_ROOT}/query \
-	${PKG_SRC_ROOT}/server \
-	${PKG_SRC_ROOT}/store
 PKG=\
 	${MODULE_ROOT}/${PKG_SRC_ROOT}/...
 
 TEST_SRC_ROOT=${PKG_NAME}test
-TEST_SRC_ROOTS=\
-	${TEST_SRC_ROOT} \
-	${TEST_SRC_ROOT}/plugins
 TEST_PKG=\
 	${MODULE_ROOT}/${TEST_SRC_ROOT}/...
-
 
 TEST_PKG=${MODULE_ROOT}/${TEST_SRC_ROOT}
 
@@ -44,7 +33,7 @@ TEST_PKG=${MODULE_ROOT}/${TEST_SRC_ROOT}
 all: test
 
 format:
-	gofmt -w ${PKG_SRC_ROOTS} ${TEST_SRC_ROOTS}
+	gofmt -s -w ${PKG_SRC_ROOT} ${TEST_SRC_ROOT}
 
 vet: format
 	go vet ${PKG}

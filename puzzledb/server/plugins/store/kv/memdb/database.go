@@ -36,10 +36,10 @@ type Database struct {
 func NewDatabaseWithID(id string) (*Database, error) {
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
-			tableName: &memdb.TableSchema{
+			tableName: {
 				Name: tableName,
 				Indexes: map[string]*memdb.IndexSchema{
-					idFieldName: &memdb.IndexSchema{
+					idFieldName: {
 						Name:    idFieldName,
 						Unique:  true,
 						Indexer: &memdb.StringFieldIndex{Field: "Key"},
