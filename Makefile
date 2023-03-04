@@ -14,47 +14,46 @@
 
 SHELL := bash
 
-PACKAGE_NAME=puzzledb
+PKG_NAME=puzzledb
 
-MODULE_ROOT=github.com/cybergarage
-PACKAGE_ROOT=${MODULE_ROOT}/${PACKAGE_NAME}
+MODULE_ROOT=github.com/cybergarage/puzzledb-go
 
-SOURCE_ROOTS=\
-	coordinator \
-	document \
-	query \
-	store \
-	server \
-	test
+PKG_SRC_ROOT=${PKG_NAME}
+PKG_SRC_ROOTS=\
+	${PKG_SRC_ROOT}/coordinator \
+	${PKG_SRC_ROOT}/document \
+	${PKG_SRC_ROOT}/errors \
+	${PKG_SRC_ROOT}/query \
+	${PKG_SRC_ROOT}/server \
+	${PKG_SRC_ROOT}/store
+PKG=\
+	${MODULE_ROOT}/${PKG_SRC_ROOT}/...
 
-PACKAGE_ID=${PACKAGE_ROOT}
+TEST_SRC_ROOT=${PKG_NAME}test
+TEST_SRC_ROOTS=\
+	${TEST_SRC_ROOT} \
+	${TEST_SRC_ROOT}/plugins
+TEST_PKG=\
+	${MODULE_ROOT}/${TEST_SRC_ROOT}/...
 
-PACKAGES=\
-	${PACKAGE_ID}/coordinator/... \
-	${PACKAGE_ID}/errors/... \
-	${PACKAGE_ID}/document/... \
-	${PACKAGE_ID}/query/... \
-	${PACKAGE_ID}/store/... \
-	${PACKAGE_ID}/server/...
 
-TEST_PACKAGES=\
-	${PACKAGE_ID}/test/...
+TEST_PKG=${MODULE_ROOT}/${TEST_SRC_ROOT}
 
 .PHONY: test format vet lint clean
 
 all: test
 
 format:
-	gofmt -w ${SOURCE_ROOTS}
+	gofmt -w ${PKG_SRC_ROOTS} ${TEST_SRC_ROOTS}
 
 vet: format
-	go vet ${PACKAGE_ROOT}
+	go vet ${PKG}
 
 lint: format
-	golangci-lint run ${SOURCE_ROOTS}
+	golangci-lint run ${PKG} ${TEST_PKG}
 
-test: lint 
-	go test -v -cover -timeout 60s ${PACKAGES} ${TEST_PACKAGES}
+test: 
+	go test -v -cover -timeout 60s ${PKG} ${TEST_PKG}
 
 clean:
-	go clean -i ${PACKAGES}
+	go clean -i ${PKG}
