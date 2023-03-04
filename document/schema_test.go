@@ -18,10 +18,27 @@ import (
 	"reflect"
 	"strconv"
 	"testing"
+	"time"
 )
 
+var elementTypes = []ElementType{
+	Int8,
+	Int16,
+	Int32,
+	Int64,
+	String,
+	Binary,
+	Float32,
+	Float64,
+	DateTime,
+	Bool,
+}
+
 func TestSchema(t *testing.T) {
+	now := time.Now()
+
 	s1 := NewSchema()
+	s1.SetName(now.String())
 	for n, et := range elementTypes {
 		e := NewElement().SetName(strconv.Itoa(n)).SetType(et)
 		s1.AddElement(e)
