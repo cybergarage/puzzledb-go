@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	testDbName    = "testdb"
+	testDBName    = "testdb"
 	testKeyCount  = 100
 	testValBufMax = 8
 )
@@ -38,11 +38,11 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		t.Error(err)
 		return
 	}
-	if err := s.CreateDatabase(testDbName); err != nil {
+	if err := s.CreateDatabase(testDBName); err != nil {
 		t.Error(err)
 		return
 	}
-	db, err := s.GetDatabase(testDbName)
+	db, err := s.GetDatabase(testDBName)
 	if err != nil {
 		t.Error(err)
 		return

@@ -41,13 +41,13 @@ func NewService() *Service {
 }
 
 // MessageReceived passes a request message from MongoDB client.
-func (server *Service) MessageReceived(msg mongo.OpMessage) {
+func (service *Service) MessageReceived(msg mongo.OpMessage) {
 	// fmt.Printf("-> %s\n", msg.String())
 	// log.Hexdump(log.LevelInfo, msg.Bytes())
 }
 
 // MessageRespond passes a response message from mongo.Server.
-func (server *Service) MessageRespond(msg mongo.OpMessage) {
+func (service *Service) MessageRespond(msg mongo.OpMessage) {
 	// fmt.Printf("<- %s\n", msg.String())
 	// log.Hexdump(log.LevelInfo, msg.Bytes())
 }
