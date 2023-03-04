@@ -28,7 +28,7 @@ const (
 	Int64 ElementType = 0x23
 	// 0x30 String.
 	String ElementType = 0x30
-	Blob   ElementType = 0x31
+	Binary ElementType = 0x31
 	// 0x40 Floating-point.
 	Float32 ElementType = 0x40
 	Float64 ElementType = 0x41
