@@ -19,12 +19,10 @@ import (
 
 	"github.com/cybergarage/go-cbor/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 )
 
 // Serializer represents a CBOR erializer.
 type Serializer struct {
-	plugins.Service
 }
 
 // NewSerializer returns a new CBOR erializer instance.
