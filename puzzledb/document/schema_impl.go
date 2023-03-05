@@ -181,6 +181,8 @@ func (s *schema) AddIndex(idx Index) {
 		return
 	}
 	s.data[schemaIndexesIdx] = append(a, idx.Data())
+	// Add index to cache
+	s.indexes = append(s.indexes, idx)
 }
 
 // Elements returns the schema elements.
