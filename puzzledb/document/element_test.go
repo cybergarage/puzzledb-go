@@ -18,26 +18,30 @@ import (
 	"reflect"
 	"strconv"
 	"testing"
-	"time"
 )
 
-func TestSchema(t *testing.T) {
-	now := time.Now()
+var elementTypes = []ElementType{
+	Int8,
+	Int16,
+	Int32,
+	Int64,
+	String,
+	Binary,
+	Float32,
+	Float64,
+	DateTime,
+	Bool,
+}
 
-	s1 := NewSchema()
-	s1.SetName(now.String())
+func TestElement(t *testing.T) {
 	for n, et := range elementTypes {
-		e := NewElement().SetName(strconv.Itoa(n)).SetType(et)
-		s1.AddElement(e)
-	}
-
-	s2, err := NewSchemaWith(s1.Data())
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	if !reflect.DeepEqual(s1.Data(), s2.Data()) {
-		t.Errorf("%v !=%v", s2, s1)
+		e1 := NewElement().SetName(strconv.Itoa(n)).SetType(et)
+		e2, err := newElementWith(e1.Data())
+		if err != nil {
+			t.Error(err)
+		}
+		if !reflect.DeepEqual(e1.Data(), e2.Data()) {
+			t.Errorf("%v !=%v", e2, e1)
+		}
 	}
 }

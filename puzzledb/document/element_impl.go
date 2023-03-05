@@ -39,11 +39,15 @@ func NewElement() Element {
 	return e
 }
 
-func newElementWith(em elementMap) Element {
+func newElementWith(obj any) (Element, error) {
+	em, ok := obj.(elementMap)
+	if !ok {
+		return nil, newErrElementInvalid(obj)
+	}
 	e := &element{
 		data: em,
 	}
-	return e
+	return e, nil
 }
 
 // SetName sets the specified name to the element.
