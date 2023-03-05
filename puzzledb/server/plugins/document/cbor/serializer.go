@@ -24,7 +24,6 @@ import (
 
 // Serializer represents a CBOR erializer.
 type Serializer struct {
-	document.Serializer
 	plugins.Service
 }
 

@@ -32,7 +32,8 @@ type transaction struct {
 
 func newTransaction(txn *memdb.Txn) *transaction {
 	return &transaction{
-		Txn: txn,
+		Txn:         txn,
+		Transaction: nil,
 	}
 }
 

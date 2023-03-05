@@ -23,7 +23,6 @@ import (
 
 // Databases represents a database map.
 type Databases struct {
-	kv.Store
 	sync.Map
 }
 
