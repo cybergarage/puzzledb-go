@@ -31,7 +31,6 @@ type BSONEncoder struct {
 // NewBSONEncoder returns a new BSON encoder instance.
 func NewBSONEncoder() *BSONEncoder {
 	return &BSONEncoder{}
-
 }
 
 // EncodeBSON encodes the specified BSON object to a document object.

@@ -28,7 +28,6 @@ type Serializer struct {
 // NewSerializer returns a new CBOR erializer instance.
 func NewSerializer() *Serializer {
 	return &Serializer{}
-
 }
 
 // Encode writes the specified object to the specified writer.

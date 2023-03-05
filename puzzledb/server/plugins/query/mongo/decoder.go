@@ -32,7 +32,6 @@ type BSONDecoder struct {
 // NewBSONDecoder returns a new CBOR erializer instance.
 func NewBSONDecoder() *BSONDecoder {
 	return &BSONDecoder{}
-
 }
 
 // DecodeBSON returns the decorded BSON object from the specified object.
