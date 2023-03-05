@@ -137,26 +137,26 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 }
 
 // Update should handle a UPDATE statement.
-func (srv *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
+func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
 	return mysql.NewResult(), nil
 }
 
 // Delete should handle a DELETE statement.
-func (srv *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *query.Delete) (*mysql.Result, error) {
+func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *query.Delete) (*mysql.Result, error) {
 	return mysql.NewResult(), nil
 }
 
 // Select should handle a SELECT statement.
-func (srv *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
+func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
 	return mysql.NewResult(), nil
 }
 
 // ShowDatabases should handle a SHOW DATABASES statement.
-func (srv *Service) ShowDatabases(ctx context.Context, conn *mysql.Conn) (*mysql.Result, error) {
+func (service *Service) ShowDatabases(ctx context.Context, conn *mysql.Conn) (*mysql.Result, error) {
 	return mysql.NewResult(), nil
 }
 
 // ShowTables should handle a SHOW TABLES statement.
-func (srv *Service) ShowTables(ctx context.Context, conn *mysql.Conn, database string) (*mysql.Result, error) {
+func (service *Service) ShowTables(ctx context.Context, conn *mysql.Conn, database string) (*mysql.Result, error) {
 	return mysql.NewResult(), nil
 }
