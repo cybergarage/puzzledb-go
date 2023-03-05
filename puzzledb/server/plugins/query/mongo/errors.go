@@ -24,3 +24,7 @@ var ErrNotSupported = errors.New("not supported")
 func newErrNotSupported(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotSupported)
 }
+
+func newErrBSONTypeNotSupported(target any) error {
+	return fmt.Errorf("BSON (%T:%v) is %w", target, target, ErrNotSupported)
+}
