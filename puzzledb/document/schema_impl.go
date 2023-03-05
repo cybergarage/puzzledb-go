@@ -86,7 +86,19 @@ func NewSchemaWith(obj any) (Schema, error) {
 		}
 	}
 
-	// Caches elements
+	// Caches indexes
+
+	ims, ok := s.indexMpas()
+	if !ok {
+		return nil, newErrSchemaInvalid(obj)
+	}
+
+	for _, im := range ims {
+		i, err := newIndexWith(s, im)
+		if err == nil {
+			s.indexes = append(s.indexes, i)
+		}
+	}
 
 	return s, nil
 }
