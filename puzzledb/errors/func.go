@@ -19,10 +19,6 @@ import (
 	"fmt"
 )
 
-func New(text string) error {
-	return errors.New(text)
-}
-
 func Wrap(err error) error {
 	return fmt.Errorf("%w", err)
 }
