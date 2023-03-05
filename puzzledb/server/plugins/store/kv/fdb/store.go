@@ -20,7 +20,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-var RequiredAPIVersion = 630
+const RequiredAPIVersion int = 630
 
 // Store represents a FoundationDB store service instance.
 type Store struct {
