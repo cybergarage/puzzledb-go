@@ -30,9 +30,9 @@ func NewIndexWith(s document.Schema, def *query.IndexDefinition) (document.Index
 	idx.SetName(def.Info.Name.Lowered())
 
 	if def.Info.Primary {
-		idx.SetType(document.Primary)
+		idx.SetType(document.PrimaryIndex)
 	} else {
-		idx.SetType(document.Secondary)
+		idx.SetType(document.SecondaryIndex)
 	}
 
 	for _, col := range def.Columns {

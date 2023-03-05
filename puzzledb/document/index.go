@@ -17,8 +17,8 @@ package document
 type IndexType uint8
 
 const (
-	Primary   IndexType = 1
-	Secondary IndexType = 2
+	PrimaryIndex   IndexType = 1
+	SecondaryIndex IndexType = 2
 )
 
 type Index interface {
