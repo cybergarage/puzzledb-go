@@ -24,7 +24,6 @@ func NewServices() *Services {
 	return &Services{
 		services: []Service{},
 	}
-
 }
 
 // Add adds a service.
