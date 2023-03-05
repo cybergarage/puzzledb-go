@@ -37,7 +37,7 @@ func NewDatabases() *Databases {
 func (dbs *Databases) CreateDatabase(name string) error {
 	db, err := NewDatabaseWithID(name)
 	if err != nil {
-		return nil
+		return err
 	}
 	dbs.Map.Store(name, db)
 	return nil
