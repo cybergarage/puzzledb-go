@@ -185,7 +185,7 @@ func (s *schema) AddIndex(idx Index) {
 
 // Elements returns the schema elements.
 func (s *schema) Indexes() []Index {
-	return []Index{}
+	return s.indexes
 }
 
 // Data returns the raw representation data in memory.
