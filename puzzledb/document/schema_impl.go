@@ -86,6 +86,8 @@ func NewSchemaWith(obj any) (Schema, error) {
 		}
 	}
 
+	// Caches elements
+
 	return s, nil
 }
 
@@ -170,18 +172,29 @@ func (s *schema) FindElement(name string) (Element, error) {
 	return nil, newErrNotSupported(name)
 }
 
+func (s *schema) indexMpas() ([]indexMap, bool) {
+	v, ok := s.data[schemaIndexesIdx]
+	if !ok {
+		return nil, false
+	}
+	ims, ok := v.([]indexMap)
+	if !ok {
+		return nil, false
+	}
+	return ims, true
+}
+
 // AddIndex adds the specified index to the schema.
 func (s *schema) AddIndex(idx Index) {
-	s.indexes = append(s.indexes, idx)
-	v, ok := s.data[schemaElementsIdx]
+	ims, ok := s.indexMpas()
 	if !ok {
 		return
 	}
-	a, ok := v.([]any)
+	im, ok := idx.Data().(indexMap)
 	if !ok {
 		return
 	}
-	s.data[schemaIndexesIdx] = append(a, idx.Data())
+	s.data[schemaIndexesIdx] = append(ims, im)
 	// Add index to cache
 	s.indexes = append(s.indexes, idx)
 }
