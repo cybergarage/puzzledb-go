@@ -45,6 +45,34 @@ func NewIndex() Index {
 	return idx
 }
 
+func newIndexWith(s *schema, obj any) (Index, error) {
+	im, ok := obj.(indexMap)
+	if !ok {
+		return nil, newErrIndexInvalid(obj)
+	}
+	i := &index{
+		data:     im,
+		elements: nil,
+	}
+
+	// Caches index elements
+
+	ies, ok := i.indexElements()
+	if !ok {
+		return nil, newErrSchemaInvalid(s)
+	}
+	i.elements = []Element{}
+	for _, ie := range ies {
+		em, err := s.FindElement(ie)
+		if err != nil {
+			return nil, newErrSchemaInvalid(s)
+		}
+		i.elements = append(i.elements, em)
+	}
+
+	return i, nil
+}
+
 // SetName sets the specified name to the index.
 func (idx *index) SetName(name string) Index {
 	idx.data[elementNameIdx] = name
