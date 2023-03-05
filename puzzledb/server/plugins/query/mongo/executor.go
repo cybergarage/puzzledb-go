@@ -15,8 +15,6 @@
 package mongo
 
 import (
-	"fmt"
-
 	"github.com/cybergarage/go-mongo/mongo"
 	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
@@ -111,7 +109,7 @@ func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Que
 		}
 		return nil
 	}
-	return fmt.Errorf("unknown BSON object type (%T) : %v", v, v)
+	return newErrBSONTypeNotSupported(v)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
@@ -366,5 +364,5 @@ func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Que
 		}
 		return nil
 	}
-	return fmt.Errorf("unknown BSON object type (%T) : %v", v, v)
+	return newErrBSONTypeNotSupported(v)
 }

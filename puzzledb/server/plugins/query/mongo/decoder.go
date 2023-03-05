@@ -15,7 +15,6 @@
 package mongo
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -169,7 +168,7 @@ func DecodeBSONValue(obj any) (*bsoncore.Value, error) {
 		return bsonVal, nil
 	}
 
-	return nil, fmt.Errorf("unknown object type : %T", obj)
+	return nil, newErrBSONTypeNotSupported(obj)
 }
 
 func bsonDocumentAddObject(bsonDoc []byte, key string, obj any) ([]byte, error) {
@@ -204,5 +203,5 @@ func bsonDocumentAddObject(bsonDoc []byte, key string, obj any) ([]byte, error) 
 		return bsoncore.AppendNullElement(bsonDoc, key), nil
 	}
 
-	return bsonDoc, fmt.Errorf("unknown element type : %v", bsonVal)
+	return bsonDoc, newErrBSONTypeNotSupported(bsonVal)
 }
