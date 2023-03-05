@@ -29,3 +29,4 @@ linters:
     - dupl
     - unparam
     - godox
+    - varcheck
