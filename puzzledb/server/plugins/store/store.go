@@ -21,7 +21,6 @@ import (
 )
 
 type Store struct {
-	Service
 	kvService kv.Service
 	document.Serializer
 }
