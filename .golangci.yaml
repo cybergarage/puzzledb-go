@@ -28,3 +28,4 @@ linters:
     - gochecknoglobals
     - dupl
     - unparam
+    - godox
