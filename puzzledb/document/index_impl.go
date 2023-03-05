@@ -27,6 +27,8 @@ const (
 	indexElementsIdx = 3
 )
 
+type indexMap = map[uint8]any
+
 type index struct {
 	data     map[uint8]any
 	elements []Element
@@ -35,7 +37,7 @@ type index struct {
 // NewIndex returns a blank index.
 func NewIndex() Index {
 	idx := &index{
-		data:     map[uint8]any{},
+		data:     indexMap{},
 		elements: []Element{},
 	}
 	idx.data[indexElementsIdx] = []string{}
