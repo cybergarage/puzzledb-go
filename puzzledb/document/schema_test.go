@@ -38,10 +38,14 @@ func TestSchema(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(s2.Data(), s1.Data()) {
-		t.Errorf("%v !=%v", s2, s1)
+		t.Errorf("%v ! =%v", s2, s1)
 	}
 
 	if len(s1.Elements()) != len(s2.Elements()) {
-		t.Errorf("%v !=%v", s2, s1)
+		t.Errorf("%v ! =%v", s2, s1)
+	}
+
+	if len(s1.Indexes()) != len(s2.Indexes()) {
+		t.Errorf("%v ! =%v", s2, s1)
 	}
 }
