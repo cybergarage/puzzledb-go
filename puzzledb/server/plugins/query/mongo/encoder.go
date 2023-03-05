@@ -15,7 +15,6 @@
 package mongo
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/cybergarage/go-mongo/mongo/bson"
@@ -127,5 +126,5 @@ func EncodeBSONValue(bsonVal bsoncore.Value) (any, error) {
 	case bsontype.ObjectID:
 		return bsonVal.ObjectID().Hex(), nil
 	}
-	return nil, fmt.Errorf("unknown BSON type : %X", bsonVal.Type)
+	return nil, newErrBSONTypeNotSupported(bsonVal.Type)
 }
