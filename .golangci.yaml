@@ -22,3 +22,7 @@ linters:
     - golint
     - structcheck
     - unused
+    - cyclop
+    - lll
+    - gomnd
+    - gochecknoglobals
