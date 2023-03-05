@@ -22,6 +22,7 @@ import (
 var ErrNotSupported = errors.New("not supported")
 var ErrSchemaInvalid = errors.New("invalid schema")
 var ErrElementInvalid = errors.New("invalid schema")
+var ErrIndexInvalid = errors.New("invalid index")
 
 func newErrNotSupported(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotSupported)
@@ -33,4 +34,8 @@ func newErrElementInvalid(obj any) error {
 
 func newErrSchemaInvalid(obj any) error {
 	return fmt.Errorf("%v(%T) is %w", obj, obj, ErrSchemaInvalid)
+}
+
+func newErrIndexInvalid(obj any) error {
+	return fmt.Errorf("%v(%T) is %w", obj, obj, ErrIndexInvalid)
 }
