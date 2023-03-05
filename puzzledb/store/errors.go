@@ -15,9 +15,8 @@
 package store
 
 import (
+	"errors"
 	"fmt"
-
-	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 )
 
 var (
