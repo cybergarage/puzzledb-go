@@ -28,6 +28,7 @@ const (
 )
 
 type indexMap = map[uint8]any
+type indexElements = []string
 
 type index struct {
 	data     map[uint8]any
@@ -40,7 +41,7 @@ func NewIndex() Index {
 		data:     indexMap{},
 		elements: []Element{},
 	}
-	idx.data[indexElementsIdx] = []string{}
+	idx.data[indexElementsIdx] = indexElements{}
 	return idx
 }
 
@@ -84,18 +85,27 @@ func (idx *index) Type() IndexType {
 	}
 }
 
-// AddElement returns the schema elements.
-func (idx *index) AddElement(elem Element) Index {
-	idx.elements = append(idx.elements, elem)
+func (idx *index) indexElements() (indexElements, bool) {
 	v, ok := idx.data[indexElementsIdx]
 	if !ok {
-		return idx
+		return nil, false
 	}
-	a, ok := v.([]string)
+	es, ok := v.(indexElements)
+	if !ok {
+		return nil, false
+	}
+	return es, true
+}
+
+// AddElement returns the schema elements.
+func (idx *index) AddElement(elem Element) Index {
+	es, ok := idx.indexElements()
 	if !ok {
 		return idx
 	}
-	idx.data[indexElementsIdx] = append(a, elem.Name())
+	idx.data[indexElementsIdx] = append(es, elem.Name())
+	// Add element to cache
+	idx.elements = append(idx.elements, elem)
 	return idx
 }
 

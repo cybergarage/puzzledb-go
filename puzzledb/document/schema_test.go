@@ -25,11 +25,26 @@ func TestSchema(t *testing.T) {
 	now := time.Now()
 
 	s1 := NewSchema()
+
 	s1.SetName(now.String())
+
 	for n, et := range elementTypes {
 		e := NewElement().SetName(strconv.Itoa(n)).SetType(et)
 		s1.AddElement(e)
 	}
+
+	for n, e := range s1.Elements() {
+		idx := NewIndex().SetName(strconv.Itoa(n))
+		if n == 0 {
+			idx.SetType(PrimaryIndex)
+		} else {
+			idx.SetType(SecondaryIndex)
+		}
+		idx.AddElement(e)
+		s1.AddIndex(idx)
+	}
+
+	// Compares
 
 	s2, err := NewSchemaWith(s1.Data())
 	if err != nil {
