@@ -59,8 +59,12 @@ func NewSchema() Schema {
 
 // NewSchemaWith creates a schema from the specified object.
 func NewSchemaWith(obj any) (Schema, error) {
+	smap, ok := obj.(schemaMap)
+	if !ok {
+		return nil, newErrSchemaInvalid(obj)
+	}
 	s := &schema{
-		data:    obj,
+		data:    smap,
 		indexes: []Index{},
 	}
 	return s, nil
