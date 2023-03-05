@@ -80,7 +80,9 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 
 	_, err = txn.GetSchema(stmt.TableName())
 	if err == nil {
-		defer txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
 		if stmt.GetIfNotExists() {
 			return mysql.NewResult(), nil
 		}
@@ -89,13 +91,17 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 
 	schema, err := NewSchemaWith(stmt)
 	if err != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
 		return nil, err
 	}
 
 	err = txn.CreateSchema(schema)
 	if err != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
 		return nil, err
 	}
 

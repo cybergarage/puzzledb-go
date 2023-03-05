@@ -35,7 +35,9 @@ func (srvs *Services) Add(srv Service) {
 func (srvs *Services) Start() error {
 	for _, srv := range srvs.services {
 		if err := srv.Start(); err != nil {
-			srvs.Stop()
+			if err := srvs.Stop(); err != nil {
+				return err
+			}
 			return err
 		}
 	}
@@ -44,10 +46,11 @@ func (srvs *Services) Start() error {
 
 // Stop stops all services.
 func (srvs Services) Stop() error {
+	var lastErr error
 	for _, srv := range srvs.services {
 		if err := srv.Stop(); err != nil {
-			return err
+			lastErr = err
 		}
 	}
-	return nil
+	return lastErr
 }
