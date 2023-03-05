@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package plugins
+package document
 
 import (
 	"bytes"
@@ -21,8 +21,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledbdocument"
-	"github.com/cybergarage/puzzledb-go/puzzledbserver/plugins/document/cbor"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/document/cbor"
 )
 
 func DeepEqual(x, y any) error {
@@ -38,7 +38,6 @@ func DeepEqual(x, y any) error {
 	return fmt.Errorf("%v != %v", x, y)
 }
 
-//nolint:gosec,cyclop
 func SerializerPrimitiveTest(t *testing.T, s document.Serializer) {
 	t.Helper()
 
@@ -74,7 +73,6 @@ func SerializerPrimitiveTest(t *testing.T, s document.Serializer) {
 	}
 }
 
-//nolint:gosec,cyclop
 func SerializerTest(t *testing.T, s document.Serializer) {
 	t.Helper()
 	testFuncs := []struct {
