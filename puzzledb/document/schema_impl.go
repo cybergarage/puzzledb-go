@@ -25,6 +25,7 @@ package document
 // 3: indexes - []map[uint8]any
 //    1: name - string
 //    2: type - uint8
+//    3: elements - []string (element name)
 
 const (
 	// SchemaVersion specifies a latest schema version.

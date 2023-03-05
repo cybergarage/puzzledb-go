@@ -66,7 +66,7 @@ func (idx *index) Name() string {
 
 // SetType sets the specified type to the element.
 func (idx *index) SetType(t IndexType) Index {
-	idx.data[indexTypeIdx] = uint8(t)
+	idx.data[indexTypeIdx] = t
 	return idx
 }
 
