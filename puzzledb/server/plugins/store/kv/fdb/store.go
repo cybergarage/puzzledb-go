@@ -29,7 +29,7 @@ type Store struct {
 
 // New returns a new memdb store instance.
 func NewStore() store.Service {
-	return &Store{}
+	return &Store{} //nolint:all
 }
 
 // CreateDatabase creates a new database.
