@@ -41,15 +41,17 @@ const (
 type schemaMap = map[uint8]any
 
 type schema struct {
-	data    schemaMap
-	indexes []Index
+	data     schemaMap
+	elements []Element
+	indexes  []Index
 }
 
 // NewSchema returns a blank schema.
 func NewSchema() Schema {
 	s := &schema{
-		data:    schemaMap{},
-		indexes: []Index{},
+		data:     schemaMap{},
+		elements: []Element{},
+		indexes:  []Index{},
 	}
 	s.SetVersion(SchemaVersion)
 	s.data[schemaElementsIdx] = []any{}
@@ -135,17 +137,7 @@ func (s *schema) AddElement(elem Element) {
 
 // Elements returns the schema elements.
 func (s *schema) Elements() []Element {
-	es := []Element{}
-	ems, ok := s.elementMaps()
-	if ok {
-		for _, em := range ems {
-			e, err := newElementWith(em)
-			if err == nil {
-				es = append(es, e)
-			}
-		}
-	}
-	return es
+	return s.elements
 }
 
 // FindElement returns the schema elements by the name.
