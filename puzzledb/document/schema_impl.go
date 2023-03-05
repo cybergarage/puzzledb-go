@@ -54,7 +54,7 @@ func NewSchema() Schema {
 		indexes:  []Index{},
 	}
 	s.SetVersion(SchemaVersion)
-	s.data[schemaElementsIdx] = []any{}
+	s.data[schemaElementsIdx] = []elementMap{}
 	s.data[schemaIndexesIdx] = []any{}
 	return s
 }
@@ -140,7 +140,6 @@ func (s *schema) elementMaps() ([]elementMap, bool) {
 
 // AddElement adds the specified element to the schema.
 func (s *schema) AddElement(elem Element) {
-	s.elements = append(s.elements, elem)
 	ems, ok := s.elementMaps()
 	if !ok {
 		return
@@ -150,6 +149,8 @@ func (s *schema) AddElement(elem Element) {
 		return
 	}
 	s.data[schemaElementsIdx] = append(ems, em)
+	// Add element to cache
+	s.elements = append(s.elements, elem)
 }
 
 // Elements returns the schema elements.
