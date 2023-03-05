@@ -23,8 +23,5 @@ const (
 )
 
 func isPrimaryKey(name string) bool {
-	if strings.Compare(name, ObjectID) == 0 {
-		return true
-	}
-	return false
+	return strings.Compare(name, ObjectID) == 0
 }
