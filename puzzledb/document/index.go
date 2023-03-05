@@ -14,7 +14,7 @@
 
 package document
 
-type IndexType int
+type IndexType uint8
 
 const (
 	Primary   IndexType = 1

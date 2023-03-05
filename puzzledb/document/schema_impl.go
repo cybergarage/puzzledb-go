@@ -55,7 +55,7 @@ func NewSchema() Schema {
 	}
 	s.SetVersion(SchemaVersion)
 	s.data[schemaElementsIdx] = []elementMap{}
-	s.data[schemaIndexesIdx] = []any{}
+	s.data[schemaIndexesIdx] = []indexMap{}
 	return s
 }
 
