@@ -38,16 +38,16 @@ func NewService() query.Service {
 }
 
 // Start starts the service.
-func (srv *Service) Start() error {
-	if err := srv.Server.Start(); err != nil {
+func (service *Service) Start() error {
+	if err := service.Server.Start(); err != nil {
 		return err
 	}
 	return nil
 }
 
 // Stop stops the service.
-func (srv *Service) Stop() error {
-	if err := srv.Server.Stop(); err != nil {
+func (service *Service) Stop() error {
+	if err := service.Server.Stop(); err != nil {
 		return err
 	}
 	return nil
