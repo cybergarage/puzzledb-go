@@ -66,9 +66,25 @@ func NewSchemaWith(obj any) (Schema, error) {
 		return nil, newErrSchemaInvalid(obj)
 	}
 	s := &schema{
-		data:    smap,
-		indexes: []Index{},
+		data:     smap,
+		elements: []Element{},
+		indexes:  []Index{},
 	}
+
+	// Caches elements
+
+	ems, ok := s.elementMaps()
+	if !ok {
+		return nil, newErrSchemaInvalid(obj)
+	}
+
+	for _, em := range ems {
+		e, err := newElementWith(em)
+		if err == nil {
+			s.elements = append(s.elements, e)
+		}
+	}
+
 	return s, nil
 }
 

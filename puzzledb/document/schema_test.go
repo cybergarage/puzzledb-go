@@ -37,7 +37,11 @@ func TestSchema(t *testing.T) {
 		return
 	}
 
-	if !reflect.DeepEqual(s1.Data(), s2.Data()) {
+	if !reflect.DeepEqual(s2.Data(), s1.Data()) {
+		t.Errorf("%v !=%v", s2, s1)
+	}
+
+	if len(s1.Elements()) != len(s2.Elements()) {
 		t.Errorf("%v !=%v", s2, s1)
 	}
 }
