@@ -21,3 +21,4 @@ linters:
     - exhaustivestruct
     - golint
     - structcheck
+    - unused
