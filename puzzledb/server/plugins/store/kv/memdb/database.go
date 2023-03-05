@@ -21,9 +21,8 @@ import (
 )
 
 const (
-	tableName    = "document"
-	idFieldName  = "id"
-	keyFieldName = "Key"
+	tableName   = "document"
+	idFieldName = "id"
 )
 
 // Database represents a database.
