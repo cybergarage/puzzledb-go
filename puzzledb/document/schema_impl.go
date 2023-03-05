@@ -140,6 +140,7 @@ func (s *schema) elementMaps() ([]elementMap, bool) {
 
 // AddElement adds the specified element to the schema.
 func (s *schema) AddElement(elem Element) {
+	s.elements = append(s.elements, elem)
 	ems, ok := s.elementMaps()
 	if !ok {
 		return
