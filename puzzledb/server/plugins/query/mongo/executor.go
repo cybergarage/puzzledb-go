@@ -53,7 +53,9 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	for _, queryDoc := range queryDocs {
 		err = service.insertDocument(tx, q, queryDoc)
 		if err != nil {
-			tx.Cancel()
+			if err := tx.Cancel(); err != nil {
+				return 0, err
+			}
 			return 0, err
 		}
 		nInserted++
@@ -126,7 +128,9 @@ func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document,
 
 	foundDoc, err := service.findDocuments(tx, q)
 	if err != nil {
-		tx.Cancel()
+		if err := tx.Cancel(); err != nil {
+			return nil, err
+		}
 		return nil, err
 	}
 
@@ -204,13 +208,17 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 
 	foundDocs, err := service.Find(conn, q)
 	if err != nil {
-		tx.Cancel()
+		if err := tx.Cancel(); err != nil {
+			return 0, err
+		}
 		return 0, err
 	}
 
 	nUpdated, err := service.updateDocuments(tx, q, foundDocs)
 	if err != nil {
-		tx.Cancel()
+		if err := tx.Cancel(); err != nil {
+			return 0, err
+		}
 		return 0, err
 	}
 
@@ -286,13 +294,17 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 
 	foundDocs, err := service.Find(conn, q)
 	if err != nil {
-		tx.Cancel()
+		if err := tx.Cancel(); err != nil {
+			return 0, err
+		}
 		return 0, err
 	}
 
 	nDeleted, err := service.deleteDocuments(tx, q, foundDocs)
 	if err != nil {
-		tx.Cancel()
+		if err := tx.Cancel(); err != nil {
+			return 0, err
+		}
 		return 0, err
 	}
 
