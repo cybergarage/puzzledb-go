@@ -27,3 +27,4 @@ linters:
     - gomnd
     - gochecknoglobals
     - dupl
+    - unparam
