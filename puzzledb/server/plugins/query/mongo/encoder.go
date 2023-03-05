@@ -60,7 +60,7 @@ func EncodeBSONDocument(bsonDoc bson.Document) (document.Object, error) {
 }
 
 func EncodeBSONValue(bsonVal bsoncore.Value) (any, error) {
-	/* TODO: The following BSON types are not supported yet
+	/* TODO: The following BSON types are not supported yet.
 	   Undefined        Type = 0x06
 	   DBPointer        Type = 0x0C
 	   JavaScript       Type = 0x0D
@@ -72,7 +72,7 @@ func EncodeBSONValue(bsonVal bsoncore.Value) (any, error) {
 	   MaxKey           Type = 0x7F
 	*/
 
-	switch bsonVal.Type {
+	switch bsonVal.Type { //nolint:all
 	case bsontype.Array:
 		bsonArray := bsonVal.Array()
 		bsonElems, err := bsonArray.Values()

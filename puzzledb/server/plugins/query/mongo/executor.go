@@ -98,7 +98,7 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 }
 
 func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
-	switch vmap := v.(type) {
+	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for key, val := range vmap {
 			indexKey := service.createIndexKey(tx, q, key, val)
@@ -170,7 +170,6 @@ func (service *Service) findDocumentObjects(tx store.Transaction, q *mongo.Query
 				objs = rs.Objects()
 			}
 			matchedDocs = append(matchedDocs, objs...)
-
 		}
 	}
 	return matchedDocs, nil
@@ -337,7 +336,7 @@ func (service *Service) deleteDocument(tx store.Transaction, q *mongo.Query, bso
 		return err
 	}
 
-	// TODO: Removes the secondary indexes for the all elements
+	// TODO: Removes the secondary indexes for the all elements.
 
 	doc, err := service.EncodeBSON(bsonDoc)
 	if err != nil {
@@ -353,7 +352,7 @@ func (service *Service) deleteDocument(tx store.Transaction, q *mongo.Query, bso
 }
 
 func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
-	switch vmap := v.(type) {
+	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for key, val := range vmap {
 			indexKey := service.createIndexKey(tx, q, key, val)
