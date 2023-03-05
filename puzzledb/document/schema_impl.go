@@ -38,15 +38,17 @@ const (
 	schemaIndexesIdx  = 3
 )
 
+type schemaMap = map[uint8]any
+
 type schema struct {
-	data    map[uint8]any
+	data    schemaMap
 	indexes []Index
 }
 
 // NewSchema returns a blank schema.
 func NewSchema() Schema {
 	s := &schema{
-		data:    map[uint8]any{},
+		data:    schemaMap{},
 		indexes: []Index{},
 	}
 	s.SetVersion(SchemaVersion)
@@ -57,7 +59,10 @@ func NewSchema() Schema {
 
 // NewSchemaWith creates a schema from the specified object.
 func NewSchemaWith(obj any) (Schema, error) {
-	s := NewSchema()
+	s := &schema{
+		data:    obj,
+		indexes: []Index{},
+	}
 	return s, nil
 }
 

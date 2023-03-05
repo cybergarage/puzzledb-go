@@ -20,7 +20,12 @@ import (
 )
 
 var ErrNotSupported = errors.New("not supported")
+var ErrSchemaInvalid = errors.New("invalid schema")
 
 func newErrNotSupported(target string) error {
-	return fmt.Errorf("%w : %v", ErrNotSupported, target)
+	return fmt.Errorf("%v is %w", target, ErrNotSupported)
+}
+
+func newErrSchemaInvalid(s any) error {
+	return fmt.Errorf("%v(%T) is %w", s, s, ErrNotSupported)
 }
