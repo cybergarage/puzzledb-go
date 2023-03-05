@@ -52,7 +52,7 @@ func DecodeBSONDocument(obj document.Object) (bson.Document, error) {
 		}
 	case map[any]any:
 		for key, val := range v {
-			switch vkey := key.(type) {
+			switch vkey := key.(type) { //nolint:all
 			case string:
 				bsonDoc, err = bsonDocumentAddObject(bsonDoc, vkey, val)
 				if err != nil {
@@ -177,7 +177,7 @@ func bsonDocumentAddObject(bsonDoc []byte, key string, obj any) ([]byte, error) 
 		return nil, err
 	}
 
-	switch bsonVal.Type {
+	switch bsonVal.Type { //nolint:all
 	case bsontype.Array:
 		return bsoncore.AppendArrayElement(bsonDoc, key, bsonVal.Array()), nil
 	case bsontype.Boolean:
