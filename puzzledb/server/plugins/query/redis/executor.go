@@ -24,31 +24,38 @@ type Conn = redis.Conn
 type Message = redis.Message
 
 func (service *Service) Del(conn *Conn, keys []string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) Exists(conn *Conn, keys []string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) Expire(conn *Conn, key string, opt redis.ExpireOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) Keys(conn *Conn, pattern string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) Rename(conn *Conn, key string, newkey string, opt redis.RenameOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) Type(conn *Conn, key string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) TTL(conn *Conn, key string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOption) (*Message, error) {
@@ -123,97 +130,109 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 }
 
 func (service *Service) MSet(conn *Conn, dict map[string]string, opt redis.MSetOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) MGet(conn *Conn, keys []string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) HDel(conn *Conn, key string, fields []string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) HSet(conn *Conn, key string, field string, val string, opt redis.HSetOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) HGet(conn *Conn, key string, field string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) HGetAll(conn *Conn, key string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) HMSet(conn *Conn, key string, dict map[string]string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) HMGet(conn *Conn, key string, fields []string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) LPush(conn *Conn, key string, elements []string, opt redis.PushOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) RPush(conn *Conn, key string, elements []string, opt redis.PushOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) LPop(conn *Conn, key string, count int) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) RPop(conn *Conn, key string, count int) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
+
 }
 
 func (service *Service) LRange(conn *Conn, key string, start int, stop int) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LRange")
 }
 
 func (service *Service) LIndex(conn *Conn, key string, index int) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LIndex")
 }
 
 func (service *Service) LLen(conn *Conn, key string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("LLen")
 }
 
 func (service *Service) SAdd(conn *Conn, key string, members []string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("SAdd")
 }
 
 func (service *Service) SMembers(conn *Conn, key string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("SMembers")
 }
 
 func (service *Service) SRem(conn *Conn, key string, members []string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("SRem")
 }
 
 func (service *Service) ZAdd(conn *Conn, key string, members []*redis.ZSetMember, opt redis.ZAddOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("ZAdd")
 }
 
 func (service *Service) ZRange(conn *Conn, key string, start int, stop int, opt redis.ZRangeOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("ZRange")
 }
 
 func (service *Service) ZRangeByScore(conn *Conn, key string, min float64, max float64, opt redis.ZRangeOption) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("ZRangeByScore")
 }
 
 func (service *Service) ZRem(conn *Conn, key string, members []string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("ZRem")
 }
 
 func (service *Service) ZScore(conn *Conn, key string, member string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("ZScore")
 }
 
 func (service *Service) ZIncBy(conn *Conn, key string, inc float64, member string) (*Message, error) {
-	return nil, nil
+	return nil, newErrNotSupported("ZIncBy")
 }
