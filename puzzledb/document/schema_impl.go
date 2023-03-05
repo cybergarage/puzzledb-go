@@ -139,7 +139,10 @@ func (s *schema) Elements() []Element {
 	ems, ok := s.elementMaps()
 	if ok {
 		for _, em := range ems {
-			es = append(es, newElementWith(em))
+			e, err := newElementWith(em)
+			if err == nil {
+				es = append(es, e)
+			}
 		}
 	}
 	return es
