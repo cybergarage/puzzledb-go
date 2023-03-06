@@ -41,7 +41,7 @@ func NewElementWith(col *query.ColumnDefinition) (document.Element, error) {
 	case query.Blob:
 		e.SetType(document.Binary)
 	default:
-		return nil, newErrNotSupported(col.Type.SQLType().String())
+		return nil, newNotSupportedError(col.Type.SQLType().String())
 	}
 	return e, nil
 }

@@ -27,48 +27,48 @@ var (
 
 // Common error functions
 
-func newErrNotSupported(target string) error {
+func newNotSupportedError(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotSupported)
 }
 
-func newErrExist(target string) error {
+func newExistError(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrExist)
 }
 
-func newErrNotExist(target string) error {
+func newNotExistError(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotExist)
 }
 
 // Detail error functions
 
-func newErrDatabaseExist(target string) error {
-	return newErrExist(fmt.Sprintf("database (%s)", target))
+func newDatabaseExistError(target string) error {
+	return newExistError(fmt.Sprintf("database (%s)", target))
 }
 
-func newErrTableExist(target string) error {
-	return newErrExist(fmt.Sprintf("table (%s)", target))
+func newTableExistError(target string) error {
+	return newExistError(fmt.Sprintf("table (%s)", target))
 }
 
-func newErrSchemaExist(target string) error {
-	return newErrExist(fmt.Sprintf("schema (%s)", target))
+func newSchemaExistError(target string) error {
+	return newExistError(fmt.Sprintf("schema (%s)", target))
 }
 
-func newErrDatabaseNotExist(target string) error {
-	return newErrNotExist(fmt.Sprintf("database (%s)", target))
+func newDatabaseNotExistError(target string) error {
+	return newNotExistError(fmt.Sprintf("database (%s)", target))
 }
 
-func newErrTableNotExist(target string) error {
-	return newErrNotExist(fmt.Sprintf("table (%s)", target))
+func newTableNotExistError(target string) error {
+	return newNotExistError(fmt.Sprintf("table (%s)", target))
 }
 
-func newErrSchemaNotExist(target string) error {
-	return newErrNotExist(fmt.Sprintf("schema (%s)", target))
+func newSchemaNotExistError(target string) error {
+	return newNotExistError(fmt.Sprintf("schema (%s)", target))
 }
 
-func newErrIndexNotSupported(target string) error {
-	return newErrNotSupported(fmt.Sprintf("index (%s)", target))
+func newIndexNotSupportedError(target string) error {
+	return newNotSupportedError(fmt.Sprintf("index (%s)", target))
 }
 
-func newErrQueryNotSupported(target string) error {
-	return newErrNotSupported(fmt.Sprintf("query (%s)", target))
+func newQueryNotSupportedError(target string) error {
+	return newNotSupportedError(fmt.Sprintf("query (%s)", target))
 }

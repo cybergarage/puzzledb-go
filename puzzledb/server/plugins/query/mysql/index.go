@@ -22,7 +22,7 @@ import (
 // NewIndexWith creates an element from the specified coulumn object.
 func NewIndexWith(s document.Schema, def *query.IndexDefinition) (document.Index, error) {
 	if def.Info.Spatial || def.Info.Fulltext {
-		return nil, newErrIndexNotSupported(def.Info.Type)
+		return nil, newIndexNotSupportedError(def.Info.Type)
 	}
 
 	idx := document.NewIndex()
