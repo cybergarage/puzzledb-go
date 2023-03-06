@@ -19,9 +19,13 @@ import (
 	"fmt"
 )
 
-var ErrExist = errors.New("exist")
-var ErrNotExist = errors.New("not exist")
-var ErrNotSupported = errors.New("not supported")
+var (
+	ErrExist        = errors.New("exist")
+	ErrNotExist     = errors.New("not exist")
+	ErrNotSupported = errors.New("not supported")
+)
+
+// Common error functions
 
 func newErrNotSupported(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotSupported)
@@ -34,6 +38,8 @@ func newErrExist(target string) error {
 func newErrNotExist(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotExist)
 }
+
+// Detail error functions
 
 func newErrDatabaseExist(target string) error {
 	return newErrExist(fmt.Sprintf("database (%s)", target))
@@ -61,4 +67,8 @@ func newErrSchemaNotExist(target string) error {
 
 func newErrIndexNotSupported(target string) error {
 	return newErrNotSupported(fmt.Sprintf("index (%s)", target))
+}
+
+func newErrQueryNotSupported(target string) error {
+	return newErrNotSupported(fmt.Sprintf("query (%s)", target))
 }
