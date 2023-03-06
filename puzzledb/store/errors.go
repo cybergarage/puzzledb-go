@@ -20,15 +20,13 @@ import (
 )
 
 var (
-	ErrDatabaseNotFound = errors.New("database not found")
-	ErrSchemaNotFound   = errors.New("schema not found")
-	ErrObjectNotFound   = errors.New("object not found")
+	ErrNotExist = errors.New("not exist")
 )
 
-func NewDatabaseNotFoundError(name string) error {
-	return fmt.Errorf("%w (%s)", ErrDatabaseNotFound, name)
+func NewDatabaseNotExistError(name string) error {
+	return fmt.Errorf("database (%s) is %w", name, ErrNotExist)
 }
 
-func NewSchemaNotFoundError(name string) error {
-	return fmt.Errorf("%w (%s)", ErrSchemaNotFound, name)
+func NewSchemaNotExistError(name string) error {
+	return fmt.Errorf("schema (%s) is %w ", name, ErrNotExist)
 }

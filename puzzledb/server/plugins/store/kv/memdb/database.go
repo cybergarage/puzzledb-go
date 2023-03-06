@@ -66,7 +66,7 @@ func (db *Database) Name() string {
 // Transact begin a new transaction.
 func (db *Database) Transact(write bool) (kv.Transaction, error) {
 	if db.MemDB == nil {
-		return nil, store.NewDatabaseNotFoundError(db.Name())
+		return nil, store.NewDatabaseNotExistError(db.Name())
 	}
 	return newTransaction(db.MemDB.Txn(write)), nil
 }

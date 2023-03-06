@@ -46,11 +46,11 @@ func (dbs *Databases) CreateDatabase(name string) error {
 func (dbs *Databases) GetDatabase(id string) (kv.Database, error) {
 	v, ok := dbs.Load(id)
 	if !ok {
-		return nil, store.NewDatabaseNotFoundError(id)
+		return nil, store.NewDatabaseNotExistError(id)
 	}
 	db, ok := v.(*Database)
 	if !ok {
-		return nil, store.NewDatabaseNotFoundError(id)
+		return nil, store.NewDatabaseNotExistError(id)
 	}
 	return db, nil
 }

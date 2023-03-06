@@ -50,7 +50,7 @@ func (txn *transaction) GetSchema(name string) (store.Schema, error) {
 		return nil, err
 	}
 	if !kvRs.Next() {
-		return nil, store.NewSchemaNotFoundError(name)
+		return nil, store.NewSchemaNotExistError(name)
 	}
 	kvObj := kvRs.Object()
 	obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
