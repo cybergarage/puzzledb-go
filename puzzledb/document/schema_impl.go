@@ -227,6 +227,17 @@ func (s *schema) FindIndex(name string) (Index, error) {
 	return nil, newIndexNotExistErrorr(name)
 }
 
+// PrimaryIndex returns the schema primary index.
+func (s *schema) PrimaryIndex() (Index, error) {
+	idxes := s.indexes
+	for _, idx := range idxes {
+		if idx.Type() == PrimaryIndex {
+			return idx, nil
+		}
+	}
+	return nil, newPrimaryIndexNotExistErrorr()
+}
+
 // Data returns the raw representation data in memory.
 func (s *schema) Data() any {
 	return s.data
