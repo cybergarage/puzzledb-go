@@ -97,6 +97,13 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 		return nil, err
 	}
 
+	if _, err := schema.PrimaryIndex(); err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
 	err = txn.CreateSchema(schema)
 	if err != nil {
 		if err := txn.Cancel(); err != nil {
