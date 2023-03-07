@@ -190,7 +190,7 @@ func (s *schema) indexMpas() ([]indexMap, bool) {
 	if !ok {
 		return nil, false
 	}
-	ims, ok := v.([]indexMap)
+	ims, ok := schemaMapsFrom(v)
 	if !ok {
 		return nil, false
 	}
