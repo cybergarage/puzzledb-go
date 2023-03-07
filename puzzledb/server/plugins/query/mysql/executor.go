@@ -20,6 +20,7 @@ import (
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/go-mysql/mysql/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 // CreateDatabase should handle a CREATE database statement.
@@ -204,7 +205,7 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
-	txn, err := db.Transact(true)
+	txn, err := db.Transact(false)
 	if err != nil {
 		return nil, err
 	}
@@ -235,13 +236,28 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
-	cond := stmt.Where
-	_, err = NewKeyFrom(dbName, schema, cond)
+	docKey, docKeyType, err := NewKeyFrom(dbName, schema, stmt.Where)
 	if err != nil {
 		if err := txn.Cancel(); err != nil {
 			return nil, err
 		}
 		return nil, err
+	}
+
+	var objs []document.Object
+	switch docKeyType {
+	case document.PrimaryIndex:
+		rs, err := txn.FindDocuments(docKey)
+		if err != nil {
+			return nil, err
+		}
+		objs = rs.Objects()
+	case document.SecondaryIndex:
+		rs, err := txn.FindDocumentsByIndex(docKey)
+		if err != nil {
+			return nil, err
+		}
+		objs = rs.Objects()
 	}
 
 	err = txn.Commit()
