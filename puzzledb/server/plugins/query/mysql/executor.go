@@ -209,6 +209,41 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
+	// TODO: Support multiple tables
+	tables := stmt.From()
+	if len(tables) != 1 {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, newJoinQueryNotSupportedError(tables)
+	}
+
+	table := tables[0]
+	tableName, err := table.Name()
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	schema, err := txn.GetSchema(tableName)
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	cond := stmt.Where
+	_, err = NewKeyFrom(dbName, schema, cond)
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
 	err = txn.Commit()
 	if err != nil {
 		return nil, err
