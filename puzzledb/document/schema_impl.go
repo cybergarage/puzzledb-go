@@ -62,23 +62,9 @@ func NewSchema() Schema {
 
 // NewSchemaWith creates a schema from the specified object.
 func NewSchemaWith(obj any) (Schema, error) {
-	smap, ok := obj.(schemaMap)
+	smap, ok := schemaMapFrom(obj)
 	if !ok {
-		amap, ok := obj.(map[any]any)
-		if !ok {
-			return nil, newSchemaInvalidError(obj)
-		}
-		smap = schemaMap{}
-		for ak, av := range amap {
-			switch k := ak.(type) {
-			case int8:
-				smap[uint8(k)] = av
-			case uint8:
-				smap[uint8(k)] = av
-			default:
-				return nil, newSchemaInvalidError(obj)
-			}
-		}
+		return nil, newSchemaInvalidError(obj)
 	}
 
 	s := &schema{
