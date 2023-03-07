@@ -23,6 +23,7 @@ import (
 func NewSchemaWith(def *query.Schema) (document.Schema, error) {
 	s := document.NewSchema()
 	s.SetName(def.TableName())
+	// Columns
 	for _, col := range def.GetTableSpec().Columns {
 		e, err := NewElementWith(col)
 		if err != nil {
@@ -38,13 +39,17 @@ func NewSchemaWith(def *query.Schema) (document.Schema, error) {
 			s.AddIndex(i)
 		}
 	}
-	// Secondary Indexes
+	// Indexes
 	for _, idx := range def.GetTableSpec().Indexes {
 		i, err := NewIndexWith(s, idx)
 		if err != nil {
 			return nil, err
 		}
 		s.AddIndex(i)
+	}
+	// Primary index
+	if _, err := s.PrimaryIndex(); err != nil {
+		return nil, err
 	}
 	return s, nil
 }
