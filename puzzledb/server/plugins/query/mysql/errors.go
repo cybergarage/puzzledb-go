@@ -82,3 +82,7 @@ func newPrimaryKeyDataNotExistError(keyName string, obj any) error {
 func newJoinQueryNotSupportedError(obj any) error {
 	return newNotSupportedError(fmt.Sprintf("JOIN query (%v)", obj))
 }
+
+func newQueryConditionNotSupportedError(obj any) error {
+	return newNotSupportedError(fmt.Sprintf("query condition (%v)", obj))
+}
