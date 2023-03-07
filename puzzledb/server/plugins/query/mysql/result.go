@@ -24,6 +24,11 @@ func NewResultWith(schema document.Schema, objs []document.Object) (*mysql.Resul
 	res := mysql.NewResult()
 
 	resRows := [][]mysql.Value{}
+	for _, obj := range objs {
+		resValues := []mysql.Value{}
+		resRows = append(resRows, resValues)
+	}
+
 	res.Rows = resRows
 
 	return res, nil
