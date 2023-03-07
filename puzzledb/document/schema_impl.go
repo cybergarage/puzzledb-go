@@ -82,9 +82,10 @@ func NewSchemaWith(obj any) (Schema, error) {
 
 	for _, em := range ems {
 		e, err := newElementWith(em)
-		if err == nil {
-			s.elements = append(s.elements, e)
+		if err != nil {
+			return nil, err
 		}
+		s.elements = append(s.elements, e)
 	}
 
 	// Caches indexes
@@ -96,9 +97,10 @@ func NewSchemaWith(obj any) (Schema, error) {
 
 	for _, im := range ims {
 		i, err := newIndexWith(s, im)
-		if err == nil {
-			s.indexes = append(s.indexes, i)
+		if err != nil {
+			return nil, err
 		}
+		s.indexes = append(s.indexes, i)
 	}
 
 	return s, nil
