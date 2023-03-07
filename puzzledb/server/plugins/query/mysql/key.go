@@ -15,11 +15,17 @@
 package mysql
 
 import (
+	"github.com/cybergarage/go-mysql/mysql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// NewKeyWith returns a new key from the specified parameters.
+// NewKeyWith returns a key from the specified parameters.
 func NewKeyWith(dbName string, tblName string, keyName string, val any) (store.Key, error) {
 	return document.NewKeyWith(dbName, tblName, keyName, val), nil
+}
+
+// NewKeyFrom returns a key from the specified parameters.
+func NewKeyFrom(dbName string, schema document.Schema, cond *query.Cond) (store.Key, error) {
+	return document.NewKeyWith(dbName, schema.Name(), "", ""), nil
 }
