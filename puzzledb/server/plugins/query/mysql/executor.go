@@ -141,7 +141,9 @@ func (service *Service) TruncateTable(ctx context.Context, conn *mysql.Conn, stm
 func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *query.Insert) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	store := service.Store()
-	db, err := store.GetDatabase(conn.Database())
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -151,11 +153,27 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
-	_, err = txn.GetSchema(stmt.TableName())
+	schema, err := txn.GetSchema(stmt.TableName())
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	docKey, doc, err := NewObjectWith(dbName, schema, stmt)
 	if err == nil {
 		if err := txn.Cancel(); err != nil {
 			return nil, err
 		}
+	}
+
+	err = txn.InsertDocument(docKey, doc)
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
 	}
 
 	err = txn.Commit()
