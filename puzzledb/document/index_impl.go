@@ -118,7 +118,7 @@ func (idx *index) indexElements() (indexElements, bool) {
 	if !ok {
 		return nil, false
 	}
-	es, ok := v.(indexElements)
+	es, ok := indexesFrom(v)
 	if !ok {
 		return nil, false
 	}
