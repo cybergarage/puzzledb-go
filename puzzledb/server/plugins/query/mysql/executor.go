@@ -139,6 +139,30 @@ func (service *Service) TruncateTable(ctx context.Context, conn *mysql.Conn, stm
 
 // Insert should handle a INSERT statement.
 func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *query.Insert) (*mysql.Result, error) {
+	log.Debugf("%v", stmt)
+	store := service.Store()
+	db, err := store.GetDatabase(conn.Database())
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = txn.GetSchema(stmt.TableName())
+	if err == nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+	}
+
+	err = txn.Commit()
+	if err != nil {
+		return nil, err
+	}
+
 	return mysql.NewResult(), nil
 }
 
