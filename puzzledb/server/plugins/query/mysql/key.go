@@ -47,6 +47,8 @@ func NewKeyFrom(dbName string, schema document.Schema, cond *query.Condition) (s
 			prIdxType = document.PrimaryIndex
 		}
 		return document.NewKeyWith(dbName, schema.Name(), colName, val.Bytes()), prIdxType, nil
+	case *query.RangeCond:
+		return nil, 0, newQueryConditionNotSupportedError(cond)
 	}
 	return nil, 0, newQueryConditionNotSupportedError(cond)
 }
