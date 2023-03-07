@@ -22,5 +22,9 @@ import (
 // NewResultWith returns a successful result with the specified parameters.
 func NewResultWith(schema document.Schema, objs []document.Object) (*mysql.Result, error) {
 	res := mysql.NewResult()
+
+	resRows := [][]mysql.Value{}
+	res.Rows = resRows
+
 	return res, nil
 }
