@@ -108,6 +108,8 @@ func (idx *index) Type() IndexType {
 	switch t := v.(type) {
 	case IndexType:
 		return IndexType(t)
+	case int8:
+		return IndexType(t)
 	default:
 		return 0
 	}
