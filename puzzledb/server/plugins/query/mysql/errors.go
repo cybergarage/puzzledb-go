@@ -76,3 +76,9 @@ func newQueryNotSupportedError(target string) error {
 func newPrimaryKeyDataNotExistError(keyName string, obj any) error {
 	return newNotExistError(fmt.Sprintf("primary key data (%s:%v)", keyName, obj))
 }
+
+// Not implemented error functions
+
+func newJoinQueryNotSupportedError(obj any) error {
+	return newNotSupportedError(fmt.Sprintf("JOIN query (%v)", obj))
+}
