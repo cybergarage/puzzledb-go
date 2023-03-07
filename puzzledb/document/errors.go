@@ -19,23 +19,28 @@ import (
 	"fmt"
 )
 
-var ErrNotSupported = errors.New("not supported")
-var ErrSchemaInvalid = errors.New("invalid schema")
-var ErrElementInvalid = errors.New("invalid schema")
-var ErrIndexInvalid = errors.New("invalid index")
+var (
+	ErrNotSupported = errors.New("not supported")
+	ErrInvalid      = errors.New("invalid")
+	ErrNotExist     = errors.New("not exist")
+)
 
-func newErrNotSupported(target string) error {
+func newNotSupportedError(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotSupported)
 }
 
-func newErrElementInvalid(obj any) error {
-	return fmt.Errorf("%v(%T) is %w", obj, obj, ErrElementInvalid)
+func newElementInvalidError(obj any) error {
+	return fmt.Errorf("element (%T:%v) is %w", obj, obj, ErrInvalid)
 }
 
-func newErrSchemaInvalid(obj any) error {
-	return fmt.Errorf("%v(%T) is %w", obj, obj, ErrSchemaInvalid)
+func newSchemaInvalidError(obj any) error {
+	return fmt.Errorf("schema (%T:%v) is %w", obj, obj, ErrInvalid)
 }
 
-func newErrIndexInvalid(obj any) error {
-	return fmt.Errorf("%v(%T) is %w", obj, obj, ErrIndexInvalid)
+func newIndexInvalidError(obj any) error {
+	return fmt.Errorf("index (%T:%v) is %w", obj, obj, ErrInvalid)
+}
+
+func newIndexNotExistErrorr(obj any) error {
+	return fmt.Errorf("index (%v) is %w", obj, ErrNotExist)
 }

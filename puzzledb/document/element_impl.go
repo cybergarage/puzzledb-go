@@ -42,7 +42,7 @@ func NewElement() Element {
 func newElementWith(obj any) (Element, error) {
 	em, ok := obj.(elementMap)
 	if !ok {
-		return nil, newErrElementInvalid(obj)
+		return nil, newElementInvalidError(obj)
 	}
 	e := &element{
 		data: em,
