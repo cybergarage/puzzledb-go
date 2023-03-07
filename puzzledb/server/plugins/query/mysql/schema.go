@@ -29,7 +29,16 @@ func NewSchemaWith(def *query.Schema) (document.Schema, error) {
 			return nil, err
 		}
 		s.AddElement(e)
+		// Primary Index
+		if col.Type.Options.KeyOpt == query.ColKeyPrimary {
+			i, err := NewPrimaryIndexWith(e)
+			if err != nil {
+				return nil, err
+			}
+			s.AddIndex(i)
+		}
 	}
+	// Secondary Indexes
 	for _, idx := range def.GetTableSpec().Indexes {
 		i, err := NewIndexWith(s, idx)
 		if err != nil {
