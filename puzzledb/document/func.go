@@ -40,7 +40,7 @@ func schemaMapFrom(obj any) (map[uint8]any, bool) {
 func schemaMapsFrom(obj any) ([]map[uint8]any, bool) {
 	smaps, ok := obj.([]map[uint8]any)
 	if ok {
-		return nil, true
+		return smaps, true
 	}
 	amaps, ok := obj.([]any)
 	if !ok {
