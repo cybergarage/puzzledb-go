@@ -36,3 +36,23 @@ func schemaMapFrom(obj any) (map[uint8]any, bool) {
 	}
 	return smap, true
 }
+
+func schemaMapsFrom(obj any) ([]map[uint8]any, bool) {
+	smaps, ok := obj.([]map[uint8]any)
+	if ok {
+		return nil, true
+	}
+	amaps, ok := obj.([]any)
+	if !ok {
+		return nil, false
+	}
+	smaps = []map[uint8]any{}
+	for _, amap := range amaps {
+		smap, ok := schemaMapFrom(amap)
+		if !ok {
+			return nil, false
+		}
+		smaps = append(smaps, smap)
+	}
+	return smaps, true
+}
