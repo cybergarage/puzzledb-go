@@ -249,15 +249,29 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 	case document.PrimaryIndex:
 		rs, err := txn.FindDocuments(docKey)
 		if err != nil {
+			if err := txn.Cancel(); err != nil {
+				return nil, err
+			}
 			return nil, err
 		}
 		objs = rs.Objects()
 	case document.SecondaryIndex:
 		rs, err := txn.FindDocumentsByIndex(docKey)
 		if err != nil {
+			if err := txn.Cancel(); err != nil {
+				return nil, err
+			}
 			return nil, err
 		}
 		objs = rs.Objects()
+	}
+
+	rs, err := NewResultWith(schema, objs)
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
 	}
 
 	err = txn.Commit()
@@ -265,7 +279,7 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
-	return mysql.NewResult(), nil
+	return rs, nil
 }
 
 // ShowDatabases should handle a SHOW DATABASES statement.
