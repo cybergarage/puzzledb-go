@@ -147,7 +147,7 @@ func (s *schema) elementMaps() ([]elementMap, bool) {
 	if !ok {
 		return nil, false
 	}
-	ems, ok := v.([]elementMap)
+	ems, ok := schemaMapsFrom(v)
 	if !ok {
 		return nil, false
 	}

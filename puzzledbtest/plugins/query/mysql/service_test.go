@@ -19,7 +19,7 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysqltest/sqltest"
-	"github.com/cybergarage/puzzledb-go/puzzledbtest"
+	test "github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
 func TestSQLTestSuite(t *testing.T) {
