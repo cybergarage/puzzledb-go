@@ -81,7 +81,6 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 	}
 
 	docKey := service.createDocumentKey(tx, q, objID)
-	document.NewKeyWith(q.Database, q.Collection, ObjectID, objID)
 	err = tx.InsertDocument(docKey, doc)
 	if err != nil {
 		return err
