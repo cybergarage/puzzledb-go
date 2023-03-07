@@ -56,3 +56,23 @@ func schemaMapsFrom(obj any) ([]map[uint8]any, bool) {
 	}
 	return smaps, true
 }
+
+func indexesFrom(obj any) ([]string, bool) {
+	idxes, ok := obj.([]string)
+	if ok {
+		return idxes, true
+	}
+	objs, ok := obj.([]any)
+	if !ok {
+		return nil, false
+	}
+	idxes = []string{}
+	for _, obj := range objs {
+		idx, ok := obj.(string)
+		if !ok {
+			return nil, false
+		}
+		idxes = append(idxes, idx)
+	}
+	return idxes, true
+}
