@@ -196,6 +196,24 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 // Select should handle a SELECT statement.
 func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	err = txn.Commit()
+	if err != nil {
+		return nil, err
+	}
+
 	return mysql.NewResult(), nil
 }
 
