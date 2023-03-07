@@ -64,7 +64,7 @@ func NewSchema() Schema {
 func NewSchemaWith(obj any) (Schema, error) {
 	smap, ok := obj.(schemaMap)
 	if !ok {
-		return nil, newErrSchemaInvalid(obj)
+		return nil, newSchemaInvalidError(obj)
 	}
 	s := &schema{
 		data:     smap,
@@ -76,7 +76,7 @@ func NewSchemaWith(obj any) (Schema, error) {
 
 	ems, ok := s.elementMaps()
 	if !ok {
-		return nil, newErrSchemaInvalid(obj)
+		return nil, newSchemaInvalidError(obj)
 	}
 
 	for _, em := range ems {
@@ -90,7 +90,7 @@ func NewSchemaWith(obj any) (Schema, error) {
 
 	ims, ok := s.indexMpas()
 	if !ok {
-		return nil, newErrSchemaInvalid(obj)
+		return nil, newSchemaInvalidError(obj)
 	}
 
 	for _, im := range ims {
@@ -173,7 +173,7 @@ func (s *schema) Elements() []Element {
 	return s.elements
 }
 
-// FindElement returns the schema elements by the name.
+// FindElement returns the schema elements by the specified name.
 func (s *schema) FindElement(name string) (Element, error) {
 	es := s.Elements()
 	for _, e := range es {
@@ -181,7 +181,7 @@ func (s *schema) FindElement(name string) (Element, error) {
 			return e, nil
 		}
 	}
-	return nil, newErrNotSupported(name)
+	return nil, newNotSupportedError(name)
 }
 
 func (s *schema) indexMpas() ([]indexMap, bool) {
@@ -211,9 +211,20 @@ func (s *schema) AddIndex(idx Index) {
 	s.indexes = append(s.indexes, idx)
 }
 
-// Elements returns the schema elements.
+// Indexes returns the schema indexes.
 func (s *schema) Indexes() []Index {
 	return s.indexes
+}
+
+// FindIndex returns the schema index by the spacified name.
+func (s *schema) FindIndex(name string) (Index, error) {
+	idxes := s.indexes
+	for _, idx := range idxes {
+		if idx.Name() == name {
+			return idx, nil
+		}
+	}
+	return nil, newIndexNotExistErrorr(name)
 }
 
 // Data returns the raw representation data in memory.
