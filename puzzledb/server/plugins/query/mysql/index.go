@@ -19,7 +19,16 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewIndexWith creates an element from the specified coulumn object.
+// NewPrimaryIndexWith creates an index from the specified element.
+func NewPrimaryIndexWith(elem document.Element) (document.Index, error) {
+	idx := document.NewIndex()
+	idx.SetName(elem.Name())
+	idx.SetType(document.PrimaryIndex)
+	idx.AddElement(elem)
+	return idx, nil
+}
+
+// NewIndexWith creates an index from the specified coulumn definition.
 func NewIndexWith(s document.Schema, def *query.IndexDefinition) (document.Index, error) {
 	if def.Info.Spatial || def.Info.Fulltext {
 		return nil, newIndexNotSupportedError(def.Info.Type)
