@@ -20,6 +20,9 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// Object represents a database object.
+type Object = map[string]any
+
 // NewObjectWith returns a new object from the specified schema and columns.
 func NewObjectWith(dbName string, schema document.Schema, stmt *query.Insert) (store.Key, store.Object, error) {
 	prIdx, err := schema.PrimaryIndex()
@@ -34,7 +37,7 @@ func NewObjectWith(dbName string, schema document.Schema, stmt *query.Insert) (s
 	}
 
 	var docKey store.Key
-	doc := map[string]any{}
+	doc := Object{}
 	for _, col := range cols.Columns() {
 		colName := col.Name()
 		// Docment key
