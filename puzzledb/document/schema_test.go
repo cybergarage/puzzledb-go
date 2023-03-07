@@ -44,6 +44,12 @@ func TestSchema(t *testing.T) {
 		s1.AddIndex(idx)
 	}
 
+	// Validates
+
+	if _, err := s1.PrimaryIndex(); err != nil {
+		t.Error(err)
+	}
+
 	// Compares
 
 	s2, err := NewSchemaWith(s1.Data())

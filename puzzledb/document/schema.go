@@ -33,6 +33,8 @@ type Schema interface {
 	Indexes() []Index
 	// FindIndex returns the schema index by the spacified name.
 	FindIndex(name string) (Index, error)
+	// PrimaryIndex returns the schema primary index.
+	PrimaryIndex() (Index, error)
 	// Data returns the raw representation data in memory.
 	Data() any
 }
