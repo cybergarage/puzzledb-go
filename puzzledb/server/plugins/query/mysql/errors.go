@@ -72,3 +72,7 @@ func newIndexNotSupportedError(target string) error {
 func newQueryNotSupportedError(target string) error {
 	return newNotSupportedError(fmt.Sprintf("query (%s)", target))
 }
+
+func newPrimaryKeyDataNotExistError(keyName string, obj any) error {
+	return newNotExistError(fmt.Sprintf("primary key data (%s:%v)", keyName, obj))
+}
