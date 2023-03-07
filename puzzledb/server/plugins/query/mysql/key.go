@@ -26,6 +26,18 @@ func NewKeyWith(dbName string, tblName string, keyName string, val any) (store.K
 }
 
 // NewKeyFrom returns a key from the specified parameters.
-func NewKeyFrom(dbName string, schema document.Schema, cond *query.Cond) (store.Key, error) {
-	return document.NewKeyWith(dbName, schema.Name(), "", ""), nil
+func NewKeyFrom(dbName string, schema document.Schema, cond *query.Condition) (store.Key, error) {
+	switch v := cond.Expr.(type) {
+	case *query.ComparisonExpr:
+		col, ok := v.Left.(*query.ColName)
+		if !ok {
+			return nil, nil
+		}
+		val, ok := v.Right.(*query.Literal)
+		if !ok {
+			return nil, nil
+		}
+		return document.NewKeyWith(dbName, schema.Name(), col, val), nil
+	}
+	return nil, newQueryConditionNotSupportedError(cond)
 }
