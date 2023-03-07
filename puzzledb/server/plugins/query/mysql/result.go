@@ -25,6 +25,10 @@ func NewResultWith(schema document.Schema, objs []document.Object) (*mysql.Resul
 
 	resRows := [][]mysql.Value{}
 	for _, obj := range objs {
+		_, ok := obj.(map[string]any)
+		if !ok {
+			return nil, newObjectInvalidError(obj)
+		}
 		resValues := []mysql.Value{}
 		resRows = append(resRows, resValues)
 	}
