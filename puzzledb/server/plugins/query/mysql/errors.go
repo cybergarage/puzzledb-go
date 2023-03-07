@@ -23,58 +23,67 @@ var (
 	ErrExist        = errors.New("exist")
 	ErrNotExist     = errors.New("not exist")
 	ErrNotSupported = errors.New("not supported")
+	ErrInvalid      = errors.New("invalid")
 )
 
 // Common error functions
 
-func newNotSupportedError(target string) error {
-	return fmt.Errorf("%v is %w", target, ErrNotSupported)
+func newNotSupportedError(obj string) error {
+	return fmt.Errorf("%v is %w", obj, ErrNotSupported)
 }
 
-func newExistError(target string) error {
-	return fmt.Errorf("%v is %w", target, ErrExist)
+func newExistError(obj string) error {
+	return fmt.Errorf("%v is %w", obj, ErrExist)
 }
 
-func newNotExistError(target string) error {
-	return fmt.Errorf("%v is %w", target, ErrNotExist)
+func newNotExistError(obj string) error {
+	return fmt.Errorf("%v is %w", obj, ErrNotExist)
+}
+
+func newInvalidError(obj any) error {
+	return fmt.Errorf("%v is %w", obj, ErrInvalid)
 }
 
 // Detail error functions
 
-func newDatabaseExistError(target string) error {
-	return newExistError(fmt.Sprintf("database (%s)", target))
+func newDatabaseExistError(obj string) error {
+	return newExistError(fmt.Sprintf("database (%s)", obj))
 }
 
-func newTableExistError(target string) error {
-	return newExistError(fmt.Sprintf("table (%s)", target))
+func newTableExistError(obj string) error {
+	return newExistError(fmt.Sprintf("table (%s)", obj))
 }
 
-func newSchemaExistError(target string) error {
-	return newExistError(fmt.Sprintf("schema (%s)", target))
+func newSchemaExistError(obj string) error {
+	return newExistError(fmt.Sprintf("schema (%s)", obj))
 }
 
-func newDatabaseNotExistError(target string) error {
-	return newNotExistError(fmt.Sprintf("database (%s)", target))
+func newDatabaseNotExistError(obj string) error {
+	return newNotExistError(fmt.Sprintf("database (%s)", obj))
 }
 
-func newTableNotExistError(target string) error {
-	return newNotExistError(fmt.Sprintf("table (%s)", target))
+func newTableNotExistError(obj string) error {
+	return newNotExistError(fmt.Sprintf("table (%s)", obj))
 }
 
-func newSchemaNotExistError(target string) error {
-	return newNotExistError(fmt.Sprintf("schema (%s)", target))
+func newSchemaNotExistError(obj string) error {
+	return newNotExistError(fmt.Sprintf("schema (%s)", obj))
 }
 
-func newIndexNotSupportedError(target string) error {
-	return newNotSupportedError(fmt.Sprintf("index (%s)", target))
+func newIndexNotSupportedError(obj string) error {
+	return newNotSupportedError(fmt.Sprintf("index (%s)", obj))
 }
 
-func newQueryNotSupportedError(target string) error {
-	return newNotSupportedError(fmt.Sprintf("query (%s)", target))
+func newQueryNotSupportedError(obj string) error {
+	return newNotSupportedError(fmt.Sprintf("query (%s)", obj))
 }
 
 func newPrimaryKeyDataNotExistError(keyName string, obj any) error {
 	return newNotExistError(fmt.Sprintf("primary key data (%s:%v)", keyName, obj))
+}
+
+func newObjectInvalidError(obj any) error {
+	return newInvalidError(fmt.Sprintf("object (%s:%v)", obj))
 }
 
 // Not implemented error functions
