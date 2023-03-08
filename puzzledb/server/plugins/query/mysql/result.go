@@ -19,17 +19,28 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewResultWith returns a successful result with the specified parameters.
-func NewResultWith(schema document.Schema, objs []document.Object) (*mysql.Result, error) {
+// NewResultFrom returns a successful result with the specified parameters.
+func NewResultFrom(schema document.Schema, objs []document.Object) (*mysql.Result, error) {
 	res := mysql.NewResult()
 
 	resRows := [][]mysql.Value{}
 	for _, obj := range objs {
-		_, ok := obj.(map[string]any)
+		objMap, ok := obj.(map[string]any)
 		if !ok {
 			return nil, newObjectInvalidError(obj)
 		}
 		resValues := []mysql.Value{}
+		for colName, colVal := range objMap {
+			colElem, err := schema.FindElement(colName)
+			if err != nil {
+				return nil, err
+			}
+			resValue, err := NewValueFrom(colElem, colVal)
+			if err != nil {
+				return nil, err
+			}
+			resValues = append(resValues, resValue)
+		}
 		resRows = append(resRows, resValues)
 	}
 
