@@ -39,7 +39,7 @@ func NewResultFrom(schema document.Schema, objs []document.Object) (*mysql.Resul
 			if err != nil {
 				return nil, err
 			}
-			resValues = append(resValues, resValue)
+			resValues = append(resValues, *resValue)
 		}
 		resRows = append(resRows, resValues)
 	}
