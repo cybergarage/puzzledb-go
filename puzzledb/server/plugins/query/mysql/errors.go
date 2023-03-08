@@ -28,7 +28,7 @@ var (
 
 // Common error functions
 
-func newNotSupportedError(obj string) error {
+func newNotSupportedError(obj any) error {
 	return fmt.Errorf("%v is %w", obj, ErrNotSupported)
 }
 
