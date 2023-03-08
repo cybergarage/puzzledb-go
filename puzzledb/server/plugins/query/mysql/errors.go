@@ -83,7 +83,7 @@ func newPrimaryKeyDataNotExistError(keyName string, obj any) error {
 }
 
 func newObjectInvalidError(obj any) error {
-	return newInvalidError(fmt.Sprintf("object (%s:%v)", obj))
+	return newInvalidError(fmt.Sprintf("object (%s:%v)", obj, obj))
 }
 
 // Not implemented error functions
