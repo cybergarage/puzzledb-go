@@ -266,7 +266,7 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		objs = rs.Objects()
 	}
 
-	rs, err := NewResultWith(schema, objs)
+	rs, err := NewResultFrom(schema, objs)
 	if err != nil {
 		if err := txn.Cancel(); err != nil {
 			return nil, err
