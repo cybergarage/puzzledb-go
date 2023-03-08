@@ -60,6 +60,8 @@ func sqlTypeFromElementType(elemType document.ElementType) (query.ValType, error
 		return query.Text /* query.VarChar*/, nil
 	case document.Binary:
 		return query.Blob, nil
+	case document.Array, document.Map, document.DateTime, document.Bool:
+		return 0, newNotSupportedError(elemType)
 	default:
 		return 0, newNotSupportedError(elemType)
 	}
