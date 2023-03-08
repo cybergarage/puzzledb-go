@@ -30,26 +30,3 @@ func NewElementWith(col *query.ColumnDefinition) (document.Element, error) {
 	e.SetType(t)
 	return e, nil
 }
-
-func elementTypeFromSQLType(sqlType query.ValType) (document.ElementType, error) {
-	switch sqlType {
-	case query.Int8:
-		return document.Int8, nil
-	case query.Int16:
-		return document.Int16, nil
-	case query.Int32:
-		return document.Int32, nil
-	case query.Int64:
-		return document.Int64, nil
-	case query.Float32:
-		return document.Float32, nil
-	case query.Float64:
-		return document.Float64, nil
-	case query.Text, query.VarChar:
-		return document.String, nil
-	case query.Blob:
-		return document.Binary, nil
-	default:
-		return 0, newNotSupportedError(sqlType.String())
-	}
-}
