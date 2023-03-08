@@ -21,27 +21,35 @@ import (
 
 // NewIndexWith creates an index from the specified index object.
 func NewElementWith(col *query.ColumnDefinition) (document.Element, error) {
+	t, err := elementTypeFromSQLType(col.Type.SQLType())
+	if err != nil {
+		return nil, err
+	}
 	e := document.NewElement()
 	e.SetName(col.Name.String())
-	switch col.Type.SQLType() {
-	case query.Int8:
-		e.SetType(document.Int8)
-	case query.Int16:
-		e.SetType(document.Int16)
-	case query.Int32:
-		e.SetType(document.Int32)
-	case query.Int64:
-		e.SetType(document.Int64)
-	case query.Float32:
-		e.SetType(document.Float32)
-	case query.Float64:
-		e.SetType(document.Float64)
-	case query.Text, query.VarChar:
-		e.SetType(document.String)
-	case query.Blob:
-		e.SetType(document.Binary)
-	default:
-		return nil, newNotSupportedError(col.Type.SQLType().String())
-	}
+	e.SetType(t)
 	return e, nil
+}
+
+func elementTypeFromSQLType(sqlType query.ValType) (document.ElementType, error) {
+	switch sqlType {
+	case query.Int8:
+		return document.Int8, nil
+	case query.Int16:
+		return document.Int16, nil
+	case query.Int32:
+		return document.Int32, nil
+	case query.Int64:
+		return document.Int64, nil
+	case query.Float32:
+		return document.Float32, nil
+	case query.Float64:
+		return document.Float64, nil
+	case query.Text, query.VarChar:
+		return document.String, nil
+	case query.Blob:
+		return document.Binary, nil
+	default:
+		return 0, newNotSupportedError(sqlType.String())
+	}
 }
