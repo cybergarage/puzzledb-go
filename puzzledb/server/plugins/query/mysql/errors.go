@@ -24,6 +24,7 @@ var (
 	ErrNotExist     = errors.New("not exist")
 	ErrNotSupported = errors.New("not supported")
 	ErrInvalid      = errors.New("invalid")
+	ErrNotEqual     = errors.New("not equal")
 )
 
 // Common error functions
@@ -42,6 +43,10 @@ func newNotExistError(obj string) error {
 
 func newInvalidError(obj any) error {
 	return fmt.Errorf("%v is %w", obj, ErrInvalid)
+}
+
+func newNotEqualError(obj1 any, obj2 any) error {
+	return fmt.Errorf("%v and %v are %w", obj1, obj2, ErrNotEqual)
 }
 
 // Detail error functions
@@ -94,4 +99,8 @@ func newJoinQueryNotSupportedError(obj any) error {
 
 func newQueryConditionNotSupportedError(obj any) error {
 	return newNotSupportedError(fmt.Sprintf("query condition (%v)", obj))
+}
+
+func newDataTypeNotEqualError(obj1 any, obj2 any) error {
+	return newNotEqualError(fmt.Sprintf("%v(%T)", obj1, obj1), fmt.Sprintf("%v", obj2))
 }
