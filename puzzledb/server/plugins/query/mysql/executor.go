@@ -249,7 +249,14 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 			return nil, err
 		}
 	case document.SecondaryIndex:
-		_, err := txn.FindDocumentsByIndex(docKey)
+		＿, err := schema.PrimaryIndex()
+		if err != nil {
+			if err := txn.Cancel(); err != nil {
+				return nil, err
+			}
+			return nil, err
+		}
+		_, err = txn.FindDocumentsByIndex(docKey)
 		if err != nil {
 			if err := txn.Cancel(); err != nil {
 				return nil, err
