@@ -30,16 +30,12 @@ func NewResultFrom(schema document.Schema, objs []document.Object) (*mysql.Resul
 			return nil, newObjectInvalidError(obj)
 		}
 		resValues := []mysql.Value{}
-		for colName := range objMap {
+		for colName, colVal := range objMap {
 			colElem, err := schema.FindElement(colName)
 			if err != nil {
 				return nil, err
 			}
-			t, err := sqlTypeFromElementType(colElem.Type())
-			if err != nil {
-				return nil, err
-			}
-			resValue, err := mysql.NewValueWith(t, []byte(""))
+			resValue, err := NewValueFrom(colElem, colVal)
 			if err != nil {
 				return nil, err
 			}
