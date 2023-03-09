@@ -17,6 +17,7 @@ package mysql
 import (
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Service represents a new MySQL service instance.
@@ -51,4 +52,12 @@ func (service *Service) Stop() error {
 		return err
 	}
 	return nil
+}
+
+// Stop stops the service.
+func (service *Service) CancelWithError(txn store.Transaction, err error) error {
+	if txErr := txn.Cancel(); txErr != nil {
+		return txErr
+	}
+	return err
 }
