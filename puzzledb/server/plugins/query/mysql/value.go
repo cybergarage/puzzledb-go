@@ -15,14 +15,14 @@
 package mysql
 
 import (
-	"github.com/cybergarage/go-mysql/mysql/query"
+	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-func NewValueFrom(elem document.Element, val any) (*query.Value, error) {
+func NewValueFrom(elem document.Element, val any) (mysql.Value, error) {
 	st, err := sqlTypeFromElementType(elem.Type())
 	if err != nil {
-		return query.NewValue(), err
+		return mysql.NewNullValue(), err
 	}
-	return query.NewValueWith(st, val), nil
+	return mysql.NewValueWith(st, []byte(""))
 }
