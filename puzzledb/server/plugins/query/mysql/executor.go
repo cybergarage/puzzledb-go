@@ -249,21 +249,37 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 			return nil, err
 		}
 	case document.SecondaryIndex:
-		_, err := schema.PrimaryIndex()
+		prIdx, err := schema.PrimaryIndex()
 		if err != nil {
 			if err := txn.Cancel(); err != nil {
 				return nil, err
 			}
 			return nil, err
 		}
-		_, err = txn.FindDocumentsByIndex(docKey)
+		rs, err := txn.FindDocumentsByIndex(docKey)
 		if err != nil {
 			if err := txn.Cancel(); err != nil {
 				return nil, err
 			}
 			return nil, err
 		}
-		// TODO: Deletes all documents in the result set
+		for rs.Next() {
+			obj := rs.Object()
+			docKey, err := NewPrimaryKeyWith(dbName, prIdx, obj)
+			if err != nil {
+				if err := txn.Cancel(); err != nil {
+					return nil, err
+				}
+				return nil, err
+			}
+			err = txn.RemoveDocument(docKey)
+			if err != nil {
+				if err := txn.Cancel(); err != nil {
+					return nil, err
+				}
+				return nil, err
+			}
+		}
 	}
 
 	err = txn.Commit()
