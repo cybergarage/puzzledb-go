@@ -192,6 +192,77 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 // Delete should handle a DELETE statement.
 func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *query.Delete) (*mysql.Result, error) {
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: Support multiple tables
+	tables := stmt.Tables()
+	if len(tables) != 1 {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, newJoinQueryNotSupportedError(tables)
+	}
+
+	table := tables[0]
+	tableName, err := table.Name()
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	schema, err := txn.GetSchema(tableName)
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	docKey, docKeyType, err := NewKeyFrom(dbName, schema, stmt.Where)
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	switch docKeyType {
+	case document.PrimaryIndex:
+		err := txn.RemoveDocument(docKey)
+		if err != nil {
+			if err := txn.Cancel(); err != nil {
+				return nil, err
+			}
+			return nil, err
+		}
+	case document.SecondaryIndex:
+		_, err := txn.FindDocumentsByIndex(docKey)
+		if err != nil {
+			if err := txn.Cancel(); err != nil {
+				return nil, err
+			}
+			return nil, err
+		}
+		// TODO: Deletes all documents in the result set
+	}
+
+	err = txn.Commit()
+	if err != nil {
+		return nil, err
+	}
 	return mysql.NewResult(), nil
 }
 
