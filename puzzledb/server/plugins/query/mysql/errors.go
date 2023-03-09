@@ -17,6 +17,8 @@ package mysql
 import (
 	"errors"
 	"fmt"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 var (
@@ -101,6 +103,6 @@ func newQueryConditionNotSupportedError(obj any) error {
 	return newNotSupportedError(fmt.Sprintf("query condition (%v)", obj))
 }
 
-func newDataTypeNotEqualError(obj1 any, obj2 any) error {
-	return newNotEqualError(fmt.Sprintf("%v(%T)", obj1, obj1), fmt.Sprintf("%v", obj2))
+func newDataTypeNotEqualError(obj any, et document.ElementType) error {
+	return newNotEqualError(fmt.Sprintf("%v(%T)", obj, obj), et.String())
 }
