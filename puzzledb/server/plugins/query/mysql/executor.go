@@ -231,7 +231,7 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
-	docKey, docKeyType, err := NewKeyFrom(dbName, schema, stmt.Where)
+	docKey, docKeyType, err := NewKeyWithCond(dbName, schema, stmt.Where)
 	if err != nil {
 		if err := txn.Cancel(); err != nil {
 			return nil, err
@@ -249,7 +249,7 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 			return nil, err
 		}
 	case document.SecondaryIndex:
-		＿, err := schema.PrimaryIndex()
+		_, err := schema.PrimaryIndex()
 		if err != nil {
 			if err := txn.Cancel(); err != nil {
 				return nil, err
@@ -314,7 +314,7 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
-	docKey, docKeyType, err := NewKeyFrom(dbName, schema, stmt.Where)
+	docKey, docKeyType, err := NewKeyWithCond(dbName, schema, stmt.Where)
 	if err != nil {
 		if err := txn.Cancel(); err != nil {
 			return nil, err

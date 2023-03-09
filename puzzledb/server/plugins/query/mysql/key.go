@@ -25,8 +25,8 @@ func NewKeyWith(dbName string, tblName string, keyName string, val any) (store.K
 	return document.NewKeyWith(dbName, tblName, keyName, val), nil
 }
 
-// NewKeyFrom returns a key from the specified parameters.
-func NewKeyFrom(dbName string, schema document.Schema, cond *query.Condition) (store.Key, document.IndexType, error) {
+// NewKeyWithCond returns a key from the specified parameters.
+func NewKeyWithCond(dbName string, schema document.Schema, cond *query.Condition) (store.Key, document.IndexType, error) {
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, 0, err
