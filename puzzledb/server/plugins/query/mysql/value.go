@@ -15,14 +15,39 @@
 package mysql
 
 import (
+	"fmt"
+
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 func NewValueFrom(elem document.Element, val any) (mysql.Value, error) {
-	st, err := sqlTypeFromElementType(elem.Type())
+	et := elem.Type()
+	var eb []byte
+	switch et {
+	case document.String:
+		v, ok := val.(string)
+		if !ok {
+			return mysql.NewNullValue(), newNotSupportedError(et)
+		}
+		eb = []byte(v)
+	case document.Binary:
+		v, ok := val.([]byte)
+		if !ok {
+			return mysql.NewNullValue(), newNotSupportedError(et)
+		}
+		eb = v
+	case document.Int8, document.Int16, document.Int32, document.Int64, document.Float32, document.Float64, document.DateTime, document.Bool:
+		eb = []byte(fmt.Sprintf("%v", val))
+	case document.Array, document.Map:
+		return mysql.NewNullValue(), newNotSupportedError(et)
+	default:
+		return mysql.NewNullValue(), newNotSupportedError(et)
+	}
+	st, err := sqlTypeFromElementType(et)
 	if err != nil {
 		return mysql.NewNullValue(), err
 	}
-	return mysql.NewValueWith(st, []byte(""))
+	// TODO: Consider simplifying sqltypes.NewValue() of vitess because the check is redundant.
+	return mysql.NewValueWith(st, eb)
 }
