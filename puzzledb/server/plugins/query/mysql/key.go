@@ -52,3 +52,8 @@ func NewKeyWithCond(dbName string, schema document.Schema, cond *query.Condition
 	}
 	return nil, 0, newQueryConditionNotSupportedError(cond)
 }
+
+// NewPrimaryKeyWith returns a key from the specified parameters.
+func NewPrimaryKeyWith(dbName string, idx document.Index, obj document.Object) (store.Key, error) {
+	return nil, nil
+}
