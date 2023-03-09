@@ -49,3 +49,34 @@ type Element interface {
 	// SetType sets the specified type to the element.
 	SetType(t ElementType) Element
 }
+
+// String represents the string representation.
+func (et ElementType) String() string {
+	switch et {
+	case Array:
+		return "array"
+	case Map:
+		return "map"
+	case Int8:
+		return "int8"
+	case Int16:
+		return "int16"
+	case Int32:
+		return "int32"
+	case Int64:
+		return "int64"
+	case String:
+		return "string"
+	case Binary:
+		return "binary"
+	case Float32:
+		return "float32"
+	case Float64:
+		return "float64"
+	case DateTime:
+		return "datetime"
+	case Bool:
+		return "bool"
+	}
+	return ""
+}
