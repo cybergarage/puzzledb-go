@@ -299,28 +299,12 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
-	docKey, docKeyType, err := NewKeyWithCond(dbName, schema, stmt.Where)
+	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
-	var objs []document.Object
-	switch docKeyType {
-	case document.PrimaryIndex:
-		rs, err := txn.FindDocuments(docKey)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
-		}
-		objs = rs.Objects()
-	case document.SecondaryIndex:
-		rs, err := txn.FindDocumentsByIndex(docKey)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
-		}
-		objs = rs.Objects()
-	}
-
-	rs, err := NewResultFrom(schema, objs)
+	res, err := NewResultFrom(schema, rs.Objects())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
@@ -330,7 +314,7 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
-	return rs, nil
+	return res, nil
 }
 
 // ShowDatabases should handle a SHOW DATABASES statement.
@@ -343,26 +327,8 @@ func (service *Service) ShowTables(ctx context.Context, conn *mysql.Conn, databa
 	return nil, newQueryNotSupportedError("ShowTables")
 }
 
-func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, tables []*query.Table, cond *query.Condition) (store.ResultSet, error) {
-	dbName := conn.Database()
-
-	// TODO: Support multiple tables
-	if len(tables) != 1 {
-		return nil, service.CancelTransactionWithError(txn, newJoinQueryNotSupportedError(tables))
-	}
-
-	table := tables[0]
-	tableName, err := table.Name()
-	if err != nil {
-		return nil, err
-	}
-
-	schema, err := txn.GetSchema(tableName)
-	if err != nil {
-		return nil, err
-	}
-
-	docKey, docKeyType, err := NewKeyWithCond(dbName, schema, cond)
+func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, cond *query.Condition) (store.ResultSet, error) {
+	docKey, docKeyType, err := NewKeyWithCond(conn.Database(), schema, cond)
 	if err != nil {
 		return nil, err
 	}
