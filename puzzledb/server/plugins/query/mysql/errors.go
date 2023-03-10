@@ -81,6 +81,10 @@ func newIndexNotSupportedError(obj string) error {
 	return newNotSupportedError(fmt.Sprintf("index (%s)", obj))
 }
 
+func newIndexTypeNotSupportedError(t document.IndexType) error {
+	return newNotSupportedError(fmt.Sprintf("index type (%02X)", t))
+}
+
 func newQueryNotSupportedError(obj string) error {
 	return newNotSupportedError(fmt.Sprintf("query (%s)", obj))
 }
