@@ -187,6 +187,32 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
+	// TODO: Support multiple tables
+	tables := stmt.Tables()
+	if len(tables) != 1 {
+		return nil, service.CancelTransactionWithError(txn, newJoinQueryNotSupportedError(tables))
+	}
+
+	table := tables[0]
+	tableName, err := table.Name()
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	schema, err := txn.GetSchema(tableName)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	for rs.Next() {
+		_ = rs.Object()
+	}
+
 	err = txn.Commit()
 	if err != nil {
 		return nil, err
