@@ -55,7 +55,7 @@ func (service *Service) Stop() error {
 }
 
 // Stop stops the service.
-func (service *Service) CancelWithError(txn store.Transaction, err error) error {
+func (service *Service) CancelTransactionWithError(txn store.Transaction, err error) error {
 	if txErr := txn.Cancel(); txErr != nil {
 		return txErr
 	}
