@@ -230,7 +230,7 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 		}
 		for rs.Next() {
 			obj := rs.Object()
-			docKey, err := NewPrimaryKeyWith(dbName, prIdx, obj)
+			docKey, err := NewKeyWithIndex(dbName, schema, prIdx, obj)
 			if err != nil {
 				return nil, service.CancelWithError(txn, err)
 			}
