@@ -22,6 +22,11 @@ import (
 // Key represents an unique key for a document object.
 type Key []any
 
+// NewKey returns a new blank key.
+func NewKey() Key {
+	return Key{}
+}
+
 // NewKeyWith returns a new key from the specified key elements.
 func NewKeyWith(elems ...any) Key {
 	elemArray := make([]any, len(elems))
