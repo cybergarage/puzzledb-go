@@ -21,6 +21,7 @@ import (
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/go-mysql/mysql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // CreateDatabase should handle a CREATE database statement.
@@ -340,4 +341,37 @@ func (service *Service) ShowDatabases(ctx context.Context, conn *mysql.Conn) (*m
 // ShowTables should handle a SHOW TABLES statement.
 func (service *Service) ShowTables(ctx context.Context, conn *mysql.Conn, database string) (*mysql.Result, error) {
 	return nil, newQueryNotSupportedError("ShowTables")
+}
+
+func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, tables []*query.Table, cond *query.Condition) (store.ResultSet, error) {
+	dbName := conn.Database()
+
+	// TODO: Support multiple tables
+	if len(tables) != 1 {
+		return nil, service.CancelTransactionWithError(txn, newJoinQueryNotSupportedError(tables))
+	}
+
+	table := tables[0]
+	tableName, err := table.Name()
+	if err != nil {
+		return nil, err
+	}
+
+	schema, err := txn.GetSchema(tableName)
+	if err != nil {
+		return nil, err
+	}
+
+	docKey, docKeyType, err := NewKeyWithCond(dbName, schema, cond)
+	if err != nil {
+		return nil, err
+	}
+
+	switch docKeyType {
+	case document.PrimaryIndex:
+		return txn.FindDocuments(docKey)
+	case document.SecondaryIndex:
+		return txn.FindDocumentsByIndex(docKey)
+	}
+	return nil, nil
 }
