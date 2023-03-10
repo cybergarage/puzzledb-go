@@ -373,5 +373,5 @@ func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.C
 	case document.SecondaryIndex:
 		return txn.FindDocumentsByIndex(docKey)
 	}
-	return nil, nil
+	return nil, newIndexTypeNotSupportedError(docKeyType)
 }
