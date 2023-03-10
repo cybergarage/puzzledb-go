@@ -53,7 +53,22 @@ func NewKeyWithCond(dbName string, schema document.Schema, cond *query.Condition
 	return nil, 0, newQueryConditionNotSupportedError(cond)
 }
 
-// NewPrimaryKeyWith returns a key from the specified parameters.
-func NewPrimaryKeyWith(dbName string, idx document.Index, obj document.Object) (store.Key, error) {
-	return nil, nil
+// NewKeyWithIndex returns a key from the specified parameters.
+func NewKeyWithIndex(dbName string, schema document.Schema, idx document.Index, obj document.Object) (store.Key, error) {
+	objMap, ok := obj.(map[string]any)
+	if !ok {
+		return nil, newObjectInvalidError(obj)
+	}
+	key := document.NewKey()
+	key = append(key, dbName)
+	key = append(key, schema.Name())
+	for _, elem := range idx.Elements() {
+		name := elem.Name()
+		v, ok := objMap[name]
+		if !ok {
+			return nil, newObjectInvalidError(obj)
+		}
+		key = append(key, v)
+	}
+	return key, nil
 }
