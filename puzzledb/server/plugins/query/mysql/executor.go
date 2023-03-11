@@ -154,14 +154,34 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
-	docKey, doc, err := NewObjectWith(dbName, schema, stmt)
+	// Inserts the object using the primary key/
+
+	prKey, docObj, err := NewObjectWith(dbName, schema, stmt)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
-	err = txn.InsertDocument(docKey, doc)
+	err = txn.InsertDocument(prKey, docObj)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	// Inserts the secondary indexes.
+
+	idxes, err := schema.SecondaryIndexes()
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	for _, idx := range idxes {
+		secKey, err := NewKeyFromIndex(dbName, schema, idx, docObj)
+		if err != nil {
+			return nil, service.CancelTransactionWithError(txn, err)
+		}
+		err = txn.InsertIndex(secKey, prKey)
+		if err != nil {
+			return nil, service.CancelTransactionWithError(txn, err)
+		}
 	}
 
 	err = txn.Commit()
@@ -174,24 +194,6 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 // Update should handle a UPDATE statement.
 func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
-	updateObjectByColumns := func(obj any, updateCols *query.Columns) error {
-		objMap, ok := obj.(Object)
-		if !ok {
-			return newObjectInvalidError(obj)
-		}
-		for _, updateCol := range updateCols.Columns() {
-			name := updateCol.Name()
-			/* NOTE: Column existence has not been confirmed.
-			_, ok = objMap[name]
-			if !ok {
-				return newCoulumNotExistError(name)
-			}
-			*/
-			objMap[name] = updateCol.Value()
-		}
-		return nil
-	}
-
 	store := service.Store()
 
 	dbName := conn.Database()
@@ -234,15 +236,7 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 	for rs.Next() {
 		docObj := rs.Object()
-		err := updateObjectByColumns(docObj, updateCols)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
-		}
-		docKey, err := NewKeyFromObject(dbName, schema, docObj)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
-		}
-		err = txn.UpdateDocument(docKey, docObj)
+		err := service.updateObject(ctx, conn, txn, schema, docObj, updateCols)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(txn, err)
 		}
@@ -254,6 +248,33 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 	}
 
 	return mysql.NewResult(), nil
+}
+
+func (service *Service) updateObject(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj any, updateCols *query.Columns) error {
+	objMap, ok := obj.(Object)
+	if !ok {
+		return newObjectInvalidError(obj)
+	}
+	dbName := conn.Database()
+	for _, updateCol := range updateCols.Columns() {
+		name := updateCol.Name()
+		// NOTE: Column existence has not been confirmed.
+		_, ok := objMap[name]
+		if !ok {
+			return newCoulumNotExistError(name)
+		}
+		objMap[name] = updateCol.Value()
+	}
+	docKey, err := NewKeyFromObject(dbName, schema, objMap)
+	if err != nil {
+		return err
+	}
+	err = txn.UpdateDocument(docKey, objMap)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Delete should handle a DELETE statement.
