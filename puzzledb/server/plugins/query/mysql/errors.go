@@ -97,6 +97,10 @@ func newObjectInvalidError(obj any) error {
 	return newInvalidError(fmt.Sprintf("object (%s:%v)", obj, obj))
 }
 
+func newCoulumNotExistError(obj any) error {
+	return newNotExistError(fmt.Sprintf("coulum (%s)", obj, obj))
+}
+
 // Not implemented error functions
 
 func newJoinQueryNotSupportedError(obj any) error {
