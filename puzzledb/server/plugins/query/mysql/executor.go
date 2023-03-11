@@ -175,6 +175,20 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 // Update should handle a UPDATE statement.
 func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
 	updateObjectByColumns := func(obj any, updateCols *query.Columns) error {
+		objMap, ok := obj.(Object)
+		if !ok {
+			return newObjectInvalidError(obj)
+		}
+		for _, updateCol := range updateCols.Columns() {
+			name := updateCol.Name()
+			/* NOTE: Column existence has not been confirmed.
+			_, ok = objMap[name]
+			if !ok {
+				return newCoulumNotExistError(name)
+			}
+			*/
+			objMap[name] = updateCol.Value()
+		}
 		return nil
 	}
 
@@ -219,8 +233,16 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 	}
 
 	for rs.Next() {
-		obj := rs.Object()
-		err := updateObjectByColumns(obj, updateCols)
+		docObj := rs.Object()
+		err := updateObjectByColumns(docObj, updateCols)
+		if err != nil {
+			return nil, service.CancelTransactionWithError(txn, err)
+		}
+		docKey, err := NewKeyFromObject(dbName, schema, docObj)
+		if err != nil {
+			return nil, service.CancelTransactionWithError(txn, err)
+		}
+		err = txn.UpdateDocument(docKey, docObj)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(txn, err)
 		}
@@ -266,7 +288,7 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
-	docKey, docKeyType, err := NewKeyWithCond(dbName, schema, stmt.Where)
+	docKey, docKeyType, err := NewKeyFromCond(dbName, schema, stmt.Where)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
@@ -288,7 +310,7 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 		}
 		for rs.Next() {
 			obj := rs.Object()
-			docKey, err := NewKeyWithIndex(dbName, schema, prIdx, obj)
+			docKey, err := NewKeyFromIndex(dbName, schema, prIdx, obj)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(txn, err)
 			}
@@ -367,7 +389,7 @@ func (service *Service) ShowTables(ctx context.Context, conn *mysql.Conn, databa
 }
 
 func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, cond *query.Condition) (store.ResultSet, error) {
-	docKey, docKeyType, err := NewKeyWithCond(conn.Database(), schema, cond)
+	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
 	if err != nil {
 		return nil, err
 	}
