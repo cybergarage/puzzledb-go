@@ -25,8 +25,8 @@ func NewKeyWith(dbName string, tblName string, keyName string, val any) (store.K
 	return document.NewKeyWith(dbName, tblName, keyName, val), nil
 }
 
-// NewKeyWithCond returns a key from the specified parameters.
-func NewKeyWithCond(dbName string, schema document.Schema, cond *query.Condition) (store.Key, document.IndexType, error) {
+// NewKeyFromCond returns a key for the specified condition.
+func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition) (store.Key, document.IndexType, error) {
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, 0, err
@@ -53,8 +53,8 @@ func NewKeyWithCond(dbName string, schema document.Schema, cond *query.Condition
 	return nil, 0, newQueryConditionNotSupportedError(cond)
 }
 
-// NewKeyWithIndex returns a key from the specified parameters.
-func NewKeyWithIndex(dbName string, schema document.Schema, idx document.Index, obj document.Object) (store.Key, error) {
+// NewKeyFromIndex returns a key for the specified index.
+func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, obj document.Object) (store.Key, error) {
 	objMap, ok := obj.(map[string]any)
 	if !ok {
 		return nil, newObjectInvalidError(obj)
@@ -63,6 +63,31 @@ func NewKeyWithIndex(dbName string, schema document.Schema, idx document.Index, 
 	key = append(key, dbName)
 	key = append(key, schema.Name())
 	for _, elem := range idx.Elements() {
+		name := elem.Name()
+		v, ok := objMap[name]
+		if !ok {
+			return nil, newObjectInvalidError(obj)
+		}
+		key = append(key, v)
+	}
+	return key, nil
+}
+
+// NewKeyFromObject returns a key from the specified object.
+func NewKeyFromObject(dbName string, schema document.Schema, obj document.Object) (store.Key, error) {
+	prIdx, err := schema.PrimaryIndex()
+	if err != nil {
+		return nil, err
+	}
+	objMap, ok := obj.(map[string]any)
+	if !ok {
+		return nil, newObjectInvalidError(obj)
+	}
+
+	key := document.NewKey()
+	key = append(key, dbName)
+	key = append(key, schema.Name())
+	for _, elem := range prIdx.Elements() {
 		name := elem.Name()
 		v, ok := objMap[name]
 		if !ok {
