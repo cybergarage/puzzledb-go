@@ -273,6 +273,8 @@ func (service *Service) updateDocument(tx store.Transaction, q *mongo.Query, bso
 		}
 	}
 
+	// TODO: Removes deprecated secondary indexes for the all elements
+
 	return nil
 }
 
