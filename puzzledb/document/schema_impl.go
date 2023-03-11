@@ -232,13 +232,24 @@ func (s *schema) FindIndex(name string) (Index, error) {
 
 // PrimaryIndex returns the schema primary index.
 func (s *schema) PrimaryIndex() (Index, error) {
-	idxes := s.indexes
-	for _, idx := range idxes {
+	for _, idx := range s.indexes {
 		if idx.Type() == PrimaryIndex {
 			return idx, nil
 		}
 	}
 	return nil, newPrimaryIndexNotExistErrorr()
+}
+
+// SecondaryIndexes returns the schema secondary indexes.
+func (s *schema) SecondaryIndexes() ([]Index, error) {
+	secIdxes := []Index{}
+	for _, idx := range s.indexes {
+		if idx.Type() != PrimaryIndex {
+			continue
+		}
+		secIdxes = append(secIdxes, idx)
+	}
+	return secIdxes, nil
 }
 
 // Data returns the raw representation data in memory.
