@@ -35,6 +35,8 @@ type Schema interface {
 	FindIndex(name string) (Index, error)
 	// PrimaryIndex returns the schema primary index.
 	PrimaryIndex() (Index, error)
+	// SecondaryIndexes returns the schema secondary indexes.
+	SecondaryIndexes() ([]Index, error)
 	// Data returns the raw representation data in memory.
 	Data() any
 }
