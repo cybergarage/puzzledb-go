@@ -98,7 +98,7 @@ func newObjectInvalidError(obj any) error {
 }
 
 func newCoulumNotExistError(obj any) error {
-	return newNotExistError(fmt.Sprintf("coulum (%s)", obj, obj))
+	return newNotExistError(fmt.Sprintf("coulum (%s)", obj))
 }
 
 // Not implemented error functions
