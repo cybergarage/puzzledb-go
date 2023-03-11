@@ -174,6 +174,10 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 // Update should handle a UPDATE statement.
 func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
+	updateObjectByColumns := func(obj any, updateCols *query.Columns) error {
+		return nil
+	}
+
 	store := service.Store()
 
 	dbName := conn.Database()
@@ -204,13 +208,22 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
+	updateCols, err := stmt.Columns()
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
 	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
 	for rs.Next() {
-		_ = rs.Object()
+		obj := rs.Object()
+		err := updateObjectByColumns(obj, updateCols)
+		if err != nil {
+			return nil, service.CancelTransactionWithError(txn, err)
+		}
 	}
 
 	err = txn.Commit()
