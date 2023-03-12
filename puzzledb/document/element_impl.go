@@ -82,12 +82,11 @@ func (e *element) Type() ElementType {
 	if !ok {
 		return 0
 	}
-	switch t := v.(type) {
-	case ElementType:
-		return ElementType(t)
-	default:
+	et, err := NewElementTypeWith(v)
+	if err != nil {
 		return 0
 	}
+	return et
 }
 
 // Data returns the raw representation data in memory.
