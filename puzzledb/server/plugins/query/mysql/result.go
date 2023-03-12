@@ -21,8 +21,14 @@ import (
 )
 
 // NewResultFrom returns a successful result with the specified parameters.
-func NewResultFrom(schema document.Schema, objs []document.Object) (*mysql.Result, error) {
+func NewResultFrom(dbName string, schema document.Schema, objs []document.Object) (*mysql.Result, error) {
 	res := mysql.NewResult()
+
+	fields, err := newFieldFromSchema(dbName, schema)
+	if err != nil {
+		return nil, err
+	}
+	res.Fields = fields
 
 	resRows := [][]mysql.Value{}
 	for _, obj := range objs {
@@ -50,8 +56,8 @@ func NewResultFrom(schema document.Schema, objs []document.Object) (*mysql.Resul
 	return res, nil
 }
 
-// NewFieldFromSchema creates schema fields from the specified schema object.
-func NewFieldFromSchema(dbName string, schema document.Schema) ([]*query.Field, error) {
+// newFieldFromSchema creates schema fields from the specified schema object.
+func newFieldFromSchema(dbName string, schema document.Schema) ([]*query.Field, error) {
 	fields := make([]*query.Field, 0)
 	tblName := schema.Name()
 	for _, elem := range schema.Elements() {
