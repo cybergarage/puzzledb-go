@@ -48,3 +48,7 @@ func newIndexNotExistErrorr(obj any) error {
 func newPrimaryIndexNotExistErrorr() error {
 	return fmt.Errorf("primary index is %w", ErrNotExist)
 }
+
+func newElementTypeInvalidError(v any) error {
+	return fmt.Errorf("element type (%s:%v) is %w", v, v, ErrInvalid)
+}
