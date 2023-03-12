@@ -229,7 +229,7 @@ func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
-	res, err := NewResultFrom(schema, rs.Objects())
+	res, err := NewResultFrom(dbName, schema, rs.Objects())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
