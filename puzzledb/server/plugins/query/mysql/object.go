@@ -23,6 +23,15 @@ import (
 // Object represents a database object.
 type Object map[string]any
 
+// NewObjectWith returns a new object from the specified schema and columns.
+func NewObjectWith(obj any) (store.Object, error) {
+	objMap, ok := obj.(Object)
+	if ok {
+		return objMap, nil
+	}
+	return nil, newObjectInvalidError(obj)
+}
+
 // NewObjectFromInsert returns a new object from the specified schema and columns.
 func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (store.Key, store.Object, error) {
 	prIdx, err := schema.PrimaryIndex()
