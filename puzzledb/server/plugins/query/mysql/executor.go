@@ -189,7 +189,7 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 
-	return mysql.NewResult(), nil
+	return mysql.NewResultWithRowsAffected(1), nil
 }
 
 // Select should handle a SELECT statement.
