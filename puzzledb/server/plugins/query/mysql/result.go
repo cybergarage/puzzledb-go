@@ -25,9 +25,9 @@ func NewResultFrom(schema document.Schema, objs []document.Object) (*mysql.Resul
 
 	resRows := [][]mysql.Value{}
 	for _, obj := range objs {
-		objMap, ok := obj.(map[string]any)
-		if !ok {
-			return nil, newObjectInvalidError(obj)
+		objMap, err := NewObjectWith(obj)
+		if err != nil {
+			return nil, err
 		}
 		resValues := []mysql.Value{}
 		for colName, colVal := range objMap {
