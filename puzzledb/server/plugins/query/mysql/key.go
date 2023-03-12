@@ -74,14 +74,14 @@ func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, 
 }
 
 // NewKeyFromObject returns a key from the specified object.
-func NewKeyFromObject(dbName string, schema document.Schema, obj document.Object) (store.Key, error) {
+func NewKeyFromObject(dbName string, schema document.Schema, docObj document.Object) (store.Key, error) {
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, err
 	}
-	objMap, ok := obj.(map[string]any)
-	if !ok {
-		return nil, newObjectInvalidError(obj)
+	objMap, err := NewObjectWith(docObj)
+	if err != nil {
+		return nil, err
 	}
 
 	key := document.NewKey()
@@ -91,7 +91,7 @@ func NewKeyFromObject(dbName string, schema document.Schema, obj document.Object
 		name := elem.Name()
 		v, ok := objMap[name]
 		if !ok {
-			return nil, newObjectInvalidError(obj)
+			return nil, newObjectInvalidError(docObj)
 		}
 		key = append(key, v)
 	}
