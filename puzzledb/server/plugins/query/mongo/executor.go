@@ -356,8 +356,7 @@ func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Que
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for key, val := range vmap {
-			indexKey := service.createIndexKey(tx, q, key, val)
-			err := tx.RemoveIndex(indexKey)
+			err := service.deleteDocumentIndex(tx, q, key, val)
 			if err != nil {
 				return err
 			}
@@ -365,4 +364,9 @@ func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Que
 		return nil
 	}
 	return newErrBSONTypeNotSupported(v)
+}
+
+func (service *Service) deleteDocumentIndex(tx store.Transaction, q *mongo.Query, key string, val any) error {
+	indexKey := service.createIndexKey(tx, q, key, val)
+	return tx.RemoveIndex(indexKey)
 }
