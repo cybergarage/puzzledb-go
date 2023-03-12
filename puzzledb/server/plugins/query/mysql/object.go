@@ -24,12 +24,12 @@ import (
 type Object map[string]any
 
 // NewObjectWith returns a new object from the specified object.
-func NewObjectWith(obj any) (store.Object, error) {
-	obj, ok := obj.(Object)
+func NewObjectWith(anyObj any) (Object, error) {
+	obj, ok := anyObj.(Object)
 	if ok {
 		return obj, nil
 	}
-	objMap, ok := obj.(map[any]any)
+	objMap, ok := anyObj.(map[any]any)
 	if ok {
 		obj := Object{}
 		for key, val := range objMap {
