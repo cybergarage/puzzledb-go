@@ -344,7 +344,7 @@ func (service *Service) deleteDocument(tx store.Transaction, q *mongo.Query, bso
 		return err
 	}
 
-	err = service.deleteDocumentIndexes(tx, q, docKey, doc)
+	err = service.deleteDocumentIndexes(tx, q, doc)
 	if err != nil {
 		return err
 	}
@@ -352,7 +352,7 @@ func (service *Service) deleteDocument(tx store.Transaction, q *mongo.Query, bso
 	return nil
 }
 
-func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
+func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Query, v any) error {
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for key, val := range vmap {
