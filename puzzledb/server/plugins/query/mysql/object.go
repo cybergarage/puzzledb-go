@@ -21,10 +21,10 @@ import (
 )
 
 // Object represents a database object.
-type Object = map[string]any
+type Object map[string]any
 
-// NewObjectWith returns a new object from the specified schema and columns.
-func NewObjectWith(dbName string, schema document.Schema, stmt *query.Insert) (store.Key, store.Object, error) {
+// NewObjectFromInsert returns a new object from the specified schema and columns.
+func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (store.Key, store.Object, error) {
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, nil, err

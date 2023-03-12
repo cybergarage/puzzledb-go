@@ -156,7 +156,7 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 	// Inserts the object using the primary key/
 
-	prKey, docObj, err := NewObjectWith(dbName, schema, stmt)
+	prKey, docObj, err := NewObjectFromInsert(dbName, schema, stmt)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
@@ -190,6 +190,71 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 	}
 
 	return mysql.NewResult(), nil
+}
+
+// Select should handle a SELECT statement.
+func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(false)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: Support multiple tables
+	tables := stmt.From()
+	if len(tables) != 1 {
+		return nil, service.CancelTransactionWithError(txn, newJoinQueryNotSupportedError(tables))
+	}
+
+	table := tables[0]
+	tableName, err := table.Name()
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	schema, err := txn.GetSchema(tableName)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	res, err := NewResultFrom(schema, rs.Objects())
+	if err != nil {
+		return nil, service.CancelTransactionWithError(txn, err)
+	}
+
+	err = txn.Commit()
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, cond *query.Condition) (store.ResultSet, error) {
+	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
+	if err != nil {
+		return nil, err
+	}
+
+	switch docKeyType {
+	case document.PrimaryIndex:
+		return txn.FindDocuments(docKey)
+	case document.SecondaryIndex:
+		return txn.FindDocumentsByIndex(docKey)
+	}
+	return nil, newIndexTypeNotSupportedError(docKeyType)
 }
 
 // Update should handle a UPDATE statement.
@@ -349,56 +414,6 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 	return mysql.NewResult(), nil
 }
 
-// Select should handle a SELECT statement.
-func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
-	store := service.Store()
-
-	dbName := conn.Database()
-	db, err := store.GetDatabase(dbName)
-	if err != nil {
-		return nil, err
-	}
-
-	txn, err := db.Transact(false)
-	if err != nil {
-		return nil, err
-	}
-
-	// TODO: Support multiple tables
-	tables := stmt.From()
-	if len(tables) != 1 {
-		return nil, service.CancelTransactionWithError(txn, newJoinQueryNotSupportedError(tables))
-	}
-
-	table := tables[0]
-	tableName, err := table.Name()
-	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
-	}
-
-	schema, err := txn.GetSchema(tableName)
-	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
-	}
-
-	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
-	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
-	}
-
-	res, err := NewResultFrom(schema, rs.Objects())
-	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
-	}
-
-	err = txn.Commit()
-	if err != nil {
-		return nil, err
-	}
-
-	return res, nil
-}
-
 // ShowDatabases should handle a SHOW DATABASES statement.
 func (service *Service) ShowDatabases(ctx context.Context, conn *mysql.Conn) (*mysql.Result, error) {
 	return nil, newQueryNotSupportedError("ShowDatabases")
@@ -407,19 +422,4 @@ func (service *Service) ShowDatabases(ctx context.Context, conn *mysql.Conn) (*m
 // ShowTables should handle a SHOW TABLES statement.
 func (service *Service) ShowTables(ctx context.Context, conn *mysql.Conn, database string) (*mysql.Result, error) {
 	return nil, newQueryNotSupportedError("ShowTables")
-}
-
-func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, cond *query.Condition) (store.ResultSet, error) {
-	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
-	if err != nil {
-		return nil, err
-	}
-
-	switch docKeyType {
-	case document.PrimaryIndex:
-		return txn.FindDocuments(docKey)
-	case document.SecondaryIndex:
-		return txn.FindDocumentsByIndex(docKey)
-	}
-	return nil, newIndexTypeNotSupportedError(docKeyType)
 }
