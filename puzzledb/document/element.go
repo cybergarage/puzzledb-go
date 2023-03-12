@@ -14,7 +14,7 @@
 
 package document
 
-type ElementType int
+type ElementType int8
 
 const (
 	// 0x0x (Reserved).
@@ -48,6 +48,19 @@ type Element interface {
 	SetName(name string) Element
 	// SetType sets the specified type to the element.
 	SetType(t ElementType) Element
+}
+
+// NewElementTypeWith returns an element type from the specified parameters.
+func NewElementTypeWith(v any) (ElementType, error) {
+	switch et := v.(type) {
+	case ElementType:
+		return et, nil
+	case int8:
+		return ElementType(et), nil
+	case uint8:
+		return ElementType(et), nil
+	}
+	return 0, newElementTypeInvalidError(v)
 }
 
 // String represents the string representation.
