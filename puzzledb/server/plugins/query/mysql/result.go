@@ -16,6 +16,7 @@ package mysql
 
 import (
 	"github.com/cybergarage/go-mysql/mysql"
+	"github.com/cybergarage/go-mysql/mysql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
@@ -47,4 +48,55 @@ func NewResultFrom(schema document.Schema, objs []document.Object) (*mysql.Resul
 	res.Rows = resRows
 
 	return res, nil
+}
+
+// NewFieldFromSchema creates schema fields from the specified schema object.
+func NewFieldFromSchema(dbName string, schema document.Schema) ([]*query.Field, error) {
+	fields := make([]*query.Field, 0)
+	tblName := schema.Name()
+	for _, elem := range schema.Elements() {
+		colName := elem.Name()
+		colType, err := sqlTypeFromElementType(elem.Type())
+		if err != nil {
+			return nil, err
+		}
+		// FIXME: Set more appreciate column length to check official MySQL implementation
+		colLen := 65535 // len(name) + 1
+		field := &query.Field{
+			// name of the field as returned by mysql C API
+			Name: colName,
+			// Remaining fields from mysql C API.
+			Database: dbName,
+			Table:    tblName,
+			OrgTable: tblName,
+			OrgName:  colName,
+			// column_length is really a uint32. All 32 bits can be used.
+			ColumnLength: uint32(colLen),
+			// charset is actually a uint16. Only the lower 16 bits are used.
+			Charset: 255, // utf8mb4,
+			// vitess-defined type. Conversion function is in sqltypes package.
+			Type: colType,
+			// decimals is actually a uint8. Only the lower 8 bits are used.
+			Decimals: 0,
+			// flags is actually a uint16. Only the lower 16 bits are used.
+			Flags: 0,
+			// column_type is optionally populated from information_schema.columns
+			ColumnType: "",
+		}
+		/*
+			switch field.Type {
+			case vitesspq.Type_BLOB, vitesspq.Type_TEXT:
+				field.Flags = field.Flags | uint32(vitesspq.MySqlFlag_BLOB_FLAG)
+			}
+			if column.Type.Options.Null != nil && !*column.Type.Options.Null {
+				field.Flags = field.Flags | uint32(vitesspq.MySqlFlag_NOT_NULL_FLAG)
+			}
+			if column.Type.Options.KeyOpt == ColKeyPrimary {
+				field.Flags = field.Flags | uint32(vitesspq.MySqlFlag_PRI_KEY_FLAG)
+				field.Flags = field.Flags | uint32(vitesspq.MySqlFlag_NOT_NULL_FLAG)
+			}
+		*/
+		fields = append(fields, field)
+	}
+	return fields, nil
 }
