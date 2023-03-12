@@ -316,9 +316,9 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 }
 
 func (service *Service) updateObject(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj any, updateCols *query.Columns) error {
-	objMap, ok := obj.(Object)
-	if !ok {
-		return newObjectInvalidError(obj)
+	objMap, err := NewObjectWith(obj)
+	if err != nil {
+		return err
 	}
 	dbName := conn.Database()
 	for _, updateCol := range updateCols.Columns() {
