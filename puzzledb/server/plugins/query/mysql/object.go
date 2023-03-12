@@ -23,11 +23,26 @@ import (
 // Object represents a database object.
 type Object map[string]any
 
-// NewObjectWith returns a new object from the specified schema and columns.
+// NewObjectWith returns a new object from the specified object.
 func NewObjectWith(obj any) (store.Object, error) {
-	objMap, ok := obj.(Object)
+	obj, ok := obj.(Object)
 	if ok {
-		return objMap, nil
+		return obj, nil
+	}
+	objMap, ok := obj.(map[any]any)
+	if ok {
+		obj := Object{}
+		for key, val := range objMap {
+			switch k := key.(type) {
+			case string:
+				obj[k] = val
+			case []byte:
+				obj[string(k)] = val
+			default:
+				return nil, newObjectInvalidError(obj)
+			}
+		}
+		return obj, nil
 	}
 	return nil, newObjectInvalidError(obj)
 }
