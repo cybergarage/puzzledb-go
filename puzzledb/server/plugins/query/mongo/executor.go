@@ -214,7 +214,7 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 		return 0, err
 	}
 
-	nUpdated, err := service.updateDocuments(tx, q, foundDocs)
+	nUpdated, err := service.updateDocumentsByQuery(tx, foundDocs, q)
 	if err != nil {
 		if err := tx.Cancel(); err != nil {
 			return 0, err
@@ -230,10 +230,10 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	return int32(nUpdated), nil
 }
 
-func (service *Service) updateDocuments(tx store.Transaction, q *mongo.Query, bsonDocs []bson.Document) (int32, error) {
+func (service *Service) updateDocumentsByQuery(tx store.Transaction, bsonDocs []bson.Document, q *mongo.Query) (int32, error) {
 	nUpdated := 0
 	for _, bsonDoc := range bsonDocs {
-		err := service.updateDocument(tx, q, bsonDoc)
+		err := service.updateDocumentByQuery(tx, bsonDoc, q)
 		if err != nil {
 			return 0, err
 		}
@@ -242,7 +242,7 @@ func (service *Service) updateDocuments(tx store.Transaction, q *mongo.Query, bs
 	return int32(nUpdated), nil
 }
 
-func (service *Service) updateDocument(tx store.Transaction, q *mongo.Query, bsonDoc bson.Document) error {
+func (service *Service) updateDocumentByQuery(tx store.Transaction, bsonDoc bson.Document, q *mongo.Query) error {
 	// Updates the matched doucments by the query
 
 	updateBSONDocs := q.GetDocuments()
