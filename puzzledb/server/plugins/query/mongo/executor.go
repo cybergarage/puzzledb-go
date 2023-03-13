@@ -29,7 +29,7 @@ func (service *Service) createObjectKey(tx store.Transaction, database string, c
 	return service.createDocumentKey(tx, database, collection, ObjectID, objID)
 }
 
-func (service *Service) createIndexKey(tx store.Transaction, database string, collection string, key string, val any) document.Key {
+func (service *Service) createidxKey(tx store.Transaction, database string, collection string, key string, val any) document.Key {
 	return service.createDocumentKey(tx, database, collection, key, val)
 }
 
@@ -111,8 +111,8 @@ func (service *Service) insertDocumentIndexes(tx store.Transaction, q *mongo.Que
 }
 
 func (service *Service) insertDocumentIndex(tx store.Transaction, q *mongo.Query, secKey string, secVal any, docKey document.Key) error {
-	indexKey := service.createIndexKey(tx, q.Database, q.Collection, secKey, secVal)
-	return tx.InsertIndex(indexKey, docKey)
+	idxKey := service.createidxKey(tx, q.Database, q.Collection, secKey, secVal)
+	return tx.InsertIndex(idxKey, docKey)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
@@ -243,9 +243,31 @@ func (service *Service) updateDocumentsByQuery(tx store.Transaction, bsonDocs []
 }
 
 func (service *Service) updateDocumentByQuery(tx store.Transaction, bsonDoc bson.Document, q *mongo.Query) error {
+	updateBSONDocs := q.GetDocuments()
+
+	// Removes current secondary indexes for the all elements
+
+	for _, updateBSONDoc := range updateBSONDocs {
+		updateBSONElems, err := updateBSONDoc.Elements()
+		if err != nil {
+			return err
+		}
+		for _, updateBSONElem := range updateBSONElems {
+			updateBSONKey := updateBSONElem.Key()
+			updateBSONVal, err := bsonDoc.LookupErr(updateBSONKey)
+			if err != nil {
+				continue
+			}
+			idxKey := service.createidxKey(tx, q.Database, q.Collection, updateBSONKey, updateBSONVal.Data)
+			err = tx.RemoveIndex(idxKey)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
 	// Updates the matched doucments by the query
 
-	updateBSONDocs := q.GetDocuments()
 	updatedBSONDoc, err := UpdateBSONDocument(bsonDoc, updateBSONDocs)
 	if err != nil {
 		return err
@@ -276,8 +298,6 @@ func (service *Service) updateDocumentByQuery(tx store.Transaction, bsonDoc bson
 			return err
 		}
 	}
-
-	// TODO: Removes deprecated secondary indexes for the all elements
 
 	return nil
 }
@@ -371,6 +391,6 @@ func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Que
 }
 
 func (service *Service) deleteDocumentIndex(tx store.Transaction, q *mongo.Query, key string, val any) error {
-	indexKey := service.createIndexKey(tx, q.Database, q.Collection, key, val)
-	return tx.RemoveIndex(indexKey)
+	idxKey := service.createidxKey(tx, q.Database, q.Collection, key, val)
+	return tx.RemoveIndex(idxKey)
 }
