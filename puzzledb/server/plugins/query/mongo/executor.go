@@ -99,9 +99,8 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
-		for key, val := range vmap {
-			indexKey := service.createIndexKey(tx, q, key, val)
-			err := tx.InsertIndex(indexKey, docKey)
+		for secKey, secVal := range vmap {
+			err := service.updateDocumentIndex(tx, q, secKey, secVal, docKey)
 			if err != nil {
 				return err
 			}
@@ -109,6 +108,11 @@ func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Que
 		return nil
 	}
 	return newErrBSONTypeNotSupported(v)
+}
+
+func (service *Service) updateDocumentIndex(tx store.Transaction, q *mongo.Query, secKey string, secVal any, docKey document.Key) error {
+	indexKey := service.createIndexKey(tx, q, secKey, secVal)
+	return tx.InsertIndex(indexKey, docKey)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
