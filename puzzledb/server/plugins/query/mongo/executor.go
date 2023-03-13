@@ -302,7 +302,7 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 		return 0, err
 	}
 
-	nDeleted, err := service.deleteDocuments(tx, q, foundDocs)
+	nDeleted, err := service.deleteDocumentsByQuery(tx, q, foundDocs)
 	if err != nil {
 		if err := tx.Cancel(); err != nil {
 			return 0, err
@@ -318,10 +318,10 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	return int32(nDeleted), nil
 }
 
-func (service *Service) deleteDocuments(tx store.Transaction, q *mongo.Query, bsonDocs []bson.Document) (int32, error) {
+func (service *Service) deleteDocumentsByQuery(tx store.Transaction, q *mongo.Query, bsonDocs []bson.Document) (int32, error) {
 	nDeleted := 0
 	for _, bsonDoc := range bsonDocs {
-		err := service.deleteDocument(tx, q, bsonDoc)
+		err := service.deleteDocumentByQuery(tx, bsonDoc, q)
 		if err != nil {
 			return 0, err
 		}
@@ -330,7 +330,7 @@ func (service *Service) deleteDocuments(tx store.Transaction, q *mongo.Query, bs
 	return int32(nDeleted), nil
 }
 
-func (service *Service) deleteDocument(tx store.Transaction, q *mongo.Query, bsonDoc bson.Document) error {
+func (service *Service) deleteDocumentByQuery(tx store.Transaction, bsonDoc bson.Document, q *mongo.Query) error {
 	objID, err := LookupBSONDocumentObjectID(bsonDoc)
 	if err != nil {
 		return err
