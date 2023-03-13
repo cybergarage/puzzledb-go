@@ -21,16 +21,16 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-func (service *Service) createStoreKey(tx store.Transaction, q *mongo.Query, key string, val any) document.Key {
-	return document.NewKeyWith(q.Database, q.Collection, key, val)
+func (service *Service) createDocumentKey(tx store.Transaction, database string, collection string, key string, val any) document.Key {
+	return document.NewKeyWith(database, collection, key, val)
 }
 
-func (service *Service) createDocumentKey(tx store.Transaction, q *mongo.Query, objID any) document.Key {
-	return service.createStoreKey(tx, q, ObjectID, objID)
+func (service *Service) createObjectKey(tx store.Transaction, database string, collection string, objID any) document.Key {
+	return service.createDocumentKey(tx, database, collection, ObjectID, objID)
 }
 
-func (service *Service) createIndexKey(tx store.Transaction, q *mongo.Query, key string, val any) document.Key {
-	return service.createStoreKey(tx, q, key, val)
+func (service *Service) createIndexKey(tx store.Transaction, database string, collection string, key string, val any) document.Key {
+	return service.createDocumentKey(tx, database, collection, key, val)
 }
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
@@ -80,7 +80,7 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 		return err
 	}
 
-	docKey := service.createDocumentKey(tx, q, objID)
+	docKey := service.createObjectKey(tx, q.Database, q.Collection, objID)
 	err = tx.InsertDocument(docKey, doc)
 	if err != nil {
 		return err
@@ -111,7 +111,7 @@ func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Que
 }
 
 func (service *Service) updateDocumentIndex(tx store.Transaction, q *mongo.Query, secKey string, secVal any, docKey document.Key) error {
-	indexKey := service.createIndexKey(tx, q, secKey, secVal)
+	indexKey := service.createIndexKey(tx, q.Database, q.Collection, secKey, secVal)
 	return tx.InsertIndex(indexKey, docKey)
 }
 
@@ -157,7 +157,7 @@ func (service *Service) findDocumentObjects(tx store.Transaction, q *mongo.Query
 			if err != nil {
 				return nil, err
 			}
-			idxKey := service.createStoreKey(tx, q, key, val)
+			idxKey := service.createDocumentKey(tx, q.Database, q.Collection, key, val)
 			var objs []document.Object
 			if isPrimaryKey(key) {
 				rs, err := tx.FindDocuments(idxKey)
@@ -258,7 +258,7 @@ func (service *Service) updateDocumentByQuery(tx store.Transaction, bsonDoc bson
 	if err != nil {
 		return err
 	}
-	docKey := service.createDocumentKey(tx, q, objID)
+	docKey := service.createObjectKey(tx, q.Database, q.Collection, objID)
 	err = tx.UpdateDocument(docKey, updatedDoc)
 	if err != nil {
 		return err
@@ -335,7 +335,7 @@ func (service *Service) deleteDocumentByQuery(tx store.Transaction, bsonDoc bson
 	if err != nil {
 		return err
 	}
-	docKey := service.createDocumentKey(tx, q, objID)
+	docKey := service.createObjectKey(tx, q.Database, q.Collection, objID)
 	err = tx.RemoveDocument(docKey)
 	if err != nil {
 		return err
@@ -371,6 +371,6 @@ func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Que
 }
 
 func (service *Service) deleteDocumentIndex(tx store.Transaction, q *mongo.Query, key string, val any) error {
-	indexKey := service.createIndexKey(tx, q, key, val)
+	indexKey := service.createIndexKey(tx, q.Database, q.Collection, key, val)
 	return tx.RemoveIndex(indexKey)
 }
