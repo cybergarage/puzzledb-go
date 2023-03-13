@@ -88,7 +88,7 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 
 	// Creates the secondary indexes for the all elements
 
-	err = service.updateDocumentIndexes(tx, q, docKey, doc)
+	err = service.insertDocumentIndexes(tx, q, docKey, doc)
 	if err != nil {
 		return err
 	}
@@ -96,11 +96,11 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 	return err
 }
 
-func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
+func (service *Service) insertDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for secKey, secVal := range vmap {
-			err := service.updateDocumentIndex(tx, q, secKey, secVal, docKey)
+			err := service.insertDocumentIndex(tx, q, secKey, secVal, docKey)
 			if err != nil {
 				return err
 			}
@@ -110,7 +110,7 @@ func (service *Service) updateDocumentIndexes(tx store.Transaction, q *mongo.Que
 	return newErrBSONTypeNotSupported(v)
 }
 
-func (service *Service) updateDocumentIndex(tx store.Transaction, q *mongo.Query, secKey string, secVal any, docKey document.Key) error {
+func (service *Service) insertDocumentIndex(tx store.Transaction, q *mongo.Query, secKey string, secVal any, docKey document.Key) error {
 	indexKey := service.createIndexKey(tx, q.Database, q.Collection, secKey, secVal)
 	return tx.InsertIndex(indexKey, docKey)
 }
@@ -271,7 +271,7 @@ func (service *Service) updateDocumentByQuery(tx store.Transaction, bsonDoc bson
 		if err != nil {
 			return err
 		}
-		err = service.updateDocumentIndexes(tx, q, docKey, updateDoc)
+		err = service.insertDocumentIndexes(tx, q, docKey, updateDoc)
 		if err != nil {
 			return err
 		}
