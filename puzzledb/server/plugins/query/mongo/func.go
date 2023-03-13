@@ -26,16 +26,16 @@ func UpdateBSONDocument(doc bson.Document, updateDocs []bson.Document) (bson.Doc
 
 	updatedDoc := bson.StartDocument()
 	for _, docElem := range docElems {
-		docKey := docElem.Key()
-		docVal := docElem.Value()
+		elemKey := docElem.Key()
+		elemVal := docElem.Value()
 		for _, updateDoc := range updateDocs {
-			updateVal, err := updateDoc.LookupErr(docKey)
+			updateVal, err := updateDoc.LookupErr(elemKey)
 			if err == nil {
-				docVal = updateVal
+				elemVal = updateVal
 				break
 			}
 		}
-		updatedDoc, err = bson.AppendValueElement(updatedDoc, docKey, docVal)
+		updatedDoc, err = bson.AppendValueElement(updatedDoc, elemKey, elemVal)
 		if err != nil {
 			return nil, err
 		}
