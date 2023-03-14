@@ -37,10 +37,15 @@ func NewResultFrom(dbName string, schema document.Schema, objs []document.Object
 			return nil, err
 		}
 		resValues := []mysql.Value{}
-		for colName, colVal := range objMap {
+		for _, field := range res.Fields {
+			colName := field.GetName()
 			colElem, err := schema.FindElement(colName)
 			if err != nil {
 				return nil, err
+			}
+			colVal, ok := objMap[colName]
+			if !ok {
+				colVal = nil
 			}
 			resValue, err := NewValueFrom(colElem, colVal)
 			if err != nil {
@@ -48,6 +53,7 @@ func NewResultFrom(dbName string, schema document.Schema, objs []document.Object
 			}
 			resValues = append(resValues, resValue)
 		}
+
 		resRows = append(resRows, resValues)
 	}
 
