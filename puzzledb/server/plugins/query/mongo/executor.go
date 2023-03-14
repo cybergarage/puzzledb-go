@@ -19,18 +19,19 @@ import (
 	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
-func (service *Service) createDocumentKey(tx store.Transaction, database string, collection string, key string, val any) document.Key {
+func (service *Service) createDocumentKey(txn store.Transaction, database string, collection string, key string, val any) document.Key {
 	return document.NewKeyWith(database, collection, key, val)
 }
 
-func (service *Service) createObjectKey(tx store.Transaction, database string, collection string, objID any) document.Key {
-	return service.createDocumentKey(tx, database, collection, ObjectID, objID)
+func (service *Service) createObjectKey(txn store.Transaction, database string, collection string, objID any) document.Key {
+	return service.createDocumentKey(txn, database, collection, ObjectID, objID)
 }
 
-func (service *Service) createidxKey(tx store.Transaction, database string, collection string, key string, val any) document.Key {
-	return service.createDocumentKey(tx, database, collection, key, val)
+func (service *Service) createidxKey(txn store.Transaction, database string, collection string, key string, val any) document.Key {
+	return service.createDocumentKey(txn, database, collection, key, val)
 }
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
@@ -40,7 +41,7 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 		return 0, mongo.NewQueryError(q)
 	}
 
-	tx, err := db.Transact(true)
+	txn, err := db.Transact(true)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -49,9 +50,9 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 
 	queryDocs := q.GetDocuments()
 	for _, queryDoc := range queryDocs {
-		err = service.insertDocument(tx, q, queryDoc)
+		err = service.insertDocument(txn, q, queryDoc)
 		if err != nil {
-			if err := tx.Cancel(); err != nil {
+			if err := txn.Cancel(); err != nil {
 				return 0, err
 			}
 			return 0, err
@@ -59,7 +60,7 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 		nInserted++
 	}
 
-	err = tx.Commit()
+	err = txn.Commit()
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -67,7 +68,7 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	return nInserted, nil
 }
 
-func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bsonDoc mongo.Document) error {
+func (service *Service) insertDocument(txn store.Transaction, q *mongo.Query, bsonDoc mongo.Document) error {
 	// Inserts the document with the primary key
 
 	doc, err := service.EncodeBSON(bsonDoc)
@@ -80,15 +81,15 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 		return err
 	}
 
-	docKey := service.createObjectKey(tx, q.Database, q.Collection, objID)
-	err = tx.InsertDocument(docKey, doc)
+	docKey := service.createObjectKey(txn, q.Database, q.Collection, objID)
+	err = txn.InsertDocument(docKey, doc)
 	if err != nil {
 		return err
 	}
 
 	// Creates the secondary indexes for the all elements
 
-	err = service.insertDocumentIndexes(tx, q, docKey, doc)
+	err = service.insertDocumentIndexes(txn, q.Database, q.Collection, docKey, doc)
 	if err != nil {
 		return err
 	}
@@ -96,11 +97,11 @@ func (service *Service) insertDocument(tx store.Transaction, q *mongo.Query, bso
 	return err
 }
 
-func (service *Service) insertDocumentIndexes(tx store.Transaction, q *mongo.Query, docKey document.Key, v any) error {
+func (service *Service) insertDocumentIndexes(txn store.Transaction, db string, col string, docKey document.Key, v any) error {
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for secKey, secVal := range vmap {
-			err := service.insertDocumentIndex(tx, q, secKey, secVal, docKey)
+			err := service.insertDocumentIndex(txn, db, col, secKey, secVal, docKey)
 			if err != nil {
 				return err
 			}
@@ -110,9 +111,9 @@ func (service *Service) insertDocumentIndexes(tx store.Transaction, q *mongo.Que
 	return newErrBSONTypeNotSupported(v)
 }
 
-func (service *Service) insertDocumentIndex(tx store.Transaction, q *mongo.Query, secKey string, secVal any, docKey document.Key) error {
-	idxKey := service.createidxKey(tx, q.Database, q.Collection, secKey, secVal)
-	return tx.InsertIndex(idxKey, docKey)
+func (service *Service) insertDocumentIndex(txn store.Transaction, db string, col string, secKey string, secVal any, docKey document.Key) error {
+	idxKey := service.createidxKey(txn, db, col, secKey, secVal)
+	return txn.InsertIndex(idxKey, docKey)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
@@ -122,20 +123,20 @@ func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document,
 		return nil, mongo.NewQueryError(q)
 	}
 
-	tx, err := db.Transact(false)
+	txn, err := db.Transact(false)
 	if err != nil {
 		return nil, mongo.NewQueryError(q)
 	}
 
-	foundDoc, err := service.findDocuments(tx, q)
+	foundDoc, err := service.findDocuments(txn, q)
 	if err != nil {
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(); err != nil {
 			return nil, err
 		}
 		return nil, err
 	}
 
-	err = tx.Commit()
+	err = txn.Commit()
 	if err != nil {
 		return nil, mongo.NewQueryError(q)
 	}
@@ -143,7 +144,7 @@ func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document,
 	return foundDoc, nil
 }
 
-func (service *Service) findDocumentObjects(tx store.Transaction, q *mongo.Query) ([]document.Object, error) {
+func (service *Service) findDocumentObjects(txn store.Transaction, q *mongo.Query) ([]document.Object, error) {
 	matchedDocs := []document.Object{}
 	for _, cond := range q.GetConditions() {
 		condElems, err := cond.Elements()
@@ -157,16 +158,16 @@ func (service *Service) findDocumentObjects(tx store.Transaction, q *mongo.Query
 			if err != nil {
 				return nil, err
 			}
-			idxKey := service.createDocumentKey(tx, q.Database, q.Collection, key, val)
+			idxKey := service.createDocumentKey(txn, q.Database, q.Collection, key, val)
 			var objs []document.Object
 			if isPrimaryKey(key) {
-				rs, err := tx.FindDocuments(idxKey)
+				rs, err := txn.FindDocuments(idxKey)
 				if err != nil {
 					return nil, err
 				}
 				objs = rs.Objects()
 			} else {
-				rs, err := tx.FindDocumentsByIndex(idxKey)
+				rs, err := txn.FindDocumentsByIndex(idxKey)
 				if err != nil {
 					return nil, err
 				}
@@ -178,8 +179,8 @@ func (service *Service) findDocumentObjects(tx store.Transaction, q *mongo.Query
 	return matchedDocs, nil
 }
 
-func (service *Service) findDocuments(tx store.Transaction, q *mongo.Query) ([]bson.Document, error) {
-	docs, err := service.findDocumentObjects(tx, q)
+func (service *Service) findDocuments(txn store.Transaction, q *mongo.Query) ([]bson.Document, error) {
+	docs, err := service.findDocumentObjects(txn, q)
 	if err != nil {
 		return nil, err
 	}
@@ -201,28 +202,28 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 		return 0, mongo.NewQueryError(q)
 	}
 
-	tx, err := db.Transact(true)
+	txn, err := db.Transact(true)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
 
 	foundDocs, err := service.Find(conn, q)
 	if err != nil {
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(); err != nil {
 			return 0, err
 		}
 		return 0, err
 	}
 
-	nUpdated, err := service.updateDocumentsByQuery(tx, foundDocs, q)
+	nUpdated, err := service.updateDocumentsByQuery(txn, foundDocs, q)
 	if err != nil {
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(); err != nil {
 			return 0, err
 		}
 		return 0, err
 	}
 
-	err = tx.Commit()
+	err = txn.Commit()
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -230,10 +231,10 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	return int32(nUpdated), nil
 }
 
-func (service *Service) updateDocumentsByQuery(tx store.Transaction, bsonDocs []bson.Document, q *mongo.Query) (int32, error) {
+func (service *Service) updateDocumentsByQuery(txn store.Transaction, bsonDocs []bson.Document, q *mongo.Query) (int32, error) {
 	nUpdated := 0
 	for _, bsonDoc := range bsonDocs {
-		err := service.updateDocumentByQuery(tx, bsonDoc, q)
+		err := service.updateDocumentByQuery(txn, bsonDoc, q)
 		if err != nil {
 			return 0, err
 		}
@@ -242,27 +243,15 @@ func (service *Service) updateDocumentsByQuery(tx store.Transaction, bsonDocs []
 	return int32(nUpdated), nil
 }
 
-func (service *Service) updateDocumentByQuery(tx store.Transaction, bsonDoc bson.Document, q *mongo.Query) error {
+func (service *Service) updateDocumentByQuery(txn store.Transaction, bsonDoc bson.Document, q *mongo.Query) error {
 	updateBSONDocs := q.GetDocuments()
 
 	// Removes current secondary indexes for the all elements
 
 	for _, updateBSONDoc := range updateBSONDocs {
-		updateBSONElems, err := updateBSONDoc.Elements()
+		err := service.deleteDocumentUpdateIndexes(txn, q.Database, q.Collection, bsonDoc, updateBSONDoc)
 		if err != nil {
 			return err
-		}
-		for _, updateBSONElem := range updateBSONElems {
-			updateBSONKey := updateBSONElem.Key()
-			updateBSONVal, err := bsonDoc.LookupErr(updateBSONKey)
-			if err != nil {
-				continue
-			}
-			idxKey := service.createidxKey(tx, q.Database, q.Collection, updateBSONKey, updateBSONVal.Data)
-			err = tx.RemoveIndex(idxKey)
-			if err != nil {
-				return err
-			}
 		}
 	}
 
@@ -280,8 +269,8 @@ func (service *Service) updateDocumentByQuery(tx store.Transaction, bsonDoc bson
 	if err != nil {
 		return err
 	}
-	docKey := service.createObjectKey(tx, q.Database, q.Collection, objID)
-	err = tx.UpdateDocument(docKey, updatedDoc)
+	docKey := service.createObjectKey(txn, q.Database, q.Collection, objID)
+	err = txn.UpdateDocument(docKey, updatedDoc)
 	if err != nil {
 		return err
 	}
@@ -293,7 +282,7 @@ func (service *Service) updateDocumentByQuery(tx store.Transaction, bsonDoc bson
 		if err != nil {
 			return err
 		}
-		err = service.insertDocumentIndexes(tx, q, docKey, updateDoc)
+		err = service.insertDocumentIndexes(txn, q.Database, q.Collection, docKey, updateDoc)
 		if err != nil {
 			return err
 		}
@@ -309,28 +298,28 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 		return 0, mongo.NewQueryError(q)
 	}
 
-	tx, err := db.Transact(true)
+	txn, err := db.Transact(true)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
 
 	foundDocs, err := service.Find(conn, q)
 	if err != nil {
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(); err != nil {
 			return 0, err
 		}
 		return 0, err
 	}
 
-	nDeleted, err := service.deleteDocumentsByQuery(tx, q, foundDocs)
+	nDeleted, err := service.deleteDocuments(txn, q.Database, q.Collection, foundDocs)
 	if err != nil {
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(); err != nil {
 			return 0, err
 		}
 		return 0, err
 	}
 
-	err = tx.Commit()
+	err = txn.Commit()
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -338,10 +327,10 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	return int32(nDeleted), nil
 }
 
-func (service *Service) deleteDocumentsByQuery(tx store.Transaction, q *mongo.Query, bsonDocs []bson.Document) (int32, error) {
+func (service *Service) deleteDocuments(txn store.Transaction, db string, col string, bsonDocs []bson.Document) (int32, error) {
 	nDeleted := 0
 	for _, bsonDoc := range bsonDocs {
-		err := service.deleteDocumentByQuery(tx, bsonDoc, q)
+		err := service.deleteDocument(txn, db, col, bsonDoc)
 		if err != nil {
 			return 0, err
 		}
@@ -350,13 +339,13 @@ func (service *Service) deleteDocumentsByQuery(tx store.Transaction, q *mongo.Qu
 	return int32(nDeleted), nil
 }
 
-func (service *Service) deleteDocumentByQuery(tx store.Transaction, bsonDoc bson.Document, q *mongo.Query) error {
+func (service *Service) deleteDocument(txn store.Transaction, db string, col string, bsonDoc bson.Document) error {
 	objID, err := LookupBSONDocumentObjectID(bsonDoc)
 	if err != nil {
 		return err
 	}
-	docKey := service.createObjectKey(tx, q.Database, q.Collection, objID)
-	err = tx.RemoveDocument(docKey)
+	docKey := service.createObjectKey(txn, db, col, objID)
+	err = txn.RemoveDocument(docKey)
 	if err != nil {
 		return err
 	}
@@ -368,7 +357,7 @@ func (service *Service) deleteDocumentByQuery(tx store.Transaction, bsonDoc bson
 		return err
 	}
 
-	err = service.deleteDocumentIndexes(tx, q, doc)
+	err = service.deleteDocumentIndexes(txn, db, col, doc)
 	if err != nil {
 		return err
 	}
@@ -376,11 +365,32 @@ func (service *Service) deleteDocumentByQuery(tx store.Transaction, bsonDoc bson
 	return nil
 }
 
-func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Query, v any) error {
+func (service *Service) deleteDocumentUpdateIndexes(txn store.Transaction, db string, col string, bsonDoc bson.Document, updateBSONDoc bsoncore.Document) error {
+
+	updateBSONElems, err := updateBSONDoc.Elements()
+	if err != nil {
+		return err
+	}
+	for _, updateBSONElem := range updateBSONElems {
+		updateBSONKey := updateBSONElem.Key()
+		updateBSONVal, err := bsonDoc.LookupErr(updateBSONKey)
+		if err != nil {
+			continue
+		}
+		idxKey := service.createidxKey(txn, db, col, updateBSONKey, updateBSONVal.Data)
+		err = txn.RemoveIndex(idxKey)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (service *Service) deleteDocumentIndexes(txn store.Transaction, db string, col string, v any) error {
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for key, val := range vmap {
-			err := service.deleteDocumentIndex(tx, q, key, val)
+			err := service.deleteDocumentIndex(txn, db, col, key, val)
 			if err != nil {
 				return err
 			}
@@ -390,7 +400,7 @@ func (service *Service) deleteDocumentIndexes(tx store.Transaction, q *mongo.Que
 	return newErrBSONTypeNotSupported(v)
 }
 
-func (service *Service) deleteDocumentIndex(tx store.Transaction, q *mongo.Query, key string, val any) error {
-	idxKey := service.createidxKey(tx, q.Database, q.Collection, key, val)
-	return tx.RemoveIndex(idxKey)
+func (service *Service) deleteDocumentIndex(txn store.Transaction, db string, col string, key string, val any) error {
+	idxKey := service.createidxKey(txn, db, col, key, val)
+	return txn.RemoveIndex(idxKey)
 }
