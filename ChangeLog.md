@@ -7,4 +7,6 @@
 - Support truncate operations for databases and tables
 
 ## v0.8.0 (2023-x-xx)
-- Initial public release  
+- Initial public release 
+- Technology preview version
+- Suppot MySQL, MongoDB and Redis protocols
