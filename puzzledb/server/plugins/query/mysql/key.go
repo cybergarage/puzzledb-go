@@ -27,6 +27,9 @@ func NewKeyWith(dbName string, tblName string, keyName string, val any) (store.K
 
 // NewKeyFromCond returns a key for the specified condition.
 func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition) (store.Key, document.IndexType, error) {
+	if cond == nil {
+		return document.NewKeyWith(dbName, schema.Name()), document.PrimaryIndex, nil
+	}
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, 0, err
