@@ -259,7 +259,6 @@ func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.C
 	if err != nil {
 		return nil, err
 	}
-
 	switch docKeyType {
 	case document.PrimaryIndex:
 		return txn.FindDocuments(docKey)
@@ -313,7 +312,7 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 	for rs.Next() {
 		docObj := rs.Object()
-		err := service.updateObject(ctx, conn, txn, schema, docObj, updateCols)
+		err := service.updateDocument(ctx, conn, txn, schema, docObj, updateCols)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(txn, err)
 		}
@@ -327,30 +326,43 @@ func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *quer
 	return mysql.NewResult(), nil
 }
 
-func (service *Service) updateObject(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj any, updateCols *query.Columns) error {
-	objMap, err := NewObjectWith(obj)
-	if err != nil {
-		return err
-	}
-	dbName := conn.Database()
-	for _, updateCol := range updateCols.Columns() {
-		name := updateCol.Name()
-		// NOTE: Column existence has not been confirmed.
-		_, ok := objMap[name]
-		if !ok {
-			return newCoulumNotExistError(name)
-		}
-		objMap[name] = updateCol.Value()
-	}
-	docKey, err := NewKeyFromObject(dbName, schema, objMap)
-	if err != nil {
-		return err
-	}
-	err = txn.UpdateDocument(docKey, objMap)
+func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj any, updateCols *query.Columns) error {
+	docObj, err := NewObjectWith(obj)
 	if err != nil {
 		return err
 	}
 
+	// Removes current secondary indexes
+	err = service.removeSecondaryIndexes(ctx, conn, txn, schema, docObj)
+	if err != nil {
+		return err
+	}
+
+	// Updates object
+	dbName := conn.Database()
+	for _, updateCol := range updateCols.Columns() {
+		name := updateCol.Name()
+		// NOTE: Column existence has not been confirmed.
+		_, ok := docObj[name]
+		if !ok {
+			return newCoulumNotExistError(name)
+		}
+		docObj[name] = updateCol.Value()
+	}
+	docKey, err := NewKeyFromObject(dbName, schema, docObj)
+	if err != nil {
+		return err
+	}
+	err = txn.UpdateDocument(docKey, docObj)
+	if err != nil {
+		return err
+	}
+
+	// Inserts new secondary indexes.
+	err = service.insertSecondaryIndexes(ctx, conn, txn, schema, docObj, docKey)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -393,16 +405,16 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 	switch docKeyType {
 	case document.PrimaryIndex:
-		err := txn.RemoveDocument(docKey)
+		err = service.deleteDocument(ctx, conn, txn, schema, docKey)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(txn, err)
 		}
 	case document.SecondaryIndex:
-		prIdx, err := schema.PrimaryIndex()
+		rs, err := txn.FindDocumentsByIndex(docKey)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(txn, err)
 		}
-		rs, err := txn.FindDocumentsByIndex(docKey)
+		prIdx, err := schema.PrimaryIndex()
 		if err != nil {
 			return nil, service.CancelTransactionWithError(txn, err)
 		}
@@ -412,7 +424,7 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 			if err != nil {
 				return nil, service.CancelTransactionWithError(txn, err)
 			}
-			err = txn.RemoveDocument(docKey)
+			err = service.deleteDocument(ctx, conn, txn, schema, docKey)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(txn, err)
 			}
@@ -424,6 +436,56 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 		return nil, err
 	}
 	return mysql.NewResult(), nil
+}
+
+func (service *Service) deleteDocument(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docKey document.Key) error {
+	err := txn.RemoveDocument(docKey)
+	if err != nil {
+		return err
+	}
+	// Removes secondary indexes
+	idxes, err := schema.SecondaryIndexes()
+	if err != nil {
+		return err
+	}
+	if len(idxes) == 0 {
+		return nil
+	}
+	rs, err := txn.FindDocuments(docKey)
+	if err != nil {
+		return err
+	}
+	for rs.Next() {
+		docObj := rs.Object()
+		err := service.removeSecondaryIndexes(ctx, conn, txn, schema, docObj)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (service *Service) removeSecondaryIndexes(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docObj any) error {
+	idxes, err := schema.SecondaryIndexes()
+	if err != nil {
+		return err
+	}
+	for _, idx := range idxes {
+		err := service.removeSecondaryIndex(ctx, conn, txn, schema, docObj, idx)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (service *Service) removeSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docObj any, idx document.Index) error {
+	dbName := conn.Database()
+	secKey, err := NewKeyFromIndex(dbName, schema, idx, docObj)
+	if err != nil {
+		return err
+	}
+	return txn.RemoveIndex(secKey)
 }
 
 // ShowDatabases should handle a SHOW DATABASES statement.
