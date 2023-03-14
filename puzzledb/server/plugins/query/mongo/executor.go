@@ -249,7 +249,7 @@ func (service *Service) updateDocumentByQuery(txn store.Transaction, bsonDoc bso
 	// Removes current secondary indexes for the all elements
 
 	for _, updateBSONDoc := range updateBSONDocs {
-		err := service.deleteDocumentUpdateIndexes(txn, q.Database, q.Collection, bsonDoc, updateBSONDoc)
+		err := service.deleteUpdateDocumentIndexes(txn, q.Database, q.Collection, bsonDoc, updateBSONDoc)
 		if err != nil {
 			return err
 		}
@@ -365,8 +365,7 @@ func (service *Service) deleteDocument(txn store.Transaction, db string, col str
 	return nil
 }
 
-func (service *Service) deleteDocumentUpdateIndexes(txn store.Transaction, db string, col string, bsonDoc bson.Document, updateBSONDoc bsoncore.Document) error {
-
+func (service *Service) deleteUpdateDocumentIndexes(txn store.Transaction, db string, col string, bsonDoc bson.Document, updateBSONDoc bsoncore.Document) error {
 	updateBSONElems, err := updateBSONDoc.Elements()
 	if err != nil {
 		return err
