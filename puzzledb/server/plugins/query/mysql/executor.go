@@ -168,20 +168,9 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 	// Inserts the secondary indexes.
 
-	idxes, err := schema.SecondaryIndexes()
+	err = service.insertSecondaryIndexes(ctx, conn, txn, schema, docObj, prKey)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
-	}
-
-	for _, idx := range idxes {
-		secKey, err := NewKeyFromIndex(dbName, schema, idx, docObj)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
-		}
-		err = txn.InsertIndex(secKey, prKey)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
-		}
 	}
 
 	err = txn.Commit()
@@ -190,6 +179,29 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 	}
 
 	return mysql.NewResultWithRowsAffected(1), nil
+}
+
+func (service *Service) insertSecondaryIndexes(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docObj any, prKey document.Key) error {
+	idxes, err := schema.SecondaryIndexes()
+	if err != nil {
+		return err
+	}
+	for _, idx := range idxes {
+		err := service.insertSecondaryIndex(ctx, conn, txn, schema, docObj, idx, prKey)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (service *Service) insertSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docObj any, idx document.Index, prKey document.Key) error {
+	dbName := conn.Database()
+	secKey, err := NewKeyFromIndex(dbName, schema, idx, docObj)
+	if err != nil {
+		return err
+	}
+	return txn.InsertIndex(secKey, prKey)
 }
 
 // Select should handle a SELECT statement.
