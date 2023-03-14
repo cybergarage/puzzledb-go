@@ -26,5 +26,5 @@ This technology preview version has the following major limitations:
 
 # Table of Contents
 
-- Implementations
-  - [Storage](doc/storage.md)
+- Architecture
+  - [Storage Engine](doc/storage.md)
