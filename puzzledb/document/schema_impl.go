@@ -244,7 +244,7 @@ func (s *schema) PrimaryIndex() (Index, error) {
 func (s *schema) SecondaryIndexes() ([]Index, error) {
 	secIdxes := []Index{}
 	for _, idx := range s.indexes {
-		if idx.Type() != PrimaryIndex {
+		if idx.Type() != SecondaryIndex {
 			continue
 		}
 		secIdxes = append(secIdxes, idx)
