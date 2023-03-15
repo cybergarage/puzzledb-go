@@ -56,7 +56,7 @@ func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	it, err := txn.Txn.Get(tableName, idFieldName, string(keyBytes))
+	it, err := txn.Txn.Get(tableName, idFieldName+prefix, string(keyBytes))
 	if err != nil {
 		return nil, err
 	}
