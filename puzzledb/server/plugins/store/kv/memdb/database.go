@@ -23,6 +23,7 @@ import (
 const (
 	tableName   = "document"
 	idFieldName = "id"
+	prefix      = "_prefix"
 )
 
 // Database represents a database.
