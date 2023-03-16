@@ -18,7 +18,7 @@ import (
 	"testing"
 
 	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/go-mysql/mysqltest/sqltest"
+	"github.com/cybergarage/go-sqltest/sqltest"
 	test "github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
