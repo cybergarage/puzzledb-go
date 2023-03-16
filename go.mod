@@ -11,6 +11,7 @@ require (
 	github.com/cybergarage/go-mysql v0.9.1 // indirect
 	github.com/cybergarage/go-redis v1.2.1 // indirect
 	github.com/cybergarage/go-sqlite v0.0.0-20221027001523-f5073641f875 // indirect
+	github.com/cybergarage/go-sqltest v0.9.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
