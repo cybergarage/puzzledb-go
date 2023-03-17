@@ -32,7 +32,7 @@ func TestSQLTestSuite(t *testing.T) {
 		return
 	}
 
-	sqltest.RunSQLTestSuite(t)
+	sqltest.RunSQLTestSuite(t, sqltest.NewMySQLClient())
 
 	err = server.Stop()
 	if err != nil {
