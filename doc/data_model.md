@@ -2,6 +2,14 @@
 
 PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently.
 
+## Concept
+
+PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
+
+![](img/storage.png)
+
+PuzzleDB defines a plug-in interface to the Key-Value store, which allows importing small local in-memory databases like memdb or large distributed databases like FoundationDB or TiKV.
+
 ## Document Model
 
 PuzzleDB is a multi-data model database and the core data model is a document model like CosmosDB. PuzzleDB is a pluggable database that combines modules, and the storage layer modules must be as expressive as JSON or BSON like ARS (Atom-Record-Sequence) of CosmosDB.
