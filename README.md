@@ -28,5 +28,3 @@ This technology preview version has the following major limitations:
   - [Distributed Model](doc/distributed_model.md)
   - [Data Model](doc/data_model.md)
   - [Consistency Model](doc/consistency_model.md)
-- Architecture
-  - [Storage Engine](doc/storage.md)
