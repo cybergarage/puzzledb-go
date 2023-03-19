@@ -6,12 +6,18 @@ PuzzleDB defines the coordinator and storage function interfaces to run as stand
 
 ![](img/distributed_model.png)
 
+## Storage Interface
+
+PuzzleDB defines the low level storage interface as an ordered key-value store like early Google Spannerr. PuzzleDB expects that the storage plugin modules are implemented based on ordered key-value stores like FoundationDB rather than non-orders hashing key-value stores like MongoDB and Cassandra. 
+
+## Coordinator Interface
+
+PuzzleDB defines the coordinator interface to synchronize between PuzzleDB nodes. PuzzleDB expects that the coordinator modules are implemented based on existing distributed coordinator services such as Apache ZooKeeper or etcd.
 
 ## References
 
 - [FoundationDB](https://www.foundationdb.org/)
-  - [Layer Concept — FoundationDB ](https://apple.github.io/foundationdb/layer-concept.html)
-
+- [Layer Concept — FoundationDB ](https://apple.github.io/foundationdb/layer-concept.html)
 - [Whitepapers  |  Cloud Spanner  |  Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
 - [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
 - [Spanner: Google's Globally-Distributed Database](https://research.google/pubs/pub39966/)
