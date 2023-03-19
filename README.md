@@ -2,6 +2,8 @@
  [![Go Reference](https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg)](https://pkg.go.dev/github.com/cybergarage/puzzledb-go)
 ![](doc/img/logo.png)
 
+PuzzleDB is a high-performance, distributed, cloud-native, multi-API, multi-model database.
+
 # Concept
 
 PuzzleDB is a multi-data model database that handles key-value model, relational model, and document model. In addition, PuzzleDB is a multi-API database and is compatible with existing database protocols such as MySQL, Redis, and MongoDB.
@@ -28,5 +30,6 @@ This technology preview version has the following major limitations:
 
 - Concept
   - [Data Model](doc/data_model.md)
+  - [Consistency Model](doc/consistency_model.md)
 - Architecture
   - [Storage Engine](doc/storage.md)
