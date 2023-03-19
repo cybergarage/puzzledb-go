@@ -8,7 +8,7 @@ PuzzleDB defines the coordinator and storage function interfaces to run as stand
 
 ## Storage Interface
 
-PuzzleDB defines the low level storage interface as an ordered key-value store like early Google Spannerr. PuzzleDB expects that the storage plugin modules are implemented based on ordered key-value stores like FoundationDB rather than non-orders hashing key-value stores like MongoDB and Cassandra. 
+PuzzleDB defines the low level storage interface as an ordered key-value store like early Google Spannerr. PuzzleDB expects that the storage plug-in modules are implemented based on ordered key-value stores like FoundationDB rather than non-orders hashing key-value stores like MongoDB and Cassandra. 
 
 ## Coordinator Interface
 
