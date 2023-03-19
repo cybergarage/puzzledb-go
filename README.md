@@ -25,7 +25,7 @@ This technology preview version has the following major limitations:
 # Table of Contents
 
 - Concept
-  - [Distributed Model](doc/distributed_model)
+  - [Distributed Model](doc/distributed_model.md)
   - [Data Model](doc/data_model.md)
   - [Consistency Model](doc/consistency_model.md)
 - Architecture
