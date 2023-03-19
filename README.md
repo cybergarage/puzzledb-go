@@ -26,5 +26,7 @@ This technology preview version has the following major limitations:
 
 # Table of Contents
 
+- Concept
+  - [Data Model](doc/data_model.md)
 - Architecture
   - [Storage Engine](doc/storage.md)
