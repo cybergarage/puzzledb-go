@@ -15,15 +15,20 @@
 package etcd
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	base "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator"
 )
 
 type etcdCoordinator struct {
 }
 
 // NewCoordinator returns a new etcd coordinator instance.
-func NewCoordinator() coordinator.Service {
+func NewCoordinator() base.Service {
 	return &etcdCoordinator{}
+}
+
+func (coord *etcdCoordinator) Transact() (coordinator.Transaction, error) {
+	return NewTransaction(), nil
 }
 
 // Start starts this etcd coordinator.
