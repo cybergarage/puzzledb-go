@@ -19,8 +19,6 @@ type MessageType uint8
 
 // Message represents a message.
 type Message interface {
-	// ID returns the ID of the message.
-	ID() string
 	// Type returns the type of the message.
 	Type() MessageType
 	// Object returns the object of the message.
