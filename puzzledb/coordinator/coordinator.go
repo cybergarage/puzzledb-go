@@ -14,6 +14,13 @@
 
 package coordinator
 
+// Value represents a value for a key-value object.
+type Value any
+
 // Coordinator represents a coordination service.
 type Coordinator interface {
+	// Set sets the value for the specified key.
+	Set(key Key, value Value) error
+	// Get gets the value for the specified key.
+	Get(key Key) (Value, error)
 }
