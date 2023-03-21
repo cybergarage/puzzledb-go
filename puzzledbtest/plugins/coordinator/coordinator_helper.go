@@ -15,9 +15,7 @@
 package coordinator
 
 import (
-	"bytes"
-	"encoding/binary"
-	"math/rand"
+	"fmt"
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
@@ -45,13 +43,11 @@ func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 		return
 	}
 
-	keys := make([][]byte, testKeyCount)
-	vals := make([][]byte, testKeyCount)
+	keys := make([]string, testKeyCount)
+	vals := make([]string, testKeyCount)
 	for n := 0; n < testKeyCount; n++ {
-		keys[n] = make([]byte, testValBufMax)
-		binary.LittleEndian.PutUint64(keys[n], rand.Uint64())
-		vals[n] = make([]byte, testValBufMax)
-		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
+		keys[n] = fmt.Sprintf("k%03d", n)
+		vals[n] = fmt.Sprintf("v%03d", n)
 	}
 
 	// Insert test
@@ -86,19 +82,19 @@ func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 			t.Error(err)
 			break
 		}
-		obj, err := tx.Get([]any{key})
+		obj, err := tx.Get([]string{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
 			break
 		}
-		val, ok := obj.Value().([]byte)
+		val, ok := obj.Value().(string)
 		if !ok {
 			cancel(t, tx)
 			t.Errorf("invalid value type: %T", obj.Value())
 			break
 		}
-		if !bytes.Equal(val, vals[n]) {
+		if val == vals[n] {
 			cancel(t, tx)
 			t.Errorf("%s != %s", val, vals[n])
 		}
