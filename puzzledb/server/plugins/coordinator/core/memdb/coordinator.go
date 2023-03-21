@@ -32,7 +32,7 @@ func NewCoordinator() core.CoordinatorService {
 }
 
 // AddObserver adds the observer to the coordinator.
-func (coord *memdbCoordinator) AddObserver(observer coordinator.Observer) error {
+func (coord *memdbCoordinator) AddObserver(key coordinator.Key, observer coordinator.Observer) error {
 	return nil
 }
 

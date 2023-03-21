@@ -22,5 +22,5 @@ type Coordinator interface {
 	// Transact begin a new transaction.
 	Transact() (Transaction, error)
 	// AddObserver adds the observer to the coordinator.
-	AddObserver(observer Observer) error
+	AddObserver(key Key, observer Observer) error
 }

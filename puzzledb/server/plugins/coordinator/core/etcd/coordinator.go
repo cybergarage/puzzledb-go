@@ -28,7 +28,7 @@ func NewCoordinator() core.CoordinatorService {
 }
 
 // AddObserver adds the observer to the coordinator.
-func (coord *etcdCoordinator) AddObserver(observer coordinator.Observer) error {
+func (coord *etcdCoordinator) AddObserver(key coordinator.Key, observer coordinator.Observer) error {
 	return nil
 }
 
