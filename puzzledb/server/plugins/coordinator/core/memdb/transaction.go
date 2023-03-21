@@ -16,27 +16,22 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	"github.com/hashicorp/go-memdb"
 )
 
 type memdbTransaction struct {
-	kv.Transaction
+	*memdb.Txn
 }
 
 // NewTransaction returns a new transaction.
-func newTransactionWith(txn kv.Transaction) coordinator.Transaction {
+func newTransactionWith(txn *memdb.Txn) coordinator.Transaction {
 	return &memdbTransaction{
-		Transaction: txn,
+		Txn: txn,
 	}
 }
 
 // Set sets the object for the specified key.
 func (txn *memdbTransaction) Set(obj coordinator.Object) error {
-	// kvObj := &kv.Object{
-	// 	Key:   obj.Key().Elements(),
-	// 	Value: obj.Value().Bytes(),
-	// }
-
 	return nil
 }
 
@@ -52,10 +47,12 @@ func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, 
 
 // Commit commits this transaction.
 func (txn *memdbTransaction) Commit() error {
-	return txn.Transaction.Commit()
+	txn.Txn.Commit()
+	return nil
 }
 
 // Cancel cancels this transaction.
 func (txn *memdbTransaction) Cancel() error {
-	return txn.Transaction.Cancel()
+	txn.Txn.Abort()
+	return nil
 }
