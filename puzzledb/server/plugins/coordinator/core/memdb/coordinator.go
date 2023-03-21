@@ -17,14 +17,18 @@ package memdb
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator/core"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv/memdb"
 )
 
 type memdbCoordinator struct {
+	*memdb.Database
 }
 
 // NewCoordinator returns a new etcd coordinator instance.
 func NewCoordinator() core.CoordinatorService {
-	return &memdbCoordinator{}
+	return &memdbCoordinator{
+		Database: nil,
+	}
 }
 
 // AddObserver adds the observer to the coordinator.
@@ -38,6 +42,11 @@ func (coord *memdbCoordinator) Transact() (coordinator.Transaction, error) {
 
 // Start starts this etcd coordinator.
 func (coord *memdbCoordinator) Start() error {
+	db, err := memdb.NewDatabase()
+	if err != nil {
+		return err
+	}
+	coord.Database = db
 	return nil
 }
 
