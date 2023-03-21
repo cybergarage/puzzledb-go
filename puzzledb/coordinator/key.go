@@ -58,6 +58,6 @@ func (key Key) Elements() []string {
 }
 
 // Encode encodes the key to a byte array.
-func (key Key) Encode() ([]byte, error) {
-	return []byte(strings.Join(key, sep)), nil
+func (key Key) Encode() (string, error) {
+	return strings.Join(key, sep), nil
 }
