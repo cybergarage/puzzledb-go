@@ -15,4 +15,9 @@
 package coordinator
 
 // Object represents a key-value object.
-type Object = any
+type Object interface {
+	// Key returns the key of the object.
+	Key() Key
+	// Value returns the value of the object.
+	Value() Value
+}
