@@ -54,15 +54,14 @@ func (txn *memdbTransaction) Set(obj coordinator.Object) error {
 
 // Get gets the object for the specified key.
 func (txn *memdbTransaction) Get(key coordinator.Key) (coordinator.Object, error) {
-	keyStr, err := key.Encode()
+	rs, err := txn.Range(key)
 	if err != nil {
 		return nil, err
 	}
-	_, err = txn.Txn.Get(tableName, idFieldName+prefix, keyStr)
-	if err != nil {
-		return nil, err
+	if !rs.Next() {
+		return nil, nil
 	}
-	return nil, nil
+	return rs.Object(), nil
 }
 
 // Range gets the resultset for the specified key range.
