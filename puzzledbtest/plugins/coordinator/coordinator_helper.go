@@ -33,6 +33,13 @@ const (
 func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 	t.Helper()
 
+	cancel := func(t *testing.T, tx coordinator.Transaction) {
+		t.Helper()
+		if err := tx.Cancel(); err != nil {
+			t.Error(err)
+		}
+	}
+
 	if err := s.Start(); err != nil {
 		t.Error(err)
 		return
@@ -61,6 +68,7 @@ func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 			val)
 
 		if err := tx.Set(obj); err != nil {
+			cancel(t, tx)
 			t.Error(err)
 			break
 		}
@@ -80,15 +88,18 @@ func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 		}
 		obj, err := tx.Get([]any{key})
 		if err != nil {
+			cancel(t, tx)
 			t.Error(err)
 			break
 		}
 		val, ok := obj.Value().([]byte)
 		if !ok {
+			cancel(t, tx)
 			t.Errorf("invalid value type: %T", obj.Value())
 			break
 		}
 		if !bytes.Equal(val, vals[n]) {
+			cancel(t, tx)
 			t.Errorf("%s != %s", val, vals[n])
 		}
 		if err := tx.Commit(); err != nil {
