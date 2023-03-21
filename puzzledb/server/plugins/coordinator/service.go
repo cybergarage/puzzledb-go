@@ -22,9 +22,9 @@ type Service struct {
 	core.CoordinatorService
 }
 
-func NewServiceWithCoordinator(coordinator core.CoordinatorService) *Service {
+func NewServiceWith(c core.CoordinatorService) *Service {
 	return &Service{
-		CoordinatorService: coordinator,
+		CoordinatorService: c,
 	}
 }
 
