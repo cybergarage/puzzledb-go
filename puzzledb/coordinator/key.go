@@ -15,12 +15,15 @@
 package coordinator
 
 import (
-	"bytes"
-	"fmt"
+	"strings"
+)
+
+const (
+	sep = " "
 )
 
 // Key represents an unique key for a key-value object.
-type Key []any
+type Key []string
 
 // NewKey returns a new blank key.
 func NewKey() Key {
@@ -28,35 +31,18 @@ func NewKey() Key {
 }
 
 // NewKeyWith returns a new key from the specified key elements.
-func NewKeyWith(elems ...any) Key {
-	elemArray := make([]any, len(elems))
+func NewKeyWith(elems ...string) Key {
+	elemArray := make([]string, len(elems))
 	copy(elemArray, elems)
 	return elemArray
 }
 
 // Elements returns all elements of the key.
-func (key Key) Elements() []any {
+func (key Key) Elements() []string {
 	return key
 }
 
 // Encode encodes the key to a byte array.
 func (key Key) Encode() ([]byte, error) {
-	var keyBuf bytes.Buffer
-	for _, elem := range key {
-		switch v := elem.(type) {
-		case string:
-			if _, err := keyBuf.WriteString(v); err != nil {
-				return nil, err
-			}
-		case []byte:
-			if _, err := keyBuf.Write(v); err != nil {
-				return nil, err
-			}
-		default:
-			if _, err := keyBuf.WriteString(fmt.Sprintf("%v", v)); err != nil {
-				return nil, err
-			}
-		}
-	}
-	return keyBuf.Bytes(), nil
+	return []byte(strings.Join(key, sep)), nil
 }
