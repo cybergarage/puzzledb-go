@@ -17,17 +17,23 @@ package memdb
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator/core"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv/memdb"
+	"github.com/hashicorp/go-memdb"
+)
+
+const (
+	tableName   = "document"
+	idFieldName = "id"
+	prefix      = "_prefix"
 )
 
 type memdbCoordinator struct {
-	*memdb.Database
+	*memdb.MemDB
 }
 
 // NewCoordinator returns a new etcd coordinator instance.
 func NewCoordinator() core.CoordinatorService {
 	return &memdbCoordinator{
-		Database: nil,
+		MemDB: nil,
 	}
 }
 
@@ -37,20 +43,31 @@ func (coord *memdbCoordinator) AddObserver(key coordinator.Key, observer coordin
 }
 
 func (coord *memdbCoordinator) Transact() (coordinator.Transaction, error) {
-	txn, err := coord.Database.Transact(true)
-	if err != nil {
-		return nil, err
-	}
-	return newTransactionWith(txn), nil
+	return newTransactionWith(coord.MemDB.Txn(true)), nil
 }
 
 // Start starts this etcd coordinator.
 func (coord *memdbCoordinator) Start() error {
-	db, err := memdb.NewDatabase()
+	schema := &memdb.DBSchema{
+		Tables: map[string]*memdb.TableSchema{
+			tableName: {
+				Name: tableName,
+				Indexes: map[string]*memdb.IndexSchema{
+					idFieldName: {
+						Name:   idFieldName,
+						Unique: true,
+						Indexer: &memdb.StringFieldIndex{Field: "Key",
+							Lowercase: true},
+					},
+				},
+			},
+		},
+	}
+	memDB, err := memdb.NewMemDB(schema)
 	if err != nil {
 		return err
 	}
-	coord.Database = db
+	coord.MemDB = memDB
 	return nil
 }
 
