@@ -12,12 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package coordinator
+package core
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator/core"
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins"
 )
 
-type Service interface {
-	core.CoordinatorService
+type CoordinatorService interface {
+	coordinator.Coordinator
+	plugins.Service
 }
