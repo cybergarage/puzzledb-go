@@ -57,6 +57,13 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
 	}
 
+	cancel := func(t *testing.T, tx store.Transaction) {
+		t.Helper()
+		if err := tx.Cancel(); err != nil {
+			t.Error(err)
+		}
+	}
+
 	// Insert test
 
 	for n, key := range keys {
@@ -71,6 +78,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 			Value: val,
 		}
 		if err := tx.Set(obj); err != nil {
+			cancel(t, tx)
 			t.Error(err)
 			break
 		}
@@ -90,15 +98,18 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 		rs, err := tx.Get([]any{key})
 		if err != nil {
+			cancel(t, tx)
 			t.Error(err)
 			break
 		}
 		if !rs.Next() {
+			cancel(t, tx)
 			t.Errorf("%v != 1", rs)
 			break
 		}
 		obj := rs.Object()
 		if !bytes.Equal(obj.Value, vals[n]) {
+			cancel(t, tx)
 			t.Errorf("%s != %s", obj.Value, vals[n])
 		}
 		if err := tx.Commit(); err != nil {
