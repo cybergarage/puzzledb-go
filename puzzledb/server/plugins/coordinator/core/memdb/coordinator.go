@@ -37,7 +37,11 @@ func (coord *memdbCoordinator) AddObserver(key coordinator.Key, observer coordin
 }
 
 func (coord *memdbCoordinator) Transact() (coordinator.Transaction, error) {
-	return NewTransaction(), nil
+	txn, err := coord.Database.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+	return newTransactionWith(txn), nil
 }
 
 // Start starts this etcd coordinator.
