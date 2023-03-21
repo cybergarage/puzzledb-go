@@ -16,14 +16,18 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 type memdbTransaction struct {
+	kv.Transaction
 }
 
 // NewTransaction returns a new transaction.
-func NewTransaction() coordinator.Transaction {
-	return &memdbTransaction{}
+func newTransactionWith(txn kv.Transaction) coordinator.Transaction {
+	return &memdbTransaction{
+		Transaction: txn,
+	}
 }
 
 // Set sets the object for the specified key.
