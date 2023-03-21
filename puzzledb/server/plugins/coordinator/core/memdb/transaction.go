@@ -19,6 +19,11 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
+type document struct {
+	Key   string
+	Value []byte
+}
+
 type memdbTransaction struct {
 	*memdb.Txn
 }
@@ -32,7 +37,19 @@ func newTransactionWith(txn *memdb.Txn) coordinator.Transaction {
 
 // Set sets the object for the specified key.
 func (txn *memdbTransaction) Set(obj coordinator.Object) error {
-	return nil
+	keyBytes, err := obj.Key().Encode()
+	if err != nil {
+		return err
+	}
+	objBytes, err := obj.Encode()
+	if err != nil {
+		return err
+	}
+	doc := &document{
+		Key:   string(keyBytes),
+		Value: objBytes,
+	}
+	return txn.Txn.Insert(tableName, doc)
 }
 
 // Get gets the object for the specified key.

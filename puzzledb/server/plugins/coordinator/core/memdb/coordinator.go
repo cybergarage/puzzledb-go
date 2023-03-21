@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	tableName   = "document"
+	tableName   = "coordinator"
 	idFieldName = "id"
 	prefix      = "_prefix"
 )
