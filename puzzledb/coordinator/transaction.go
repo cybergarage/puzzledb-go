@@ -16,10 +16,10 @@ package coordinator
 
 // Transaction represents a transaction interface.
 type Transaction interface {
-	// Set sets the value for the specified key.
-	Set(key Key, value Value) error
-	// Get gets the value for the specified key.
-	Get(key Key) (Value, error)
+	// Set sets the object for the specified key.
+	Set(obj Object) error
+	// Get gets the object for the specified key.
+	Get(key Key) (Object, error)
 	// Range gets the resultset for the specified key range.
 	Range(key Key) (ResultSet, error)
 	// Commit commits this transaction.

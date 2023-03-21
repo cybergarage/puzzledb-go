@@ -26,13 +26,13 @@ func NewTransaction() coordinator.Transaction {
 	return &etcdTransaction{}
 }
 
-// Set sets the value for the specified key.
-func (txn *etcdTransaction) Set(key coordinator.Key, value coordinator.Value) error {
+// Set sets the object for the specified key.
+func (txn *etcdTransaction) Set(obj coordinator.Object) error {
 	return nil
 }
 
-// Get gets the value for the specified key.
-func (txn *etcdTransaction) Get(key coordinator.Key) (coordinator.Value, error) {
+// Get gets the object for the specified key.
+func (txn *etcdTransaction) Get(key coordinator.Key) (coordinator.Object, error) {
 	return nil, nil
 }
 
