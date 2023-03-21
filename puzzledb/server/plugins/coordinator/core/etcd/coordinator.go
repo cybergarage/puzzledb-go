@@ -16,14 +16,14 @@ package etcd
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	base "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator/core"
 )
 
 type etcdCoordinator struct {
 }
 
 // NewCoordinator returns a new etcd coordinator instance.
-func NewCoordinator() base.Service {
+func NewCoordinator() core.CoordinatorService {
 	return &etcdCoordinator{}
 }
 
