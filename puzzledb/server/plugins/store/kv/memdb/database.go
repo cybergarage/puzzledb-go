@@ -59,6 +59,11 @@ func NewDatabaseWithID(id string) (*Database, error) {
 	}, nil
 }
 
+// NewDatabase returns a new database.
+func NewDatabase() (*Database, error) {
+	return NewDatabaseWithID("")
+}
+
 // Name returns the unique name.
 func (db *Database) Name() string {
 	return db.ID
