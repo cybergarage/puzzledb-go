@@ -14,10 +14,25 @@
 
 package coordinator
 
+import (
+	"github.com/cybergarage/go-cbor/cbor"
+)
+
 // Value represents a value for a key-value object.
 type Value any
 
 // NewValueWith returns a new value.
 func NewValueWith(v any) Value {
 	return v
+}
+
+// NewValueFrom returns a new value from the specified value.
+func NewValueFrom(v any) (Value, error) {
+	switch v := v.(type) {
+	case string:
+		return cbor.Unmarshal([]byte(v))
+	case []byte:
+		return cbor.Unmarshal(v)
+	}
+	return nil, newValueInvalidError(v)
 }
