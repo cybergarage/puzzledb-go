@@ -94,7 +94,7 @@ func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 			t.Errorf("invalid value type: %T", obj.Value())
 			break
 		}
-		if val == vals[n] {
+		if val != vals[n] {
 			cancel(t, tx)
 			t.Errorf("%s != %s", val, vals[n])
 		}
