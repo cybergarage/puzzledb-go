@@ -14,10 +14,10 @@
 
 package coordinator
 
-// Coordinator represents a coordination service.
-type Coordinator interface {
-	// Transact begin a new transaction.
-	Transact() (Transaction, error)
-	// AddObserver adds the observer to the coordinator.
-	AddObserver(key Key, observer Observer) error
+// Value represents a value for a key-value object.
+type Value any
+
+// NewValueWith returns a new value.
+func NewValueWith(v any) Value {
+	return v
 }
