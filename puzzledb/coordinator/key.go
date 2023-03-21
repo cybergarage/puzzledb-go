@@ -49,7 +49,7 @@ func NewKeyFrom(v any) (Key, error) {
 	case Key:
 		return v, nil
 	}
-	return nil, newElementTypeInvalidError(v)
+	return nil, newKeyInvalidError(v)
 }
 
 // Elements returns all elements of the key.
