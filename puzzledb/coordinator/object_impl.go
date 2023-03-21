@@ -36,3 +36,8 @@ func (obj *object) Key() Key {
 func (obj *object) Value() Value {
 	return obj.value
 }
+
+// Encode encodes the object.
+func (obj *object) Encode() ([]byte, error) {
+	return nil, nil
+}

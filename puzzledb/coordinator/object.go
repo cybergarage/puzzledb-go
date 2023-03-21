@@ -20,4 +20,6 @@ type Object interface {
 	Key() Key
 	// Value returns the value of the object.
 	Value() Value
+	// Encode encodes the object.
+	Encode() ([]byte, error)
 }

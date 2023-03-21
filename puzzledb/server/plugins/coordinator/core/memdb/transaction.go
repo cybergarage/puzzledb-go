@@ -32,6 +32,11 @@ func newTransactionWith(txn kv.Transaction) coordinator.Transaction {
 
 // Set sets the object for the specified key.
 func (txn *memdbTransaction) Set(obj coordinator.Object) error {
+	// kvObj := &kv.Object{
+	// 	Key:   obj.Key().Elements(),
+	// 	Value: obj.Value().Bytes(),
+	// }
+
 	return nil
 }
 
