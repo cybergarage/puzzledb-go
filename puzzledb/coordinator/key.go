@@ -37,6 +37,21 @@ func NewKeyWith(elems ...string) Key {
 	return elemArray
 }
 
+// NewKeyFrom returns a new key from the specified value.
+func NewKeyFrom(v any) (Key, error) {
+	switch v := v.(type) {
+	case string:
+		return NewKeyWith(strings.Split(v, sep)...), nil
+	case []string:
+		return NewKeyWith(v...), nil
+	case []byte:
+		return NewKeyWith(strings.Split(string(v), sep)...), nil
+	case Key:
+		return v, nil
+	}
+	return nil, newElementTypeInvalidError(v)
+}
+
 // Elements returns all elements of the key.
 func (key Key) Elements() []string {
 	return key
