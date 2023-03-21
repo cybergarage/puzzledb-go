@@ -71,11 +71,11 @@ func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, 
 	if err != nil {
 		return nil, err
 	}
-	_, err = txn.Txn.Get(tableName, idFieldName+prefix, keyStr)
+	it, err := txn.Txn.Get(tableName, idFieldName+prefix, keyStr)
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	return newResultSet(key, it), nil
 }
 
 // Commit commits this transaction.
