@@ -37,7 +37,7 @@ func newTransactionWith(txn *memdb.Txn) coordinator.Transaction {
 
 // Set sets the object for the specified key.
 func (txn *memdbTransaction) Set(obj coordinator.Object) error {
-	keyBytes, err := obj.Key().Encode()
+	keyStr, err := obj.Key().Encode()
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func (txn *memdbTransaction) Set(obj coordinator.Object) error {
 		return err
 	}
 	doc := &document{
-		Key:   string(keyBytes),
+		Key:   keyStr,
 		Value: objBytes,
 	}
 	return txn.Txn.Insert(tableName, doc)
@@ -54,11 +54,27 @@ func (txn *memdbTransaction) Set(obj coordinator.Object) error {
 
 // Get gets the object for the specified key.
 func (txn *memdbTransaction) Get(key coordinator.Key) (coordinator.Object, error) {
+	keyStr, err := key.Encode()
+	if err != nil {
+		return nil, err
+	}
+	_, err = txn.Txn.Get(tableName, idFieldName+prefix, keyStr)
+	if err != nil {
+		return nil, err
+	}
 	return nil, nil
 }
 
 // Range gets the resultset for the specified key range.
 func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, error) {
+	keyStr, err := key.Encode()
+	if err != nil {
+		return nil, err
+	}
+	_, err = txn.Txn.Get(tableName, idFieldName+prefix, keyStr)
+	if err != nil {
+		return nil, err
+	}
 	return nil, nil
 }
 
