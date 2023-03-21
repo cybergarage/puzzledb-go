@@ -47,10 +47,10 @@ func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, 
 
 // Commit commits this transaction.
 func (txn *memdbTransaction) Commit() error {
-	return nil
+	return txn.Transaction.Commit()
 }
 
 // Cancel cancels this transaction.
 func (txn *memdbTransaction) Cancel() error {
-	return nil
+	return txn.Transaction.Cancel()
 }
