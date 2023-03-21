@@ -27,6 +27,11 @@ func NewCoordinator() base.Service {
 	return &etcdCoordinator{}
 }
 
+// AddObserver adds the observer to the coordinator.
+func (coord *etcdCoordinator) AddObserver(observer coordinator.Observer) error {
+	return nil
+}
+
 func (coord *etcdCoordinator) Transact() (coordinator.Transaction, error) {
 	return NewTransaction(), nil
 }
