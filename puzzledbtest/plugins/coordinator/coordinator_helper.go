@@ -15,9 +15,18 @@
 package coordinator
 
 import (
+	"bytes"
+	"encoding/binary"
+	"math/rand"
 	"testing"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	plugins "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator/core"
+)
+
+const (
+	testKeyCount  = 100
+	testValBufMax = 8
 )
 
 //nolint:gosec,cyclop,revive
@@ -28,6 +37,66 @@ func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 		t.Error(err)
 		return
 	}
+
+	keys := make([][]byte, testKeyCount)
+	vals := make([][]byte, testKeyCount)
+	for n := 0; n < testKeyCount; n++ {
+		keys[n] = make([]byte, testValBufMax)
+		binary.LittleEndian.PutUint64(keys[n], rand.Uint64())
+		vals[n] = make([]byte, testValBufMax)
+		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
+	}
+
+	// Insert test
+
+	for n, key := range keys {
+		tx, err := s.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		val := vals[n]
+		obj := coordinator.NewObjectWith(
+			coordinator.NewKeyWith(key),
+			val)
+
+		if err := tx.Set(obj); err != nil {
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Select test
+
+	for n, key := range keys {
+		tx, err := s.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		obj, err := tx.Get([]any{key})
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		val, ok := obj.Value().([]byte)
+		if !ok {
+			t.Errorf("invalid value type: %T", obj.Value())
+			break
+		}
+		if !bytes.Equal(val, vals[n]) {
+			t.Errorf("%s != %s", val, vals[n])
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
 	if err := s.Stop(); err != nil {
 		t.Error(err)
 		return
