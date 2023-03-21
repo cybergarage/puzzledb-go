@@ -72,7 +72,7 @@ func (rs *indexResultSet) Object() store.Object {
 	return rs.obj
 }
 
-// Objects returns an object in the current position.
+// Objects returns all objects in the resultset.
 func (rs *indexResultSet) Objects() []store.Object {
 	objs := []store.Object{}
 	for rs.Next() {
