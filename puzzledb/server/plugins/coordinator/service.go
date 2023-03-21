@@ -18,6 +18,22 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator/core"
 )
 
-type Service interface {
+type Service struct {
 	core.CoordinatorService
+}
+
+func NewServiceWithCoordinator(coordinator core.CoordinatorService) *Service {
+	return &Service{
+		CoordinatorService: coordinator,
+	}
+}
+
+// Start starts this service.
+func (service *Service) Start() error {
+	return service.CoordinatorService.Start()
+}
+
+// Stop stops this service.
+func (service *Service) Stop() error {
+	return service.CoordinatorService.Stop()
 }
