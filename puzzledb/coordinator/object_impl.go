@@ -14,6 +14,10 @@
 
 package coordinator
 
+import (
+	"github.com/cybergarage/go-cbor/cbor"
+)
+
 type object struct {
 	key   Key
 	value Value
@@ -39,5 +43,5 @@ func (obj *object) Value() Value {
 
 // Encode encodes the object.
 func (obj *object) Encode() ([]byte, error) {
-	return nil, nil
+	return cbor.Marshal(obj.value)
 }
