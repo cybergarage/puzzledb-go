@@ -14,8 +14,26 @@
 
 package coordinator
 
-// Observer represents a coordinator observer.
-type Observer interface {
-	// ProcessEvent processes the event.
-	ProcessEvent(evt Event)
+// event represents a coordinator event.
+type event struct {
+	typ EventType
+	obj Object
+}
+
+// NewEventWith returns a new event with the specified type and object.
+func NewEventWith(t EventType, obj Object) Event {
+	return &event{
+		typ: t,
+		obj: obj,
+	}
+}
+
+// Type returns the event type.
+func (evt *event) Type() EventType {
+	return evt.typ
+}
+
+// Object returns the object of the event.
+func (evt *event) Object() Object {
+	return evt.obj
 }

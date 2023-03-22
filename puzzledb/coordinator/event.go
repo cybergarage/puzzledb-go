@@ -14,8 +14,22 @@
 
 package coordinator
 
-// Observer represents a coordinator observer.
-type Observer interface {
-	// ProcessEvent processes the event.
-	ProcessEvent(evt Event)
+// EventType represents a coordinator event type.
+type EventType uint8
+
+const (
+	// ObjectCreated represents a object created event.
+	ObjectCreated EventType = iota
+	// ObjectUpdated represents a object updated event.
+	ObjectUpdated
+	// ObjectDeleted represents a object deleted event.
+	ObjectDeleted
+)
+
+// Event represents a  coordinator event.
+type Event interface {
+	// Type returns the event type.
+	Type() EventType
+	// Object returns the object of the event.
+	Object() Object
 }
