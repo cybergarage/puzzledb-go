@@ -40,7 +40,7 @@ func NewCoordinator() core.CoordinatorService {
 }
 
 func (coord *memdbCoordinator) Transact() (coordinator.Transaction, error) {
-	return newTransactionWith(coord.MemDB.Txn(true)), nil
+	return newTransactionWith(coord.NotifyManager, coord.MemDB.Txn(true)), nil
 }
 
 // Start starts this etcd coordinator.
