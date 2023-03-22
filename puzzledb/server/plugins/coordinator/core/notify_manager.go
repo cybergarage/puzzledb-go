@@ -22,18 +22,18 @@ import (
 
 type observerMap = map[string]coordinator.Observer
 
-type Manager struct {
+type NotifyManager struct {
 	observers observerMap
 }
 
-func NewManager() *Manager {
-	return &Manager{
+func NewNotifyManager() *NotifyManager {
+	return &NotifyManager{
 		observers: observerMap{},
 	}
 }
 
 // AddObserver adds the observer to the coordinator.
-func (mgr *Manager) AddObserver(key coordinator.Key, observer coordinator.Observer) error {
+func (mgr *NotifyManager) AddObserver(key coordinator.Key, observer coordinator.Observer) error {
 	keyStr, err := key.Encode()
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func (mgr *Manager) AddObserver(key coordinator.Key, observer coordinator.Observ
 	return nil
 }
 
-func (mgr *Manager) NofifyEvent(e coordinator.Event) error {
+func (mgr *NotifyManager) NofifyEvent(e coordinator.Event) error {
 	eKeyStr, err := e.Object().Key().Encode()
 	if err != nil {
 		return err
