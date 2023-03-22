@@ -3,7 +3,11 @@
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/cybergarage/puzzledb-go) [![Go](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg)](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml)
  [![Go Reference](https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg)](https://pkg.go.dev/github.com/cybergarage/puzzledb-go)
 
-PuzzleDB is a high-performance, distributed, cloud-native, multi-API, multi-model database.PuzzleDB is a multi-data model database that handles key-value model, relational model, and document model. In addition, PuzzleDB is a multi-API database and is compatible with existing database protocols such as MySQL, Redis, and MongoDB.
+PuzzleDB is a high-performance, distributed, cloud-native, multi-API, multi-model database.
+
+# What is PuzzleDB
+
+PuzzleDB is a multi-data model database that handles key-value model, relational model, and document model. In addition, PuzzleDB is a multi-API database and is compatible with existing database protocols such as MySQL, Redis, and MongoDB.
 
 ![](doc/img/concept.png)
 
@@ -23,9 +27,14 @@ This technology preview version has the following major limitations:
 - MongoDB
 - MySQL
 
+# How does PuzzleDB work?
+
+- See [Quick Start](doc/quick_start.md) to learn about how to get started
+- For data model of PuzzleDB, see [Data Model](doc/data_model.md)
+
 # Table of Contents
 
 - Concept
-  - [Distributed Model](doc/distributed_model.md)
   - [Data Model](doc/data_model.md)
+  - [Distributed Model](doc/distributed_model.md)
   - [Consistency Model](doc/consistency_model.md)
