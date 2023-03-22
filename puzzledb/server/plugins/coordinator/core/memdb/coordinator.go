@@ -39,11 +39,6 @@ func NewCoordinator() core.CoordinatorService {
 	}
 }
 
-// AddObserver adds the observer to the coordinator.
-func (coord *memdbCoordinator) AddObserver(key coordinator.Key, observer coordinator.Observer) error {
-	return nil
-}
-
 func (coord *memdbCoordinator) Transact() (coordinator.Transaction, error) {
 	return newTransactionWith(coord.MemDB.Txn(true)), nil
 }
