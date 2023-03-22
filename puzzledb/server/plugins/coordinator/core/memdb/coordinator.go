@@ -27,13 +27,15 @@ const (
 )
 
 type memdbCoordinator struct {
+	*core.BaseCoordinator
 	*memdb.MemDB
 }
 
 // NewCoordinator returns a new etcd coordinator instance.
 func NewCoordinator() core.CoordinatorService {
 	return &memdbCoordinator{
-		MemDB: nil,
+		BaseCoordinator: core.NewBaseCoordinator(),
+		MemDB:           nil,
 	}
 }
 
