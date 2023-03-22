@@ -20,16 +20,14 @@ import (
 )
 
 type etcdCoordinator struct {
+	*core.BaseCoordinator
 }
 
 // NewCoordinator returns a new etcd coordinator instance.
 func NewCoordinator() core.CoordinatorService {
-	return &etcdCoordinator{}
-}
-
-// AddObserver adds the observer to the coordinator.
-func (coord *etcdCoordinator) AddObserver(key coordinator.Key, observer coordinator.Observer) error {
-	return nil
+	return &etcdCoordinator{
+		BaseCoordinator: core.NewBaseCoordinator(),
+	}
 }
 
 func (coord *etcdCoordinator) Transact() (coordinator.Transaction, error) {

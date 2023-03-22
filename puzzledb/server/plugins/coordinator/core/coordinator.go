@@ -15,9 +15,12 @@
 package core
 
 type BaseCoordinator struct {
+	*Manager
 }
 
 // NewBaseCoordinator returns a new base coordinator instance.
 func NewBaseCoordinator() *BaseCoordinator {
-	return &BaseCoordinator{}
+	return &BaseCoordinator{
+		Manager: NewManager(),
+	}
 }
