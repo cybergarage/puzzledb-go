@@ -59,6 +59,14 @@ func (server *Server) Stop() error {
 	return nil
 }
 
+// Restart restarts the server.
+func (server *Server) Restart() error {
+	if err := server.Stop(); err != nil {
+		return errors.Wrap(err)
+	}
+	return server.Start()
+}
+
 // LoadPlugins loads default plugin services.
 func (server *Server) LoadPlugins() {
 	services := []plugins.Service{}
