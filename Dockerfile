@@ -5,4 +5,4 @@ WORKDIR /puzzledb
 
 FROM ubuntu:22.04
 
-RUN make build
+RUN make install
