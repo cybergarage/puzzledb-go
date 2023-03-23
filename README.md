@@ -41,8 +41,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 This technology preview version has the following major limitations:
 
-- Redis
-- MongoDB
-- MySQL
+- [Redis](doc/redis.md)
+- [MongoDB](doc/mongodb.md)
+- [MySQL](doc/mongodb.md)
 
 
