@@ -15,11 +15,6 @@ PuzzleDB supports existing query protocols such as MongoDB, Redia, and MySQL. Th
 
 The name PuzzleDB comes from the ability to combine multiple modules such as coordinators, storages, and existing database protocol handlers to form a database.
 
-# How does PuzzleDB work?
-
-- See [Quick Start](doc/quick_start.md) to learn about how to get started
-- For data model of PuzzleDB, see [Data Model](doc/data_model.md)
-
 # Features
 
 PuzzleDB has the following features:
@@ -34,6 +29,10 @@ This technology preview version has the following major limitations:
 - MongoDB
 - MySQL
 
+# How does PuzzleDB work?
+
+- See [Quick Start](doc/quick_start.md) to learn about how to get started
+- For data model of PuzzleDB, see [Data Model](doc/data_model.md)
 
 # Roadmap
 
