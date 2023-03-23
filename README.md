@@ -24,11 +24,14 @@ PuzzleDB has the following features:
 - Support for multi-data models:
   - Key-value, Document and Relational.
 
-This technology preview version has the following major limitations:
+# How does PuzzleDB work?
 
-- Redis
-- MongoDB
-- MySQL
+- See [Quick Start](doc/quick_start.md) to learn about how to get started.
+- For architecture of PuzzleDB, see the following concept document:
+
+  - [Data Model](doc/data_model.md)
+  - [Distributed Model](doc/distributed_model.md)
+  - [Consistency Model](doc/consistency_model.md)
 
 # Roadmap
 
@@ -36,11 +39,10 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ![](doc/img/roadmap.png)
 
-# How does PuzzleDB work?
+This technology preview version has the following major limitations:
 
-- See [Quick Start](doc/quick_start.md) to learn about how to get started.
-- For architecture of PuzzleDB, see the following concept document:
-  - [Data Model](doc/data_model.md)
-  - [Distributed Model](doc/distributed_model.md)
-  - [Consistency Model](doc/consistency_model.md)
+- Redis
+- MongoDB
+- MySQL
+
 
