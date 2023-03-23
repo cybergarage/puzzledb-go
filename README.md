@@ -29,14 +29,16 @@ This technology preview version has the following major limitations:
 - MongoDB
 - MySQL
 
-# Roadmap
-
-![](doc/img/roadmap.png)
-
 # How does PuzzleDB work?
 
 - See [Quick Start](doc/quick_start.md) to learn about how to get started
 - For data model of PuzzleDB, see [Data Model](doc/data_model.md)
+
+# Roadmap
+
+PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release.
+
+![](doc/img/roadmap.png)
 
 # Table of Contents
 
