@@ -28,12 +28,21 @@ TEST_PKG=\
 
 TEST_PKG=${MODULE_ROOT}/${TEST_SRC_ROOT}
 
+BIN_SRC_ROOT=bin
+BIN_ID=${MODULE_ROOT}/${BIN_SRC_ROOT}
+BIN_SERVER=${PKG_NAME}-server
+BIN_SERVER_ID=${BIN_ID}/${BIN_SERVER}
+BIN_SRCS=\
+        ${BIN_SRC_ROOT}/${BIN_SERVER}
+BINS=\
+        ${BIN_SERVER_ID}
+
 .PHONY: test format vet lint clean
 
 all: test
 
 format:
-	gofmt -s -w ${PKG_SRC_ROOT} ${TEST_SRC_ROOT}
+	gofmt -s -w ${PKG_SRC_ROOT} ${TEST_SRC_ROOT} ${BIN_SRC_ROOT}
 
 vet: format
 	go vet ${PKG}
@@ -43,6 +52,9 @@ lint: format
 
 test: lint
 	go test -v -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
+
+install: test
+	go install -v -gcflags=${GCFLAGS} ${BINS}
 
 clean:
 	go clean -i ${PKG}
