@@ -27,6 +27,10 @@ This technology preview version has the following major limitations:
 - MongoDB
 - MySQL
 
+# Roadmap
+
+![](doc/img/roadmap.png)
+
 # How does PuzzleDB work?
 
 - See [Quick Start](doc/quick_start.md) to learn about how to get started
