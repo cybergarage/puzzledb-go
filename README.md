@@ -19,9 +19,10 @@ The name PuzzleDB comes from the ability to combine multiple modules such as coo
 
 PuzzleDB has the following features:
 
-- Redis
-- MongoDB
-- MySQL
+- Support for existing query protocols:
+  - Redis, MongoDB and MySQL
+- Support for multi-data models:
+  - Key-value, Document and Relational.
 
 This technology preview version has the following major limitations:
 
@@ -29,20 +30,17 @@ This technology preview version has the following major limitations:
 - MongoDB
 - MySQL
 
-# How does PuzzleDB work?
-
-- See [Quick Start](doc/quick_start.md) to learn about how to get started
-- For data model of PuzzleDB, see [Data Model](doc/data_model.md)
-
 # Roadmap
 
 PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
 
 ![](doc/img/roadmap.png)
 
-# Table of Contents
+# How does PuzzleDB work?
 
-- Concept
+- See [Quick Start](doc/quick_start.md) to learn about how to get started.
+- For architecture of PuzzleDB, see the following concept document:
   - [Data Model](doc/data_model.md)
   - [Distributed Model](doc/distributed_model.md)
   - [Consistency Model](doc/consistency_model.md)
+
