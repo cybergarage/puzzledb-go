@@ -14,10 +14,15 @@
 
 package puzzledb
 
-type config struct {
+import (
+	"github.com/spf13/viper"
+)
+
+type viperConfig struct {
 }
 
 // NewConfig returns a new configuration.
 func NewConfig() (Config, error) {
-	return &config{}, nil
+	viper.SetConfigName(ProductName)
+	return &viperConfig{}, nil
 }
