@@ -14,6 +14,10 @@
 
 package puzzledb
 
-// Config represents a configuration interface.
-type Config interface {
+type config struct {
+}
+
+// NewConfig returns a new configuration.
+func NewConfig() (Config, error) {
+	return &config{}, nil
 }
