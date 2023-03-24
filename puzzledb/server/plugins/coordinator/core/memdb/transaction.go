@@ -40,6 +40,12 @@ func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn) coordinator.Tra
 
 // Set sets the object for the specified key.
 func (txn *memdbTransaction) Set(obj coordinator.Object) error {
+	hasObj := false
+	coordObj, err := txn.Get(obj.Key())
+	if err != nil && coordObj != nil {
+		hasObj = true
+	}
+
 	keyStr, err := obj.Key().Encode()
 	if err != nil {
 		return err
@@ -52,7 +58,22 @@ func (txn *memdbTransaction) Set(obj coordinator.Object) error {
 		Key:   keyStr,
 		Value: objBytes,
 	}
-	return txn.Txn.Insert(tableName, doc)
+	err = txn.Txn.Insert(tableName, doc)
+	if err != nil {
+		return err
+	}
+
+	var evt coordinator.Event
+	if hasObj {
+		evt = coordinator.NewEventWith(coordinator.ObjectUpdated, obj)
+	} else {
+		evt = coordinator.NewEventWith(coordinator.ObjectCreated, obj)
+	}
+	err = txn.NotifyManager.NofifyEvent(evt)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Get gets the object for the specified key.
