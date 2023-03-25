@@ -26,6 +26,7 @@ type viperConfig struct {
 // NewConfig returns a new configuration.
 func NewConfig() (Config, error) {
 	viper.SetConfigName(ProductName)
+	viper.SetConfigType("yaml")
 	return &viperConfig{}, nil
 }
 
