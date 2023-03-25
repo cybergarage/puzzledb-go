@@ -60,6 +60,15 @@ func (conf *viperConfig) Get(name ...string) (any, error) {
 	return v, nil
 }
 
+func (conf *viperConfig) GetString(name ...string) (string, error) {
+	path := strings.Join(name, ".")
+	v := viper.GetString(path)
+	if v == "" {
+		return "", newErrNotFound(path)
+	}
+	return v, nil
+}
+
 func (conf *viperConfig) GetInt(name ...string) (int, error) {
 	path := strings.Join(name, ".")
 	v := viper.GetInt(path)
@@ -67,11 +76,6 @@ func (conf *viperConfig) GetInt(name ...string) (int, error) {
 		return 0, newErrNotFound(path)
 	}
 	return v, nil
-}
-
-// Port returns a port number for the specified name.
-func (conf *viperConfig) Port(name string) (int, error) {
-	return conf.GetInt("port", name)
 }
 
 // String returns a string representation of the configuration.
