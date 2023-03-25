@@ -22,7 +22,7 @@ import (
 )
 
 func TestService(t *testing.T) {
-	server := test.NewServer()
+	server := puzzledbtest.NewServer()
 	err := server.Start()
 	if err != nil {
 		t.Error(err)
