@@ -40,11 +40,11 @@ func TestConfig(t *testing.T) {
 		portNum, err := conf.Port(port.name)
 		if err != nil {
 			t.Error(err)
+			t.Log(conf.String())
 			return
 		}
 		if portNum != port.expected {
 			t.Errorf("expected port number is %d but got %d", port.expected, portNum)
-			t.Log(conf.String())
 			return
 		}
 	}
