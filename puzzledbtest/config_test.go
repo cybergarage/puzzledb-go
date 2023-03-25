@@ -44,6 +44,7 @@ func TestConfig(t *testing.T) {
 		}
 		if portNum != port.expected {
 			t.Errorf("expected port number is %d but got %d", port.expected, portNum)
+			t.Log(conf.String())
 			return
 		}
 	}
