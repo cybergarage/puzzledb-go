@@ -117,8 +117,7 @@ func EncodeBSONValue(bsonVal bsoncore.Value) (any, error) {
 		ts := bsonVal.DateTime()
 		return time.Unix(ts, 0), nil
 	case bsontype.Null:
-		return nil, newErrNotSupported("LRange")
-
+		return nil, nil
 	case bsontype.Int32:
 		return bsonVal.Int32(), nil
 	case bsontype.Int64:
