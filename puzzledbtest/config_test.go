@@ -21,12 +21,13 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	conf, err := puzzledb.NewConfigWithPath(".")
+	c, err := puzzledb.NewConfigWithPath(".")
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
+	conf := puzzledb.NewServerConfig(c)
 	ports := []struct {
 		name     string
 		expected int
