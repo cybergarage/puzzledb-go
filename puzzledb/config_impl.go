@@ -15,6 +15,7 @@
 package puzzledb
 
 import (
+	"bytes"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -71,4 +72,11 @@ func (conf *viperConfig) GetInt(name ...string) (int, error) {
 // Port returns a port number for the specified name.
 func (conf *viperConfig) Port(name string) (int, error) {
 	return conf.GetInt("port", name)
+}
+
+// String returns a string representation of the configuration.
+func (conf *viperConfig) String() string {
+	var w bytes.Buffer
+	viper.DebugTo(&w)
+	return w.String()
 }

@@ -21,5 +21,30 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	puzzledb.NewConfigWithPath(".")
+	conf, err := puzzledb.NewConfigWithPath(".")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	ports := []struct {
+		name     string
+		expected int
+	}{
+		{
+			name:     "mysql",
+			expected: 3306,
+		},
+	}
+	for _, port := range ports {
+		portNum, err := conf.Port(port.name)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		if portNum != port.expected {
+			t.Errorf("expected port number is %d but got %d", port.expected, portNum)
+			return
+		}
+	}
 }
