@@ -15,6 +15,8 @@
 package puzzledb
 
 import (
+	"fmt"
+
 	"github.com/spf13/viper"
 )
 
@@ -25,4 +27,9 @@ type viperConfig struct {
 func NewConfig() (Config, error) {
 	viper.SetConfigName(ProductName)
 	return &viperConfig{}, nil
+}
+
+// Port returns a port number for the specified name.
+func (config *viperConfig) Port(name string) (int, error) {
+	return 0, newErrNotFound(fmt.Sprintf("port %v", name))
 }
