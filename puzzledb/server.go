@@ -58,18 +58,9 @@ func (server *Server) SetConfig(config Config) {
 
 // Start starts the server.
 func (server *Server) Start() error {
-	if server.Config == nil {
-		config, err := NewConfig()
-		if err != nil {
-			return err
-		}
-		server.Config = NewServerConfigWith(config)
-	}
-
 	if err := server.Services.Start(); err != nil {
 		return errors.Wrap(err)
 	}
-
 	return nil
 }
 
@@ -78,7 +69,6 @@ func (server *Server) Stop() error {
 	if err := server.Services.Stop(); err != nil {
 		return errors.Wrap(err)
 	}
-
 	return nil
 }
 
