@@ -18,4 +18,6 @@ package puzzledb
 type Config interface {
 	// Port returns a port number for the specified name.
 	Port(name string) (int, error)
+	// String returns a string representation of the configuration.
+	String() string
 }
