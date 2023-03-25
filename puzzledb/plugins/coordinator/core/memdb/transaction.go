@@ -103,6 +103,14 @@ func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, 
 
 // Delete deletes the object for the specified key.
 func (txn *memdbTransaction) Delete(key coordinator.Key) error {
+	keyBytes, err := key.Encode()
+	if err != nil {
+		return err
+	}
+	_, err = txn.Txn.DeleteAll(tableName, idFieldName, string(keyBytes))
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
