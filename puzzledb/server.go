@@ -28,15 +28,15 @@ import (
 
 // Server represents a server instance.
 type Server struct {
-	Config
+	*ServerConfig
 	*plugins.Services
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		Config:   nil,
-		Services: plugins.NewServices(),
+		ServerConfig: nil,
+		Services:     plugins.NewServices(),
 	}
 
 	server.LoadPlugins()
@@ -46,7 +46,7 @@ func NewServer() *Server {
 
 // SetConfig sets the server configuration.
 func (server *Server) SetConfig(config Config) {
-	server.Config = config
+	server.Config = NewServerConfigWith(config)
 }
 
 // Start starts the server.
@@ -56,7 +56,7 @@ func (server *Server) Start() error {
 		if err != nil {
 			return err
 		}
-		server.Config = config
+		server.Config = NewServerConfigWith(config)
 	}
 
 	if err := server.Services.Start(); err != nil {
