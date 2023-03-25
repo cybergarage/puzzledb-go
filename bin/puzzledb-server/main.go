@@ -39,7 +39,7 @@ import (
 	"syscall"
 
 	clog "github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/puzzledb-go/puzzledb/server"
+	"github.com/cybergarage/puzzledb-go/puzzledb"
 )
 
 const (
@@ -62,7 +62,7 @@ func main() {
 		}()
 	}
 
-	server := server.NewServer()
+	server := puzzledb.NewServer()
 	if err := server.Start(); err != nil {
 		clog.Errorf("%s couldn't be started (%s)", prgName, err.Error())
 		os.Exit(1)

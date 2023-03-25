@@ -12,21 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledbtest
+package coordinator
 
-import "github.com/cybergarage/go-mysql/mysqltest/server"
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
+)
 
-// Server represents an example server.
-type Server struct {
-	*server.Server
-	Host string
+type Service struct {
+	core.CoordinatorService
 }
 
-// NewServer returns an example server instance.
-func NewServer() *Server {
-	server := &Server{
-		Server: server.NewServer(),
-		Host:   LocalHost,
+func NewServiceWith(c core.CoordinatorService) *Service {
+	return &Service{
+		CoordinatorService: c,
 	}
-	return server
+}
+
+// Start starts this service.
+func (service *Service) Start() error {
+	return service.CoordinatorService.Start()
+}
+
+// Stop stops this service.
+func (service *Service) Stop() error {
+	return service.CoordinatorService.Stop()
 }

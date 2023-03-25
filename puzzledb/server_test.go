@@ -12,21 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledbtest
+package puzzledb
 
-import "github.com/cybergarage/go-mysql/mysqltest/server"
+import (
+	"testing"
+)
 
-// Server represents an example server.
-type Server struct {
-	*server.Server
-	Host string
-}
+func TestNewServer(t *testing.T) {
+	server := NewServer()
 
-// NewServer returns an example server instance.
-func NewServer() *Server {
-	server := &Server{
-		Server: server.NewServer(),
-		Host:   LocalHost,
+	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
 	}
-	return server
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }

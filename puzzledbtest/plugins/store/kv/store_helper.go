@@ -20,7 +20,7 @@ import (
 	"math/rand"
 	"testing"
 
-	plugins "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/store/kv"
+	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 

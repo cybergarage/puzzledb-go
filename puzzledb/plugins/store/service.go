@@ -12,21 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledbtest
+package store
 
-import "github.com/cybergarage/go-mysql/mysqltest/server"
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+)
 
-// Server represents an example server.
-type Server struct {
-	*server.Server
-	Host string
-}
-
-// NewServer returns an example server instance.
-func NewServer() *Server {
-	server := &Server{
-		Server: server.NewServer(),
-		Host:   LocalHost,
-	}
-	return server
+type Service interface {
+	store.Store
+	plugins.Service
 }
