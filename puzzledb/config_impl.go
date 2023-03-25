@@ -23,20 +23,30 @@ import (
 type viperConfig struct {
 }
 
-// NewConfig returns a new configuration.
-func NewConfig() (Config, error) {
+func newConfig() Config {
 	viper.SetConfigName(ProductName)
 	viper.SetConfigType("yaml")
-	return &viperConfig{}, nil
+	return &viperConfig{}
+}
+
+// NewConfig returns a new configuration.
+func NewConfig() (Config, error) {
+	conf := newConfig()
+	err := viper.ReadInConfig()
+	if err != nil {
+		return nil, err
+	}
+	return conf, nil
 }
 
 // NewConfigWithPath returns a new configuration with the specified path.
 func NewConfigWithPath(path string) (Config, error) {
-	conf, err := NewConfig()
+	conf := newConfig()
+	viper.AddConfigPath(path)
+	err := viper.ReadInConfig()
 	if err != nil {
 		return nil, err
 	}
-	viper.AddConfigPath(path)
 	return conf, nil
 }
 

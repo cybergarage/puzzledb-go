@@ -21,5 +21,5 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	puzzledb.NewConfig()
+	puzzledb.NewConfigWithPath(".")
 }
