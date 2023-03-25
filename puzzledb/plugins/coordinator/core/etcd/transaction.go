@@ -41,6 +41,11 @@ func (txn *etcdTransaction) Range(key coordinator.Key) (coordinator.ResultSet, e
 	return nil, nil
 }
 
+// Delete deletes the object for the specified key.
+func (txn *etcdTransaction) Delete(key coordinator.Key) error {
+	return nil
+}
+
 // Commit commits this transaction.
 func (txn *etcdTransaction) Commit() error {
 	return nil
