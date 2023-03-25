@@ -22,6 +22,8 @@ type Transaction interface {
 	Get(key Key) (Object, error)
 	// Range gets the resultset for the specified key range.
 	Range(key Key) (ResultSet, error)
+	// Delete deletes the object for the specified key.
+	Delete(key Key) error
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
