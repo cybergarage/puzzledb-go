@@ -30,7 +30,17 @@ func NewConfig() (Config, error) {
 	return &viperConfig{}, nil
 }
 
+// NewConfigWithPath returns a new configuration with the specified path.
+func NewConfigWithPath(path string) (Config, error) {
+	conf, err := NewConfig()
+	if err != nil {
+		return nil, err
+	}
+	viper.AddConfigPath(path)
+	return conf, nil
+}
+
 // Port returns a port number for the specified name.
-func (config *viperConfig) Port(name string) (int, error) {
+func (conf *viperConfig) Port(name string) (int, error) {
 	return 0, newErrNotFound(fmt.Sprintf("port %v", name))
 }
