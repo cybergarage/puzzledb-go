@@ -16,4 +16,6 @@ package puzzledb
 
 // Config represents a configuration interface.
 type Config interface {
+	// Port returns a port number for the specified name.
+	Port(name string) (int, error)
 }
