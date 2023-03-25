@@ -12,21 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledbtest
+package memdb
 
-import "github.com/cybergarage/go-mysql/mysqltest/server"
+import store "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 
-// Server represents an example server.
-type Server struct {
-	*server.Server
-	Host string
+// Store represents a Memdb store service instance.
+type Store struct {
+	*Databases
 }
 
-// NewServer returns an example server instance.
-func NewServer() *Server {
-	server := &Server{
-		Server: server.NewServer(),
-		Host:   LocalHost,
+// New returns a new memdb store instance.
+func NewStore() store.Service {
+	return &Store{
+		Databases: NewDatabases(),
 	}
-	return server
+}
+
+// Start starts this memdb.
+func (db *Store) Start() error {
+	return nil
+}
+
+// Stop stops this memdb.
+func (db Store) Stop() error {
+	return nil
 }

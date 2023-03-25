@@ -12,21 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledbtest
+package etcd
 
-import "github.com/cybergarage/go-mysql/mysqltest/server"
+import (
+	"testing"
+)
 
-// Server represents an example server.
-type Server struct {
-	*server.Server
-	Host string
-}
-
-// NewServer returns an example server instance.
-func NewServer() *Server {
-	server := &Server{
-		Server: server.NewServer(),
-		Host:   LocalHost,
-	}
-	return server
+func TestCoordinator(t *testing.T) {
+	// coordinator.CoordinatorTest(t, NewCoordinator())
 }

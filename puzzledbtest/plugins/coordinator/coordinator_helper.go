@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	plugins "github.com/cybergarage/puzzledb-go/puzzledb/server/plugins/coordinator/core"
+	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
 const (
