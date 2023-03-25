@@ -15,7 +15,7 @@
 package puzzledb
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -50,7 +50,25 @@ func NewConfigWithPath(path string) (Config, error) {
 	return conf, nil
 }
 
+func (conf *viperConfig) Get(name ...string) (any, error) {
+	path := strings.Join(name, ".")
+	v := viper.Get(path)
+	if v == nil {
+		return nil, newErrNotFound(path)
+	}
+	return v, nil
+}
+
+func (conf *viperConfig) GetInt(name ...string) (int, error) {
+	path := strings.Join(name, ".")
+	v := viper.GetInt(path)
+	if v == 0 {
+		return 0, newErrNotFound(path)
+	}
+	return v, nil
+}
+
 // Port returns a port number for the specified name.
 func (conf *viperConfig) Port(name string) (int, error) {
-	return 0, newErrNotFound(fmt.Sprintf("port %v", name))
+	return conf.GetInt("port", name)
 }
