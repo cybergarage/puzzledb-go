@@ -19,13 +19,13 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-sqltest/sqltest"
-	test "github.com/cybergarage/puzzledb-go/puzzledbtest"
+	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
 func TestSQLTestSuite(t *testing.T) {
 	log.SetStdoutDebugEnbled(true)
 
-	server := test.NewServer()
+	server := puzzledbtest.NewServer()
 	err := server.Start()
 	if err != nil {
 		t.Error(err)
