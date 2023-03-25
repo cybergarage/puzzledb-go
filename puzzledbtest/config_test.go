@@ -21,7 +21,7 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	c, err := puzzledb.NewConfigWithPath(".")
+	c, err := puzzledb.NewConfigWithPath("../conf")
 	if err != nil {
 		t.Error(err)
 		return
