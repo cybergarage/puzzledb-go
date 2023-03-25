@@ -14,18 +14,20 @@
 
 package puzzledbtest
 
-import "github.com/cybergarage/go-mysql/mysqltest/server"
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb"
+)
 
 // Server represents an example server.
 type Server struct {
-	*server.Server
+	*puzzledb.Server
 	Host string
 }
 
 // NewServer returns an example server instance.
 func NewServer() *Server {
 	server := &Server{
-		Server: server.NewServer(),
+		Server: puzzledb.NewServer(),
 		Host:   LocalHost,
 	}
 	return server
