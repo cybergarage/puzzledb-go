@@ -62,7 +62,13 @@ func main() {
 		}()
 	}
 
-	server := puzzledb.NewServer()
+	config, err := puzzledb.NewConfigWithPath(".")
+	if err != nil {
+		clog.Errorf("%s couldn't load the configuration (%s)", prgName, err.Error())
+		return
+	}
+
+	server := puzzledb.NewServerWithConfig(config)
 	if err := server.Start(); err != nil {
 		clog.Errorf("%s couldn't be started (%s)", prgName, err.Error())
 		os.Exit(1)
