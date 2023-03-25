@@ -101,6 +101,11 @@ func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, 
 	return newResultSet(key, it), nil
 }
 
+// Delete deletes the object for the specified key.
+func (txn *memdbTransaction) Delete(key coordinator.Key) error {
+	return nil
+}
+
 // Commit commits this transaction.
 func (txn *memdbTransaction) Commit() error {
 	txn.Txn.Commit()
