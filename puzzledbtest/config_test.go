@@ -27,7 +27,7 @@ func TestConfig(t *testing.T) {
 		return
 	}
 
-	conf := puzzledb.NewServerConfig(c)
+	conf := puzzledb.NewServerConfigWith(c)
 	ports := []struct {
 		name     string
 		expected int
