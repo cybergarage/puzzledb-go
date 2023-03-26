@@ -353,6 +353,7 @@ func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, tx
 	if err != nil {
 		return err
 	}
+
 	err = txn.UpdateDocument(docKey, docObj)
 	if err != nil {
 		return err
