@@ -19,7 +19,9 @@ type ServerConfig struct {
 }
 
 func NewServerConfigWith(config Config) *ServerConfig {
-	return &ServerConfig{config}
+	return &ServerConfig{
+		Config: config,
+	}
 }
 
 // Port returns a port number for the specified name.
