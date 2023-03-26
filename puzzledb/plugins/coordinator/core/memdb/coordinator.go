@@ -53,8 +53,10 @@ func (coord *memdbCoordinator) Start() error {
 					idFieldName: {
 						Name:   idFieldName,
 						Unique: true,
-						Indexer: &memdb.StringFieldIndex{Field: "Key",
-							Lowercase: true},
+						Indexer: &memdb.StringFieldIndex{
+							Field:     idFieldName,
+							Lowercase: true,
+						},
 					},
 				},
 			},
