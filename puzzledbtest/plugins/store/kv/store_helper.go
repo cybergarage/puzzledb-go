@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package plugins
+package kv
 
 import (
 	"bytes"
@@ -30,7 +30,7 @@ const (
 	testValBufMax = 8
 )
 
-//nolint:gosec,cyclop,gocognit
+//nolint:gosec,cyclop,gocognit,gocyclo
 func StoreTest(t *testing.T, s plugins.Service) {
 	t.Helper()
 
@@ -65,6 +65,64 @@ func StoreTest(t *testing.T, s plugins.Service) {
 	}
 
 	// Insert test
+
+	for n, key := range keys {
+		tx, err := db.Transact(true)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		val := vals[n]
+		obj := &store.Object{
+			Key:   []any{key},
+			Value: val,
+		}
+		if err := tx.Set(obj); err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Select test
+
+	for n, key := range keys {
+		tx, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		rs, err := tx.Get([]any{key})
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if !rs.Next() {
+			cancel(t, tx)
+			t.Errorf("%v != 1", rs)
+			break
+		}
+		obj := rs.Object()
+		if !bytes.Equal(obj.Value, vals[n]) {
+			cancel(t, tx)
+			t.Errorf("%s != %s", obj.Value, vals[n])
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Update test
+
+	for n := 0; n < testKeyCount; n++ {
+		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
+	}
 
 	for n, key := range keys {
 		tx, err := db.Transact(true)
