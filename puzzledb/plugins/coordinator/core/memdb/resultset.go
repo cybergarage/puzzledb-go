@@ -40,15 +40,15 @@ func (rs *resultSet) Next() bool {
 	if elem == nil {
 		return false
 	}
-	doc, ok := elem.(*document)
+	doc, ok := elem.(*Document)
 	if !ok {
 		return false
 	}
-	key, err := coordinator.NewKeyFrom(doc.id)
+	key, err := coordinator.NewKeyFrom(doc.Key)
 	if err != nil {
 		return false
 	}
-	val, err := coordinator.NewValueFrom(doc.value)
+	val, err := coordinator.NewValueFrom(doc.Value)
 	if err != nil {
 		return false
 	}

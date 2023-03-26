@@ -22,7 +22,8 @@ import (
 
 const (
 	tableName   = "document"
-	idFieldName = "id"
+	idName      = "id"
+	idFieldName = "Key"
 	prefix      = "_prefix"
 )
 
@@ -39,8 +40,8 @@ func NewDatabaseWithID(id string) (*Database, error) {
 			tableName: {
 				Name: tableName,
 				Indexes: map[string]*memdb.IndexSchema{
-					idFieldName: {
-						Name:         idFieldName,
+					idName: {
+						Name:         idName,
 						AllowMissing: false,
 						Unique:       true,
 						Indexer: &memdb.StringFieldIndex{
