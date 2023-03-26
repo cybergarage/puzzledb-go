@@ -83,7 +83,7 @@ func (txn *memdbTransaction) Get(key coordinator.Key) (coordinator.Object, error
 		return nil, err
 	}
 	if !rs.Next() {
-		return nil, nil
+		return nil, coordinator.NewKeyNotExistError(key)
 	}
 	return rs.Object(), nil
 }
