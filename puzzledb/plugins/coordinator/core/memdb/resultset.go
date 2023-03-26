@@ -44,11 +44,11 @@ func (rs *resultSet) Next() bool {
 	if !ok {
 		return false
 	}
-	key, err := coordinator.NewKeyFrom(doc.Key)
+	key, err := coordinator.NewKeyFrom(doc.id)
 	if err != nil {
 		return false
 	}
-	val, err := coordinator.NewValueFrom(doc.Value)
+	val, err := coordinator.NewValueFrom(doc.value)
 	if err != nil {
 		return false
 	}

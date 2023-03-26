@@ -21,8 +21,8 @@ import (
 )
 
 type document struct {
-	Key   string
-	Value []byte
+	id    string
+	value []byte
 }
 
 type memdbTransaction struct {
@@ -55,8 +55,8 @@ func (txn *memdbTransaction) Set(obj coordinator.Object) error {
 		return err
 	}
 	doc := &document{
-		Key:   keyStr,
-		Value: objBytes,
+		id:    keyStr,
+		value: objBytes,
 	}
 	err = txn.Txn.Insert(tableName, doc)
 	if err != nil {
