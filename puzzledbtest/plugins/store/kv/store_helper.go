@@ -30,7 +30,7 @@ const (
 	testValBufMax = 8
 )
 
-//nolint:gosec,cyclop
+//nolint:gosec,cyclop,gocognit
 func StoreTest(t *testing.T, s plugins.Service) {
 	t.Helper()
 
@@ -111,6 +111,37 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		if !bytes.Equal(obj.Value, vals[n]) {
 			cancel(t, tx)
 			t.Errorf("%s != %s", obj.Value, vals[n])
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Delete test
+
+	for _, key := range keys {
+		tx, err := db.Transact(true)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		err = tx.Remove([]any{key})
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		rs, err := tx.Get([]any{key})
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if rs.Next() {
+			cancel(t, tx)
+			t.Errorf("%v != 1", rs)
+			break
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
