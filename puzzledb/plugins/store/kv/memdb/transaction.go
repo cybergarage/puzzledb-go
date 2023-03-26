@@ -19,9 +19,9 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
-type document struct {
-	id    string
-	value []byte
+type Document struct {
+	Key   string
+	Value []byte
 }
 
 // transaction represents a Memdb transaction instance.
@@ -49,9 +49,9 @@ func (txn *transaction) Set(obj *kv.Object) error {
 	if err != nil {
 		return err
 	}
-	doc := &document{
-		id:    string(keyBytes),
-		value: obj.Value,
+	doc := &Document{
+		Key:   string(keyBytes),
+		Value: obj.Value,
 	}
 	return txn.Txn.Insert(tableName, doc)
 }
@@ -62,7 +62,7 @@ func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	it, err := txn.Txn.Get(tableName, idFieldName+prefix, string(keyBytes))
+	it, err := txn.Txn.Get(tableName, idName+prefix, string(keyBytes))
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (txn *transaction) Remove(key kv.Key) error {
 	if err != nil {
 		return err
 	}
-	_, err = txn.Txn.DeleteAll(tableName, idFieldName, string(keyBytes))
+	_, err = txn.Txn.DeleteAll(tableName, idName, string(keyBytes))
 	if err != nil {
 		return err
 	}

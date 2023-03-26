@@ -20,9 +20,9 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
-type document struct {
-	id    string
-	value []byte
+type Document struct {
+	Key   string
+	Value []byte
 }
 
 type memdbTransaction struct {
@@ -54,9 +54,9 @@ func (txn *memdbTransaction) Set(obj coordinator.Object) error {
 	if err != nil {
 		return err
 	}
-	doc := &document{
-		id:    keyStr,
-		value: objBytes,
+	doc := &Document{
+		Key:   keyStr,
+		Value: objBytes,
 	}
 	err = txn.Txn.Insert(tableName, doc)
 	if err != nil {
@@ -94,7 +94,7 @@ func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, 
 	if err != nil {
 		return nil, err
 	}
-	it, err := txn.Txn.Get(tableName, idFieldName+prefix, keyStr)
+	it, err := txn.Txn.Get(tableName, idName+prefix, keyStr)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func (txn *memdbTransaction) Delete(key coordinator.Key) error {
 	if err != nil {
 		return err
 	}
-	_, err = txn.Txn.DeleteAll(tableName, idFieldName, string(keyBytes))
+	_, err = txn.Txn.DeleteAll(tableName, idName, string(keyBytes))
 	if err != nil {
 		return err
 	}

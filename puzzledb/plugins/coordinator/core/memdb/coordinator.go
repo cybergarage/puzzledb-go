@@ -22,7 +22,8 @@ import (
 
 const (
 	tableName   = "coordinator"
-	idFieldName = "id"
+	idName      = "id"
+	idFieldName = "Key"
 	prefix      = "_prefix"
 )
 
@@ -50,8 +51,8 @@ func (coord *memdbCoordinator) Start() error {
 			tableName: {
 				Name: tableName,
 				Indexes: map[string]*memdb.IndexSchema{
-					idFieldName: {
-						Name:         idFieldName,
+					idName: {
+						Name:         idName,
 						AllowMissing: false,
 						Unique:       true,
 						Indexer: &memdb.StringFieldIndex{

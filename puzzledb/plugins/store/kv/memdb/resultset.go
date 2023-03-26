@@ -40,13 +40,13 @@ func (rs *resultSet) Next() bool {
 	if elem == nil {
 		return false
 	}
-	doc, ok := elem.(*document)
+	doc, ok := elem.(*Document)
 	if !ok {
 		return false
 	}
 	rs.obj = &kv.Object{
 		Key:   rs.key,
-		Value: doc.value,
+		Value: doc.Value,
 	}
 	return true
 }
