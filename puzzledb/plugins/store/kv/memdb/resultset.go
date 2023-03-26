@@ -46,7 +46,7 @@ func (rs *resultSet) Next() bool {
 	}
 	rs.obj = &kv.Object{
 		Key:   rs.key,
-		Value: doc.Value,
+		Value: doc.value,
 	}
 	return true
 }

@@ -20,8 +20,8 @@ import (
 )
 
 type document struct {
-	Key   string
-	Value []byte
+	id    string
+	value []byte
 }
 
 // transaction represents a Memdb transaction instance.
@@ -50,8 +50,8 @@ func (txn *transaction) Set(obj *kv.Object) error {
 		return err
 	}
 	doc := &document{
-		Key:   string(keyBytes),
-		Value: obj.Value,
+		id:    string(keyBytes),
+		value: obj.Value,
 	}
 	return txn.Txn.Insert(tableName, doc)
 }
