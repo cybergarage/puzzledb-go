@@ -28,7 +28,7 @@ const (
 	testValBufMax = 8
 )
 
-//nolint:gosec,cyclop,revive,gocognit
+//nolint:gosec,cyclop,revive,gocognit,gocyclo
 func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 	t.Helper()
 
@@ -52,6 +52,64 @@ func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
 	}
 
 	// Insert test
+
+	for n, key := range keys {
+		tx, err := s.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		val := vals[n]
+		obj := coordinator.NewObjectWith(
+			coordinator.NewKeyWith(key),
+			val)
+
+		if err := tx.Set(obj); err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Select test
+
+	for n, key := range keys {
+		tx, err := s.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		obj, err := tx.Get([]string{key})
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		val, ok := obj.Value().(string)
+		if !ok {
+			cancel(t, tx)
+			t.Errorf("invalid value type: %T", obj.Value())
+			break
+		}
+		if val != vals[n] {
+			cancel(t, tx)
+			t.Errorf("%s != %s", val, vals[n])
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Insert test
+
+	for n := 0; n < testKeyCount; n++ {
+		vals[n] = fmt.Sprintf("v%03d", (n + testKeyCount))
+	}
 
 	for n, key := range keys {
 		tx, err := s.Transact()
