@@ -53,7 +53,7 @@ lint: format
 test: lint
 	go test -v -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
-build: test
+build: lint
 	go build -v -gcflags=${GCFLAGS} ${BINS}
 
 install: test
