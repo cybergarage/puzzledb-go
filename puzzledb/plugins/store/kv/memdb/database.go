@@ -40,8 +40,9 @@ func NewDatabaseWithID(id string) (*Database, error) {
 				Name: tableName,
 				Indexes: map[string]*memdb.IndexSchema{
 					idFieldName: {
-						Name:   idFieldName,
-						Unique: true,
+						Name:         idFieldName,
+						AllowMissing: false,
+						Unique:       true,
 						Indexer: &memdb.StringFieldIndex{
 							Field:     idFieldName,
 							Lowercase: true,
