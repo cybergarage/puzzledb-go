@@ -46,15 +46,15 @@ const (
 )
 
 func main() {
-	// isDebugEnabled := flag.Bool("d", false, "enable debugging log output")
+	isDebugEnabled := flag.Bool("d", false, "enable debugging log output")
 	isProfileEnabled := flag.Bool("p", false, "enable profiling server")
 	flag.Parse()
 
-	// logLevel := log.LevelTrace
-	// if *isDebugEnabled {
-	// 	logLevel = log.LevelDebug
-	// }
-	// log.SetSharedLogger(log.NewStdoutLogger(logLevel))
+	logLevel := log.LevelTrace
+	if *isDebugEnabled {
+		logLevel = log.LevelDebug
+	}
+	log.SetSharedLogger(log.NewStdoutLogger(logLevel))
 
 	if *isProfileEnabled {
 		go func() {
