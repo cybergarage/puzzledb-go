@@ -12,16 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledb
+package puzzledbtest
 
 import (
 	"testing"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb"
 )
 
 func TestNewServer(t *testing.T) {
 	server := NewServer()
 
 	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestNewServerWithConfig(t *testing.T) {
+	conf, err := puzzledb.NewConfigWithPath("../conf")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	server := NewServerWithConfig(conf)
+
+	err = server.Start()
 	if err != nil {
 		t.Error(err)
 		return
