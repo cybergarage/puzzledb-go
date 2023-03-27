@@ -19,6 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
+// nolint: exhaustive
 func elementTypeFromSQLType(sqlType query.ValType) (document.ElementType, error) {
 	switch sqlType {
 	case query.Int8:
