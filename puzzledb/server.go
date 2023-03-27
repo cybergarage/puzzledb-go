@@ -53,7 +53,7 @@ func NewServerWithConfig(config Config) *Server {
 
 // SetConfig sets the server configuration.
 func (server *Server) SetConfig(config Config) {
-	server.Config = NewServerConfigWith(config)
+	server.ServerConfig = NewServerConfigWith(config)
 }
 
 // Start starts the server.
