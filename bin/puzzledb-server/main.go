@@ -32,13 +32,12 @@ package main
 
 import (
 	"flag"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
-	clog "github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb"
 )
 
@@ -47,30 +46,32 @@ const (
 )
 
 func main() {
-	isDebugEnabled := flag.Bool("debug", false, "enable debugging log output")
-	isProfileEnabled := flag.Bool("profile", false, "enable profiling server")
+	// isDebugEnabled := flag.Bool("d", false, "enable debugging log output")
+	isProfileEnabled := flag.Bool("p", false, "enable profiling server")
 	flag.Parse()
 
-	if *isDebugEnabled {
-		clog.SetStdoutDebugEnbled(true)
-	}
+	// logLevel := log.LevelTrace
+	// if *isDebugEnabled {
+	// 	logLevel = log.LevelDebug
+	// }
+	// log.SetSharedLogger(log.NewStdoutLogger(logLevel))
 
 	if *isProfileEnabled {
 		go func() {
 			// nolint: gosec
-			log.Println(http.ListenAndServe("localhost:6060", nil))
+			http.ListenAndServe("localhost:6060", nil)
 		}()
 	}
 
-	config, err := puzzledb.NewConfigWithPath(".")
+	conf, err := puzzledb.NewConfigWithPath(".")
 	if err != nil {
-		clog.Errorf("%s couldn't load the configuration (%s)", prgName, err.Error())
+		log.Errorf("%s couldn't load the configuration (%s)", prgName, err.Error())
 		return
 	}
 
-	server := puzzledb.NewServerWithConfig(config)
+	server := puzzledb.NewServerWithConfig(conf)
 	if err := server.Start(); err != nil {
-		clog.Errorf("%s couldn't be started (%s)", prgName, err.Error())
+		log.Errorf("%s couldn't be started (%s)", prgName, err.Error())
 		os.Exit(1)
 	}
 
@@ -89,15 +90,15 @@ func main() {
 			s := <-sigCh
 			switch s {
 			case syscall.SIGHUP:
-				clog.Infof("caught %s, restarting...", s.String())
+				log.Infof("caught %s, restarting...", s.String())
 				if err := server.Restart(); err != nil {
-					clog.Errorf("%s couldn't be restarted (%s)", prgName, err.Error())
+					log.Errorf("%s couldn't be restarted (%s)", prgName, err.Error())
 					os.Exit(1)
 				}
 			case syscall.SIGINT, syscall.SIGTERM:
-				clog.Infof("caught %s, stopping...", s.String())
+				log.Infof("caught %s, stopping...", s.String())
 				if err := server.Stop(); err != nil {
-					clog.Errorf("%s couldn't be stopped (%s)", prgName, err.Error())
+					log.Errorf("%s couldn't be stopped (%s)", prgName, err.Error())
 					os.Exit(1)
 				}
 				exitCh <- 0
