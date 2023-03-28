@@ -6,13 +6,13 @@ require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20221026173525-97cc643cef69
 	github.com/cybergarage/go-cbor v1.2.0
 	github.com/cybergarage/go-logger v1.3.3
-	github.com/cybergarage/go-mongo v0.9.1
+	github.com/cybergarage/go-mongo v0.9.2
 	github.com/cybergarage/go-mysql v0.9.2
-	github.com/cybergarage/go-redis v1.2.1
+	github.com/cybergarage/go-redis v1.3.0
 	github.com/cybergarage/go-sqltest v0.9.2
 	github.com/hashicorp/go-memdb v1.3.2
 	github.com/spf13/viper v1.15.0
-	go.mongodb.org/mongo-driver v1.10.0
+	go.mongodb.org/mongo-driver v1.11.2
 )
 
 require (
@@ -37,6 +37,7 @@ require (
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/montanaflynn/stats v0.6.3 // indirect
+	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/opentracing-contrib/go-grpc v0.0.0-20180928155321-4b5a12d3ff02 // indirect
 	github.com/opentracing/opentracing-go v1.1.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
