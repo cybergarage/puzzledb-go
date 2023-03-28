@@ -50,7 +50,18 @@ PuzzleDB currently supports the MongoDB commands in phases. See [MongoDB](doc/mo
 To operate PuzzleDB with the MySQL protocol, use the standard MySQL shell [mysql](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) as follows:
 
 ```
-% mysql   
+% mysql -h 127.0.0.1 --protocol=tcp
+mysql> CREATE DATABASE test;
+mysql> USE test;
+mysql> CREATE TABLE test (k VARCHAR(255) PRIMARY KEY, v int);
+mysql> INSERT INTO test (k, v) VALUES ('foo', 0);
+mysql> SELECT * FROM test WHERE k = 'foo';
++------+------+
+| k    | v    |
++------+------+
+| foo  |    0 |
++------+------+
+1 row in set (0.00 sec)
 ```
 
 PuzzleDB currently supports the MySQL commands in phases. See [MySQL](doc/mysql.md) for current support status.
