@@ -7,7 +7,7 @@ RUN apk add bash
 COPY . /puzzledb
 WORKDIR /puzzledb
 
-RUN go build -v -gcflags= github.com/cybergarage/puzzledb-go/bin/puzzledb-server
+RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/bin/puzzledb-server
 
 COPY ./conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
