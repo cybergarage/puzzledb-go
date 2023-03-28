@@ -45,3 +45,13 @@ test> db.collection.findOne({age: 25})
 
 PuzzleDB currently supports the MongoDB commands in phases. See [MongoDB](doc/mongodb.md) for current support status.
 
+## MySQL
+
+To operate PuzzleDB with the MySQL protocol, use the standard MySQL shell [mysql](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) as follows:
+
+```
+% mysql   
+```
+
+PuzzleDB currently supports the MySQL commands in phases. See [MySQL](doc/mysql.md) for current support status.
+
