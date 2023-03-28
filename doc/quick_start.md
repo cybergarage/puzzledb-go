@@ -17,3 +17,17 @@ docker run -d --name puzzledb-server \
 ```
 
 PuzzleDB listens on three default database ports: Redis, MongoDB, and MySQL.
+
+## Redis
+
+To operate PuzzleDB with the Redis protocol, use the standard Redis command [redis-cli](https://redis.io/docs/ui/cli/) as follows:
+
+```
+%  redis-cli 
+127.0.0.1:6379> SET mykey "Hello"
+OK
+127.0.0.1:6379> GET mykey
+"Hello"
+```
+
+PuzzleDB currently supports the Redis command in phases. See [Redis](doc/redis.md) for current support status.
