@@ -1,15 +1,15 @@
+FROM golang:1.20-alpine
+
 USER root
 
 COPY . /puzzledb
 WORKDIR /puzzledb
 
-FROM ubuntu:22.04
+RUN go build -v -gcflags= github.com/cybergarage/puzzledb-go/bin/puzzledb-server
 
-RUN make build
-
-go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/bin/puzzledb-server
-
+COPY ./conf/puzzledb.yaml /puzzledb.yaml
 COPY ./docker/entrypoint.sh /entrypoint.sh
+
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
