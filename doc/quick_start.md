@@ -30,4 +30,18 @@ OK
 "Hello"
 ```
 
-PuzzleDB currently supports the Redis command in phases. See [Redis](doc/redis.md) for current support status.
+PuzzleDB currently supports the Redis commands in phases. See [Redis](doc/redis.md) for current support status.
+
+## MongoDB
+
+To operate PuzzleDB with the MongoDB protocol, use the standard MongoDB shell [mongosh](https://www.mongodb.com/docs/mongodb-shell/#mongodb-binary-bin.mongosh) as follows:
+
+```
+% mongosh   
+test> db.collection.insertOne({name: "Alice", age: 25})
+test> db.collection.findOne({name: "Alice"})
+test> db.collection.findOne({age: 25})
+```
+
+PuzzleDB currently supports the MongoDB commands in phases. See [MongoDB](doc/mongodb.md) for current support status.
+
