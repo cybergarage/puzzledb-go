@@ -63,17 +63,19 @@ func main() {
 		}()
 	}
 
+	var server *puzzledb.Server
+
 	conf, err := puzzledb.NewConfigWithPath(".")
-	if err != nil {
-		log.Errorf("%s couldn't load the configuration (%s)", prgName, err.Error())
-		return
+	if err == nil {
+		log.Infof("%s couldn't load the configuration (%s)", prgName, err.Error())
 	}
 
-	server := puzzledb.NewServerWithConfig(conf)
+	server = puzzledb.NewServerWithConfig(conf)
 	if err := server.Start(); err != nil {
 		log.Errorf("%s couldn't be started (%s)", prgName, err.Error())
 		os.Exit(1)
 	}
+	log.Infof("%s started", prgName)
 
 	sigCh := make(chan os.Signal, 1)
 
@@ -96,9 +98,9 @@ func main() {
 					os.Exit(1)
 				}
 			case syscall.SIGINT, syscall.SIGTERM:
-				log.Infof("caught %s, stopping...", s.String())
+				log.Infof("caught %s, terminating...", s.String())
 				if err := server.Stop(); err != nil {
-					log.Errorf("%s couldn't be stopped (%s)", prgName, err.Error())
+					log.Errorf("%s couldn't be terminated (%s)", prgName, err.Error())
 					os.Exit(1)
 				}
 				exitCh <- 0
@@ -107,6 +109,8 @@ func main() {
 	}()
 
 	code := <-exitCh
+
+	log.Infof("%s terminated", prgName)
 
 	os.Exit(code)
 }
