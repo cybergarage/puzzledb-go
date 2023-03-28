@@ -15,6 +15,7 @@
 SHELL := bash
 
 PKG_NAME=puzzledb
+PKG_VER=$(shell git describe --abbrev=0 --tags)
 
 MODULE_ROOT=github.com/cybergarage/puzzledb-go
 
@@ -53,14 +54,17 @@ lint: format
 test: lint
 	go test -v -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
+image:
+	docker image build -tcybergarage/puzzledb:${PKG_VER} .
+
 build:
 	go build -v -gcflags=${GCFLAGS} ${BINS}
 
 install:
 	go install -v -gcflags=${GCFLAGS} ${BINS}
 
-docker:
-	docker image build  .
+run:
+	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3307:3307 cybergarage/puzzledb:${PKG_VER}
 
 clean:
 	go clean -i ${PKG}
