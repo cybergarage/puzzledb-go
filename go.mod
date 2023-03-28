@@ -11,6 +11,7 @@ require (
 	github.com/cybergarage/go-redis v1.2.1
 	github.com/cybergarage/go-sqltest v0.9.2
 	github.com/hashicorp/go-memdb v1.3.2
+	github.com/spf13/viper v1.15.0
 	go.mongodb.org/mongo-driver v1.10.0
 )
 
@@ -50,7 +51,6 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.15.0 // indirect
 	github.com/spyzhov/ajson v0.4.2 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/tinylib/msgp v1.1.1 // indirect
