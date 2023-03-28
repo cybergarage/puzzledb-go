@@ -38,9 +38,9 @@ To operate PuzzleDB with the MongoDB protocol, use the standard MongoDB shell [m
 
 ```
 % mongosh   
-test> db.collection.insertOne({name: "Alice", age: 25})
-test> db.collection.findOne({name: "Alice"})
-test> db.collection.findOne({age: 25})
+test> db.trainers.insertOne({name: "Ash", age: 10, city: "Pallet Town"})
+test> db.trainers.findOne({name: "Ash"})
+test> db.trainers.findOne({age: 10})
 ```
 
 PuzzleDB currently supports the MongoDB commands in phases. See [MongoDB](doc/mongodb.md) for current support status.
