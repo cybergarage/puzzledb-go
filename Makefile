@@ -53,10 +53,10 @@ lint: format
 test: lint
 	go test -v -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
-build: lint
+build:
 	go build -v -gcflags=${GCFLAGS} ${BINS}
 
-install: test
+install:
 	go install -v -gcflags=${GCFLAGS} ${BINS}
 
 docker:
