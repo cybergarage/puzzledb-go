@@ -42,6 +42,9 @@ BINS=\
 
 all: test
 
+version:
+	@pushd ${PKG_SRC_ROOT} && ./version.gen > version.go && popd
+
 format:
 	gofmt -s -w ${PKG_SRC_ROOT} ${TEST_SRC_ROOT} ${BIN_SRC_ROOT}
 
