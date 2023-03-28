@@ -75,7 +75,7 @@ func main() {
 		log.Errorf("%s couldn't be started (%s)", prgName, err.Error())
 		os.Exit(1)
 	}
-	log.Infof("%s started", prgName)
+	log.Infof("%s (PID:%d) started", prgName, os.Getpid())
 
 	sigCh := make(chan os.Signal, 1)
 
@@ -110,7 +110,7 @@ func main() {
 
 	code := <-exitCh
 
-	log.Infof("%s terminated", prgName)
+	log.Infof("%s (PID:%d) terminated", prgName, os.Getpid())
 
 	os.Exit(code)
 }
