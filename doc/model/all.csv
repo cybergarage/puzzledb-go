@@ -1,0 +1,16 @@
+Type,PuzzleDB,Redis,MongoDB,SQL
+Collection,map,Hash,Object,COMPLEX
+,array,List,Array,ARRAY
+String,string,String,String,VARCHAR
+,,,,CHAR
+Integer,tiny,,,TINYINT
+,short,,,SMALLINT
+,int,,32-bit integer,INTEGER
+,long,,64-bit integer,BIGINT
+Real,float32,,32-bit IEEE-754,FLOAT
+,float64,,64-bit IEEE-754,DOUBLE (REAL)
+Time,time.Time,,Date,DATE DATETIME
+,,,Timestamp,TIME TIMESTAMP
+Special,null,,Null,NULL
+,bool,,Boolean,BOOLEAN (TINYINT(1))
+,[]byte,,Binary data,BLOB (BYTEA)

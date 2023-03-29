@@ -1,0 +1,14 @@
+Type,PuzzleDB,CBOR
+Collection,map,5 (map)
+,array,4 (array)
+String,string,3 (text string)
+Integer,tiny,tiny
+,short,short
+,int,int
+,long,long
+Real,float32,7 (floating-point) 26
+,float64,7 (floating-point) 27
+Time,time.Time,6 (tag) 0
+Special,null,null
+,bool,bool
+,[]byte,binary
