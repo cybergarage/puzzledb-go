@@ -1,0 +1,5 @@
+image::img/logo.png[]
+
+= MySQL
+
+PuzzleDB supports MySQL commands based on https://github.com/cybergarage/go-mysql[go-mysql], a database framework that makes it easy to implement MySQL compatible servers using Go.
