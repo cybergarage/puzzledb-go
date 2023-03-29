@@ -3,3 +3,28 @@ image::img/logo.png[]
 = MySQL
 
 PuzzleDB supports MySQL commands based on https://github.com/cybergarage/go-mysql[go-mysql], a database framework that makes it easy to implement MySQL compatible servers using Go.
+
+== Supported commands
+
+PuzzleDB currently supports https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html[MySQL statements] in stages. This section describes the status of Redis command support in PuzzleDB.
+
+===  Data Definition Statements
+
+[format="csv", options="header, autowidth"]
+|====
+include::mysql/dds.csv[]
+|====
+
+=== Data Manipulation Statements
+
+[format="csv", options="header, autowidth"]
+|====
+include::mysql/dms.csv[]
+|====
+
+=== Utility Statements
+
+[format="csv", options="header, autowidth"]
+|====
+include::mysql/util.csv[]
+|====
