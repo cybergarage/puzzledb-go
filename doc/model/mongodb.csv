@@ -1,0 +1,13 @@
+MongoDB,PuzzleDB
+Object,map
+Array,array
+String,string
+32-bit integer,int
+64-bit integer,long
+32-bit IEEE-754,float32
+64-bit IEEE-754,float64
+Date,time.Time
+Timestamp,time.Time
+Null,null
+Boolean,bool
+Binary data,[]byte

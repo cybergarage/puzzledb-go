@@ -6,9 +6,9 @@
 
 PuzzleDB supports Redis commands based on [go-redis](https://github.com/cybergarage/go-redis), a database framework that makes it easy to implement Redis compatible servers using Go.
 
-## Data model
+## Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model. PuzzleDB converts Redis data model the PuzzleDB data model as follows:
+PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts Redis data model the PuzzleDB data model as follows:
 
 <table>
 <colgroup>
@@ -45,11 +45,11 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 </tbody>
 </table>
 
-## Supported commands
+## Supported Commands
 
 PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stages. This section describes the status of Redis command support in PuzzleDB.
 
-### Connection commands
+### Connection Commands
 
 <table>
 <colgroup>
@@ -94,7 +94,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 </tbody>
 </table>
 
-### Generic commands
+### Generic Commands
 
 <table>
 <colgroup>
@@ -307,7 +307,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 </tbody>
 </table>
 
-### String commands
+### String Commands
 
 <table>
 <colgroup>
