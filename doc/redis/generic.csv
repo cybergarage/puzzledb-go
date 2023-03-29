@@ -1,4 +1,4 @@
-Supported,Generic Command,Redis Version,Note
+Support,Generic Command,Redis Version,Note
 -,COPY,6.2.0,
 O,DEL,1.0.0,
 -,DUMP,2.6.0,
