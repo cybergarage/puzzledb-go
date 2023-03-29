@@ -8,7 +8,7 @@ PuzzleDB supports Redis commands based on [go-redis](https://github.com/cybergar
 
 ## Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts Redis data model the PuzzleDB data model as follows:
+PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts Redis data model into the PuzzleDB data model as follows:
 
 <table>
 <colgroup>

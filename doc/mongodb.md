@@ -73,11 +73,9 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 </tbody>
 </table>
 
-# Supported Commands
+## Supported Commands
 
 PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/docs/manual/reference/command/) in stages. This section describes the status of MongoDB command support in PuzzleDB.
-
-## User Commands
 
 ### Diagnostic Commands
 
