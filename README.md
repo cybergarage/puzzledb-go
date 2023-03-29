@@ -49,3 +49,4 @@ This technology preview version has the following major limitations:
 
 - [Contribute][doc/contributing.md]
   - [Build on macOS](doc/build-on-macos.md)
+  - [Build on Ubuntu](doc/build-on-macos.md)
