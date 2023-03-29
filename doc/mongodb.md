@@ -6,6 +6,73 @@
 
 PuzzleDB supports MongoDB API based on [go-mongo](https://github.com/cybergarage/go-mongo), a database framework that makes it easy to implement MongoDB compatible servers using Go.
 
+## Data Model
+
+PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts MongoDB data model, [BSON (Binary JSON)](https://bsonspec.org/), into the PuzzleDB data model as follows:
+
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">MongoDB</th>
+<th style="text-align: left;">PuzzleDB</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>Object</p></td>
+<td style="text-align: left;"><p>map</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Array</p></td>
+<td style="text-align: left;"><p>array</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"><p>string</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>32-bit integer</p></td>
+<td style="text-align: left;"><p>int</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>64-bit integer</p></td>
+<td style="text-align: left;"><p>long</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>32-bit IEEE-754</p></td>
+<td style="text-align: left;"><p>float32</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>64-bit IEEE-754</p></td>
+<td style="text-align: left;"><p>float64</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Date</p></td>
+<td style="text-align: left;"><p>time.Time</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Timestamp</p></td>
+<td style="text-align: left;"><p>time.Time</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Null</p></td>
+<td style="text-align: left;"><p>null</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Boolean</p></td>
+<td style="text-align: left;"><p>bool</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Binary data</p></td>
+<td style="text-align: left;"><p>[]byte</p></td>
+</tr>
+</tbody>
+</table>
+
 # Supported Commands
 
 PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/docs/manual/reference/command/) in stages. This section describes the status of MongoDB command support in PuzzleDB.
