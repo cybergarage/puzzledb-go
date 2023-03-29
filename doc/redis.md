@@ -8,7 +8,7 @@ PuzzleDB supports Redis commands based on [go-redis](https://github.com/cybergar
 
 ## Supported commands
 
-PuzzleDB supports the following supported Redis commands.
+PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stages. This section describes the status of Redis command support in PuzzleDB.
 
 ### Connection commands
 
