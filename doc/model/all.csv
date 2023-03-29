@@ -1,7 +1,9 @@
 Type,PuzzleDB,Redis,MongoDB,SQL
 Collection,map,Hash,Object,COMPLEX
 ,array,List,Array,ARRAY
-String,string,String,String,VARCHAR
+,,Sets,,
+,,Sorted Sets,,
+String,string,,String,VARCHAR
 ,,,,CHAR
 Integer,tiny,,,TINYINT
 ,short,,,SMALLINT
@@ -13,4 +15,4 @@ Time,time.Time,,Date,DATE DATETIME
 ,,,Timestamp,TIME TIMESTAMP
 Special,null,,Null,NULL
 ,bool,,Boolean,BOOLEAN (TINYINT(1))
-,[]byte,,Binary data,BLOB (BYTEA)
+,[]byte,String,Binary data,BLOB (BYTEA)

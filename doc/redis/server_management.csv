@@ -1,3 +1,3 @@
-Support,Set Command,Redis Version,Note
+Support,Command,Redis Version,Note
 O,CONFIG SET,2.0.0,
 O,CONFIG GET,2.0.0,

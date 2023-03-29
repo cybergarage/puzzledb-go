@@ -1,0 +1,6 @@
+Redis,PuzzleDB
+Hash,map
+List,array
+Sets,array
+Sorted Sets,array
+String,[]byte

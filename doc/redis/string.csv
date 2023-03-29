@@ -1,4 +1,4 @@
-Support,String Command,Redis Version,Note
+Support,Command,Redis Version,Note
 O,APPEND,2.0.0,
 O,DECR,1.0.0,
 O,DECRBY,1.0.0,

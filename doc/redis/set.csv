@@ -1,4 +1,4 @@
-Support,Set Command,Redis Version,Note
+Support,Command,Redis Version,Note
 O,SADD,1.0.0,
 O,SCARD,1.0.0,
 -,SDIFF,1.0.0,
