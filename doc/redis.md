@@ -6,6 +6,45 @@
 
 PuzzleDB supports Redis commands based on [go-redis](https://github.com/cybergarage/go-redis), a database framework that makes it easy to implement Redis compatible servers using Go.
 
+## Data model
+
+PuzzleDB is a multi-data model database and the core data model is a document model. PuzzleDB converts Redis data model the PuzzleDB data model as follows:
+
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Redis</th>
+<th style="text-align: left;">PuzzleDB</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>Hash</p></td>
+<td style="text-align: left;"><p>map</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>List</p></td>
+<td style="text-align: left;"><p>array</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Sets</p></td>
+<td style="text-align: left;"><p>array</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Sorted Sets</p></td>
+<td style="text-align: left;"><p>array</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"><p>[]byte</p></td>
+</tr>
+</tbody>
+</table>
+
 ## Supported commands
 
 PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stages. This section describes the status of Redis command support in PuzzleDB.
@@ -22,7 +61,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <thead>
 <tr class="header">
 <th style="text-align: left;">Support</th>
-<th style="text-align: left;">Connection Command</th>
+<th style="text-align: left;">Command</th>
 <th style="text-align: left;">Redis Version</th>
 <th style="text-align: left;">Note</th>
 </tr>
@@ -67,7 +106,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <thead>
 <tr class="header">
 <th style="text-align: left;">Support</th>
-<th style="text-align: left;">Generic Command</th>
+<th style="text-align: left;">Command</th>
 <th style="text-align: left;">Redis Version</th>
 <th style="text-align: left;">Note</th>
 </tr>
@@ -280,7 +319,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <thead>
 <tr class="header">
 <th style="text-align: left;">Support</th>
-<th style="text-align: left;">String Command</th>
+<th style="text-align: left;">Command</th>
 <th style="text-align: left;">Redis Version</th>
 <th style="text-align: left;">Note</th>
 </tr>

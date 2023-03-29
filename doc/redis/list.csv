@@ -1,4 +1,4 @@
-Support,List Command,Redis Version,Note
+Support,Command,Redis Version,Note
 -,BLMOVE,7.0.0,
 -,BLMPOP,7.0.0,
 -,BLPOP,2.0.0,

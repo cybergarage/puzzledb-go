@@ -1,4 +1,4 @@
-Support,Sorted Set Command,Redis Version,Note
+Support,Command,Redis Version,Note
 -,BZMPOP,7.0.0,
 -,BZPOPMAX,5.0.0,
 -,BZPOPMIN,5.0.0,
