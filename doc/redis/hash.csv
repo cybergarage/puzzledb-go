@@ -1,4 +1,4 @@
-Supported,Hash Command,Redis Version,Note
+Support,Hash Command,Redis Version,Note
 O,HDEL,2.0.0,
 O,HEXISTS,2.0.0,
 O,HGET,2.0.0,

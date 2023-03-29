@@ -1,0 +1,32 @@
+image::img/logo.png[]
+
+= MongoDB
+
+PuzzleDB supports MongoDB API based on https://github.com/cybergarage/go-mongo[go-mongo], a database framework that makes it easy to implement MongoDB compatible servers using Go.
+
+= Supported Commands
+
+PuzzleDB currently supports https://www.mongodb.com/docs/manual/reference/command/[MongoDB database commands] in stages. This section describes the status of MongoDB command support in PuzzleDB.
+
+== User Commands
+
+=== Diagnostic Commands
+
+[format="csv", options="header, autowidth"]
+|====
+include::mongo/diagnostic.csv[]
+|====
+
+=== Replication Commands
+
+[format="csv", options="header, autowidth"]
+|====
+include::mongo/replication.csv[]
+|====
+
+=== Query and Write Operation Commands
+
+[format="csv", options="header, autowidth"]
+|====
+include::mongo/query.csv[]
+|====

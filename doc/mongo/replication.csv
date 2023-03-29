@@ -1,0 +1,2 @@
+Support,Replication Command,Note
+O,isMaster,Always returns true
