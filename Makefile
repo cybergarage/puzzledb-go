@@ -42,10 +42,15 @@ BINS=\
 
 all: test
 
+%.md : %.adoc
+	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc  --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook > $@
+docs := $(patsubst %.adoc,%.md,$(wildcard doc/*.adoc))
+doc: $(docs)
+
 version:
 	@pushd ${PKG_SRC_ROOT} && ./version.gen > version.go && popd
 
-format:
+format: version doc
 	gofmt -s -w ${PKG_SRC_ROOT} ${TEST_SRC_ROOT} ${BIN_SRC_ROOT}
 
 vet: format
