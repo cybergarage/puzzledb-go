@@ -2,8 +2,29 @@ image::img/logo.png[]
 
 = Redis
 
-PuzzleDB supports MongoDB API based on https://github.com/cybergarage/go-redis[go-redis], a database framework that makes it easy to implement Redis compatible servers using Go.
+PuzzleDB supports Redis commands based on https://github.com/cybergarage/go-redis[go-redis], a database framework that makes it easy to implement Redis compatible servers using Go.
 
 == Supported commands
 
 PuzzleDB supports the following supported Redis commands.
+
+=== Connection commands
+
+[format="csv", options="header, autowidth"]
+|====
+include::redis/connection.csv[]
+|====
+
+=== Generic commands
+
+[format="csv", options="header, autowidth"]
+|====
+include::redis/generic.csv[]
+|====
+
+=== String commands
+
+[format="csv", options="header, autowidth"]
+|====
+include::redis/string.csv[]
+|====
