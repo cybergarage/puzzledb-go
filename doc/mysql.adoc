@@ -4,6 +4,15 @@ image::img/logo.png[]
 
 PuzzleDB supports MySQL commands based on https://github.com/cybergarage/go-mysql[go-mysql], a database framework that makes it easy to implement MySQL compatible servers using Go.
 
+== Data Model
+
+PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts https://dev.mysql.com/doc/refman/8.0/en/data-types.html[MySQL data types] into the PuzzleDB data model as follows:
+
+[format="csv", options="header, autowidth"]
+|====
+include::model/mysql.csv[]
+|====
+
 == Supported commands
 
 PuzzleDB currently supports https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html[MySQL statements] in stages. This section describes the status of Redis command support in PuzzleDB.

@@ -1,0 +1,16 @@
+MySQL,PuzzleDB
+COMPLEX,map
+ARRAY,array
+VARCHAR,string
+CHAR,string
+TINYINT,tiny
+SMALLINT,short
+INTEGER,int
+BIGINT,long
+FLOAT,float32
+DOUBLE (REAL),float64
+DATE DATETIME,time.Time
+TIME TIMESTAMP,time.Time
+NULL,null
+BOOLEAN (TINYINT(1)),bool
+BLOB (BYTEA),[]byte
