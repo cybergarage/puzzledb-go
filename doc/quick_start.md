@@ -10,10 +10,10 @@ PuzzleDB Docker image is the easiest way; if you do not have Docker installed, g
 
 ```
 docker run -d --name puzzledb-server \
-  -p 6379:6379 \
-  -p 27017:27017 \
-  -p 3307:3307 \
-  puzzledb/puzzledb-server
+ -p 6379:6379 \
+ -p 27017:27017 \
+ -p 3307:3307 \
+ puzzledb/puzzledb-server
 ```
 
 PuzzleDB listens on three default database ports: Redis, MongoDB, and MySQL.
@@ -23,27 +23,27 @@ PuzzleDB listens on three default database ports: Redis, MongoDB, and MySQL.
 To operate PuzzleDB with the Redis protocol, use the standard Redis command [redis-cli](https://redis.io/docs/ui/cli/) as follows:
 
 ```
-%  redis-cli 
+% redis-cli 
 127.0.0.1:6379> SET mykey "Hello"
 OK
 127.0.0.1:6379> GET mykey
 "Hello"
 ```
 
-PuzzleDB currently supports the Redis commands in phases. See [Redis](doc/redis.md) for current support status.
+PuzzleDB currently supports the Redis commands in stages. See [Redis](doc/redis.md) for current support status.
 
 ## MongoDB
 
 To operate PuzzleDB with the MongoDB protocol, use the standard MongoDB shell [mongosh](https://www.mongodb.com/docs/mongodb-shell/#mongodb-binary-bin.mongosh) as follows:
 
 ```
-% mongosh   
+% mongosh  
 test> db.trainers.insertOne({name: "Ash", age: 10, city: "Pallet Town"})
 test> db.trainers.findOne({name: "Ash"})
 test> db.trainers.findOne({age: 10})
 ```
 
-PuzzleDB currently supports the MongoDB commands in phases. See [MongoDB](doc/mongodb.md) for current support status.
+PuzzleDB currently supports the MongoDB commands in stages. See [MongoDB](doc/mongodb.md) for current support status.
 
 ## MySQL
 
@@ -57,12 +57,12 @@ mysql> CREATE TABLE test (k VARCHAR(255) PRIMARY KEY, v int);
 mysql> INSERT INTO test (k, v) VALUES ('foo', 0);
 mysql> SELECT * FROM test WHERE k = 'foo';
 +------+------+
-| k    | v    |
+| k  | v  |
 +------+------+
-| foo  |    0 |
+| foo |  0 |
 +------+------+
 1 row in set (0.00 sec)
 ```
 
-PuzzleDB currently supports the MySQL commands in phases. See [MySQL](doc/mysql.md) for current support status.
+PuzzleDB currently supports the MySQL commands in stages. See [MySQL](doc/mysql.md) for current support status.
 

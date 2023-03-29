@@ -1,0 +1,9 @@
+image::img/logo.png[]
+
+= Redis
+
+PuzzleDB supports MongoDB API based on https://github.com/cybergarage/go-redis[go-redis], a database framework that makes it easy to implement Redis compatible servers using Go.
+
+== Supported commands
+
+PuzzleDB supports the following supported Redis commands.
