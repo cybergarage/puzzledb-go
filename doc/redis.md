@@ -21,7 +21,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Supported</th>
+<th style="text-align: left;">Support</th>
 <th style="text-align: left;">Connection Command</th>
 <th style="text-align: left;">Redis Version</th>
 <th style="text-align: left;">Note</th>
@@ -66,7 +66,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Supported</th>
+<th style="text-align: left;">Support</th>
 <th style="text-align: left;">Generic Command</th>
 <th style="text-align: left;">Redis Version</th>
 <th style="text-align: left;">Note</th>
@@ -279,7 +279,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Supported</th>
+<th style="text-align: left;">Support</th>
 <th style="text-align: left;">String Command</th>
 <th style="text-align: left;">Redis Version</th>
 <th style="text-align: left;">Note</th>

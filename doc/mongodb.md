@@ -22,7 +22,7 @@ PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Supported</th>
+<th style="text-align: left;">Support</th>
 <th style="text-align: left;">Diagnostic Command</th>
 <th style="text-align: left;">Note</th>
 </tr>
@@ -46,7 +46,7 @@ PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Supported</th>
+<th style="text-align: left;">Support</th>
 <th style="text-align: left;">Replication Command</th>
 <th style="text-align: left;">Note</th>
 </tr>
@@ -70,7 +70,7 @@ PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Supported</th>
+<th style="text-align: left;">Support</th>
 <th style="text-align: left;">Query Command</th>
 <th style="text-align: left;">Note</th>
 </tr>
