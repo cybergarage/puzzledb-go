@@ -44,3 +44,8 @@ This technology preview version has the following major limitations:
 - [Redis](doc/redis.md)
 - [MongoDB](doc/mongodb.md)
 - [MySQL](doc/mysql.md)
+
+# Contribute
+
+- [Contribute][doc/contributing.md]
+  - [Build on macOS](doc/build-on-macos.md)
