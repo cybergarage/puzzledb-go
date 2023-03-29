@@ -1,0 +1,8 @@
+Supported,Query Command,Note
+O,delete,
+O,find,
+-,findAndModify,
+-,getMore,
+O,insert,
+-,resetError,
+O,update,

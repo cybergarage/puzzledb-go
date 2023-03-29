@@ -10,9 +10,23 @@ PuzzleDB currently supports https://www.mongodb.com/docs/manual/reference/comman
 
 == User Commands
 
-== Aggregation Commands
+=== Diagnostic Commands
 
-== Geospatial Commands
+[format="csv", options="header, autowidth"]
+|====
+include::mongo/diagnostic.csv[]
+|====
 
-== Query and Write Operation Commands
+=== Replication Commands
 
+[format="csv", options="header, autowidth"]
+|====
+include::mongo/replication.csv[]
+|====
+
+=== Query and Write Operation Commands
+
+[format="csv", options="header, autowidth"]
+|====
+include::mongo/query.csv[]
+|====
