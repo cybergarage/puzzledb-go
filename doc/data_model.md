@@ -51,9 +51,23 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 <td style="text-align: left;"><p>ARRAY</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Sets</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Sorted Sets</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p>String</p></td>
 <td style="text-align: left;"><p>string</p></td>
-<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>String</p></td>
 <td style="text-align: left;"><p>VARCHAR</p></td>
 </tr>
@@ -137,7 +151,7 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>[]byte</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>String</p></td>
 <td style="text-align: left;"><p>Binary data</p></td>
 <td style="text-align: left;"><p>BLOB (BYTEA)</p></td>
 </tr>
