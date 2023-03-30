@@ -1,0 +1,69 @@
+image:doc/img/logo.png[doc/img/logo]
+
+image:https://img.shields.io/github/v/tag/cybergarage/puzzledb-go[GitHub
+tag (latest SemVer)]
+https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml[image:https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg[Go]]
+https://pkg.go.dev/github.com/cybergarage/puzzledb-go[image:https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg[Go
+Reference]]
+
+PuzzleDB is a high-performance, distributed, cloud-native, multi-API,
+multi-model database.
+
+= What is PuzzleDB
+
+PuzzleDB is a multi-data model database that handles key-value model,
+relational model, and document model. In addition, PuzzleDB is a
+multi-API database and is compatible with existing database protocols
+such as MySQL, Redis, and MongoDB.
+
+image:doc/img/concept.png[doc/img/concept]
+
+PuzzleDB supports existing query protocols such as MongoDB, Redia, and
+MySQL. Thus, developers can start using PuzzleDB as a scalable,
+high-performance distributed database with existing database client
+drivers without any learning curve.
+
+The name PuzzleDB comes from the ability to combine multiple modules
+such as coordinators, storages, and existing database protocol handlers
+to form a database.
+
+= Features
+
+PuzzleDB has the following features:
+
+* Support for existing query protocols:
+** Redis, MongoDB and MySQL
+* Support for multi-data models:
+** Key-value, Document and Relational.
+
+= How does PuzzleDB work?
+
+* See link:doc/quick_start.md[Quick Start] to learn about how to get
+started.
+* For architecture of PuzzleDB, see the following concept document:
+** link:doc/data_model.md[Data Model]
+** link:doc/distributed_model.md[Distributed Model]
+** link:doc/consistency_model.md[Consistency Model]
+
+= User Guides
+
+= Roadmap
+
+PuzzleDB is currently in a technical preview release. Currently,
+PuzzleDB is in the process of developing and testing a distributed
+plugin for the next release. The development roadmap for PuzzleDB is
+shown below.
+
+image:doc/img/roadmap.png[doc/img/roadmap]
+
+This technology preview version has the following major limitations:
+
+* link:doc/redis.md[Redis]
+* link:doc/mongodb.md[MongoDB]
+* link:doc/mysql.md[MySQL]
+
+= Developer Guides
+
+* link:doc/contributing.md[Contribute]
+** link:doc/build-on-macos.md[Build on macOS]
+** link:doc/build-on-macos.md[Build on Ubuntu]
