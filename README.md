@@ -33,6 +33,8 @@ PuzzleDB has the following features:
   - [Distributed Model](doc/distributed_model.md)
   - [Consistency Model](doc/consistency_model.md)
 
+# User Guides
+
 # Roadmap
 
 PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
@@ -45,8 +47,8 @@ This technology preview version has the following major limitations:
 - [MongoDB](doc/mongodb.md)
 - [MySQL](doc/mysql.md)
 
-# Contribute
+# Developer Guides
 
-- [Contribute][doc/contributing.md]
+- [Contribute](doc/contributing.md)
   - [Build on macOS](doc/build-on-macos.md)
   - [Build on Ubuntu](doc/build-on-macos.md)
