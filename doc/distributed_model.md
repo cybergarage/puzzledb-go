@@ -1,5 +1,3 @@
-![](img/logo.png)
-
 # Distributed Model
 
 PuzzleDB is a pluggable database that combines modules, and a pluggable module interface is defined based on a FoundationDB-like layering concept. PuzzleDB separates the query layer and data model from the storage layer, the lowest storage layer is defined as a simple Key-Value store like FoundationDB and early Google Spanner.
