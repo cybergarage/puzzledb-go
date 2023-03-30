@@ -28,8 +28,6 @@ PuzzleDB has the following features:
 
 # How does PuzzleDB work?
 
--   See [Quick Start](doc/quick_start.md) to learn about how to get started.
-
 -   For architecture of PuzzleDB, see the following concept document:
 
     -   [Data Model](doc/data_model.md)
@@ -40,11 +38,7 @@ PuzzleDB has the following features:
 
 # User Guides
 
-# Roadmap
-
-PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
-
-![doc/img/roadmap](doc/img/roadmap.png)
+-   See [Quick Start](doc/quick_start.md) to learn about how to get started.
 
 # Limitations
 
@@ -55,6 +49,12 @@ This technology preview version has the following major limitations:
 -   [MongoDB](doc/mongodb.md)
 
 -   [MySQL](doc/mysql.md)
+
+# Roadmap
+
+PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
+
+![doc/img/roadmap](doc/img/roadmap.png)
 
 # Developer Guides
 
