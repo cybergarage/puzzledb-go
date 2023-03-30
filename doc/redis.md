@@ -1,10 +1,12 @@
-<figure>
-<img src="img/logo.png" alt="logo" />
-</figure>
-
-# Redis
+# Redis Compatibility
 
 PuzzleDB supports Redis commands based on [go-redis](https://github.com/cybergarage/go-redis), a database framework that makes it easy to implement Redis compatible servers using Go.
+
+<figure>
+<img src="https://raw.githubusercontent.com/cybergarage/go-redis/main/doc/img/framework.png" alt="framework" />
+</figure>
+
+The [go-redis](https://github.com/cybergarage/go-redis) framework automatically handles the Redis protocol and system commands such as PING and SELECT. Therefore, PuzzleDB achieves compatibility with Redis by implementing only user commands such as SET and GET.
 
 ## Data Model
 
