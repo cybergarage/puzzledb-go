@@ -1,10 +1,12 @@
-<figure>
-<img src="img/logo.png" alt="logo" />
-</figure>
-
-# MySQL
+# MySQL Compatibility
 
 PuzzleDB supports MySQL commands based on [go-mysql](https://github.com/cybergarage/go-mysql), a database framework that makes it easy to implement MySQL compatible servers using Go.
+
+<figure>
+<img src="https://raw.githubusercontent.com/cybergarage/go-mysql/main/doc/img/framework.png" alt="framework" />
+</figure>
+
+The [go-mysql](https://github.com/cybergarage/go-mysql) framework automatically handles the MySQL protocol and system commands. Therefore, PuzzleDB achieves Redis compatibility by implementing only simply handling DDL (Data Definition Language) and DML (Data Manipulation Language) query commands.
 
 ## Data Model
 

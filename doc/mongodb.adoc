@@ -1,8 +1,10 @@
-image::img/logo.png[]
-
-= MongoDB
+= MongoDB Comptibility
 
 PuzzleDB supports MongoDB API based on https://github.com/cybergarage/go-mongo[go-mongo], a database framework that makes it easy to implement MongoDB compatible servers using Go.
+
+image::https://raw.githubusercontent.com/cybergarage/go-mongo/master/doc/img/framework.png[]
+
+The https://github.com/cybergarage/go-mongo[go-mongo] framework automatically handles the MongoDB protocol and system commands. Therefore, PuzzleDB achieves MongoDB compatibility by implementing only user query commands.
 
 == Data Model
 
