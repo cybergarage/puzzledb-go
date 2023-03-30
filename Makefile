@@ -43,10 +43,11 @@ BINS=\
 all: test
 
 %.md : %.adoc
-	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc  --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook > $@
+	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
 docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc))
 doc: $(docs) README.md
 	mv README_.md README.md
+	# sed -i '' '/^$$/d' README.md
 
 version:
 	@pushd ${PKG_SRC_ROOT} && ./version.gen > version.go && popd
