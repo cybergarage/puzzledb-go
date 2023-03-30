@@ -46,6 +46,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ![doc/img/roadmap](doc/img/roadmap.png)
 
+# Limitations
+
 This technology preview version has the following major limitations:
 
 -   [Redis](doc/redis.md)
