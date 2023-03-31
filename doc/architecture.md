@@ -8,7 +8,7 @@ PuzzleDB defines the coordinator and storage function interfaces to run as stand
 
 ## Plug-In Concepts
 
-PuzzleDB defines a base plug-in interface for the pluggable component, and each plug-in interface is defined in PuzzleDB based on the following concepts.
+PuzzleDB defines a core plug-in interface and basic component plug-in interfaces such as query, storage, and coordinator plug-in components based on the following concepts.
 
 ### Query Interface
 
