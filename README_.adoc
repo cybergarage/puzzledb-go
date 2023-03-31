@@ -10,7 +10,7 @@ PuzzleDB is a high-performance, distributed, cloud-native, multi-API, multi-mode
 
 = Overview
 
-* link:doc/welcome.md[What is PuzzleDB]
+* link:doc/whatis.md[What is PuzzleDB]
 
 = How does PuzzleDB work?
 
