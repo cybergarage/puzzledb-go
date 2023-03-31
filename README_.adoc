@@ -8,6 +8,8 @@ Reference]]
 
 PuzzleDB is a high-performance, distributed, cloud-native, multi-API, multi-model database.
 
+include::doc/whatis.adoc[]
+
 = Overview
 
 * link:doc/whatis.md[What is PuzzleDB]
