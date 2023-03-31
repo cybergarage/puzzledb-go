@@ -5,7 +5,7 @@ relational model, and document model. In addition, PuzzleDB is a
 multi-API database and is compatible with existing database protocols
 such as MySQL, Redis, and MongoDB.
 
-image:https://raw.githubusercontent.com/cybergarage/puzzledb-go/main/doc/img/consistency_model.png[]
+image:https://raw.githubusercontent.com/cybergarage/puzzledb-go/main/doc/img/concept.png[]
 
 PuzzleDB supports existing query protocols such as MongoDB, Redia, and
 MySQL. Thus, developers can start using PuzzleDB as a scalable,
