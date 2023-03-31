@@ -52,7 +52,7 @@ doc: $(docs)
 version:
 	@pushd ${PKG_SRC_ROOT} && ./version.gen > version.go && popd
 
-format: version doc
+format: version
 	gofmt -s -w ${PKG_SRC_ROOT} ${TEST_SRC_ROOT} ${BIN_SRC_ROOT}
 
 vet: format
