@@ -39,8 +39,8 @@ PuzzleDB has the following features:
 = How does PuzzleDB work?
 
 * For architecture of PuzzleDB, see the following concept document:
+** link:doc/architecture.md[Architecture]
 ** link:doc/data_model.md[Data Model]
-** link:doc/distributed_model.md[Distributed Model]
 ** link:doc/consistency_model.md[Consistency Model]
 
 = User Guides

@@ -30,9 +30,9 @@ PuzzleDB has the following features:
 
 -   For architecture of PuzzleDB, see the following concept document:
 
-    -   [Data Model](doc/data_model.md)
+    -   [Architecture](doc/architecture.md)
 
-    -   [Distributed Model](doc/distributed_model.md)
+    -   [Data Model](doc/data_model.md)
 
     -   [Consistency Model](doc/consistency_model.md)
 
