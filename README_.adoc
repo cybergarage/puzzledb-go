@@ -10,6 +10,8 @@ PuzzleDB is a high-performance, distributed, cloud-native, multi-API, multi-mode
 
 include::doc/whatis.adoc[]
 
+include::doc/roadmap.adoc[]
+
 = Overview
 
 * link:doc/whatis.md[What is PuzzleDB]
@@ -33,14 +35,6 @@ This technology preview version has the following major limitations:
 * link:doc/redis.md[Redis]
 * link:doc/mongodb.md[MongoDB]
 * link:doc/mysql.md[MySQL]
-
-= Roadmap
-
-PuzzleDB is currently in a technical preview release. Currently,
-PuzzleDB is in the process of developing and testing a distributed
-plugin for the next release. The development roadmap for PuzzleDB is shown below.
-
-image:doc/img/roadmap.png[doc/img/roadmap]
 
 = Developer Guides
 
