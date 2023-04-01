@@ -73,7 +73,10 @@ build:
 install:
 	go install -v -gcflags=${GCFLAGS} ${BINS}
 
-run:
+run: build
+	./${BIN_SERVER}
+
+rund: image
 	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3307:3307 cybergarage/puzzledb:${PKG_VER}
 
 clean:
