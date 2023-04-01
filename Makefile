@@ -32,6 +32,7 @@ TEST_PKG=${MODULE_ROOT}/${TEST_SRC_ROOT}
 BIN_SRC_ROOT=bin
 BIN_ID=${MODULE_ROOT}/${BIN_SRC_ROOT}
 BIN_SERVER=${PKG_NAME}-server
+BIN_DOCKER_TAG=cybergarage/${PKG_NAME}:${PKG_VER}
 BIN_SERVER_ID=${BIN_ID}/${BIN_SERVER}
 BIN_SRCS=\
         ${BIN_SRC_ROOT}/${BIN_SERVER}
@@ -65,7 +66,7 @@ test: lint
 	go test -v -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
 image:
-	docker image build -tcybergarage/puzzledb:${PKG_VER} .
+	docker image build -t${BIN_DOCKER_TAG} .
 
 build:
 	go build -v -gcflags=${GCFLAGS} ${BINS}
@@ -77,7 +78,7 @@ run: build
 	./${BIN_SERVER}
 
 rund: image
-	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3307:3307 cybergarage/puzzledb:${PKG_VER}
+	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3307:3307 ${BIN_DOCKER_TAG}
 
 clean:
 	go clean -i ${PKG}
