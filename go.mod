@@ -6,9 +6,9 @@ require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20221026173525-97cc643cef69
 	github.com/cybergarage/go-cbor v1.2.0
 	github.com/cybergarage/go-logger v1.3.3
-	github.com/cybergarage/go-mongo v0.9.2
-	github.com/cybergarage/go-mysql v0.9.2
-	github.com/cybergarage/go-redis v1.3.0
+	github.com/cybergarage/go-mongo v0.9.3
+	github.com/cybergarage/go-mysql v0.9.3
+	github.com/cybergarage/go-redis v1.3.1
 	github.com/cybergarage/go-sqltest v0.9.2
 	github.com/hashicorp/go-memdb v1.3.2
 	github.com/spf13/viper v1.15.0
