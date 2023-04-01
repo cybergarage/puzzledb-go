@@ -42,7 +42,7 @@ import (
 )
 
 const (
-	prgName = " puzzledb-server"
+	prgName = "puzzledb"
 )
 
 func main() {
@@ -63,7 +63,7 @@ func main() {
 		}()
 	}
 
-	log.Infof("%s %s", prgName, puzzledb.Version)
+	log.Infof("%s/%s", prgName, puzzledb.Version)
 
 	var server *puzzledb.Server
 
