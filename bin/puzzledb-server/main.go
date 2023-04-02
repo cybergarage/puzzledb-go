@@ -73,7 +73,6 @@ func main() {
 		log.Errorf("%s couldn't be started (%s)", puzzledb.ProductName, err.Error())
 		os.Exit(1)
 	}
-	log.Infof("%s (PID:%d) started", puzzledb.ProductName, os.Getpid())
 
 	sigCh := make(chan os.Signal, 1)
 
@@ -107,8 +106,6 @@ func main() {
 	}()
 
 	code := <-exitCh
-
-	log.Infof("%s (PID:%d) terminated", puzzledb.ProductName, os.Getpid())
 
 	os.Exit(code)
 }

@@ -15,6 +15,9 @@
 package puzzledb
 
 import (
+	"os"
+
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/document/cbor"
@@ -61,6 +64,7 @@ func (server *Server) Start() error {
 	if err := server.Services.Start(); err != nil {
 		return errors.Wrap(err)
 	}
+	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 	return nil
 }
 
@@ -69,6 +73,7 @@ func (server *Server) Stop() error {
 	if err := server.Services.Stop(); err != nil {
 		return errors.Wrap(err)
 	}
+	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
 	return nil
 }
 
