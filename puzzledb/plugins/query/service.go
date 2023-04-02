@@ -36,6 +36,11 @@ func NewService() *BaseService {
 	return server
 }
 
+// Type returns the plug-in service type.
+func (service *BaseService) Type() plugins.ServiceType {
+	return plugins.QueryService
+}
+
 func (service *BaseService) SetStore(store store.Store) {
 	service.store = store
 }

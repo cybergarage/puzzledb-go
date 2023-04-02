@@ -16,7 +16,6 @@ package mongo
 
 import (
 	"github.com/cybergarage/go-mongo/mongo"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -39,11 +38,6 @@ func NewService() *Service {
 	server.SetUserCommandExecutor(server)
 
 	return server
-}
-
-// Type returns the plug-in service type.
-func (service *Service) Type() plugins.ServiceType {
-	return plugins.QueryService
 }
 
 // Name returns the plug-in service name.

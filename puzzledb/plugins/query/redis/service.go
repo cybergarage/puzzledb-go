@@ -38,6 +38,11 @@ func NewService() query.Service {
 	return service
 }
 
+// Name returns the plug-in service name.
+func (service *Service) Name() string {
+	return "redis"
+}
+
 // Start starts the service.
 func (service *Service) Start() error {
 	if err := service.Server.Start(); err != nil {
