@@ -18,8 +18,10 @@ package plugins
 type ServiceType uint8
 
 const (
+	// ConfigService represents a configuration service.
+	ConfigService = iota
 	// DocumentService represents a serializer service.
-	DocumentService ServiceType = iota
+	DocumentService ServiceType
 	// QueryService represents a query service.
 	QueryService
 	// DocumentStoreService represents a document store service.
@@ -34,6 +36,8 @@ const (
 
 func (t ServiceType) String() string {
 	switch t {
+	case ConfigService:
+		return "config"
 	case DocumentService:
 		return "document"
 	case QueryService:
