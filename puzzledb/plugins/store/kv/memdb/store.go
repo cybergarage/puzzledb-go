@@ -14,7 +14,10 @@
 
 package memdb
 
-import store "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	store "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+)
 
 // Store represents a Memdb store service instance.
 type Store struct {
@@ -28,12 +31,22 @@ func NewStore() store.Service {
 	}
 }
 
+// Type returns the plug-in service type.
+func (store *Store) Type() plugins.ServiceType {
+	return plugins.KvStoreService
+}
+
+// Name returns the plug-in service name.
+func (store *Store) Name() string {
+	return "memdb"
+}
+
 // Start starts this memdb.
-func (db *Store) Start() error {
+func (store *Store) Start() error {
 	return nil
 }
 
 // Stop stops this memdb.
-func (db Store) Stop() error {
+func (store Store) Stop() error {
 	return nil
 }
