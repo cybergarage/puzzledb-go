@@ -41,10 +41,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb"
 )
 
-const (
-	prgName = "puzzledb"
-)
-
 func main() {
 	isDebugEnabled := flag.Bool("d", false, "enable debugging log output")
 	isProfileEnabled := flag.Bool("p", false, "enable profiling server")
@@ -63,21 +59,21 @@ func main() {
 		}()
 	}
 
-	log.Infof("%s/%s", prgName, puzzledb.Version)
+	log.Infof("%s/%s", puzzledb.ProductName, puzzledb.Version)
 
 	var server *puzzledb.Server
 
 	conf, err := puzzledb.NewConfigWithPath(".")
 	if err == nil {
-		log.Infof("%s couldn't load the configuration (%s)", prgName, err.Error())
+		log.Infof("%s couldn't load the configuration (%s)", puzzledb.ProductName, err.Error())
 	}
 
 	server = puzzledb.NewServerWithConfig(conf)
 	if err := server.Start(); err != nil {
-		log.Errorf("%s couldn't be started (%s)", prgName, err.Error())
+		log.Errorf("%s couldn't be started (%s)", puzzledb.ProductName, err.Error())
 		os.Exit(1)
 	}
-	log.Infof("%s (PID:%d) started", prgName, os.Getpid())
+	log.Infof("%s (PID:%d) started", puzzledb.ProductName, os.Getpid())
 
 	sigCh := make(chan os.Signal, 1)
 
@@ -96,13 +92,13 @@ func main() {
 			case syscall.SIGHUP:
 				log.Infof("caught %s, restarting...", s.String())
 				if err := server.Restart(); err != nil {
-					log.Errorf("%s couldn't be restarted (%s)", prgName, err.Error())
+					log.Errorf("%s couldn't be restarted (%s)", puzzledb.ProductName, err.Error())
 					os.Exit(1)
 				}
 			case syscall.SIGINT, syscall.SIGTERM:
 				log.Infof("caught %s, terminating...", s.String())
 				if err := server.Stop(); err != nil {
-					log.Errorf("%s couldn't be terminated (%s)", prgName, err.Error())
+					log.Errorf("%s couldn't be terminated (%s)", puzzledb.ProductName, err.Error())
 					os.Exit(1)
 				}
 				exitCh <- 0
@@ -112,7 +108,7 @@ func main() {
 
 	code := <-exitCh
 
-	log.Infof("%s (PID:%d) terminated", prgName, os.Getpid())
+	log.Infof("%s (PID:%d) terminated", puzzledb.ProductName, os.Getpid())
 
 	os.Exit(code)
 }

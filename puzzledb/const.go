@@ -15,5 +15,6 @@
 package puzzledb
 
 const (
+	// ProductName is the product name.
 	ProductName = "puzzledb"
 )
