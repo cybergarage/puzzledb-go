@@ -16,6 +16,7 @@ package store
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -32,8 +33,19 @@ func NewStoreWithKvStore(kvs kv.Service) *Store {
 	}
 }
 
+// SetSerializer sets the serializer.
 func (store *Store) SetSerializer(serializer document.Serializer) {
 	store.Serializer = serializer
+}
+
+// Type returns the plug-in service type.
+func (store *Store) Type() plugins.ServiceType {
+	return plugins.DocumentStoreService
+}
+
+// Name returns the plug-in service name.
+func (store *Store) Name() string {
+	return "document"
 }
 
 // CreateDatabase creates a new database.
