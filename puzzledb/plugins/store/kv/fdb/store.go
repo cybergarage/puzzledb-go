@@ -33,13 +33,13 @@ func NewStore() store.Service {
 	return &Store{} //nolint:all
 }
 
-// Type returns the plug-in service type.
-func (store *Store) Type() plugins.ServiceType {
+// ServiceType returns the plug-in service type.
+func (store *Store) ServiceType() plugins.ServiceType {
 	return plugins.KvStoreService
 }
 
-// Name returns the plug-in service name.
-func (store *Store) Name() string {
+// ServiceName returns the plug-in service name.
+func (store *Store) ServiceName() string {
 	return "fdb"
 }
 

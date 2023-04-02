@@ -31,13 +31,13 @@ func NewCoordinator() core.CoordinatorService {
 	}
 }
 
-// Type returns the plug-in service type.
-func (coord *etcdCoordinator) Type() plugins.ServiceType {
+// ServiceType returns the plug-in service type.
+func (coord *etcdCoordinator) ServiceType() plugins.ServiceType {
 	return plugins.CoordinatorService
 }
 
-// Name returns the plug-in service name.
-func (coord *etcdCoordinator) Name() string {
+// ServiceName returns the plug-in service name.
+func (coord *etcdCoordinator) ServiceName() string {
 	return "etcd"
 }
 

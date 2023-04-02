@@ -19,6 +19,7 @@ import (
 
 	"github.com/cybergarage/go-cbor/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 // Serializer represents a CBOR erializer.
@@ -28,6 +29,16 @@ type Serializer struct {
 // NewSerializer returns a new CBOR erializer instance.
 func NewSerializer() *Serializer {
 	return &Serializer{}
+}
+
+// ServiceType returns the plug-in service type.
+func (s *Serializer) ServiceType() plugins.ServiceType {
+	return plugins.DocumentService
+}
+
+// ServiceName returns the plug-in service name.
+func (s *Serializer) ServiceName() string {
+	return "cbor"
 }
 
 // Encode writes the specified object to the specified writer.

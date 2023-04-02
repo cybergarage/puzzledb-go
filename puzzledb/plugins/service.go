@@ -16,10 +16,10 @@ package plugins
 
 // Service represents a plugin service.
 type Service interface {
-	// Type returns the service type.
-	Type() ServiceType
-	// Name returns the service name.
-	Name() string
+	// ServiceType returns the service type.
+	ServiceType() ServiceType
+	// ServiceName returns the service name.
+	ServiceName() string
 	// Start starts the service
 	Start() error
 	// Stop stops the service

@@ -38,8 +38,8 @@ func NewService() query.Service {
 	return srv
 }
 
-// Name returns the plug-in service name.
-func (service *Service) Name() string {
+// ServiceName returns the plug-in service name.
+func (service *Service) ServiceName() string {
 	return "mysql"
 }
 
