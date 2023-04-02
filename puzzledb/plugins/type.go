@@ -35,18 +35,18 @@ const (
 func (t ServiceType) String() string {
 	switch t {
 	case DocumentService:
-		return "Document"
+		return "document"
 	case QueryService:
-		return "Query"
+		return "query"
 	case DocumentStoreService:
-		return "DocumentStore"
+		return "document store"
 	case KvStoreService:
-		return "KvStore"
+		return "key-value store"
 	case CoordinatorService:
-		return "Coordinator"
+		return "coordinator"
 	case ExtendService:
-		return "Extend"
+		return "extend"
 	default:
-		return "Unknown"
+		return "unknown"
 	}
 }
