@@ -14,6 +14,10 @@
 
 package plugins
 
+import (
+	"github.com/cybergarage/go-logger/log"
+)
+
 // Service represents a plugin services.
 type Services struct {
 	services []Service
@@ -33,6 +37,7 @@ func (srvs *Services) Add(srv Service) {
 
 // Start starts all services.
 func (srvs *Services) Start() error {
+	log.Infof("plug-ins loading...")
 	for _, srv := range srvs.services {
 		if err := srv.Start(); err != nil {
 			if err := srvs.Stop(); err != nil {
@@ -41,16 +46,19 @@ func (srvs *Services) Start() error {
 			return err
 		}
 	}
+	log.Infof("plug-ins loaded")
 	return nil
 }
 
 // Stop stops all services.
 func (srvs Services) Stop() error {
+	log.Infof("plug-ins terminating...")
 	var lastErr error
 	for _, srv := range srvs.services {
 		if err := srv.Stop(); err != nil {
 			lastErr = err
 		}
 	}
+	log.Infof("plug-ins terminated")
 	return lastErr
 }
