@@ -16,6 +16,7 @@ package fdb
 
 import (
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -30,6 +31,16 @@ type Store struct {
 // New returns a new memdb store instance.
 func NewStore() store.Service {
 	return &Store{} //nolint:all
+}
+
+// Type returns the plug-in service type.
+func (store *Store) Type() plugins.ServiceType {
+	return plugins.KvStoreService
+}
+
+// Name returns the plug-in service name.
+func (store *Store) Name() string {
+	return "fdb"
 }
 
 // CreateDatabase creates a new database.
