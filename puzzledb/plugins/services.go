@@ -45,6 +45,7 @@ func (srvs *Services) Start() error {
 			}
 			return err
 		}
+		log.Infof("%s (%s) loaded", srv.ServiceName(), srv.ServiceType().String())
 	}
 	log.Infof("plug-ins loaded")
 	return nil
