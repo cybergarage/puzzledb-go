@@ -41,13 +41,13 @@ func NewCoordinator() core.CoordinatorService {
 	}
 }
 
-// Type returns the plug-in service type.
-func (coord *memdbCoordinator) Type() plugins.ServiceType {
+// ServiceType returns the plug-in service type.
+func (coord *memdbCoordinator) ServiceType() plugins.ServiceType {
 	return plugins.CoordinatorService
 }
 
-// Name returns the plug-in service name.
-func (coord *memdbCoordinator) Name() string {
+// ServiceName returns the plug-in service name.
+func (coord *memdbCoordinator) ServiceName() string {
 	return "memdb"
 }
 

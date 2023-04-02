@@ -36,8 +36,8 @@ func NewService() *BaseService {
 	return server
 }
 
-// Type returns the plug-in service type.
-func (service *BaseService) Type() plugins.ServiceType {
+// ServiceType returns the plug-in service type.
+func (service *BaseService) ServiceType() plugins.ServiceType {
 	return plugins.QueryService
 }
 
