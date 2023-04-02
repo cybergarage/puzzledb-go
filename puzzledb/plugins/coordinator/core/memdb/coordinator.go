@@ -16,6 +16,7 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 	"github.com/hashicorp/go-memdb"
 )
@@ -38,6 +39,16 @@ func NewCoordinator() core.CoordinatorService {
 		BaseCoordinator: core.NewBaseCoordinator(),
 		MemDB:           nil,
 	}
+}
+
+// Type returns the plug-in service type.
+func (coord *memdbCoordinator) Type() plugins.ServiceType {
+	return plugins.CoordinatorService
+}
+
+// Name returns the plug-in service name.
+func (coord *memdbCoordinator) Name() string {
+	return "memdb"
 }
 
 func (coord *memdbCoordinator) Transact() (coordinator.Transaction, error) {
