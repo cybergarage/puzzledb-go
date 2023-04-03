@@ -29,7 +29,7 @@ func TestService(t *testing.T) {
 		return
 	}
 
-	mongotest.ServerTest(t)
+	mongotest.RunOfficialClientTest(t)
 
 	err = server.Stop()
 	if err != nil {
