@@ -32,6 +32,19 @@ const (
 	ExtendService
 )
 
+// ServiceTypes returns all service types.
+func ServiceTypes() []ServiceType {
+	return []ServiceType{
+		DocumentService,
+		QueryService,
+		DocumentStoreService,
+		KvStoreService,
+		CoordinatorService,
+		ExtendService,
+	}
+}
+
+// String returns a string representation of the service type.
 func (t ServiceType) String() string {
 	switch t {
 	case DocumentService:
