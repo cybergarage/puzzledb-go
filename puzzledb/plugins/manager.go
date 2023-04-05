@@ -77,7 +77,6 @@ func (mgr Manager) Stop() error {
 // String returns a string representation of the plug-in manager.
 func (mgr *Manager) String() string {
 	var s string
-	s += "plug-ins\n"
 	for _, servieType := range ServiceTypes() {
 		s += fmt.Sprintf("- %s\n", servieType.String())
 		for _, service := range mgr.services {
@@ -86,5 +85,5 @@ func (mgr *Manager) String() string {
 			}
 		}
 	}
-	return s
+	return strings.TrimSuffix(s, "\n")
 }

@@ -52,9 +52,9 @@ func (t ServiceType) String() string {
 	case QueryService:
 		return "query"
 	case DocumentStoreService:
-		return "document store"
+		return "store (document)"
 	case KvStoreService:
-		return "key-value store"
+		return "store (key-value)"
 	case CoordinatorService:
 		return "coordinator"
 	case ExtendService:
