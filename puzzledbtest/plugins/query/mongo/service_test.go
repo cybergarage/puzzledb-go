@@ -17,6 +17,7 @@ package mongo
 import (
 	"testing"
 
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mongo/mongotest"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
@@ -29,7 +30,26 @@ func TestService(t *testing.T) {
 		return
 	}
 
-	mongotest.RunOfficialClientTest(t)
+	mongotest.RunClientTest(t)
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestEmbedSuite(t *testing.T) {
+	log.SetStdoutDebugEnbled(true)
+
+	server := puzzledbtest.NewServer()
+	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	mongotest.RunEmbedSuite(t)
 
 	err = server.Stop()
 	if err != nil {

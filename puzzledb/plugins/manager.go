@@ -15,62 +15,76 @@
 package plugins
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/cybergarage/go-logger/log"
 )
 
-// Service represents a plugin services.
-type Services struct {
+// Manager represents a plug-in manager.
+type Manager struct {
 	services []Service
 }
 
-// NewServices returns a new services instance.
-func NewServices() *Services {
-	return &Services{
+// NewManager returns a plug-in manager instance.
+func NewManager() *Manager {
+	return &Manager{
 		services: []Service{},
 	}
 }
 
 // Add adds a service.
-func (srvs *Services) Add(srv Service) {
-	srvs.services = append(srvs.services, srv)
+func (mgr *Manager) Add(srv Service) {
+	mgr.services = append(mgr.services, srv)
 }
 
 // Start starts all services.
-func (srvs *Services) Start() error {
+func (mgr *Manager) Start() error {
 	log.Infof("plug-ins loading...")
-	for _, srv := range srvs.services {
+
+	for _, srv := range mgr.services {
 		if err := srv.Start(); err != nil {
-			if err := srvs.Stop(); err != nil {
+			if err := mgr.Stop(); err != nil {
 				return err
 			}
 			return err
 		}
 		log.Infof("%s (%s) loaded", srv.ServiceName(), srv.ServiceType().String())
 	}
+
 	log.Infof("plug-ins loaded")
 
-	log.Infof("plug-ins")
-	for _, servieType := range ServiceTypes() {
-		log.Infof("- %s", servieType.String())
-		for _, service := range srvs.services {
-			if service.ServiceType() == servieType {
-				log.Infof("-- %s", service.ServiceName())
-			}
-		}
+	for _, s := range strings.Split(mgr.String(), "\n") {
+		log.Infof("%s", s)
 	}
 
 	return nil
 }
 
 // Stop stops all services.
-func (srvs Services) Stop() error {
+func (mgr Manager) Stop() error {
 	log.Infof("plug-ins terminating...")
 	var lastErr error
-	for _, srv := range srvs.services {
+	for _, srv := range mgr.services {
 		if err := srv.Stop(); err != nil {
 			lastErr = err
 		}
 	}
 	log.Infof("plug-ins terminated")
 	return lastErr
+}
+
+// String returns a string representation of the plug-in manager.
+func (mgr *Manager) String() string {
+	var s string
+	s += "plug-ins\n"
+	for _, servieType := range ServiceTypes() {
+		s += fmt.Sprintf("- %s\n", servieType.String())
+		for _, service := range mgr.services {
+			if service.ServiceType() == servieType {
+				s += fmt.Sprintf("-- %s\n", service.ServiceName())
+			}
+		}
+	}
+	return s
 }

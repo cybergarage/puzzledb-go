@@ -32,14 +32,14 @@ import (
 // Server represents a server instance.
 type Server struct {
 	*ServerConfig
-	*plugins.Services
+	*plugins.Manager
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
 		ServerConfig: nil,
-		Services:     plugins.NewServices(),
+		Manager:      plugins.NewManager(),
 	}
 
 	server.LoadPlugins()
@@ -61,7 +61,7 @@ func (server *Server) SetConfig(config Config) {
 
 // Start starts the server.
 func (server *Server) Start() error {
-	if err := server.Services.Start(); err != nil {
+	if err := server.Manager.Start(); err != nil {
 		return errors.Wrap(err)
 	}
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
@@ -70,7 +70,7 @@ func (server *Server) Start() error {
 
 // Stop stops the server.
 func (server *Server) Stop() error {
-	if err := server.Services.Stop(); err != nil {
+	if err := server.Manager.Stop(); err != nil {
 		return errors.Wrap(err)
 	}
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
@@ -107,6 +107,6 @@ func (server *Server) LoadPlugins() {
 	}
 
 	for _, service := range services {
-		server.Services.Add(service)
+		server.Manager.Add(service)
 	}
 }
