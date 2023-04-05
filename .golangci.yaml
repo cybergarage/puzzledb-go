@@ -32,3 +32,4 @@ linters:
     - varcheck
     - interfacebloat
     - nolintlint
+    - nestif
