@@ -33,3 +33,6 @@ linters:
     - interfacebloat
     - nolintlint
     - nestif
+    - scopelint
+    - maligned
+    - nosnakecase
