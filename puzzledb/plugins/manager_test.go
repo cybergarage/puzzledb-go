@@ -19,7 +19,7 @@ import (
 )
 
 func TestNewService(t *testing.T) {
-	srvs := NewServices()
+	srvs := NewManager()
 	if err := srvs.Start(); err != nil {
 		t.Error(err)
 	}

@@ -22,6 +22,10 @@ import (
 	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
+func (service *Service) createDocumentAllKey(txn store.Transaction, database string, collection string) document.Key {
+	return document.NewKeyWith(database, collection, "", "")
+}
+
 func (service *Service) createDocumentKey(txn store.Transaction, database string, collection string, key string, val any) document.Key {
 	return document.NewKeyWith(database, collection, key, val)
 }
@@ -146,35 +150,48 @@ func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document,
 
 func (service *Service) findDocumentObjects(txn store.Transaction, q *mongo.Query) ([]document.Object, error) {
 	matchedDocs := []document.Object{}
-	for _, cond := range q.GetConditions() {
-		condElems, err := cond.Elements()
-		if err != nil {
-			return nil, mongo.NewQueryError(q)
-		}
-		for _, condElem := range condElems {
-			key := condElem.Key()
-			bsonVal := condElem.Value()
-			val, err := EncodeBSONValue(bsonVal)
+	if q.HasConditions() {
+		// Finds the documents by the conditions
+		for _, cond := range q.GetConditions() {
+			condElems, err := cond.Elements()
 			if err != nil {
-				return nil, err
+				return nil, mongo.NewQueryError(q)
 			}
-			idxKey := service.createDocumentKey(txn, q.Database, q.Collection, key, val)
-			var objs []document.Object
-			if isPrimaryKey(key) {
-				rs, err := txn.FindDocuments(idxKey)
+			for _, condElem := range condElems {
+				key := condElem.Key()
+				bsonVal := condElem.Value()
+				val, err := EncodeBSONValue(bsonVal)
 				if err != nil {
 					return nil, err
 				}
-				objs = rs.Objects()
-			} else {
-				rs, err := txn.FindDocumentsByIndex(idxKey)
-				if err != nil {
-					return nil, err
+				idxKey := service.createDocumentKey(txn, q.Database, q.Collection, key, val)
+				var objs []document.Object
+				if isPrimaryKey(key) {
+					rs, err := txn.FindDocuments(idxKey)
+					if err != nil {
+						return nil, err
+					}
+					objs = rs.Objects()
+				} else {
+					rs, err := txn.FindDocumentsByIndex(idxKey)
+					if err != nil {
+						return nil, err
+					}
+					objs = rs.Objects()
 				}
-				objs = rs.Objects()
+				matchedDocs = append(matchedDocs, objs...)
 			}
-			matchedDocs = append(matchedDocs, objs...)
 		}
+	} else {
+		// Finds all documents
+		idxKey := service.createDocumentAllKey(txn, q.Database, q.Collection)
+		var objs []document.Object
+		rs, err := txn.FindDocuments(idxKey)
+		if err != nil {
+			return nil, err
+		}
+		objs = rs.Objects()
+		matchedDocs = append(matchedDocs, objs...)
 	}
 	return matchedDocs, nil
 }
