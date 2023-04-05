@@ -92,7 +92,10 @@ func (server *Server) LoadPlugins() {
 	seralizer := cbor.NewSerializer()
 	services = append(services, seralizer)
 
-	store := store.NewStoreWithKvStore(memdb.NewStore())
+	kvStore := memdb.NewStore()
+	services = append(services, kvStore)
+
+	store := store.NewStoreWithKvStore(kvStore)
 	store.SetSerializer(seralizer)
 	services = append(services, store)
 
