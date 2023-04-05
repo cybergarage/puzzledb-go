@@ -48,6 +48,17 @@ func (srvs *Services) Start() error {
 		log.Infof("%s (%s) loaded", srv.ServiceName(), srv.ServiceType().String())
 	}
 	log.Infof("plug-ins loaded")
+
+	log.Infof("plug-ins")
+	for _, servieType := range ServiceTypes() {
+		log.Infof("- %s", servieType.String())
+		for _, service := range srvs.services {
+			if service.ServiceType() == servieType {
+				log.Infof("-- %s", service.ServiceName())
+			}
+		}
+	}
+
 	return nil
 }
 
