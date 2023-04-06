@@ -31,8 +31,11 @@ func NewServer() *Server {
 		Host:   LocalHost,
 	}
 
-	conf, _ := puzzledb.NewConfigWithPath("../config")
-	server.Server.SetConfig(conf)
+	conf, err := puzzledb.NewConfigWithString(puzzledbConf)
+	if err != nil {
+		panic(err)
+	}
+	server.SetConfig(conf)
 
 	return server
 }
