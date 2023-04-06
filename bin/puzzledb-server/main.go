@@ -59,8 +59,6 @@ func main() {
 		}()
 	}
 
-	log.Infof("%s/%s", puzzledb.ProductName, puzzledb.Version)
-
 	var server *puzzledb.Server
 
 	conf, err := puzzledb.NewConfigWithPath(".")
