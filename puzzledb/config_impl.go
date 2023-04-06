@@ -15,6 +15,7 @@
 package puzzledb
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 
@@ -46,6 +47,15 @@ func NewConfigWithPath(path string) (Config, error) {
 	viper.AddConfigPath(path)
 	err := viper.ReadInConfig()
 	if err != nil {
+		return nil, err
+	}
+	return conf, nil
+}
+
+// NewConfigWithString returns a new configuration with the specified string.
+func NewConfigWithString(config string) (Config, error) {
+	conf := newConfig()
+	if err := viper.ReadConfig(bytes.NewBuffer([]byte(config))); err != nil {
 		return nil, err
 	}
 	return conf, nil
