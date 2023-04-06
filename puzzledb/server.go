@@ -126,7 +126,5 @@ func (server *Server) LoadPlugins() {
 		services = append(services, queryService)
 	}
 
-	for _, service := range services {
-		server.Manager.Add(service)
-	}
+	server.Manager.Reload(services)
 }
