@@ -26,6 +26,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
 )
 
@@ -92,9 +94,20 @@ func (server *Server) LoadPlugins() {
 	seralizer := cbor.NewSerializer()
 	services = append(services, seralizer)
 
-	kvStore := memdb.NewStore()
-	services = append(services, kvStore)
+	kvStores := []kv.Service{
+		memdb.NewStore(),
+		fdb.NewStore(),
+	}
+	for _, kvStore := range kvStores {
+		services = append(services, kvStore)
+	}
 
+	// coordServices := []coordinator.Service{}
+	// for _, coordService := range coordServices {
+	// 	services = append(services, coordService)
+	// }
+
+	kvStore := kvStores[0]
 	store := store.NewStoreWithKvStore(kvStore)
 	store.SetSerializer(seralizer)
 	services = append(services, store)
