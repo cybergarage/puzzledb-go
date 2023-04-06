@@ -30,6 +30,10 @@ func NewServer() *Server {
 		Server: puzzledb.NewServer(),
 		Host:   LocalHost,
 	}
+
+	conf, _ := puzzledb.NewConfigWithPath("../config")
+	server.Server.SetConfig(conf)
+
 	return server
 }
 
