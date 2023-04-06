@@ -180,3 +180,17 @@ PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/
 </tr>
 </tbody>
 </table>
+
+## Indexing
+
+Currently, PuzzleDB automatically indexes all sigle fields of inserted and updated documents by default, as CosmosDB does. In the future, PuzzleDB will support indexing of only the specified fields like MongoDB or more smart indexing like CosmosDB.
+
+## References
+
+-   [Conceptual whitepapers - Azure Cosmos DB | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers)
+
+-   [Azure Cosmos DB indexing policies | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/index-policy)
+
+-   [Schema-Agnostic Indexing with Azure DocumentDB](https://www.microsoft.com/en-us/research/publication/schema-agnostic-indexing-azure-documentdb/)
+
+-   [Manage indexing in Azure Cosmos DB for MongoDB | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/indexing)
