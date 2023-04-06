@@ -39,3 +39,14 @@ include::mongo/replication.csv[]
 |====
 include::mongo/query.csv[]
 |====
+
+== Indexing
+
+Currently, PuzzleDB automatically indexes all sigle fields of inserted and updated documents by default, as CosmosDB does. In the future, PuzzleDB will support indexing of only the specified fields like MongoDB or more smart indexing like CosmosDB.
+
+== References
+
+- https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers[Conceptual whitepapers - Azure Cosmos DB | Microsoft Learn]
+- https://learn.microsoft.com/en-us/azure/cosmos-db/index-policy[Azure Cosmos DB indexing policies | Microsoft Learn]
+- https://www.microsoft.com/en-us/research/publication/schema-agnostic-indexing-azure-documentdb/[Schema-Agnostic Indexing with Azure DocumentDB]
+- https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/indexing[Manage indexing in Azure Cosmos DB for MongoDB | Microsoft Learn]
