@@ -44,8 +44,6 @@ func NewServer() *Server {
 		Manager:      plugins.NewManager(),
 	}
 
-	server.LoadPlugins()
-
 	return server
 }
 
@@ -63,9 +61,15 @@ func (server *Server) SetConfig(config Config) {
 
 // Start starts the server.
 func (server *Server) Start() error {
+	if server.ServerConfig != nil {
+		log.Infof(server.ServerConfig.String())
+	}
+
+	server.LoadPlugins()
 	if err := server.Manager.Start(); err != nil {
 		return errors.Wrap(err)
 	}
+
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 	return nil
 }
