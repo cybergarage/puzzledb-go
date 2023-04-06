@@ -15,7 +15,7 @@
 package puzzledb
 
 import (
-	"bytes"
+	"fmt"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -80,7 +80,10 @@ func (conf *viperConfig) GetInt(name ...string) (int, error) {
 
 // String returns a string representation of the configuration.
 func (conf *viperConfig) String() string {
-	var w bytes.Buffer
-	viper.DebugTo(&w)
-	return w.String()
+	var s string
+	for _, key := range viper.AllKeys() {
+		value := viper.Get(key)
+		s += fmt.Sprintf("%s: %v\n", key, value)
+	}
+	return strings.TrimSuffix(s, "\n")
 }
