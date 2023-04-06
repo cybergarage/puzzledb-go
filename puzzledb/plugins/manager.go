@@ -38,6 +38,11 @@ func (mgr *Manager) Add(srv Service) {
 	mgr.services = append(mgr.services, srv)
 }
 
+// Reload reloads all services.
+func (mgr *Manager) Reload(srvs []Service) {
+	mgr.services = srvs
+}
+
 // Start starts all services.
 func (mgr *Manager) Start() error {
 	log.Infof("plug-ins loading...")
