@@ -35,7 +35,7 @@ func NewStore() store.Service {
 
 // ServiceType returns the plug-in service type.
 func (store *Store) ServiceType() plugins.ServiceType {
-	return plugins.KvStoreService
+	return plugins.StoreKvService
 }
 
 // ServiceName returns the plug-in service name.
