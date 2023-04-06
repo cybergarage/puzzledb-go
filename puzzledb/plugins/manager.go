@@ -78,12 +78,16 @@ func (mgr Manager) Stop() error {
 func (mgr *Manager) String() string {
 	var s string
 	for _, servieType := range ServiceTypes() {
-		s += fmt.Sprintf("- %s\n", servieType.String())
+		names := []string{}
 		for _, service := range mgr.services {
 			if service.ServiceType() == servieType {
-				s += fmt.Sprintf("-- %s\n", service.ServiceName())
+				names = append(names, service.ServiceName())
 			}
 		}
+		if len(names) == 0 {
+			continue
+		}
+		s += fmt.Sprintf("- %s (%s)\n", servieType.String(), strings.Join(names, ", "))
 	}
 	return strings.TrimSuffix(s, "\n")
 }
