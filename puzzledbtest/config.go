@@ -18,5 +18,5 @@ import (
 	_ "embed"
 )
 
-//go:embed config/puzzledb.conf
-var puzzledbConf []byte
+//go:embed puzzledb.yaml
+var puzzledbConf string
