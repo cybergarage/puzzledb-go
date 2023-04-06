@@ -40,7 +40,7 @@ func (store *Store) SetSerializer(serializer document.Serializer) {
 
 // ServiceType returns the plug-in service type.
 func (store *Store) ServiceType() plugins.ServiceType {
-	return plugins.DocumentStoreService
+	return plugins.StoreDocumentService
 }
 
 // ServiceName returns the plug-in service name.
