@@ -61,7 +61,10 @@ func (server *Server) SetConfig(config Config) {
 
 // Start starts the server.
 func (server *Server) Start() error {
+	log.Infof("%s/%s", ProductName, Version)
+
 	if server.ServerConfig != nil {
+		log.Infof("configuration loaded")
 		log.Infof(server.ServerConfig.String())
 	}
 
