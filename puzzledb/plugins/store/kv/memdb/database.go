@@ -33,6 +33,12 @@ type Database struct {
 	*memdb.MemDB
 }
 
+// Document represents a document.
+type Document struct {
+	Key   string
+	Value []byte
+}
+
 // NewDatabaseWithID returns a new database with the specified ID.
 func NewDatabaseWithID(id string) (*Database, error) {
 	schema := &memdb.DBSchema{
