@@ -52,9 +52,9 @@ func StoreTest(t *testing.T, s plugins.Service) {
 	vals := make([][]byte, testKeyCount)
 	for n := 0; n < testKeyCount; n++ {
 		keys[n] = make([]byte, testValBufMax)
-		binary.LittleEndian.PutUint64(keys[n], rand.Uint64())
+		binary.LittleEndian.PutUint64(keys[n], uint64(n))
 		vals[n] = make([]byte, testValBufMax)
-		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
+		binary.LittleEndian.PutUint64(vals[n], uint64(n))
 	}
 
 	cancel := func(t *testing.T, tx store.Transaction) {
