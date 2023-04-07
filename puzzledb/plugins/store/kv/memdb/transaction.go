@@ -70,12 +70,9 @@ func (txn *transaction) Remove(key kv.Key) error {
 	if err != nil {
 		return err
 	}
-	n, err := txn.Txn.DeleteAll(tableName, idName, string(keyBytes))
+	_, err = txn.Txn.DeletePrefix(tableName, idName+prefix, string(keyBytes))
 	if err != nil {
 		return err
-	}
-	if n == 0 {
-		return NewKeyNotExistError(key)
 	}
 	return nil
 }
