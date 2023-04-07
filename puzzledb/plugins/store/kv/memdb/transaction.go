@@ -19,10 +19,6 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
-type Document struct {
-	Key   string
-	Value []byte
-}
 
 // transaction represents a Memdb transaction instance.
 type transaction struct {
