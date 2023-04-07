@@ -78,7 +78,10 @@ func (txn *transaction) Remove(key kv.Key) error {
 	}
 	err = txn.Txn.Delete(tableName, doc)
 	if err != nil {
-		return kv.NewObjectNotExistError(key)
+		if errors.Is(err, memdb.ErrNotFound) {
+			return kv.NewObjectNotExistError(key)
+		}
+		return err
 	}
 	return nil
 }
