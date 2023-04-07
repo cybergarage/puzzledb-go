@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
-
 // transaction represents a Memdb transaction instance.
 type transaction struct {
 	kv.Transaction
@@ -71,9 +70,12 @@ func (txn *transaction) Remove(key kv.Key) error {
 	if err != nil {
 		return err
 	}
-	_, err = txn.Txn.DeleteAll(tableName, idName, string(keyBytes))
+	n, err := txn.Txn.DeleteAll(tableName, idName, string(keyBytes))
 	if err != nil {
 		return err
+	}
+	if n == 0 {
+		return NewKeyNotExistError(key)
 	}
 	return nil
 }
