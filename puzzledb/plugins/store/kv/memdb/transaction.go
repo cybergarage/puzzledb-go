@@ -15,6 +15,8 @@
 package memdb
 
 import (
+	"errors"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/hashicorp/go-memdb"
 )
@@ -36,7 +38,7 @@ func newTransaction(txn *memdb.Txn) *transaction {
 func (txn *transaction) Set(obj *kv.Object) error {
 	// FIXME: memdb.Transaction::Set() inserts a duplicate record instead of updating it.
 	err := txn.Remove(obj.Key)
-	if err != nil {
+	if err != nil && !errors.Is(err, kv.ErrNotExist) {
 		return err
 	}
 	// Sets new record
@@ -70,11 +72,12 @@ func (txn *transaction) Remove(key kv.Key) error {
 	if err != nil {
 		return err
 	}
-	deleted, err := txn.Txn.DeletePrefix(tableName, idName+prefix, string(keyBytes))
-	if err != nil {
-		return err
+	doc := &Document{
+		Key:   string(keyBytes),
+		Value: nil,
 	}
-	if !deleted {
+	err = txn.Txn.Delete(tableName, doc)
+	if err != nil {
 		return kv.NewObjectNotExistError(key)
 	}
 	return nil
