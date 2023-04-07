@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package memdb
+package kv
 
 import (
 	"errors"
@@ -23,6 +23,6 @@ var (
 	ErrNotExist = errors.New("not exist")
 )
 
-func NewKeyNotExistError(v any) error {
-	return fmt.Errorf("key (%s) is %w", v, ErrNotExist)
+func NewObjectNotExistError(v any) error {
+	return fmt.Errorf("object (%s) is %w", v, ErrNotExist)
 }
