@@ -26,11 +26,9 @@ PuzzleDB has the following features:
 
     -   Key-value, Document and Relational.
 
-# Roadmap
+# Get Started
 
-PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
-
-![doc/img/roadmap](doc/img/roadmap.png)
+PuzzleDB releases the official Docker image on Docker Hub. See [Quick Start](doc/quick_start.md) to learn about how to get started with the docker image.
 
 # How does PuzzleDB work?
 
@@ -52,9 +50,11 @@ This Technology Preview version provides staged support for the following major 
 
 -   [MySQL](doc/mysql.md)
 
-# User Guides
+# Roadmap
 
--   See [Quick Start](doc/quick_start.md) to learn about how to get started.
+PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
+
+![doc/img/roadmap](doc/img/roadmap.png)
 
 # Developer Guides
 
