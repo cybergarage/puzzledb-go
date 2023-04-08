@@ -16,6 +16,7 @@ package mysql
 
 import (
 	"context"
+	"errors"
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
@@ -471,13 +472,14 @@ func (service *Service) removeSecondaryIndexes(ctx context.Context, conn *mysql.
 	if err != nil {
 		return err
 	}
+	var lastErr error
 	for _, idx := range idxes {
 		err := service.removeSecondaryIndex(ctx, conn, txn, schema, docObj, idx)
-		if err != nil {
-			return err
+		if err != nil && !errors.Is(err, store.ErrNotExist) {
+			lastErr = err
 		}
 	}
-	return nil
+	return lastErr
 }
 
 func (service *Service) removeSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docObj any, idx document.Index) error {
