@@ -45,7 +45,7 @@ func (txn *transaction) CreateSchema(schema store.Schema) error {
 // GetSchema returns the specified schema.
 func (txn *transaction) GetSchema(name string) (store.Schema, error) {
 	kvSchemaKey := txn.createSchemaKey(name)
-	kvRs, err := txn.kv.Range(kvSchemaKey)
+	kvRs, err := txn.kv.GetRange(kvSchemaKey)
 	if err != nil {
 		return nil, err
 	}

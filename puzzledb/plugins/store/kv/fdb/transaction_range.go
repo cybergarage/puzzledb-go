@@ -53,8 +53,8 @@ func (rs *rangeResultSet) Object() *kv.Object {
 	return rs.obj
 }
 
-// Range returns a result set of the specified key.
-func (txn *transaction) Range(key kv.Key) (kv.ResultSet, error) {
+// GetRange returns a result set of the specified key.
+func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err
