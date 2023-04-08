@@ -47,7 +47,7 @@ func NewObjectWith(anyObj any) (Object, error) {
 }
 
 // NewObjectFromInsert returns a new object from the specified schema and columns.
-func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, document.Object, error) {
+func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, Object, error) {
 	cols, err := stmt.Columns()
 	if err != nil {
 		return nil, nil, err
