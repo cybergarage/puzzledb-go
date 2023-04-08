@@ -104,13 +104,18 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 		if !rs.Next() {
 			cancel(t, tx)
-			t.Errorf("%v != 1", rs)
+			t.Errorf("key (%v) is not found", key)
 			break
 		}
 		obj := rs.Object()
 		if !bytes.Equal(obj.Value, vals[n]) {
 			cancel(t, tx)
 			t.Errorf("%s != %s", obj.Value, vals[n])
+		}
+		if rs.Next() {
+			cancel(t, tx)
+			t.Errorf("other key (%v) is found", key)
+			break
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
@@ -162,13 +167,18 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 		if !rs.Next() {
 			cancel(t, tx)
-			t.Errorf("%v != 1", rs)
+			t.Errorf("key (%v) is not found", key)
 			break
 		}
 		obj := rs.Object()
 		if !bytes.Equal(obj.Value, vals[n]) {
 			cancel(t, tx)
 			t.Errorf("%s != %s", obj.Value, vals[n])
+		}
+		if rs.Next() {
+			cancel(t, tx)
+			t.Errorf("other key (%v) is found", key)
+			break
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
@@ -212,7 +222,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 		if rs.Next() {
 			cancel(t, tx)
-			t.Errorf("%v is not removed", key)
+			t.Errorf("key (%v) is not removed", key)
 			break
 		}
 		if err := tx.Commit(); err != nil {
