@@ -79,17 +79,5 @@ func NewKeyFromObject(dbName string, schema document.Schema, obj Object) (store.
 	if err != nil {
 		return nil, err
 	}
-	objKey := document.NewKey()
-	objKey = append(objKey, dbName)
-	objKey = append(objKey, schema.Name())
-	objKey = append(objKey, prIdx.Name())
-	for _, elem := range prIdx.Elements() {
-		name := elem.Name()
-		v, ok := obj[name]
-		if !ok {
-			return nil, newObjectInvalidError(obj)
-		}
-		objKey = append(objKey, v)
-	}
-	return objKey, nil
+	return NewKeyFromIndex(dbName, schema, prIdx, obj)
 }
