@@ -85,13 +85,17 @@ func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
 
 // Remove removes the specified key-value object.
 func (txn *transaction) Remove(key kv.Key) error {
-	keyBytes, err := key.Encode()
+	obj, err := txn.Get(key)
+	if err != nil {
+		return err
+	}
+	keyBytes, err := obj.KeyBytes()
 	if err != nil {
 		return err
 	}
 	doc := &Document{
 		Key:   string(keyBytes),
-		Value: nil,
+		Value: obj.Value,
 	}
 	err = txn.Txn.Delete(tableName, doc)
 	if err != nil {
