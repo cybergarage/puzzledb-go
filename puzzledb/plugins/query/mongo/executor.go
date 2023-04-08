@@ -15,6 +15,8 @@
 package mongo
 
 import (
+	"errors"
+
 	"github.com/cybergarage/go-mongo/mongo"
 	"github.com/cybergarage/go-mongo/mongo/bson"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
@@ -267,7 +269,7 @@ func (service *Service) updateDocumentByQuery(txn store.Transaction, bsonDoc bso
 
 	for _, updateBSONDoc := range updateBSONDocs {
 		err := service.deleteUpdateDocumentIndexes(txn, q.Database, q.Collection, bsonDoc, updateBSONDoc)
-		if err != nil {
+		if err != nil && !errors.Is(err, store.ErrNotExist) {
 			return err
 		}
 	}
