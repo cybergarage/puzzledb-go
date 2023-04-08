@@ -46,7 +46,7 @@ func main() {
 	isProfileEnabled := flag.Bool("p", false, "enable profiling server")
 	flag.Parse()
 
-	logLevel := log.LevelTrace
+	logLevel := log.LevelInfo
 	if *isDebugEnabled {
 		logLevel = log.LevelDebug
 	}
