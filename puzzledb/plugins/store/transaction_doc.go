@@ -38,7 +38,7 @@ func (txn *transaction) InsertDocument(docKey store.Key, obj store.Object) error
 
 // FindDocuments returns a result set matching the specified key.
 func (txn *transaction) FindDocuments(docKey store.Key) (store.ResultSet, error) {
-	kvRs, err := txn.kv.Range(kv.NewKeyWith(kv.DocumentKeyHeader, docKey))
+	kvRs, err := txn.kv.GetRange(kv.NewKeyWith(kv.DocumentKeyHeader, docKey))
 	if err != nil {
 		return nil, err
 	}

@@ -121,7 +121,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 			t.Error(err)
 			break
 		}
-		rs, err := tx.Range([]any{key})
+		rs, err := tx.GetRange([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -208,7 +208,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 			t.Error(err)
 			break
 		}
-		rs, err := tx.Range([]any{key})
+		rs, err := tx.GetRange([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -290,7 +290,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 			t.Error(err)
 			break
 		}
-		rs, err := tx.Range([]any{key})
+		rs, err := tx.GetRange([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)

@@ -50,7 +50,7 @@ func (txn *transaction) RemoveIndex(idxKey store.Key) error {
 // FindDocumentsByIndex gets document objects matching the specified index key.
 func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet, error) {
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
-	kvIdxRs, err := txn.kv.Range(kvIdxKey)
+	kvIdxRs, err := txn.kv.GetRange(kvIdxKey)
 	if err != nil {
 		return nil, err
 	}
