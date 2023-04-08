@@ -64,7 +64,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	// Insert test
+	// Inserts test keys and values.
 
 	for n, key := range keys {
 		tx, err := db.Transact(true)
@@ -88,7 +88,31 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	// Select test
+	// Selects inserted test keys.
+
+	for n, key := range keys {
+		tx, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		obj, err := tx.Get([]any{key})
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if !bytes.Equal(obj.Value, vals[n]) {
+			cancel(t, tx)
+			t.Errorf("%s != %s", obj.Value, vals[n])
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Selects inserted test keys by range
 
 	for n, key := range keys {
 		tx, err := db.Transact(false)
@@ -123,7 +147,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	// Update test
+	// Updates inserted test values.
 
 	for n := 0; n < testKeyCount; n++ {
 		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
@@ -151,7 +175,31 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	// Select test (updated)
+	// Selects updated test keys.
+
+	for n, key := range keys {
+		tx, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		obj, err := tx.Get([]any{key})
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if !bytes.Equal(obj.Value, vals[n]) {
+			cancel(t, tx)
+			t.Errorf("%s != %s", obj.Value, vals[n])
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Selects updated test keys by range.
 
 	for n, key := range keys {
 		tx, err := db.Transact(false)
@@ -186,7 +234,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	// Remove test
+	// Removes inserted test keys.
 
 	for _, key := range keys {
 		tx, err := db.Transact(true)
@@ -206,7 +254,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	// Select test (removed)
+	// Selects removed test keys.
 
 	for _, key := range keys {
 		tx, err := db.Transact(false)
