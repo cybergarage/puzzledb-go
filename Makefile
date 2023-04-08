@@ -78,7 +78,7 @@ run: build
 	./${BIN_SERVER}
 
 rund:
-	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3307:3307 ${BIN_DOCKER_TAG}
+	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3306:3306 ${BIN_DOCKER_TAG}
 
 clean:
 	go clean -i ${PKG}
