@@ -40,6 +40,18 @@ func (txn *transaction) Set(obj *kv.Object) error {
 	return nil
 }
 
+// Get returns a key-value object of the specified key.
+func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
+	rs, err := txn.getone((key))
+	if err != nil {
+		return nil, err
+	}
+	if !rs.Next() {
+		return nil, kv.NewObjectNotExistError(key)
+	}
+	return rs.Object(), nil
+}
+
 // Range returns a result set of the specified key.
 func (txn *transaction) Range(key kv.Key) (kv.ResultSet, error) {
 	return txn.getone((key))
