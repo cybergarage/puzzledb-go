@@ -30,7 +30,7 @@ const (
 	testValBufMax = 8
 )
 
-//nolint:gosec,cyclop,gocognit,gocyclo
+//nolint:gosec,cyclop,gocognit,gocyclo,maintidx
 func StoreTest(t *testing.T, s plugins.Service) {
 	t.Helper()
 
