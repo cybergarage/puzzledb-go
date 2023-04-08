@@ -42,14 +42,19 @@ func (txn *transaction) Set(obj *kv.Object) error {
 
 // Get returns a key-value object of the specified key.
 func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
-	rs, err := txn.getone((key))
+	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err
 	}
-	if !rs.Next() {
-		return nil, kv.NewObjectNotExistError(key)
+	fbs := txn.Transaction.Get(fdb.Key(keyBytes))
+	val, err := fbs.Get()
+	if err != nil {
+		return nil, err
 	}
-	return rs.Object(), nil
+	return &kv.Object{
+		Key:   key,
+		Value: val,
+	}, nil
 }
 
 // Remove removes the specified key-value object.
