@@ -52,11 +52,6 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 	return rs.Object(), nil
 }
 
-// Range returns a result set of the specified key.
-func (txn *transaction) Range(key kv.Key) (kv.ResultSet, error) {
-	return txn.getone((key))
-}
-
 // Remove removes the specified key-value object.
 func (txn *transaction) Remove(key kv.Key) error {
 	keyBytes, err := key.Encode()
