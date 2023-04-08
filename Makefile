@@ -77,7 +77,7 @@ install:
 run: build
 	./${BIN_SERVER}
 
-rund: image
+rund:
 	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3307:3307 ${BIN_DOCKER_TAG}
 
 clean:
