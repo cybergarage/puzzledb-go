@@ -421,12 +421,16 @@ func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *quer
 			return nil, service.CancelTransactionWithError(txn, err)
 		}
 		for rs.Next() {
-			obj := rs.Object()
-			docKey, err := NewKeyFromIndex(dbName, schema, prIdx, obj)
+			docObj := rs.Object()
+			obj, err := NewObjectWith(docObj)
+			if err != nil {
+				return nil, err
+			}
+			objKey, err := NewKeyFromIndex(dbName, schema, prIdx, obj)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(txn, err)
 			}
-			err = service.deleteDocument(ctx, conn, txn, schema, docKey)
+			err = service.deleteDocument(ctx, conn, txn, schema, objKey)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(txn, err)
 			}
