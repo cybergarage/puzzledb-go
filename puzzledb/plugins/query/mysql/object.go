@@ -48,43 +48,26 @@ func NewObjectWith(anyObj any) (Object, error) {
 
 // NewObjectFromInsert returns a new object from the specified schema and columns.
 func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, document.Object, error) {
-	prIdx, err := schema.PrimaryIndex()
-	if err != nil {
-		return nil, nil, err
-	}
-	prIdxName := prIdx.Name()
-
 	cols, err := stmt.Columns()
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var docKey document.Key
-	doc := Object{}
+	obj := Object{}
 	for _, col := range cols.Columns() {
 		colName := col.Name()
-		// Docment key
-		if colName == prIdxName {
-			prKey, err := NewKeyWith(dbName, schema.Name(), prIdxName, col.Value())
-			if err != nil {
-				return nil, nil, err
-			}
-			docKey = prKey
-		}
-
-		// Document data
 		// TODO: Checks data types
 		_, err := schema.FindElement(colName)
 		if err != nil {
 			return nil, nil, err
 		}
-		doc[colName] = col.Value()
+		obj[colName] = col.Value()
 	}
 
-	// Checks primary key data
-	if docKey == nil {
-		return nil, nil, newPrimaryKeyDataNotExistError(prIdxName, doc)
+	objKey, err := NewKeyFromObject(dbName, schema, obj)
+	if err != nil {
+		return nil, nil, err
 	}
 
-	return docKey, doc, nil
+	return objKey, obj, nil
 }
