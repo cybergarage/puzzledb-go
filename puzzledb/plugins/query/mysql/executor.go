@@ -157,19 +157,19 @@ func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *quer
 
 	// Inserts the object using the primary key/
 
-	prKey, docObj, err := NewObjectFromInsert(dbName, schema, stmt)
+	docKey, docObj, err := NewObjectFromInsert(dbName, schema, stmt)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
-	err = txn.InsertDocument(prKey, docObj)
+	err = txn.InsertDocument(docKey, docObj)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
 
 	// Inserts the secondary indexes.
 
-	err = service.insertSecondaryIndexes(ctx, conn, txn, schema, docObj, prKey)
+	err = service.insertSecondaryIndexes(ctx, conn, txn, schema, docObj, docKey)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(txn, err)
 	}
