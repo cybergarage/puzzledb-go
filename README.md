@@ -32,10 +32,6 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ![doc/img/roadmap](doc/img/roadmap.png)
 
-# Overview
-
--   [What is PuzzleDB](doc/whatis.md)
-
 # How does PuzzleDB work?
 
 -   For architecture of PuzzleDB, see the following concept document:
@@ -57,6 +53,10 @@ This Technology Preview version provides staged support for the following major 
 -   [MySQL](doc/mysql.md)
 
 Please refer to the following documents for information regarding the support status and limitations of each protocol.
+
+# Overview
+
+-   [What is PuzzleDB](doc/whatis.md)
 
 # User Guides
 
