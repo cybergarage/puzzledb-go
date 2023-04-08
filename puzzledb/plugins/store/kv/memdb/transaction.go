@@ -53,8 +53,8 @@ func (txn *transaction) Set(obj *kv.Object) error {
 	return txn.Txn.Insert(tableName, doc)
 }
 
-// Get returns a result set of the specified key.
-func (txn *transaction) Get(key kv.Key) (kv.ResultSet, error) {
+// Range returns a result set of the specified key.
+func (txn *transaction) Range(key kv.Key) (kv.ResultSet, error) {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return nil, err

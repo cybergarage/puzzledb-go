@@ -48,7 +48,7 @@ func (rs *indexResultSet) Next() bool {
 	if err != nil {
 		return false
 	}
-	kvRs, err := rs.txn.kv.Get([]any{kvIdx}) // kvIdx is already encoded
+	kvRs, err := rs.txn.kv.Range([]any{kvIdx}) // kvIdx is already encoded
 	if err != nil {
 		return false
 	}
