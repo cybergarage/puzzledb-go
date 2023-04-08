@@ -51,6 +51,10 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 	if err != nil {
 		return nil, err
 	}
+	// NOTE: FutureByteSlice::Get() doesn't return nil if the key doesn't exist.
+	if len(val) == 0 {
+		return nil, kv.NewObjectNotExistError(key)
+	}
 	return &kv.Object{
 		Key:   key,
 		Value: val,
