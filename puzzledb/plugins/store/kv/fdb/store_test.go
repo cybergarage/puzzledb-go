@@ -20,6 +20,6 @@ import (
 	kv "github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
 )
 
-func TestStores(t *testing.T) {
+func TestStore(t *testing.T) {
 	kv.StoreTest(t, NewStore())
 }
