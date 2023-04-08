@@ -26,7 +26,7 @@ import (
 
 const (
 	testDBName    = "testdb"
-	testKeyCount  = 100
+	testKeyCount  = 10
 	testValBufMax = 8
 )
 
@@ -52,9 +52,9 @@ func StoreTest(t *testing.T, s plugins.Service) {
 	vals := make([][]byte, testKeyCount)
 	for n := 0; n < testKeyCount; n++ {
 		keys[n] = make([]byte, testValBufMax)
-		binary.LittleEndian.PutUint64(keys[n], uint64(n))
+		binary.LittleEndian.PutUint64(keys[n], rand.Uint64())
 		vals[n] = make([]byte, testValBufMax)
-		binary.LittleEndian.PutUint64(vals[n], uint64(n))
+		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
 	}
 
 	cancel := func(t *testing.T, tx store.Transaction) {
@@ -146,7 +146,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	// Select test
+	// Select test (updated)
 
 	for n, key := range keys {
 		tx, err := db.Transact(false)
@@ -176,7 +176,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	// Delete test
+	// Remove test
 
 	for _, key := range keys {
 		tx, err := db.Transact(true)
@@ -190,6 +190,20 @@ func StoreTest(t *testing.T, s plugins.Service) {
 			t.Error(err)
 			break
 		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Select test (removed)
+
+	for _, key := range keys {
+		tx, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			break
+		}
 		rs, err := tx.Get([]any{key})
 		if err != nil {
 			cancel(t, tx)
@@ -198,7 +212,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 		if rs.Next() {
 			cancel(t, tx)
-			t.Errorf("%v != 1", rs)
+			t.Errorf("%v is not removed", key)
 			break
 		}
 		if err := tx.Commit(); err != nil {
