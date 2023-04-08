@@ -48,7 +48,7 @@ func (txn *transaction) FindDocuments(docKey store.Key) (store.ResultSet, error)
 // RemoveDocument removes a document object with the specified primary key.
 func (txn *transaction) RemoveDocument(docKey store.Key) error {
 	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
-	return txn.kv.Remove(kvDocKey)
+	return wrapKeyNotExistError(docKey, txn.kv.Remove(kvDocKey))
 }
 
 // UpdateDocument updates a document object with the specified primary key.
