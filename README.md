@@ -44,15 +44,19 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   [Data Model](doc/data_model.md)
 
-    -   [Consistency Model](doc/consistency_model.md)
+    -   [Consistency Model](doc/consistency_model.md) \*\*
 
-    -   Supported Protocols
+# Supported Protocols
 
-        -   [Redis](doc/redis.md)
+This Technology Preview version provides staged support for the following major database protocols.
 
-        -   [MongoDB](doc/mongodb.md)
+-   [Redis](doc/redis.md)
 
-        -   [MySQL](doc/mysql.md)
+-   [MongoDB](doc/mongodb.md)
+
+-   [MySQL](doc/mysql.md)
+
+Please refer to the following documents for information regarding the support status and limitations of each protocol.
 
 # User Guides
 
@@ -60,6 +64,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 # Developer Guides
 
--   [Build on macOS](doc/build-on-macos.md)
+-   [Contribute](doc/contributing.md)
 
--   [Build on Ubuntu](doc/build-on-macos.md)
+    -   [Build on macOS](doc/build-on-macos.md)
+
+    -   [Build on Ubuntu](doc/build-on-macos.md)
