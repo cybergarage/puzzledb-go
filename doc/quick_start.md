@@ -50,7 +50,7 @@ PuzzleDB currently supports the MongoDB commands in stages. See [MongoDB](doc/mo
 To operate PuzzleDB with the MySQL protocol, use the standard MySQL shell [mysql](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) as follows:
 
 ```
-% mysql -h 127.0.0.1 --protocol=tcp
+% mysql -h 127.0.0.1
 mysql> CREATE DATABASE test;
 mysql> USE test;
 mysql> CREATE TABLE test (k VARCHAR(255) PRIMARY KEY, v int);
