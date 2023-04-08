@@ -26,10 +26,10 @@ jobs:
 
     - name: Set up FoundationDB
       run: |
-         sudo wget https://github.com/apple/foundationdb/releases/download/7.2.5/foundationdb-server_7.2.5-1_amd64.deb
-         sudo dpkg -i foundationdb-server_7.2.5-1_amd64.deb
          sudo wget https://github.com/apple/foundationdb/releases/download/7.2.5/foundationdb-clients_7.2.5-1_amd64.deb
          sudo dpkg -i foundationdb-clients_7.2.5-1_amd64.deb
+         sudo wget https://github.com/apple/foundationdb/releases/download/7.2.5/foundationdb-server_7.2.5-1_amd64.deb
+         sudo dpkg -i foundationdb-server_7.2.5-1_amd64.deb
 
     - name: Test
       run: make test
