@@ -62,18 +62,19 @@ func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, 
 	if err != nil {
 		return nil, err
 	}
-	key := document.NewKey()
-	key = append(key, dbName)
-	key = append(key, schema.Name())
+	objKey := document.NewKey()
+	objKey = append(objKey, dbName)
+	objKey = append(objKey, schema.Name())
+	objKey = append(objKey, idx.Name())
 	for _, elem := range idx.Elements() {
 		name := elem.Name()
 		v, ok := objMap[name]
 		if !ok {
 			return nil, newObjectInvalidError(obj)
 		}
-		key = append(key, v)
+		objKey = append(objKey, v)
 	}
-	return key, nil
+	return objKey, nil
 }
 
 // NewKeyFromObject returns a key from the specified object.
