@@ -68,7 +68,7 @@ func (server *Server) Start() error {
 		log.Infof(server.ServerConfig.String())
 	}
 
-	server.LoadPlugins()
+	server.loadDefaultPlugins()
 	if err := server.Manager.Start(); err != nil {
 		return errors.Wrap(err)
 	}
@@ -94,8 +94,7 @@ func (server *Server) Restart() error {
 	return server.Start()
 }
 
-// LoadPlugins loads default plugin services.
-func (server *Server) LoadPlugins() {
+func (server *Server) loadDefaultPlugins() {
 	services := []plugins.Service{}
 
 	seralizer := cbor.NewSerializer()
