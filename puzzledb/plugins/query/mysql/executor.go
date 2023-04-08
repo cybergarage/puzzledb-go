@@ -196,9 +196,9 @@ func (service *Service) insertSecondaryIndexes(ctx context.Context, conn *mysql.
 	return nil
 }
 
-func (service *Service) insertSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docObj any, idx document.Index, prKey document.Key) error {
+func (service *Service) insertSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index, prKey document.Key) error {
 	dbName := conn.Database()
-	secKey, err := NewKeyFromIndex(dbName, schema, idx, docObj)
+	secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
 	if err != nil {
 		return err
 	}
