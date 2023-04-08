@@ -18,21 +18,14 @@ include::doc/roadmap.adoc[]
 ** link:doc/architecture.md[Architecture]
 ** link:doc/data_model.md[Data Model]
 ** link:doc/consistency_model.md[Consistency Model]
-** 
 
 = Supported Protocols
 
-This Technology Preview version provides staged support for the following major database protocols. 
+This Technology Preview version provides staged support for the following major database protocols. Please refer to the following documents for information regarding the support status and limitations of each protocol.
 
 * link:doc/redis.md[Redis]
 * link:doc/mongodb.md[MongoDB]
 * link:doc/mysql.md[MySQL]
-
-Please refer to the following documents for information regarding the support status and limitations of each protocol.
-
-= Overview
-
-* link:doc/whatis.md[What is PuzzleDB]
 
 = User Guides
 
