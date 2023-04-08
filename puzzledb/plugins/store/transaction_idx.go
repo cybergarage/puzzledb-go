@@ -44,7 +44,7 @@ func (txn *transaction) InsertIndex(idxKey store.Key, docKey store.Key) error {
 // RemoveIndex removes the specified secondary index.
 func (txn *transaction) RemoveIndex(idxKey store.Key) error {
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
-	return txn.kv.Remove(kvIdxKey)
+	return wrapKeyNotExistError(idxKey, txn.kv.Remove(kvIdxKey))
 }
 
 // FindDocumentsByIndex gets document objects matching the specified index key.
