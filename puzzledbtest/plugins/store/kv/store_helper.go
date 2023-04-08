@@ -17,6 +17,7 @@ package kv
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"math/rand"
 	"testing"
 
@@ -255,6 +256,33 @@ func StoreTest(t *testing.T, s plugins.Service) {
 	}
 
 	// Selects removed test keys.
+
+	for _, key := range keys {
+		tx, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		_, err = tx.Get([]any{key})
+		if err == nil {
+			t.Errorf("key (%v) is found", key)
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if !errors.Is(err, store.ErrNotExist) {
+			t.Errorf("key (%v): %s", key, err.Error())
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Selects removed test keys by range.
 
 	for _, key := range keys {
 		tx, err := db.Transact(false)
