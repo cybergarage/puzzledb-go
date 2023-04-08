@@ -28,3 +28,10 @@ func NewServerConfigWith(config Config) *ServerConfig {
 func (conf *ServerConfig) Port(name string) (int, error) {
 	return conf.Config.GetInt("port", name)
 }
+
+func (conf *ServerConfig) String() string {
+	if conf.Config == nil {
+		return ""
+	}
+	return conf.Config.String()
+}
