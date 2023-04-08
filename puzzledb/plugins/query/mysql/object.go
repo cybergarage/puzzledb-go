@@ -17,7 +17,6 @@ package mysql
 import (
 	"github.com/cybergarage/go-mysql/mysql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Object represents a database object.
@@ -48,7 +47,7 @@ func NewObjectWith(anyObj any) (Object, error) {
 }
 
 // NewObjectFromInsert returns a new object from the specified schema and columns.
-func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (store.Key, store.Object, error) {
+func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, document.Object, error) {
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, nil, err
@@ -60,7 +59,7 @@ func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Inse
 		return nil, nil, err
 	}
 
-	var docKey store.Key
+	var docKey document.Key
 	doc := Object{}
 	for _, col := range cols.Columns() {
 		colName := col.Name()
