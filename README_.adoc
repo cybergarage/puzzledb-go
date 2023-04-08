@@ -10,7 +10,9 @@ PuzzleDB is a high-performance, distributed, cloud-native, multi-API, multi-mode
 
 include::doc/whatis.adoc[]
 
-include::doc/roadmap.adoc[]
+= Get Started
+
+PuzzleDB releases the official Docker image on Docker Hub. See link:doc/quick_start.md[Quick Start] to learn about how to get started with the docker image.
 
 = How does PuzzleDB work?
 
@@ -27,10 +29,7 @@ This Technology Preview version provides staged support for the following major 
 * link:doc/mongodb.md[MongoDB]
 * link:doc/mysql.md[MySQL]
 
-= User Guides
-
-* See link:doc/quick_start.md[Quick Start] to learn about how to get
-started.
+include::doc/roadmap.adoc[]
 
 = Developer Guides
 
