@@ -28,7 +28,7 @@ PuzzleDB has the following features:
 
 # Get Started
 
-PuzzleDB releases the official Docker image on Docker Hub. See the following [Quick Start](doc/quick_start.md) to learn about how to get started with the docker image.
+PuzzleDB releases the official Docker image on Docker Hub. See the following [Quick Start](doc/quick_start.md) guide to learn about how to get started with the Docker image.
 
 -   [Quick Start](doc/quick_start.md)
 

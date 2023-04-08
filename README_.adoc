@@ -12,7 +12,7 @@ include::doc/whatis.adoc[]
 
 = Get Started
 
-PuzzleDB releases the official Docker image on Docker Hub. See the following link:doc/quick_start.md[Quick Start] to learn about how to get started with the docker image.
+PuzzleDB releases the official Docker image on Docker Hub. See the following link:doc/quick_start.md[Quick Start] guide to learn about how to get started with the Docker image.
 
 * link:doc/quick_start.md[Quick Start]
 
