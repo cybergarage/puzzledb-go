@@ -459,7 +459,11 @@ func (service *Service) deleteDocument(ctx context.Context, conn *mysql.Conn, tx
 	}
 	for rs.Next() {
 		docObj := rs.Object()
-		err := service.removeSecondaryIndexes(ctx, conn, txn, schema, docObj)
+		obj, err := NewObjectWith(docObj)
+		if err != nil {
+			return err
+		}
+		err = service.removeSecondaryIndexes(ctx, conn, txn, schema, obj)
 		if err != nil {
 			return err
 		}
@@ -467,14 +471,14 @@ func (service *Service) deleteDocument(ctx context.Context, conn *mysql.Conn, tx
 	return nil
 }
 
-func (service *Service) removeSecondaryIndexes(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docObj any) error {
+func (service *Service) removeSecondaryIndexes(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj Object) error {
 	idxes, err := schema.SecondaryIndexes()
 	if err != nil {
 		return err
 	}
 	var lastErr error
 	for _, idx := range idxes {
-		err := service.removeSecondaryIndex(ctx, conn, txn, schema, docObj, idx)
+		err := service.removeSecondaryIndex(ctx, conn, txn, schema, obj, idx)
 		if err != nil && !errors.Is(err, store.ErrNotExist) {
 			lastErr = err
 		}
@@ -482,9 +486,9 @@ func (service *Service) removeSecondaryIndexes(ctx context.Context, conn *mysql.
 	return lastErr
 }
 
-func (service *Service) removeSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docObj any, idx document.Index) error {
+func (service *Service) removeSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index) error {
 	dbName := conn.Database()
-	secKey, err := NewKeyFromIndex(dbName, schema, idx, docObj)
+	secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
 	if err != nil {
 		return err
 	}
