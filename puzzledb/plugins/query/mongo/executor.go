@@ -369,7 +369,7 @@ func (service *Service) deleteDocument(txn store.Transaction, db string, col str
 		return err
 	}
 
-	// TODO: Removes the secondary indexes for the all elements.
+	// Removes the secondary indexes for the all elements.
 
 	doc, err := service.EncodeBSON(bsonDoc)
 	if err != nil {
@@ -409,7 +409,7 @@ func (service *Service) deleteDocumentIndexes(txn store.Transaction, db string, 
 	case map[string]any:
 		for key, val := range vmap {
 			err := service.deleteDocumentIndex(txn, db, col, key, val)
-			if err != nil {
+			if err != nil && !errors.Is(err, store.ErrNotExist) {
 				return err
 			}
 		}
