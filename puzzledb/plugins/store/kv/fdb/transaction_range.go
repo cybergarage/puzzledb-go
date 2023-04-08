@@ -59,9 +59,9 @@ func (txn *transaction) Range(key kv.Key) (kv.ResultSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	r := fdb.SelectorRange{
-		Begin: fdb.FirstGreaterOrEqual(fdb.Key(keyBytes)),
-		End:   fdb.LastLessThan(fdb.Key(keyBytes)),
+	r, err := fdb.PrefixRange(fdb.Key(keyBytes))
+	if err != nil {
+		return nil, err
 	}
 	ro := fdb.RangeOptions{
 		Limit:   0,
