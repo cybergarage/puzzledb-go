@@ -1,5 +1,3 @@
-![](img/logo.png)
-
 # Quick Start
 
 This chapter shows you how to get started with PuzzleDB quickly: you can start a standalone PuzzleDB server with Docker and use Redis, MongoDB or MySQL CLI commands to insert and read sample data.
