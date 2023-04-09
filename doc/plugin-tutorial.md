@@ -92,7 +92,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key</p></td>
 <td style="text-align: left;"><p>Key serializer services</p></td>
-<td style="text-align: left;"><p>Tupple</p></td>
+<td style="text-align: left;"><p>Tuple</p></td>
 <td style="text-align: left;"><p>O</p></td>
 </tr>
 <tr class="odd">
