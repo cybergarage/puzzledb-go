@@ -62,7 +62,7 @@ For architecture of PuzzleDB, see the following concept documents:
 
         -   [Data Model](doc/data-model.md)
 
-    -   [Consistency Model](doc/consistency-model.md)
+        -   [Consistency Model](doc/consistency-model.md)
 
 # Roadmap
 
