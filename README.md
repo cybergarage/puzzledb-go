@@ -52,17 +52,15 @@ This technology preview version partially supports major database models and pro
 
 For architecture of PuzzleDB, see the following concept documents:
 
--   Design Docs
+-   [Design Concepts](doc/concept.md)
 
-    -   [Design Concepts](doc/concept.md)
+    -   [Layer Concept](doc/layer_concept.md)
 
-        -   [Layer Concept](doc/layer_concept.md)
+    -   [Plug-In Concept](doc/plugin_concept.md)
 
-        -   [Plug-In Concept](doc/plugin_concept.md)
+    -   [Data Model](doc/data-model.md)
 
-        -   [Data Model](doc/data-model.md)
-
-        -   [Consistency Model](doc/consistency-model.md)
+    -   [Consistency Model](doc/consistency-model.md)
 
 # Roadmap
 
