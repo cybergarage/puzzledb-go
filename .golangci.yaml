@@ -36,7 +36,6 @@ linters:
     - scopelint
     - maligned
     - nosnakecase
-    - typecheck
 
 linters-settings:
   revive:
