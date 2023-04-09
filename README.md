@@ -68,10 +68,26 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ![doc/img/roadmap](doc/img/roadmap.png)
 
+# User Guides
+
+-   Configuration (Planning)
+
 # Developer Guides
 
--   [Quick Start](doc/quick-start.md)
+-   Contributing (Planning)
+
+    -   [Coding Guidelines](doc/coding_guideline.md)
+
+-   Building and Testing
 
     -   [Build on macOS](doc/build-on-macos.md)
 
     -   [Build on Ubuntu](doc/build-on-macos.md)
+
+-   Extending PuzzleDB
+
+    -   [Plug-In Concept](doc/plugin_concept.md)
+
+    -   [Plug-in Services](doc/plugin-types.md)
+
+        -   [Building User Plug-ins](doc/plugin-tutorial.md)

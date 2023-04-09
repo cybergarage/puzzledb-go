@@ -38,8 +38,18 @@ For architecture of PuzzleDB, see the following concept documents:
 
 include::doc/roadmap.adoc[]
 
+= User Guides
+
+* Configuration (Planning)
+
 = Developer Guides
 
-* link:doc/quick-start.md[Quick Start]
+* Contributing (Planning)
+** link:doc/coding_guideline.md[Coding Guidelines]
+* Building and Testing
 ** link:doc/build-on-macos.md[Build on macOS]
 ** link:doc/build-on-macos.md[Build on Ubuntu]
+* Extending PuzzleDB
+** link:doc/plugin_concept.md[Plug-In Concept]
+** link:doc/plugin-types.md[Plug-in Services]
+*** link:doc/plugin-tutorial.md[Building User Plug-ins]
