@@ -26,6 +26,8 @@ For the plugin services specified in the standards listed in the following table
 include::plugin/plugin-types.csv[]
 |====
 
+For more information on plug-in implementation, please refer to the standard plug-ins located in the `plugins` directory.
+
 ## Registering Plug-in
 
 To register your plug-in service, you should override  `Server::LoadPlugins()`` as follows:
@@ -56,7 +58,4 @@ To register your plug-in service, you should override  `Server::LoadPlugins()`` 
  	return nil
  }
 
-## Examples
-
-For more information on plug-in implementation, please refer to the standard plug-ins located in the `plugins` directory.
 
