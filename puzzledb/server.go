@@ -20,6 +20,9 @@ import (
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
+	coordinator_etcd "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/etcd"
+	coordinator_memdb "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/memdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mongo"
@@ -111,10 +114,13 @@ func (server *Server) loadDefaultPlugins() error {
 		services = append(services, kvStore)
 	}
 
-	// coordServices := []coordinator.Service{}
-	// for _, coordService := range coordServices {
-	// 	services = append(services, coordService)
-	// }
+	coordServices := []*coordinator.Service{
+		coordinator.NewServiceWith(coordinator_memdb.NewCoordinator()),
+		coordinator.NewServiceWith(coordinator_etcd.NewCoordinator()),
+	}
+	for _, coordService := range coordServices {
+		services = append(services, coordService)
+	}
 
 	kvStore := kvStores[0]
 	store := store.NewStoreWithKvStore(kvStore)
