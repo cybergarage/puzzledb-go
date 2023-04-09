@@ -4,7 +4,7 @@ This section describes the plug-in interface for adding your own plug-in service
 
 ## Plug-in interface
 
-Each plug-in service should implement the following Service interface, which is located in the puzzledb/plugins directory.
+Each plug-in service should implement the following `Service` interface, which is located in the `puzzledb/plugins` directory.
 
  type Service interface {
  	// ServiceType returns the service type.
@@ -19,7 +19,7 @@ Each plug-in service should implement the following Service interface, which is 
 
 ## Registering Plug-in
 
-To register your plug-in service, you should override Server::LoadPlugins() as the following.
+To register your plug-in service, you should override  `Server::LoadPlugins()`` as follows:
 
  import (
  	"github.com/cybergarage/puzzledb-go/puzzledb"
@@ -41,13 +41,13 @@ To register your plug-in service, you should override Server::LoadPlugins() as t
  	if err := server.Server.LoadPlugins(); err != nil {
  		return err
  	}
-	// Register your plug-in service
-	var service puzzledb.Service = ....
-	server.RegisterService(service)			
+ 	// Register your plug-in service
+ 	var service puzzledb.Service = ....
+ 	server.RegisterService(service)			
  	return nil
  }
 
 ## Examples
 
-For more information on plug-in implementation, see the standard plug-ins in the plugins directory
+For more information on plug-in implementation, please refer to the standard plug-ins located in the `plugins` directory.
 
