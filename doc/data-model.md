@@ -1,7 +1,3 @@
-<figure>
-<img src="img/logo.png" alt="logo" />
-</figure>
-
 # Data Model
 
 PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently. PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
