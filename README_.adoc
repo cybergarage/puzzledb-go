@@ -30,7 +30,7 @@ This technology preview version partially supports major database models and pro
 
 For architecture of PuzzleDB, see the following concept documents:
 
-** Design Docs
+** Design Concepts
 *** link:doc/concept.md[Concept]
 **** link:doc/layer_concept.md[Layer Concept]
 **** link:doc/plugin_concept.md[Plug-In Concept]

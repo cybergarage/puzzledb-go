@@ -1,6 +1,6 @@
-= Concept
+= Design Concept
 
 This section describes the architecture and design concepts of PuzzleDB.
 
-include::layer_concept.adoc[leveloffset=+1]
+include::layer-concept.adoc[leveloffset=+1]
 include::plugin-concept.adoc[leveloffset=+1]

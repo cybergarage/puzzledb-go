@@ -52,7 +52,7 @@ This technology preview version partially supports major database models and pro
 
 For architecture of PuzzleDB, see the following concept documents:
 
--   Design Docs
+-   Design Concepts
 
     -   [Concept](doc/concept.md)
 
