@@ -1,8 +1,24 @@
-# Concept
+# Design Concept
 
 This section describes the architecture and design concepts of PuzzleDB.
 
-Unresolved directive in concept.adoc - include::layer\_concept.adoc\[leveloffset=+1\] :leveloffset: +1
+# Layer Concept
+
+PuzzleDB adopts a unique approach similar to FoundationDB and early Google Spanner. It offers high scalability and ACID transactions while constructing its data model, indexes, and query processing on a foundation of simple key-value storage without any query functionality. In PuzzleDB, not only are records represented as key-value pairs, but schemas and indices are also represented as key-value data.
+
+![layer concept](img/layer_concept.png)
+
+## References
+
+-   [FoundationDB](https://www.foundationdb.org/)
+
+-   [Layer Concept — FoundationDB](https://apple.github.io/foundationdb/layer-concept.html)
+
+-   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
+
+-   [Announcing FoundationDB Document Layer](https://www.foundationdb.org/blog/announcing-document-layer/)
+
+-   [FoundationDB Record Layer](https://foundationdb.github.io/fdb-record-layer/)
 
 # Plug-In Concepts
 
