@@ -33,17 +33,17 @@ func NewManager() *Manager {
 	}
 }
 
-// RegisterService adds a service.
+// RegisterService adds a plug-in service.
 func (mgr *Manager) RegisterService(srv Service) {
 	mgr.services = append(mgr.services, srv)
 }
 
-// Reload reloads all services.
-func (mgr *Manager) Reload(srvs []Service) {
+// ReloadServices reloads all plug-in services.
+func (mgr *Manager) ReloadServices(srvs []Service) {
 	mgr.services = srvs
 }
 
-// Start starts all services.
+// Start starts all plug-in services.
 func (mgr *Manager) Start() error {
 	log.Infof("plug-ins loading...")
 
@@ -66,7 +66,7 @@ func (mgr *Manager) Start() error {
 	return nil
 }
 
-// Stop stops all services.
+// Stop stops all plug-in services.
 func (mgr Manager) Stop() error {
 	log.Infof("plug-ins terminating...")
 	var lastErr error
