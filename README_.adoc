@@ -6,7 +6,7 @@ https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml[image:http
 https://pkg.go.dev/github.com/cybergarage/puzzledb-go[image:https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg[Go
 Reference]]
 
-PuzzleDB is a high-performance, distributed, cloud-native, multi-API, multi-model database.
+PuzzleDB aims to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version is developed in the Go language.
 
 include::doc/whatis.adoc[]
 
