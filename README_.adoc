@@ -21,8 +21,8 @@ See the following guide to learn about how to get started.
 For architecture of PuzzleDB, see the following concept documents:
 
 * link:doc/concept.md[Design Concepts]
-** link:doc/layer_concept.md[Layer Concept]
-** link:doc/plugin_concept.md[Plug-In Concept]
+** link:doc/layer-concept.md[Layer Concept]
+** link:doc/plugin-concept.md[Plug-In Concept]
 ** link:doc/data-model.md[Data Model]
 ** link:doc/consistency-model.md[Consistency Model]
 
