@@ -46,7 +46,9 @@ all: test
 %.md : %.adoc
 	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
 docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc))
-doc: $(docs)
+doc_touch:
+	touch doc/*.adoc
+doc: doc_touch $(docs)
 	@mv README_.md README.md
 	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
 
