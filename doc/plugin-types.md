@@ -73,7 +73,7 @@ PuzzleDB defines a core plug-in interface that includes query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key</p></td>
 <td style="text-align: left;"><p>Key serializer services</p></td>
-<td style="text-align: left;"><p>Tupple</p></td>
+<td style="text-align: left;"><p>Tuple</p></td>
 <td style="text-align: left;"><p>O</p></td>
 </tr>
 <tr class="odd">
@@ -100,7 +100,7 @@ PuzzleDB defines a core plug-in interface that includes query, storage, and coor
 <tr class="even">
 <td style="text-align: left;"><p>Extend</p></td>
 <td style="text-align: left;"><p>-</p></td>
-<td style="text-align: left;"><p>User defined services</p></td>
+<td style="text-align: left;"><p>User-defined services</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
