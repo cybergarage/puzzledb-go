@@ -32,7 +32,7 @@ PuzzleDB has the following features:
 
 See the following guide to learn about how to get started.
 
--   [Quick Start](doc/quick_start.md)
+-   [Quick Start](doc/quick-start.md)
 
 # Supported Protocols
 
@@ -54,7 +54,11 @@ For architecture of PuzzleDB, see the following concept documents:
 
 -   Design Docs
 
-    -   [Architecture](doc/architecture.md)
+    -   [Concept](doc/concept.md)
+
+        -   [Layer Concept](doc/layer_concept.md)
+
+        -   [Plug-In Concept](doc/plugin_concept.md)
 
     -   [Data Model](doc/data_model.md)
 
@@ -68,7 +72,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 # Developer Guides
 
--   [Quick Start](doc/quick_start.md)
+-   [Quick Start](doc/quick-start.md)
 
     -   [Build on macOS](doc/build-on-macos.md)
 

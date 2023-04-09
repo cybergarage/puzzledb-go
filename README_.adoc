@@ -14,7 +14,7 @@ include::doc/whatis.adoc[]
 
 See the following guide to learn about how to get started.
 
-* link:doc/quick_start.md[Quick Start]
+* link:doc/quick-start.md[Quick Start]
 
 = Supported Protocols
 
@@ -31,7 +31,9 @@ This technology preview version partially supports major database models and pro
 For architecture of PuzzleDB, see the following concept documents:
 
 ** Design Docs
-*** link:doc/architecture.md[Architecture]
+*** link:doc/concept.md[Concept]
+**** link:doc/layer_concept.md[Layer Concept]
+**** link:doc/plugin_concept.md[Plug-In Concept]
 *** link:doc/data_model.md[Data Model]
 *** link:doc/consistency_model.md[Consistency Model]
 
@@ -39,6 +41,6 @@ include::doc/roadmap.adoc[]
 
 = Developer Guides
 
-* link:doc/quick_start.md[Quick Start]
+* link:doc/quick-start.md[Quick Start]
 ** link:doc/build-on-macos.md[Build on macOS]
 ** link:doc/build-on-macos.md[Build on Ubuntu]
