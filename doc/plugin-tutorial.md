@@ -126,6 +126,8 @@ For the plugin services specified in the standards listed in the following table
 </tbody>
 </table>
 
+For more information on plug-in implementation, please refer to the standard plug-ins located in the `plugins` directory.
+
 ## Registering Plug-in
 
 To register your plug-in service, you should override `` Server::LoadPlugins()` `` as follows:
@@ -155,7 +157,3 @@ To register your plug-in service, you should override `` Server::LoadPlugins()` 
         server.RegisterService(service)
         return nil
     }
-
-## Examples
-
-For more information on plug-in implementation, please refer to the standard plug-ins located in the `plugins` directory.
