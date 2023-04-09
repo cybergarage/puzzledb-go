@@ -12,25 +12,26 @@ include::doc/whatis.adoc[]
 
 = Get Started
 
-PuzzleDB releases the official Docker image on Docker Hub. See the following link:doc/quick_start.md[Quick Start] guide to learn about how to get started with the Docker image.
+See the following guide to learn about how to get started.
 
 * link:doc/quick_start.md[Quick Start]
 
 = How does PuzzleDB work?
 
-* For architecture of PuzzleDB, see the following concept documents:
+For architecture of PuzzleDB, see the following concept documents:
+
 ** Design Docs
 *** link:doc/architecture.md[Architecture]
 *** link:doc/data_model.md[Data Model]
 *** link:doc/consistency_model.md[Consistency Model]
 
-= Supported Protocols
+This technology preview version provides staged support for the following major database protocols. Please refer to the following documents for information regarding the support status and limitations of each protocol.
 
-This Technology Preview version provides staged support for the following major database protocols. Please refer to the following documents for information regarding the support status and limitations of each protocol.
-
-* link:doc/redis.md[Redis]
-* link:doc/mongodb.md[MongoDB]
-* link:doc/mysql.md[MySQL]
+* Supported Protocols
+** link:doc/redis.md[Redis]
+** link:doc/mongodb.md[MongoDB]
+** link:doc/mysql.md[MySQL]
+** PostgreSQL (Planning)
 
 include::doc/roadmap.adoc[]
 

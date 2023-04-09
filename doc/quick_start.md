@@ -4,19 +4,33 @@
 
 This chapter shows you how to get started with PuzzleDB quickly: you can start a standalone PuzzleDB server with Docker and use Redis, MongoDB or MySQL CLI commands to insert and read sample data.
 
-## Start PuzzleDB Server
+## Starting PuzzleDB Server
 
-PuzzleDB Docker image is the easiest way; if you do not have Docker installed, go there and install it first. To start the standalone server, use the following command:
+### Building from Source
+
+To start the latest PuzzleDB, refer to [Go Stared](https://go.dev/learn/) to set up your Go development environment and run the following command:
+
+```
+git clone https://github.com/cybergarage/puzzledb-go.git
+cd puzzledb
+make run
+```
+
+### Using Docker image
+
+PuzzleDB Docker image is the easiest way; if you do not have Docker installed, go there and install it first. To start the standalone server, run the following command:
 
 ```
 docker run -it --rm \
  -p 6379:6379 \
  -p 27017:27017 \
- -p 3307:3307 \
+ -p 3306:3306 \
  cybergarage/puzzledb
 ```
 
-PuzzleDB listens on three default database ports: Redis, MongoDB, and MySQL.
+## Using database clients
+
+The started PuzzleDB listens on the standard ports of the supported Redis, MongoDB, and MySQL database protocols, and you can connect with PuzzleDB using the standard CLI commands.
 
 ## Redis
 

@@ -28,31 +28,33 @@ PuzzleDB has the following features:
 
 # Get Started
 
-PuzzleDB releases the official Docker image on Docker Hub. See the following [Quick Start](doc/quick_start.md) guide to learn about how to get started with the Docker image.
+See the following guide to learn about how to get started.
 
 -   [Quick Start](doc/quick_start.md)
 
 # How does PuzzleDB work?
 
--   For architecture of PuzzleDB, see the following concept documents:
+For architecture of PuzzleDB, see the following concept documents:
 
-    -   Design Docs
+-   Design Docs
 
-        -   [Architecture](doc/architecture.md)
+    -   [Architecture](doc/architecture.md)
 
-        -   [Data Model](doc/data_model.md)
+    -   [Data Model](doc/data_model.md)
 
-        -   [Consistency Model](doc/consistency_model.md)
+    -   [Consistency Model](doc/consistency_model.md)
 
-# Supported Protocols
+This technology preview version provides staged support for the following major database protocols. Please refer to the following documents for information regarding the support status and limitations of each protocol.
 
-This Technology Preview version provides staged support for the following major database protocols. Please refer to the following documents for information regarding the support status and limitations of each protocol.
+-   Supported Protocols
 
--   [Redis](doc/redis.md)
+    -   [Redis](doc/redis.md)
 
--   [MongoDB](doc/mongodb.md)
+    -   [MongoDB](doc/mongodb.md)
 
--   [MySQL](doc/mysql.md)
+    -   [MySQL](doc/mysql.md)
+
+    -   PostgreSQL (Planning)
 
 # Roadmap
 
