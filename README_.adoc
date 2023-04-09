@@ -41,9 +41,11 @@ include::doc/roadmap.adoc[]
 = User Guides
 
 * Configuration (Planning)
+* link:https://hub.docker.com/repository/docker/cybergarage/puzzledb/general[Docker Hub (cybergarage/puzzledb)]
 
 = Developer Guides
 
+* link:https://pkg.go.dev/github.com/cybergarage/puzzledb-go[Go Reference]
 * Contributing (Planning)
 ** link:doc/coding_guideline.md[Coding Guidelines]
 * Building and Testing
