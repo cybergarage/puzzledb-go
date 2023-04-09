@@ -65,6 +65,9 @@ lint: format
 test: lint
 	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
+test_only:
+	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
+
 image:
 	docker image build -t${BIN_DOCKER_TAG} .
 
