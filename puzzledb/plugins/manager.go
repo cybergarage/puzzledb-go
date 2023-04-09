@@ -33,8 +33,8 @@ func NewManager() *Manager {
 	}
 }
 
-// Add adds a service.
-func (mgr *Manager) Add(srv Service) {
+// RegisterService adds a service.
+func (mgr *Manager) RegisterService(srv Service) {
 	mgr.services = append(mgr.services, srv)
 }
 
