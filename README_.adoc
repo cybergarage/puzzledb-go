@@ -16,6 +16,15 @@ See the following guide to learn about how to get started.
 
 * link:doc/quick_start.md[Quick Start]
 
+= Supported Database Protocols
+
+This technology preview version partially supports major database models and protocols. Please refer to the following documents for details on support status and limitations.
+
+** link:doc/redis.md[Redis]
+** link:doc/mongodb.md[MongoDB]
+** link:doc/mysql.md[MySQL]
+** PostgreSQL (Planning)
+
 = How does PuzzleDB work?
 
 For architecture of PuzzleDB, see the following concept documents:
@@ -24,14 +33,6 @@ For architecture of PuzzleDB, see the following concept documents:
 *** link:doc/architecture.md[Architecture]
 *** link:doc/data_model.md[Data Model]
 *** link:doc/consistency_model.md[Consistency Model]
-
-This technology preview version provides staged support for the following major database protocols. Please refer to the following documents for information regarding the support status and limitations of each protocol.
-
-* Supported Protocols
-** link:doc/redis.md[Redis]
-** link:doc/mongodb.md[MongoDB]
-** link:doc/mysql.md[MySQL]
-** PostgreSQL (Planning)
 
 include::doc/roadmap.adoc[]
 
