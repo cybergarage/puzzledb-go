@@ -56,6 +56,18 @@ PuzzleDB defines the coordinator interface to synchronize between PuzzleDB nodes
 
 -   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
 
+# Consistency Model
+
+PuzzleDB is a multi-data model database; PuzzleDB is a pluggable database that combines modules, and the storage layer modules are expected to satisfy ACID-like interfaces.
+
+PuzzleDB defines the top-level storage plug-in as a document model interface, and the storage interface consists of transaction and document interfaces.
+
+<figure>
+<img src="img/consistency_model.png" alt="consistency model" />
+</figure>
+
+While developers can omit the interface and implement the storage plug-ins based on non-ACID storage, such as contingent consistency model storage, PuzzleDB expects that storage modules are implemented based on ACID storages.
+
 # Data Model
 
 PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently. PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
@@ -309,15 +321,3 @@ PuzzleDB encodes a document data with a serializer and stores it as a key-value 
 -   [Schema-Agnostic Indexing with Azure DocumentDB](https://www.vldb.org/pvldb/vol8/p1668-shukla.pdf)
 
 -   [CBOR — Concise Binary Object Representation | Overview](http://cbor.io/)
-
-# Consistency Model
-
-PuzzleDB is a multi-data model database; PuzzleDB is a pluggable database that combines modules, and the storage layer modules are expected to satisfy ACID-like interfaces.
-
-PuzzleDB defines the top-level storage plug-in as a document model interface, and the storage interface consists of transaction and document interfaces.
-
-<figure>
-<img src="img/consistency_model.png" alt="consistency model" />
-</figure>
-
-While developers can omit the interface and implement the storage plug-ins based on non-ACID storage, such as contingent consistency model storage, PuzzleDB expects that storage modules are implemented based on ACID storages.
