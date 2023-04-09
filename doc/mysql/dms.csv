@@ -1,5 +1,5 @@
 Support,Statement,Note
 O,DELETE,
-O,INSERT,Sub-queries and algebraic operations are currently not supported
-O,SELECT,
+O,INSERT,
+O,SELECT,Sub-queries and algebraic operations are currently not supported
 O,UPDATE,
