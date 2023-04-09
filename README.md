@@ -34,17 +34,19 @@ See the following guide to learn about how to get started.
 
 -   [Quick Start](doc/quick_start.md)
 
-# Supported Database Protocols
+# Supported Protocols
 
 This technology preview version partially supports major database models and protocols. Please refer to the following documents for details on support status and limitations.
 
--   [Redis Compatibility](doc/redis.md)
+-   Compatibility
 
--   [MongoDB Compatibility](doc/mongodb.md)
+    -   [Redis](doc/redis.md)
 
--   [MySQL Compatibility](doc/mysql.md)
+    -   [MongoDB](doc/mongodb.md)
 
--   PostgreSQL (Planning)
+    -   [MySQL](doc/mysql.md)
+
+    -   PostgreSQL (Planning)
 
 # How does PuzzleDB work?
 
