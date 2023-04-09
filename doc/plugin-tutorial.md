@@ -78,7 +78,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"><p>etcd</p></td>
+<td style="text-align: left;"><p>etcd (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
 </tr>
 <tr class="odd">

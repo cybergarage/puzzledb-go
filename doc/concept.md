@@ -89,7 +89,7 @@ PuzzleDB defines a core plug-in interface that includes query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"><p>etcd</p></td>
+<td style="text-align: left;"><p>etcd (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
 </tr>
 <tr class="odd">
