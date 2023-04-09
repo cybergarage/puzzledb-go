@@ -144,7 +144,7 @@ PuzzleDB currently supports [MySQL statements](https://dev.mysql.com/doc/refman/
 <tr class="even">
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>INSERT</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Sub-queries and algebraic operations are currently not supported</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>O</p></td>
