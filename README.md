@@ -76,6 +76,10 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 # Developer Guides
 
+-   References
+
+    -   [Go Reference](https://pkg.go.dev/github.com/cybergarage/puzzledb-go)
+
 -   Contributing (Planning)
 
     -   [Coding Guidelines](doc/coding_guideline.md)
@@ -93,5 +97,3 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
     -   [Plug-in Services](doc/plugin-types.md)
 
         -   [Building User Plug-ins](doc/plugin-tutorial.md)
-
--   [Go Reference](https://pkg.go.dev/github.com/cybergarage/puzzledb-go)

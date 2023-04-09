@@ -45,6 +45,8 @@ include::doc/roadmap.adoc[]
 
 = Developer Guides
 
+* References
+** link:https://pkg.go.dev/github.com/cybergarage/puzzledb-go[Go Reference]
 * Contributing (Planning)
 ** link:doc/coding_guideline.md[Coding Guidelines]
 * Building and Testing
@@ -54,4 +56,3 @@ include::doc/roadmap.adoc[]
 ** link:doc/plugin_concept.md[Plug-In Concept]
 ** link:doc/plugin-types.md[Plug-in Services]
 *** link:doc/plugin-tutorial.md[Building User Plug-ins]
-* link:https://pkg.go.dev/github.com/cybergarage/puzzledb-go[Go Reference]
