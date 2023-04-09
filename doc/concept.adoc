@@ -2,6 +2,8 @@
 
 This section describes the architecture and design concepts of PuzzleDB.
 
+:toc:
+
 include::layer-concept.adoc[leveloffset=+1]
 include::plugin-concept.adoc[leveloffset=+1]
 include::data-model.adoc[leveloffset=+1]
