@@ -40,9 +40,9 @@ For architecture of PuzzleDB, see the following concept documents:
 
 -   [Design Concepts](doc/concept.md)
 
-    -   [Layer Concept](doc/layer_concept.md)
+    -   [Layer Concept](doc/layer-concept.md)
 
-    -   [Plug-In Concept](doc/plugin_concept.md)
+    -   [Plug-In Concept](doc/plugin-concept.md)
 
     -   [Data Model](doc/data-model.md)
 
