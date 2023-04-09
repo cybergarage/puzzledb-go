@@ -20,7 +20,12 @@ to form a database.
 
 PuzzleDB has the following features:
 
-* Support for existing query protocols:
-** Redis, MongoDB and MySQL
-* Support for multi-data models:
-** Key-value, Document and Relational.
+* Flexibility: PuzzleDB allows extensibility through its plugin architecture and pluggable modules for queries, data models, storage, and more.
+
+* Scalability: PuzzleDB seamlessly transitions from an in-memory standalone storage plugin module to a scalable, shared-nothing, horizontally distributed database using an ordered distributed key-value store plugin module.
+
+* Facility: PuzzleDB supports major database model and protocol plugin modules, such as Redis, MongoDB, and MySQL, simplifying application migration.
+
+* Safety: PuzzleDB offers ACID-compliant plugin modules, enabling the development of intuitive and secure applications.
+
+* Efficiency: PuzzleDB manages various database data models, including key-value, document, and relational, by consolidating them into a single core model.

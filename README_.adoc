@@ -20,9 +20,9 @@ See the following guide to learn about how to get started.
 
 This technology preview version partially supports major database models and protocols. Please refer to the following documents for details on support status and limitations.
 
-** link:doc/redis.md[Redis]
-** link:doc/mongodb.md[MongoDB]
-** link:doc/mysql.md[MySQL]
+** link:doc/redis.md[Redis Compatibility]
+** link:doc/mongodb.md[MongoDB Compatibility]
+** link:doc/mysql.md[MySQL Compatibility]
 ** PostgreSQL (Planning)
 
 = How does PuzzleDB work?
@@ -38,6 +38,6 @@ include::doc/roadmap.adoc[]
 
 = Developer Guides
 
-* link:doc/contributing.md[Contribute]
+* link:doc/quick_start.md[Quick Start]
 ** link:doc/build-on-macos.md[Build on macOS]
 ** link:doc/build-on-macos.md[Build on Ubuntu]
