@@ -131,7 +131,7 @@ func (server *Server) loadDefaultPlugins() error {
 		services = append(services, queryService)
 	}
 
-	server.Manager.Reload(services)
+	server.Manager.ReloadServices(services)
 
 	return nil
 }
