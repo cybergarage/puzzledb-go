@@ -11,7 +11,7 @@ To build PuzzleDB, run the following command:
 
  make build
 
- == Testing PuzzleDB
+== Testing PuzzleDB
 
 PuzzleDB uses the Go testing framework. To run all tests, run the following command:
 

@@ -18,10 +18,11 @@ PuzzleDB releases the official Docker image on Docker Hub. See the following lin
 
 = How does PuzzleDB work?
 
-* For architecture of PuzzleDB, see the following concept document:
-** link:doc/architecture.md[Architecture]
-** link:doc/data_model.md[Data Model]
-** link:doc/consistency_model.md[Consistency Model]
+* For architecture of PuzzleDB, see the following concept documents:
+** Design Docs
+*** link:doc/architecture.md[Architecture]
+*** link:doc/data_model.md[Data Model]
+*** link:doc/consistency_model.md[Consistency Model]
 
 = Supported Protocols
 
