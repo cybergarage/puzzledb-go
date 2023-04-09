@@ -1,0 +1,13 @@
+Major Type,Sub Type,Description,Plug-ins,Distributed
+Query,-,Query handler services,Redis,O
+,,,MongoDB,O
+,,,MySQL,O
+,,,PostgreSQL (Planning),O
+Coordinator,-,Coordination services,memdb,X
+,,,etcd,O
+Encoder,Document,Document serializer services,CBOR,O
+,Key,Key serializer services,Tupple,O
+Store,Document,Doument store services,Key-value based store,O
+,Key-value,Key-value store services,memdb,X
+,,,FoundationDB,O
+Extend,-,User-defined services,-,-
