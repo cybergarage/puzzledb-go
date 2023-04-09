@@ -81,6 +81,8 @@ github.com/cybergarage/go-safecast v1.1.0 h1:vBBrFIvsK5LvtIDSXXQbIdrtmJR5BmLpPkr
 github.com/cybergarage/go-safecast v1.1.0/go.mod h1:us/bjLPEfj6kR3DaY0HGhcW1WK0oDCqkpuYSTi+t7uY=
 github.com/cybergarage/go-sqltest v0.9.2 h1:/pybi/2K1n0keyOkcQNyqV4wxyr63Om6lP76XHS8b7w=
 github.com/cybergarage/go-sqltest v0.9.2/go.mod h1:McSUrZEH5nC+4w3lBO1I4NBREIGJd8nUBVtBLiNZgl4=
+github.com/cybergarage/go-sqltest v0.9.3 h1:/njRN6rkuc/NvTkvT/AW+0jntAd0w6Q8PHiFGWhh2Yo=
+github.com/cybergarage/go-sqltest v0.9.3/go.mod h1:CQkUZIyjHsxe0YqRRSvxiWanbDgLcFYAhz/6FQP7vqs=
 github.com/cyphar/filepath-securejoin v0.2.3 h1:YX6ebbZCZP7VkM3scTTokDgBL2TY741X51MTk3ycuNI=
 github.com/cyphar/filepath-securejoin v0.2.3/go.mod h1:aPGpWjXOXUn2NCNjFvBE6aRxGGx79pTxQpKOJNYHHl4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
