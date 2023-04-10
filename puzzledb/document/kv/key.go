@@ -15,25 +15,14 @@
 package kv
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// Key represents a key in the key-value store.
-type Key = kv.Key
-
-// KeyHeader represents a key header in the key-value store.
-type HeaderType = kv.HeaderType
-
-// KeyHeader represents a header for all keys.
-type KeyHeader = kv.KeyHeader
-
-var DatabaseKeyHeader = kv.DatabaseKeyHeader
-var SchemaKeyHeader = kv.SchemaKeyHeader
-var DocumentKeyHeader = kv.DocumentKeyHeader
-var PrimaryIndexHeader = kv.PrimaryIndexHeader
-var SecondaryIndexHeader = kv.SecondaryIndexHeader
+// Key represents an object key.
+type Key = document.Key
 
 // NewKeyWith returns a new key from the specified header and key elements.
 func NewKeyWith(header KeyHeader, key Key) Key {
-	return kv.NewKeyWith(header, key)
+	kvKey := []any{header.Bytes()}
+	return append(kvKey, key.Elements()...)
 }

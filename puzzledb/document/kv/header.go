@@ -14,26 +14,36 @@
 
 package kv
 
-import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
-)
+type HeaderType byte
 
-// Key represents a key in the key-value store.
-type Key = kv.Key
-
-// KeyHeader represents a key header in the key-value store.
-type HeaderType = kv.HeaderType
+// DocumentType represents a document type.
+type DocumentType byte
 
 // KeyHeader represents a header for all keys.
-type KeyHeader = kv.KeyHeader
+type KeyHeader [2]byte
 
-var DatabaseKeyHeader = kv.DatabaseKeyHeader
-var SchemaKeyHeader = kv.SchemaKeyHeader
-var DocumentKeyHeader = kv.DocumentKeyHeader
-var PrimaryIndexHeader = kv.PrimaryIndexHeader
-var SecondaryIndexHeader = kv.SecondaryIndexHeader
+// Version represents a version.
+type Version byte
 
-// NewKeyWith returns a new key from the specified header and key elements.
-func NewKeyWith(header KeyHeader, key Key) Key {
-	return kv.NewKeyWith(header, key)
+// IndexType represents an index type.
+type IndexType byte
+
+func (header KeyHeader) Type() HeaderType {
+	return HeaderType(header[0])
+}
+
+func (header KeyHeader) Version() Version {
+	return VertionFromHeaderByte(header[1])
+}
+
+func (header KeyHeader) DocumentType() DocumentType {
+	return DocumentType(TypeFromHeaderByte(header[1]))
+}
+
+func (header KeyHeader) IndexType() IndexType {
+	return IndexType(TypeFromHeaderByte(header[1]))
+}
+
+func (header KeyHeader) Bytes() []byte {
+	return header[:]
 }
