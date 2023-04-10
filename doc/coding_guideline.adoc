@@ -21,3 +21,4 @@ For detailed linting rules regarding https://github.com/golangci/golangci-lint[G
 
 - https://golang.org/doc/effective_go.html#interface-names[Effective Go]
 - https://github.com/golang/go/wiki/CodeReviewComments[Go Code Review Comments]
+- https://github.com/golang-standards/project-layout[Standard Go Project Layout]
