@@ -7,9 +7,8 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 include::plugin/plugin-types.csv[]
 |====
 
-`Distributed`: Indicates whether the PuzzleDB instance node or plugin instance node supports a distributed operation. The non-distributed plug-ins are provided for stand-alone operation or for internal testing of PuzzleDB.
-
-`Dependency`: Indicates other plugin types required to run the plugin.
+* Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
+* Dependency: Indicates other plug-in service types required to run the plug-in service.
 
 == Plug-In Interfaces
 
@@ -17,11 +16,11 @@ PuzzleDB defines the core plug-in interfaces based on the following concepts.
 
 === Query Interface
 
-PuzzleDB defines the query interface to support any database protocols such as Redis, MongoDB and MySQL protocols. The query interface is kept to a minimal specification in order to support a wide variety of database protocols.
+PuzzleDB defines the query interface to support any database protocol such as Redis, MongoDB, and MySQL protocols. The query interface is kept to a minimal specification to support a wide variety of database protocols.
 
 === Storage Interface
 
-PuzzleDB defines the low level storage interface as an ordered key-value store like early Google Spannerr. PuzzleDB expects that the storage plug-in components are implemented based on ordered key-value stores like FoundationDB rather than non-orders hashing key-value stores like MongoDB and Cassandra. 
+PuzzleDB defines the low-level storage interface as an ordered key-value store like early Google Spanner. PuzzleDB expects that the storage plug-in components are implemented based on ordered key-value stores like FoundationDB rather than non-ordered hashing key-value stores like MongoDB and Cassandra.
 
 === Coordinator Interface
 

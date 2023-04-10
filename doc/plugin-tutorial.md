@@ -93,11 +93,19 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"><p>ZooKeeper (Planning)</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>FoundationDB (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Encoder</p></td>
 <td style="text-align: left;"><p>Document</p></td>
 <td style="text-align: left;"><p>Document serializer services</p></td>
@@ -105,7 +113,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key</p></td>
 <td style="text-align: left;"><p>Key serializer services</p></td>
@@ -113,7 +121,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Store</p></td>
 <td style="text-align: left;"><p>Document</p></td>
 <td style="text-align: left;"><p>Doument store services</p></td>
@@ -121,7 +129,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>Store (Key-value)</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key-value</p></td>
 <td style="text-align: left;"><p>Key-value store services</p></td>
@@ -129,7 +137,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>X</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -137,7 +145,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -145,7 +153,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>Store (Key-value), Coordinator</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Extend</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>User-defined services</p></td>
