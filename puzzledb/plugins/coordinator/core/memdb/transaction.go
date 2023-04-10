@@ -25,21 +25,21 @@ type Document struct {
 	Value []byte
 }
 
-type memdbTransaction struct {
+type Txn struct {
 	*core.NotifyManager
 	*memdb.Txn
 }
 
 // NewTransaction returns a new transaction.
 func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn) coordinator.Transaction {
-	return &memdbTransaction{
+	return &Txn{
 		NotifyManager: mgr,
 		Txn:           txn,
 	}
 }
 
 // Set sets the object for the specified key.
-func (txn *memdbTransaction) Set(obj coordinator.Object) error {
+func (txn *Txn) Set(obj coordinator.Object) error {
 	hasObj := false
 	coordObj, err := txn.Get(obj.Key())
 	if err != nil && coordObj != nil {
@@ -77,7 +77,7 @@ func (txn *memdbTransaction) Set(obj coordinator.Object) error {
 }
 
 // Get gets the object for the specified key.
-func (txn *memdbTransaction) Get(key coordinator.Key) (coordinator.Object, error) {
+func (txn *Txn) Get(key coordinator.Key) (coordinator.Object, error) {
 	rs, err := txn.Range(key)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (txn *memdbTransaction) Get(key coordinator.Key) (coordinator.Object, error
 }
 
 // Range gets the resultset for the specified key range.
-func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, error) {
+func (txn *Txn) Range(key coordinator.Key) (coordinator.ResultSet, error) {
 	keyStr, err := key.Encode()
 	if err != nil {
 		return nil, err
@@ -102,7 +102,7 @@ func (txn *memdbTransaction) Range(key coordinator.Key) (coordinator.ResultSet, 
 }
 
 // Delete deletes the object for the specified key.
-func (txn *memdbTransaction) Delete(key coordinator.Key) error {
+func (txn *Txn) Delete(key coordinator.Key) error {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return err
@@ -115,13 +115,13 @@ func (txn *memdbTransaction) Delete(key coordinator.Key) error {
 }
 
 // Commit commits this transaction.
-func (txn *memdbTransaction) Commit() error {
+func (txn *Txn) Commit() error {
 	txn.Txn.Commit()
 	return nil
 }
 
 // Cancel cancels this transaction.
-func (txn *memdbTransaction) Cancel() error {
+func (txn *Txn) Cancel() error {
 	txn.Txn.Abort()
 	return nil
 }
