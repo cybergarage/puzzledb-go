@@ -28,35 +28,35 @@ const (
 	prefix      = "_prefix"
 )
 
-type memdbCoordinator struct {
+type Coordinator struct {
 	*core.BaseCoordinator
 	*memdb.MemDB
 }
 
 // NewCoordinator returns a new etcd coordinator instance.
 func NewCoordinator() core.CoordinatorService {
-	return &memdbCoordinator{
+	return &Coordinator{
 		BaseCoordinator: core.NewBaseCoordinator(),
 		MemDB:           nil,
 	}
 }
 
 // ServiceType returns the plug-in service type.
-func (coord *memdbCoordinator) ServiceType() plugins.ServiceType {
+func (coord *Coordinator) ServiceType() plugins.ServiceType {
 	return plugins.CoordinatorService
 }
 
 // ServiceName returns the plug-in service name.
-func (coord *memdbCoordinator) ServiceName() string {
+func (coord *Coordinator) ServiceName() string {
 	return "memdb"
 }
 
-func (coord *memdbCoordinator) Transact() (coordinator.Transaction, error) {
+func (coord *Coordinator) Transact() (coordinator.Transaction, error) {
 	return newTransactionWith(coord.NotifyManager, coord.MemDB.Txn(true)), nil
 }
 
 // Start starts this etcd coordinator.
-func (coord *memdbCoordinator) Start() error {
+func (coord *Coordinator) Start() error {
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
 			tableName: {
@@ -84,6 +84,6 @@ func (coord *memdbCoordinator) Start() error {
 }
 
 // Stop stops this etcd coordinator.
-func (coord *memdbCoordinator) Stop() error {
+func (coord *Coordinator) Stop() error {
 	return nil
 }
