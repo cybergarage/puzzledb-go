@@ -36,12 +36,6 @@ func newTransaction(txn *memdb.Txn) *transaction {
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *transaction) Set(obj *kv.Object) error {
-	// FIXME: memdb.Transaction::Set() inserts a duplicate record instead of updating it.
-	err := txn.Remove(obj.Key)
-	if err != nil && !errors.Is(err, kv.ErrNotExist) {
-		return err
-	}
-	// Sets new record
 	keyBytes, err := obj.KeyBytes()
 	if err != nil {
 		return err
