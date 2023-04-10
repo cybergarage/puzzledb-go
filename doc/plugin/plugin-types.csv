@@ -1,13 +1,15 @@
-Major Type,Sub Type,Description,Plug-ins,Distributed
-Query,-,Query handler services,Redis,O
-,,,MongoDB,O
-,,,MySQL,O
-,,,PostgreSQL (Planning),O
-Coordinator,-,Coordination services,memdb,X
-,,,etcd (Planning),O
-Encoder,Document,Document serializer services,CBOR,O
-,Key,Key serializer services,Tuple,O
-Store,Document,Doument store services,Key-value based store,O
-,Key-value,Key-value store services,memdb,X
-,,,FoundationDB,O
-Extend,-,User-defined services,-,-
+Major Type,Sub Type,Description,Plug-ins,Distributed,Dependency
+Query,-,Query handler services,Redis,O,Store (Document)
+,,,MongoDB,O,Store (Document)
+,,,MySQL,O,Store (Document)
+,,,PostgreSQL (Planning),O,Store (Document)
+Coordinator,-,Coordination services,memdb,X,-
+,,,etcd (Planning),O,-
+,,,FoundationDB (Planning),O,-
+Encoder,Document,Document serializer services,CBOR,O,-
+,Key,Key serializer services,Tuple,O,-
+Store,Document,Doument store services,Key-value based store,O,Store (Key-value)
+,Key-value,Key-value store services,memdb,X,-
+,,,FoundationDB,O,-
+,,,Key-value Cahche (Planning),O,"Store (Key-value), Coordinator"
+Extend,-,User-defined services,-,-,-

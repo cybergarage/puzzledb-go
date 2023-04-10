@@ -21,13 +21,14 @@ Each plug-in service should implement the following `Service` interface, which i
 
 For the plugin services specified in the standards listed in the following table, refer to each plugin interface that is defined in the `plugins` directory.
 
-<table>
+<table style="width:100%;">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -36,6 +37,7 @@ For the plugin services specified in the standards listed in the following table
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Plug-ins</th>
 <th style="text-align: left;">Distributed</th>
+<th style="text-align: left;">Dependency</th>
 </tr>
 </thead>
 <tbody>
@@ -45,6 +47,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>Query handler services</p></td>
 <td style="text-align: left;"><p>Redis</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
@@ -52,6 +55,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>MongoDB</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
@@ -59,6 +63,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>MySQL</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
@@ -66,6 +71,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>PostgreSQL (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>Coordinator</p></td>
@@ -73,6 +79,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>Coordination services</p></td>
 <td style="text-align: left;"><p>memdb</p></td>
 <td style="text-align: left;"><p>X</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
@@ -80,46 +87,69 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>etcd (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p>Encoder</p></td>
 <td style="text-align: left;"><p>Document</p></td>
 <td style="text-align: left;"><p>Document serializer services</p></td>
 <td style="text-align: left;"><p>CBOR</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key</p></td>
 <td style="text-align: left;"><p>Key serializer services</p></td>
 <td style="text-align: left;"><p>Tuple</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p>Store</p></td>
 <td style="text-align: left;"><p>Document</p></td>
 <td style="text-align: left;"><p>Doument store services</p></td>
 <td style="text-align: left;"><p>Key-value based store</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Key-value)</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key-value</p></td>
 <td style="text-align: left;"><p>Key-value store services</p></td>
 <td style="text-align: left;"><p>memdb</p></td>
 <td style="text-align: left;"><p>X</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>FoundationDB</p></td>
 <td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Key-value Cahche (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Key-value), Coordinator</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Extend</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>User-defined services</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
