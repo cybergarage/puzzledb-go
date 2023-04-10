@@ -154,6 +154,14 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>Store (Key-value), Coordinator</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>TiKV (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p>Extend</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>User-defined services</p></td>
