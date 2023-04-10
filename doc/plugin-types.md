@@ -74,11 +74,19 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"><p>ZooKeeper (Planning)</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>FoundationDB (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Encoder</p></td>
 <td style="text-align: left;"><p>Document</p></td>
 <td style="text-align: left;"><p>Document serializer services</p></td>
@@ -86,7 +94,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key</p></td>
 <td style="text-align: left;"><p>Key serializer services</p></td>
@@ -94,7 +102,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Store</p></td>
 <td style="text-align: left;"><p>Document</p></td>
 <td style="text-align: left;"><p>Doument store services</p></td>
@@ -102,7 +110,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>Store (Key-value)</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key-value</p></td>
 <td style="text-align: left;"><p>Key-value store services</p></td>
@@ -110,7 +118,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>X</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -118,7 +126,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -126,7 +134,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>Store (Key-value), Coordinator</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Extend</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>User-defined services</p></td>
@@ -137,9 +145,9 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 </tbody>
 </table>
 
-`Distributed`: Indicates whether the PuzzleDB instance node or plugin instance node supports a distributed operation. The non-distributed plug-ins are provided for stand-alone operation or for internal testing of PuzzleDB.
+-   Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
 
-`Dependency`: Indicates other plugin types required to run the plugin.
+-   Dependency: Indicates other plug-in service types required to run the plug-in service.
 
 ## Plug-In Interfaces
 
@@ -147,11 +155,11 @@ PuzzleDB defines the core plug-in interfaces based on the following concepts.
 
 ### Query Interface
 
-PuzzleDB defines the query interface to support any database protocols such as Redis, MongoDB and MySQL protocols. The query interface is kept to a minimal specification in order to support a wide variety of database protocols.
+PuzzleDB defines the query interface to support any database protocol such as Redis, MongoDB, and MySQL protocols. The query interface is kept to a minimal specification to support a wide variety of database protocols.
 
 ### Storage Interface
 
-PuzzleDB defines the low level storage interface as an ordered key-value store like early Google Spannerr. PuzzleDB expects that the storage plug-in components are implemented based on ordered key-value stores like FoundationDB rather than non-orders hashing key-value stores like MongoDB and Cassandra.
+PuzzleDB defines the low-level storage interface as an ordered key-value store like early Google Spanner. PuzzleDB expects that the storage plug-in components are implemented based on ordered key-value stores like FoundationDB rather than non-ordered hashing key-value stores like MongoDB and Cassandra.
 
 ### Coordinator Interface
 

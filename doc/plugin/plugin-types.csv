@@ -5,6 +5,7 @@ Query,-,Query handler services,Redis,O,Store (Document)
 ,,,PostgreSQL (Planning),O,Store (Document)
 Coordinator,-,Coordination services,memdb,X,-
 ,,,etcd (Planning),O,-
+,,,ZooKeeper (Planning),,
 ,,,FoundationDB (Planning),O,-
 Encoder,Document,Document serializer services,CBOR,O,-
 ,Key,Key serializer services,Tuple,O,-
