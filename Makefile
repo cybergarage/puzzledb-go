@@ -45,8 +45,9 @@ all: test
 
 %.md : %.adoc
 	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
+csvs := $(wildcard doc/**/*.csv)
 docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc))
-doc_touch:
+doc_touch: $(csvs)
 	touch doc/*.adoc
 doc: doc_touch $(docs)
 	@mv README_.md README.md
