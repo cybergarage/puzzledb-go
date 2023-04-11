@@ -51,13 +51,17 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 		return nil, err
 	}
 	fbs := txn.Transaction.Get(fdb.Key(keyBytes))
-	val, err := fbs.Get()
+	v, err := fbs.Get()
 	if err != nil {
 		return nil, err
 	}
 	// NOTE: FutureByteSlice::Get() doesn't return nil if the key doesn't exist.
-	if len(val) == 0 {
+	if len(v) == 0 {
 		return nil, coordinator.NewKeyNotExistError(key)
+	}
+	val, err := coordinator.NewValueFrom(v)
+	if err != nil {
+		return nil, err
 	}
 	return coordinator.NewObjectWith(key, val), nil
 }
