@@ -30,6 +30,6 @@ func NewManagerConfigWith(config Config) *ManagerConfig {
 	}
 }
 
-func (conf *ManagerConfig) EnablePlugin() (string, error) {
+func (conf *ManagerConfig) GetConfig() (string, error) {
 	return conf.Config.GetString(strings.Join([]string{pluginsConfig, ""}, "."))
 }
