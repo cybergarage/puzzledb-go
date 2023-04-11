@@ -30,6 +30,6 @@ func NewManagerConfigWith(config Config) *ManagerConfig {
 	}
 }
 
-func (conf *ManagerConfig) EnabledService(t ServiceType) (string, error) {
+func (conf *ManagerConfig) EnabledConfig(t ServiceType) (string, error) {
 	return conf.Config.GetString(strings.Join([]string{pluginsConfig, t.String()}, "."))
 }
