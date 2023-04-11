@@ -16,12 +16,14 @@ package puzzledb
 
 // Config represents a configuration interface.
 type Config interface {
+	// Set sets a value to the specified path.
+	Set(path []string, v any) error
 	// Get returns a value for the specified name.
-	Get(name ...string) (any, error)
+	Get(path ...string) (any, error)
 	// GetString returns a string value for the specified name.
-	GetString(name ...string) (string, error)
+	GetString(path ...string) (string, error)
 	// GetInt returns an integer value for the specified name.
-	GetInt(name ...string) (int, error)
+	GetInt(path ...string) (int, error)
 	// String returns a string representation of the configuration.
 	String() string
 }
