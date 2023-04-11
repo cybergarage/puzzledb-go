@@ -23,14 +23,21 @@ import (
 
 // Manager represents a plug-in manager.
 type Manager struct {
+	*ManagerConfig
 	services []Service
 }
 
 // NewManager returns a plug-in manager instance.
 func NewManager() *Manager {
 	return &Manager{
-		services: []Service{},
+		ManagerConfig: nil,
+		services:      []Service{},
 	}
+}
+
+// SetConfig sets the manager configuration.
+func (mgr *Manager) SetConfig(config Config) {
+	mgr.ManagerConfig = NewManagerConfigWith((config))
 }
 
 // RegisterService adds a plug-in service.
