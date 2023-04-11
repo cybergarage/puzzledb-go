@@ -50,7 +50,7 @@ func NewServer() *Server {
 	return server
 }
 
-// NewServerWithConfig returns a new server instance with the specified configuration.
+// NewServerWithConfig returns a new server instance with the specified configuradtion.
 func NewServerWithConfig(config Config) *Server {
 	server := NewServer()
 	server.SetConfig(config)
@@ -60,6 +60,7 @@ func NewServerWithConfig(config Config) *Server {
 // SetConfig sets the server configuration.
 func (server *Server) SetConfig(config Config) {
 	server.ServerConfig = NewServerConfigWith(config)
+	server.Manager.SetConfig(config)
 }
 
 // Start starts the server.
