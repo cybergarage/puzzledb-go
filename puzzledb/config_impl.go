@@ -61,6 +61,11 @@ func NewConfigWithString(config string) (Config, error) {
 	return conf, nil
 }
 
+// Set sets a value to the specified path.
+func (conf *viperConfig) Set(path []string, v any) error {
+	return nil
+}
+
 func (conf *viperConfig) Get(name ...string) (any, error) {
 	path := strings.Join(name, ".")
 	v := viper.Get(path)
