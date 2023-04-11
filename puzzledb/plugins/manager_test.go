@@ -18,7 +18,7 @@ import (
 	"testing"
 )
 
-func TestNewService(t *testing.T) {
+func TestManager(t *testing.T) {
 	srvs := NewManager()
 	if err := srvs.Start(); err != nil {
 		t.Error(err)
