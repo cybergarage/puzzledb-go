@@ -15,42 +15,64 @@
 package fdb
 
 import (
+	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
+const RequiredAPIVersion int = 630
+
 type Coordinator struct {
 	*core.BaseCoordinator
+	fdb.Database
 }
 
 // NewCoordinator returns a new etcd coordinator instance.
 func NewCoordinator() core.CoordinatorService {
-	return &Coordinator{
+	return &Coordinator{ //nolint:all
 		BaseCoordinator: core.NewBaseCoordinator(),
 	}
 }
 
 // ServiceType returns the plug-in service type.
-func (fdb *Coordinator) ServiceType() plugins.ServiceType {
+func (coord *Coordinator) ServiceType() plugins.ServiceType {
 	return plugins.CoordinatorService
 }
 
 // ServiceName returns the plug-in service name.
-func (fdb *Coordinator) ServiceName() string {
+func (coord *Coordinator) ServiceName() string {
 	return "fdb"
 }
 
-func (fdb *Coordinator) Transact() (coordinator.Transaction, error) {
-	return NewTransaction(), nil
+func (coord *Coordinator) Transact() (coordinator.Transaction, error) {
+	txn, err := coord.Database.CreateTransaction()
+	if err != nil {
+		return nil, err
+	}
+	err = txn.Options().SetAccessSystemKeys()
+	if err != nil {
+		return nil, err
+	}
+
+	return newTransaction(txn), nil
 }
 
 // Start starts this etcd coordinator.
-func (fdb *Coordinator) Start() error {
+func (coord *Coordinator) Start() error {
+	err := fdb.APIVersion(RequiredAPIVersion)
+	if err != nil {
+		return err
+	}
+	db, err := fdb.OpenDefault()
+	if err != nil {
+		return err
+	}
+	coord.Database = db
 	return nil
 }
 
 // Stop stops this etcd coordinator.
-func (fdb *Coordinator) Stop() error {
+func (coord *Coordinator) Stop() error {
 	return nil
 }
