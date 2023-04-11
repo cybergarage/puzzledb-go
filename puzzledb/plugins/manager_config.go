@@ -14,6 +14,12 @@
 
 package plugins
 
+import "strings"
+
+const (
+	pluginsConfig = "plugins"
+)
+
 type ManagerConfig struct {
 	Config
 }
@@ -22,4 +28,8 @@ func NewManagerConfigWith(config Config) *ManagerConfig {
 	return &ManagerConfig{
 		Config: config,
 	}
+}
+
+func (conf *ManagerConfig) EnablePlugin() (string, error) {
+	return conf.Config.GetString(strings.Join([]string{pluginsConfig, ""}, "."))
 }
