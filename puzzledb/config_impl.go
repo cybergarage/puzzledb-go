@@ -64,12 +64,11 @@ func NewConfigWithString(config string) (Config, error) {
 }
 
 // Set sets a value to the specified path.
-func (conf *viperConfig) Set(path []string, v any) error {
+func (conf *viperConfig) Set(path string, v any) error {
 	return nil
 }
 
-func (conf *viperConfig) Get(name ...string) (any, error) {
-	path := strings.Join(name, ".")
+func (conf *viperConfig) Get(path string) (any, error) {
 	v := viper.Get(path)
 	if v == nil {
 		return nil, newErrNotFound(path)
@@ -77,8 +76,7 @@ func (conf *viperConfig) Get(name ...string) (any, error) {
 	return v, nil
 }
 
-func (conf *viperConfig) GetString(name ...string) (string, error) {
-	path := strings.Join(name, ".")
+func (conf *viperConfig) GetString(path string) (string, error) {
 	v := viper.GetString(path)
 	if v == "" {
 		return "", newErrNotFound(path)
@@ -86,8 +84,7 @@ func (conf *viperConfig) GetString(name ...string) (string, error) {
 	return v, nil
 }
 
-func (conf *viperConfig) GetInt(name ...string) (int, error) {
-	path := strings.Join(name, ".")
+func (conf *viperConfig) GetInt(path string) (int, error) {
 	v := viper.GetInt(path)
 	if v == 0 {
 		return 0, newErrNotFound(path)
