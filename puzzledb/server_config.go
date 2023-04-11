@@ -14,6 +14,8 @@
 
 package puzzledb
 
+import "strings"
+
 type ServerConfig struct {
 	Config
 }
@@ -26,7 +28,7 @@ func NewServerConfigWith(config Config) *ServerConfig {
 
 // Port returns a port number for the specified name.
 func (conf *ServerConfig) Port(name string) (int, error) {
-	return conf.Config.GetInt("port", name)
+	return conf.Config.GetInt(strings.Join([]string{"port", name}, "."))
 }
 
 func (conf *ServerConfig) String() string {
