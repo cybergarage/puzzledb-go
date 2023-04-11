@@ -1,2 +1,5 @@
 port:
   mysql: 3306
+plugins:
+  store:
+    
