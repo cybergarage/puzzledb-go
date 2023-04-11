@@ -44,7 +44,9 @@ func NewConfig() (Config, error) {
 // NewConfigWithPath returns a new configuration with the specified path.
 func NewConfigWithPath(path string) (Config, error) {
 	conf := newConfig()
+	viper.SetEnvPrefix(strings.ToUpper(ProductName))
 	viper.AddConfigPath(path)
+	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
 		return nil, err
