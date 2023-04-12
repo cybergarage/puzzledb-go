@@ -42,7 +42,7 @@ func (txn *transaction) FindDocuments(docKey store.Key) (store.ResultSet, error)
 	if err != nil {
 		return nil, err
 	}
-	return newResultSet(txn.Serializer, kvRs), nil
+	return newResultSet(txn.Coder, kvRs), nil
 }
 
 // RemoveDocument removes a document object with the specified primary key.

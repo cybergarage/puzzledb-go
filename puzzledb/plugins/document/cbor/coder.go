@@ -22,43 +22,43 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
-// Serializer represents a CBOR erializer.
-type Serializer struct {
+// Coder represents a CBOR erializer.
+type Coder struct {
 }
 
-// NewSerializer returns a new CBOR erializer instance.
-func NewSerializer() *Serializer {
-	return &Serializer{}
+// NewCoder returns a new CBOR erializer instance.
+func NewCoder() *Coder {
+	return &Coder{}
 }
 
 // ServiceType returns the plug-in service type.
-func (s *Serializer) ServiceType() plugins.ServiceType {
+func (s *Coder) ServiceType() plugins.ServiceType {
 	return plugins.EncoderDocumentService
 }
 
 // ServiceName returns the plug-in service name.
-func (s *Serializer) ServiceName() string {
+func (s *Coder) ServiceName() string {
 	return "cbor"
 }
 
 // Encode writes the specified object to the specified writer.
-func (s *Serializer) Encode(w io.Writer, obj document.Object) error {
+func (s *Coder) Encode(w io.Writer, obj document.Object) error {
 	cbor := cbor.NewEncoder(w)
 	return cbor.Encode(obj)
 }
 
 // Decode returns the decorded object from the specified reader if available, otherwise returns an error.
-func (s *Serializer) Decode(r io.Reader) (document.Object, error) {
+func (s *Coder) Decode(r io.Reader) (document.Object, error) {
 	cbor := cbor.NewDecoder(r)
 	return cbor.Decode()
 }
 
-// Start starts this serializer.
-func (s *Serializer) Start() error {
+// Start starts this coder.
+func (s *Coder) Start() error {
 	return nil
 }
 
-// Stop stops this serializer.
-func (s Serializer) Stop() error {
+// Stop stops this coder.
+func (s Coder) Stop() error {
 	return nil
 }

@@ -24,7 +24,7 @@ import (
 	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
-func TestSerializer(t *testing.T) {
+func TestCoder(t *testing.T) {
 	now := time.Unix(time.Now().Unix(), 0)
 	bsonObj := bson.D{
 		{Key: "string", Value: "abc"},
@@ -49,7 +49,7 @@ func TestSerializer(t *testing.T) {
 		return
 	}
 
-	s := NewSerializer()
+	s := NewCoder()
 
 	// BSON -> Go
 	goObj, err := s.EncodeBSON(bsonDoc)
