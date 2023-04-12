@@ -35,10 +35,10 @@ plugins:
   query:
     redis:
       enabled: true
-      port: 3306
+      port: 6379
     mongo:
       enabled: true
-      port: 3306
+      port: 27017
     mysql:
       enabled: true
       port: 3306
