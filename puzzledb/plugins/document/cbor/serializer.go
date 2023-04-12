@@ -33,7 +33,7 @@ func NewSerializer() *Serializer {
 
 // ServiceType returns the plug-in service type.
 func (s *Serializer) ServiceType() plugins.ServiceType {
-	return plugins.EncoderDocumentService
+	return plugins.CoderDocumentService
 }
 
 // ServiceName returns the plug-in service name.
