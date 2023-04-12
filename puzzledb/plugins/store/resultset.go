@@ -23,16 +23,16 @@ import (
 )
 
 type resultSet struct {
-	kvRs     kv.ResultSet
-	obj      store.Object
-	decorder document.Decoder
+	kvRs    kv.ResultSet
+	obj     store.Object
+	decoder document.Decoder
 }
 
-func newResultSet(decorder document.Decoder, rs kv.ResultSet) store.ResultSet {
+func newResultSet(decoder document.Decoder, rs kv.ResultSet) store.ResultSet {
 	return &resultSet{
-		kvRs:     rs,
-		obj:      nil,
-		decorder: decorder,
+		kvRs:    rs,
+		obj:     nil,
+		decoder: decoder,
 	}
 }
 
@@ -42,7 +42,7 @@ func (rs *resultSet) Next() bool {
 		return false
 	}
 	kvObj := rs.kvRs.Object()
-	obj, err := rs.decorder.Decode(bytes.NewReader(kvObj.Value))
+	obj, err := rs.decoder.Decode(bytes.NewReader(kvObj.Value))
 	if err != nil {
 		return false
 	}

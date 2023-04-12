@@ -22,15 +22,15 @@ import (
 
 type transaction struct {
 	kv kv.Transaction
-	document.Serializer
+	document.Coder
 	db *database
 }
 
-func newTransaction(db *database, kvTx kv.Transaction, serializer document.Serializer) (store.Transaction, error) {
+func newTransaction(db *database, kvTx kv.Transaction, coder document.Coder) (store.Transaction, error) {
 	return &transaction{
-		db:         db,
-		kv:         kvTx,
-		Serializer: serializer,
+		db:    db,
+		kv:    kvTx,
+		Coder: coder,
 	}, nil
 }
 

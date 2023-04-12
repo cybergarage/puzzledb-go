@@ -38,7 +38,7 @@ func DeepEqual(x, y any) error {
 	return fmt.Errorf("%v != %v", x, y)
 }
 
-func SerializerPrimitiveTest(t *testing.T, s document.Serializer) {
+func CoderPrimitiveTest(t *testing.T, s document.Coder) {
 	t.Helper()
 
 	tests := []struct {
@@ -73,13 +73,13 @@ func SerializerPrimitiveTest(t *testing.T, s document.Serializer) {
 	}
 }
 
-func SerializerTest(t *testing.T, s document.Serializer) {
+func CoderTest(t *testing.T, s document.Coder) {
 	t.Helper()
 	testFuncs := []struct {
 		name string
-		fn   func(*testing.T, document.Serializer)
+		fn   func(*testing.T, document.Coder)
 	}{
-		{"primitive", SerializerPrimitiveTest},
+		{"primitive", CoderPrimitiveTest},
 	}
 
 	for _, testFunc := range testFuncs {
@@ -89,17 +89,17 @@ func SerializerTest(t *testing.T, s document.Serializer) {
 	}
 }
 
-func TestSerializer(t *testing.T) {
-	serializers := []struct {
-		name       string
-		serializer document.Serializer
+func TestCoder(t *testing.T) {
+	coders := []struct {
+		name  string
+		coder document.Coder
 	}{
-		{"cbor", cbor.NewSerializer()},
+		{"cbor", cbor.NewCoder()},
 	}
 
-	for _, s := range serializers {
-		t.Run(s.name, func(t *testing.T) {
-			SerializerTest(t, s.serializer)
+	for _, coder := range coders {
+		t.Run(coder.name, func(t *testing.T) {
+			CoderTest(t, coder.coder)
 		})
 	}
 }

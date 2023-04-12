@@ -21,5 +21,5 @@ import (
 
 type Service interface {
 	plugins.Service
-	document.Serializer
+	document.Coder
 }

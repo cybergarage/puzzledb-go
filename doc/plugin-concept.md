@@ -97,7 +97,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <tr class="odd">
 <td style="text-align: left;"><p>Encoder</p></td>
 <td style="text-align: left;"><p>Document</p></td>
-<td style="text-align: left;"><p>Document serializer services</p></td>
+<td style="text-align: left;"><p>Document coder services</p></td>
 <td style="text-align: left;"><p>CBOR</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -105,7 +105,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key</p></td>
-<td style="text-align: left;"><p>Key serializer services</p></td>
+<td style="text-align: left;"><p>Key coder services</p></td>
 <td style="text-align: left;"><p>Tuple</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>

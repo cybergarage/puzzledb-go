@@ -104,7 +104,7 @@ func (server *Server) Restart() error {
 func (server *Server) loadDefaultPlugins() error {
 	services := []plugins.Service{}
 
-	seralizer := cbor.NewSerializer()
+	seralizer := cbor.NewCoder()
 	services = append(services, seralizer)
 
 	kvStores := []kv.Service{
@@ -125,7 +125,7 @@ func (server *Server) loadDefaultPlugins() error {
 
 	kvStore := kvStores[0]
 	store := store.NewStoreWithKvStore(kvStore)
-	store.SetSerializer(seralizer)
+	store.SetDocumentCoder(seralizer)
 	services = append(services, store)
 
 	queryServices := []query.Service{

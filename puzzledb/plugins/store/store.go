@@ -23,19 +23,19 @@ import (
 
 type Store struct {
 	kvService kv.Service
-	document.Serializer
+	document.Coder
 }
 
 func NewStoreWithKvStore(kvs kv.Service) *Store {
 	return &Store{
-		kvService:  kvs,
-		Serializer: nil,
+		kvService: kvs,
+		Coder:     nil,
 	}
 }
 
-// SetSerializer sets the serializer.
-func (store *Store) SetSerializer(serializer document.Serializer) {
-	store.Serializer = serializer
+// SetDocumentCoder sets the document coder.
+func (store *Store) SetDocumentCoder(coder document.Coder) {
+	store.Coder = coder
 }
 
 // ServiceType returns the plug-in service type.
@@ -60,8 +60,8 @@ func (store *Store) GetDatabase(name string) (store.Database, error) {
 		return nil, err
 	}
 	db := &database{
-		kv:         kvDB,
-		Serializer: store.Serializer,
+		kv:    kvDB,
+		Coder: store.Coder,
 	}
 	return db, nil
 }
