@@ -14,8 +14,8 @@
 
 package document
 
-// A Serializer includes Decorder and Encoder interfaces.
-type Serializer interface {
+// A Coder includes decoder and encoder interfaces.
+type Coder interface {
 	Decoder
 	Encoder
 }

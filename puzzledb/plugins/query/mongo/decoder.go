@@ -24,7 +24,7 @@ import (
 	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
-// BSONDecoder represents a decorder.
+// BSONDecoder represents a decoder.
 type BSONDecoder struct {
 }
 

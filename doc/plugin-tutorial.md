@@ -108,7 +108,7 @@ For the plugin services specified in the standards listed in the following table
 <tr class="odd">
 <td style="text-align: left;"><p>Encoder</p></td>
 <td style="text-align: left;"><p>Document</p></td>
-<td style="text-align: left;"><p>Document serializer services</p></td>
+<td style="text-align: left;"><p>Document coder services</p></td>
 <td style="text-align: left;"><p>CBOR</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -116,7 +116,7 @@ For the plugin services specified in the standards listed in the following table
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key</p></td>
-<td style="text-align: left;"><p>Key serializer services</p></td>
+<td style="text-align: left;"><p>Key coder services</p></td>
 <td style="text-align: left;"><p>Tuple</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>

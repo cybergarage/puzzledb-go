@@ -17,7 +17,9 @@ package puzzledb
 import "strings"
 
 const (
-	portConfig = "port"
+	pluginsConfig = "plugins"
+	queryConfig   = "query"
+	portConfig    = "port"
 )
 
 type ServerConfig struct {
@@ -32,7 +34,7 @@ func NewServerConfigWith(config Config) *ServerConfig {
 
 // Port returns a port number for the specified name.
 func (conf *ServerConfig) Port(name string) (int, error) {
-	return conf.Config.GetInt(strings.Join([]string{portConfig, name}, "."))
+	return conf.Config.GetInt(strings.Join([]string{pluginsConfig, queryConfig, name, portConfig}, "."))
 }
 
 func (conf *ServerConfig) String() string {

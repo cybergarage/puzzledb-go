@@ -1,5 +1,44 @@
-port:
-  mysql: 3306
 plugins:
+  encoder:
+    document:
+      default: cbor
+      cbor:
+        enabled: true
+    key: 
+      default: tuple
+      tuple:
+        enabled: true
+  coordinator: 
+    enabled: memdb
+    memdb:
+      enabled: true
+    etcd:
+      enabled: true
+      endpoints: null
+    fdb:
+      enabled: true
+      cluseterFile: null
   store:
-    
+    document:
+      enabled: kv
+      kv:
+        enabled: true
+        store: memdb
+    kv:
+      enabled: memdb
+      memdb:
+        enabled: true
+        endpoints: null
+      fdb:
+        enabled: true
+        cluseterFile: null
+  query:
+    redis:
+      enabled: true
+      port: 6379
+    mongo:
+      enabled: true
+      port: 27017
+    mysql:
+      enabled: true
+      port: 3306
