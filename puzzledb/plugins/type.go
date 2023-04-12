@@ -18,10 +18,10 @@ package plugins
 type ServiceType uint8
 
 const (
-	// EncoderDocumentService represents a serializer service for document.
-	EncoderDocumentService ServiceType = iota
-	// EncoderKeyService represents a serializer service for key.
-	EncoderKeyService
+	// CoderDocumentService represents a serializer service for document.
+	CoderDocumentService ServiceType = iota
+	// CoderKeyService represents a serializer service for key.
+	CoderKeyService
 	// QueryService represents a query service.
 	QueryService
 	// StoreDocumentService represents a document store service.
@@ -37,8 +37,8 @@ const (
 // ServiceTypes returns all service types.
 func ServiceTypes() []ServiceType {
 	return []ServiceType{
-		EncoderDocumentService,
-		EncoderKeyService,
+		CoderDocumentService,
+		CoderKeyService,
 		QueryService,
 		StoreDocumentService,
 		StoreKvService,
@@ -50,10 +50,10 @@ func ServiceTypes() []ServiceType {
 // String returns a string representation of the service type.
 func (t ServiceType) String() string {
 	switch t {
-	case EncoderDocumentService:
-		return "encorder.document"
-	case EncoderKeyService:
-		return "encorder.key"
+	case CoderDocumentService:
+		return "corder.document"
+	case CoderKeyService:
+		return "corder.key"
 	case QueryService:
 		return "query"
 	case StoreDocumentService:
