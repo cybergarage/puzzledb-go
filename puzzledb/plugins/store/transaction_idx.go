@@ -54,5 +54,5 @@ func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet,
 	if err != nil {
 		return nil, err
 	}
-	return newIndexResultSet(txn, txn.Serializer, kvIdxRs), nil
+	return newIndexResultSet(txn, txn.Coder, kvIdxRs), nil
 }

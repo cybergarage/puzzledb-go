@@ -23,7 +23,7 @@ import (
 type Service struct {
 	*mongo.Server
 	*query.BaseService
-	*Serializer
+	*Coder
 }
 
 // NewService returns a MongoDB service instance.
@@ -31,7 +31,7 @@ func NewService() *Service {
 	server := &Service{
 		Server:      mongo.NewServer(),
 		BaseService: query.NewService(),
-		Serializer:  NewSerializer(),
+		Coder:       NewCoder(),
 	}
 
 	server.SetMessageListener(server)

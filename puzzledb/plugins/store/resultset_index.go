@@ -23,18 +23,18 @@ import (
 )
 
 type indexResultSet struct {
-	txn      *transaction
-	kvRs     kv.ResultSet
-	obj      store.Object
-	decorder document.Decoder
+	txn     *transaction
+	kvRs    kv.ResultSet
+	obj     store.Object
+	decoder document.Decoder
 }
 
-func newIndexResultSet(txn *transaction, decorder document.Decoder, rs kv.ResultSet) store.ResultSet {
+func newIndexResultSet(txn *transaction, decoder document.Decoder, rs kv.ResultSet) store.ResultSet {
 	return &indexResultSet{
-		txn:      txn,
-		kvRs:     rs,
-		obj:      nil,
-		decorder: decorder,
+		txn:     txn,
+		kvRs:    rs,
+		obj:     nil,
+		decoder: decoder,
 	}
 }
 
@@ -44,7 +44,7 @@ func (rs *indexResultSet) Next() bool {
 		return false
 	}
 	kvIdxObj := rs.kvRs.Object()
-	kvIdx, err := rs.decorder.Decode(bytes.NewReader(kvIdxObj.Value))
+	kvIdx, err := rs.decoder.Decode(bytes.NewReader(kvIdxObj.Value))
 	if err != nil {
 		return false
 	}
