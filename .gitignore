@@ -17,3 +17,5 @@
 # macOS
 .DS_Store
 
+# PuzzleDB
+puzzledb-server
