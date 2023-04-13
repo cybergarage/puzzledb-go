@@ -22,7 +22,22 @@ import (
 func newTupleWith(key document.Key) tuple.Tuple {
 	tpl := make([]tuple.TupleElement, len(key))
 	for n, keyElem := range key {
-		tpl[n] = keyElem
+		switch v := keyElem.(type) {
+		case int8:
+			tpl[n] = int(v)
+		case int16:
+			tpl[n] = int(v)
+		case int32:
+			tpl[n] = int(v)
+		case uint8:
+			tpl[n] = int(v)
+		case uint16:
+			tpl[n] = int(v)
+		case uint32:
+			tpl[n] = int(v)
+		default:
+			tpl[n] = v
+		}
 	}
 	return tpl
 }
