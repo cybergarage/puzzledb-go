@@ -16,6 +16,7 @@ package key
 
 import (
 	_ "embed"
+	"math/rand"
 	"strconv"
 
 	"fmt"
@@ -29,6 +30,93 @@ import (
 var testKeyTypes []byte
 
 // nolint:goerr113, gocognit, gci, gocyclo
+func newKeyElemFrom(t string, v string) (any, error) {
+	switch t {
+	case "string":
+		return v, nil
+	case "bytes":
+		return []byte(v), nil
+	case "bool":
+		return strconv.ParseBool(v)
+	case "nil":
+		return nil, nil
+	case "int":
+		i, err := strconv.ParseInt(v, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		return int(i), nil
+	case "int8":
+		i, err := strconv.ParseInt(v, 10, 8)
+		if err != nil {
+			return nil, err
+		}
+		return int8(i), nil
+	case "int16":
+		i, err := strconv.ParseInt(v, 10, 16)
+		if err != nil {
+			return nil, err
+		}
+		return int16(i), nil
+	case "int32":
+		i, err := strconv.ParseInt(v, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		return int32(i), nil
+	case "int64":
+		i, err := strconv.ParseInt(v, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		return int64(i), nil
+	case "uint":
+		i, err := strconv.ParseUint(v, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		return uint(i), nil
+	case "uint8":
+		i, err := strconv.ParseUint(v, 10, 8)
+		if err != nil {
+			return nil, err
+		}
+		return uint8(i), nil
+	case "uint16":
+		i, err := strconv.ParseUint(v, 10, 16)
+		if err != nil {
+			return nil, err
+		}
+		return uint16(i), nil
+	case "uint32":
+		i, err := strconv.ParseUint(v, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		return uint32(i), nil
+	case "uint64":
+		i, err := strconv.ParseUint(v, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		return uint64(i), nil
+	case "float32":
+		i, err := strconv.ParseFloat(v, 32)
+		if err != nil {
+			return nil, err
+		}
+		return float32(i), nil
+	case "float64":
+		i, err := strconv.ParseFloat(v, 64)
+		if err != nil {
+			return nil, err
+		}
+		return float64(i), nil
+	default:
+		return nil, fmt.Errorf("unknown type: %s", t)
+	}
+}
+
 func CoderTest(t *testing.T, coder document.KeyCoder) {
 	t.Helper()
 
@@ -38,90 +126,11 @@ func CoderTest(t *testing.T, coder document.KeyCoder) {
 		t.Fatal(err)
 	}
 
-	getKeyValue := func(t string, v string) (any, error) {
-		switch t {
-		case "string":
-			return v, nil
-		case "bytes":
-			return []byte(v), nil
-		case "bool":
-			return strconv.ParseBool(v)
-		case "nil":
-			return nil, nil
-		case "int":
-			i, err := strconv.ParseInt(v, 10, 64)
-			if err != nil {
-				return nil, err
-			}
-			return int(i), nil
-		case "int8":
-			i, err := strconv.ParseInt(v, 10, 8)
-			if err != nil {
-				return nil, err
-			}
-			return int8(i), nil
-		case "int16":
-			i, err := strconv.ParseInt(v, 10, 16)
-			if err != nil {
-				return nil, err
-			}
-			return int16(i), nil
-		case "int32":
-			i, err := strconv.ParseInt(v, 10, 32)
-			if err != nil {
-				return nil, err
-			}
-			return int32(i), nil
-		case "int64":
-			i, err := strconv.ParseInt(v, 10, 64)
-			if err != nil {
-				return nil, err
-			}
-			return int64(i), nil
-		case "uint":
-			i, err := strconv.ParseUint(v, 10, 64)
-			if err != nil {
-				return nil, err
-			}
-			return uint(i), nil
-		case "uint8":
-			i, err := strconv.ParseUint(v, 10, 8)
-			if err != nil {
-				return nil, err
-			}
-			return uint8(i), nil
-		case "uint16":
-			i, err := strconv.ParseUint(v, 10, 16)
-			if err != nil {
-				return nil, err
-			}
-			return uint16(i), nil
-		case "uint32":
-			i, err := strconv.ParseUint(v, 10, 32)
-			if err != nil {
-				return nil, err
-			}
-			return uint32(i), nil
-		case "uint64":
-			i, err := strconv.ParseUint(v, 10, 64)
-			if err != nil {
-				return nil, err
-			}
-			return uint64(i), nil
-		case "float32":
-			i, err := strconv.ParseFloat(v, 32)
-			if err != nil {
-				return nil, err
-			}
-			return float32(i), nil
-		case "float64":
-			i, err := strconv.ParseFloat(v, 64)
-			if err != nil {
-				return nil, err
-			}
-			return float64(i), nil
-		default:
-			return nil, fmt.Errorf("unknown type: %s", t)
+	shuffleKey := func(key document.Key) {
+		n := len(key)
+		for i := n - 1; i > 0; i-- {
+			j := rand.Intn(i + 1)
+			key[i], key[j] = key[j], key[i]
 		}
 	}
 
@@ -130,13 +139,16 @@ func CoderTest(t *testing.T, coder document.KeyCoder) {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
 			key := document.NewKey()
 			for n, pictParam := range pictParams {
-				kv, err := getKeyValue(pictParam, pictCase[n])
+				kv, err := newKeyElemFrom(pictParam, pictCase[n])
 				if err != nil {
 					t.Error(err)
 					return
 				}
 				key = append(key, kv)
 			}
+
+			// Non-shuffled key
+
 			kb, err := coder.Encode(key)
 			if err != nil {
 				t.Error(err)
@@ -144,6 +156,49 @@ func CoderTest(t *testing.T, coder document.KeyCoder) {
 			}
 
 			decKey, err := coder.Decode(kb)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			if !key.Equals(decKey) {
+				t.Errorf("%s != %s", key, decKey)
+				return
+			}
+
+			// Random shuffled key
+
+			shuffleKey(key)
+
+			kb, err = coder.Encode(key)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			decKey, err = coder.Decode(kb)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			if !key.Equals(decKey) {
+				t.Errorf("%s != %s", key, decKey)
+				return
+			}
+
+			// Random reduced key
+
+			kn := rand.Intn(len(key)-1) + 1
+			key = key[:kn]
+
+			kb, err = coder.Encode(key)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			decKey, err = coder.Decode(kb)
 			if err != nil {
 				t.Error(err)
 				return
