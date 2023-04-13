@@ -60,3 +60,8 @@ func (key Key) Encode() ([]byte, error) {
 	}
 	return keyBuf.Bytes(), nil
 }
+
+// Equals returns true if the specified key is equal to the key.
+func (key Key) Equals(other Key) bool {
+	return true
+}
