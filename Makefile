@@ -41,16 +41,6 @@ BINS=\
 
 all: test
 
-%.md : %.adoc
-	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
-csvs := $(wildcard doc/**/*.csv)
-docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc))
-doc_touch: $(csvs)
-	touch doc/*.adoc
-doc: doc_touch $(docs)
-	@mv README_.md README.md
-	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
-
 version:
 	@pushd ${PKG_SRC_ROOT} && ./version.gen > version.go && popd
 
@@ -63,7 +53,14 @@ vet: format
 lint: format
 	golangci-lint run ${PKG_SRC_ROOT}/... ${TEST_SRC_ROOT}/...
 
-test: lint
+%.pict : %.mod
+	pict $< > $@
+
+models=$(shell find ${TEST_SRC_ROOT}) -name '*.mod')
+
+picts=$(models:.mod=.pict)
+
+test: lint ${picts}
 	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
 test_only:
@@ -86,3 +83,17 @@ rund:
 
 clean:
 	go clean -i ${PKG}
+
+#
+# Document
+#
+
+%.md : %.adoc
+	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
+csvs := $(wildcard doc/**/*.csv)
+docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc))
+doc_touch: $(csvs)
+	touch doc/*.adoc
+doc: doc_touch $(docs)
+	@mv README_.md README.md
+	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
