@@ -19,7 +19,6 @@ import (
 	"strconv"
 
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/cybergarage/go-pict/pict"
@@ -28,20 +27,6 @@ import (
 
 //go:embed key_types.pict
 var testKeyTypes []byte
-
-// nolint:goerr113
-func DeepEqual(x, y any) error {
-	if x == y {
-		return nil
-	}
-	if reflect.DeepEqual(x, y) {
-		return nil
-	}
-	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
-		return nil
-	}
-	return fmt.Errorf("%v != %v", x, y)
-}
 
 // nolint:goerr113, gocognit, gci
 func CoderTest(t *testing.T, coder document.KeyCoder) {
@@ -146,9 +131,8 @@ func CoderTest(t *testing.T, coder document.KeyCoder) {
 				return
 			}
 
-			err = DeepEqual(key, decKey)
-			if err != nil {
-				t.Error(err)
+			if !key.Equals(decKey) {
+				t.Errorf("%s != %s", key, decKey)
 				return
 			}
 		})
