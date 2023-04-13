@@ -65,3 +65,12 @@ func (key Key) Encode() ([]byte, error) {
 func (key Key) Equals(other Key) bool {
 	return true
 }
+
+// String returns a string representation of the key.
+func (key Key) String() string {
+	var s string
+	for _, elem := range key {
+		s += fmt.Sprintf("%v", elem)
+	}
+	return s
+}
