@@ -36,6 +36,7 @@ linters:
     - scopelint
     - maligned
     - nosnakecase
+    - gci
 
 linters-settings:
   revive:
