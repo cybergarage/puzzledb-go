@@ -22,9 +22,9 @@ import (
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/document/cbor"
 )
 
+// nolint:goerr113
 func DeepEqual(x, y any) error {
 	if x == y {
 		return nil
@@ -38,7 +38,7 @@ func DeepEqual(x, y any) error {
 	return fmt.Errorf("%v != %v", x, y)
 }
 
-func CoderPrimitiveTest(t *testing.T, s document.Coder) {
+func CoderPrimitiveTest(t *testing.T, coder document.Coder) {
 	t.Helper()
 
 	tests := []struct {
@@ -51,14 +51,14 @@ func CoderPrimitiveTest(t *testing.T, s document.Coder) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			var w bytes.Buffer
-			err := s.Encode(&w, test.obj)
+			err := coder.Encode(&w, test.obj)
 			if err != nil {
 				t.Error(err)
 				return
 			}
 
 			r := bytes.NewReader(w.Bytes())
-			decObj, err := s.Decode(r)
+			decObj, err := coder.Decode(r)
 			if err != nil {
 				t.Error(err)
 				return
@@ -73,7 +73,7 @@ func CoderPrimitiveTest(t *testing.T, s document.Coder) {
 	}
 }
 
-func CoderTest(t *testing.T, s document.Coder) {
+func CoderTest(t *testing.T, coder document.Coder) {
 	t.Helper()
 	testFuncs := []struct {
 		name string
@@ -84,22 +84,7 @@ func CoderTest(t *testing.T, s document.Coder) {
 
 	for _, testFunc := range testFuncs {
 		t.Run(testFunc.name, func(t *testing.T) {
-			testFunc.fn(t, s)
-		})
-	}
-}
-
-func TestCoder(t *testing.T) {
-	coders := []struct {
-		name  string
-		coder document.Coder
-	}{
-		{"cbor", cbor.NewCoder()},
-	}
-
-	for _, coder := range coders {
-		t.Run(coder.name, func(t *testing.T) {
-			CoderTest(t, coder.coder)
+			testFunc.fn(t, coder)
 		})
 	}
 }
