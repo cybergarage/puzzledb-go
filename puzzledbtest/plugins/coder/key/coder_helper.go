@@ -28,7 +28,7 @@ import (
 //go:embed key_types.pict
 var testKeyTypes []byte
 
-// nolint:goerr113, gocognit, gci
+// nolint:goerr113, gocognit, gci, gocyclo
 func CoderTest(t *testing.T, coder document.KeyCoder) {
 	t.Helper()
 
@@ -42,6 +42,12 @@ func CoderTest(t *testing.T, coder document.KeyCoder) {
 		switch t {
 		case "string":
 			return v, nil
+		case "bytes":
+			return []byte(v), nil
+		case "bool":
+			return strconv.ParseBool(v)
+		case "nil":
+			return nil, nil
 		case "int":
 			i, err := strconv.ParseInt(v, 10, 64)
 			if err != nil {
@@ -102,6 +108,18 @@ func CoderTest(t *testing.T, coder document.KeyCoder) {
 				return nil, err
 			}
 			return uint64(i), nil
+		case "float32":
+			i, err := strconv.ParseFloat(v, 32)
+			if err != nil {
+				return nil, err
+			}
+			return float32(i), nil
+		case "float64":
+			i, err := strconv.ParseFloat(v, 64)
+			if err != nil {
+				return nil, err
+			}
+			return float64(i), nil
 		default:
 			return nil, fmt.Errorf("unknown type: %s", t)
 		}
