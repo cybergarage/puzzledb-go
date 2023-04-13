@@ -63,6 +63,16 @@ func (key Key) Encode() ([]byte, error) {
 
 // Equals returns true if the specified key is equal to the key.
 func (key Key) Equals(other Key) bool {
+	if len(key) != len(other) {
+		return false
+	}
+	for n, elem := range key {
+		es := fmt.Sprintf("%v", elem)
+		os := fmt.Sprintf("%v", other[n])
+		if es != os {
+			return false
+		}
+	}
 	return true
 }
 
