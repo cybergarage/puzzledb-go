@@ -34,6 +34,11 @@ func NewStoreWith(coder document.KeyCoder) kv.Service {
 	}
 }
 
+// SetKeyCoder sets the key coder.
+func (store *Store) SetKeyCoder(coder document.KeyCoder) {
+	store.KeyCoder = coder
+}
+
 // ServiceType returns the plug-in service type.
 func (store *Store) ServiceType() plugins.ServiceType {
 	return plugins.StoreKvService
