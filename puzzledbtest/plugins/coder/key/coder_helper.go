@@ -24,7 +24,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-//go:embed key_types.pict
+//go:embed go_types.pict
 var testKeyTypes []byte
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
