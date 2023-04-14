@@ -23,14 +23,16 @@ import (
 type transaction struct {
 	kv kv.Transaction
 	document.Coder
+	document.KeyCoder
 	db *database
 }
 
-func newTransaction(db *database, kvTx kv.Transaction, coder document.Coder) (store.Transaction, error) {
+func newTransaction(db *database, kvTx kv.Transaction, docCoder document.Coder, keyCoder document.KeyCoder) (store.Transaction, error) {
 	return &transaction{
-		db:    db,
-		kv:    kvTx,
-		Coder: coder,
+		db:       db,
+		kv:       kvTx,
+		Coder:    docCoder,
+		KeyCoder: keyCoder,
 	}, nil
 }
 

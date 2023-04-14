@@ -29,7 +29,7 @@ func (txn *transaction) InsertIndex(idxKey store.Key, docKey store.Key) error {
 		return err
 	}
 	var encDocKey bytes.Buffer
-	err = txn.Encode(&encDocKey, kvDocKeyBytes)
+	err = txn.EncodeDocument(&encDocKey, kvDocKeyBytes)
 	if err != nil {
 		return err
 	}
