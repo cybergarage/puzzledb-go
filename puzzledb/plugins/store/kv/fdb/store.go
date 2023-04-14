@@ -30,7 +30,12 @@ type Store struct {
 	document.KeyCoder
 }
 
-// NewStoreWith returns a new memdb store instance.
+// NewStore returns a new FoundationDB store instance.
+func NewStore() store.Service {
+	return NewStoreWith(nil)
+}
+
+// NewStoreWith returns a new FoundationDB store instance with the specified key coder.
 func NewStoreWith(coder document.KeyCoder) store.Service {
 	return &Store{ //nolint:all
 		KeyCoder: coder,
