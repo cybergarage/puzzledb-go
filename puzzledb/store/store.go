@@ -22,7 +22,7 @@ import (
 type Store interface {
 	// SetDocumentCoder sets the document coder.
 	SetDocumentCoder(coder document.Coder)
-	// SetDocumentCoder sets the document coder.
+	// SetKeyCoder sets the key coder.
 	SetKeyCoder(coder document.KeyCoder)
 	// CreateDatabase creates a new database.
 	CreateDatabase(name string) error

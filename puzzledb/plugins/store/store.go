@@ -40,7 +40,7 @@ func (store *Store) SetDocumentCoder(coder document.Coder) {
 	store.Coder = coder
 }
 
-// SetDocumentCoder sets the document coder.
+// SetKeyCoder sets the key coder.
 func (store *Store) SetKeyCoder(coder document.KeyCoder) {
 	store.KeyCoder = coder
 }
