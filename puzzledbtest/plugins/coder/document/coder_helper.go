@@ -16,19 +16,20 @@ package document
 
 import (
 	"bytes"
+	_ "embed"
 	"fmt"
-	"math"
 	"reflect"
 	"testing"
 
+	"github.com/cybergarage/go-pict/pict"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
+//go:embed go_types.pict
+var goTypes []byte
+
 // nolint:goerr113
 func DeepEqual(x, y any) error {
-	if x == y {
-		return nil
-	}
 	if reflect.DeepEqual(x, y) {
 		return nil
 	}
@@ -38,20 +39,27 @@ func DeepEqual(x, y any) error {
 	return fmt.Errorf("%v != %v", x, y)
 }
 
-func DocumentCoderPrimitiveTest(t *testing.T, coder document.Coder) {
+func PrimitiveDocumentTest(t *testing.T, coder document.Coder) {
 	t.Helper()
 
-	tests := []struct {
-		name string
-		obj  any
-	}{
-		{"int", math.MaxInt},
+	pict := pict.NewParserWithBytes(goTypes)
+	err := pict.Parse()
+	if err != nil {
+		t.Fatal(err)
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
+	pictParams := pict.Params()
+	for _, pictCase := range pict.Cases() {
+		for n, pictParam := range pictParams {
+			pictElem := pictCase[n]
+			obj, err := pictElem.CastType(string(pictParam))
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
 			var w bytes.Buffer
-			err := coder.EncodeDocument(&w, test.obj)
+			err = coder.EncodeDocument(&w, obj)
 			if err != nil {
 				t.Error(err)
 				return
@@ -64,12 +72,12 @@ func DocumentCoderPrimitiveTest(t *testing.T, coder document.Coder) {
 				return
 			}
 
-			err = DeepEqual(decObj, test.obj)
+			err = DeepEqual(decObj, obj)
 			if err != nil {
 				t.Error(err)
 				return
 			}
-		})
+		}
 	}
 }
 
@@ -79,7 +87,7 @@ func DocumentCoderTest(t *testing.T, coder document.Coder) {
 		name string
 		fn   func(*testing.T, document.Coder)
 	}{
-		{"primitive", DocumentCoderPrimitiveTest},
+		{"primitive", PrimitiveDocumentTest},
 	}
 
 	for _, testFunc := range testFuncs {
