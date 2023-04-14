@@ -18,14 +18,14 @@ import "io"
 
 // An Decoder reads encorded objects from the specified input stream.
 type Decoder interface {
-	// Decode returns the decorded object from the specified reader if available, otherwise returns an error.
-	Decode(r io.Reader) (Object, error)
+	// DecodeDocument returns the decorded object from the specified reader if available, otherwise returns an error.
+	DecodeDocument(r io.Reader) (Object, error)
 }
 
 // An Encoder writes the specified object to the specified output stream.
 type Encoder interface {
-	// Encode writes the specified object to the specified writer.
-	Encode(w io.Writer, obj Object) error
+	// EncodeDocument writes the specified object to the specified writer.
+	EncodeDocument(w io.Writer, obj Object) error
 }
 
 // A Coder includes decoder and encoder interfaces.
