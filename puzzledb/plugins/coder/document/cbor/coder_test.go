@@ -20,6 +20,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/coder/document"
 )
 
-func TestCorder(t *testing.T) {
+func TestCBORCorder(t *testing.T) {
 	document.DocumentCoderTest(t, NewCoder())
 }
