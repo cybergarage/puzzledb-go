@@ -21,5 +21,5 @@ import (
 )
 
 func TestCorder(t *testing.T) {
-	document.CoderTest(t, NewCoder())
+	document.DocumentCoderTest(t, NewCoder())
 }
