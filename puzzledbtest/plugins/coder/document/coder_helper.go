@@ -18,6 +18,7 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
+	"math/rand"
 	"reflect"
 	"testing"
 
@@ -29,7 +30,7 @@ import (
 var goTypes []byte
 
 // nolint:goerr113
-func DeepEqual(x, y any) error {
+func deepEqual(x, y any) error {
 	if reflect.DeepEqual(x, y) {
 		return nil
 	}
@@ -39,7 +40,7 @@ func DeepEqual(x, y any) error {
 	return fmt.Errorf("%v != %v", x, y)
 }
 
-func PrimitiveDocumentTest(t *testing.T, coder document.Coder) {
+func primitiveDocumentTest(t *testing.T, coder document.Coder) {
 	t.Helper()
 
 	pict := pict.NewParserWithBytes(goTypes)
@@ -72,11 +73,163 @@ func PrimitiveDocumentTest(t *testing.T, coder document.Coder) {
 				return
 			}
 
-			err = DeepEqual(decObj, obj)
+			err = deepEqual(decObj, obj)
 			if err != nil {
 				t.Error(err)
 				return
 			}
+		}
+	}
+}
+
+func mapDocumentTest(t *testing.T, coder document.Coder) {
+	t.Helper()
+
+	pict := pict.NewParserWithBytes(goTypes)
+	err := pict.Parse()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	pictParams := pict.Params()
+	for _, pictCase := range pict.Cases() {
+		obj := map[string]any{}
+		for n, pictParam := range pictParams {
+			name := string(pictParam)
+			pictElem := pictCase[n]
+			v, err := pictElem.CastType(name)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			obj[name] = v
+		}
+
+		var w bytes.Buffer
+		err = coder.EncodeDocument(&w, obj)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		r := bytes.NewReader(w.Bytes())
+		decObj, err := coder.DecodeDocument(r)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		err = deepEqual(decObj, obj)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}
+}
+
+// nolint:gosec
+func arrayDocumentTest(t *testing.T, coder document.Coder) {
+	t.Helper()
+
+	pict := pict.NewParserWithBytes(goTypes)
+	err := pict.Parse()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	shuffleArray := func(array []any) {
+		n := len(array)
+		for i := n - 1; i > 0; i-- {
+			j := rand.Intn(i + 1)
+			array[i], array[j] = array[j], array[i]
+		}
+	}
+
+	pictParams := pict.Params()
+	for _, pictCase := range pict.Cases() {
+		obj := []any{}
+		for n, pictParam := range pictParams {
+			name := string(pictParam)
+			pictElem := pictCase[n]
+			v, err := pictElem.CastType(name)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			obj = append(obj, v)
+		}
+
+		// Non-shuffled array
+
+		var w bytes.Buffer
+		err = coder.EncodeDocument(&w, obj)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		r := bytes.NewReader(w.Bytes())
+		decObj, err := coder.DecodeDocument(r)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		err = deepEqual(decObj, obj)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		// Shuffled array
+
+		w.Reset()
+
+		shuffleArray(obj)
+
+		err = coder.EncodeDocument(&w, obj)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		r = bytes.NewReader(w.Bytes())
+		decObj, err = coder.DecodeDocument(r)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		err = deepEqual(decObj, obj)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		// Random reduced array
+
+		w.Reset()
+
+		nObj := rand.Intn(len(obj)-1) + 1
+		obj = obj[:nObj]
+
+		err = coder.EncodeDocument(&w, obj)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		r = bytes.NewReader(w.Bytes())
+		decObj, err = coder.DecodeDocument(r)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		err = deepEqual(decObj, obj)
+		if err != nil {
+			t.Error(err)
+			return
 		}
 	}
 }
@@ -87,7 +240,9 @@ func DocumentCoderTest(t *testing.T, coder document.Coder) {
 		name string
 		fn   func(*testing.T, document.Coder)
 	}{
-		{"primitive", PrimitiveDocumentTest},
+		{"primitive", primitiveDocumentTest},
+		{"array", arrayDocumentTest},
+		{"map", mapDocumentTest},
 	}
 
 	for _, testFunc := range testFuncs {
