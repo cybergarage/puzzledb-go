@@ -8,7 +8,7 @@ require (
 	github.com/cybergarage/go-logger v1.3.3
 	github.com/cybergarage/go-mongo v0.9.4
 	github.com/cybergarage/go-mysql v0.9.3
-	github.com/cybergarage/go-pict v0.8.0
+	github.com/cybergarage/go-pict v0.8.1
 	github.com/cybergarage/go-redis v1.3.1
 	github.com/cybergarage/go-sqltest v0.9.3
 	github.com/hashicorp/go-memdb v1.3.2
