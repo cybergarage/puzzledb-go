@@ -19,7 +19,3 @@ type Object struct {
 	Key   Key
 	Value []byte
 }
-
-func (obj *Object) KeyBytes() ([]byte, error) {
-	return obj.Key.Encode()
-}

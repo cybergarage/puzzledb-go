@@ -17,6 +17,7 @@ package memdb
 import (
 	"sync"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -24,17 +25,19 @@ import (
 // Databases represents a database map.
 type Databases struct {
 	sync.Map
+	document.KeyCoder
 }
 
-func NewDatabases() *Databases {
+func NewDatabasesWith(coder document.KeyCoder) *Databases {
 	return &Databases{
-		Map: sync.Map{},
+		Map:      sync.Map{},
+		KeyCoder: coder,
 	}
 }
 
 // CreateDatabase creates a new database.
 func (dbs *Databases) CreateDatabase(name string) error {
-	db, err := NewDatabaseWithID(name)
+	db, err := NewDatabaseWithID(name, dbs.KeyCoder)
 	if err != nil {
 		return err
 	}

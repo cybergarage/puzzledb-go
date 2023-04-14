@@ -16,14 +16,14 @@ package document
 
 // An KeyDecoder decodes the specified bytes.
 type KeyDecoder interface {
-	// Decode returns the decoded key from the specified bytes if available, otherwise returns an error.
-	Decode([]byte) (Key, error)
+	// DecodeKey returns the decoded key from the specified bytes if available, otherwise returns an error.
+	DecodeKey([]byte) (Key, error)
 }
 
 // An KeyEncoder encodes the specified key.
 type KeyEncoder interface {
-	// Encode returns the encoded bytes from the specified key if available, otherwise returns an error.
-	Encode(Key) ([]byte, error)
+	// EncodeKey returns the encoded bytes from the specified key if available, otherwise returns an error.
+	EncodeKey(Key) ([]byte, error)
 }
 
 // A KeyCoder includes key decoder and encoder interfaces.

@@ -51,14 +51,14 @@ func DocumentCoderPrimitiveTest(t *testing.T, coder document.Coder) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			var w bytes.Buffer
-			err := coder.Encode(&w, test.obj)
+			err := coder.EncodeDocument(&w, test.obj)
 			if err != nil {
 				t.Error(err)
 				return
 			}
 
 			r := bytes.NewReader(w.Bytes())
-			decObj, err := coder.Decode(r)
+			decObj, err := coder.DecodeDocument(r)
 			if err != nil {
 				t.Error(err)
 				return
