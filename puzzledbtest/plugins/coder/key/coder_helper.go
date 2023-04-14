@@ -30,7 +30,7 @@ import (
 var testKeyTypes []byte
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoderTest(t *testing.T, coder document.KeyCoder) {
+func KeyCoderTest(t *testing.T, coder document.KeyCoder) {
 	t.Helper()
 
 	pict := pict.NewParserWithBytes(testKeyTypes)

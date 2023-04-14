@@ -21,5 +21,5 @@ import (
 )
 
 func TestCorder(t *testing.T) {
-	key.CoderTest(t, NewCoder())
+	key.KeyCoderTest(t, NewCoder())
 }
