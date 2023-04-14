@@ -23,14 +23,12 @@ import (
 // Store represents a Memdb store service instance.
 type Store struct {
 	*Databases
-	document.KeyCoder
 }
 
-// NewStoreWith returns a new memdb store instance.
-func NewStoreWith(coder document.KeyCoder) kv.Service {
+// NewStore returns a new memdb store instance.
+func NewStore() kv.Service {
 	return &Store{
-		Databases: NewDatabasesWith(coder),
-		KeyCoder:  coder,
+		Databases: NewDatabasesWith(nil),
 	}
 }
 
