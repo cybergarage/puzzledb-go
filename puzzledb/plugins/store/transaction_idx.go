@@ -24,7 +24,7 @@ import (
 // InsertIndex puts a secondary index with the primary key.
 func (txn *transaction) InsertIndex(idxKey store.Key, docKey store.Key) error {
 	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
-	kvDocKeyBytes, err := kvDocKey.Encode()
+	kvDocKeyBytes, err := txn.EncodeKey(kvDocKey)
 	if err != nil {
 		return err
 	}
