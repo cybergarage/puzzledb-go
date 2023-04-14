@@ -27,14 +27,19 @@ type Store struct {
 
 // NewStore returns a new memdb store instance.
 func NewStore() kv.Service {
+	return NewStoreWith(nil)
+}
+
+// NewStoreWith returns a new memdb store instance with the specified key coder.
+func NewStoreWith(coder document.KeyCoder) kv.Service {
 	return &Store{
-		Databases: NewDatabasesWith(nil),
+		Databases: NewDatabasesWith(coder),
 	}
 }
 
 // SetKeyCoder sets the key coder.
 func (store *Store) SetKeyCoder(coder document.KeyCoder) {
-	store.KeyCoder = coder
+	store.Databases.KeyCoder = coder
 }
 
 // ServiceType returns the plug-in service type.
