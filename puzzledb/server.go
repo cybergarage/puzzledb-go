@@ -113,7 +113,7 @@ func (server *Server) loadDefaultPlugins() error {
 
 	kvStores := []kv.Service{
 		memdb.NewStore(),
-		fdb.NewStoreWith(keyCoder),
+		fdb.NewStore(),
 	}
 	for _, kvStore := range kvStores {
 		kvStore.SetKeyCoder(keyCoder)
