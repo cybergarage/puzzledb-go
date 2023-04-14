@@ -21,10 +21,10 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 	coordinator_etcd "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/etcd"
 	coordinator_memdb "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/memdb"
-
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mongo"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mysql"
@@ -108,9 +108,8 @@ func (server *Server) loadDefaultPlugins() error {
 	docCoder := cbor.NewCoder()
 	services = append(services, docCoder)
 
-	// "github.com/cybergarage/puzzledb-go/puzzledb/plugins/document/key/tuple".
-	// keyCoder := tuple.NewCoder()
-	// services = append(services, keyCoder)
+	keyCoder := tuple.NewCoder()
+	services = append(services, keyCoder)
 
 	kvStores := []kv.Service{
 		memdb.NewStore(),
