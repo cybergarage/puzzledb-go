@@ -116,6 +116,7 @@ func (server *Server) loadDefaultPlugins() error {
 		fdb.NewStoreWith(keyCoder),
 	}
 	for _, kvStore := range kvStores {
+		kvStore.SetKeyCoder(keyCoder)
 		services = append(services, kvStore)
 	}
 
