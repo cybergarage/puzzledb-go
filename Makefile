@@ -53,9 +53,6 @@ vet: format
 lint: format
 	golangci-lint run ${PKG_SRC_ROOT}/... ${TEST_SRC_ROOT}/...
 
-%.pict : %.mod
-	pict $< > $@
-
 test: lint
 	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
@@ -95,11 +92,11 @@ doc: doc_touch $(docs)
 	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
 
 #
-# Pict
+# Testing
 #
 
-models=$(shell find ${TEST_SRC_ROOT}) -name '*.mod')
-
+%.pict : %.mod
+	pict $< > $@
+models=$(shell find ${TEST_SRC_ROOT} -name '*.mod')
 picts=$(models:.mod=.pict)
-
 pict: $(picts)
