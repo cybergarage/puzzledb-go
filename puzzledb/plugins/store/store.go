@@ -24,18 +24,25 @@ import (
 type Store struct {
 	kvService kv.Service
 	document.Coder
+	document.KeyCoder
 }
 
 func NewStoreWithKvStore(kvs kv.Service) *Store {
 	return &Store{
 		kvService: kvs,
 		Coder:     nil,
+		KeyCoder:  nil,
 	}
 }
 
 // SetDocumentCoder sets the document coder.
 func (store *Store) SetDocumentCoder(coder document.Coder) {
 	store.Coder = coder
+}
+
+// SetDocumentCoder sets the document coder.
+func (store *Store) SetKeyCoder(coder document.KeyCoder) {
+	store.KeyCoder = coder
 }
 
 // ServiceType returns the plug-in service type.
@@ -60,8 +67,9 @@ func (store *Store) GetDatabase(name string) (store.Database, error) {
 		return nil, err
 	}
 	db := &database{
-		kv:    kvDB,
-		Coder: store.Coder,
+		kv:       kvDB,
+		Coder:    store.Coder,
+		KeyCoder: store.KeyCoder,
 	}
 	return db, nil
 }
