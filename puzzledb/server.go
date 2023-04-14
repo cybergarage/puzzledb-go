@@ -130,6 +130,7 @@ func (server *Server) loadDefaultPlugins() error {
 	kvStore := kvStores[0]
 	store := store.NewStoreWithKvStore(kvStore)
 	store.SetDocumentCoder(docCoder)
+	store.SetKeyCoder(keyCoder)
 	services = append(services, store)
 
 	queryServices := []query.Service{
