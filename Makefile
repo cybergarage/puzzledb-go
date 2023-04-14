@@ -56,11 +56,7 @@ lint: format
 %.pict : %.mod
 	pict $< > $@
 
-models=$(shell find ${TEST_SRC_ROOT}) -name '*.mod')
-
-picts=$(models:.mod=.pict)
-
-test: lint ${picts}
+test: lint
 	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
 test_only:
@@ -97,3 +93,13 @@ doc_touch: $(csvs)
 doc: doc_touch $(docs)
 	@mv README_.md README.md
 	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
+
+#
+# Pict
+#
+
+models=$(shell find ${TEST_SRC_ROOT}) -name '*.mod')
+
+picts=$(models:.mod=.pict)
+
+pict: $(picts)
