@@ -22,7 +22,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestSQLTestSuite(t *testing.T) {
+func TestMySQLTestSuite(t *testing.T) {
 	log.SetStdoutDebugEnbled(true)
 
 	server := puzzledbtest.NewServer()
