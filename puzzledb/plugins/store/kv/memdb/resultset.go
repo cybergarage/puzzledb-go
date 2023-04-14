@@ -15,22 +15,23 @@
 package memdb
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/hashicorp/go-memdb"
 )
 
 // Memdb represents a Memdb instance.
 type resultSet struct {
-	key kv.Key
+	document.KeyCoder
 	it  memdb.ResultIterator
 	obj *kv.Object
 }
 
-func newResultSet(key kv.Key, it memdb.ResultIterator) kv.ResultSet {
+func newResultSet(coder document.KeyCoder, it memdb.ResultIterator) kv.ResultSet {
 	return &resultSet{
-		key: key,
-		it:  it,
-		obj: nil,
+		KeyCoder: coder,
+		it:       it,
+		obj:      nil,
 	}
 }
 
@@ -44,8 +45,12 @@ func (rs *resultSet) Next() bool {
 	if !ok {
 		return false
 	}
+	key, err := rs.DecodeKey([]byte(doc.Key))
+	if err != nil {
+		return false
+	}
 	rs.obj = &kv.Object{
-		Key:   rs.key,
+		Key:   key,
 		Value: doc.Value,
 	}
 	return true

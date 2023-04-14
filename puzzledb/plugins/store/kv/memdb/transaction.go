@@ -60,7 +60,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 	if err != nil {
 		return nil, err
 	}
-	rs := newResultSet(key, it)
+	rs := newResultSet(txn.KeyCoder, it)
 	if !rs.Next() {
 		return nil, kv.NewObjectNotExistError(key)
 	}
@@ -77,7 +77,7 @@ func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	return newResultSet(key, it), nil
+	return newResultSet(txn.KeyCoder, it), nil
 }
 
 // Remove removes the specified key-value object.
