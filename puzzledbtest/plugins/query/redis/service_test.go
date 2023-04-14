@@ -21,7 +21,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestService(t *testing.T) {
+func TestRedisService(t *testing.T) {
 
 	server := puzzledbtest.NewServer()
 	err := server.Start()
