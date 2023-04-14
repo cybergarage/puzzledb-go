@@ -21,17 +21,15 @@ import (
 )
 
 type rangeResultSet struct {
-	kv.Key
 	fdb.RangeResult
 	obj *kv.Object
 	*fdb.RangeIterator
 	document.KeyCoder
 }
 
-func newRangeResultSet(coder document.KeyCoder, key kv.Key, rs fdb.RangeResult) kv.ResultSet {
+func newRangeResultSet(coder document.KeyCoder, rs fdb.RangeResult) kv.ResultSet {
 	return &rangeResultSet{
 		KeyCoder:      coder,
-		Key:           key,
 		RangeResult:   rs,
 		RangeIterator: rs.Iterator(),
 		obj:           nil}
@@ -76,5 +74,5 @@ func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
 		Reverse: false,
 	}
 	rs := txn.Transaction.GetRange(r, ro)
-	return newRangeResultSet(txn.KeyCoder, key, rs), nil
+	return newRangeResultSet(txn.KeyCoder, rs), nil
 }
