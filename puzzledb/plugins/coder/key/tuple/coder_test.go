@@ -20,6 +20,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/coder/key"
 )
 
-func TestCorder(t *testing.T) {
+func TestTupleCorder(t *testing.T) {
 	key.KeyCoderTest(t, NewCoder())
 }
