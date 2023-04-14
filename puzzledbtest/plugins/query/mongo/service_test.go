@@ -39,7 +39,7 @@ func TestMongoService(t *testing.T) {
 	}
 }
 
-func TestEmbedSuite(t *testing.T) {
+func TestMongoEmbedSuite(t *testing.T) {
 	log.SetStdoutDebugEnbled(true)
 
 	server := puzzledbtest.NewServer()
