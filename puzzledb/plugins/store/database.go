@@ -23,6 +23,7 @@ import (
 type database struct {
 	kv kv.Database
 	document.Coder
+	document.KeyCoder
 }
 
 // Name returns the unique name.
@@ -36,5 +37,5 @@ func (db *database) Transact(write bool) (store.Transaction, error) {
 	if err != nil {
 		return nil, err
 	}
-	return newTransaction(db, kvTx, db.Coder)
+	return newTransaction(db, kvTx, db.Coder, db.KeyCoder)
 }
