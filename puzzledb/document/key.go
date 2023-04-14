@@ -15,7 +15,6 @@
 package document
 
 import (
-	"bytes"
 	"fmt"
 )
 
@@ -37,28 +36,6 @@ func NewKeyWith(elems ...any) Key {
 // Elements returns all elements of the key.
 func (key Key) Elements() []any {
 	return key
-}
-
-// Encode encodes the key to a byte array.
-func (key Key) Encode() ([]byte, error) {
-	var keyBuf bytes.Buffer
-	for _, elem := range key {
-		switch v := elem.(type) {
-		case string:
-			if _, err := keyBuf.WriteString(v); err != nil {
-				return nil, err
-			}
-		case []byte:
-			if _, err := keyBuf.Write(v); err != nil {
-				return nil, err
-			}
-		default:
-			if _, err := keyBuf.WriteString(fmt.Sprintf("%v", v)); err != nil {
-				return nil, err
-			}
-		}
-	}
-	return keyBuf.Bytes(), nil
 }
 
 // Equals returns true if the specified key is equal to the key.
