@@ -16,6 +16,7 @@ package fdb
 
 import (
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
@@ -24,10 +25,12 @@ type rangeResultSet struct {
 	fdb.RangeResult
 	obj *kv.Object
 	*fdb.RangeIterator
+	document.KeyCoder
 }
 
-func newRangeResultSet(key kv.Key, rs fdb.RangeResult) kv.ResultSet {
+func newRangeResultSet(coder document.KeyCoder, key kv.Key, rs fdb.RangeResult) kv.ResultSet {
 	return &rangeResultSet{
+		KeyCoder:      coder,
 		Key:           key,
 		RangeResult:   rs,
 		RangeIterator: rs.Iterator(),
@@ -42,8 +45,12 @@ func (rs *rangeResultSet) Next() bool {
 	if err != nil {
 		return false
 	}
+	key, err := rs.DecodeKey(irs.Key)
+	if err != nil {
+		return false
+	}
 	rs.obj = &kv.Object{
-		Key:   rs.Key,
+		Key:   key,
 		Value: irs.Value,
 	}
 	return true
@@ -69,5 +76,5 @@ func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
 		Reverse: false,
 	}
 	rs := txn.Transaction.GetRange(r, ro)
-	return newRangeResultSet(key, rs), nil
+	return newRangeResultSet(txn.KeyCoder, key, rs), nil
 }
