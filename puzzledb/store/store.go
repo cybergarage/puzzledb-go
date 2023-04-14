@@ -14,8 +14,16 @@
 
 package store
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
 // Store represents a store interface.
 type Store interface {
+	// SetDocumentCoder sets the document coder.
+	SetDocumentCoder(coder document.Coder)
+	// SetDocumentCoder sets the document coder.
+	SetKeyCoder(coder document.KeyCoder)
 	// CreateDatabase creates a new database.
 	CreateDatabase(name string) error
 	// GetDatabase retruns the specified database.
