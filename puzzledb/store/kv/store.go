@@ -14,8 +14,14 @@
 
 package kv
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
 // Store represents a store interface.
 type Store interface {
+	// SetKeyCoder sets the key coder.
+	SetKeyCoder(coder document.KeyCoder)
 	// CreateDatabase creates a new database.
 	CreateDatabase(name string) error
 	// GetDatabase retruns the specified database.
