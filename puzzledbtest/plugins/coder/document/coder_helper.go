@@ -38,7 +38,7 @@ func DeepEqual(x, y any) error {
 	return fmt.Errorf("%v != %v", x, y)
 }
 
-func CoderPrimitiveTest(t *testing.T, coder document.Coder) {
+func DocumentCoderPrimitiveTest(t *testing.T, coder document.Coder) {
 	t.Helper()
 
 	tests := []struct {
@@ -73,13 +73,13 @@ func CoderPrimitiveTest(t *testing.T, coder document.Coder) {
 	}
 }
 
-func CoderTest(t *testing.T, coder document.Coder) {
+func DocumentCoderTest(t *testing.T, coder document.Coder) {
 	t.Helper()
 	testFuncs := []struct {
 		name string
 		fn   func(*testing.T, document.Coder)
 	}{
-		{"primitive", CoderPrimitiveTest},
+		{"primitive", DocumentCoderPrimitiveTest},
 	}
 
 	for _, testFunc := range testFuncs {
