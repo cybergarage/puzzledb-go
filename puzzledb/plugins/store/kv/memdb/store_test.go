@@ -22,5 +22,5 @@ import (
 )
 
 func TestStore(t *testing.T) {
-	kv.StoreTest(t, NewStoreWith(tuple.NewCoder()))
+	kv.StoreTest(t, NewStore(tuple.NewCoder()))
 }
