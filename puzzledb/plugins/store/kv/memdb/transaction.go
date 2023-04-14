@@ -17,6 +17,7 @@ package memdb
 import (
 	"errors"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/hashicorp/go-memdb"
 )
@@ -25,18 +26,20 @@ import (
 type transaction struct {
 	kv.Transaction
 	*memdb.Txn
+	document.KeyCoder
 }
 
-func newTransaction(txn *memdb.Txn) *transaction {
+func newTransaction(txn *memdb.Txn, coder document.KeyCoder) *transaction {
 	return &transaction{
 		Txn:         txn,
 		Transaction: nil,
+		KeyCoder:    coder,
 	}
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *transaction) Set(obj *kv.Object) error {
-	keyBytes, err := obj.KeyBytes()
+	keyBytes, err := txn.EncodeKey(obj.Key)
 	if err != nil {
 		return err
 	}
@@ -49,7 +52,7 @@ func (txn *transaction) Set(obj *kv.Object) error {
 
 // Get returns a key-value object of the specified key.
 func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +69,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 
 // GetRange returns a result set of the specified key.
 func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +86,7 @@ func (txn *transaction) Remove(key kv.Key) error {
 	if err != nil {
 		return err
 	}
-	keyBytes, err := obj.KeyBytes()
+	keyBytes, err := txn.EncodeKey(obj.Key)
 	if err != nil {
 		return err
 	}
