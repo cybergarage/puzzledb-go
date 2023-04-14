@@ -22,7 +22,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestService(t *testing.T) {
+func TestMongoService(t *testing.T) {
 	server := puzzledbtest.NewServer()
 	err := server.Start()
 	if err != nil {
