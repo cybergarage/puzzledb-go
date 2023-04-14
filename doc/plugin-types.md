@@ -87,7 +87,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>-</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>Encoder</p></td>
+<td style="text-align: left;"><p>Coder</p></td>
 <td style="text-align: left;"><p>Document</p></td>
 <td style="text-align: left;"><p>Document coder services</p></td>
 <td style="text-align: left;"><p>CBOR</p></td>
@@ -108,7 +108,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>Doument store services</p></td>
 <td style="text-align: left;"><p>Key-value based store</p></td>
 <td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>Store (Key-value)</p></td>
+<td style="text-align: left;"><p>Store (Key-value), Coder (Document), Coder (Key)</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
@@ -116,7 +116,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>Key-value store services</p></td>
 <td style="text-align: left;"><p>memdb</p></td>
 <td style="text-align: left;"><p>X</p></td>
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Coder (Document), Coder (Key)</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
@@ -124,7 +124,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>FoundationDB</p></td>
 <td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Coder (Document), Coder (Key)</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>

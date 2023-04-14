@@ -39,13 +39,13 @@ func (s *Coder) ServiceName() string {
 	return "tuple"
 }
 
-// Encode returns the encoded bytes from the specified key if available, otherwise returns an error.
-func (s *Coder) Encode(key document.Key) ([]byte, error) {
+// EncodeKey returns the encoded bytes from the specified key if available, otherwise returns an error.
+func (s *Coder) EncodeKey(key document.Key) ([]byte, error) {
 	return newTupleWith(key).Pack(), nil
 }
 
-// Decode returns the decoded key from the specified bytes if available, otherwise returns an error.
-func (s *Coder) Decode(b []byte) (document.Key, error) {
+// DecodeKey returns the decoded key from the specified bytes if available, otherwise returns an error.
+func (s *Coder) DecodeKey(b []byte) (document.Key, error) {
 	tpl, err := tuple.Unpack(b)
 	if err != nil {
 		return nil, err

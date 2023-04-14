@@ -15,6 +15,7 @@
 package memdb
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/hashicorp/go-memdb"
@@ -31,6 +32,7 @@ const (
 type Database struct {
 	ID string
 	*memdb.MemDB
+	document.KeyCoder
 }
 
 // Document represents a document.
@@ -40,7 +42,7 @@ type Document struct {
 }
 
 // NewDatabaseWithID returns a new database with the specified ID.
-func NewDatabaseWithID(id string) (*Database, error) {
+func NewDatabaseWithID(id string, coder document.KeyCoder) (*Database, error) {
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
 			tableName: {
@@ -64,14 +66,15 @@ func NewDatabaseWithID(id string) (*Database, error) {
 		return nil, err
 	}
 	return &Database{
-		ID:    id,
-		MemDB: memDB,
+		ID:       id,
+		MemDB:    memDB,
+		KeyCoder: coder,
 	}, nil
 }
 
-// NewDatabase returns a new database.
-func NewDatabase() (*Database, error) {
-	return NewDatabaseWithID("")
+// NewDatabaseWith returns a new database.
+func NewDatabaseWith(coder document.KeyCoder) (*Database, error) {
+	return NewDatabaseWithID("", coder)
 }
 
 // Name returns the unique name.
@@ -84,5 +87,5 @@ func (db *Database) Transact(write bool) (kv.Transaction, error) {
 	if db.MemDB == nil {
 		return nil, store.NewDatabaseNotExistError(db.Name())
 	}
-	return newTransaction(db.MemDB.Txn(write)), nil
+	return newTransaction(db.MemDB.Txn(write), db.KeyCoder), nil
 }

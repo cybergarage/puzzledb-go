@@ -41,14 +41,14 @@ func (s *Coder) ServiceName() string {
 	return "cbor"
 }
 
-// Encode writes the specified object to the specified writer.
-func (s *Coder) Encode(w io.Writer, obj document.Object) error {
+// EncodeDocument writes the specified object to the specified writer.
+func (s *Coder) EncodeDocument(w io.Writer, obj document.Object) error {
 	cbor := cbor.NewEncoder(w)
 	return cbor.Encode(obj)
 }
 
-// Decode returns the decorded object from the specified reader if available, otherwise returns an error.
-func (s *Coder) Decode(r io.Reader) (document.Object, error) {
+// DecodeDocument returns the decorded object from the specified reader if available, otherwise returns an error.
+func (s *Coder) DecodeDocument(r io.Reader) (document.Object, error) {
 	cbor := cbor.NewDecoder(r)
 	return cbor.Decode()
 }

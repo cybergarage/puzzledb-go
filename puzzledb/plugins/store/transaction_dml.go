@@ -31,7 +31,7 @@ func (txn *transaction) createSchemaKey(schema string) store.Key {
 func (txn *transaction) CreateSchema(schema store.Schema) error {
 	kvSchemaKey := txn.createSchemaKey(schema.Name())
 	var encSchema bytes.Buffer
-	err := txn.Encode(&encSchema, schema.Data())
+	err := txn.EncodeDocument(&encSchema, schema.Data())
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func (txn *transaction) GetSchema(name string) (store.Schema, error) {
 		return nil, store.NewSchemaNotExistError(name)
 	}
 	kvObj := kvRs.Object()
-	obj, err := txn.Decode(bytes.NewReader(kvObj.Value))
+	obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value))
 	if err != nil {
 		return nil, err
 	}

@@ -16,23 +16,26 @@ package fdb
 
 import (
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // transaction represents a transaction instance.
 type transaction struct {
 	fdb.Transaction
+	document.KeyCoder
 }
 
-func newTransaction(txn fdb.Transaction) kv.Transaction {
+func newTransaction(txn fdb.Transaction, coder document.KeyCoder) kv.Transaction {
 	return &transaction{
 		Transaction: txn,
+		KeyCoder:    coder,
 	}
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *transaction) Set(obj *kv.Object) error {
-	keyBytes, err := obj.KeyBytes()
+	keyBytes, err := txn.EncodeKey(obj.Key)
 	if err != nil {
 		return err
 	}
@@ -42,7 +45,7 @@ func (txn *transaction) Set(obj *kv.Object) error {
 
 // Get returns a key-value object of the specified key.
 func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +66,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 
 // Remove removes the specified key-value object.
 func (txn *transaction) Remove(key kv.Key) error {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return err
 	}
