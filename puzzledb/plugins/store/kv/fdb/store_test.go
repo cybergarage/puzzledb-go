@@ -17,9 +17,10 @@ package fdb
 import (
 	"testing"
 
-	kv "github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
+	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
 )
 
 func TestStore(t *testing.T) {
-	kv.StoreTest(t, NewStore())
+	kv.StoreTest(t, NewStoreWith(tuple.NewCoder()))
 }

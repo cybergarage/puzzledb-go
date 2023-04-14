@@ -55,7 +55,7 @@ func (rs *rangeResultSet) Object() *kv.Object {
 
 // GetRange returns a result set of the specified key.
 func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return nil, err
 	}

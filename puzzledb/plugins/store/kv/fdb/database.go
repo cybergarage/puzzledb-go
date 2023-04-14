@@ -16,6 +16,7 @@ package fdb
 
 import (
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
@@ -23,12 +24,14 @@ import (
 type Database struct {
 	ID string
 	fdb.Database
+	document.KeyCoder
 }
 
-func newDatabaseWith(id string, db fdb.Database) store.Database {
+func newDatabaseWith(id string, db fdb.Database, coder document.KeyCoder) store.Database {
 	return &Database{
 		ID:       id,
 		Database: db,
+		KeyCoder: coder,
 	}
 }
 
@@ -47,5 +50,5 @@ func (db *Database) Transact(write bool) (store.Transaction, error) {
 	if err != nil {
 		return nil, err
 	}
-	return newTransaction(txn), nil
+	return newTransaction(txn, db.KeyCoder), nil
 }

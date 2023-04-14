@@ -17,9 +17,10 @@ package memdb
 import (
 	"testing"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	kv "github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
 )
 
 func TestStore(t *testing.T) {
-	kv.StoreTest(t, NewStore())
+	kv.StoreTest(t, NewStoreWith(tuple.NewCoder()))
 }

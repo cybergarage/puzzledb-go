@@ -15,19 +15,22 @@
 package memdb
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	store "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 )
 
 // Store represents a Memdb store service instance.
 type Store struct {
 	*Databases
+	document.KeyCoder
 }
 
-// New returns a new memdb store instance.
-func NewStore() store.Service {
+// NewStoreWith returns a new memdb store instance.
+func NewStoreWith(coder document.KeyCoder) kv.Service {
 	return &Store{
-		Databases: NewDatabases(),
+		Databases: NewDatabasesWith(coder),
+		KeyCoder:  coder,
 	}
 }
 
