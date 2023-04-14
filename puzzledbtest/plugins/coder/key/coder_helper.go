@@ -149,13 +149,13 @@ func KeyCoderTest(t *testing.T, coder document.KeyCoder) {
 
 			// Non-shuffled key
 
-			kb, err := coder.Encode(key)
+			kb, err := coder.EncodeKey(key)
 			if err != nil {
 				t.Error(err)
 				return
 			}
 
-			decKey, err := coder.Decode(kb)
+			decKey, err := coder.DecodeKey(kb)
 			if err != nil {
 				t.Error(err)
 				return
@@ -170,13 +170,13 @@ func KeyCoderTest(t *testing.T, coder document.KeyCoder) {
 
 			shuffleKey(key)
 
-			kb, err = coder.Encode(key)
+			kb, err = coder.EncodeKey(key)
 			if err != nil {
 				t.Error(err)
 				return
 			}
 
-			decKey, err = coder.Decode(kb)
+			decKey, err = coder.DecodeKey(kb)
 			if err != nil {
 				t.Error(err)
 				return
@@ -192,13 +192,13 @@ func KeyCoderTest(t *testing.T, coder document.KeyCoder) {
 			kn := rand.Intn(len(key)-1) + 1
 			key = key[:kn]
 
-			kb, err = coder.Encode(key)
+			kb, err = coder.EncodeKey(key)
 			if err != nil {
 				t.Error(err)
 				return
 			}
 
-			decKey, err = coder.Decode(kb)
+			decKey, err = coder.DecodeKey(kb)
 			if err != nil {
 				t.Error(err)
 				return
