@@ -112,8 +112,8 @@ func (server *Server) loadDefaultPlugins() error {
 	services = append(services, keyCoder)
 
 	kvStores := []kv.Service{
-		memdb.NewStore(),
-		fdb.NewStore(),
+		memdb.NewStoreWith(keyCoder),
+		fdb.NewStoreWith(keyCoder),
 	}
 	for _, kvStore := range kvStores {
 		services = append(services, kvStore)
