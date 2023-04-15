@@ -61,6 +61,7 @@ func main() {
 
 	var server *puzzledb.Server
 
+	// paths := []string{".", "./conf", fmt.Sprintf("/etc/%s", puzzledb.ProductName)}
 	conf, err := puzzledb.NewConfigWithPath(".")
 	if err == nil {
 		log.Infof("%s couldn't load the configuration (%s)", puzzledb.ProductName, err.Error())
