@@ -50,6 +50,11 @@ func (mgr *Manager) ReloadServices(srvs []Service) {
 	mgr.services = srvs
 }
 
+// Services returns all registered plug-in services.
+func (mgr *Manager) Services() []Service {
+	return mgr.services
+}
+
 // Start starts all plug-in services.
 func (mgr *Manager) Start() error {
 	log.Infof("plug-ins loading...")
