@@ -70,7 +70,7 @@ func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 	services := mgr.ServicesByType(t)
 	if len(services) == 0 {
-		return nil, newErrNotFound(t.String())
+		return nil, NewErrNotFound(t.String())
 	}
 	lastIdx := len(services) - 1
 	if mgr.Config == nil {
@@ -86,7 +86,7 @@ func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 			return srv, nil
 		}
 	}
-	return nil, newErrNotFound(fmt.Sprintf("%s (%s)", configName, t.String()))
+	return nil, NewErrNotFound(fmt.Sprintf("%s (%s)", configName, t.String()))
 }
 
 // Start starts all plug-in services.
