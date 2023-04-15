@@ -68,7 +68,7 @@ bin:
 install:
 	go install -v -gcflags=${GCFLAGS} ${BINS}
 
-run: build
+run: bin
 	./${BIN_SERVER}
 
 rund:
