@@ -31,7 +31,11 @@ func NewErrInvalid(target string) error {
 }
 
 func NewErrServiceNotFound(t ServiceType) error {
-	return NewErrInvalid(t.String()))
+	return NewErrInvalid(t.String())
+}
+
+func NewErrDefaultServiceNotFound(t ServiceType) error {
+	return NewErrInvalid(fmt.Sprintf("default %s", t.String()))
 }
 
 func NewErrInvalidService(s Service) error {
