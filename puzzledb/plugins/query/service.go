@@ -15,13 +15,15 @@
 package query
 
 import (
+	"fmt"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 type Service interface {
 	plugins.Service
-	SetStore(store store.Store)
+	SetStore(store plugins.Service) error
 	Store() store.Store
 }
 
@@ -41,8 +43,13 @@ func (service *BaseService) ServiceType() plugins.ServiceType {
 	return plugins.QueryService
 }
 
-func (service *BaseService) SetStore(store store.Store) {
+func (service *BaseService) SetStore(v plugins.Service) error {
+	store, ok := v.(store.Store)
+	if !ok {
+		return plugins.NewErrInvalid(fmt.Sprintf("%s (%s)", v.ServiceName(), v.ServiceType().String()))
+	}
 	service.store = store
+	return nil
 }
 
 func (service *BaseService) Store() store.Store {
