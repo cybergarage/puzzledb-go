@@ -37,7 +37,7 @@ BIN_SRCS=\
 BINS=\
         ${BIN_SERVER_ID}
 
-.PHONY: test format vet lint clean docker
+.PHONY: test format vet lint clean docker bin
 
 all: test
 
@@ -62,7 +62,7 @@ test_only:
 image:
 	docker image build -t${BIN_DOCKER_TAG} .
 
-build:
+bin:
 	go build -v -gcflags=${GCFLAGS} ${BINS}
 
 install:
