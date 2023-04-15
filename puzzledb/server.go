@@ -73,7 +73,7 @@ func (server *Server) Restart() error {
 	return server.Start()
 }
 
-func (server *Server) loadEmbeddedPlugins() error {
+func (server *Server) reloadEmbeddedPlugins() error {
 	services := []plugins.Service{
 		cbor.NewCoder(),
 		tuple.NewCoder(),
@@ -93,7 +93,7 @@ func (server *Server) loadEmbeddedPlugins() error {
 }
 
 func (server *Server) LoadPlugins() error {
-	if err := server.loadEmbeddedPlugins(); err != nil {
+	if err := server.reloadEmbeddedPlugins(); err != nil {
 		return err
 	}
 	return nil
