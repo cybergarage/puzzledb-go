@@ -18,6 +18,7 @@ import (
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
@@ -73,45 +74,17 @@ func (server *Server) Restart() error {
 }
 
 func (server *Server) loadEmbeddedPlugins() error {
-	services := []plugins.Service{}
-
-	docCoder := cbor.NewCoder()
-	services = append(services, docCoder)
-
-	keyCoder := tuple.NewCoder()
-	services = append(services, keyCoder)
-
-	kvStores := []kv.Service{
+	services := []plugins.Service{
+		cbor.NewCoder(),
+		tuple.NewCoder(),
+		store.NewStore(),
 		memdb.NewStore(),
 		fdb.NewStore(),
-	}
-	for _, kvStore := range kvStores {
-		kvStore.SetKeyCoder(keyCoder)
-		services = append(services, kvStore)
-	}
-
-	coordServices := []*coordinator.Service{
 		coordinator.NewServiceWith(coordinator_memdb.NewCoordinator()),
 		coordinator.NewServiceWith(coordinator_etcd.NewCoordinator()),
-	}
-	for _, coordService := range coordServices {
-		services = append(services, coordService)
-	}
-
-	kvStore := kvStores[0]
-	store := store.NewStore()
-	store.SetKvStore(kvStore)
-	store.SetDocumentCoder(docCoder)
-	store.SetKeyCoder(keyCoder)
-	services = append(services, store)
-
-	queryServices := []query.Service{
 		mysql.NewService(),
 		redis.NewService(),
 		mongo.NewService(),
-	}
-	for _, queryService := range queryServices {
-		services = append(services, queryService)
 	}
 
 	server.Manager.ReloadServices(services)
@@ -127,6 +100,59 @@ func (server *Server) LoadPlugins() error {
 }
 
 func (server *Server) setupPlugins() error {
+	// Default services
+
+	defaultService, err := server.DefaultService(plugins.CoderKeyService)
+	if err != nil {
+		return errors.Wrap(err)
+	}
+	defaultKeyCoder, ok := defaultService.(document.KeyCoder)
+	if !ok {
+		return plugins.NewErrDefaultServiceNotFound(plugins.CoderKeyService)
+	}
+
+	defaultService, err = server.DefaultService(plugins.CoderDocumentService)
+	if err != nil {
+		return errors.Wrap(err)
+	}
+	defaultDocCoder, ok := defaultService.(document.Coder)
+	if !ok {
+		return plugins.NewErrDefaultServiceNotFound(plugins.CoderDocumentService)
+	}
+
+	// KV store services
+
+	services := server.ServicesByType(plugins.StoreKvService)
+	for _, service := range services {
+		kvService, ok := service.(kv.Service)
+		if !ok {
+			return plugins.NewErrInvalidService(service)
+		}
+		kvService.SetKeyCoder(defaultKeyCoder)
+	}
+
+	// Document store services
+
+	defaultService, err = server.DefaultService(plugins.StoreKvService)
+	if err != nil {
+		return errors.Wrap(err)
+	}
+	defaultKvStore, ok := defaultService.(kv.Service)
+	if !ok {
+		return plugins.NewErrDefaultServiceNotFound(plugins.StoreKvService)
+	}
+
+	services = server.ServicesByType(plugins.StoreDocumentService)
+	for _, service := range services {
+		store, ok := service.(*store.Store)
+		if !ok {
+			return plugins.NewErrInvalidService(service)
+		}
+		store.SetKeyCoder(defaultKeyCoder)
+		store.SetDocumentCoder(defaultDocCoder)
+		store.SetKvStore(defaultKvStore)
+	}
+
 	// Query services
 
 	defaultStore, err := server.DefaultService(plugins.StoreDocumentService)
@@ -134,7 +160,7 @@ func (server *Server) setupPlugins() error {
 		return errors.Wrap(err)
 	}
 
-	services := server.ServicesByType(plugins.QueryService)
+	services = server.ServicesByType(plugins.QueryService)
 	for _, service := range services {
 		queryService, ok := service.(query.Service)
 		if !ok {
