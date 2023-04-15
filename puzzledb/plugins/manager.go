@@ -68,6 +68,9 @@ func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 
 // DefaultService returns the default plug-in service with the specified type.
 func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
+	if !t.IsExclusive() {
+		return nil, NewErrServiceNotFound(t)
+	}
 	services := mgr.ServicesByType(t)
 	if len(services) == 0 {
 		return nil, NewErrServiceNotFound(t)
