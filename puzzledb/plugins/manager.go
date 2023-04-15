@@ -94,9 +94,13 @@ func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 		return services[lastIdx], nil //nolint:nilerr
 	}
 	for _, srv := range services {
-		if srv.ServiceName() == configName {
-			return srv, nil
+		if srv.ServiceName() != configName {
+			continue
 		}
+		if !mgr.IsEnabled(srv) {
+			return nil, NewErrDisabledService(srv)
+		}
+		return srv, nil
 	}
 	return nil, NewErrNotFound(fmt.Sprintf("%s (%s)", configName, t.String()))
 }
