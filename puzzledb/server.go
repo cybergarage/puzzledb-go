@@ -102,7 +102,7 @@ func (server *Server) Restart() error {
 	return server.Start()
 }
 
-func (server *Server) loadDefaultPlugins() error {
+func (server *Server) loadEmbeddedPlugins() error {
 	services := []plugins.Service{}
 
 	docCoder := cbor.NewCoder()
@@ -129,7 +129,8 @@ func (server *Server) loadDefaultPlugins() error {
 	}
 
 	kvStore := kvStores[0]
-	store := store.NewStoreWith(kvStore)
+	store := store.NewStore()
+	store.SetKvStore(kvStore)
 	store.SetDocumentCoder(docCoder)
 	store.SetKeyCoder(keyCoder)
 	services = append(services, store)
@@ -150,7 +151,7 @@ func (server *Server) loadDefaultPlugins() error {
 }
 
 func (server *Server) LoadPlugins() error {
-	if err := server.loadDefaultPlugins(); err != nil {
+	if err := server.loadEmbeddedPlugins(); err != nil {
 		return err
 	}
 	return nil
