@@ -67,7 +67,7 @@ func (store *Store) ServiceType() plugins.ServiceType {
 
 // ServiceName returns the plug-in service name.
 func (store *Store) ServiceName() string {
-	return "document"
+	return "kv"
 }
 
 // CreateDatabase creates a new database.
