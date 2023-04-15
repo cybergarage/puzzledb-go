@@ -195,6 +195,7 @@ func (server *Server) Start() error {
 		return errors.Wrap(err)
 	}
 
+	log.Infof("%s", server.Manager.String())
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
 	return nil
