@@ -153,6 +153,9 @@ func (mgr *Manager) String() string {
 					name = fmt.Sprintf("*%s", name)
 				}
 			}
+			if !mgr.IsEnabled(service) {
+				name = fmt.Sprintf("-%s", name)
+			}
 			names = append(names, name)
 		}
 		if len(names) == 0 {
