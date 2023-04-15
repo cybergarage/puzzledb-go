@@ -20,7 +20,12 @@ import (
 )
 
 var ErrNotFound = errors.New("not found")
+var ErrInvalid = errors.New("invalid")
 
 func newErrNotFound(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotFound)
+}
+
+func newErrInvalid(target string) error {
+	return fmt.Errorf("%v is %w", target, ErrInvalid)
 }
