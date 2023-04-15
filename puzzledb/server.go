@@ -15,7 +15,6 @@
 package puzzledb
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
@@ -142,7 +141,7 @@ func (server *Server) setupPlugins() error {
 	for _, service := range services {
 		queryService, ok := service.(query.Service)
 		if !ok {
-			return newErrInvalid(fmt.Sprintf("%s (%s)", service.ServiceName(), service.ServiceType().String()))
+			return plugins.NewErrInvalidService(service)
 		}
 		if err := queryService.SetStore(defaultStore); err != nil {
 			return errors.Wrap(err)

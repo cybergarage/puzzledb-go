@@ -29,3 +29,7 @@ func NewErrNotFound(target string) error {
 func NewErrInvalid(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrInvalid)
 }
+
+func NewErrInvalidService(s Service) error {
+	return NewErrInvalid(fmt.Sprintf("%s (%s)", s.ServiceName(), s.ServiceType().String()))
+}
