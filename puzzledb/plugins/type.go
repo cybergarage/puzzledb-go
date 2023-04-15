@@ -18,20 +18,25 @@ package plugins
 type ServiceType uint8
 
 const (
+	// ExclusiveServiceType represents an exclusive service type.
+	ExclusiveServiceType = 0x80
+)
+
+const (
 	// CoderDocumentService represents a serializer service for document.
-	CoderDocumentService ServiceType = iota
+	CoderDocumentService ServiceType = 0x01 | ExclusiveServiceType
 	// CoderKeyService represents a serializer service for key.
-	CoderKeyService
+	CoderKeyService ServiceType = 0x02 | ExclusiveServiceType
 	// QueryService represents a query service.
-	QueryService
+	QueryService ServiceType = 0x03
 	// StoreDocumentService represents a document store service.
-	StoreDocumentService
+	StoreDocumentService ServiceType = 0x04 | ExclusiveServiceType
 	// StoreKvService represents a key-value store service.
-	StoreKvService
+	StoreKvService ServiceType = 0x05 | ExclusiveServiceType
 	// CoordinatorService represents a coordinator service.
-	CoordinatorService
+	CoordinatorService ServiceType = 0x06 | ExclusiveServiceType
 	// ExtendService represents an uncategorized service.
-	ExtendService
+	ExtendService ServiceType = 0x0F
 )
 
 // ServiceTypes returns all service types.
@@ -45,6 +50,11 @@ func ServiceTypes() []ServiceType {
 		CoordinatorService,
 		ExtendService,
 	}
+}
+
+// IsExclusive returns true if the service type is exclusive.
+func (t ServiceType) IsExclusive() bool {
+	return (t & ExclusiveServiceType) != 0
 }
 
 // String returns a string representation of the service type.
