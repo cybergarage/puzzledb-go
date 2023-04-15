@@ -16,7 +16,10 @@ package store
 
 import (
 	"testing"
+
+	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 )
 
 func TestStore(t *testing.T) {
+	StoreTest(t, plugins.NewStoreWith(nil))
 }
