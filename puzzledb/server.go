@@ -111,9 +111,6 @@ func (server *Server) loadEmbeddedPlugins() error {
 		mongo.NewService(),
 	}
 	for _, queryService := range queryServices {
-		if err := queryService.SetStore(store); err != nil {
-			return errors.Wrap(err)
-		}
 		services = append(services, queryService)
 	}
 
