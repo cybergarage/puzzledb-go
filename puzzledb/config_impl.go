@@ -54,6 +54,18 @@ func NewConfigWithPath(path string) (Config, error) {
 	return conf, nil
 }
 
+func NewConfigWithPaths(paths ...string) (Config, error) {
+	conf := newConfig()
+	for _, path := range paths {
+		viper.AddConfigPath(path)
+	}
+	err := viper.ReadInConfig()
+	if err != nil {
+		return nil, err
+	}
+	return conf, nil
+}
+
 // NewConfigWithString returns a new configuration with the specified string.
 func NewConfigWithString(config string) (Config, error) {
 	conf := newConfig()
