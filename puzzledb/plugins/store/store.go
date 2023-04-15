@@ -17,12 +17,12 @@ package store
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 type Store struct {
-	kvService kv.Service
+	kvStore kv.Store
 	document.Coder
 	document.KeyCoder
 }
@@ -30,24 +30,24 @@ type Store struct {
 // NewStore returns a new store.
 func NewStore() *Store {
 	return &Store{
-		kvService: nil,
-		Coder:     nil,
-		KeyCoder:  nil,
+		kvStore:  nil,
+		Coder:    nil,
+		KeyCoder: nil,
 	}
 }
 
 // NewStoreWith returns a new store with the specified key-value store service.
-func NewStoreWith(kvs kv.Service) *Store {
+func NewStoreWith(kvs kv.Store) *Store {
 	return &Store{
-		kvService: kvs,
-		Coder:     nil,
-		KeyCoder:  nil,
+		kvStore:  kvs,
+		Coder:    nil,
+		KeyCoder: nil,
 	}
 }
 
-// SetKvService sets the key-value store service.
-func (store *Store) SetKvService(service kv.Service) {
-	store.kvService = service
+// SetKvStore sets the key-value store service.
+func (store *Store) SetKvStore(kvs kv.Store) {
+	store.kvStore = kvs
 }
 
 // SetDocumentCoder sets the document coder.
@@ -72,12 +72,12 @@ func (store *Store) ServiceName() string {
 
 // CreateDatabase creates a new database.
 func (store *Store) CreateDatabase(name string) error {
-	return store.kvService.CreateDatabase(name)
+	return store.kvStore.CreateDatabase(name)
 }
 
 // GetDatabase retruns the specified database.
 func (store *Store) GetDatabase(name string) (store.Database, error) {
-	kvDB, err := store.kvService.GetDatabase(name)
+	kvDB, err := store.kvStore.GetDatabase(name)
 	if err != nil {
 		return nil, err
 	}
@@ -91,15 +91,15 @@ func (store *Store) GetDatabase(name string) (store.Database, error) {
 
 // RemoveDatabase removes the specified database.
 func (store *Store) RemoveDatabase(name string) error {
-	return store.kvService.RemoveDatabase((name))
+	return store.kvStore.RemoveDatabase((name))
 }
 
 // Start starts this store.
 func (store *Store) Start() error {
-	return store.kvService.Start()
+	return nil
 }
 
 // Stop stops this store.
 func (store *Store) Stop() error {
-	return store.kvService.Stop()
+	return nil
 }
