@@ -9,7 +9,7 @@ plugins:
       tuple:
         enabled: true
   coordinator: 
-    enabled: memdb
+    default: memdb
     memdb:
       enabled: true
     etcd:
@@ -20,12 +20,12 @@ plugins:
       cluseterFile: null
   store:
     document:
-      enabled: kv
+      default: kv
       kv:
         enabled: true
         store: memdb
     kv:
-      enabled: memdb
+      default: memdb
       memdb:
         enabled: true
         endpoints: null
