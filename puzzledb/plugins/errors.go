@@ -21,6 +21,7 @@ import (
 
 var ErrNotFound = errors.New("not found")
 var ErrInvalid = errors.New("invalid")
+var ErrDisabled = errors.New("disabled")
 
 func NewErrNotFound(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotFound)
@@ -28,6 +29,10 @@ func NewErrNotFound(target string) error {
 
 func NewErrInvalid(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrInvalid)
+}
+
+func NewErrDisabled(target string) error {
+	return fmt.Errorf("%v is %w", target, ErrDisabled)
 }
 
 func NewErrServiceNotFound(t ServiceType) error {
@@ -40,4 +45,8 @@ func NewErrDefaultServiceNotFound(t ServiceType) error {
 
 func NewErrInvalidService(s Service) error {
 	return NewErrInvalid(fmt.Sprintf("%s (%s)", s.ServiceName(), s.ServiceType().String()))
+}
+
+func NewErrDisabledService(s Service) error {
+	return NewErrDisabled(fmt.Sprintf("%s (%s)", s.ServiceName(), s.ServiceType().String()))
 }
