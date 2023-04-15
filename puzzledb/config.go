@@ -24,6 +24,8 @@ type Config interface {
 	GetString(path string) (string, error)
 	// GetInt returns an integer value for the specified name.
 	GetInt(path string) (int, error)
+	// GetBool returns a boolean value for the specified name.
+	GetBool(path string) (bool, error)
 	// String returns a string representation of the configuration.
 	String() string
 }
