@@ -61,15 +61,15 @@ func (t ServiceType) IsExclusive() bool {
 func (t ServiceType) String() string {
 	switch t {
 	case CoderDocumentService:
-		return "corder.document"
+		return "coder.document"
 	case CoderKeyService:
-		return "corder.key"
+		return "coder.key"
 	case QueryService:
 		return "query"
 	case StoreDocumentService:
 		return "store.document"
 	case StoreKvService:
-		return "store.key-value"
+		return "store.kv"
 	case CoordinatorService:
 		return "coordinator"
 	case ExtendService:
