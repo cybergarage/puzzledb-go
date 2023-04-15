@@ -108,10 +108,6 @@ func (mgr *Manager) Start() error {
 
 	log.Infof("plug-ins loaded")
 
-	for _, s := range strings.Split(mgr.String(), "\n") {
-		log.Infof("%s", s)
-	}
-
 	return nil
 }
 
