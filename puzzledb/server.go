@@ -15,6 +15,7 @@
 package puzzledb
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
@@ -64,36 +65,6 @@ func (server *Server) SetConfig(config Config) {
 	server.Manager.SetConfig(config)
 }
 
-// Start starts the server.
-func (server *Server) Start() error {
-	log.Infof("%s/%s", ProductName, Version)
-
-	if server.ServerConfig != nil {
-		log.Infof("configuration loaded")
-		log.Infof(server.ServerConfig.String())
-	}
-
-	if err := server.LoadPlugins(); err != nil {
-		return errors.Wrap(err)
-	}
-
-	if err := server.Manager.Start(); err != nil {
-		return errors.Wrap(err)
-	}
-
-	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
-	return nil
-}
-
-// Stop stops the server.
-func (server *Server) Stop() error {
-	if err := server.Manager.Stop(); err != nil {
-		return errors.Wrap(err)
-	}
-	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
-	return nil
-}
-
 // Restart restarts the server.
 func (server *Server) Restart() error {
 	if err := server.Stop(); err != nil {
@@ -141,7 +112,9 @@ func (server *Server) loadEmbeddedPlugins() error {
 		mongo.NewService(),
 	}
 	for _, queryService := range queryServices {
-		queryService.SetStore(store)
+		if err := queryService.SetStore(store); err != nil {
+			return errors.Wrap(err)
+		}
 		services = append(services, queryService)
 	}
 
@@ -154,5 +127,62 @@ func (server *Server) LoadPlugins() error {
 	if err := server.loadEmbeddedPlugins(); err != nil {
 		return err
 	}
+	return nil
+}
+
+func (server *Server) setupPlugins() error {
+	// Query services
+
+	defaultStore, err := server.DefaultService(plugins.StoreDocumentService)
+	if err != nil {
+		return errors.Wrap(err)
+	}
+
+	services := server.ServicesByType(plugins.QueryService)
+	for _, service := range services {
+		queryService, ok := service.(query.Service)
+		if !ok {
+			return newErrInvalid(fmt.Sprintf("%s (%s)", service.ServiceName(), service.ServiceType().String()))
+		}
+		if err := queryService.SetStore(defaultStore); err != nil {
+			return errors.Wrap(err)
+		}
+	}
+
+	return nil
+}
+
+// Start starts the server.
+func (server *Server) Start() error {
+	log.Infof("%s/%s", ProductName, Version)
+
+	if server.ServerConfig != nil {
+		log.Infof("configuration loaded")
+		log.Infof(server.ServerConfig.String())
+	}
+
+	if err := server.LoadPlugins(); err != nil {
+		return errors.Wrap(err)
+	}
+
+	if err := server.setupPlugins(); err != nil {
+		return errors.Wrap(err)
+	}
+
+	if err := server.Manager.Start(); err != nil {
+		return errors.Wrap(err)
+	}
+
+	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
+
+	return nil
+}
+
+// Stop stops the server.
+func (server *Server) Stop() error {
+	if err := server.Manager.Stop(); err != nil {
+		return errors.Wrap(err)
+	}
+	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
 	return nil
 }
