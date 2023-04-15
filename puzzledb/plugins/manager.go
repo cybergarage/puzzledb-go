@@ -129,11 +129,19 @@ func (mgr Manager) Stop() error {
 func (mgr *Manager) String() string {
 	var s string
 	for _, servieType := range ServiceTypes() {
+		defaultService, err := mgr.DefaultService(servieType)
 		names := []string{}
 		for _, service := range mgr.services {
-			if service.ServiceType() == servieType {
-				names = append(names, service.ServiceName())
+			if service.ServiceType() != servieType {
+				continue
 			}
+			name := service.ServiceName()
+			if err == nil {
+				if name == defaultService.ServiceName() {
+					name = fmt.Sprintf("*%s", name)
+				}
+			}
+			names = append(names, name)
 		}
 		if len(names) == 0 {
 			continue
