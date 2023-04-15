@@ -55,6 +55,17 @@ func (mgr *Manager) Services() []Service {
 	return mgr.services
 }
 
+// Service returns all registered plug-in services with the specified type.
+func (mgr *Manager) ServicesByType(t ServiceType) []Service {
+	services := []Service{}
+	for _, srv := range mgr.services {
+		if srv.ServiceType() == t {
+			services = append(services, srv)
+		}
+	}
+	return services
+}
+
 // Start starts all plug-in services.
 func (mgr *Manager) Start() error {
 	log.Infof("plug-ins loading...")
