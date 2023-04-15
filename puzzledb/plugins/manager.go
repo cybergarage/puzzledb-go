@@ -50,6 +50,15 @@ func (mgr *Manager) ReloadServices(srvs []Service) {
 	mgr.services = srvs
 }
 
+func (mgr *Manager) IsEnabled(s Service) bool {
+	configPath := strings.Join([]string{configPlugins, s.ServiceType().String(), s.ServiceName(), configEnabled}, ".")
+	enabled, err := mgr.Config.GetBool(configPath)
+	if err != nil {
+		return true
+	}
+	return enabled
+}
+
 // Services returns all registered plug-in services.
 func (mgr *Manager) Services() []Service {
 	return mgr.services
