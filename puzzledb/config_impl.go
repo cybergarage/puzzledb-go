@@ -17,6 +17,7 @@ package puzzledb
 import (
 	"bytes"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -90,7 +91,7 @@ func (conf *viperConfig) Get(path string) (any, error) {
 
 func (conf *viperConfig) GetString(path string) (string, error) {
 	v := viper.GetString(path)
-	if v == "" {
+	if len(v) == 0 {
 		return "", newErrNotFound(path)
 	}
 	return v, nil
@@ -102,6 +103,14 @@ func (conf *viperConfig) GetInt(path string) (int, error) {
 		return 0, newErrNotFound(path)
 	}
 	return v, nil
+}
+
+func (conf *viperConfig) GetBool(path string) (bool, error) {
+	v := viper.GetString(path)
+	if len(v) == 0 {
+		return false, newErrNotFound(path)
+	}
+	return strconv.ParseBool(v)
 }
 
 // String returns a string representation of the configuration.
