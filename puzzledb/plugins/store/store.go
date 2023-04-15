@@ -35,6 +35,11 @@ func NewStoreWithKvStore(kvs kv.Service) *Store {
 	}
 }
 
+// SetKvService sets the key-value store service.
+func (store *Store) SetKvService(service kv.Service) {
+	store.kvService = service
+}
+
 // SetDocumentCoder sets the document coder.
 func (store *Store) SetDocumentCoder(coder document.Coder) {
 	store.Coder = coder
