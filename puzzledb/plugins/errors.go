@@ -30,6 +30,10 @@ func NewErrInvalid(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrInvalid)
 }
 
+func NewErrServiceNotFound(t ServiceType) error {
+	return NewErrInvalid(t.String()))
+}
+
 func NewErrInvalidService(s Service) error {
 	return NewErrInvalid(fmt.Sprintf("%s (%s)", s.ServiceName(), s.ServiceType().String()))
 }

@@ -70,7 +70,7 @@ func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 	services := mgr.ServicesByType(t)
 	if len(services) == 0 {
-		return nil, NewErrNotFound(t.String())
+		return nil, NewErrServiceNotFound(t)
 	}
 	lastIdx := len(services) - 1
 	if mgr.Config == nil {
