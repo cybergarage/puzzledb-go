@@ -66,6 +66,29 @@ func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 	return services
 }
 
+// DefaultService returns the default plug-in service with the specified type.
+func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
+	services := mgr.ServicesByType(t)
+	if len(services) == 0 {
+		return nil, newErrNotFound(t.String())
+	}
+	lastIdx := len(services) - 1
+	if mgr.Config == nil {
+		return services[lastIdx], nil
+	}
+	configPath := strings.Join([]string{configPlugins, t.String(), configDefault}, ".")
+	configName, err := mgr.Config.GetString(configPath)
+	if err != nil {
+		return services[lastIdx], nil //nolint:nilerr
+	}
+	for _, srv := range services {
+		if srv.ServiceName() == configName {
+			return srv, nil
+		}
+	}
+	return nil, newErrNotFound(fmt.Sprintf("%s (%s)", configName, t.String()))
+}
+
 // Start starts all plug-in services.
 func (mgr *Manager) Start() error {
 	log.Infof("plug-ins loading...")
