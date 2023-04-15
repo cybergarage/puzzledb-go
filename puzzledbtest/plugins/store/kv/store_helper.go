@@ -26,24 +26,24 @@ import (
 )
 
 const (
-	testDBName    = "testdb"
+	testDBName    = "testkv"
 	testKeyCount  = 10
 	testValBufMax = 8
 )
 
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
-func StoreTest(t *testing.T, s plugins.Service) {
+func StoreTest(t *testing.T, service plugins.Service) {
 	t.Helper()
 
-	if err := s.Start(); err != nil {
+	if err := service.Start(); err != nil {
 		t.Error(err)
 		return
 	}
-	if err := s.CreateDatabase(testDBName); err != nil {
+	if err := service.CreateDatabase(testDBName); err != nil {
 		t.Error(err)
 		return
 	}
-	db, err := s.GetDatabase(testDBName)
+	db, err := service.GetDatabase(testDBName)
 	if err != nil {
 		t.Error(err)
 		return
@@ -307,7 +307,7 @@ func StoreTest(t *testing.T, s plugins.Service) {
 		}
 	}
 
-	if err := s.Stop(); err != nil {
+	if err := service.Stop(); err != nil {
 		t.Error(err)
 		return
 	}
