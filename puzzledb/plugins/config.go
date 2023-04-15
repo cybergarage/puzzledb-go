@@ -14,6 +14,11 @@
 
 package plugins
 
+const (
+	configPlugins = "plugins"
+	configDefault = "default"
+)
+
 // Config represents a configuration interface.
 type Config interface {
 	// Set sets a value to the specified path.
