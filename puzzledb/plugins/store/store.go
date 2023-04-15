@@ -27,6 +27,15 @@ type Store struct {
 	document.KeyCoder
 }
 
+// NewStore returns a new store.
+func NewStore() *Store {
+	return &Store{
+		kvService: nil,
+		Coder:     nil,
+		KeyCoder:  nil,
+	}
+}
+
 // NewStoreWith returns a new store with the specified key-value store service.
 func NewStoreWith(kvs kv.Service) *Store {
 	return &Store{
