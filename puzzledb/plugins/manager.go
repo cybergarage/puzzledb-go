@@ -111,12 +111,16 @@ func (mgr *Manager) Start() error {
 
 	for _, srv := range mgr.services {
 		if err := srv.Start(); err != nil {
+			if !mgr.IsEnabled(srv) {
+				log.Infof("%s (%s) skipped", srv.ServiceName(), srv.ServiceType().String())
+				continue
+			}
 			if err := mgr.Stop(); err != nil {
 				return err
 			}
 			return err
 		}
-		log.Infof("%s (%s) loaded", srv.ServiceName(), srv.ServiceType().String())
+		log.Infof("%s (%s) started", srv.ServiceName(), srv.ServiceType().String())
 	}
 
 	log.Infof("plug-ins loaded")
@@ -129,9 +133,14 @@ func (mgr Manager) Stop() error {
 	log.Infof("plug-ins terminating...")
 	var lastErr error
 	for _, srv := range mgr.services {
+		if !mgr.IsEnabled(srv) {
+			log.Infof("%s (%s) skipped", srv.ServiceName(), srv.ServiceType().String())
+			continue
+		}
 		if err := srv.Stop(); err != nil {
 			lastErr = err
 		}
+		log.Infof("%s (%s) terminated", srv.ServiceName(), srv.ServiceType().String())
 	}
 	log.Infof("plug-ins terminated")
 	return lastErr
