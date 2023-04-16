@@ -80,7 +80,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(true)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		val := vals[n]
 		obj := &store.Object{
@@ -90,11 +90,11 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -104,13 +104,13 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		obj, err := tx.Get([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if !bytes.Equal(obj.Value, vals[n]) {
 			cancel(t, tx)
@@ -118,7 +118,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -128,32 +128,33 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		rs, err := tx.GetRange([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if !rs.Next() {
 			cancel(t, tx)
 			t.Errorf("key (%v) is not found", key)
-			break
+			return
 		}
 		obj := rs.Object()
 		if !bytes.Equal(obj.Value, vals[n]) {
 			cancel(t, tx)
 			t.Errorf("%s != %s", obj.Value, vals[n])
+			return
 		}
 		if rs.Next() {
 			cancel(t, tx)
 			t.Errorf("other key (%v) is found", key)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -167,7 +168,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(true)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		val := vals[n]
 		obj := &store.Object{
@@ -177,11 +178,11 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -191,21 +192,22 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		obj, err := tx.Get([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if !bytes.Equal(obj.Value, vals[n]) {
 			cancel(t, tx)
 			t.Errorf("%s != %s", obj.Value, vals[n])
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -215,32 +217,33 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		rs, err := tx.GetRange([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if !rs.Next() {
 			cancel(t, tx)
 			t.Errorf("key (%v) is not found", key)
-			break
+			return
 		}
 		obj := rs.Object()
 		if !bytes.Equal(obj.Value, vals[n]) {
 			cancel(t, tx)
 			t.Errorf("%s != %s", obj.Value, vals[n])
+			return
 		}
 		if rs.Next() {
 			cancel(t, tx)
 			t.Errorf("other key (%v) is found", key)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -250,17 +253,17 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(true)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		err = tx.Remove([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -270,24 +273,24 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		_, err = tx.Get([]any{key})
 		if err == nil {
 			t.Errorf("key (%v) is found", key)
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if !errors.Is(err, store.ErrNotExist) {
 			t.Errorf("key (%v): %s", key, err.Error())
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -297,22 +300,22 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		tx, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		rs, err := tx.GetRange([]any{key})
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if rs.Next() {
 			cancel(t, tx)
 			t.Errorf("key (%v) is not removed", key)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
