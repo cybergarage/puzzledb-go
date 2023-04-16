@@ -15,13 +15,15 @@
 package store
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 )
 
 const (
-	testDBName    = "testdoc"
+	testDBPrefix  = "testdoc"
 	testKeyCount  = 10
 	testValBufMax = 8
 )
@@ -29,6 +31,8 @@ const (
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
 func DocumentStoreTest(t *testing.T, service store.Service) {
 	t.Helper()
+
+	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().Unix())
 
 	if err := service.Start(); err != nil {
 		t.Error(err)
@@ -43,6 +47,12 @@ func DocumentStoreTest(t *testing.T, service store.Service) {
 		t.Error(err)
 		return
 	}
+
+	defer func() {
+		if err := service.RemoveDatabase(testDBName); err != nil {
+			t.Error(err)
+		}
+	}()
 
 	if err := service.Stop(); err != nil {
 		t.Error(err)
