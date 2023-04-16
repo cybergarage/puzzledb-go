@@ -30,7 +30,7 @@ plugins:
         enabled: true
         endpoints: null
       fdb:
-        enabled: false
+        enabled: true
         cluseterFile: null
   query:
     redis:
