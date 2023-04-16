@@ -15,11 +15,16 @@
 package store
 
 import (
+	_ "embed"
 	"fmt"
+	"reflect"
 	"testing"
 	"time"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
+	"github.com/cybergarage/go-pict/pict"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 const (
@@ -28,8 +33,22 @@ const (
 	testValBufMax = 8
 )
 
+//go:embed go_types.pict
+var goTypes []byte
+
+// nolint:goerr113
+func deepEqual(x, y any) error {
+	if reflect.DeepEqual(x, y) {
+		return nil
+	}
+	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
+		return nil
+	}
+	return fmt.Errorf("%v != %v", x, y)
+}
+
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
-func DocumentStoreTest(t *testing.T, service store.Service) {
+func DocumentStoreTest(t *testing.T, service plugins.Service) {
 	t.Helper()
 
 	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().Unix())
@@ -42,7 +61,8 @@ func DocumentStoreTest(t *testing.T, service store.Service) {
 		t.Error(err)
 		return
 	}
-	_, err := service.GetDatabase(testDBName)
+
+	db, err := service.GetDatabase(testDBName)
 	if err != nil {
 		t.Error(err)
 		return
@@ -53,6 +73,87 @@ func DocumentStoreTest(t *testing.T, service store.Service) {
 			t.Error(err)
 		}
 	}()
+
+	// Generates test keys and objects
+
+	pict := pict.NewParserWithBytes(goTypes)
+	err = pict.Parse()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	keys := make([]document.Key, len(pict.Cases()))
+	for n, pictCase := range pict.Cases() {
+		key := document.NewKey()
+		for n, pictParam := range pict.Params() {
+			kv, err := pictCase[n].CastType(string(pictParam))
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			key = append(key, kv)
+		}
+		keys[n] = key
+	}
+
+	objs := make([]document.Object, len(pict.Cases()))
+	for n, pictCase := range pict.Cases() {
+		obj := map[string]any{}
+		for n, pictParam := range pict.Params() {
+			name := string(pictParam)
+			pictElem := pictCase[n]
+			v, err := pictElem.CastType(name)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			obj[name] = v
+		}
+		objs[n] = obj
+	}
+
+	// Insert objects
+
+	cancel := func(t *testing.T, tx store.Transaction) {
+		t.Helper()
+		if err := tx.Cancel(); err != nil {
+			t.Error(err)
+		}
+	}
+
+	for n, key := range keys {
+		tx, err := db.Transact(true)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		err = tx.InsertDocument(key, objs[n])
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	objs = make([]document.Object, len(pict.Cases()))
+	for n, pictCase := range pict.Cases() {
+		obj := []any{}
+		for n, pictParam := range pict.Params() {
+			name := string(pictParam)
+			pictElem := pictCase[n]
+			v, err := pictElem.CastType(name)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			obj = append(obj, v)
+		}
+		objs[n] = obj
+	}
 
 	if err := service.Stop(); err != nil {
 		t.Error(err)

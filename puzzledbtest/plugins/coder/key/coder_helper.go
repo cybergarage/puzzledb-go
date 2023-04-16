@@ -45,10 +45,9 @@ func KeyCoderTest(t *testing.T, coder document.KeyCoder) {
 		}
 	}
 
-	pictParams := pict.Params()
 	for _, pictCase := range pict.Cases() {
 		key := document.NewKey()
-		for n, pictParam := range pictParams {
+		for n, pictParam := range pict.Params() {
 			pictElem := pictCase[n]
 			kv, err := pictElem.CastType(string(pictParam))
 			if err != nil {
