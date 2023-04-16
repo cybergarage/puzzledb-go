@@ -112,7 +112,7 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 		objs[n] = obj
 	}
 
-	// Insert objects
+	// Insertっs objects
 
 	cancel := func(t *testing.T, tx store.Transaction) {
 		t.Helper()
@@ -139,6 +139,39 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 		}
 	}
 
+	// Gets objects
+
+	for n, key := range keys {
+		tx, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		rs, err := tx.FindDocuments(key)
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+		rsObjs := rs.Objects()
+		if len(rsObjs) != 1 {
+			cancel(t, tx)
+			t.Errorf("objs != 1 (%d)", len(rsObjs))
+			return
+		}
+		if err := deepEqual(rsObjs[0], objs[n]); err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	// Updates objects
+
 	objs = make([]document.Object, len(pict.Cases()))
 	for n, pictCase := range pict.Cases() {
 		obj := []any{}
@@ -154,6 +187,103 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 		}
 		objs[n] = obj
 	}
+
+	for n, key := range keys {
+		tx, err := db.Transact(true)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		err = tx.UpdateDocument(key, objs[n])
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	// Gets updated objects
+
+	for n, key := range keys {
+		tx, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		rs, err := tx.FindDocuments(key)
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+		rsObjs := rs.Objects()
+		if len(rsObjs) != 1 {
+			cancel(t, tx)
+			t.Errorf("objs != 1 (%d)", len(rsObjs))
+			return
+		}
+		if err := deepEqual(rsObjs[0], objs[n]); err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	// Removes objects
+
+	for _, key := range keys {
+		tx, err := db.Transact(true)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		err = tx.RemoveDocument(key)
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	// Gets removed objects
+
+	for _, key := range keys {
+		tx, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		rs, err := tx.FindDocuments(key)
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+		rsObjs := rs.Objects()
+		if len(rsObjs) != 0 {
+			cancel(t, tx)
+			t.Errorf("objs != 0 (%d)", len(rsObjs))
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	// Stops service
 
 	if err := service.Stop(); err != nil {
 		t.Error(err)
