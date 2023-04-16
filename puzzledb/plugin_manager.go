@@ -107,6 +107,18 @@ func (mgr *PluginManager) DefaultDocumentCoderService() (document.Service, error
 	return defaultDocCoder, nil
 }
 
+func (mgr *PluginManager) DefaultKvStore() (kv.Service, error) {
+	defaultService, err := mgr.DefaultService(plugins.StoreKvService)
+	if err != nil {
+		return nil, errors.Wrap(err)
+	}
+	defaultKvStore, ok := defaultService.(kv.Service)
+	if !ok {
+		return nil, plugins.NewErrDefaultServiceNotFound(plugins.StoreKvService)
+	}
+	return defaultKvStore, nil
+}
+
 func (mgr *PluginManager) EnabledKeyCoderServices() []key.Service {
 	services := []key.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
