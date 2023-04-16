@@ -35,9 +35,9 @@ func NewManager() *Manager {
 	}
 }
 
-func (mgr *Manager) CoderKeyServices() []key.Service {
+func (mgr *Manager) EnabledCoderKeyServices() []key.Service {
 	services := []key.Service{}
-	for _, service := range mgr.ServicesByType(plugins.CoderKeyService) {
+	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
 		if s, ok := service.(key.Service); ok {
 			services = append(services, s)
 		}
@@ -45,9 +45,9 @@ func (mgr *Manager) CoderKeyServices() []key.Service {
 	return services
 }
 
-func (mgr *Manager) CoderDocumentServices() []document.Service {
+func (mgr *Manager) EnabledCoderDocumentServices() []document.Service {
 	services := []document.Service{}
-	for _, service := range mgr.ServicesByType(plugins.CoderDocumentService) {
+	for _, service := range mgr.EnabledServicesByType(plugins.CoderDocumentService) {
 		if s, ok := service.(document.Service); ok {
 			services = append(services, s)
 		}
@@ -55,9 +55,9 @@ func (mgr *Manager) CoderDocumentServices() []document.Service {
 	return services
 }
 
-func (mgr *Manager) DocumentStoreServices() []store.Service {
+func (mgr *Manager) EnabledDocumentStoreServices() []store.Service {
 	services := []store.Service{}
-	for _, service := range mgr.ServicesByType(plugins.StoreDocumentService) {
+	for _, service := range mgr.EnabledServicesByType(plugins.StoreDocumentService) {
 		if s, ok := service.(store.Service); ok {
 			services = append(services, s)
 		}
@@ -65,9 +65,9 @@ func (mgr *Manager) DocumentStoreServices() []store.Service {
 	return services
 }
 
-func (mgr *Manager) KvStoreServices() []kv.Service {
+func (mgr *Manager) EnabledKvStoreServices() []kv.Service {
 	services := []kv.Service{}
-	for _, service := range mgr.ServicesByType(plugins.StoreKvService) {
+	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvService) {
 		if s, ok := service.(kv.Service); ok {
 			services = append(services, s)
 		}
