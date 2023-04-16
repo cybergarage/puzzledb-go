@@ -171,11 +171,11 @@ func (mgr *Manager) String() string {
 			name := service.ServiceName()
 			if err == nil {
 				if name == defaultService.ServiceName() {
-					name = fmt.Sprintf("*%s", name)
+					name = fmt.Sprintf("%s*", name)
 				}
 			}
 			if !mgr.IsEnabled(service) {
-				name = fmt.Sprintf("-%s", name)
+				name = fmt.Sprintf("%s-", name)
 			}
 			names = append(names, name)
 		}
