@@ -19,6 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 )
@@ -77,6 +78,16 @@ func (mgr *PluginManager) KvStoreServices() []kv.Service {
 	services := []kv.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvService) {
 		if s, ok := service.(kv.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) QueryServices() []query.Service {
+	services := []query.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.QueryService) {
+		if s, ok := service.(query.Service); ok {
 			services = append(services, s)
 		}
 	}
