@@ -131,11 +131,11 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
