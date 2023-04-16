@@ -33,6 +33,56 @@ func NewPluginManagerWith(mgr *plugins.Manager) *PluginManager {
 	}
 }
 
+func (mgr *PluginManager) RemoveDisabledServices(services []plugins.Service) []plugins.Service {
+	enabledServices := []plugins.Service{}
+	for _, service := range services {
+		if mgr.IsEnabled(service) {
+			enabledServices = append(enabledServices, service)
+		}
+	}
+	return enabledServices
+}
+
+func (mgr *PluginManager) KeyCoderServices() []key.Service {
+	services := []key.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
+		if s, ok := service.(key.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) DocumentCoderServices() []document.Service {
+	services := []document.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.CoderDocumentService) {
+		if s, ok := service.(document.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) DocumentStoreServices() []store.Service {
+	services := []store.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.StoreDocumentService) {
+		if s, ok := service.(store.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) KvStoreServices() []kv.Service {
+	services := []kv.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvService) {
+		if s, ok := service.(kv.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
 func (mgr *PluginManager) DefaultKeyCoderService() (key.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.CoderKeyService)
 	if err != nil {
