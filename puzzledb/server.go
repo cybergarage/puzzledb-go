@@ -24,8 +24,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
-	coordinator_etcd "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/etcd"
-	coordinator_memdb "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/memdb"
+	etcd_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/etcd"
+	memdb_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/memdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mongo"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mysql"
@@ -80,8 +80,8 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		store.NewStore(),
 		fdb.NewStore(),
 		memdb.NewStore(),
-		coordinator.NewServiceWith(coordinator_etcd.NewCoordinator()),
-		coordinator.NewServiceWith(coordinator_memdb.NewCoordinator()),
+		coordinator.NewServiceWith(etcd_coordinator.NewCoordinator()),
+		coordinator.NewServiceWith(memdb_coordinator.NewCoordinator()),
 		mysql.NewService(),
 		redis.NewService(),
 		mongo.NewService(),
