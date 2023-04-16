@@ -48,6 +48,7 @@ func NewStoreWith(kvs kv.Store) *Store {
 // SetKvStore sets the key-value store service.
 func (store *Store) SetKvStore(kvs kv.Store) {
 	store.kvStore = kvs
+	store.kvStore.SetKeyCoder(store.KeyCoder)
 }
 
 // SetDocumentCoder sets the document coder.
@@ -58,6 +59,9 @@ func (store *Store) SetDocumentCoder(coder document.Coder) {
 // SetKeyCoder sets the key coder.
 func (store *Store) SetKeyCoder(coder document.KeyCoder) {
 	store.KeyCoder = coder
+	if store.kvStore != nil {
+		store.kvStore.SetKeyCoder(coder)
+	}
 }
 
 // ServiceType returns the plug-in service type.
