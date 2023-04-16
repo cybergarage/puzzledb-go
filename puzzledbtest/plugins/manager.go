@@ -35,7 +35,7 @@ func NewManager() *Manager {
 	}
 }
 
-func (mgr *Manager) EnabledCoderKeyServices() []key.Service {
+func (mgr *Manager) EnabledKeyCoderServices() []key.Service {
 	services := []key.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
 		if s, ok := service.(key.Service); ok {
@@ -45,7 +45,7 @@ func (mgr *Manager) EnabledCoderKeyServices() []key.Service {
 	return services
 }
 
-func (mgr *Manager) EnabledCoderDocumentServices() []document.Service {
+func (mgr *Manager) EnabledDocumentCoderServices() []document.Service {
 	services := []document.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.CoderDocumentService) {
 		if s, ok := service.(document.Service); ok {
