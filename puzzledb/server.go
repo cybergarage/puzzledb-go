@@ -18,7 +18,6 @@ import (
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
@@ -26,12 +25,10 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 	etcd_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/etcd"
 	memdb_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/memdb"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mongo"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
 )
@@ -99,76 +96,51 @@ func (server *Server) LoadPlugins() error {
 	return nil
 }
 
-func (server *Server) setupPlugins() error {
+func (server *Server) setupPluginDefaults() error {
 	// Default services
 
-	defaultService, err := server.DefaultService(plugins.CoderKeyService)
+	defaultKeyCoder, err := server.DefaultKeyCoderService()
 	if err != nil {
 		return errors.Wrap(err)
-	}
-	defaultKeyCoder, ok := defaultService.(document.KeyCoder)
-	if !ok {
-		return plugins.NewErrDefaultServiceNotFound(plugins.CoderKeyService)
 	}
 
-	defaultService, err = server.DefaultService(plugins.CoderDocumentService)
+	defaultDocCoder, err := server.DefaultDocumentCoderService()
 	if err != nil {
 		return errors.Wrap(err)
-	}
-	defaultDocCoder, ok := defaultService.(document.Coder)
-	if !ok {
-		return plugins.NewErrDefaultServiceNotFound(plugins.CoderDocumentService)
 	}
 
 	// KV store services
 
-	services := server.ServicesByType(plugins.StoreKvService)
-	for _, service := range services {
-		kvService, ok := service.(kv.Service)
-		if !ok {
-			return plugins.NewErrInvalidService(service)
-		}
-		kvService.SetKeyCoder(defaultKeyCoder)
+	for _, service := range server.KvStoreServices() {
+		service.SetKeyCoder(defaultKeyCoder)
 	}
 
 	// Document store services
 
-	defaultService, err = server.DefaultService(plugins.StoreKvService)
+	defaultKvStore, err := server.DefaultKvStoreService()
 	if err != nil {
 		return errors.Wrap(err)
 	}
-	defaultKvStore, ok := defaultService.(kv.Service)
-	if !ok {
-		return plugins.NewErrDefaultServiceNotFound(plugins.StoreKvService)
-	}
 
-	services = server.ServicesByType(plugins.StoreDocumentService)
-	for _, service := range services {
+	for _, service := range server.DocumentStoreServices() {
+		service.SetKeyCoder(defaultKeyCoder)
+		service.SetDocumentCoder(defaultDocCoder)
 		store, ok := service.(*store.Store)
 		if !ok {
 			return plugins.NewErrInvalidService(service)
 		}
-		store.SetKeyCoder(defaultKeyCoder)
-		store.SetDocumentCoder(defaultDocCoder)
 		store.SetKvStore(defaultKvStore)
 	}
 
 	// Query services
 
-	defaultStore, err := server.DefaultService(plugins.StoreDocumentService)
+	defaultStore, err := server.DefaultStoreService()
 	if err != nil {
 		return errors.Wrap(err)
 	}
 
-	services = server.ServicesByType(plugins.QueryService)
-	for _, service := range services {
-		queryService, ok := service.(query.Service)
-		if !ok {
-			return plugins.NewErrInvalidService(service)
-		}
-		if err := queryService.SetStore(defaultStore); err != nil {
-			return errors.Wrap(err)
-		}
+	for _, service := range server.QueryServices() {
+		service.SetStore(defaultStore)
 	}
 
 	return nil
@@ -187,7 +159,7 @@ func (server *Server) Start() error {
 		return errors.Wrap(err)
 	}
 
-	if err := server.setupPlugins(); err != nil {
+	if err := server.setupPluginDefaults(); err != nil {
 		return errors.Wrap(err)
 	}
 
