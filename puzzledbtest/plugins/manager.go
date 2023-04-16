@@ -17,6 +17,7 @@ package plugins
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
@@ -31,6 +32,16 @@ func NewManager() *Manager {
 	return &Manager{
 		Manager: server.Manager,
 	}
+}
+
+func (mgr *Manager) CoderKeyServices() []key.Service {
+	services := []key.Service{}
+	for _, service := range mgr.ServicesByType(plugins.CoderKeyService) {
+		if s, ok := service.(key.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
 }
 
 func (mgr *Manager) CoderDocumentServices() []document.Service {
