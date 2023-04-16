@@ -30,6 +30,15 @@ func TestDocumentStore(t *testing.T) {
 	for _, kvStore := range mgr.EnabledKvStoreServices() {
 		for _, keyCoder := range mgr.EnabledKeyCoderServices() {
 			for _, docCoder := range mgr.EnabledDocumentCoderServices() {
+				if err := kvStore.Start(); err != nil {
+					t.Error(err)
+					return
+				}
+				defer func() {
+					if err := kvStore.Stop(); err != nil {
+						t.Error(err)
+					}
+				}()
 				docStore.SetKvStore(kvStore)
 				docStore.SetKeyCoder(keyCoder)
 				docStore.SetDocumentCoder(docCoder)
