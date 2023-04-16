@@ -15,11 +15,8 @@
 package plugins
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
@@ -27,50 +24,8 @@ type Manager struct {
 	*plugins.Manager
 }
 
-func NewManager() *Manager {
+func NewManager() *puzzledb.PluginManager {
 	server := puzzledbtest.NewServer()
 	server.LoadPlugins() //nolint:errcheck
-	return &Manager{
-		Manager: server.Manager,
-	}
-}
-
-func (mgr *Manager) EnabledKeyCoderServices() []key.Service {
-	services := []key.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
-		if s, ok := service.(key.Service); ok {
-			services = append(services, s)
-		}
-	}
-	return services
-}
-
-func (mgr *Manager) EnabledDocumentCoderServices() []document.Service {
-	services := []document.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.CoderDocumentService) {
-		if s, ok := service.(document.Service); ok {
-			services = append(services, s)
-		}
-	}
-	return services
-}
-
-func (mgr *Manager) EnabledDocumentStoreServices() []store.Service {
-	services := []store.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.StoreDocumentService) {
-		if s, ok := service.(store.Service); ok {
-			services = append(services, s)
-		}
-	}
-	return services
-}
-
-func (mgr *Manager) EnabledKvStoreServices() []kv.Service {
-	services := []kv.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvService) {
-		if s, ok := service.(kv.Service); ok {
-			services = append(services, s)
-		}
-	}
-	return services
+	return server.PluginManager
 }

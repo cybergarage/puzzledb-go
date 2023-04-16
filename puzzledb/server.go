@@ -39,14 +39,14 @@ import (
 // Server represents a server instance.
 type Server struct {
 	*ServerConfig
-	*plugins.Manager
+	*PluginManager
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		ServerConfig: nil,
-		Manager:      plugins.NewManager(),
+		ServerConfig:  nil,
+		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 	}
 
 	return server
