@@ -64,13 +64,25 @@ func (mgr *Manager) Services() []Service {
 	return mgr.services
 }
 
-// Service returns all registered plug-in services with the specified type.
+// ServicesByType returns all registered plug-in services with the specified type.
 func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 	services := []Service{}
 	for _, srv := range mgr.services {
 		if srv.ServiceType() == t {
 			services = append(services, srv)
 		}
+	}
+	return services
+}
+
+// EnabledServicesByType returns all enabled plug-in services with the specified type.
+func (mgr *Manager) EnabledServicesByType(t ServiceType) []Service {
+	services := []Service{}
+	for _, srv := range mgr.ServicesByType(t) {
+		if !mgr.IsEnabled(srv) {
+			continue
+		}
+		services = append(services, srv)
 	}
 	return services
 }
