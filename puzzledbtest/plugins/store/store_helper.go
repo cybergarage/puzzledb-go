@@ -17,7 +17,7 @@ package store
 import (
 	"testing"
 
-	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 )
 
 const (
@@ -27,7 +27,7 @@ const (
 )
 
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
-func StoreTest(t *testing.T, service plugins.Service) {
+func DocumentStoreTest(t *testing.T, service store.Service) {
 	t.Helper()
 
 	if err := service.Start(); err != nil {
