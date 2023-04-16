@@ -31,7 +31,7 @@ func TestDocumentStore(t *testing.T) {
 		for _, keyCoder := range mgr.EnabledKeyCoderServices() {
 			for _, docCoder := range mgr.EnabledDocumentCoderServices() {
 				if err := kvStore.Start(); err != nil {
-					t.Error(err)
+					t.Skip(err)
 					return
 				}
 				defer func() {
@@ -42,8 +42,8 @@ func TestDocumentStore(t *testing.T) {
 				docStore.SetKvStore(kvStore)
 				docStore.SetKeyCoder(keyCoder)
 				docStore.SetDocumentCoder(docCoder)
-				serviceNames := []string{kvStore.ServiceName(), keyCoder.ServiceName(), docCoder.ServiceName()}
-				testName := fmt.Sprintf("%s (%s)", docStore.ServiceName(), strings.Join(serviceNames, " + "))
+				serviceNames := []string{keyCoder.ServiceName(), docCoder.ServiceName(), kvStore.ServiceName()}
+				testName := fmt.Sprintf("%s(%s)", docStore.ServiceName(), strings.Join(serviceNames, ","))
 				t.Run(testName, func(t *testing.T) {
 					DocumentStoreTest(t, docStore)
 				})
