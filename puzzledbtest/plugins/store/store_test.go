@@ -15,6 +15,8 @@
 package store
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
@@ -26,10 +28,17 @@ func TestDocumentStore(t *testing.T) {
 
 	mgr := plugins.NewManager()
 	for _, kvStore := range mgr.EnabledKvStoreServices() {
-		docStore.SetKvStore(kvStore)
-		name := docStore.ServiceName()
-		t.Run(name, func(t *testing.T) {
-			DocumentStoreTest(t, docStore)
-		})
+		for _, keyCoder := range mgr.EnabledKeyCoderServices() {
+			for _, docCoder := range mgr.EnabledDocumentCoderServices() {
+				docStore.SetKvStore(kvStore)
+				docStore.SetKeyCoder(keyCoder)
+				docStore.SetDocumentCoder(docCoder)
+				serviceNames := []string{kvStore.ServiceName(), keyCoder.ServiceName(), docCoder.ServiceName()}
+				testName := fmt.Sprintf("%s (%s)", docStore.ServiceName(), strings.Join(serviceNames, " + "))
+				t.Run(testName, func(t *testing.T) {
+					DocumentStoreTest(t, docStore)
+				})
+			}
+		}
 	}
 }
