@@ -18,15 +18,17 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"math/rand"
 	"testing"
+	"time"
 
 	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 const (
-	testDBName    = "testkv"
+	testDBPrefix  = "testkv"
 	testKeyCount  = 10
 	testValBufMax = 8
 )
@@ -35,6 +37,7 @@ const (
 func StoreTest(t *testing.T, service plugins.Service) {
 	t.Helper()
 
+	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().Unix())
 	if err := service.Start(); err != nil {
 		t.Error(err)
 		return
@@ -48,6 +51,12 @@ func StoreTest(t *testing.T, service plugins.Service) {
 		t.Error(err)
 		return
 	}
+
+	defer func() {
+		if err := service.RemoveDatabase(testDBName); err != nil {
+			t.Error(err)
+		}
+	}()
 
 	keys := make([][]byte, testKeyCount)
 	vals := make([][]byte, testKeyCount)
