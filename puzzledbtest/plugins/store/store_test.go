@@ -17,14 +17,19 @@ package store
 import (
 	"testing"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins"
 )
 
-func TestDocumentStores(t *testing.T) {
+func TestDocumentStore(t *testing.T) {
+	docStore := store.NewStore()
+
 	mgr := plugins.NewManager()
-	for _, s := range mgr.DocumentStoreServices() {
-		t.Run(s.ServiceName(), func(t *testing.T) {
-			DocumentStoreTest(t, s)
+	for _, kvStore := range mgr.EnabledKvStoreServices() {
+		docStore.SetKvStore(kvStore)
+		name := docStore.ServiceName()
+		t.Run(name, func(t *testing.T) {
+			DocumentStoreTest(t, docStore)
 		})
 	}
 }
