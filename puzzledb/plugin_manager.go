@@ -46,7 +46,7 @@ func (mgr *PluginManager) RemoveDisabledServices(services []plugins.Service) []p
 
 func (mgr *PluginManager) KeyCoderServices() []key.Service {
 	services := []key.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
+	for _, service := range mgr.ServicesByType(plugins.CoderKeyService) {
 		if s, ok := service.(key.Service); ok {
 			services = append(services, s)
 		}
@@ -56,7 +56,7 @@ func (mgr *PluginManager) KeyCoderServices() []key.Service {
 
 func (mgr *PluginManager) DocumentCoderServices() []document.Service {
 	services := []document.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.CoderDocumentService) {
+	for _, service := range mgr.ServicesByType(plugins.CoderDocumentService) {
 		if s, ok := service.(document.Service); ok {
 			services = append(services, s)
 		}
@@ -66,7 +66,7 @@ func (mgr *PluginManager) DocumentCoderServices() []document.Service {
 
 func (mgr *PluginManager) DocumentStoreServices() []store.Service {
 	services := []store.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.StoreDocumentService) {
+	for _, service := range mgr.ServicesByType(plugins.StoreDocumentService) {
 		if s, ok := service.(store.Service); ok {
 			services = append(services, s)
 		}
@@ -76,7 +76,7 @@ func (mgr *PluginManager) DocumentStoreServices() []store.Service {
 
 func (mgr *PluginManager) KvStoreServices() []kv.Service {
 	services := []kv.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvService) {
+	for _, service := range mgr.ServicesByType(plugins.StoreKvService) {
 		if s, ok := service.(kv.Service); ok {
 			services = append(services, s)
 		}
@@ -86,7 +86,7 @@ func (mgr *PluginManager) KvStoreServices() []kv.Service {
 
 func (mgr *PluginManager) QueryServices() []query.Service {
 	services := []query.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.QueryService) {
+	for _, service := range mgr.ServicesByType(plugins.QueryService) {
 		if s, ok := service.(query.Service); ok {
 			services = append(services, s)
 		}
