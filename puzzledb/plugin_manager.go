@@ -105,16 +105,28 @@ func (mgr *PluginManager) QueryServices() []query.Service {
 	return services
 }
 
+func (mgr *PluginManager) DefaultCoordinatorService() (coordinator.Service, error) {
+	defaultService, err := mgr.DefaultService(plugins.CoordinatorService)
+	if err != nil {
+		return nil, errors.Wrap(err)
+	}
+	service, ok := defaultService.(coordinator.Service)
+	if !ok {
+		return nil, plugins.NewErrDefaultServiceNotFound(plugins.CoordinatorService)
+	}
+	return service, nil
+}
+
 func (mgr *PluginManager) DefaultKeyCoderService() (key.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.CoderKeyService)
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
-	defaultKeyCoder, ok := defaultService.(key.Service)
+	service, ok := defaultService.(key.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.CoderKeyService)
 	}
-	return defaultKeyCoder, nil
+	return service, nil
 }
 
 func (mgr *PluginManager) DefaultDocumentCoderService() (document.Service, error) {
@@ -122,11 +134,11 @@ func (mgr *PluginManager) DefaultDocumentCoderService() (document.Service, error
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
-	defaultDocCoder, ok := defaultService.(document.Service)
+	service, ok := defaultService.(document.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.CoderDocumentService)
 	}
-	return defaultDocCoder, nil
+	return service, nil
 }
 
 func (mgr *PluginManager) DefaultKvStoreService() (kv.Service, error) {
@@ -134,11 +146,11 @@ func (mgr *PluginManager) DefaultKvStoreService() (kv.Service, error) {
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
-	defaultKvStore, ok := defaultService.(kv.Service)
+	service, ok := defaultService.(kv.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.StoreKvService)
 	}
-	return defaultKvStore, nil
+	return service, nil
 }
 
 func (mgr *PluginManager) DefaultStoreService() (store.Service, error) {
@@ -146,11 +158,11 @@ func (mgr *PluginManager) DefaultStoreService() (store.Service, error) {
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
-	defaultDocStore, ok := defaultService.(store.Service)
+	service, ok := defaultService.(store.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.StoreDocumentService)
 	}
-	return defaultDocStore, nil
+	return service, nil
 }
 
 func (mgr *PluginManager) EnabledKeyCoderServices() []key.Service {
