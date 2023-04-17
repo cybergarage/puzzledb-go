@@ -15,25 +15,32 @@
 package coordinator
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
-type Service struct {
+type Service interface {
+	coordinator.Coordinator
+	plugins.Service
+}
+
+type serviceImpl struct {
 	core.CoordinatorService
 }
 
-func NewServiceWith(c core.CoordinatorService) *Service {
-	return &Service{
+func NewServiceWith(c core.CoordinatorService) Service {
+	return &serviceImpl{
 		CoordinatorService: c,
 	}
 }
 
 // Start starts this service.
-func (service *Service) Start() error {
+func (service *serviceImpl) Start() error {
 	return service.CoordinatorService.Start()
 }
 
 // Stop stops this service.
-func (service *Service) Stop() error {
+func (service *serviceImpl) Stop() error {
 	return service.CoordinatorService.Stop()
 }
