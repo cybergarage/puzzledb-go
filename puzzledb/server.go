@@ -141,12 +141,18 @@ func (server *Server) setupPlugins() error {
 
 	// Query services
 
+	defaultCoodinator, err := server.DefaultCoordinatorService()
+	if err != nil {
+		return errors.Wrap(err)
+	}
+
 	defaultStore, err := server.DefaultStoreService()
 	if err != nil {
 		return errors.Wrap(err)
 	}
 
 	for _, service := range server.QueryServices() {
+		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
 	}
 
