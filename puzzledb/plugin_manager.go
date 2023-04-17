@@ -19,6 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
@@ -58,6 +59,16 @@ func (mgr *PluginManager) DocumentCoderServices() []document.Service {
 	services := []document.Service{}
 	for _, service := range mgr.ServicesByType(plugins.CoderDocumentService) {
 		if s, ok := service.(document.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) CoordinatorServices() []coordinator.Service {
+	services := []coordinator.Service{}
+	for _, service := range mgr.ServicesByType(plugins.CoordinatorService) {
+		if s, ok := service.(coordinator.Service); ok {
 			services = append(services, s)
 		}
 	}
