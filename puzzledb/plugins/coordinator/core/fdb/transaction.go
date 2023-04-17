@@ -17,15 +17,20 @@ package fdb
 import (
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 // transaction represents a transaction instance.
 type transaction struct {
+	document.KeyCoder
+	document.Coder
 	fdb.Transaction
 }
 
-func newTransaction(txn fdb.Transaction) coordinator.Transaction {
+func newTransaction(txn fdb.Transaction, keyCoder document.KeyCoder, docCoder document.Coder) coordinator.Transaction {
 	return &transaction{
+		KeyCoder:    keyCoder,
+		Coder:       docCoder,
 		Transaction: txn,
 	}
 }
