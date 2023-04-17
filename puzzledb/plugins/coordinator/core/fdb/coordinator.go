@@ -55,7 +55,7 @@ func (coord *Coordinator) Transact() (coordinator.Transaction, error) {
 		return nil, err
 	}
 
-	return newTransaction(txn, coord.KeyCoder, coord.Coder), nil
+	return newTransaction(txn), nil
 }
 
 // Start starts this etcd coordinator.
