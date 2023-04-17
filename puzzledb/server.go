@@ -109,13 +109,6 @@ func (server *Server) setupPlugins() error {
 		return errors.Wrap(err)
 	}
 
-	// Coordinator services
-
-	for _, service := range server.CoordinatorServices() {
-		service.SetKeyCoder(defaultKeyCoder)
-		service.SetDocumentCoder(defaultDocCoder)
-	}
-
 	// KV store services
 
 	for _, service := range server.KvStoreServices() {
