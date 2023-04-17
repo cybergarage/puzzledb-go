@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
 const (
@@ -29,7 +29,7 @@ const (
 )
 
 //nolint:gosec,cyclop,revive,gocognit,gocyclo
-func CoordinatorTest(t *testing.T, s plugins.CoordinatorService) {
+func CoordinatorTest(t *testing.T, s core.CoordinatorService) {
 	t.Helper()
 
 	cancel := func(t *testing.T, tx coordinator.Transaction) {
