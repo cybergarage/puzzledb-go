@@ -19,6 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
@@ -46,7 +47,7 @@ func (mgr *PluginManager) RemoveDisabledServices(services []plugins.Service) []p
 
 func (mgr *PluginManager) KeyCoderServices() []key.Service {
 	services := []key.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
+	for _, service := range mgr.ServicesByType(plugins.CoderKeyService) {
 		if s, ok := service.(key.Service); ok {
 			services = append(services, s)
 		}
@@ -56,8 +57,18 @@ func (mgr *PluginManager) KeyCoderServices() []key.Service {
 
 func (mgr *PluginManager) DocumentCoderServices() []document.Service {
 	services := []document.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.CoderDocumentService) {
+	for _, service := range mgr.ServicesByType(plugins.CoderDocumentService) {
 		if s, ok := service.(document.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) CoordinatorServices() []coordinator.Service {
+	services := []coordinator.Service{}
+	for _, service := range mgr.ServicesByType(plugins.CoordinatorService) {
+		if s, ok := service.(coordinator.Service); ok {
 			services = append(services, s)
 		}
 	}
@@ -66,7 +77,7 @@ func (mgr *PluginManager) DocumentCoderServices() []document.Service {
 
 func (mgr *PluginManager) DocumentStoreServices() []store.Service {
 	services := []store.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.StoreDocumentService) {
+	for _, service := range mgr.ServicesByType(plugins.StoreDocumentService) {
 		if s, ok := service.(store.Service); ok {
 			services = append(services, s)
 		}
@@ -76,7 +87,7 @@ func (mgr *PluginManager) DocumentStoreServices() []store.Service {
 
 func (mgr *PluginManager) KvStoreServices() []kv.Service {
 	services := []kv.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvService) {
+	for _, service := range mgr.ServicesByType(plugins.StoreKvService) {
 		if s, ok := service.(kv.Service); ok {
 			services = append(services, s)
 		}
@@ -86,7 +97,7 @@ func (mgr *PluginManager) KvStoreServices() []kv.Service {
 
 func (mgr *PluginManager) QueryServices() []query.Service {
 	services := []query.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.QueryService) {
+	for _, service := range mgr.ServicesByType(plugins.QueryService) {
 		if s, ok := service.(query.Service); ok {
 			services = append(services, s)
 		}
@@ -94,16 +105,28 @@ func (mgr *PluginManager) QueryServices() []query.Service {
 	return services
 }
 
+func (mgr *PluginManager) DefaultCoordinatorService() (coordinator.Service, error) {
+	defaultService, err := mgr.DefaultService(plugins.CoordinatorService)
+	if err != nil {
+		return nil, errors.Wrap(err)
+	}
+	service, ok := defaultService.(coordinator.Service)
+	if !ok {
+		return nil, plugins.NewErrDefaultServiceNotFound(plugins.CoordinatorService)
+	}
+	return service, nil
+}
+
 func (mgr *PluginManager) DefaultKeyCoderService() (key.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.CoderKeyService)
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
-	defaultKeyCoder, ok := defaultService.(key.Service)
+	service, ok := defaultService.(key.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.CoderKeyService)
 	}
-	return defaultKeyCoder, nil
+	return service, nil
 }
 
 func (mgr *PluginManager) DefaultDocumentCoderService() (document.Service, error) {
@@ -111,11 +134,11 @@ func (mgr *PluginManager) DefaultDocumentCoderService() (document.Service, error
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
-	defaultDocCoder, ok := defaultService.(document.Service)
+	service, ok := defaultService.(document.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.CoderDocumentService)
 	}
-	return defaultDocCoder, nil
+	return service, nil
 }
 
 func (mgr *PluginManager) DefaultKvStoreService() (kv.Service, error) {
@@ -123,11 +146,11 @@ func (mgr *PluginManager) DefaultKvStoreService() (kv.Service, error) {
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
-	defaultKvStore, ok := defaultService.(kv.Service)
+	service, ok := defaultService.(kv.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.StoreKvService)
 	}
-	return defaultKvStore, nil
+	return service, nil
 }
 
 func (mgr *PluginManager) DefaultStoreService() (store.Service, error) {
@@ -135,11 +158,11 @@ func (mgr *PluginManager) DefaultStoreService() (store.Service, error) {
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
-	defaultDocStore, ok := defaultService.(store.Service)
+	service, ok := defaultService.(store.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.StoreDocumentService)
 	}
-	return defaultDocStore, nil
+	return service, nil
 }
 
 func (mgr *PluginManager) EnabledKeyCoderServices() []key.Service {
