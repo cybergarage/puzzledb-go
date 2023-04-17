@@ -12,20 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package plugins
+package puzzledbtest
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-type Manager struct {
-	*plugins.Manager
-}
-
-func NewManager() *puzzledb.PluginManager {
-	server := puzzledbtest.NewServer()
+func NewPluginManager() *puzzledb.PluginManager {
+	server := NewServer()
 	server.LoadPlugins() //nolint:errcheck
 	return server.PluginManager
 }

@@ -20,13 +20,13 @@ import (
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
-	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
 func TestDocumentStore(t *testing.T) {
 	docStore := store.NewStore()
 
-	mgr := plugins.NewManager()
+	mgr := puzzledbtest.NewPluginManager()
 	for _, kvStore := range mgr.EnabledKvStoreServices() {
 		for _, keyCoder := range mgr.EnabledKeyCoderServices() {
 			for _, docCoder := range mgr.EnabledDocumentCoderServices() {
