@@ -16,6 +16,7 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 	"github.com/hashicorp/go-memdb"
 )
@@ -25,21 +26,25 @@ type Document struct {
 	Value []byte
 }
 
-type Txn struct {
+type transaction struct {
 	*core.NotifyManager
 	*memdb.Txn
+	document.KeyCoder
+	document.Coder
 }
 
 // NewTransaction returns a new transaction.
-func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn) coordinator.Transaction {
-	return &Txn{
+func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn, keyCoder document.KeyCoder, docCoder document.Coder) coordinator.Transaction {
+	return &transaction{
+		KeyCoder:      keyCoder,
+		Coder:         docCoder,
 		NotifyManager: mgr,
 		Txn:           txn,
 	}
 }
 
 // Set sets the object for the specified key.
-func (txn *Txn) Set(obj coordinator.Object) error {
+func (txn *transaction) Set(obj coordinator.Object) error {
 	hasObj := false
 	coordObj, err := txn.Get(obj.Key())
 	if err != nil && coordObj != nil {
@@ -77,7 +82,7 @@ func (txn *Txn) Set(obj coordinator.Object) error {
 }
 
 // Get gets the object for the specified key.
-func (txn *Txn) Get(key coordinator.Key) (coordinator.Object, error) {
+func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 	rs, err := txn.Range(key)
 	if err != nil {
 		return nil, err
@@ -89,7 +94,7 @@ func (txn *Txn) Get(key coordinator.Key) (coordinator.Object, error) {
 }
 
 // Range gets the resultset for the specified key range.
-func (txn *Txn) Range(key coordinator.Key) (coordinator.ResultSet, error) {
+func (txn *transaction) Range(key coordinator.Key) (coordinator.ResultSet, error) {
 	keyStr, err := key.Encode()
 	if err != nil {
 		return nil, err
@@ -102,7 +107,7 @@ func (txn *Txn) Range(key coordinator.Key) (coordinator.ResultSet, error) {
 }
 
 // Delete deletes the object for the specified key.
-func (txn *Txn) Delete(key coordinator.Key) error {
+func (txn *transaction) Delete(key coordinator.Key) error {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return err
@@ -115,13 +120,13 @@ func (txn *Txn) Delete(key coordinator.Key) error {
 }
 
 // Commit commits this transaction.
-func (txn *Txn) Commit() error {
+func (txn *transaction) Commit() error {
 	txn.Txn.Commit()
 	return nil
 }
 
 // Cancel cancels this transaction.
-func (txn *Txn) Cancel() error {
+func (txn *transaction) Cancel() error {
 	txn.Txn.Abort()
 	return nil
 }

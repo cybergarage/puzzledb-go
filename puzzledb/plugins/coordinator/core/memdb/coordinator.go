@@ -52,7 +52,7 @@ func (coord *Coordinator) ServiceName() string {
 }
 
 func (coord *Coordinator) Transact() (coordinator.Transaction, error) {
-	return newTransactionWith(coord.NotifyManager, coord.MemDB.Txn(true)), nil
+	return newTransactionWith(coord.NotifyManager, coord.MemDB.Txn(true), coord.KeyCoder, coord.Coder), nil
 }
 
 // Start starts this etcd coordinator.
