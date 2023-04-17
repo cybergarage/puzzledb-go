@@ -185,6 +185,16 @@ func (mgr *PluginManager) EnabledDocumentCoderServices() []document.Service {
 	return services
 }
 
+func (mgr *PluginManager) EnabledCoordinatorServices() []coordinator.Service {
+	services := []coordinator.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.CoordinatorService) {
+		if s, ok := service.(coordinator.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
 func (mgr *PluginManager) EnabledDocumentStoreServices() []store.Service {
 	services := []store.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.StoreDocumentService) {
