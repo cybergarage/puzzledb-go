@@ -14,16 +14,8 @@
 
 package coordinator
 
-import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-)
-
 // Coordinator represents a coordination service.
 type Coordinator interface {
-	// SetDocumentCoder sets the document coder.
-	SetDocumentCoder(coder document.Coder)
-	// SetKeyCoder sets the key coder.
-	SetKeyCoder(coder document.KeyCoder)
 	// Transact begin a new transaction.
 	Transact() (Transaction, error)
 	// AddObserver adds the observer to the coordinator.
