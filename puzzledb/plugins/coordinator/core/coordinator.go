@@ -14,13 +14,31 @@
 
 package core
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
 type BaseCoordinator struct {
 	*NotifyManager
+	document.KeyCoder
+	document.Coder
 }
 
 // NewBaseCoordinator returns a new base coordinator instance.
 func NewBaseCoordinator() *BaseCoordinator {
 	return &BaseCoordinator{
 		NotifyManager: NewNotifyManager(),
+		KeyCoder:      nil,
+		Coder:         nil,
 	}
+}
+
+// SetDocumentCoder sets the document coder.
+func (coord *BaseCoordinator) SetDocumentCoder(coder document.Coder) {
+	coord.Coder = coder
+}
+
+// SetKeyCoder sets the key coder.
+func (coord *BaseCoordinator) SetKeyCoder(coder document.KeyCoder) {
+	coord.KeyCoder = coder
 }
