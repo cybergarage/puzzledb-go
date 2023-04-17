@@ -96,7 +96,7 @@ func (server *Server) LoadPlugins() error {
 	return nil
 }
 
-func (server *Server) setupPluginDefaults() error {
+func (server *Server) setupPlugins() error {
 	// Default services
 
 	defaultKeyCoder, err := server.DefaultKeyCoderService()
@@ -107,6 +107,13 @@ func (server *Server) setupPluginDefaults() error {
 	defaultDocCoder, err := server.DefaultDocumentCoderService()
 	if err != nil {
 		return errors.Wrap(err)
+	}
+
+	// Coordinator services
+
+	for _, service := range server.CoordinatorServices() {
+		service.SetKeyCoder(defaultKeyCoder)
+		service.SetDocumentCoder(defaultDocCoder)
 	}
 
 	// KV store services
@@ -159,7 +166,7 @@ func (server *Server) Start() error {
 		return errors.Wrap(err)
 	}
 
-	if err := server.setupPluginDefaults(); err != nil {
+	if err := server.setupPlugins(); err != nil {
 		return errors.Wrap(err)
 	}
 
