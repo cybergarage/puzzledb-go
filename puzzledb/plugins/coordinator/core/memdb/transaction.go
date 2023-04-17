@@ -16,7 +16,6 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 	"github.com/hashicorp/go-memdb"
 )
@@ -29,15 +28,11 @@ type Document struct {
 type transaction struct {
 	*core.NotifyManager
 	*memdb.Txn
-	document.KeyCoder
-	document.Coder
 }
 
 // NewTransaction returns a new transaction.
-func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn, keyCoder document.KeyCoder, docCoder document.Coder) coordinator.Transaction {
+func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn) coordinator.Transaction {
 	return &transaction{
-		KeyCoder:      keyCoder,
-		Coder:         docCoder,
 		NotifyManager: mgr,
 		Txn:           txn,
 	}
