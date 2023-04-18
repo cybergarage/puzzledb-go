@@ -28,26 +28,8 @@ const (
 	portConfig    = "port"
 )
 
-type ServerConfig struct {
+type Config struct {
 	config.Config
-}
-
-func NewServerConfigWith(config config.Config) *ServerConfig {
-	return &ServerConfig{
-		Config: config,
-	}
-}
-
-// Port returns a port number for the specified name.
-func (conf *ServerConfig) Port(name string) (int, error) {
-	return conf.Config.GetInt(strings.Join([]string{pluginsConfig, queryConfig, name, portConfig}, "."))
-}
-
-func (conf *ServerConfig) String() string {
-	if conf.Config == nil {
-		return ""
-	}
-	return conf.Config.String()
 }
 
 // NewConfig returns a new configuration.
@@ -58,6 +40,13 @@ func NewConfig() (config.Config, error) {
 		return nil, err
 	}
 	return conf, nil
+}
+
+// NewConfigWith returns a new configuration with the specified configuration.
+func NewConfigWith(config config.Config) *Config {
+	return &Config{
+		Config: config,
+	}
 }
 
 // NewConfigWithPath returns a new configuration with the specified path.
@@ -90,4 +79,16 @@ func NewConfigWithString(conString string) (config.Config, error) {
 		return nil, err
 	}
 	return conf, nil
+}
+
+// Port returns a port number for the specified name.
+func (conf *Config) Port(name string) (int, error) {
+	return conf.Config.GetInt(strings.Join([]string{pluginsConfig, queryConfig, name, portConfig}, "."))
+}
+
+func (conf *Config) String() string {
+	if conf.Config == nil {
+		return ""
+	}
+	return conf.Config.String()
 }
