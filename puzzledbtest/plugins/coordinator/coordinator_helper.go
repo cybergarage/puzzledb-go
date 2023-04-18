@@ -40,7 +40,7 @@ func deepEqual(x, y any) error {
 }
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorTest(t *testing.T, s core.CoordinatorService) {
+func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	t.Helper()
 
 	cancel := func(t *testing.T, tx coordinator.Transaction) {
