@@ -14,18 +14,80 @@
 
 package puzzledb
 
-// Config represents a configuration interface.
-type Config interface {
-	// Set sets a value to the specified path.
-	Set(path string, v any) error
-	// Get returns a value for the specified name.
-	Get(path string) (any, error)
-	// GetString returns a string value for the specified name.
-	GetString(path string) (string, error)
-	// GetInt returns an integer value for the specified name.
-	GetInt(path string) (int, error)
-	// GetBool returns a boolean value for the specified name.
-	GetBool(path string) (bool, error)
-	// String returns a string representation of the configuration.
-	String() string
+import (
+	"bytes"
+	"strings"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
+	"github.com/spf13/viper"
+)
+
+const (
+	pluginsConfig = "plugins"
+	queryConfig   = "query"
+	portConfig    = "port"
+)
+
+type ServerConfig struct {
+	config.Config
+}
+
+func NewServerConfigWith(config config.Config) *ServerConfig {
+	return &ServerConfig{
+		Config: config,
+	}
+}
+
+// Port returns a port number for the specified name.
+func (conf *ServerConfig) Port(name string) (int, error) {
+	return conf.Config.GetInt(strings.Join([]string{pluginsConfig, queryConfig, name, portConfig}, "."))
+}
+
+func (conf *ServerConfig) String() string {
+	if conf.Config == nil {
+		return ""
+	}
+	return conf.Config.String()
+}
+
+// NewConfig returns a new configuration.
+func NewConfig() (config.Config, error) {
+	conf := config.NewConfigWith(ProductName)
+	err := viper.ReadInConfig()
+	if err != nil {
+		return nil, err
+	}
+	return conf, nil
+}
+
+// NewConfigWithPath returns a new configuration with the specified path.
+func NewConfigWithPath(path string) (config.Config, error) {
+	conf := config.NewConfigWith(ProductName)
+	viper.AddConfigPath(path)
+	err := viper.ReadInConfig()
+	if err != nil {
+		return nil, err
+	}
+	return conf, nil
+}
+
+func NewConfigWithPaths(paths ...string) (config.Config, error) {
+	conf := config.NewConfigWith(ProductName)
+	for _, path := range paths {
+		viper.AddConfigPath(path)
+	}
+	err := viper.ReadInConfig()
+	if err != nil {
+		return nil, err
+	}
+	return conf, nil
+}
+
+// NewConfigWithString returns a new configuration with the specified string.
+func NewConfigWithString(conString string) (config.Config, error) {
+	conf := config.NewConfigWith(ProductName)
+	if err := viper.ReadConfig(bytes.NewBuffer([]byte(conString))); err != nil {
+		return nil, err
+	}
+	return conf, nil
 }
