@@ -21,5 +21,5 @@ import (
 )
 
 func TestCoordinator(t *testing.T) {
-	coordinator.CoordinatorStoreTest(t, NewCoordinator())
+	coordinator.CoordinatorTest(t, NewCoordinator())
 }

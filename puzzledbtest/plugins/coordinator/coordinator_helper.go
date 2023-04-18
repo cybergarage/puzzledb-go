@@ -390,3 +390,8 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 		return
 	}
 }
+
+func CoordinatorTest(t *testing.T, s core.CoordinatorService) {
+	CoordinatorStoreTest(t, s)
+	CoordinatorWatcherTest(t, s)
+}
