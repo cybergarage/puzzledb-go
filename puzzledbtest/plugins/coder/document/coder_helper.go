@@ -29,7 +29,6 @@ import (
 //go:embed go_types.pict
 var goTypes []byte
 
-// nolint:goerr113
 func deepEqual(x, y any) error {
 	if reflect.DeepEqual(x, y) {
 		return nil
@@ -37,7 +36,7 @@ func deepEqual(x, y any) error {
 	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
 		return nil
 	}
-	return fmt.Errorf("%v != %v", x, y)
+	return fmt.Errorf("%v != %v", x, y) // nolint:goerr113
 }
 
 func primitiveDocumentTest(t *testing.T, coder document.Coder) {

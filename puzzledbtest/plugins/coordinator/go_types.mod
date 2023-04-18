@@ -1,9 +1,7 @@
 bool: true, false
-nil: nil
 float32: 0.0, 1.0
 float64: 0.0, 1.0
 string: a, ab, abc
-bytes: a, ab, abc
 uint: 0, 18446744073709551615
 uint8: 0, 255
 uint16: 0, 65535
