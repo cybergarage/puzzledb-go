@@ -39,6 +39,73 @@ func deepEqual(x, y any) error {
 	return fmt.Errorf("%v != %v", x, y) // nolint:goerr113
 }
 
+func generateCoordinatorObjects() ([]coordinator.Object, error) {
+	pict := pict.NewParserWithBytes(goTypes)
+	err := pict.Parse()
+	if err != nil {
+		return []coordinator.Object{}, err
+	}
+
+	keys := make([]coordinator.Key, len(pict.Cases()))
+	for n, pictCase := range pict.Cases() {
+		key := coordinator.NewKey()
+		for n, pictParam := range pict.Params() {
+			kv, err := pictCase[n].CastType(string(pictParam))
+			if err != nil {
+				return []coordinator.Object{}, err
+			}
+			key = append(key, fmt.Sprintf("%v", kv))
+		}
+		keys[n] = key
+	}
+
+	vals := make([]coordinator.Value, len(pict.Cases()))
+	for n, pictCase := range pict.Cases() {
+		val := map[string]any{}
+		for n, pictParam := range pict.Params() {
+			name := string(pictParam)
+			pictElem := pictCase[n]
+			v, err := pictElem.CastType(name)
+			if err != nil {
+				return []coordinator.Object{}, err
+			}
+			val[name] = v
+		}
+		vals[n] = coordinator.NewValueWith(val)
+	}
+
+	objs := make([]coordinator.Object, len(pict.Cases()))
+	for n, key := range keys {
+		objs[n] = coordinator.NewObjectWith(key, vals[n])
+	}
+
+	return objs, nil
+}
+
+func updateCoordinatorObjects(objs []coordinator.Object) ([]coordinator.Object, error) {
+	pict := pict.NewParserWithBytes(goTypes)
+	err := pict.Parse()
+	if err != nil {
+		return []coordinator.Object{}, err
+	}
+
+	for n, pictCase := range pict.Cases() {
+		val := []any{}
+		for n, pictParam := range pict.Params() {
+			name := string(pictParam)
+			pictElem := pictCase[n]
+			v, err := pictElem.CastType(name)
+			if err != nil {
+				return []coordinator.Object{}, err
+			}
+			val = append(val, v)
+		}
+		objs[n] = coordinator.NewObjectWith(objs[n].Key(), val)
+	}
+
+	return objs, nil
+}
+
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
 func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	t.Helper()
@@ -59,51 +126,20 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 
 	// Generates test keys and objects
 
-	pict := pict.NewParserWithBytes(goTypes)
-	err := pict.Parse()
+	objs, err := generateCoordinatorObjects()
 	if err != nil {
-		t.Fatal(err)
-	}
-
-	keys := make([]coordinator.Key, len(pict.Cases()))
-	for n, pictCase := range pict.Cases() {
-		key := coordinator.NewKey()
-		for n, pictParam := range pict.Params() {
-			kv, err := pictCase[n].CastType(string(pictParam))
-			if err != nil {
-				t.Error(err)
-				return
-			}
-			key = append(key, fmt.Sprintf("%v", kv))
-		}
-		keys[n] = key
-	}
-
-	vals := make([]coordinator.Value, len(pict.Cases()))
-	for n, pictCase := range pict.Cases() {
-		val := map[string]any{}
-		for n, pictParam := range pict.Params() {
-			name := string(pictParam)
-			pictElem := pictCase[n]
-			v, err := pictElem.CastType(name)
-			if err != nil {
-				t.Error(err)
-				return
-			}
-			val[name] = v
-		}
-		vals[n] = coordinator.NewValueWith(val)
+		t.Error(err)
+		return
 	}
 
 	// Inserts new objects
 
-	for n, key := range keys {
+	for _, obj := range objs {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
 			break
 		}
-		obj := coordinator.NewObjectWith(key, vals[n])
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -117,19 +153,19 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 
 	// Selects inserted objects
 
-	for n, key := range keys {
+	for _, obj := range objs {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
 			break
 		}
-		obj, err := tx.Get(key)
+		retObj, err := tx.Get(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
 			break
 		}
-		if err := deepEqual(obj.Value(), vals[n]); err != nil {
+		if err := deepEqual(retObj.Value(), obj.Value()); err != nil {
 			cancel(t, tx)
 			t.Error(err)
 			break
@@ -142,28 +178,18 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 
 	// Updates inserted objects
 
-	for n, pictCase := range pict.Cases() {
-		val := []any{}
-		for n, pictParam := range pict.Params() {
-			name := string(pictParam)
-			pictElem := pictCase[n]
-			v, err := pictElem.CastType(name)
-			if err != nil {
-				t.Error(err)
-				return
-			}
-			val = append(val, v)
-		}
-		vals[n] = coordinator.NewValueWith(val)
+	objs, err = updateCoordinatorObjects(objs)
+	if err != nil {
+		t.Error(err)
+		return
 	}
 
-	for n, key := range keys {
+	for _, obj := range objs {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
 			break
 		}
-		obj := coordinator.NewObjectWith(key, vals[n])
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -177,20 +203,20 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 
 	// Selects update objects
 
-	for n, key := range keys {
+	for _, obj := range objs {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
 			break
 		}
-		obj, err := tx.Get(key)
+		retObj, err := tx.Get(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
 			break
 		}
 
-		if err := deepEqual(obj.Value(), vals[n]); err != nil {
+		if err := deepEqual(retObj.Value(), obj.Value()); err != nil {
 			cancel(t, tx)
 			t.Error(err)
 			break
@@ -201,21 +227,151 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 		}
 	}
 
-	// Delete test
+	// Deletes updated objects
 
-	for _, key := range keys {
+	for _, obj := range objs {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
 			break
 		}
-		err = tx.Delete(key)
+		err = tx.Delete(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
 			break
 		}
-		_, err = tx.Get(key)
+		_, err = tx.Get(obj.Key())
+		if !errors.Is(err, coordinator.ErrNotExist) {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Terminates the coordinator service
+
+	if err := s.Stop(); err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+// nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
+func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
+	t.Helper()
+
+	cancel := func(t *testing.T, tx coordinator.Transaction) {
+		t.Helper()
+		if err := tx.Cancel(); err != nil {
+			t.Error(err)
+		}
+	}
+
+	// Starts the coordinator service
+
+	if err := s.Start(); err != nil {
+		t.Error(err)
+		return
+	}
+
+	// Generates test keys and objects
+
+	objs, err := generateCoordinatorObjects()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	// Inserts new objects
+
+	for _, obj := range objs {
+		tx, err := s.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		if err := tx.Set(obj); err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Updates inserted objects
+
+	objs, err = updateCoordinatorObjects(objs)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	for _, obj := range objs {
+		tx, err := s.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		if err := tx.Set(obj); err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Selects update objects
+
+	for _, obj := range objs {
+		tx, err := s.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		retObj, err := tx.Get(obj.Key())
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+
+		if err := deepEqual(retObj.Value(), obj.Value()); err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			break
+		}
+	}
+
+	// Deletes updated objects
+
+	for _, obj := range objs {
+		tx, err := s.Transact()
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		err = tx.Delete(obj.Key())
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			break
+		}
+		_, err = tx.Get(obj.Key())
 		if !errors.Is(err, coordinator.ErrNotExist) {
 			cancel(t, tx)
 			t.Error(err)
