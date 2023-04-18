@@ -36,14 +36,14 @@ import (
 
 // Server represents a server instance.
 type Server struct {
-	*ServerConfig
+	*Config
 	*PluginManager
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		ServerConfig:  nil,
+		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 	}
 
@@ -59,7 +59,7 @@ func NewServerWithConfig(config config.Config) *Server {
 
 // SetConfig sets the server configuration.
 func (server *Server) SetConfig(config config.Config) {
-	server.ServerConfig = NewServerConfigWith(config)
+	server.Config = NewConfigWith(config)
 	server.Manager.SetConfig(config)
 }
 
@@ -146,6 +146,7 @@ func (server *Server) setupPlugins() error {
 	}
 
 	for _, service := range server.QueryServices() {
+		service.SetConfig(server.Config)
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
 	}
@@ -157,9 +158,9 @@ func (server *Server) setupPlugins() error {
 func (server *Server) Start() error {
 	log.Infof("%s/%s", ProductName, Version)
 
-	if server.ServerConfig != nil {
+	if server.Config != nil {
 		log.Infof("configuration loaded")
-		log.Infof(server.ServerConfig.String())
+		log.Infof(server.Config.String())
 	}
 
 	if err := server.LoadPlugins(); err != nil {
