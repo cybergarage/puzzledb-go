@@ -18,10 +18,12 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
+// Config represents a query service configuration.
 type Config struct {
 	config.Config
 }
 
+// NewConfig returns a new service configuration.
 func NewConfigWith(config config.Config) *Config {
 	return &Config{
 		Config: config,
