@@ -28,15 +28,12 @@ import (
 )
 
 const (
-	testDBPrefix  = "testdoc"
-	testKeyCount  = 10
-	testValBufMax = 8
+	testDBPrefix = "testdoc"
 )
 
 //go:embed go_types.pict
 var goTypes []byte
 
-// nolint:goerr113
 func deepEqual(x, y any) error {
 	if reflect.DeepEqual(x, y) {
 		return nil
@@ -44,7 +41,7 @@ func deepEqual(x, y any) error {
 	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
 		return nil
 	}
-	return fmt.Errorf("%v != %v", x, y)
+	return fmt.Errorf("%v != %v", x, y) // nolint:goerr113
 }
 
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
@@ -112,7 +109,7 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 		objs[n] = obj
 	}
 
-	// Insertっs objects
+	// Inserts objects
 
 	cancel := func(t *testing.T, tx store.Transaction) {
 		t.Helper()
