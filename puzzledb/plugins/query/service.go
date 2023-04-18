@@ -15,6 +15,7 @@
 package query
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -22,6 +23,7 @@ import (
 
 type Service interface {
 	plugins.Service
+	SetConfig(config config.Config)
 	SetCoordinator(coordinator coordinator.Coordinator)
 	Coordinator() coordinator.Coordinator
 	SetStore(store store.Store)
@@ -29,12 +31,14 @@ type Service interface {
 }
 
 type BaseService struct {
+	Config      *Config
 	coordinator coordinator.Coordinator
 	store       store.Store
 }
 
 func NewService() *BaseService {
 	server := &BaseService{
+		Config:      nil,
 		store:       nil,
 		coordinator: nil,
 	}
@@ -44,6 +48,10 @@ func NewService() *BaseService {
 // ServiceType returns the plug-in service type.
 func (service *BaseService) ServiceType() plugins.ServiceType {
 	return plugins.QueryService
+}
+
+func (service *BaseService) SetConfig(config config.Config) {
+	service.Config = NewConfigWith(config)
 }
 
 // SetCoordinator sets the coordinator.
