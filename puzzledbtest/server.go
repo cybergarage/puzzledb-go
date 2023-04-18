@@ -16,6 +16,7 @@ package puzzledbtest
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
 // Server represents an example server.
@@ -41,7 +42,7 @@ func NewServer() *Server {
 }
 
 // NewServerWithConfig returns a new test server instance with the specified configuration.
-func NewServerWithConfig(config puzzledb.Config) *Server {
+func NewServerWithConfig(config config.Config) *Server {
 	server := &Server{
 		Server: puzzledb.NewServerWithConfig(config),
 		Host:   LocalHost,

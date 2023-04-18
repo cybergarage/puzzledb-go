@@ -18,6 +18,7 @@ import (
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
@@ -50,14 +51,14 @@ func NewServer() *Server {
 }
 
 // NewServerWithConfig returns a new server instance with the specified configuradtion.
-func NewServerWithConfig(config Config) *Server {
+func NewServerWithConfig(config config.Config) *Server {
 	server := NewServer()
 	server.SetConfig(config)
 	return server
 }
 
 // SetConfig sets the server configuration.
-func (server *Server) SetConfig(config Config) {
+func (server *Server) SetConfig(config config.Config) {
 	server.ServerConfig = NewServerConfigWith(config)
 	server.Manager.SetConfig(config)
 }

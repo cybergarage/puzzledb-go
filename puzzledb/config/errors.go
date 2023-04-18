@@ -12,34 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledb
+package config
 
-import "strings"
-
-const (
-	pluginsConfig = "plugins"
-	queryConfig   = "query"
-	portConfig    = "port"
+import (
+	"errors"
+	"fmt"
 )
 
-type ServerConfig struct {
-	Config
+var ErrNotFound = errors.New("not found")
+var ErrInvalid = errors.New("invalid")
+
+func newErrNotFound(target string) error {
+	return fmt.Errorf("%v is %w", target, ErrNotFound)
 }
 
-func NewServerConfigWith(config Config) *ServerConfig {
-	return &ServerConfig{
-		Config: config,
-	}
-}
-
-// Port returns a port number for the specified name.
-func (conf *ServerConfig) Port(name string) (int, error) {
-	return conf.Config.GetInt(strings.Join([]string{pluginsConfig, queryConfig, name, portConfig}, "."))
-}
-
-func (conf *ServerConfig) String() string {
-	if conf.Config == nil {
-		return ""
-	}
-	return conf.Config.String()
+func newErrInvalid(target string) error {
+	return fmt.Errorf("%v is %w", target, ErrInvalid)
 }

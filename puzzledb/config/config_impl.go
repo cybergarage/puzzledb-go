@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledb
+package config
 
 import (
-	"bytes"
 	"fmt"
 	"strconv"
 	"strings"
@@ -26,54 +25,13 @@ import (
 type viperConfig struct {
 }
 
-func newConfig() Config {
-	viper.SetConfigName(ProductName)
-	viper.SetEnvPrefix(strings.ToUpper(ProductName))
+// NewConfigWith creates a new configuration with the specified product name.
+func NewConfigWith(productName string) Config {
+	viper.SetConfigName(productName)
+	viper.SetEnvPrefix(strings.ToUpper(productName))
 	viper.SetConfigType("yaml")
 	viper.AutomaticEnv()
 	return &viperConfig{}
-}
-
-// NewConfig returns a new configuration.
-func NewConfig() (Config, error) {
-	conf := newConfig()
-	err := viper.ReadInConfig()
-	if err != nil {
-		return nil, err
-	}
-	return conf, nil
-}
-
-// NewConfigWithPath returns a new configuration with the specified path.
-func NewConfigWithPath(path string) (Config, error) {
-	conf := newConfig()
-	viper.AddConfigPath(path)
-	err := viper.ReadInConfig()
-	if err != nil {
-		return nil, err
-	}
-	return conf, nil
-}
-
-func NewConfigWithPaths(paths ...string) (Config, error) {
-	conf := newConfig()
-	for _, path := range paths {
-		viper.AddConfigPath(path)
-	}
-	err := viper.ReadInConfig()
-	if err != nil {
-		return nil, err
-	}
-	return conf, nil
-}
-
-// NewConfigWithString returns a new configuration with the specified string.
-func NewConfigWithString(config string) (Config, error) {
-	conf := newConfig()
-	if err := viper.ReadConfig(bytes.NewBuffer([]byte(config))); err != nil {
-		return nil, err
-	}
-	return conf, nil
 }
 
 // Set sets a value to the specified path.
