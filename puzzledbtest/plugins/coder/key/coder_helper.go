@@ -16,7 +16,9 @@ package key
 
 import (
 	_ "embed"
+	"fmt"
 	"math/rand"
+	"reflect"
 
 	"testing"
 
@@ -26,6 +28,16 @@ import (
 
 //go:embed go_types.pict
 var testKeyTypes []byte
+
+func deepEqual(x, y any) error {
+	if reflect.DeepEqual(x, y) {
+		return nil
+	}
+	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
+		return nil
+	}
+	return fmt.Errorf("%v != %v", x, y) // nolint:goerr113
+}
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
 func KeyCoderTest(t *testing.T, coder document.KeyCoder) {
