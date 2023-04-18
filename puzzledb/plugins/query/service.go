@@ -21,6 +21,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// Service represents a query service.
 type Service interface {
 	plugins.Service
 	SetConfig(config config.Config)
@@ -36,6 +37,7 @@ type BaseService struct {
 	store       store.Store
 }
 
+// NewService returns a new query base service.
 func NewService() *BaseService {
 	server := &BaseService{
 		Config:      nil,
