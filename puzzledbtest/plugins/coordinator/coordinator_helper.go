@@ -189,6 +189,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 			t.Error(err)
 			break
 		}
+
 		if err := deepEqual(obj.Value(), vals[n]); err != nil {
 			cancel(t, tx)
 			t.Error(err)
