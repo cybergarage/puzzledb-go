@@ -273,6 +273,7 @@ func newqTestWatcher() *testWatcher {
 }
 
 func (w *testWatcher) ProcessEvent(e coordinator.Event) {
+	w.receivedEvents = append(w.receivedEvents, e)
 }
 
 func (w *testWatcher) IsEventReceived(e coordinator.Event) bool {
