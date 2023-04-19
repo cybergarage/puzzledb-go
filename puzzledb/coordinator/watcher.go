@@ -14,8 +14,8 @@
 
 package coordinator
 
-// Observer represents a coordinator observer.
-type Observer interface {
-	// ProcessEvent processes the event.
+// Watcher is an interface for watching events.
+type Watcher interface {
+	// ProcessEvent processes the watching event.
 	ProcessEvent(evt Event)
 }

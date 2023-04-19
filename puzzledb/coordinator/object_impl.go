@@ -15,6 +15,9 @@
 package coordinator
 
 import (
+	"fmt"
+	"reflect"
+
 	"github.com/cybergarage/go-cbor/cbor"
 )
 
@@ -44,4 +47,20 @@ func (obj *object) Value() Value {
 // Encode encodes the object.
 func (obj *object) Encode() ([]byte, error) {
 	return cbor.Marshal(obj.value)
+}
+
+// Equals returns true if the object is equal to the specified object.
+func (obj *object) Equals(other Object) bool {
+	if obj == nil || other == nil {
+		return false
+	}
+	if !obj.key.Equals(other.Key()) {
+		return false
+	}
+	return reflect.DeepEqual(obj.value, other.Value())
+}
+
+// String returns the string representation of the event.
+func (obj *object) String() string {
+	return fmt.Sprintf("%v %v", obj.key.String(), obj.value)
 }

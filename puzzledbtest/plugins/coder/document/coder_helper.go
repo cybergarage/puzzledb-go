@@ -218,7 +218,7 @@ func arrayDocumentTest(t *testing.T, coder document.Coder) {
 			return
 		}
 
-		r = bytes.NewReader(w.Bytes())
+		r = bytes.NewReader(w.Bystes())
 		decObj, err = coder.DecodeDocument(r)
 		if err != nil {
 			t.Error(err)
