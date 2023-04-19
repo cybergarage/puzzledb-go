@@ -20,7 +20,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 )
 
-type observerMap = map[string]coordinator.Observer
+type observerMap = map[string]coordinator.Watcher
 
 type NotifyManager struct {
 	observers observerMap
@@ -33,7 +33,7 @@ func NewNotifyManager() *NotifyManager {
 }
 
 // AddObserver adds the observer to the coordinator.
-func (mgr *NotifyManager) AddObserver(key coordinator.Key, observer coordinator.Observer) error {
+func (mgr *NotifyManager) AddObserver(key coordinator.Key, observer coordinator.Watcher) error {
 	keyStr, err := key.Encode()
 	if err != nil {
 		return err
