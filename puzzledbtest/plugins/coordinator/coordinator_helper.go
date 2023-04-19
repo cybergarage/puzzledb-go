@@ -124,6 +124,14 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 		return
 	}
 
+	// Terminates the coordinator service
+
+	defer func() {
+		if err := s.Stop(); err != nil {
+			t.Error(err)
+		}
+	}()
+
 	// Generates test keys and objects
 
 	objs, err := generateCoordinatorObjects()
@@ -138,16 +146,16 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -157,22 +165,22 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		retObj, err := tx.Get(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := deepEqual(retObj.Value(), obj.Value()); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -188,16 +196,16 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -207,23 +215,23 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		retObj, err := tx.Get(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 
 		if err := deepEqual(retObj.Value(), obj.Value()); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -233,32 +241,47 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		err = tx.Delete(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		_, err = tx.Get(obj.Key())
 		if !errors.Is(err, coordinator.ErrNotExist) {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
+}
 
-	// Terminates the coordinator service
+type testWatcher struct {
+	receivedEvents []coordinator.Event
+}
 
-	if err := s.Stop(); err != nil {
-		t.Error(err)
-		return
+func newqTestWatcher() *testWatcher {
+	return &testWatcher{
+		receivedEvents: []coordinator.Event{},
 	}
+}
+
+func (w *testWatcher) ProcessEvent(e coordinator.Event) {
+}
+
+func (w *testWatcher) IsEventReceived(e coordinator.Event) bool {
+	for _, event := range w.receivedEvents {
+		if e.Equals(event) {
+			return true
+		}
+	}
+	return false
 }
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
@@ -279,6 +302,14 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 		return
 	}
 
+	// Terminates the coordinator service
+
+	defer func() {
+		if err := s.Stop(); err != nil {
+			t.Error(err)
+		}
+	}()
+
 	// Generates test keys and objects
 
 	objs, err := generateCoordinatorObjects()
@@ -287,22 +318,51 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 		return
 	}
 
+	// Registers watcheres
+
+	watchers := make([]*testWatcher, 10)
+	for n := range watchers {
+		watchers[n] = newqTestWatcher()
+	}
+
+	for _, obj := range objs {
+		for _, w := range watchers {
+			err := s.Watch(obj.Key(), w)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+		}
+	}
+
 	// Inserts new objects
 
 	for _, obj := range objs {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
+		}
+	}
+
+	// Checks if watchers received events
+
+	for _, obj := range objs {
+		for _, w := range watchers {
+			e := coordinator.NewEventWith(coordinator.ObjectCreated, obj)
+			if !w.IsEventReceived(e) {
+				t.Errorf("watcher did not receive event: %s", e.String())
+				return
+			}
 		}
 	}
 
@@ -318,16 +378,16 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -337,23 +397,22 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		retObj, err := tx.Get(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
-
 		if err := deepEqual(retObj.Value(), obj.Value()); err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
 	}
 
@@ -363,31 +422,24 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 		tx, err := s.Transact()
 		if err != nil {
 			t.Error(err)
-			break
+			return
 		}
 		err = tx.Delete(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		_, err = tx.Get(obj.Key())
 		if !errors.Is(err, coordinator.ErrNotExist) {
 			cancel(t, tx)
 			t.Error(err)
-			break
+			return
 		}
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
-			break
+			return
 		}
-	}
-
-	// Terminates the coordinator service
-
-	if err := s.Stop(); err != nil {
-		t.Error(err)
-		return
 	}
 }
 
