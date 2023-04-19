@@ -32,8 +32,8 @@ func NewNotifyManager() *NotifyManager {
 	}
 }
 
-// AddObserver adds the observer to the coordinator.
-func (mgr *NotifyManager) AddObserver(key coordinator.Key, observer coordinator.Watcher) error {
+// Watch adds a watcher to the coordinator.
+func (mgr *NotifyManager) Watch(key coordinator.Key, observer coordinator.Watcher) error {
 	keyStr, err := key.Encode()
 	if err != nil {
 		return err

@@ -18,6 +18,6 @@ package coordinator
 type Coordinator interface {
 	// Transact begin a new transaction.
 	Transact() (Transaction, error)
-	// AddObserver adds the observer to the coordinator.
-	AddObserver(key Key, observer Watcher) error
+	// Watch adds a watcher to the coordinator.
+	Watch(key Key, w Watcher) error
 }
