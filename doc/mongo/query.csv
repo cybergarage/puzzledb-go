@@ -1,6 +1,6 @@
 Support,Query Command,Note
 O,delete,
-O,find,
+O,find,Only $eq operation supported
 -,findAndModify,
 -,getMore,
 O,insert,
