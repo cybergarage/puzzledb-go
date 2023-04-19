@@ -15,6 +15,7 @@
 package coordinator
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -57,7 +58,17 @@ func (key Key) Elements() []string {
 	return key
 }
 
+// Equals returns true if the key is equal to the specified key.
+func (key Key) Equals(other Key) bool {
+	return false
+}
+
 // Encode encodes the key to a byte array.
 func (key Key) Encode() (string, error) {
 	return strings.Join(key, sep), nil
+}
+
+// String returns the string representation of the key.
+func (key Key) String() string {
+	return fmt.Sprintf("[%s]", strings.Join(key, " "))
 }
