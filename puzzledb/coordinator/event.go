@@ -14,22 +14,14 @@
 
 package coordinator
 
-// EventType represents a coordinator event type.
-type EventType uint8
-
-const (
-	// ObjectCreated represents a object created event.
-	ObjectCreated EventType = iota
-	// ObjectUpdated represents a object updated event.
-	ObjectUpdated
-	// ObjectDeleted represents a object deleted event.
-	ObjectDeleted
-)
-
 // Event represents a  coordinator event.
 type Event interface {
 	// Type returns the event type.
 	Type() EventType
 	// Object returns the object of the event.
 	Object() Object
+	// Equals returns true if the event is equal to the specified event.
+	Equals(Event) bool
+	// String returns the string representation of the event.
+	String() string
 }
