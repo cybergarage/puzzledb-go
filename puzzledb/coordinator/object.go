@@ -22,4 +22,8 @@ type Object interface {
 	Value() Value
 	// Encode encodes the object.
 	Encode() ([]byte, error)
+	// Equals returns true if the object is equal to the specified object.
+	Equals(Object) bool
+	// String returns the string representation of the event.
+	String() string
 }

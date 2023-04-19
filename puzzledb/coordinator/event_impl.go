@@ -14,6 +14,8 @@
 
 package coordinator
 
+import "fmt"
+
 // event represents a coordinator event.
 type event struct {
 	typ EventType
@@ -29,11 +31,27 @@ func NewEventWith(t EventType, obj Object) Event {
 }
 
 // Type returns the event type.
-func (evt *event) Type() EventType {
-	return evt.typ
+func (e *event) Type() EventType {
+	return e.typ
 }
 
 // Object returns the object of the event.
-func (evt *event) Object() Object {
-	return evt.obj
+func (e *event) Object() Object {
+	return e.obj
+}
+
+// Equals returns true if the event is equal to the specified event.
+func (e *event) Equals(other Event) bool {
+	if e.Type() != other.Type() {
+		return false
+	}
+	if e.Object().Equals(other.Object()) {
+		return true
+	}
+	return false
+}
+
+// String returns the string representation of the event.
+func (e *event) String() string {
+	return fmt.Sprintf("%s %s", e.typ.String(), e.obj.String())
 }

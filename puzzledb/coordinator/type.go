@@ -14,25 +14,27 @@
 
 package coordinator
 
-type message struct {
-	typ MessageType
-	obj any
-}
+// EventType represents a coordinator event type.
+type EventType uint8
 
-// NewMessageWith creates a new message with the specified ID, type, and object.
-func NewMessageWith(typ MessageType, obj any) Message {
-	return &message{
-		typ: typ,
-		obj: obj,
+const (
+	// ObjectCreated represents a object created event.
+	ObjectCreated EventType = iota
+	// ObjectUpdated represents a object updated event.
+	ObjectUpdated
+	// ObjectDeleted represents a object deleted event.
+	ObjectDeleted
+)
+
+func (t EventType) String() string {
+	switch t {
+	case ObjectCreated:
+		return "created"
+	case ObjectUpdated:
+		return "updated"
+	case ObjectDeleted:
+		return "deleted"
+	default:
+		return "unknown"
 	}
-}
-
-// Type returns the type of the message.
-func (msg *message) Type() MessageType {
-	return msg.typ
-}
-
-// Object returns the object of the message.
-func (msg *message) Object() any {
-	return msg.obj
 }

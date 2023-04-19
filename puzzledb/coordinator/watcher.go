@@ -14,13 +14,8 @@
 
 package coordinator
 
-// MessageType represents a message type.
-type MessageType uint8
-
-// Message represents a message.
-type Message interface {
-	// Type returns the type of the message.
-	Type() MessageType
-	// Object returns the object of the message.
-	Object() any
+// Watcher is an interface for watching events.
+type Watcher interface {
+	// ProcessEvent processes the watching event.
+	ProcessEvent(evt Event)
 }
