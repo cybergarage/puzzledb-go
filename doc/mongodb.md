@@ -151,7 +151,7 @@ PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/
 <tr class="even">
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>find</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Only $eq operation supported</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>-</p></td>
