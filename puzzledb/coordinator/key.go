@@ -60,7 +60,15 @@ func (key Key) Elements() []string {
 
 // Equals returns true if the key is equal to the specified key.
 func (key Key) Equals(other Key) bool {
-	return false
+	if len(key) != len(other) {
+		return false
+	}
+	for n, elem := range key {
+		if elem != other[n] {
+			return false
+		}
+	}
+	return true
 }
 
 // Encode encodes the key to a byte array.
