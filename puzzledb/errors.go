@@ -20,9 +20,8 @@ import (
 )
 
 var (
-	ErrNotFound     = errors.New("not found")
-	ErrInvalid      = errors.New("invalid")
-	ErrNotSupported = errors.New("not supported")
+	ErrNotFound = errors.New("not found")
+	ErrInvalid  = errors.New("invalid")
 )
 
 func newErrNotFound(target string) error {
@@ -31,8 +30,4 @@ func newErrNotFound(target string) error {
 
 func newErrInvalid(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrInvalid)
-}
-
-func NewErrNotSupported(v any) error {
-	return fmt.Errorf("%v is %w", v, ErrNotSupported)
 }
