@@ -70,7 +70,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 # User Guides
 
--   Configuration (Planning)
+-   [Configuring PullzeDB](doc/configuring.md)
 
 -   [Docker Hub (cybergarage/puzzledb)](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
 
