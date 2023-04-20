@@ -20,8 +20,9 @@ import (
 )
 
 var (
-	ErrInvalid  = errors.New("invalid")
-	ErrNotExist = errors.New("not exist")
+	ErrInvalid      = errors.New("invalid")
+	ErrNotExist     = errors.New("not exist")
+	ErrNotSupported = errors.New("not supported")
 )
 
 func newKeyInvalidError(v any) error {
@@ -34,4 +35,8 @@ func newValueInvalidError(v any) error {
 
 func NewKeyNotExistError(v any) error {
 	return fmt.Errorf("key (%s) is %w", v, ErrNotExist)
+}
+
+func NewErrNotSupported(v any) error {
+	return fmt.Errorf("%v is %w", v, ErrNotSupported)
 }
