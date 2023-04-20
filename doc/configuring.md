@@ -1,0 +1,3 @@
+# Configuring PuzzleDB
+
+PuzzleDB is configured using a configuration file. The default configuration file is located at `config/puzzledb.yml`. You can override the configuration file location by setting the `PUZZLEDB` environment variable.
