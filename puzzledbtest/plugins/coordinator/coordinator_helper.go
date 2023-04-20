@@ -18,7 +18,6 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/cybergarage/go-pict/pict"
@@ -28,16 +27,6 @@ import (
 
 //go:embed go_types.pict
 var goTypes []byte
-
-func deepEqual(x, y any) error {
-	if reflect.DeepEqual(x, y) {
-		return nil
-	}
-	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
-		return nil
-	}
-	return fmt.Errorf("%v != %v", x, y) // nolint:goerr113
-}
 
 func generateCoordinatorObjects() ([]coordinator.Object, error) {
 	pict := pict.NewParserWithBytes(goTypes)
@@ -174,7 +163,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 			t.Error(err)
 			return
 		}
-		if err := deepEqual(retObj.Value(), obj.Value()); err != nil {
+		if !retObj.Equals(obj) {
 			cancel(t, tx)
 			t.Error(err)
 			return
@@ -225,7 +214,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 			return
 		}
 
-		if err := deepEqual(retObj.Value(), obj.Value()); err != nil {
+		if !retObj.Equals(obj) {
 			cancel(t, tx)
 			t.Error(err)
 			return
@@ -416,6 +405,15 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 		err = tx.Delete(obj.Key())
 		if err != nil {
 			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			return
+		}
+		tx, err = s.Transact()
+		if err != nil {
 			t.Error(err)
 			return
 		}
