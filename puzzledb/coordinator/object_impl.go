@@ -57,7 +57,13 @@ func (obj *object) Equals(other Object) bool {
 	if !obj.key.Equals(other.Key()) {
 		return false
 	}
-	return reflect.DeepEqual(obj.value, other.Value())
+	if reflect.DeepEqual(obj.value, other.Value()) {
+		return true
+	}
+	if fmt.Sprintf("%v", obj.value) == fmt.Sprintf("%v", other.Value()) {
+		return true
+	}
+	return false
 }
 
 // String returns the string representation of the event.
