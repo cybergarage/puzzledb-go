@@ -20,38 +20,46 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 )
 
-type observerMap = map[string]coordinator.Watcher
+type watchersMap = map[string][]coordinator.Watcher
 
 type NotifyManager struct {
-	observers observerMap
+	watchersMap watchersMap
 }
 
 func NewNotifyManager() *NotifyManager {
 	return &NotifyManager{
-		observers: observerMap{},
+		watchersMap: watchersMap{},
 	}
 }
 
 // Watch adds a watcher to the coordinator.
-func (mgr *NotifyManager) Watch(key coordinator.Key, observer coordinator.Watcher) error {
+func (mgr *NotifyManager) Watch(key coordinator.Key, watcher coordinator.Watcher) error {
 	keyStr, err := key.Encode()
 	if err != nil {
 		return err
 	}
-	mgr.observers[keyStr] = observer
+
+	watchers, ok := mgr.watchersMap[keyStr]
+	if !ok {
+		watchers = []coordinator.Watcher{}
+	}
+	mgr.watchersMap[keyStr] = append(watchers, watcher)
+
 	return nil
 }
 
 func (mgr *NotifyManager) NofifyEvent(e coordinator.Event) error {
-	eKeyStr, err := e.Object().Key().Encode()
+	keyStr, err := e.Object().Key().Encode()
 	if err != nil {
 		return err
 	}
-	for key, observer := range mgr.observers {
-		if !strings.HasPrefix(key, eKeyStr) {
+	for key, watcheres := range mgr.watchersMap {
+		if !strings.HasPrefix(key, keyStr) {
 			continue
 		}
-		observer.ProcessEvent(e)
+		for _, w := range watcheres {
+			w.ProcessEvent(e)
+		}
 	}
 	return nil
 }
