@@ -38,13 +38,18 @@ func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn) coordinator.Tra
 	}
 }
 
+// Exists returns true if the object for the specified key exists.
+func (txn *transaction) Exists(key coordinator.Key) (coordinator.Object, bool) {
+	obj, err := txn.Get(key)
+	if err != nil || obj == nil {
+		return nil, false
+	}
+	return obj, true
+}
+
 // Set sets the object for the specified key.
 func (txn *transaction) Set(obj coordinator.Object) error {
-	hasObj := false
-	coordObj, err := txn.Get(obj.Key())
-	if err != nil && coordObj != nil {
-		hasObj = true
-	}
+	_, hasObj := txn.Exists(obj.Key())
 
 	keyStr, err := obj.Key().Encode()
 	if err != nil {
@@ -103,14 +108,26 @@ func (txn *transaction) Range(key coordinator.Key) (coordinator.ResultSet, error
 
 // Delete deletes the object for the specified key.
 func (txn *transaction) Delete(key coordinator.Key) error {
+	obj, hasObj := txn.Exists(key)
+	if !hasObj {
+		return coordinator.NewKeyNotExistError(key)
+	}
+
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return err
 	}
-	_, err = txn.Txn.DeleteAll(tableName, idName, string(keyBytes))
+	_, err = txn.Txn.DeleteAll(tableName, idName, keyBytes)
 	if err != nil {
 		return err
 	}
+
+	evt := coordinator.NewEventWith(coordinator.ObjectDeleted, obj)
+	err = txn.NotifyManager.NofifyEvent(evt)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
