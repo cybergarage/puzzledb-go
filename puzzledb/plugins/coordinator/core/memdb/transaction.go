@@ -42,7 +42,7 @@ func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn) coordinator.Tra
 func (txn *transaction) Set(obj coordinator.Object) error {
 	hasObj := false
 	coordObj, err := txn.Get(obj.Key())
-	if err != nil && coordObj != nil {
+	if err == nil && coordObj != nil {
 		hasObj = true
 	}
 
