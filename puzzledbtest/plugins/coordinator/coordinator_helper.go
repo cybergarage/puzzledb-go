@@ -47,31 +47,32 @@ func generateCoordinatorObjects() ([]coordinator.Object, error) {
 	}
 
 	keys := make([]coordinator.Key, len(pict.Cases()))
-	for n, pictCase := range pict.Cases() {
+	for i, pictCase := range pict.Cases() {
 		key := coordinator.NewKey()
-		for n, pictParam := range pict.Params() {
-			kv, err := pictCase[n].CastType(string(pictParam))
+		key = append(key, fmt.Sprintf("key%d", i))
+		for j, pictParam := range pict.Params() {
+			kv, err := pictCase[j].CastType(string(pictParam))
 			if err != nil {
 				return []coordinator.Object{}, err
 			}
 			key = append(key, fmt.Sprintf("%v", kv))
 		}
-		keys[n] = key
+		keys[i] = key
 	}
 
 	vals := make([]coordinator.Value, len(pict.Cases()))
-	for n, pictCase := range pict.Cases() {
+	for i, pictCase := range pict.Cases() {
 		val := map[string]any{}
-		for n, pictParam := range pict.Params() {
+		for j, pictParam := range pict.Params() {
 			name := string(pictParam)
-			pictElem := pictCase[n]
+			pictElem := pictCase[j]
 			v, err := pictElem.CastType(name)
 			if err != nil {
 				return []coordinator.Object{}, err
 			}
 			val[name] = v
 		}
-		vals[n] = coordinator.NewValueWith(val)
+		vals[i] = coordinator.NewValueWith(val)
 	}
 
 	objs := make([]coordinator.Object, len(pict.Cases()))
@@ -89,18 +90,18 @@ func updateCoordinatorObjects(objs []coordinator.Object) ([]coordinator.Object, 
 		return []coordinator.Object{}, err
 	}
 
-	for n, pictCase := range pict.Cases() {
+	for i, pictCase := range pict.Cases() {
 		val := []any{}
-		for n, pictParam := range pict.Params() {
+		for j, pictParam := range pict.Params() {
 			name := string(pictParam)
-			pictElem := pictCase[n]
+			pictElem := pictCase[j]
 			v, err := pictElem.CastType(name)
 			if err != nil {
 				return []coordinator.Object{}, err
 			}
 			val = append(val, v)
 		}
-		objs[n] = coordinator.NewObjectWith(objs[n].Key(), val)
+		objs[i] = coordinator.NewObjectWith(objs[i].Key(), val)
 	}
 
 	return objs, nil
