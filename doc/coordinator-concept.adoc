@@ -1,0 +1,17 @@
+= Coordinator Concept
+In distributed mode, PuzzleDB assumes that it will be launched as multiple distributed instances, and each plug-in service (such as query plug-ins) launched on each instance should be coordinated using the coordinator service plug-in.
+
+image:img/architecture.png[]
+
+The coordinator service plug-in is used to manage and synchronize the distributed PuzzleDB nodes.
+
+== References
+
+* Coordinator Services
+** https://research.google/pubs/pub41344/[The Chubby lock service for loosely-coupled distributed systems]
+** https://zookeeper.apache.org/[Apache ZooKeeper]
+** https://www.consul.io/[Consul by HashiCorp]
+** https://etcd.io/[etcd by CoreOS]
+
+* https://loneidealist.medium.com/distributed-coordination-5eb8eabb2ff[Distributed Coordination. How distributed systems reach consensus | by Imesha Sudasingha | Medium]
+* https://loneidealist.medium.com/apache-curator-vs-etcd3-9c1362600b26[Apache Zookeeper vs etcd3. A comparison between distributed… | by Imesha Sudasingha | Medium]

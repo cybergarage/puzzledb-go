@@ -44,6 +44,8 @@ For architecture of PuzzleDB, see the following concept documents:
 
     -   [Plug-In Concept](doc/plugin-concept.md)
 
+    -   [Coordinator Concept](doc/coordinator-concept.md)
+
     -   [Data Model](doc/data-model.md)
 
     -   [Consistency Model](doc/consistency-model.md)
