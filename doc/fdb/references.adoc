@@ -1,0 +1,3 @@
+* https://www.foundationdb.org/[FoundationDB]
+** https://apple.github.io/foundationdb/layer-concept.html[Layer Concept — FoundationDB]
+** https://www.foundationdb.org/blog/announcing-document-layer/[Announcing FoundationDB Document Layer]
