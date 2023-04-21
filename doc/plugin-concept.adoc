@@ -11,8 +11,9 @@ include::plugin-types.adoc[leveloffset=+1]
 
 == References
 
-- https://www.foundationdb.org/[FoundationDB]
-- https://apple.github.io/foundationdb/layer-concept.html[Layer Concept — 
-- https://cloud.google.com/spanner/docs/whitepapers[Whitepapers | Cloud Spanner | Google Cloud]
-- https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en[What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog]
-- https://research.google/pubs/pub39966/[Spanner: Google's Globally-Distributed Database]
+* https://www.foundationdb.org/[FoundationDB]
+** https://apple.github.io/foundationdb/layer-concept.html[Layer Concept - FoundationDB]
+* https://cloud.google.com/spanner/[Google Cloud Spanner]
+**  https://cloud.google.com/spanner/docs/whitepapers[Whitepapers | Cloud Spanner | Google Cloud]
+** https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en[What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog]
+** https://research.google/pubs/pub39966/[Spanner: Google's Globally-Distributed Database]
