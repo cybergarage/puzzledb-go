@@ -1,0 +1,8 @@
+= Storage Concepts
+
+In PuzzleDB, the storage plug-ins are expected to be implemented in a transaction-enabled, ordered sharding NoSQL storage system, similar to Google Spanner or FoundationDB.
+
+== References
+
+include::fdb/references.adoc[leveloffset=+1]
+include::spanner/references.adoc[leveloffset=+1]
