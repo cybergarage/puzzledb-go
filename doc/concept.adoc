@@ -1,6 +1,6 @@
 = Design Concepts
 
-This section describes the architecture and design concepts of PuzzleDB.
+PuzzleDB has a unique approach in the NewSQL field by using a simple key-value foundation for data model, indexes, and queries, enabling high scalability and ACID transactions.This section describes the architecture and design concepts of PuzzleDB.
 
 :toc:
 
