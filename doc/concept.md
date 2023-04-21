@@ -1,6 +1,6 @@
 # Design Concepts
 
-This section describes the architecture and design concepts of PuzzleDB.
+PuzzleDB has a unique approach in the NewSQL field by using a simple key-value foundation for data model, indexes, and queries, enabling high scalability and ACID transactions.This section describes the architecture and design concepts of PuzzleDB.
 
 # Layer Concept
 
@@ -8,7 +8,9 @@ PuzzleDB adopts a unique approach similar to FoundationDB and early Google Spann
 
 ![layer concept](img/layer_concept.png)
 
-In PuzzleDB, not only are records represented as key-value pairs, but schemas and indices are also represented as key-value data.
+Most databases come as a combination of a storage engine, data model, and query language. For instance, Postgres includes the Postgres storage engine, relational data model, and SQL query language, while MongoDB includes the MongoDB distributed storage engine, document data model, and MongoDB API.
+
+In contrast, PuzzleDB has loosely coupled the query API, data model, and storage engine, enabling users to build their database with a suitable combination for their specific use cases and workloads. In PuzzleDB, not only are records represented as key-value pairs, but schemas and indices are also represented as key-value data.
 
 ## References
 
