@@ -92,7 +92,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 -   Extending PuzzleDB
 
-    -   [Plug-In Concept](doc/plugin_concept.md)
+    -   [Plug-In Concept](doc/plugin-concept.md)
 
     -   [Plug-in Services](doc/plugin-types.md)
 
