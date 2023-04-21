@@ -185,10 +185,12 @@ PuzzleDB defines the coordinator interface to synchronize between PuzzleDB nodes
 
 -   [FoundationDB](https://www.foundationdb.org/)
 
--   <https://apple.github.io/foundationdb/layer-concept.html>\[Layer Concept —
+    -   [Layer Concept - FoundationDB](https://apple.github.io/foundationdb/layer-concept.html)
 
--   [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
+-   [Google Cloud Spanner](https://cloud.google.com/spanner/)
 
--   [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
+    -   [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
 
--   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
+    -   [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
+
+    -   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
