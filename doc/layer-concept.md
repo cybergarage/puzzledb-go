@@ -18,7 +18,15 @@ In contrast, PuzzleDB has loosely coupled the query API, data model, and storage
 
 <!-- -->
 
--   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
+-   [Google Cloud Spanner](https://cloud.google.com/spanner/)
+
+    -   [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
+
+    -   [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
+
+    -   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
+
+    -   [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)
 
 # Data Model
 
