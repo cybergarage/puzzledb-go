@@ -53,6 +53,6 @@ include::doc/roadmap.adoc[]
 ** link:doc/build-on-macos.md[Build on macOS]
 ** link:doc/build-on-macos.md[Build on Ubuntu]
 * Extending PuzzleDB
-** link:doc/plugin_concept.md[Plug-In Concept]
+** link:doc/plugin-concept.md[Plug-In Concept]
 ** link:doc/plugin-types.md[Plug-in Services]
 *** link:doc/plugin-tutorial.md[Building User Plug-ins]
