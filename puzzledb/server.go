@@ -152,6 +152,7 @@ func (server *Server) setupPlugins() error {
 		service.SetConfig(server.Config)
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
+		service.SetTracer(server.Tracer)
 	}
 
 	return nil
