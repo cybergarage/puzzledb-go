@@ -1,0 +1,7 @@
+= Tracing
+
+== References
+
+* https://opentelemetry.io[OpenTelemetry]
+* https://opentracing.io/specification/n[OpenTracing specification]
+** https://opentelemetry.io/docs/migration/opentracing/[Migrating from OpenTracing | OpenTelemetry]

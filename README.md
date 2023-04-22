@@ -74,9 +74,17 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 # User Guides
 
--   [Configuring PullzeDB](doc/configuring.md)
+-   Get Started
 
--   [Docker Hub (cybergarage/puzzledb)](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
+    -   [Quick Start](doc/quick-start.md)
+
+    -   [Configuring PullzeDB](doc/configuring.md)
+
+    -   [Docker Hub (cybergarage/puzzledb)](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
+
+-   Operation
+
+    -   [Tracing](doc/tracing.md)
 
 # Developer Guides
 

@@ -42,8 +42,12 @@ include::doc/roadmap.adoc[]
 
 = User Guides
 
-* link:doc/configuring.md[Configuring PullzeDB]
-* link:https://hub.docker.com/repository/docker/cybergarage/puzzledb/general[Docker Hub (cybergarage/puzzledb)]
+* Get Started
+** link:doc/quick-start.md[Quick Start]
+** link:doc/configuring.md[Configuring PullzeDB]
+** link:https://hub.docker.com/repository/docker/cybergarage/puzzledb/general[Docker Hub (cybergarage/puzzledb)]
+* Operation
+** link:doc/tracing.md[Tracing]
 
 = Developer Guides
 
