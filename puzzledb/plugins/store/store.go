@@ -98,6 +98,11 @@ func (store *Store) RemoveDatabase(name string) error {
 	return store.kvStore.RemoveDatabase((name))
 }
 
+// ListDatabases returns the database list.
+func (store *Store) ListDatabases() ([]store.Database, error) {
+	return nil, nil
+}
+
 // Start starts this store.
 func (store *Store) Start() error {
 	return nil
