@@ -15,6 +15,7 @@
 package query
 
 import (
+	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -24,11 +25,18 @@ import (
 // Service represents a query service.
 type Service interface {
 	plugins.Service
+	// SetConfig sets the config.
 	SetConfig(config config.Config)
+	// SetCoordinator sets the coordinator.
 	SetCoordinator(coordinator coordinator.Coordinator)
+	// Coordinator returns the coordinator.
 	Coordinator() coordinator.Coordinator
+	// SetStore sets the store.
 	SetStore(store store.Store)
+	// Store returns the store.
 	Store() store.Store
+	// SetTracer sets the tracing tracer.
+	SetTracer(t tracer.Tracer)
 }
 
 type BaseService struct {
