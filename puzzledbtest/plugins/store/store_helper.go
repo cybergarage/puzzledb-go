@@ -59,6 +59,12 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 		return
 	}
 
+	_, err := service.ListDatabases()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
 	db, err := service.GetDatabase(testDBName)
 	if err != nil {
 		t.Error(err)
