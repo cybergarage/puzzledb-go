@@ -11,6 +11,7 @@ require (
 	github.com/cybergarage/go-pict v0.8.1
 	github.com/cybergarage/go-redis v1.3.1
 	github.com/cybergarage/go-sqltest v0.9.3
+	github.com/cybergarage/go-tracing v0.8.1
 	github.com/hashicorp/go-memdb v1.3.2
 	github.com/spf13/viper v1.15.0
 	go.mongodb.org/mongo-driver v1.11.2
@@ -21,7 +22,6 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cybergarage/go-safecast v1.1.0 // indirect
-	github.com/cybergarage/go-tracing v0.8.1 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible // indirect
