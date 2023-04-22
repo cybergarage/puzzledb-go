@@ -1,5 +1,15 @@
 logging:
   level: info
+tracing:
+  enabled: true
+  tracer: 
+    default: opentracing
+    opentracing:
+      enabled: true
+      endpoint:
+    opentelemetry:
+      enabled: true
+      endpoint:
 plugins:
   coder:
     document:
