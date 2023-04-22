@@ -46,69 +46,81 @@ func NewStoreWith(kvs kv.Store) *Store {
 }
 
 // SetKvStore sets the key-value store service.
-func (store *Store) SetKvStore(kvs kv.Store) {
-	store.kvStore = kvs
-	store.kvStore.SetKeyCoder(store.KeyCoder)
+func (s *Store) SetKvStore(kvs kv.Store) {
+	s.kvStore = kvs
+	s.kvStore.SetKeyCoder(s.KeyCoder)
 }
 
 // SetDocumentCoder sets the document coder.
-func (store *Store) SetDocumentCoder(coder document.Coder) {
-	store.Coder = coder
+func (s *Store) SetDocumentCoder(coder document.Coder) {
+	s.Coder = coder
 }
 
 // SetKeyCoder sets the key coder.
-func (store *Store) SetKeyCoder(coder document.KeyCoder) {
-	store.KeyCoder = coder
-	if store.kvStore != nil {
-		store.kvStore.SetKeyCoder(coder)
+func (s *Store) SetKeyCoder(coder document.KeyCoder) {
+	s.KeyCoder = coder
+	if s.kvStore != nil {
+		s.kvStore.SetKeyCoder(coder)
 	}
 }
 
 // ServiceType returns the plug-in service type.
-func (store *Store) ServiceType() plugins.ServiceType {
+func (s *Store) ServiceType() plugins.ServiceType {
 	return plugins.StoreDocumentService
 }
 
 // ServiceName returns the plug-in service name.
-func (store *Store) ServiceName() string {
+func (s *Store) ServiceName() string {
 	return "kv"
 }
 
 // CreateDatabase creates a new database.
-func (store *Store) CreateDatabase(name string) error {
-	return store.kvStore.CreateDatabase(name)
+func (s *Store) CreateDatabase(name string) error {
+	return s.kvStore.CreateDatabase(name)
 }
 
 // GetDatabase retruns the specified database.
-func (store *Store) GetDatabase(name string) (store.Database, error) {
-	kvDB, err := store.kvStore.GetDatabase(name)
+func (s *Store) GetDatabase(name string) (store.Database, error) {
+	kvDB, err := s.kvStore.GetDatabase(name)
 	if err != nil {
 		return nil, err
 	}
 	db := &database{
 		kv:       kvDB,
-		Coder:    store.Coder,
-		KeyCoder: store.KeyCoder,
+		Coder:    s.Coder,
+		KeyCoder: s.KeyCoder,
 	}
 	return db, nil
 }
 
 // RemoveDatabase removes the specified database.
-func (store *Store) RemoveDatabase(name string) error {
-	return store.kvStore.RemoveDatabase((name))
+func (s *Store) RemoveDatabase(name string) error {
+	return s.kvStore.RemoveDatabase((name))
 }
 
-// ListDatabases returns the database list.
-func (store *Store) ListDatabases() ([]store.Database, error) {
-	return nil, nil
+// ListDatabases returns the all databases.
+func (s *Store) ListDatabases() ([]store.Database, error) {
+	kvDB, err := s.kvStore.ListDatabases()
+	if err != nil {
+		return nil, err
+	}
+	dbs := make([]store.Database, len(kvDB))
+	for n, kvDB := range kvDB {
+		dbs[n] = &database{
+			kv:       kvDB,
+			Coder:    s.Coder,
+			KeyCoder: s.KeyCoder,
+		}
+	}
+	return dbs, nil
 }
 
 // Start starts this store.
-func (store *Store) Start() error {
+func (s *Store) Start() error {
 	return nil
 }
 
 // Stop stops this store.
-func (store *Store) Stop() error {
+func (s *Store) Stop() error {
 	return nil
 }

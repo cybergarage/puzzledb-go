@@ -67,6 +67,11 @@ func (store *Store) GetDatabase(id string) (kv.Database, error) {
 	return newDatabaseWith(id, store.Database, store.KeyCoder), nil
 }
 
+// ListDatabases returns the all databases.
+func (store *Store) ListDatabases() ([]kv.Database, error) {
+	return nil, nil
+}
+
 // RemoveDatabase removes the specified database.
 func (store *Store) RemoveDatabase(name string) error {
 	return nil

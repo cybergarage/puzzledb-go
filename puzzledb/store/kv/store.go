@@ -28,4 +28,6 @@ type Store interface {
 	GetDatabase(name string) (Database, error)
 	// RemoveDatabase removes the specified database.
 	RemoveDatabase(name string) error
+	// ListDatabases returns the all databases.
+	ListDatabases() ([]Database, error)
 }
