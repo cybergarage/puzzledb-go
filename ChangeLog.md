@@ -6,8 +6,9 @@
 # v0.9.0 (2023-xx-xx)
 - Add distributed storage and coordinator plug-in modules
 
-# v0.8.0 (2023-xx-xx)
+# v0.8.1 (2023-xx-xx)
 - Add support for additional query commands in MySQL, MongoDB, and Redis protocols
+- Add tracing plug-ins
 
 # v0.8.0 (2023-04-10)
 - Initial public technology preview release
