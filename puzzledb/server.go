@@ -18,6 +18,7 @@ import (
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -38,6 +39,7 @@ import (
 type Server struct {
 	*Config
 	*PluginManager
+	tracer.Tracer
 }
 
 // NewServer returns a new server instance.
@@ -45,6 +47,7 @@ func NewServer() *Server {
 	server := &Server{
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
+		Tracer:        tracer.NullTracer,
 	}
 
 	return server
@@ -152,6 +155,11 @@ func (server *Server) setupPlugins() error {
 	}
 
 	return nil
+}
+
+// SetTracer sets the tracing tracer.
+func (server *Server) SetTracer(t tracer.Tracer) {
+	server.Tracer = t
 }
 
 // Start starts the server.
