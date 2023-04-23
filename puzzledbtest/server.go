@@ -49,3 +49,8 @@ func NewServerWithConfig(config config.Config) *Server {
 	}
 	return server
 }
+
+func (server *Server) Store() *Store {
+	store, _ := server.DefaultStoreService()
+	return NewStoreWith(store)
+}
