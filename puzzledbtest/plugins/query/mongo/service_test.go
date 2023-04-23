@@ -33,7 +33,7 @@ func TestMongoEmbedSuite(t *testing.T) {
 	}
 
 	mongotest.RunEmbedSuite(t)
-	t.Logf("\n%s", server.Store().String())
+	t.Logf("%s", server.Store().String())
 
 	err = server.Stop()
 	if err != nil {
