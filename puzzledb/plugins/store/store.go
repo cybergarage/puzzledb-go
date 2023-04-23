@@ -121,8 +121,8 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 		return nil, err
 	}
 	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
-	_, err = txn.Get(kvDBKey)
-	if err != nil {
+	kvDBObj, err := txn.Get(kvDBKey)
+	if err != nil && kvDBObj == nil {
 		txn.Cancel()
 		return nil, store.NewDatabaseNotExistError(name)
 	}
