@@ -15,6 +15,8 @@
 package store
 
 import (
+	"bytes"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -71,12 +73,55 @@ func (s *Store) ServiceType() plugins.ServiceType {
 
 // ServiceName returns the plug-in service name.
 func (s *Store) ServiceName() string {
-	return "kv"
+	return "dockv"
 }
 
 // CreateDatabase creates a new database.
 func (s *Store) CreateDatabase(name string) error {
-	return s.kvStore.CreateDatabase(name)
+	err := s.kvStore.CreateDatabase(name)
+	if err != nil {
+		return err
+	}
+
+	kvDB, err := s.kvStore.GetDatabase(name)
+	if err != nil {
+		return err
+	}
+
+	kvDbKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
+
+	txn, err := kvDB.Transact(true)
+	if err != nil {
+		return err
+	}
+	_, err = txn.Get(kvDbKey)
+	if err == nil {
+		txn.Cancel()
+		return err
+	}
+	v := map[string]any{}
+	var vb bytes.Buffer
+	err = s.EncodeDocument(&vb, v)
+	if err != nil {
+		txn.Cancel()
+		return err
+	}
+	kvObj := kv.Object{
+		Key:   kvDbKey,
+		Value: vb.Bytes(),
+	}
+	err = txn.Set(&kvObj)
+	if err != nil {
+		txn.Cancel()
+		return err
+	}
+	err = txn.Commit()
+	if err != nil {
+		txn.Cancel()
+		return err
+	}
+
+	return nil
 }
 
 // GetDatabase retruns the specified database.
