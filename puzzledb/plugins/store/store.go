@@ -78,23 +78,13 @@ func (s *Store) ServiceName() string {
 
 // CreateDatabase creates a new database.
 func (s *Store) CreateDatabase(name string) error {
-	err := s.kvStore.CreateDatabase(name)
+	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
+
+	txn, err := s.kvStore.Transact(true)
 	if err != nil {
 		return err
 	}
-
-	kvDB, err := s.kvStore.GetDatabase(name)
-	if err != nil {
-		return err
-	}
-
-	kvDbKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
-
-	txn, err := kvDB.Transact(true)
-	if err != nil {
-		return err
-	}
-	_, err = txn.Get(kvDbKey)
+	_, err = txn.Get(kvDBKey)
 	if err == nil {
 		txn.Cancel()
 		return err
@@ -107,7 +97,7 @@ func (s *Store) CreateDatabase(name string) error {
 		return err
 	}
 	kvObj := kv.Object{
-		Key:   kvDbKey,
+		Key:   kvDBKey,
 		Value: vb.Bytes(),
 	}
 	err = txn.Set(&kvObj)
@@ -126,17 +116,12 @@ func (s *Store) CreateDatabase(name string) error {
 
 // GetDatabase retruns the specified database.
 func (s *Store) GetDatabase(name string) (store.Database, error) {
-	kvDB, err := s.kvStore.GetDatabase(name)
+	txn, err := s.kvStore.Transact(false)
 	if err != nil {
 		return nil, err
 	}
-
-	txn, err := kvDB.Transact(false)
-	if err != nil {
-		return nil, err
-	}
-	kvDbKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
-	_, err = txn.Get(kvDbKey)
+	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
+	_, err = txn.Get(kvDBKey)
 	if err != nil {
 		txn.Cancel()
 		return nil, store.NewDatabaseNotExistError(name)
@@ -148,7 +133,8 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 	}
 
 	db := &database{
-		kv:       kvDB,
+		name:     name,
+		Store:    s.kvStore,
 		Coder:    s.Coder,
 		KeyCoder: s.KeyCoder,
 	}
@@ -157,23 +143,18 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 
 // RemoveDatabase removes the specified database.
 func (s *Store) RemoveDatabase(name string) error {
-	kvDB, err := s.kvStore.GetDatabase(name)
+	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
+
+	txn, err := s.kvStore.Transact(true)
 	if err != nil {
 		return err
 	}
-
-	kvDbKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
-
-	txn, err := kvDB.Transact(true)
-	if err != nil {
-		return err
-	}
-	_, err = txn.Get(kvDbKey)
+	_, err = txn.Get(kvDBKey)
 	if err != nil {
 		txn.Cancel()
 		return err
 	}
-	err = txn.Remove(kvDbKey)
+	err = txn.Remove(kvDBKey)
 	if err != nil {
 		txn.Cancel()
 		return err
@@ -184,7 +165,7 @@ func (s *Store) RemoveDatabase(name string) error {
 		return err
 	}
 
-	return s.kvStore.RemoveDatabase((name))
+	return nil
 }
 
 // ListDatabases returns the all databases.
