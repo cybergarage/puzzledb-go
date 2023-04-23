@@ -25,7 +25,7 @@ import (
 )
 
 func (service *Service) createDocumentAllKey(txn store.Transaction, database string, collection string) document.Key {
-	return document.NewKeyWith(database, collection, "", "")
+	return document.NewKeyWith(database, collection)
 }
 
 func (service *Service) createDocumentKey(txn store.Transaction, database string, collection string, key string, val any) document.Key {
