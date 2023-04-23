@@ -14,7 +14,12 @@
 
 package puzzledbtest
 
-import "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
+import (
+	"fmt"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+)
 
 type Store struct {
 	store.Service
@@ -26,5 +31,43 @@ func NewStoreWith(service store.Service) *Store {
 	}
 }
 
-func (s *Store) Print() {
+func (s *Store) String() string {
+	out := ""
+
+	docStore, ok := s.Service.(*store.Store)
+	if !ok {
+		return out
+	}
+
+	kvStore := docStore.KvStore()
+	tx, err := kvStore.Transact(false)
+	if err != nil {
+		return out
+	}
+
+	keys := []kv.Key{
+		kv.NewKeyWith(kv.DatabaseKeyHeader, kv.Key{}),
+		kv.NewKeyWith(kv.SchemaKeyHeader, kv.Key{}),
+		kv.NewKeyWith(kv.PrimaryIndexHeader, kv.Key{}),
+		kv.NewKeyWith(kv.SecondaryIndexHeader, kv.Key{}),
+		kv.NewKeyWith(kv.DocumentKeyHeader, kv.Key{}),
+	}
+
+	for _, key := range keys {
+		rs, err := tx.GetRange(key)
+		if err != nil {
+			continue
+		}
+		for rs.Next() {
+			obj := rs.Object()
+			out += fmt.Sprintf("%v\n", obj)
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return out
+	}
+
+	return out
 }
