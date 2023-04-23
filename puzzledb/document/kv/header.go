@@ -14,6 +14,8 @@
 
 package kv
 
+import "fmt"
+
 type HeaderType byte
 
 // DocumentType represents a document type.
@@ -46,4 +48,8 @@ func (header KeyHeader) IndexType() IndexType {
 
 func (header KeyHeader) Bytes() []byte {
 	return header[:]
+}
+
+func (header KeyHeader) String() string {
+	return fmt.Sprintf("%c %02x", header.Type(), header[1])
 }
