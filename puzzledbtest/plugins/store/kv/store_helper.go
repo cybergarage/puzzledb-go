@@ -18,10 +18,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"fmt"
 	"math/rand"
 	"testing"
-	"time"
 
 	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -34,29 +32,24 @@ const (
 )
 
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
-func StoreTest(t *testing.T, service plugins.Service) {
+func StoreTest(t *testing.T, kvStore plugins.Service) {
 	t.Helper()
 
-	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().Unix())
-	if err := service.Start(); err != nil {
-		t.Error(err)
-		return
-	}
-	if err := service.CreateDatabase(testDBName); err != nil {
-		t.Error(err)
-		return
-	}
-	db, err := service.GetDatabase(testDBName)
-	if err != nil {
+	// Starts the key-value store service.
+
+	if err := kvStore.Start(); err != nil {
 		t.Error(err)
 		return
 	}
 
 	defer func() {
-		if err := service.RemoveDatabase(testDBName); err != nil {
+		if err := kvStore.Stop(); err != nil {
 			t.Error(err)
+			return
 		}
 	}()
+
+	// Generates test keys and values.
 
 	keys := make([][]byte, testKeyCount)
 	vals := make([][]byte, testKeyCount)
@@ -77,7 +70,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	// Inserts test keys and values.
 
 	for n, key := range keys {
-		tx, err := db.Transact(true)
+		tx, err := kvStore.Transact(true)
 		if err != nil {
 			t.Error(err)
 			return
@@ -101,7 +94,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	// Selects inserted test keys.
 
 	for n, key := range keys {
-		tx, err := db.Transact(false)
+		tx, err := kvStore.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
@@ -125,7 +118,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	// Selects inserted test keys by range
 
 	for n, key := range keys {
-		tx, err := db.Transact(false)
+		tx, err := kvStore.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
@@ -165,7 +158,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	}
 
 	for n, key := range keys {
-		tx, err := db.Transact(true)
+		tx, err := kvStore.Transact(true)
 		if err != nil {
 			t.Error(err)
 			return
@@ -189,7 +182,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	// Selects updated test keys.
 
 	for n, key := range keys {
-		tx, err := db.Transact(false)
+		tx, err := kvStore.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
@@ -214,7 +207,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	// Selects updated test keys by range.
 
 	for n, key := range keys {
-		tx, err := db.Transact(false)
+		tx, err := kvStore.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
@@ -250,7 +243,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	// Removes inserted test keys.
 
 	for _, key := range keys {
-		tx, err := db.Transact(true)
+		tx, err := kvStore.Transact(true)
 		if err != nil {
 			t.Error(err)
 			return
@@ -270,7 +263,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	// Selects removed test keys.
 
 	for _, key := range keys {
-		tx, err := db.Transact(false)
+		tx, err := kvStore.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
@@ -297,7 +290,7 @@ func StoreTest(t *testing.T, service plugins.Service) {
 	// Selects removed test keys by range.
 
 	for _, key := range keys {
-		tx, err := db.Transact(false)
+		tx, err := kvStore.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
@@ -317,10 +310,5 @@ func StoreTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-	}
-
-	if err := service.Stop(); err != nil {
-		t.Error(err)
-		return
 	}
 }

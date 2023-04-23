@@ -18,8 +18,8 @@ import (
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	store "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	kvPlugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+	kvStore "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 const RequiredAPIVersion int = 630
@@ -31,12 +31,12 @@ type Store struct {
 }
 
 // NewStore returns a new FoundationDB store instance.
-func NewStore() store.Service {
+func NewStore() kvPlugin.Service {
 	return NewStoreWith(nil)
 }
 
 // NewStoreWith returns a new FoundationDB store instance with the specified key coder.
-func NewStoreWith(coder document.KeyCoder) store.Service {
+func NewStoreWith(coder document.KeyCoder) kvPlugin.Service {
 	return &Store{ //nolint:all
 		KeyCoder: coder,
 	}
@@ -57,19 +57,17 @@ func (store *Store) ServiceName() string {
 	return "fdb"
 }
 
-// CreateDatabase creates a new database.
-func (store *Store) CreateDatabase(name string) error {
-	return nil
-}
-
-// GetDatabase retruns the specified database.
-func (store *Store) GetDatabase(id string) (kv.Database, error) {
-	return newDatabaseWith(id, store.Database, store.KeyCoder), nil
-}
-
-// RemoveDatabase removes the specified database.
-func (store *Store) RemoveDatabase(name string) error {
-	return nil
+// Transact begin a new transaction.
+func (store *Store) Transact(write bool) (kvStore.Transaction, error) {
+	txn, err := store.Database.CreateTransaction()
+	if err != nil {
+		return nil, err
+	}
+	err = txn.Options().SetAccessSystemKeys()
+	if err != nil {
+		return nil, err
+	}
+	return newTransaction(txn, store.KeyCoder), nil
 }
 
 // Start starts this memdb.
