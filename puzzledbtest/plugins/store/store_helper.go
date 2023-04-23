@@ -75,6 +75,9 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 		if err := service.RemoveDatabase(testDBName); err != nil {
 			t.Error(err)
 		}
+		if err := service.Stop(); err != nil {
+			t.Error(err)
+		}
 	}()
 
 	// Generates test keys and objects
@@ -284,12 +287,5 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-	}
-
-	// Stops service
-
-	if err := service.Stop(); err != nil {
-		t.Error(err)
-		return
 	}
 }
