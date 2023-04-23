@@ -78,7 +78,6 @@ func (s *Store) ServiceName() string {
 
 // CreateDatabase creates a new database.
 func (s *Store) CreateDatabase(name string) error {
-
 	txn, err := s.kvStore.Transact(true)
 	if err != nil {
 		return err
@@ -88,14 +87,18 @@ func (s *Store) CreateDatabase(name string) error {
 
 	kvDBObj, err := txn.Get(kvDBKey)
 	if err == nil && kvDBObj != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return err
+		}
 		return store.NewDatabaseExistError(name)
 	}
 	v := map[string]any{}
 	var vb bytes.Buffer
 	err = s.EncodeDocument(&vb, v)
 	if err != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return err
+		}
 		return err
 	}
 	kvObj := kv.Object{
@@ -104,12 +107,16 @@ func (s *Store) CreateDatabase(name string) error {
 	}
 	err = txn.Set(&kvObj)
 	if err != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return err
+		}
 		return err
 	}
 	err = txn.Commit()
 	if err != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return err
+		}
 		return err
 	}
 
@@ -126,12 +133,16 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 
 	kvDBObj, err := txn.Get(kvDBKey)
 	if err != nil && kvDBObj == nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
 		return nil, store.NewDatabaseNotExistError(name)
 	}
 	err = txn.Commit()
 	if err != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
 		return nil, err
 	}
 
@@ -155,17 +166,23 @@ func (s *Store) RemoveDatabase(name string) error {
 
 	kvDBObj, err := txn.Get(kvDBKey)
 	if err != nil && kvDBObj == nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return err
+		}
 		return err
 	}
 	err = txn.Remove(kvDBKey)
 	if err != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return err
+		}
 		return err
 	}
 	err = txn.Commit()
 	if err != nil {
-		txn.Cancel()
+		if err := txn.Cancel(); err != nil {
+			return err
+		}
 		return err
 	}
 
