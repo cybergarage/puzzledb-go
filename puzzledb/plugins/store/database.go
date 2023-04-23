@@ -25,11 +25,17 @@ type database struct {
 	kv.Store
 	document.Coder
 	document.KeyCoder
+	store.DatabaseOptions
 }
 
 // Name returns the unique name.
 func (db *database) Name() string {
 	return db.name
+}
+
+// Options returns the database options.
+func (db *database) Options() store.DatabaseOptions {
+	return db.DatabaseOptions
 }
 
 // Transact begin a new transaction.

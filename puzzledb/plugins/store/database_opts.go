@@ -28,7 +28,7 @@ func newDatabaeOptionsFrom(obj any) (store.DatabaseOptions, error) {
 
 	optMap, ok := obj.(map[any]any)
 	if ok {
-		var opts store.DatabaseOptions
+		opts := store.DatabaseOptions{}
 		for k, v := range optMap {
 			opts[fmt.Sprintf("%v", k)] = v
 		}

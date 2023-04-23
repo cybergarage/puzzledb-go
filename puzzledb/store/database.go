@@ -14,10 +14,15 @@
 
 package store
 
+// DatabaseOptions represents a database options.
+type DatabaseOptions = map[string]interface{}
+
 // Database represents a database interface.
 type Database interface {
 	// Name returns the unique name.
 	Name() string
+	// Options returns the database options.
+	Options() DatabaseOptions
 	// Transact begin a new transaction.
 	Transact(write bool) (Transaction, error)
 }
