@@ -22,6 +22,7 @@ import (
 var (
 	ErrNotExist = errors.New("not exist")
 	ErrExist    = errors.New("exist")
+	ErrInvalid  = errors.New("invalid")
 )
 
 func NewDatabaseNotExistError(name string) error {
@@ -38,4 +39,8 @@ func NewSchemaNotExistError(name string) error {
 
 func NewObjectNotExistError(key Key) error {
 	return fmt.Errorf("object (%s) is %w ", key, ErrNotExist)
+}
+
+func NewDatabaseOptionsInvalidError(opts any) error {
+	return fmt.Errorf("database options (%v) is %w", opts, ErrInvalid)
 }
