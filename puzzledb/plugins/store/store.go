@@ -85,6 +85,7 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	txn, err := kvDB.Transact(false)
 	if err != nil {
 		return nil, err
@@ -100,6 +101,7 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 		txn.Cancel()
 		return nil, err
 	}
+
 	db := &database{
 		kv:       kvDB,
 		Coder:    s.Coder,
@@ -110,6 +112,33 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 
 // RemoveDatabase removes the specified database.
 func (s *Store) RemoveDatabase(name string) error {
+	kvDB, err := s.kvStore.GetDatabase(name)
+	if err != nil {
+		return err
+	}
+
+	kvDbKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
+
+	txn, err := kvDB.Transact(true)
+	if err != nil {
+		return err
+	}
+	_, err = txn.Get(kvDbKey)
+	if err != nil {
+		txn.Cancel()
+		return err
+	}
+	err = txn.Remove(kvDbKey)
+	if err != nil {
+		txn.Cancel()
+		return err
+	}
+	err = txn.Commit()
+	if err != nil {
+		txn.Cancel()
+		return err
+	}
+
 	return s.kvStore.RemoveDatabase((name))
 }
 
