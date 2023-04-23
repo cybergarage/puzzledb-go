@@ -85,6 +85,21 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 	if err != nil {
 		return nil, err
 	}
+	txn, err := kvDB.Transact(false)
+	if err != nil {
+		return nil, err
+	}
+	kvDbKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
+	_, err = txn.Get(kvDbKey)
+	if err != nil {
+		txn.Cancel()
+		return nil, store.NewDatabaseNotExistError(name)
+	}
+	err = txn.Commit()
+	if err != nil {
+		txn.Cancel()
+		return nil, err
+	}
 	db := &database{
 		kv:       kvDB,
 		Coder:    s.Coder,
