@@ -191,15 +191,50 @@ func (s *Store) RemoveDatabase(name string) error {
 
 // ListDatabases returns the all databases.
 func (s *Store) ListDatabases() ([]store.Database, error) {
+	txn, err := s.kvStore.Transact(false)
+	if err != nil {
+		return nil, err
+	}
+
+	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{})
+	kvRs, err := txn.GetRange(kvDBKey)
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
 	dbs := make([]store.Database, 0)
-	// dbs := make([]store.Database, len(kvDB))
-	// for n, kvDB := range kvDB {
-	// 	dbs[n] = &database{
-	// 		kv:       kvDB,
-	// 		Coder:    s.Coder,
-	// 		KeyCoder: s.KeyCoder,
-	// 	}
-	// }
+	for kvRs.Next() {
+		kvObj := kvRs.Object()
+		kvKeys := kvObj.Key.Elements()
+		kvKeyLen := len(kvKeys)
+		if kvKeyLen == 0 {
+			continue
+		}
+		lastKvKey := kvKeys[kvKeyLen-1]
+		name, ok := lastKvKey.(string)
+		if !ok {
+			continue
+		}
+		db := &database{
+			name:     name,
+			Store:    s.kvStore,
+			Coder:    s.Coder,
+			KeyCoder: s.KeyCoder,
+		}
+		dbs = append(dbs, db)
+	}
+
+	err = txn.Commit()
+	if err != nil {
+		if err := txn.Cancel(); err != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+
 	return dbs, nil
 }
 
