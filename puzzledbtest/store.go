@@ -65,7 +65,7 @@ func (s *Store) String() string {
 			keys := obj.Key.Elements()
 			hb, ok := keys[0].([]byte)
 			if !ok {
-				continue
+				out += fmt.Sprintf("%v: %v\n", keys[1:], obj.Value)
 			}
 			h := dockv.NewKeyHeaderFrom(hb)
 			switch h.Type() {
@@ -73,12 +73,14 @@ func (s *Store) String() string {
 				r := bytes.NewReader(obj.Value)
 				val, err := docStore.DecodeDocument(r)
 				if err != nil {
+					out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], obj.Value)
 					continue
 				}
 				out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], val)
 			case dockv.IndexObject:
 				idxKeys, err := docStore.DecodeKey(obj.Value)
 				if err != nil {
+					out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], obj.Value)
 					continue
 				}
 				out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], idxKeys)
