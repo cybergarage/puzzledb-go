@@ -87,7 +87,7 @@ func (s *Store) CreateDatabase(name string) error {
 	_, err = txn.Get(kvDBKey)
 	if err == nil {
 		txn.Cancel()
-		return err
+		return store.NewDatabaseExistError(name)
 	}
 	v := map[string]any{}
 	var vb bytes.Buffer
