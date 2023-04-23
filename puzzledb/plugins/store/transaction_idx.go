@@ -15,8 +15,6 @@
 package store
 
 import (
-	"bytes"
-
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -28,15 +26,10 @@ func (txn *transaction) InsertIndex(idxKey store.Key, docKey store.Key) error {
 	if err != nil {
 		return err
 	}
-	var encDocKey bytes.Buffer
-	err = txn.EncodeDocument(&encDocKey, kvDocKeyBytes)
-	if err != nil {
-		return err
-	}
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
 	kvObj := kv.Object{
 		Key:   kvIdxKey,
-		Value: encDocKey.Bytes(),
+		Value: kvDocKeyBytes,
 	}
 	return txn.kv.Set(&kvObj)
 }
@@ -54,5 +47,5 @@ func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet,
 	if err != nil {
 		return nil, err
 	}
-	return newIndexResultSet(txn, txn.Coder, kvIdxRs), nil
+	return newIndexResultSet(txn, txn.KeyCoder, txn.Coder, kvIdxRs), nil
 }
