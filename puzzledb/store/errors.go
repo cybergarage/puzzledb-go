@@ -21,10 +21,15 @@ import (
 
 var (
 	ErrNotExist = errors.New("not exist")
+	ErrExist    = errors.New("exist")
 )
 
 func NewDatabaseNotExistError(name string) error {
 	return fmt.Errorf("database (%s) is %w", name, ErrNotExist)
+}
+
+func NewDatabaseExistError(name string) error {
+	return fmt.Errorf("database (%s) is %w", name, ErrExist)
 }
 
 func NewSchemaNotExistError(name string) error {
