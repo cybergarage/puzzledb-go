@@ -92,18 +92,20 @@ func (s *Store) CreateDatabase(name string) error {
 		}
 		return store.NewDatabaseExistError(name)
 	}
-	v := map[string]any{}
-	var vb bytes.Buffer
-	err = s.EncodeDocument(&vb, v)
+
+	var opts store.DatabaseOptions
+	var objBytes bytes.Buffer
+	err = s.EncodeDocument(&objBytes, opts)
 	if err != nil {
 		if err := txn.Cancel(); err != nil {
 			return err
 		}
 		return err
 	}
+
 	kvObj := kv.Object{
 		Key:   kvDBKey,
-		Value: vb.Bytes(),
+		Value: objBytes.Bytes(),
 	}
 	err = txn.Set(&kvObj)
 	if err != nil {
@@ -146,12 +148,24 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 		return nil, err
 	}
 
-	db := &database{
-		name:     name,
-		Store:    s.kvStore,
-		Coder:    s.Coder,
-		KeyCoder: s.KeyCoder,
+	dbOptsObj, err := s.DecodeDocument(bytes.NewReader(kvDBObj.Value))
+	if err != nil {
+		return nil, err
 	}
+
+	dbOpts, err := newDatabaeOptionsFrom(dbOptsObj)
+	if err != nil {
+		return nil, err
+	}
+
+	db := &database{
+		name:            name,
+		DatabaseOptions: dbOpts,
+		Store:           s.kvStore,
+		Coder:           s.Coder,
+		KeyCoder:        s.KeyCoder,
+	}
+
 	return db, nil
 }
 
@@ -218,11 +232,23 @@ func (s *Store) ListDatabases() ([]store.Database, error) {
 		if !ok {
 			continue
 		}
+
+		dbOptsObj, err := s.DecodeDocument(bytes.NewReader(kvObj.Value))
+		if err != nil {
+			return nil, err
+		}
+
+		dbOpts, err := newDatabaeOptionsFrom(dbOptsObj)
+		if err != nil {
+			return nil, err
+		}
+
 		db := &database{
-			name:     name,
-			Store:    s.kvStore,
-			Coder:    s.Coder,
-			KeyCoder: s.KeyCoder,
+			name:            name,
+			DatabaseOptions: dbOpts,
+			Store:           s.kvStore,
+			Coder:           s.Coder,
+			KeyCoder:        s.KeyCoder,
 		}
 		dbs = append(dbs, db)
 	}
