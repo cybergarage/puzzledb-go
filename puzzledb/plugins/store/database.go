@@ -21,19 +21,20 @@ import (
 )
 
 type database struct {
-	kv kv.Database
+	name string
+	kv.Store
 	document.Coder
 	document.KeyCoder
 }
 
 // Name returns the unique name.
 func (db *database) Name() string {
-	return db.kv.Name()
+	return db.name
 }
 
 // Transact begin a new transaction.
 func (db *database) Transact(write bool) (store.Transaction, error) {
-	kvTx, err := db.kv.Transact(write)
+	kvTx, err := db.Store.Transact(write)
 	if err != nil {
 		return nil, err
 	}
