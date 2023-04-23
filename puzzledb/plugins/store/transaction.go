@@ -15,6 +15,8 @@
 package store
 
 import (
+	"fmt"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -49,4 +51,13 @@ func (txn *transaction) Commit() error {
 // Cancel cancels this transaction.
 func (txn *transaction) Cancel() error {
 	return txn.kv.Cancel()
+}
+
+// CancelWithError cancels this transaction.
+func (txn *transaction) CancelWithError(err error) error {
+	txnErr := txn.kv.Cancel()
+	if txnErr == nil {
+		return err
+	}
+	return fmt.Errorf("%w: %w", err, txnErr)
 }
