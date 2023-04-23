@@ -20,7 +20,7 @@ plugins:
       cluseterFile: null
   store:
     document:
-      default: kv
+      default: dockv
       kv:
         enabled: true
         store: memdb
