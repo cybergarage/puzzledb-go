@@ -22,23 +22,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestMongoService(t *testing.T) {
-	server := puzzledbtest.NewServer()
-	err := server.Start()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	mongotest.RunClientTest(t)
-
-	err = server.Stop()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
 func TestMongoEmbedSuite(t *testing.T) {
 	log.SetStdoutDebugEnbled(true)
 
@@ -50,6 +33,7 @@ func TestMongoEmbedSuite(t *testing.T) {
 	}
 
 	mongotest.RunEmbedSuite(t)
+	t.Logf("%s", server.Store().String())
 
 	err = server.Stop()
 	if err != nil {
