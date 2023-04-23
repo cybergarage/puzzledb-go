@@ -53,6 +53,11 @@ func (s *Store) SetKvStore(kvs kv.Store) {
 	s.kvStore.SetKeyCoder(s.KeyCoder)
 }
 
+// KvStore returns the key-value store.
+func (s *Store) KvStore() kv.Store {
+	return s.kvStore
+}
+
 // SetDocumentCoder sets the document coder.
 func (s *Store) SetDocumentCoder(coder document.Coder) {
 	s.Coder = coder
