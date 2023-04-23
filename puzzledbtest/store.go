@@ -15,8 +15,10 @@
 package puzzledbtest
 
 import (
+	"bytes"
 	"fmt"
 
+	dockv "github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -60,7 +62,27 @@ func (s *Store) String() string {
 		}
 		for rs.Next() {
 			obj := rs.Object()
-			out += fmt.Sprintf("%v\n", obj)
+			keys := obj.Key.Elements()
+			hb, ok := keys[0].([]byte)
+			if !ok {
+				continue
+			}
+			h := dockv.NewKeyHeaderFrom(hb)
+			switch h.Type() {
+			case dockv.DatabaseObject, dockv.SchemaObject, dockv.DocumentObject:
+				r := bytes.NewReader(obj.Value)
+				val, err := docStore.DecodeDocument(r)
+				if err != nil {
+					continue
+				}
+				out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], val)
+			case dockv.IndexObject:
+				idxKeys, err := docStore.DecodeKey(obj.Value)
+				if err != nil {
+					continue
+				}
+				out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], idxKeys)
+			}
 		}
 	}
 
