@@ -30,26 +30,39 @@ type Version byte
 // IndexType represents an index type.
 type IndexType byte
 
+// NewKeyHeader creates a new key header from the specified bytes.
+func NewKeyHeaderFrom(b []byte) KeyHeader {
+	var header KeyHeader
+	copy(header[:], b)
+	return header
+}
+
+// Type returns a header type.
 func (header KeyHeader) Type() HeaderType {
 	return HeaderType(header[0])
 }
 
+// Version returns a version.
 func (header KeyHeader) Version() Version {
 	return VertionFromHeaderByte(header[1])
 }
 
+// DocumentType returns a document type.
 func (header KeyHeader) DocumentType() DocumentType {
 	return DocumentType(TypeFromHeaderByte(header[1]))
 }
 
+// IndexType returns an index type.
 func (header KeyHeader) IndexType() IndexType {
 	return IndexType(TypeFromHeaderByte(header[1]))
 }
 
+// Bytes returns a byte array.
 func (header KeyHeader) Bytes() []byte {
 	return header[:]
 }
 
+// String returns a string.
 func (header KeyHeader) String() string {
 	return fmt.Sprintf("%c %02x", header.Type(), header[1])
 }
