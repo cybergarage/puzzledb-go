@@ -22,10 +22,6 @@ import (
 type Store interface {
 	// SetKeyCoder sets the key coder.
 	SetKeyCoder(coder document.KeyCoder)
-	// CreateDatabase creates a new database.
-	CreateDatabase(name string) error
-	// GetDatabase retruns the specified database.
-	GetDatabase(name string) (Database, error)
-	// RemoveDatabase removes the specified database.
-	RemoveDatabase(name string) error
+	// Transact begin a new transaction.
+	Transact(write bool) (Transaction, error)
 }

@@ -30,7 +30,6 @@ const (
 
 // Database represents a database.
 type Database struct {
-	ID string
 	*memdb.MemDB
 	document.KeyCoder
 }
@@ -41,8 +40,8 @@ type Document struct {
 	Value []byte
 }
 
-// NewDatabaseWithID returns a new database with the specified ID.
-func NewDatabaseWithID(id string, coder document.KeyCoder) (*Database, error) {
+// NewDatabaseWith returns a new database.
+func NewDatabaseWith(coder document.KeyCoder) (*Database, error) {
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
 			tableName: {
@@ -66,26 +65,15 @@ func NewDatabaseWithID(id string, coder document.KeyCoder) (*Database, error) {
 		return nil, err
 	}
 	return &Database{
-		ID:       id,
 		MemDB:    memDB,
 		KeyCoder: coder,
 	}, nil
 }
 
-// NewDatabaseWith returns a new database.
-func NewDatabaseWith(coder document.KeyCoder) (*Database, error) {
-	return NewDatabaseWithID("", coder)
-}
-
-// Name returns the unique name.
-func (db *Database) Name() string {
-	return db.ID
-}
-
 // Transact begin a new transaction.
 func (db *Database) Transact(write bool) (kv.Transaction, error) {
 	if db.MemDB == nil {
-		return nil, store.NewDatabaseNotExistError(db.Name())
+		return nil, store.NewDatabaseNotExistError("memdb")
 	}
 	return newTransaction(db.MemDB.Txn(write), db.KeyCoder), nil
 }

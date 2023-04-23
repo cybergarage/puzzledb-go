@@ -22,7 +22,8 @@ import (
 
 // Store represents a Memdb store service instance.
 type Store struct {
-	*Databases
+	document.KeyCoder
+	*Database
 }
 
 // NewStore returns a new memdb store instance.
@@ -33,13 +34,14 @@ func NewStore() kv.Service {
 // NewStoreWith returns a new memdb store instance with the specified key coder.
 func NewStoreWith(coder document.KeyCoder) kv.Service {
 	return &Store{
-		Databases: NewDatabasesWith(coder),
+		KeyCoder: coder,
+		Database: nil,
 	}
 }
 
 // SetKeyCoder sets the key coder.
 func (store *Store) SetKeyCoder(coder document.KeyCoder) {
-	store.Databases.KeyCoder = coder
+	store.KeyCoder = coder
 }
 
 // ServiceType returns the plug-in service type.
@@ -54,6 +56,11 @@ func (store *Store) ServiceName() string {
 
 // Start starts this memdb.
 func (store *Store) Start() error {
+	db, err := NewDatabaseWith(store.KeyCoder)
+	if err != nil {
+		return err
+	}
+	store.Database = db
 	return nil
 }
 
