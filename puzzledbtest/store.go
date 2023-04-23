@@ -62,28 +62,35 @@ func (s *Store) String() string {
 		}
 		for rs.Next() {
 			obj := rs.Object()
+
 			keys := obj.Key.Elements()
-			hb, ok := keys[0].([]byte)
+			keyHeaderBytes, ok := keys[0].([]byte)
 			if !ok {
 				out += fmt.Sprintf("%v: %v\n", keys[1:], obj.Value)
 			}
-			h := dockv.NewKeyHeaderFrom(hb)
-			switch h.Type() {
+			keyHeader := dockv.NewKeyHeaderFrom(keyHeaderBytes)
+
+			switch keyHeader.Type() {
 			case dockv.DatabaseObject, dockv.SchemaObject, dockv.DocumentObject:
 				r := bytes.NewReader(obj.Value)
 				val, err := docStore.DecodeDocument(r)
 				if err != nil {
-					out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], obj.Value)
+					out += fmt.Sprintf("%v %v: %v\n", keyHeader, keys[1:], obj.Value)
 					continue
 				}
-				out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], val)
+				out += fmt.Sprintf("%v %v: %v\n", keyHeader, keys[1:], val)
 			case dockv.IndexObject:
 				idxKeys, err := docStore.DecodeKey(obj.Value)
 				if err != nil {
-					out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], obj.Value)
+					out += fmt.Sprintf("%v %v: %v\n", keyHeader, keys[1:], obj.Value)
 					continue
 				}
-				out += fmt.Sprintf("%v %v: %v\n", h, keys[1:], idxKeys)
+				idxKeyHederBytes, ok := idxKeys[0].([]byte)
+				if !ok {
+					out += fmt.Sprintf("%v %v: %v\n", keyHeader, keys[1:], idxKeys)
+				}
+				idxKeyHeder := dockv.NewKeyHeaderFrom(idxKeyHederBytes)
+				out += fmt.Sprintf("%v %v: %v %v\n", keyHeader, keys[1:], idxKeyHeder, idxKeys[1:])
 			}
 		}
 	}
