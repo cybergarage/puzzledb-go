@@ -25,3 +25,6 @@ func NewStoreWith(service store.Service) *Store {
 		Service: service,
 	}
 }
+
+func (s *Store) Print() {
+}
