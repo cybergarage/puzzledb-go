@@ -107,6 +107,9 @@ func (service *Service) insertDocumentIndexes(txn store.Transaction, db string, 
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for secKey, secVal := range vmap {
+			if secKey == ObjectID {
+				continue
+			}
 			err := service.insertDocumentIndex(txn, db, col, secKey, secVal, docKey)
 			if err != nil {
 				return err
