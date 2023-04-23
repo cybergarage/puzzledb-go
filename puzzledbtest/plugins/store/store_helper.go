@@ -59,9 +59,22 @@ func DocumentStoreTest(t *testing.T, service plugins.Service) {
 		return
 	}
 
-	_, err := service.ListDatabases()
-	if err != nil {
-		t.Error(err)
+	hasDatabase := func(name string) bool {
+		dbs, err := service.ListDatabases()
+		if err != nil {
+			t.Error(err)
+			return false
+		}
+		for _, db := range dbs {
+			if db.Name() == name {
+				return true
+			}
+		}
+		return false
+	}
+
+	if !hasDatabase(testDBName) {
+		t.Errorf("database %s not found", testDBName)
 		return
 	}
 
