@@ -25,26 +25,25 @@ import (
 
 func TestDocumentStore(t *testing.T) {
 	docStore := store.NewStore()
-
 	mgr := puzzledbtest.NewPluginManager()
 	for _, kvStore := range mgr.EnabledKvStoreServices() {
 		for _, keyCoder := range mgr.EnabledKeyCoderServices() {
 			for _, docCoder := range mgr.EnabledDocumentCoderServices() {
-				if err := kvStore.Start(); err != nil {
-					t.Skip(err)
-					return
-				}
-				defer func() {
-					if err := kvStore.Stop(); err != nil {
-						t.Error(err)
-					}
-				}()
 				docStore.SetKvStore(kvStore)
 				docStore.SetKeyCoder(keyCoder)
 				docStore.SetDocumentCoder(docCoder)
 				serviceNames := []string{keyCoder.ServiceName(), docCoder.ServiceName(), kvStore.ServiceName()}
 				testName := fmt.Sprintf("%s(%s)", docStore.ServiceName(), strings.Join(serviceNames, ","))
 				t.Run(testName, func(t *testing.T) {
+					if err := kvStore.Start(); err != nil {
+						t.Skip(err)
+						return
+					}
+					defer func() {
+						if err := kvStore.Stop(); err != nil {
+							t.Error(err)
+						}
+					}()
 					DocumentStoreTest(t, docStore)
 				})
 			}
