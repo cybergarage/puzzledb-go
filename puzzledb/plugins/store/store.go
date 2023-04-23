@@ -205,6 +205,7 @@ func (s *Store) ListDatabases() ([]store.Database, error) {
 
 // Start starts this store.
 func (s *Store) Start() error {
+	s.kvStore.SetKeyCoder(s.KeyCoder)
 	return nil
 }
 
