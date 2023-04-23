@@ -25,37 +25,60 @@ import (
 type indexResultSet struct {
 	txn     *transaction
 	kvRs    kv.ResultSet
+	kvIdxRs kv.ResultSet
 	obj     store.Object
-	decoder document.Decoder
+	document.KeyDecoder
+	document.Decoder
 }
 
-func newIndexResultSet(txn *transaction, decoder document.Decoder, rs kv.ResultSet) store.ResultSet {
+func newIndexResultSet(txn *transaction, keyDecoder document.KeyDecoder, docDecoder document.Decoder, rs kv.ResultSet) store.ResultSet {
 	return &indexResultSet{
-		txn:     txn,
-		kvRs:    rs,
-		obj:     nil,
-		decoder: decoder,
+		txn:        txn,
+		kvRs:       rs,
+		kvIdxRs:    nil,
+		obj:        nil,
+		KeyDecoder: keyDecoder,
+		Decoder:    docDecoder,
 	}
 }
 
-// Next moves the cursor forward next object from its current position.
+// Next moves the cursor forward next object from its current resultset position.
 func (rs *indexResultSet) Next() bool {
+	// First, checks the current index resultset.
+	if rs.kvIdxRs != nil {
+		return rs.nextIndex()
+	}
+
+	// Next, checks the current resultset when the current index resultset is nil.
 	if !rs.kvRs.Next() {
 		return false
 	}
 	kvIdxObj := rs.kvRs.Object()
-	kvIdx, err := rs.decoder.DecodeDocument(bytes.NewReader(kvIdxObj.Value))
+	kvIdx, err := rs.txn.DecodeKey(kvIdxObj.Value)
 	if err != nil {
 		return false
 	}
-	kvRs, err := rs.txn.kv.GetRange([]any{kvIdx}) // kvIdx is already encoded
+	kvIdxRs, err := rs.txn.kv.GetRange(kvIdx)
 	if err != nil {
 		return false
 	}
-	if !kvRs.Next() {
+	rs.kvIdxRs = kvIdxRs
+	if rs.nextIndex() {
+		return true
+	}
+	return rs.Next()
+}
+
+// nextIndex moves the cursor forward next object from the current index resultset.
+func (rs *indexResultSet) nextIndex() bool {
+	if rs.kvIdxRs == nil {
 		return false
 	}
-	kvObj := kvRs.Object()
+	if !rs.kvIdxRs.Next() {
+		rs.kvIdxRs = nil
+		return false
+	}
+	kvObj := rs.kvIdxRs.Object()
 	if kvObj == nil {
 		return false
 	}
