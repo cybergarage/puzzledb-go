@@ -100,10 +100,6 @@ func (s *Store) RemoveDatabase(name string) error {
 
 // ListDatabases returns the all databases.
 func (s *Store) ListDatabases() ([]store.Database, error) {
-	kvDB, err := s.kvStore.ListDatabases()
-	if err != nil {
-		return nil, err
-	}
 	dbs := make([]store.Database, len(kvDB))
 	for n, kvDB := range kvDB {
 		dbs[n] = &database{
