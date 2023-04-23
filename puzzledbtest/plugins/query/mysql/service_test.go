@@ -32,8 +32,9 @@ func TestMySQLTestSuite(t *testing.T) {
 		return
 	}
 
-	sqltest.RunEmbedSuite(t, sqltest.NewMySQLClient())
-	t.Logf("\n%s", server.Store().String())
+	if err := sqltest.RunEmbedSuite(t, sqltest.NewMySQLClient()); err != nil {
+		t.Logf("\n%s", server.Store().String())
+	}
 
 	err = server.Stop()
 	if err != nil {
