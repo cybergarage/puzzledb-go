@@ -104,6 +104,22 @@ func (txn *transaction) Remove(key kv.Key) error {
 	return nil
 }
 
+// RemoveRange removes the specified key-value object.
+func (txn *transaction) RemoveRange(key kv.Key) error {
+	keyBytes, err := txn.EncodeKey(key)
+	if err != nil {
+		return err
+	}
+	_, err = txn.Txn.DeleteAll(tableName, string(keyBytes))
+	if err != nil {
+		if errors.Is(err, memdb.ErrNotFound) {
+			return kv.NewObjectNotExistError(key)
+		}
+		return err
+	}
+	return nil
+}
+
 // Commit commits this transaction.
 func (txn *transaction) Commit() error {
 	txn.Txn.Commit()
