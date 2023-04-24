@@ -27,6 +27,8 @@ type DatabaseOperation interface {
 	GetSchema(name string) (Schema, error)
 	// RemoveSchema removes the specified schema.
 	RemoveSchema(name string) error
+	// TruncateSchemas removes all schemas.
+	TruncateSchemas() error
 }
 
 type DocumentOperation interface {

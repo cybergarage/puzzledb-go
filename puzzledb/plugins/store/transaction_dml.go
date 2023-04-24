@@ -65,3 +65,9 @@ func (txn *transaction) RemoveSchema(name string) error {
 	kvSchemaKey := txn.createSchemaKey(name)
 	return txn.kv.Remove(kvSchemaKey)
 }
+
+// TruncateSchemas removes all schemas.
+func (txn *transaction) TruncateSchemas() error {
+	kvSchemaKey := kv.NewKeyWith(kv.SchemaKeyHeader, document.NewKeyWith(txn.Database().Name()))
+	return txn.kv.Remove(kvSchemaKey)
+}
