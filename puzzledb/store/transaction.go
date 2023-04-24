@@ -40,6 +40,8 @@ type DocumentOperation interface {
 	RemoveDocument(docKey Key) error
 	// RemoveDocuments removes document objects with the specified primary key.
 	RemoveDocuments(docKey Key) error
+	// TruncateDocuments removes all document objects.
+	TruncateDocuments() error
 }
 
 type IndexOperation interface {
