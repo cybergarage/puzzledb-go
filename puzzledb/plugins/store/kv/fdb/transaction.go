@@ -74,6 +74,20 @@ func (txn *transaction) Remove(key kv.Key) error {
 	return nil
 }
 
+// RemoveRange removes the specified key-value objects.
+func (txn *transaction) RemoveRange(key kv.Key) error {
+	keyBytes, err := txn.EncodeKey(key)
+	if err != nil {
+		return err
+	}
+	r, err := fdb.PrefixRange(fdb.Key(keyBytes))
+	if err != nil {
+		return err
+	}
+	txn.Transaction.ClearRange(r)
+	return nil
+}
+
 // Commit commits this transaction.
 func (txn *transaction) Commit() error {
 	err := txn.Transaction.Commit().Get()
