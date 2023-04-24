@@ -15,6 +15,7 @@
 package store
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -48,4 +49,10 @@ func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet,
 		return nil, err
 	}
 	return newIndexResultSet(txn, txn.KeyCoder, txn.Coder, kvIdxRs), nil
+}
+
+// TruncateIndexes removes all secondary indexes.
+func (txn *transaction) TruncateIndexes() error {
+	kvSchemaKey := kv.NewKeyWith(kv.SecondaryIndexHeader, document.NewKeyWith(txn.Database().Name()))
+	return txn.kv.Remove(kvSchemaKey)
 }

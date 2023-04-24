@@ -53,6 +53,8 @@ type IndexOperation interface {
 	RemoveIndex(idxKey Key) error
 	// FindDocumentsByIndex returns a result set matching the specified index key.
 	FindDocumentsByIndex(indexKey Key) (ResultSet, error)
+	// TruncateIndexes removes all secondary indexes.
+	TruncateIndexes() error
 }
 
 type TransactionOperation interface {
