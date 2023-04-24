@@ -44,7 +44,7 @@ func TestDocumentStore(t *testing.T) {
 							t.Error(err)
 						}
 					}()
-					DocumentStoreTest(t, docStore)
+					DocumentStoreCRUDTest(t, docStore)
 				})
 			}
 		}

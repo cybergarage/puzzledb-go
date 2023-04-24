@@ -45,10 +45,10 @@ func deepEqual(x, y any) error {
 }
 
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
-func DocumentStoreTest(t *testing.T, service plugins.Service) {
+func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	t.Helper()
 
-	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().Unix())
+	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().UnixNano())
 
 	if err := service.Start(); err != nil {
 		t.Error(err)
