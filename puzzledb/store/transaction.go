@@ -38,6 +38,8 @@ type DocumentOperation interface {
 	UpdateDocument(docKey Key, obj Object) error
 	// RemoveDocument removes a document object with the specified primary key.
 	RemoveDocument(docKey Key) error
+	// RemoveDocuments removes document objects with the specified primary key.
+	RemoveDocuments(docKey Key) error
 }
 
 type IndexOperation interface {
