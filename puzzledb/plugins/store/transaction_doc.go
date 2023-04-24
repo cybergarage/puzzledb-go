@@ -45,12 +45,6 @@ func (txn *transaction) FindDocuments(docKey store.Key) (store.ResultSet, error)
 	return newResultSet(txn.Coder, kvRs), nil
 }
 
-// RemoveDocument removes a document object with the specified primary key.
-func (txn *transaction) RemoveDocument(docKey store.Key) error {
-	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
-	return wrapKeyNotExistError(docKey, txn.kv.Remove(kvDocKey))
-}
-
 // UpdateDocument updates a document object with the specified primary key.
 func (txn *transaction) UpdateDocument(docKey store.Key, obj store.Object) error {
 	var encObj bytes.Buffer
@@ -64,4 +58,16 @@ func (txn *transaction) UpdateDocument(docKey store.Key, obj store.Object) error
 		Value: encObj.Bytes(),
 	}
 	return txn.kv.Set(&kvObj)
+}
+
+// RemoveDocument removes a document object with the specified primary key.
+func (txn *transaction) RemoveDocument(docKey store.Key) error {
+	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
+	return wrapKeyNotExistError(docKey, txn.kv.Remove(kvDocKey))
+}
+
+// RemoveDocument removes document objects with the specified primary key.
+func (txn *transaction) RemoveDocuments(docKey store.Key) error {
+	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
+	return wrapKeyNotExistError(docKey, txn.kv.RemoveRange(kvDocKey))
 }
