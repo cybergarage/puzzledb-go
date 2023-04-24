@@ -17,6 +17,7 @@ package store
 import (
 	"bytes"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -70,4 +71,9 @@ func (txn *transaction) RemoveDocument(docKey store.Key) error {
 func (txn *transaction) RemoveDocuments(docKey store.Key) error {
 	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
 	return wrapKeyNotExistError(docKey, txn.kv.RemoveRange(kvDocKey))
+}
+
+// TruncateDocuments removes all document objects.
+func (txn *transaction) TruncateDocuments() error {
+	return txn.RemoveDocuments(document.NewKeyWith(txn.Database().Name()))
 }
