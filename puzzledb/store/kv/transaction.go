@@ -24,6 +24,8 @@ type Transaction interface {
 	GetRange(key Key) (ResultSet, error)
 	// Remove removes the specified key-value object.
 	Remove(key Key) error
+	// RemoveRange removes the specified key-value objects.
+	RemoveRange(key Key) error
 	// Commit commits this transaction.
 	Commit() error
 	// Cancel cancels this transaction.
