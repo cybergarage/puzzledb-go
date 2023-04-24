@@ -176,20 +176,59 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 
 // RemoveDatabase removes the specified database.
 func (s *Store) RemoveDatabase(name string) error {
+	db, err := s.GetDatabase(name)
+	if err != nil {
+		return err
+	}
+
+	// Remove database objects
+
+	dbTxn, err := db.Transact(true)
+	if err != nil {
+		return err
+	}
+
+	err = dbTxn.TruncateDocuments()
+	if err != nil {
+		if err := dbTxn.Cancel(); err != nil {
+			return err
+		}
+		return err
+	}
+
+	err = dbTxn.TruncateIndexes()
+	if err != nil {
+		if err := dbTxn.Cancel(); err != nil {
+			return err
+		}
+		return err
+	}
+
+	err = dbTxn.TruncateSchemas()
+	if err != nil {
+		if err := dbTxn.Cancel(); err != nil {
+			return err
+		}
+		return err
+	}
+
+	err = dbTxn.Commit()
+	if err != nil {
+		if err := dbTxn.Cancel(); err != nil {
+			return err
+		}
+		return err
+	}
+
+	// Remove database objects
+
+	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
+
 	txn, err := s.kvStore.Transact(true)
 	if err != nil {
 		return err
 	}
 
-	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{name})
-
-	kvDBObj, err := txn.Get(kvDBKey)
-	if err != nil && kvDBObj == nil {
-		if err := txn.Cancel(); err != nil {
-			return err
-		}
-		return err
-	}
 	err = txn.Remove(kvDBKey)
 	if err != nil {
 		if err := txn.Cancel(); err != nil {
