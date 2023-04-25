@@ -39,17 +39,19 @@ import (
 type Server struct {
 	*Config
 	*PluginManager
+	*GrpcServer
 	tracer.Tracer
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
+		GrpcServer:    nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 		Tracer:        tracer.NullTracer,
 	}
-
+	server.GrpcServer = NewGrpcServerWith(server)
 	return server
 }
 
