@@ -4,11 +4,43 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ![doc/img/roadmap](img/roadmap.png)
 
-## v0.8.1
+## v1.1.0
+
+-   Query Plug-ins
+
+    -   ✓ PostgreSQL Plug-in
+
+## v1.0.0
+
+-   ❏ CLI Utilities
+
+    -   ✓ puzzledb-cli
+
+-   ❏ Distributed Tracer Plug-ins
+
+    -   ❏ OpenTelemetry Plug-in
+
+    -   ❏ OpenTracing Plug-in
+
+## v0.9.0
+
+-   Coordinator Plug-ins
+
+    -   ❏ etcd Plug-in
 
 -   Storage Plug-ins
 
--   ✓ FoundationDB KV-Storage Plug-in
+    -   ✓ FoundationDB Plug-in
+
+## v0.8.x
+
+-   Coordinator Plug-ins
+
+    -   ✓ memdb Plug-in
+
+-   Configurator Plug-ins
+
+    -   ✓ puzzledb.yaml
 
 ## v0.8.0
 
@@ -19,3 +51,9 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
     -   ✓ Redis Plug-in
 
     -   ✓ MongoDB Plug-in
+
+-   Storage Plug-ins
+
+    -   ✓ Document Plug-in
+
+    -   ✓ memdb Plug-in
