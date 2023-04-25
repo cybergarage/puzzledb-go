@@ -34,12 +34,16 @@ TEST_PKG=\
 BIN_SRC_ROOT=cmd
 BIN_ID=${MODULE_ROOT}/${BIN_SRC_ROOT}
 BIN_SERVER=${PKG_NAME}-server
-BIN_DOCKER_TAG=cybergarage/${PKG_NAME}:${PKG_VER}
 BIN_SERVER_ID=${BIN_ID}/${BIN_SERVER}
+BIN_SERVER_DOCKER_TAG=cybergarage/${PKG_NAME}:${PKG_VER}
+BIN_CLI=${PKG_NAME}-cli
+BIN_CLI_ID=${BIN_ID}/${BIN_CLI}
 BIN_SRCS=\
-        ${BIN_SRC_ROOT}/${BIN_SERVER}
+        ${BIN_SRC_ROOT}/${BIN_SERVER} \
+        ${BIN_SRC_ROOT}/${BIN_CLI}
 BINS=\
-        ${BIN_SERVER_ID}
+        ${BIN_SERVER_ID} \
+        ${BIN_CLI_ID}
 
 .PHONY: test format vet lint clean docker cmd
 
@@ -64,7 +68,7 @@ test_only:
 	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
 image:
-	docker image build -t${BIN_DOCKER_TAG} .
+	docker image build -t${BIN_SERVER_DOCKER_TAG} .
 
 cmd:
 	go build -v -gcflags=${GCFLAGS} ${BINS}
@@ -76,7 +80,7 @@ run: cmd
 	./${BIN_SERVER}
 
 rund:
-	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3306:3306 ${BIN_DOCKER_TAG}
+	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3306:3306 ${BIN_SERVER_DOCKER_TAG}
 
 clean:
 	go clean -i ${PKG}
