@@ -29,6 +29,7 @@ const (
 )
 
 type GrpcServer struct {
+	*Server
 	grpcServer *grpc.Server
 	Addr       string
 	Port       int
@@ -36,9 +37,10 @@ type GrpcServer struct {
 	pb.UnimplementedStoreAPIServer
 }
 
-// NewGrpcServer returns a new GrpcServer.
-func NewGrpcServer() *GrpcServer {
+// NewGrpcServerWith returns a new GrpcServer.
+func NewGrpcServerWith(server *Server) *GrpcServer {
 	return &GrpcServer{
+		Server:                      server,
 		grpcServer:                  nil,
 		Addr:                        "",
 		Port:                        DefaultGrpcPort,
