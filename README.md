@@ -72,6 +72,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ![doc/img/roadmap](doc/img/roadmap.png)
 
+For more information about the roadmap, please refer to [Roadmap](doc/roadmap.adoc).
+
 # User Guides
 
 -   Get Started
