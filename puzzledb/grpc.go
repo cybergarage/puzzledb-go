@@ -25,7 +25,7 @@ import (
 
 const (
 	// DefaultGrpcPort is the default port number of the gRPC server.
-	DefaultGrpcPort = 50051
+	DefaultGrpcPort = 50053
 )
 
 type GrpcServer struct {
