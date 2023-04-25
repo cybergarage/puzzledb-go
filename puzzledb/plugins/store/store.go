@@ -181,7 +181,7 @@ func (s *Store) RemoveDatabase(name string) error {
 		return err
 	}
 
-	// Remove database objects
+	// Remove all database objects
 
 	dbTxn, err := db.Transact(true)
 	if err != nil {
