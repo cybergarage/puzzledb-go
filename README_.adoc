@@ -62,3 +62,5 @@ include::doc/roadmap.adoc[]
 ** link:doc/plugin-concept.md[Plug-In Concept]
 ** link:doc/plugin-types.md[Plug-in Services]
 *** link:doc/plugin-tutorial.md[Building User Plug-ins]
+* Specification
+** link:doc/storage-kv.md[Key-Value Store Specification]
