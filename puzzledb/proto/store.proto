@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package api;
+
+service DatabaseAPI {
+  rpc ListDatabases (ListDatabasesRequest) returns (ListDatabasesResponse);
+  rpc ListCollections (ListCollectionsRequest) returns (ListCollectionsResponse);
+}
+
+message ListDatabasesRequest {
+}
+
+message ListDatabasesResponse {
+  repeated string databases = 1;
+}
+
+message ListCollectionsRequest {
+  string database_name = 1;
+}
+
+message ListCollectionsResponse {
+  repeated string collections = 1;
+}
