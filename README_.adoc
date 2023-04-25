@@ -38,7 +38,15 @@ This technology preview version partially supports major database models and pro
 ** link:doc/mysql.md[MySQL]
 ** PostgreSQL (Planning)
 
-include::doc/roadmap.adoc[]
+= Roadmap
+
+PuzzleDB is currently in a technical preview release. Currently,
+PuzzleDB is in the process of developing and testing a distributed
+plugin for the next release. The development roadmap for PuzzleDB is shown below.
+
+image:doc/img/roadmap.png[doc/img/roadmap]
+
+For more information about the roadmap, please refer to link:doc/roadmap.adoc[Roadmap].
 
 = User Guides
 
