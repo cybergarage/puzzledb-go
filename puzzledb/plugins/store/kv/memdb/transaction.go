@@ -110,7 +110,7 @@ func (txn *transaction) RemoveRange(key kv.Key) error {
 	if err != nil {
 		return err
 	}
-	_, err = txn.Txn.DeleteAll(tableName, string(keyBytes))
+	_, err = txn.Txn.DeleteAll(tableName, idName+prefix, string(keyBytes))
 	if err != nil {
 		if errors.Is(err, memdb.ErrNotFound) {
 			return kv.NewObjectNotExistError(key)
