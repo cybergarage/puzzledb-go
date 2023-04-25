@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package api;
 
-service DatabaseAPI {
+option go_package = "github.com/cybergarage/puzzledb-go/puzzledb/proto/api";
+
+service StoreAPI {
   rpc ListDatabases (ListDatabasesRequest) returns (ListDatabasesResponse);
   rpc ListCollections (ListCollectionsRequest) returns (ListCollectionsResponse);
 }
