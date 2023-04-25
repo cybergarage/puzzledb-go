@@ -108,8 +108,7 @@ protopkg:
 	protoc -I=${PKG_PROTO_ROOT} --go_out=paths=source_relative:${PKG_PROTO_ROOT}/api --go-grpc_out=paths=source_relative:${PKG_PROTO_ROOT}/api $<
 protos=$(shell find ${PKG_SRC_ROOT} -name '*.proto')
 pbs=$(protos:.proto=.pb.go)
-proto: $(pbs) ${protopkg}
-
+proto: $(pbs)
 
 #
 # Testing
