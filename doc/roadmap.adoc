@@ -9,7 +9,7 @@ image:img/roadmap.png[doc/img/roadmap]
 == v1.1.0
 
 * Query Plug-ins
-** [*] PostgreSQL Plug-in
+** [ ] PostgreSQL Plug-in
 
 == v1.0.0
 * [ ] CLI Utilities
