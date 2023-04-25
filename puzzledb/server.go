@@ -15,12 +15,12 @@
 package puzzledb
 
 import (
+	"errors"
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
-	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
@@ -71,7 +71,7 @@ func (server *Server) SetConfig(config config.Config) {
 // Restart restarts the server.
 func (server *Server) Restart() error {
 	if err := server.Stop(); err != nil {
-		return errors.Wrap(err)
+		return err
 	}
 	return server.Start()
 }
@@ -107,12 +107,12 @@ func (server *Server) setupPlugins() error {
 
 	defaultKeyCoder, err := server.DefaultKeyCoderService()
 	if err != nil {
-		return errors.Wrap(err)
+		return err
 	}
 
 	defaultDocCoder, err := server.DefaultDocumentCoderService()
 	if err != nil {
-		return errors.Wrap(err)
+		return err
 	}
 
 	// KV store services
@@ -125,7 +125,7 @@ func (server *Server) setupPlugins() error {
 
 	defaultKvStore, err := server.DefaultKvStoreService()
 	if err != nil {
-		return errors.Wrap(err)
+		return err
 	}
 
 	for _, service := range server.DocumentStoreServices() {
@@ -142,12 +142,12 @@ func (server *Server) setupPlugins() error {
 
 	defaultCoodinator, err := server.DefaultCoordinatorService()
 	if err != nil {
-		return errors.Wrap(err)
+		return err
 	}
 
 	defaultStore, err := server.DefaultStoreService()
 	if err != nil {
-		return errors.Wrap(err)
+		return err
 	}
 
 	for _, service := range server.QueryServices() {
@@ -175,19 +175,25 @@ func (server *Server) Start() error {
 	}
 
 	if err := server.LoadPlugins(); err != nil {
-		return errors.Wrap(err)
+		return err
 	}
 
 	if err := server.setupPlugins(); err != nil {
-		return errors.Wrap(err)
+		return err
 	}
 
 	if err := server.Manager.Start(); err != nil {
-		return errors.Wrap(err)
+		if stopErr := server.Stop(); stopErr != nil {
+			return errors.Join(err, stopErr)
+		}
+		return err
 	}
 
 	if err := server.GrpcServer.Start(); err != nil {
-		return errors.Wrap(err)
+		if stopErr := server.Stop(); stopErr != nil {
+			return errors.Join(err, stopErr)
+		}
+		return err
 	}
 
 	log.Infof("%s", server.Manager.String())
@@ -198,13 +204,13 @@ func (server *Server) Start() error {
 
 // Stop stops the server.
 func (server *Server) Stop() error {
-	var lastErr error
-	if err := server.Manager.Stop(); err != nil {
-		lastErr = errors.Wrap(err)
+	var err error
+	if stopErr := server.Manager.Stop(); stopErr != nil {
+		err = errors.Join(err, stopErr)
 	}
-	if err := server.GrpcServer.Stop(); err != nil {
-		lastErr = errors.Wrap(err)
+	if stopErr := server.GrpcServer.Stop(); stopErr != nil {
+		err = errors.Join(err, stopErr)
 	}
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
-	return lastErr
+	return err
 }
