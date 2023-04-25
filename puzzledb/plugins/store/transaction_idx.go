@@ -54,5 +54,5 @@ func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet,
 // TruncateIndexes removes all secondary indexes.
 func (txn *transaction) TruncateIndexes() error {
 	kvSchemaKey := kv.NewKeyWith(kv.SecondaryIndexHeader, document.NewKeyWith(txn.Database().Name()))
-	return txn.kv.Remove(kvSchemaKey)
+	return txn.kv.RemoveRange(kvSchemaKey)
 }
