@@ -198,9 +198,13 @@ func (server *Server) Start() error {
 
 // Stop stops the server.
 func (server *Server) Stop() error {
+	var lastErr error
 	if err := server.Manager.Stop(); err != nil {
-		return errors.Wrap(err)
+		lastErr = errors.Wrap(err)
+	}
+	if err := server.GrpcServer.Stop(); err != nil {
+		lastErr = errors.Wrap(err)
 	}
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
-	return nil
+	return lastErr
 }
