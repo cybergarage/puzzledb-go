@@ -109,3 +109,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
     -   [Plug-in Services](doc/plugin-types.md)
 
         -   [Building User Plug-ins](doc/plugin-tutorial.md)
+
+-   Specification
+
+    -   [Key-Value Store Specification](doc/storage-kv.md)

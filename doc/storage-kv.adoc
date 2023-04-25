@@ -1,0 +1,12 @@
+= Key-Value Store Specification
+
+ In PuzzleDB, not only are records represented as key-value pairs, but schemas and indices are also represented as key-value data. This section describes the format of the key-value data used in PuzzleDB.
+
+[options="header"]
+|==============================================================
+| Type   | Key Order |          |            |         | Value 
+|        | 1         | 2        | 3          | 4       |       
+| Object | Header    | Database | Collection | Element | Object
+| Index  | Header    | Database | Collection | Element | Key   
+| Schema | Header    | Database | Collection | -       | CBOR  
+|==============================================================
