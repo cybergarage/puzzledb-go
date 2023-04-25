@@ -31,7 +31,7 @@ TEST_SRC_ROOT=${PKG_NAME}test
 TEST_PKG=\
 	${MODULE_ROOT}/${TEST_SRC_ROOT}/...
 
-BIN_SRC_ROOT=bin
+BIN_SRC_ROOT=cmd
 BIN_ID=${MODULE_ROOT}/${BIN_SRC_ROOT}
 BIN_SERVER=${PKG_NAME}-server
 BIN_DOCKER_TAG=cybergarage/${PKG_NAME}:${PKG_VER}
@@ -41,7 +41,7 @@ BIN_SRCS=\
 BINS=\
         ${BIN_SERVER_ID}
 
-.PHONY: test format vet lint clean docker bin
+.PHONY: test format vet lint clean docker cmd
 
 all: test
 
@@ -66,13 +66,13 @@ test_only:
 image:
 	docker image build -t${BIN_DOCKER_TAG} .
 
-bin:
+cmd:
 	go build -v -gcflags=${GCFLAGS} ${BINS}
 
 install:
 	go install -v -gcflags=${GCFLAGS} ${BINS}
 
-run: bin
+run: cmd
 	./${BIN_SERVER}
 
 rund:
