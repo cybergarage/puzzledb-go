@@ -14,10 +14,14 @@
 
 SHELL := bash
 
+GOBIN := $(shell go env GOPATH)/bin
+PATH := $(GOBIN):$(PATH)
+
 PKG_NAME=puzzledb
 PKG_VER=$(shell git describe --abbrev=0 --tags)
 
 MODULE_ROOT=github.com/cybergarage/puzzledb-go
+PKG_ROOT=${MODULE_ROOT}/${PKG_NAME}
 
 PKG_SRC_ROOT=${PKG_NAME}
 PKG=\
@@ -90,6 +94,22 @@ doc_touch: $(csvs)
 doc: doc_touch $(docs)
 	@mv README_.md README.md
 	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
+
+#
+# Protos
+#
+
+PKG_PROTO_ROOT=${PKG_SRC_ROOT}/proto
+protopkg:
+	go get -u google.golang.org/protobuf
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest	
+%.pb.go : %.proto
+	protoc -I=${PKG_PROTO_ROOT} --go_out=paths=source_relative:${PKG_PROTO_ROOT}/api --go-grpc_out=paths=source_relative:${PKG_PROTO_ROOT}/api $<
+protos=$(shell find ${PKG_SRC_ROOT} -name '*.proto')
+pbs=$(protos:.proto=.pb.go)
+proto: $(pbs) ${protopkg}
+
 
 #
 # Testing
