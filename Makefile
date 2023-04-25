@@ -80,7 +80,7 @@ run: cmd
 	./${BIN_SERVER}
 
 rund:
-	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3306:3306 ${BIN_SERVER_DOCKER_TAG}
+	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3306:3306 -p 50053:50053 ${BIN_SERVER_DOCKER_TAG}
 
 clean:
 	go clean -i ${PKG}
