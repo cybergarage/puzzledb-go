@@ -33,7 +33,6 @@ type GrpcServer struct {
 	grpcServer *grpc.Server
 	Addr       string
 	Port       int
-	net.Listener
 	pb.UnimplementedStoreAPIServer
 }
 
@@ -44,7 +43,6 @@ func NewGrpcServerWith(server *Server) *GrpcServer {
 		grpcServer:                  nil,
 		Addr:                        "",
 		Port:                        DefaultGrpcPort,
-		Listener:                    nil,
 		UnimplementedStoreAPIServer: pb.UnimplementedStoreAPIServer{},
 	}
 }
@@ -53,13 +51,13 @@ func NewGrpcServerWith(server *Server) *GrpcServer {
 func (server *GrpcServer) Start() error {
 	var err error
 	addr := net.JoinHostPort(server.Addr, strconv.Itoa(server.Port))
-	server.Listener, err = net.Listen("tcp", addr)
+	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		return err
 	}
 	server.grpcServer = grpc.NewServer()
 	pb.RegisterStoreAPIServer(server.grpcServer, server)
-	go server.grpcServer.Serve(server.Listener)
+	go server.grpcServer.Serve(listener)
 	return nil
 }
 
@@ -68,13 +66,6 @@ func (server *GrpcServer) Stop() error {
 	if server.grpcServer != nil {
 		server.grpcServer.Stop()
 		server.grpcServer = nil
-	}
-	if server.Listener != nil {
-		err := server.Listener.Close()
-		if err != nil {
-			return err
-		}
-		server.Listener = nil
 	}
 	return nil
 }
