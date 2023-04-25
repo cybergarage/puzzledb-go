@@ -59,10 +59,7 @@ func (server *GrpcServer) Start() error {
 	}
 	server.grpcServer = grpc.NewServer()
 	pb.RegisterStoreAPIServer(server.grpcServer, server)
-	err = server.grpcServer.Serve(server.Listener)
-	if err != nil {
-		return err
-	}
+	go server.grpcServer.Serve(server.Listener)
 	return nil
 }
 
