@@ -8,7 +8,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 -   Query Plug-ins
 
-    -   ✓ PostgreSQL Plug-in
+    -   ❏ PostgreSQL Plug-in
 
 ## v1.0.0
 
