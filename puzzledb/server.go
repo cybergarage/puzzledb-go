@@ -155,6 +155,10 @@ func (server *Server) setupPlugins() error {
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
 		service.SetTracer(server.Tracer)
+		port, err := server.QueryPortConfig(service.ServiceName())
+		if err != nil {
+			service.SetPort(port)
+		}
 	}
 
 	return nil
