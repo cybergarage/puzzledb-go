@@ -38,7 +38,7 @@ func TestConfig(t *testing.T) {
 		},
 	}
 	for _, port := range ports {
-		portNum, err := conf.Port(port.name)
+		portNum, err := conf.PortConfig(port.name)
 		if err != nil {
 			t.Error(err)
 			t.Log(conf.String())
