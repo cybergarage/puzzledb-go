@@ -16,6 +16,7 @@ package config
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -74,7 +75,9 @@ func (conf *viperConfig) GetBool(path string) (bool, error) {
 // String returns a string representation of the configuration.
 func (conf *viperConfig) String() string {
 	var s string
-	for _, key := range viper.AllKeys() {
+	keys := viper.AllKeys()
+	sort.Strings(keys)
+	for _, key := range keys {
 		value := viper.Get(key)
 		s += fmt.Sprintf("%s: %v\n", key, value)
 	}
