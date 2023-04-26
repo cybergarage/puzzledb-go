@@ -47,6 +47,11 @@ func NewGrpcServerWith(server *Server) *GrpcServer {
 	}
 }
 
+// SetPort sets a port number of the server.
+func (server *GrpcServer) SetPort(port int) {
+	server.Port = port
+}
+
 // Start starts the server.
 func (server *GrpcServer) Start() error {
 	var err error
@@ -63,6 +68,8 @@ func (server *GrpcServer) Start() error {
 		}
 	}()
 
+	log.Infof("gRPC (%s) started", addr)
+
 	return nil
 }
 
@@ -72,5 +79,9 @@ func (server *GrpcServer) Stop() error {
 		server.grpcServer.Stop()
 		server.grpcServer = nil
 	}
+
+	addr := net.JoinHostPort(server.Addr, strconv.Itoa(server.Port))
+	log.Infof("gRPC (%s) terminated", addr)
+
 	return nil
 }
