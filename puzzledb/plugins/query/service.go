@@ -37,6 +37,8 @@ type Service interface {
 	Store() store.Store
 	// SetTracer sets the tracing tracer.
 	SetTracer(t tracer.Tracer)
+	// SetPort sets the listen port.
+	SetPort(port int)
 }
 
 type BaseService struct {
