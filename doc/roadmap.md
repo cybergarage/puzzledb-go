@@ -42,6 +42,10 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   ✓ puzzledb.yaml
 
+-   Operator Plug-ins
+
+    -   gRPC Plug-in
+
 ## v0.8.0
 
 -   Query Plug-ins
