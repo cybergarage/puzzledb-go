@@ -1,6 +1,6 @@
 grpc:
   enabled: true
-  port: 50051
+  port: 50053
 logging:
   level: info
 tracing:
