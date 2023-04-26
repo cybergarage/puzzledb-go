@@ -18,7 +18,6 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/cybergarage/go-logger/log"
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/api"
 	"google.golang.org/grpc"
 )
@@ -57,11 +56,6 @@ func (server *GrpcServer) Start() error {
 	}
 	server.grpcServer = grpc.NewServer()
 	pb.RegisterStoreAPIServer(server.grpcServer, server)
-	go func() {
-		if err := server.grpcServer.Serve(listener); err != nil {
-			log.Error(err)
-		}
-	}()
 
 	return nil
 }
