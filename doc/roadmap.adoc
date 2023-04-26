@@ -30,6 +30,8 @@ image:img/roadmap.png[doc/img/roadmap]
 ** [*] memdb Plug-in
 * Configurator Plug-ins
 ** [*] puzzledb.yaml
+* Operator Plug-ins
+** gRPC Plug-in
 
 == v0.8.0
 
