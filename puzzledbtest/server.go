@@ -15,6 +15,7 @@
 package puzzledbtest
 
 import (
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
@@ -53,4 +54,22 @@ func NewServerWithConfig(config config.Config) *Server {
 func (server *Server) Store() *Store {
 	store, _ := server.DefaultStoreService()
 	return NewStoreWith(store)
+}
+
+// Start starts the server.
+func (server *Server) Start() error {
+	err := server.Server.Start()
+	if err != nil {
+		log.Error(err)
+	}
+	return err
+}
+
+// Stop stops the server.
+func (server *Server) Stop() error {
+	err := server.Server.Stop()
+	if err != nil {
+		log.Error(err)
+	}
+	return err
 }
