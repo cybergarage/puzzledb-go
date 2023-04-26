@@ -12,8 +12,7 @@ image:img/roadmap.png[doc/img/roadmap]
 ** [ ] Audit Plug-ins
 ** [ ] Encrypt Plug-ins
 
-== v1.1.0
-
+== v1.5.0
 * Query Plug-ins
 ** [ ] PostgreSQL Plug-in
 

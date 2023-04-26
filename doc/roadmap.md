@@ -14,7 +14,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   ❏ Encrypt Plug-ins
 
-## v1.1.0
+## v1.5.0
 
 -   Query Plug-ins
 
