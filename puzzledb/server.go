@@ -193,8 +193,10 @@ func (server *Server) Start() error {
 		return err
 	}
 
+	log.Infof("%s", server.Manager.String())
+
 	ok, _ := server.GrpcServer.EnabledConfig()
-	if !ok {
+	if ok {
 		port, err := server.GrpcServer.PortConfig()
 		if err != nil {
 			server.GrpcServer.SetPort(port)
@@ -209,7 +211,6 @@ func (server *Server) Start() error {
 		log.Infof("gRPC disabled")
 	}
 
-	log.Infof("%s", server.Manager.String())
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
 	return nil
