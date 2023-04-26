@@ -193,11 +193,20 @@ func (server *Server) Start() error {
 		return err
 	}
 
-	if err := server.GrpcServer.Start(); err != nil {
-		if stopErr := server.Stop(); stopErr != nil {
-			return errors.Join(err, stopErr)
+	ok, _ := server.GrpcServer.EnabledConfig()
+	if !ok {
+		port, err := server.GrpcServer.PortConfig()
+		if err != nil {
+			server.GrpcServer.SetPort(port)
 		}
-		return err
+		if err := server.GrpcServer.Start(); err != nil {
+			if stopErr := server.Stop(); stopErr != nil {
+				return errors.Join(err, stopErr)
+			}
+			return err
+		}
+	} else {
+		log.Infof("gRPC disabled")
 	}
 
 	log.Infof("%s", server.Manager.String())
