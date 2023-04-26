@@ -81,8 +81,8 @@ func NewConfigWithString(conString string) (config.Config, error) {
 	return conf, nil
 }
 
-// Port returns a port number for the specified name.
-func (conf *Config) Port(name string) (int, error) {
+// PortConfig returns a port number for the specified query service name.
+func (conf *Config) PortConfig(name string) (int, error) {
 	return conf.Config.GetInt(strings.Join([]string{pluginsConfig, queryConfig, name, portConfig}, "."))
 }
 
