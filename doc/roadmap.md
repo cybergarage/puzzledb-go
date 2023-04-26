@@ -6,6 +6,10 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ## v2.0.0
 
+-   Enterprise Plug-ins
+
+    -   ❏ QoS Plug-ins
+
 -   Security Plug-ins
 
     -   ❏ Authenticator Plug-ins﻿
@@ -22,52 +26,64 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ## v1.0.0
 
--   ❏ CLI Utilities
+-   New Plug-ins
 
-    -   ✓ puzzledb-cli
+    -   Storage Plug-ins
 
--   ❏ Distributed Tracer Plug-ins
-
-    -   ❏ OpenTelemetry Plug-in
-
-    -   ❏ OpenTracing Plug-in
+        -   ❏ TiKV Plug-in
 
 ## v0.9.0
 
--   Coordinator Plug-ins
+-   New CLI Utilities
 
-    -   ❏ etcd Plug-in
+    -   ✓ puzzledb-cli
 
--   Storage Plug-ins
+-   New Plug-ins
 
-    -   ✓ FoundationDB Plug-in
+    -   Coordinator Plug-ins
 
-## v0.8.x
+        -   ✓ memdb Plug-in
 
--   Coordinator Plug-ins
+        -   ❏ etcd Plug-in
 
-    -   ✓ memdb Plug-in
+    -   Storage Plug-ins
 
--   Configurator Plug-ins
+        -   Key-Value Store Plug-ins
 
-    -   ✓ puzzledb.yaml
+            -   ✓ FoundationDB Plug-in
 
--   Operator Plug-ins
+    -   Configurator Plug-ins
 
-    -   gRPC Plug-in
+        -   ✓ puzzledb.yaml
+
+    -   Operator Plug-ins
+
+        -   gRPC Plug-in
+
+    -   Distributed Tracer Plug-ins
+
+        -   ✓ OpenTelemetry Plug-in
+
+        -   ✓ OpenTracing Plug-in
 
 ## v0.8.0
 
--   Query Plug-ins
+-   Initial Plug-ins
 
-    -   ✓ MySQL Plug-in
+    -   Query Plug-ins
 
-    -   ✓ Redis Plug-in
+        -   ✓ MySQL Plug-in
 
-    -   ✓ MongoDB Plug-in
+        -   ✓ Redis Plug-in
 
--   Storage Plug-ins
+        -   ✓ MongoDB Plug-in
 
-    -   ✓ Document Plug-in
+    -   Storage Plug-ins
 
-    -   ✓ memdb Plug-in
+        -   Document Store Plug-in
+
+            -   ✓ Key-Value storePlug-in
+
+        -   Key-Value Store Plug-ins
+
+            -   ✓ memdb Plug-in
