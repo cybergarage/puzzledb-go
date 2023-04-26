@@ -17,6 +17,7 @@ package puzzledb
 import (
 	"net"
 	"strconv"
+	"strings"
 
 	"github.com/cybergarage/go-logger/log"
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/api"
@@ -50,6 +51,16 @@ func NewGrpcServerWith(server *Server) *GrpcServer {
 // SetPort sets a port number of the server.
 func (server *GrpcServer) SetPort(port int) {
 	server.Port = port
+}
+
+// EnabledConfig returns a port number for the specified query service name.
+func (server *GrpcServer) EnabledConfig() (bool, error) {
+	return server.Config.GetBool(strings.Join([]string{grpcConfig, enabledConfig}, "."))
+}
+
+// PortConfig returns a port number for the specified query service name.
+func (server *GrpcServer) PortConfig() (int, error) {
+	return server.Config.GetInt(strings.Join([]string{grpcConfig, portConfig}, "."))
 }
 
 // Start starts the server.

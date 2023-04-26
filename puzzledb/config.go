@@ -27,6 +27,7 @@ const (
 	grpcConfig    = "grpc"
 	queryConfig   = "query"
 	portConfig    = "port"
+	enabledConfig = "enabled"
 )
 
 type Config struct {
@@ -80,11 +81,6 @@ func NewConfigWithString(conString string) (config.Config, error) {
 		return nil, err
 	}
 	return conf, nil
-}
-
-// QueryPortConfig returns a port number for the specified query service name.
-func (conf *Config) gRPCPortConfig() (int, error) {
-	return conf.Config.GetInt(strings.Join([]string{grpcConfig, portConfig}, "."))
 }
 
 // QueryPortConfig returns a port number for the specified query service name.
