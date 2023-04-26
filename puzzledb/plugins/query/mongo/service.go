@@ -42,7 +42,7 @@ func NewService() *Service {
 
 // ServiceName returns the plug-in service name.
 func (service *Service) ServiceName() string {
-	return "mongodb"
+	return "mongo"
 }
 
 // MessageReceived passes a request message from MongoDB client.
