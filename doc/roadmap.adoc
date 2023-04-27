@@ -7,49 +7,54 @@ plugin for the next release. The development roadmap for PuzzleDB is shown below
 image:img/roadmap.png[doc/img/roadmap]
 
 == v2.0.0
-* Enterprise Plug-ins
-** [ ] QoS Plug-ins
-* Security Plug-ins
-** [ ] Authenticator Plug-ins﻿
-** [ ] Audit Plug-ins
-** [ ] Encrypt Plug-ins
+* New plug-ins
+** Enterprise plug-ins
+*** [ ] Added QoS plug-ins
+** Security plug-ins
+*** [ ] Added Authenticator plug-ins﻿
+*** [ ] Added Audit plug-ins
+*** [ ] Added Encrypt plug-ins
 
-== v1.5.0
-* Query Plug-ins
-** [ ] PostgreSQL Plug-in
+== v1.x.x
+* New plug-ins
+** Query plug-ins
+*** [ ] Added PostgreSQL plug-in
+** Storage plug-ins
+*** [ ] Added TiKV plug-in
 
 == v1.0.0
-* New Plug-ins
-** Storage Plug-ins
-*** [ ] TiKV Plug-in
+* New features
+** [ ] Added TLS with mTLS Support
 
 == v0.9.0
-* New CLI Utilities
-** [*] puzzledb-cli
-* New Plug-ins
-** Coordinator Plug-ins
-*** [*] memdb Plug-in
-*** [ ] etcd Plug-in
-** Storage Plug-ins
-*** Key-Value Store Plug-ins
-**** [*] FoundationDB Plug-in
-** Configurator Plug-ins
-*** [*] puzzledb.yaml
-** Operator Plug-ins
-*** gRPC Plug-in
-** Distributed Tracer Plug-ins
-*** [*] OpenTelemetry Plug-in
-*** [*] OpenTracing Plug-in
+* New features
+** CLI Utilities
+*** [*] Added puzzledb-cli
+** Operator APIs
+*** Added gRPC server for operator APIs and CLI utilities.
+** Configuration support
+*** [*] Added support for configuration with environment variables.
+*** [*] Added support for configuration with puzzledb.yaml.
+* New plug-ins
+** Coordinator plug-ins
+*** [*] Added memdb plug-in
+*** [ ] Added etcd plug-in
+** Storage plug-ins
+*** Key-Value Store plug-ins
+**** [*] Added FoundationDB plug-in
+** Distributed Tracer plug-ins
+*** [*] Added OpenTelemetry plug-in
+*** [*] Added OpenTracing plug-in
 
 == v0.8.0
 
-* Initial Plug-ins
-** Query Plug-ins
-*** [*] MySQL Plug-in
-*** [*] Redis Plug-in
-*** [*] MongoDB Plug-in
-** Storage Plug-ins
-*** Document Store Plug-in
-**** [*] Key-Value storePlug-in
-*** Key-Value Store Plug-ins
-**** [*] memdb Plug-in
+* Initial plug-ins
+** Query plug-ins
+*** [*] MySQL plug-in
+*** [*] Redis plug-in
+*** [*] MongoDB plug-in
+** Storage plug-ins
+*** Document tore plug-in
+**** [*] Key-Value storeplug-in
+*** Key-Value Store plug-ins
+**** [*] memdb plug-in
