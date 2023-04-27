@@ -48,13 +48,14 @@ image:img/roadmap.png[doc/img/roadmap]
 
 == v0.8.0
 
+* Initial public release
 * Initial plug-ins
 ** Query plug-ins
 *** [*] MySQL plug-in
 *** [*] Redis plug-in
 *** [*] MongoDB plug-in
 ** Storage plug-ins
-*** Document tore plug-in
-**** [*] Key-Value storeplug-in
+*** Document store plug-in
+**** [*] Key-Value store plug-in
 *** Key-Value Store plug-ins
 **** [*] memdb plug-in

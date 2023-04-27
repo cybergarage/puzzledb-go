@@ -78,6 +78,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ## v0.8.0
 
+-   Initial public release
+
 -   Initial plug-ins
 
     -   Query plug-ins
@@ -90,9 +92,9 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Storage plug-ins
 
-        -   Document tore plug-in
+        -   Document store plug-in
 
-            -   ✓ Key-Value storeplug-in
+            -   ✓ Key-Value store plug-in
 
         -   Key-Value Store plug-ins
 
