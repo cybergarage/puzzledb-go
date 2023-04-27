@@ -6,84 +6,94 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ## v2.0.0
 
--   Enterprise Plug-ins
+-   New plug-ins
 
-    -   ❏ QoS Plug-ins
+    -   Enterprise plug-ins
 
--   Security Plug-ins
+        -   ❏ Added QoS plug-ins
 
-    -   ❏ Authenticator Plug-ins﻿
+    -   Security plug-ins
 
-    -   ❏ Audit Plug-ins
+        -   ❏ Added Authenticator plug-ins﻿
 
-    -   ❏ Encrypt Plug-ins
+        -   ❏ Added Audit plug-ins
 
-## v1.5.0
+        -   ❏ Added Encrypt plug-ins
 
--   Query Plug-ins
+## v1.x.x
 
-    -   ❏ PostgreSQL Plug-in
+-   New plug-ins
+
+    -   Query plug-ins
+
+        -   ❏ Added PostgreSQL plug-in
+
+    -   Storage plug-ins
+
+        -   ❏ Added TiKV plug-in
 
 ## v1.0.0
 
--   New Plug-ins
+-   New features
 
-    -   Storage Plug-ins
-
-        -   ❏ TiKV Plug-in
+    -   ❏ Added TLS with mTLS Support
 
 ## v0.9.0
 
--   New CLI Utilities
+-   New features
 
-    -   ✓ puzzledb-cli
+    -   CLI Utilities
 
--   New Plug-ins
+        -   ✓ Added puzzledb-cli
 
-    -   Coordinator Plug-ins
+    -   Operator APIs
 
-        -   ✓ memdb Plug-in
+        -   Added gRPC server for operator APIs and CLI utilities.
 
-        -   ❏ etcd Plug-in
+    -   Configuration support
 
-    -   Storage Plug-ins
+        -   ✓ Added support for configuration with environment variables.
 
-        -   Key-Value Store Plug-ins
+        -   ✓ Added support for configuration with puzzledb.yaml.
 
-            -   ✓ FoundationDB Plug-in
+-   New plug-ins
 
-    -   Configurator Plug-ins
+    -   Coordinator plug-ins
 
-        -   ✓ puzzledb.yaml
+        -   ✓ Added memdb plug-in
 
-    -   Operator Plug-ins
+        -   ❏ Added etcd plug-in
 
-        -   gRPC Plug-in
+    -   Storage plug-ins
 
-    -   Distributed Tracer Plug-ins
+        -   Key-Value Store plug-ins
 
-        -   ✓ OpenTelemetry Plug-in
+            -   ✓ Added FoundationDB plug-in
 
-        -   ✓ OpenTracing Plug-in
+    -   Distributed Tracer plug-ins
+
+        -   ✓ Added OpenTelemetry plug-in
+
+        -   ✓ Added OpenTracing plug-in
 
 ## v0.8.0
 
--   Initial Plug-ins
+-   Initial plug-ins
 
-    -   Query Plug-ins
+    -   Query plug-ins
 
-        -   ✓ MySQL Plug-in
+        -   ✓ MySQL plug-in
 
-        -   ✓ Redis Plug-in
+        -   ✓ Redis plug-in
 
-        -   ✓ MongoDB Plug-in
+        -   ✓ MongoDB plug-in
 
-    -   Storage Plug-ins
+    -   Storage plug-ins
 
-        -   Document Store Plug-in
+        -   Document tore plug-in
 
-            -   ✓ Key-Value storePlug-in
+            -   ✓ Key-Value storeplug-in
 
-        -   Key-Value Store Plug-ins
+        -   Key-Value Store plug-ins
 
-            -   ✓ memdb Plug-in
+            -   ✓ memdb plug-in
