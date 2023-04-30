@@ -21,3 +21,7 @@ func NewClient() *Client {
 	client := &Client{}
 	return client
 }
+
+func (client *Client) Execute(args []string) error {
+	return nil
+}
