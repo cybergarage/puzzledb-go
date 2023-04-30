@@ -12,43 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
-func init() {
+func init() { // nolint:gochecknoinits
 	rootCmd.AddCommand(listCmd)
 	listCmd.AddCommand(listDatabasesCmd)
 	listCmd.AddCommand(listCollectionsCmd)
 }
 
-var listCmd = &cobra.Command{
+var listCmd = &cobra.Command{ // nolint:exhaustruct
 	Use:   "list",
 	Short: "List store resources",
 	Long:  `List store resources such as databases and collections.`,
 }
 
-var listDatabasesCmd = &cobra.Command{
+var listDatabasesCmd = &cobra.Command{ // nolint:exhaustruct
 	Use:   "databases",
 	Short: "List databases",
 	Long:  `List all the databases.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// TODO: Add logic to list databases
-		fmt.Println("Listing databases...")
+		// fmt.Println("Listing databases...")
 	},
 }
 
-var listCollectionsCmd = &cobra.Command{
+// nolint:forbidigo
+var listCollectionsCmd = &cobra.Command{ // nolint:exhaustruct
 	Use:   "collections [database]",
 	Short: "List collections in a database",
 	Long:  `List all the collections in the specified database.`,
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		// TODO: Add logic to list collections in the specified database
-		fmt.Printf("Listing collections in database %s...\n", args[0])
+		// fmt.Printf("Listing collections in database %s...\n", args[0])
 	},
 }
