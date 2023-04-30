@@ -14,6 +14,16 @@
 
 package main
 
+import (
+	"fmt"
+	"os"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/cmd"
+)
+
 func main() {
-	Execute()
+	if err := cmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
