@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Store_CreateDatabase_FullMethodName  = "/api.Store/CreateDatabase"
-	Store_DeleteDatabase_FullMethodName  = "/api.Store/DeleteDatabase"
+	Store_RemoveDatabase_FullMethodName  = "/api.Store/RemoveDatabase"
 	Store_ListDatabases_FullMethodName   = "/api.Store/ListDatabases"
 	Store_ListCollections_FullMethodName = "/api.Store/ListCollections"
 )
@@ -30,7 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StoreClient interface {
 	CreateDatabase(ctx context.Context, in *CreateDatabaseRequest, opts ...grpc.CallOption) (*StatusResponse, error)
-	DeleteDatabase(ctx context.Context, in *DeleteDatabaseRequest, opts ...grpc.CallOption) (*StatusResponse, error)
+	RemoveDatabase(ctx context.Context, in *RemoveDatabaseRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 	ListDatabases(ctx context.Context, in *ListDatabasesRequest, opts ...grpc.CallOption) (*ListDatabasesResponse, error)
 	ListCollections(ctx context.Context, in *ListCollectionsRequest, opts ...grpc.CallOption) (*ListCollectionsResponse, error)
 }
@@ -52,9 +52,9 @@ func (c *storeClient) CreateDatabase(ctx context.Context, in *CreateDatabaseRequ
 	return out, nil
 }
 
-func (c *storeClient) DeleteDatabase(ctx context.Context, in *DeleteDatabaseRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
+func (c *storeClient) RemoveDatabase(ctx context.Context, in *RemoveDatabaseRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
 	out := new(StatusResponse)
-	err := c.cc.Invoke(ctx, Store_DeleteDatabase_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Store_RemoveDatabase_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func (c *storeClient) ListCollections(ctx context.Context, in *ListCollectionsRe
 // for forward compatibility
 type StoreServer interface {
 	CreateDatabase(context.Context, *CreateDatabaseRequest) (*StatusResponse, error)
-	DeleteDatabase(context.Context, *DeleteDatabaseRequest) (*StatusResponse, error)
+	RemoveDatabase(context.Context, *RemoveDatabaseRequest) (*StatusResponse, error)
 	ListDatabases(context.Context, *ListDatabasesRequest) (*ListDatabasesResponse, error)
 	ListCollections(context.Context, *ListCollectionsRequest) (*ListCollectionsResponse, error)
 	mustEmbedUnimplementedStoreServer()
@@ -97,8 +97,8 @@ type UnimplementedStoreServer struct {
 func (UnimplementedStoreServer) CreateDatabase(context.Context, *CreateDatabaseRequest) (*StatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDatabase not implemented")
 }
-func (UnimplementedStoreServer) DeleteDatabase(context.Context, *DeleteDatabaseRequest) (*StatusResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteDatabase not implemented")
+func (UnimplementedStoreServer) RemoveDatabase(context.Context, *RemoveDatabaseRequest) (*StatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveDatabase not implemented")
 }
 func (UnimplementedStoreServer) ListDatabases(context.Context, *ListDatabasesRequest) (*ListDatabasesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListDatabases not implemented")
@@ -137,20 +137,20 @@ func _Store_CreateDatabase_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Store_DeleteDatabase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteDatabaseRequest)
+func _Store_RemoveDatabase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveDatabaseRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StoreServer).DeleteDatabase(ctx, in)
+		return srv.(StoreServer).RemoveDatabase(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Store_DeleteDatabase_FullMethodName,
+		FullMethod: Store_RemoveDatabase_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StoreServer).DeleteDatabase(ctx, req.(*DeleteDatabaseRequest))
+		return srv.(StoreServer).RemoveDatabase(ctx, req.(*RemoveDatabaseRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -203,8 +203,8 @@ var Store_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Store_CreateDatabase_Handler,
 		},
 		{
-			MethodName: "DeleteDatabase",
-			Handler:    _Store_DeleteDatabase_Handler,
+			MethodName: "RemoveDatabase",
+			Handler:    _Store_RemoveDatabase_Handler,
 		},
 		{
 			MethodName: "ListDatabases",

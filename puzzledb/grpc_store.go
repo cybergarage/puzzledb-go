@@ -17,8 +17,34 @@ package puzzledb
 import (
 	"context"
 
-	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/api"
+	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 )
+
+func (server *GrpcServer) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*pb.StatusResponse, error) {
+	res := pb.StatusResponse{} //nolint:exhaustruct
+	defaultStore, err := server.DefaultStoreService()
+	if err != nil {
+		return &res, err
+	}
+	err = defaultStore.CreateDatabase(req.DatabaseName)
+	if err != nil {
+		return &res, err
+	}
+	return &res, nil
+}
+
+func (server *GrpcServer) RemoveDatabase(ctx context.Context, req *pb.RemoveDatabaseRequest) (*pb.StatusResponse, error) {
+	res := pb.StatusResponse{} //nolint:exhaustruct
+	defaultStore, err := server.DefaultStoreService()
+	if err != nil {
+		return &res, err
+	}
+	err = defaultStore.RemoveDatabase(req.DatabaseName)
+	if err != nil {
+		return &res, err
+	}
+	return &res, nil
+}
 
 func (server *GrpcServer) ListDatabases(context.Context, *pb.ListDatabasesRequest) (*pb.ListDatabasesResponse, error) {
 	res := pb.ListDatabasesResponse{} //nolint:exhaustruct
