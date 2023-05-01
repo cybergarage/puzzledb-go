@@ -11,11 +11,12 @@ service Store {
   rpc ListCollections (ListCollectionsRequest) returns (ListCollectionsResponse);
 }
 
+enum Status {
+  OK = 0;
+  ERROR = 1;
+}  
+
 message StatusResponse {  
-  enum Status {
-    OK = 0;
-    ERROR = 1;
-  }  
   Status status = 1;
   int32 code = 2;
   string message = 3;
