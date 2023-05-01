@@ -49,13 +49,25 @@ func (client *Client) SetHost(host string) {
 }
 
 // Open opens a gRPC connection.
-func (client *Client) Open(host string) error {
+func (client *Client) Open() error {
 	addr := net.JoinHostPort(client.Host, strconv.Itoa(client.Port))
 	conn, err := grpc.Dial(addr)
 	if err != nil {
 		return err
 	}
 	client.Conn = conn
+	return nil
+}
+
+func (client *Client) Close() error {
+	if client.Conn == nil {
+		return nil
+	}
+	err := client.Conn.Close()
+	if err != nil {
+		return err
+	}
+	client.Conn = nil
 	return nil
 }
 
