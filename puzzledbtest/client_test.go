@@ -15,7 +15,13 @@
 package puzzledbtest
 
 import (
+	"fmt"
 	"testing"
+	"time"
+)
+
+const (
+	testDBPrefix = "grpc"
 )
 
 func TestClient(t *testing.T) {
@@ -36,6 +42,20 @@ func TestClient(t *testing.T) {
 
 	client := NewClient()
 	err = client.Open()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().UnixNano())
+
+	err = client.CreateDatabase(testDBName)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	err = client.RemoveDatabase(testDBName)
 	if err != nil {
 		t.Error(err)
 		return
