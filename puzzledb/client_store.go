@@ -20,6 +20,31 @@ import (
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 )
 
+// CreateDatabase creates a specified database.
+func (client *Client) CreateDatabase(name string) error {
+	c := pb.NewStoreClient(client.Conn)
+	req := &pb.CreateDatabaseRequest{
+		DatabaseName: name,
+	}
+	_, err := c.CreateDatabase(context.Background(), req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (client *Client) RemoveDatabase(name string) error {
+	c := pb.NewStoreClient(client.Conn)
+	req := &pb.DeleteDatabaseRequest{
+		DatabaseName: name,
+	}
+	_, err := c.DeleteDatabase(context.Background(), req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // ListDatabases returns a list of database names.
 func (client *Client) ListDatabases() ([]string, error) {
 	c := pb.NewStoreClient(client.Conn)
