@@ -17,12 +17,12 @@ package puzzledb
 import (
 	"context"
 
-	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/api"
+	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 )
 
 // ListDatabases returns a list of database names.
 func (client *Client) ListDatabases() ([]string, error) {
-	c := pb.NewStoreAPIClient(client.Conn)
+	c := pb.NewStoreClient(client.Conn)
 	res, err := c.ListDatabases(context.Background(), &pb.ListDatabasesRequest{})
 	if err != nil {
 		return []string{}, err
