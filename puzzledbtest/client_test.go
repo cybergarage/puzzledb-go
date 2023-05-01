@@ -41,6 +41,17 @@ func TestClient(t *testing.T) {
 		return
 	}
 
+	dbs, err := client.ListDatabases()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	if len(dbs) != 0 {
+		t.Errorf("Unexpected database list : %v", dbs)
+		return
+	}
+
 	defer func() {
 		err = client.Close()
 		if err != nil {
