@@ -26,11 +26,27 @@ func TestClient(t *testing.T) {
 		return
 	}
 
-	NewClient()
+	defer func() {
+		err = server.Stop()
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}()
 
-	err = server.Stop()
+	client := NewClient()
+	err = client.Open()
 	if err != nil {
 		t.Error(err)
 		return
 	}
+
+	defer func() {
+		err = client.Close()
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}()
+
 }
