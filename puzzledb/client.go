@@ -19,6 +19,7 @@ import (
 	"strconv"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 // Client represens a gRPC client.
@@ -51,7 +52,7 @@ func (client *Client) SetHost(host string) {
 // Open opens a gRPC connection.
 func (client *Client) Open() error {
 	addr := net.JoinHostPort(client.Host, strconv.Itoa(client.Port))
-	conn, err := grpc.Dial(addr)
+	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return err
 	}
