@@ -2,11 +2,31 @@ syntax = "proto3";
 
 package api;
 
-option go_package = "github.com/cybergarage/puzzledb-go/puzzledb/proto/api";
+option go_package = "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc";
 
-service StoreAPI {
+service Store {
+  rpc CreateDatabase (CreateDatabaseRequest) returns (StatusResponse);
+  rpc DeleteDatabase (DeleteDatabaseRequest) returns (StatusResponse);
   rpc ListDatabases (ListDatabasesRequest) returns (ListDatabasesResponse);
   rpc ListCollections (ListCollectionsRequest) returns (ListCollectionsResponse);
+}
+
+message StatusResponse {  
+  enum Status {
+    OK = 0;
+    ERROR = 1;
+  }  
+  Status status = 1;
+  int32 code = 2;
+  string message = 3;
+}
+
+message CreateDatabaseRequest {
+  string database_name = 1;
+}
+
+message DeleteDatabaseRequest {
+  string database_name = 1;
 }
 
 message ListDatabasesRequest {
