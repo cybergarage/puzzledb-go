@@ -14,14 +14,17 @@
 
 package puzzledbtest
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb"
+)
+
 type Client struct {
+	*puzzledb.Client
 }
 
 func NewClient() *Client {
-	client := &Client{}
+	client := &Client{
+		Client: puzzledb.NewClient(),
+	}
 	return client
-}
-
-func (client *Client) Execute(args []string) error {
-	return nil
 }
