@@ -22,8 +22,21 @@ import (
 
 func (server *GrpcServer) ListDatabases(context.Context, *pb.ListDatabasesRequest) (*pb.ListDatabasesResponse, error) {
 	res := pb.ListDatabasesResponse{} //nolint:exhaustruct
+	defaultStore, err := server.DefaultStoreService()
+	if err != nil {
+		return &res, err
+	}
+	dbs, err := defaultStore.ListDatabases()
+	if err != nil {
+		return &res, err
+	}
+	res.Databases = []string{}
+	for _, db := range dbs {
+		res.Databases = append(res.Databases, db.Name())
+	}
 	return &res, nil
 }
+
 func (server *GrpcServer) ListCollections(context.Context, *pb.ListCollectionsRequest) (*pb.ListCollectionsResponse, error) {
 	res := pb.ListCollectionsResponse{} //nolint:exhaustruct
 	return &res, nil
