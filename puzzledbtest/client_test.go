@@ -19,5 +19,18 @@ import (
 )
 
 func TestClient(t *testing.T) {
+	server := NewServer()
+	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
 	NewClient()
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }
