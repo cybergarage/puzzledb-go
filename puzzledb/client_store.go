@@ -35,10 +35,10 @@ func (client *Client) CreateDatabase(name string) error {
 
 func (client *Client) RemoveDatabase(name string) error {
 	c := pb.NewStoreClient(client.Conn)
-	req := &pb.DeleteDatabaseRequest{
+	req := &pb.RemoveDatabaseRequest{
 		DatabaseName: name,
 	}
-	_, err := c.DeleteDatabase(context.Background(), req)
+	_, err := c.RemoveDatabase(context.Background(), req)
 	if err != nil {
 		return err
 	}

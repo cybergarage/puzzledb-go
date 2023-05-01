@@ -20,7 +20,7 @@ import (
 	"strings"
 
 	"github.com/cybergarage/go-logger/log"
-	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/api"
+	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 	"google.golang.org/grpc"
 )
 
@@ -34,17 +34,17 @@ type GrpcServer struct {
 	grpcServer *grpc.Server
 	Addr       string
 	Port       int
-	pb.UnimplementedStoreAPIServer
+	pb.UnimplementedStoreServer
 }
 
 // NewGrpcServerWith returns a new GrpcServer.
 func NewGrpcServerWith(server *Server) *GrpcServer {
 	return &GrpcServer{
-		Server:                      server,
-		grpcServer:                  nil,
-		Addr:                        "",
-		Port:                        DefaultGrpcPort,
-		UnimplementedStoreAPIServer: pb.UnimplementedStoreAPIServer{},
+		Server:                   server,
+		grpcServer:               nil,
+		Addr:                     "",
+		Port:                     DefaultGrpcPort,
+		UnimplementedStoreServer: pb.UnimplementedStoreServer{},
 	}
 }
 
@@ -72,7 +72,7 @@ func (server *GrpcServer) Start() error {
 		return err
 	}
 	server.grpcServer = grpc.NewServer()
-	pb.RegisterStoreAPIServer(server.grpcServer, server)
+	pb.RegisterStoreServer(server.grpcServer, server)
 	go func() {
 		if err := server.grpcServer.Serve(listener); err != nil {
 			log.Error(err)
