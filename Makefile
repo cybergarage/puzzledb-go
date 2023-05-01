@@ -109,7 +109,7 @@ protopkg:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest	
 %.pb.go : %.proto
-	protoc -I=${PKG_PROTO_ROOT} --go_out=paths=source_relative:${PKG_PROTO_ROOT}/api --go-grpc_out=paths=source_relative:${PKG_PROTO_ROOT}/api $<
+	protoc -I=${PKG_PROTO_ROOT} --go_out=paths=source_relative:${PKG_PROTO_ROOT}/grpc --go-grpc_out=paths=source_relative:${PKG_PROTO_ROOT}/grpc $<
 protos=$(shell find ${PKG_SRC_ROOT} -name '*.proto')
 pbs=$(protos:.proto=.pb.go)
 proto: $(pbs)
