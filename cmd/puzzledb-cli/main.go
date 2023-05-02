@@ -24,15 +24,13 @@ import (
 
 func main() {
 	client := puzzledb.NewClient()
-	err := client.Open()
-	if err != nil {
+	if err := client.Open(); err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	defer func() {
-		err = client.Close()
-		if err != nil {
+		if err := client.Close(); err != nil {
 			fmt.Println(err)
 			return
 		}
