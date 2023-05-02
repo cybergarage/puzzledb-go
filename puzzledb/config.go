@@ -31,9 +31,6 @@ const (
 	enabledConfig = "enabled"
 )
 
-//go:embed conf/puzzledb.yaml
-var defaultConfigString string
-
 type Config struct {
 	config.Config
 }
