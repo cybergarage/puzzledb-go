@@ -54,9 +54,9 @@ func Execute() error {
 			return err
 		}
 
-		// Search config in home directory with name ".puzzledb-go" (without extension).
+		// Search config in home directory with name ".puzzledb-cli" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".puzzledb-go")
+		viper.SetConfigName(".puzzledb-cli")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
