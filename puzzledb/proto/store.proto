@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package api;
+package grpc;
 
 option go_package = "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc";
 
