@@ -51,6 +51,11 @@ func NewServer() *Server {
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 		Tracer:        tracer.NullTracer,
 	}
+	conf, err := NewDefaultConfig()
+	if err != nil {
+		panic(err)
+	}
+	server.SetConfig(conf)
 	server.GrpcServer = NewGrpcServerWith(server)
 	return server
 }
