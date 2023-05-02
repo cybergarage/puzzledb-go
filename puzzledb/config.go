@@ -32,7 +32,7 @@ const (
 )
 
 //go:embed conf/puzzledb.yaml
-var defaultConfig string
+var defaultConfigString string
 
 type Config struct {
 	config.Config
