@@ -55,13 +55,24 @@ func TestClient(t *testing.T) {
 		return
 	}
 
+	dbs, err := client.ListDatabases()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	if len(dbs) < 1 || dbs[0] != testDBName {
+		t.Errorf("Unexpected database list : %v", dbs)
+		return
+	}
+
 	err = client.RemoveDatabase(testDBName)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	dbs, err := client.ListDatabases()
+	dbs, err = client.ListDatabases()
 	if err != nil {
 		t.Error(err)
 		return
