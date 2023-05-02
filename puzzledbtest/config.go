@@ -19,4 +19,4 @@ import (
 )
 
 //go:embed puzzledb.yaml
-var puzzledbConf string
+var testConfigString string
