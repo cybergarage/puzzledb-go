@@ -15,6 +15,7 @@
 package puzzledb
 
 import (
+	"context"
 	"net"
 	"strconv"
 	"strings"
@@ -71,7 +72,7 @@ func (server *GrpcServer) Start() error {
 	if err != nil {
 		return err
 	}
-	server.grpcServer = grpc.NewServer()
+	server.grpcServer = grpc.NewServer(grpc.UnaryInterceptor(loggingUnaryInterceptor))
 	pb.RegisterStoreServer(server.grpcServer, server)
 	go func() {
 		if err := server.grpcServer.Serve(listener); err != nil {
@@ -95,4 +96,23 @@ func (server *GrpcServer) Stop() error {
 	log.Infof("gRPC (%s) terminated", addr)
 
 	return nil
+}
+
+func loggingUnaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	resp, err = handler(ctx, req)
+
+	if err == nil {
+		log.Infof("gRPC Method: %s, Request: %v, Response: %v",
+			info.FullMethod,
+			req,
+			resp)
+
+	} else {
+		log.Errorf("gRPC Method: %s, Request: %v, Response: %v",
+			info.FullMethod,
+			req,
+			err.Error())
+	}
+
+	return resp, err
 }
