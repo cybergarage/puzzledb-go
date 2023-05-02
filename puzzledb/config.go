@@ -16,6 +16,7 @@ package puzzledb
 
 import (
 	"bytes"
+	_ "embed"
 	"strings"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
@@ -29,6 +30,9 @@ const (
 	portConfig    = "port"
 	enabledConfig = "enabled"
 )
+
+//go:embed conf/puzzledb.yaml
+var defaultConfig string
 
 type Config struct {
 	config.Config
