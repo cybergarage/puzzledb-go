@@ -33,7 +33,7 @@ func NewServer() *Server {
 		Host:   LocalHost,
 	}
 
-	conf, err := puzzledb.NewConfigWithString(puzzledbConf)
+	conf, err := puzzledb.NewConfigWithString(testConfigString)
 	if err != nil {
 		panic(err)
 	}
