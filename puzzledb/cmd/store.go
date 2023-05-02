@@ -15,6 +15,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
@@ -35,8 +37,14 @@ var listDatabasesCmd = &cobra.Command{ // nolint:exhaustruct
 	Short: "List databases",
 	Long:  `List all the databases.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// TODO: Add logic to list databases
-		// fmt.Println("Listing databases...")
+		dbs, err := GetClient().ListDatabases()
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		for _, db := range dbs {
+			fmt.Println(db)
+		}
 	},
 }
 
