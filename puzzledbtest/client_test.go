@@ -47,6 +47,14 @@ func TestClient(t *testing.T) {
 		return
 	}
 
+	defer func() {
+		err = client.Close()
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}()
+
 	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().UnixNano())
 
 	err = client.CreateDatabase(testDBName)
@@ -82,13 +90,4 @@ func TestClient(t *testing.T) {
 		t.Errorf("Unexpected database list : %v", dbs)
 		return
 	}
-
-	defer func() {
-		err = client.Close()
-		if err != nil {
-			t.Error(err)
-			return
-		}
-	}()
-
 }
