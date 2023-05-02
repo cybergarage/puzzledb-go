@@ -18,10 +18,27 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/cmd"
 )
 
 func main() {
+	client := puzzledb.NewClient()
+	err := client.Open()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	defer func() {
+		err = client.Close()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}()
+
+	cmd.SetClient(client)
 	if err := cmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
