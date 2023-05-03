@@ -16,7 +16,13 @@ package puzzledb
 
 import (
 	"github.com/cybergarage/go-tracing/tracer"
-	"github.com/cybergarage/puzzledb-go/puzzledb/config"
+	"github.com/cybergarage/go-tracing/tracer/ot"
+	"github.com/cybergarage/go-tracing/tracer/otel"
+)
+
+const (
+	opentelemetryConfig = "opentelemetry"
+	opentracingConfig   = "opentracing"
 )
 
 // Tracer represents a tracer.
@@ -39,18 +45,54 @@ func (t *Tracer) Tracer() tracer.Tracer {
 }
 
 func (t *Tracer) EnabledConfig() (bool, error) {
-	return t.Server.Config.GetBool(config.NewPathWith(tracingConfig, enabledConfig))
+	return t.Server.Config.GetBool(tracingConfig, enabledConfig)
+}
+
+func (t *Tracer) DefaultConfig() (string, error) {
+	return t.Server.Config.GetString(tracingConfig, defaultConfig)
+}
+
+func (t *Tracer) EndpointConfig(name string) (string, error) {
+	return t.Server.Config.GetString(tracingConfig, tracerConfig, name, endpointConfig)
 }
 
 func (t *Tracer) Start() error {
+	t.tracer = tracer.NewNullTracer()
 	enabled, err := t.EnabledConfig()
 	if err != nil {
 		return err
 	}
-	if enabled {
-
+	if !enabled {
+		return nil
 	}
-	t.tracer.SetServiceName(ProductName)
+
+	tracerName, err := t.DefaultConfig()
+	if err != nil {
+		return err
+	}
+	var tracer tracer.Tracer
+	switch tracerName {
+	case opentelemetryConfig:
+		tracer = otel.NewTracer()
+	case opentracingConfig:
+		tracer = ot.NewTracer()
+	default:
+		return newErrNotFound(tracerName)
+	}
+
+	endpoint, err := t.EndpointConfig(tracerName)
+	if err != nil {
+		return err
+	}
+
+	tracer.SetServiceName(ProductName)
+	tracer.SetEndpoint(endpoint)
+	if err := tracer.Start(); err != nil {
+		return err
+	}
+
+	t.tracer = tracer
+
 	return nil
 }
 
