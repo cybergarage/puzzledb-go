@@ -19,16 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Config_List_FullMethodName = "/Config/List"
-	Config_Get_FullMethodName  = "/Config/Get"
+	Config_ListConfig_FullMethodName = "/Config/ListConfig"
+	Config_GetConfig_FullMethodName  = "/Config/GetConfig"
 )
 
 // ConfigClient is the client API for Config service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ConfigClient interface {
-	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	ListConfig(ctx context.Context, in *ListConfigRequest, opts ...grpc.CallOption) (*ListConfigResponse, error)
+	GetConfig(ctx context.Context, in *GetConfigRequest, opts ...grpc.CallOption) (*GetConfigResponse, error)
 }
 
 type configClient struct {
@@ -39,18 +39,18 @@ func NewConfigClient(cc grpc.ClientConnInterface) ConfigClient {
 	return &configClient{cc}
 }
 
-func (c *configClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
-	out := new(ListResponse)
-	err := c.cc.Invoke(ctx, Config_List_FullMethodName, in, out, opts...)
+func (c *configClient) ListConfig(ctx context.Context, in *ListConfigRequest, opts ...grpc.CallOption) (*ListConfigResponse, error) {
+	out := new(ListConfigResponse)
+	err := c.cc.Invoke(ctx, Config_ListConfig_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *configClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
-	err := c.cc.Invoke(ctx, Config_Get_FullMethodName, in, out, opts...)
+func (c *configClient) GetConfig(ctx context.Context, in *GetConfigRequest, opts ...grpc.CallOption) (*GetConfigResponse, error) {
+	out := new(GetConfigResponse)
+	err := c.cc.Invoke(ctx, Config_GetConfig_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,8 +61,8 @@ func (c *configClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.Cal
 // All implementations must embed UnimplementedConfigServer
 // for forward compatibility
 type ConfigServer interface {
-	List(context.Context, *ListRequest) (*ListResponse, error)
-	Get(context.Context, *GetRequest) (*GetResponse, error)
+	ListConfig(context.Context, *ListConfigRequest) (*ListConfigResponse, error)
+	GetConfig(context.Context, *GetConfigRequest) (*GetConfigResponse, error)
 	mustEmbedUnimplementedConfigServer()
 }
 
@@ -70,11 +70,11 @@ type ConfigServer interface {
 type UnimplementedConfigServer struct {
 }
 
-func (UnimplementedConfigServer) List(context.Context, *ListRequest) (*ListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+func (UnimplementedConfigServer) ListConfig(context.Context, *ListConfigRequest) (*ListConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListConfig not implemented")
 }
-func (UnimplementedConfigServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (UnimplementedConfigServer) GetConfig(context.Context, *GetConfigRequest) (*GetConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConfig not implemented")
 }
 func (UnimplementedConfigServer) mustEmbedUnimplementedConfigServer() {}
 
@@ -89,38 +89,38 @@ func RegisterConfigServer(s grpc.ServiceRegistrar, srv ConfigServer) {
 	s.RegisterService(&Config_ServiceDesc, srv)
 }
 
-func _Config_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListRequest)
+func _Config_ListConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ConfigServer).List(ctx, in)
+		return srv.(ConfigServer).ListConfig(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Config_List_FullMethodName,
+		FullMethod: Config_ListConfig_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigServer).List(ctx, req.(*ListRequest))
+		return srv.(ConfigServer).ListConfig(ctx, req.(*ListConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Config_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+func _Config_GetConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ConfigServer).Get(ctx, in)
+		return srv.(ConfigServer).GetConfig(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Config_Get_FullMethodName,
+		FullMethod: Config_GetConfig_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigServer).Get(ctx, req.(*GetRequest))
+		return srv.(ConfigServer).GetConfig(ctx, req.(*GetConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -133,12 +133,12 @@ var Config_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ConfigServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "List",
-			Handler:    _Config_List_Handler,
+			MethodName: "ListConfig",
+			Handler:    _Config_ListConfig_Handler,
 		},
 		{
-			MethodName: "Get",
-			Handler:    _Config_Get_Handler,
+			MethodName: "GetConfig",
+			Handler:    _Config_GetConfig_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
