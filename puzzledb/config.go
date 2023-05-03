@@ -31,6 +31,7 @@ const (
 	tracingConfig  = "tracing"
 	tracerConfig   = "tracer"
 	endpointConfig = "endpoint"
+	defaultConfig  = "default"
 )
 
 type Config struct {
