@@ -76,6 +76,8 @@ github.com/cybergarage/go-mongo v1.0.0 h1:xsSt0wVCckOenasqWq8F684KsdB/HseuQX/SU1
 github.com/cybergarage/go-mongo v1.0.0/go.mod h1:pvtilnfAZexmU0uonROsmKbDmpWRxPRJZ20Dwhrzh8Y=
 github.com/cybergarage/go-mysql v0.9.4 h1:tBl0j6lGjSWPuWECrXW5jOc3ms8uFwEm7xscfwmr3IM=
 github.com/cybergarage/go-mysql v0.9.4/go.mod h1:VmO/fSBL7jja/uUZPsTHBFy8C2O/fQmK94FAKXepvTE=
+github.com/cybergarage/go-mysql v1.0.0 h1:4wrXs8N4m3Wf0u/iy8+JdbFiq4rwYRvqNynQ0h4vS2Q=
+github.com/cybergarage/go-mysql v1.0.0/go.mod h1:cJnBhfwxy0W0sxG0ZBy1YMmiNbfZ7itgh8ni4bWdmeY=
 github.com/cybergarage/go-pict v0.8.1 h1:qQivvxVUkxGhtuLHXKmEi1grXg5uNlZWie0bVyVyDmA=
 github.com/cybergarage/go-pict v0.8.1/go.mod h1:ukn4bXgVb/owpw5tllWRPE0AR5Fx/ucbw43dpvFM90w=
 github.com/cybergarage/go-redis v1.3.2 h1:Bs9ePdmIptKrXSANSWjpx7tYBWpg2X8Hq7mYsdBonIY=
