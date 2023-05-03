@@ -19,7 +19,6 @@ import (
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
@@ -40,7 +39,7 @@ type Server struct {
 	*Config
 	*PluginManager
 	*GrpcServer
-	tracer.Tracer
+	*Tracer
 }
 
 // NewServer returns a new server instance.
@@ -49,7 +48,7 @@ func NewServer() *Server {
 		GrpcServer:    nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
-		Tracer:        tracer.NullTracer,
+		Tracer:        nil,
 	}
 	conf, err := NewDefaultConfig()
 	if err != nil {
@@ -57,6 +56,7 @@ func NewServer() *Server {
 	}
 	server.SetConfig(conf)
 	server.GrpcServer = NewGrpcServerWith(server)
+	server.Tracer = NewTracerWith(server)
 	return server
 }
 
@@ -159,7 +159,7 @@ func (server *Server) setupPlugins() error {
 		service.SetConfig(server.Config)
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
-		service.SetTracer(server.Tracer)
+		service.SetTracer(server.Tracer.Tracer())
 		port, err := server.QueryPortConfig(service.ServiceName())
 		if err != nil {
 			service.SetPort(port)
@@ -167,11 +167,6 @@ func (server *Server) setupPlugins() error {
 	}
 
 	return nil
-}
-
-// SetTracer sets the tracing tracer.
-func (server *Server) SetTracer(t tracer.Tracer) {
-	server.Tracer = t
 }
 
 // Start starts the server.
@@ -182,6 +177,8 @@ func (server *Server) Start() error {
 		log.Infof("configuration loaded")
 		log.Infof(server.Config.String())
 	}
+
+	// Setup plugins
 
 	if err := server.LoadPlugins(); err != nil {
 		return err
@@ -199,6 +196,8 @@ func (server *Server) Start() error {
 	}
 
 	log.Infof("%s", server.Manager.String())
+
+	// Setup gRPC server
 
 	ok, _ := server.GrpcServer.EnabledConfig()
 	if ok {
