@@ -74,14 +74,12 @@ github.com/cybergarage/go-logger v1.3.3 h1:ppR2jxOxjo5Q47HEAZdqfKEK84hRmtrhzedbx
 github.com/cybergarage/go-logger v1.3.3/go.mod h1:2iMjinHam5oqyKEGsKIzeQQmmOPxpCgro95LOlEC2ks=
 github.com/cybergarage/go-mongo v1.0.0 h1:xsSt0wVCckOenasqWq8F684KsdB/HseuQX/SU14dkgA=
 github.com/cybergarage/go-mongo v1.0.0/go.mod h1:pvtilnfAZexmU0uonROsmKbDmpWRxPRJZ20Dwhrzh8Y=
-github.com/cybergarage/go-mysql v0.9.4 h1:tBl0j6lGjSWPuWECrXW5jOc3ms8uFwEm7xscfwmr3IM=
-github.com/cybergarage/go-mysql v0.9.4/go.mod h1:VmO/fSBL7jja/uUZPsTHBFy8C2O/fQmK94FAKXepvTE=
 github.com/cybergarage/go-mysql v1.0.0 h1:4wrXs8N4m3Wf0u/iy8+JdbFiq4rwYRvqNynQ0h4vS2Q=
 github.com/cybergarage/go-mysql v1.0.0/go.mod h1:cJnBhfwxy0W0sxG0ZBy1YMmiNbfZ7itgh8ni4bWdmeY=
 github.com/cybergarage/go-pict v0.8.1 h1:qQivvxVUkxGhtuLHXKmEi1grXg5uNlZWie0bVyVyDmA=
 github.com/cybergarage/go-pict v0.8.1/go.mod h1:ukn4bXgVb/owpw5tllWRPE0AR5Fx/ucbw43dpvFM90w=
-github.com/cybergarage/go-redis v1.3.2 h1:Bs9ePdmIptKrXSANSWjpx7tYBWpg2X8Hq7mYsdBonIY=
-github.com/cybergarage/go-redis v1.3.2/go.mod h1:xOEAS17QPaKwfy/S2mald4pRlfKVBaXD80WWH++5wX4=
+github.com/cybergarage/go-redis v1.3.4 h1:UulXmKtmkJ9fqyjLYaulApkQnFWD6GrxBRhP/MA6M3Q=
+github.com/cybergarage/go-redis v1.3.4/go.mod h1:gbv11mtOV+BkhfkEdX1BI+fD5QzhwNFpg48NPNsD/u0=
 github.com/cybergarage/go-safecast v1.1.0 h1:vBBrFIvsK5LvtIDSXXQbIdrtmJR5BmLpPkrvaPHuFZ8=
 github.com/cybergarage/go-safecast v1.1.0/go.mod h1:us/bjLPEfj6kR3DaY0HGhcW1WK0oDCqkpuYSTi+t7uY=
 github.com/cybergarage/go-sqltest v0.9.4 h1:Sxhp6MPZbTn0Zmmsgc7sY2t1WZXWzywmwhTiz7C6wek=
