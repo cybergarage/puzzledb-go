@@ -6,12 +6,12 @@ require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20230317231317-e330030d07af
 	github.com/cybergarage/go-cbor v1.2.0
 	github.com/cybergarage/go-logger v1.3.3
-	github.com/cybergarage/go-mongo v0.9.5
+	github.com/cybergarage/go-mongo v1.0.0
 	github.com/cybergarage/go-mysql v0.9.4
 	github.com/cybergarage/go-pict v0.8.1
 	github.com/cybergarage/go-redis v1.3.2
 	github.com/cybergarage/go-sqltest v0.9.4
-	github.com/cybergarage/go-tracing v0.8.1
+	github.com/cybergarage/go-tracing v1.0.0
 	github.com/hashicorp/go-memdb v1.3.2
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.7.0
@@ -28,6 +28,8 @@ require (
 	github.com/cybergarage/go-safecast v1.1.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/go-logr/logr v1.2.4 // indirect
+	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
@@ -62,16 +64,21 @@ require (
 	github.com/spyzhov/ajson v0.4.2 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/tinylib/msgp v1.1.1 // indirect
-	github.com/uber/jaeger-client-go v2.16.0+incompatible // indirect
+	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.1 // indirect
 	github.com/xdg-go/stringprep v1.0.3 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
+	go.opentelemetry.io/otel v1.15.1 // indirect
+	go.opentelemetry.io/otel/exporters/jaeger v1.15.1 // indirect
+	go.opentelemetry.io/otel/sdk v1.15.1 // indirect
+	go.opentelemetry.io/otel/trace v1.15.1 // indirect
+	go.uber.org/atomic v1.10.0 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
