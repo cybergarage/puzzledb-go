@@ -16,7 +16,10 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb"
 	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -24,20 +27,14 @@ import (
 )
 
 var cfgFile string
+var gRPCHost string
+var gRPCPort int
 
 // rootCmd represents the base command when called without any subcommands.
 var rootCmd = &cobra.Command{ // nolint:exhaustruct
 	Use:   "puzzledb-cli",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Short: "",
+	Long:  "",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -56,15 +53,46 @@ func Execute() error {
 
 		// Search config in home directory with name ".puzzledb-cli" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".puzzledb-cli")
+		viper.SetConfigName(puzzledb.ProductName + "-cli")
 	}
 
+	viper.SetEnvPrefix(strings.ToUpper(puzzledb.ProductName))
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
+
+	// Setup the gRPC client
+
+	client := puzzledb.NewClient()
+	client.SetHost(gRPCHost)
+	client.SetPort(gRPCPort)
+
+	if host := viper.GetString("host"); 0 < len(host) {
+		client.SetHost(host)
+	}
+	if port := viper.GetString("port"); 0 < len(port) {
+		i, err := strconv.Atoi(port)
+		if err != nil {
+			return err
+		}
+		client.SetPort(i)
+	}
+
+	if err := client.Open(); err != nil {
+		return err
+	}
+
+	SetClient(client)
+
+	defer func() {
+		if err := client.Close(); err != nil {
+			fmt.Println(err)
+			return
+		}
+	}()
 
 	return rootCmd.Execute()
 }
@@ -76,11 +104,14 @@ func init() { // nolint:gochecknoinits
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.puzzledb-cli.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.puzzledb-cli.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	rootCmd.PersistentFlags().StringVar(&gRPCHost, "host", "", fmt.Sprintf("gRPC host or address for a %v instance", puzzledb.ProductName))
+	rootCmd.PersistentFlags().IntVar(&gRPCPort, "port", puzzledb.DefaultGrpcPort, fmt.Sprintf("gRPC port number for a %v instance", puzzledb.ProductName))
 }
 
 // initConfig reads in config file and ENV variables if set.
