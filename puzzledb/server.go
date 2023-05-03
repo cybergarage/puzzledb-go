@@ -178,6 +178,12 @@ func (server *Server) Start() error {
 		log.Infof(server.Config.String())
 	}
 
+	// Setup tracer
+
+	if err := server.tracer.Start(); err != nil {
+		return err
+	}
+
 	// Setup plugins
 
 	if err := server.LoadPlugins(); err != nil {
@@ -227,6 +233,9 @@ func (server *Server) Stop() error {
 		err = errors.Join(err, stopErr)
 	}
 	if stopErr := server.GrpcServer.Stop(); stopErr != nil {
+		err = errors.Join(err, stopErr)
+	}
+	if stopErr := server.tracer.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
 	}
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
