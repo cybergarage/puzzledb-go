@@ -59,6 +59,22 @@ func TestClient(t *testing.T) {
 		}
 	}()
 
+	// Checks config services
+
+	_, err = client.ListConfig()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	_, err = client.GetConfig("logging.level")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	// Checks store services
+
 	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().UnixNano())
 
 	err = client.CreateDatabase(testDBName)
