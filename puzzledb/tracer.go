@@ -15,6 +15,8 @@
 package puzzledb
 
 import (
+	"strings"
+
 	"github.com/cybergarage/go-tracing/tracer"
 )
 
@@ -37,7 +39,19 @@ func (t *Tracer) Tracer() tracer.Tracer {
 	return t.tracer
 }
 
+func (t *Tracer) EnabledConfig() (bool, error) {
+	return t.Server.Config.GetBool(strings.Join([]string{tracingConfig, enabledConfig}, "."))
+}
+
 func (t *Tracer) Start() error {
+	enabled, err := t.EnabledConfig()
+	if err != nil {
+		return err
+	}
+	if enabled {
+		
+	}
+	t.tracer.SetServiceName(ProductName)
 	return nil
 }
 
