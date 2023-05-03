@@ -180,7 +180,7 @@ func (server *Server) Start() error {
 
 	// Setup tracer
 
-	if err := server.tracer.Start(); err != nil {
+	if err := server.Tracer.Start(); err != nil {
 		return err
 	}
 
