@@ -24,11 +24,14 @@ import (
 )
 
 const (
-	pluginsConfig = "plugins"
-	grpcConfig    = "grpc"
-	queryConfig   = "query"
-	portConfig    = "port"
-	enabledConfig = "enabled"
+	pluginsConfig  = "plugins"
+	grpcConfig     = "grpc"
+	queryConfig    = "query"
+	portConfig     = "port"
+	enabledConfig  = "enabled"
+	tracingConfig  = "tracing"
+	tracerConfig   = "tracer"
+	endpointConfig = "endpoint"
 )
 
 type Config struct {
