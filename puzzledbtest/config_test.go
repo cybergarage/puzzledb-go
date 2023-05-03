@@ -21,32 +21,37 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	c, err := puzzledb.NewConfigWithPath("../conf")
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	paths := []string{".", "../puzzledb/conf"}
+	for _, path := range paths {
+		t.Run(path, func(t *testing.T) {
+			c, err := puzzledb.NewConfigWithPath(path)
+			if err != nil {
+				t.Error(err)
+				return
+			}
 
-	conf := puzzledb.NewConfigWith(c)
-	ports := []struct {
-		name     string
-		expected int
-	}{
-		{
-			name:     "mysql",
-			expected: 3306,
-		},
-	}
-	for _, port := range ports {
-		portNum, err := conf.QueryPortConfig(port.name)
-		if err != nil {
-			t.Error(err)
-			t.Log(conf.String())
-			return
-		}
-		if portNum != port.expected {
-			t.Errorf("expected port number is %d but got %d", port.expected, portNum)
-			return
-		}
+			conf := puzzledb.NewConfigWith(c)
+			ports := []struct {
+				name     string
+				expected int
+			}{
+				{
+					name:     "mysql",
+					expected: 3306,
+				},
+			}
+			for _, port := range ports {
+				portNum, err := conf.QueryPortConfig(port.name)
+				if err != nil {
+					t.Error(err)
+					t.Log(conf.String())
+					return
+				}
+				if portNum != port.expected {
+					t.Errorf("expected port number is %d but got %d", port.expected, portNum)
+					return
+				}
+			}
+		})
 	}
 }
