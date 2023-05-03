@@ -15,6 +15,7 @@
 package puzzledb
 
 import (
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/go-tracing/tracer/ot"
 	"github.com/cybergarage/go-tracing/tracer/otel"
@@ -58,13 +59,6 @@ func (t *Tracer) EndpointConfig(name string) (string, error) {
 
 func (t *Tracer) Start() error {
 	t.tracer = tracer.NewNullTracer()
-	enabled, err := t.EnabledConfig()
-	if err != nil {
-		return err
-	}
-	if !enabled {
-		return nil
-	}
 
 	tracerName, err := t.DefaultConfig()
 	if err != nil {
@@ -93,9 +87,27 @@ func (t *Tracer) Start() error {
 
 	t.tracer = tracer
 
+	log.Infof("%s tracer (%s) started", tracerName, endpoint)
+
 	return nil
 }
 
 func (t *Tracer) Stop() error {
-	return t.tracer.Stop()
+	tracerName, err := t.DefaultConfig()
+	if err != nil {
+		return err
+	}
+
+	endpoint, err := t.EndpointConfig(tracerName)
+	if err != nil {
+		return err
+	}
+
+	if err := t.tracer.Stop(); err != nil {
+		return err
+	}
+
+	log.Infof("%s tracer (%s) started", tracerName, endpoint)
+
+	return nil
 }
