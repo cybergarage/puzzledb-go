@@ -36,16 +36,18 @@ type GrpcServer struct {
 	Addr       string
 	Port       int
 	pb.UnimplementedStoreServer
+	pb.UnimplementedConfigServer
 }
 
 // NewGrpcServerWith returns a new GrpcServer.
 func NewGrpcServerWith(server *Server) *GrpcServer {
 	return &GrpcServer{
-		Server:                   server,
-		grpcServer:               nil,
-		Addr:                     "",
-		Port:                     DefaultGrpcPort,
-		UnimplementedStoreServer: pb.UnimplementedStoreServer{},
+		Server:                    server,
+		grpcServer:                nil,
+		Addr:                      "",
+		Port:                      DefaultGrpcPort,
+		UnimplementedStoreServer:  pb.UnimplementedStoreServer{},
+		UnimplementedConfigServer: pb.UnimplementedConfigServer{},
 	}
 }
 
@@ -74,6 +76,7 @@ func (server *GrpcServer) Start() error {
 	}
 	server.grpcServer = grpc.NewServer(grpc.UnaryInterceptor(loggingUnaryInterceptor))
 	pb.RegisterStoreServer(server.grpcServer, server)
+	pb.RegisterConfigServer(server.grpcServer, server)
 	go func() {
 		if err := server.grpcServer.Serve(listener); err != nil {
 			log.Error(err)
