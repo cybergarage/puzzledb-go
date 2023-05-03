@@ -31,7 +31,7 @@ image:img/roadmap.png[doc/img/roadmap]
 ** CLI Utilities
 *** [*] Added puzzledb-cli
 ** Operator APIs
-*** Added gRPC server for operator APIs and CLI utilities.
+*** [*] Added gRPC services for operator APIs and CLI utilities.
 ** Configuration support
 *** [*] Added support for configuration with environment variables.
 *** [*] Added support for configuration with puzzledb.yaml.

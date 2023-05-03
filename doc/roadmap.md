@@ -48,7 +48,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Operator APIs
 
-        -   Added gRPC server for operator APIs and CLI utilities.
+        -   ✓ Added gRPC services for operator APIs and CLI utilities.
 
     -   Configuration support
 
