@@ -92,6 +92,21 @@ func (conf *Config) QueryPortConfig(name string) (int, error) {
 	return conf.Config.GetInt(strings.Join([]string{pluginsConfig, queryConfig, name, portConfig}, "."))
 }
 
+// GetString returns a string value for the specified name.
+func (conf *Config) GetString(paths ...string) (string, error) {
+	return conf.Config.GetString(config.NewPathWith(paths...))
+}
+
+// GetInt returns an integer value for the specified name.
+func (conf *Config) GetInt(paths ...string) (int, error) {
+	return conf.Config.GetInt(config.NewPathWith(paths...))
+}
+
+// GetBool returns a boolean value for the specified name.
+func (conf *Config) GetBool(paths ...string) (bool, error) {
+	return conf.Config.GetBool(config.NewPathWith(paths...))
+}
+
 func (conf *Config) String() string {
 	if conf.Config == nil {
 		return ""
