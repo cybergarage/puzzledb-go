@@ -15,9 +15,8 @@
 package puzzledb
 
 import (
-	"strings"
-
 	"github.com/cybergarage/go-tracing/tracer"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
 // Tracer represents a tracer.
@@ -40,7 +39,7 @@ func (t *Tracer) Tracer() tracer.Tracer {
 }
 
 func (t *Tracer) EnabledConfig() (bool, error) {
-	return t.Server.Config.GetBool(strings.Join([]string{tracingConfig, enabledConfig}, "."))
+	return t.Server.Config.GetBool(config.NewPathWith(tracingConfig, enabledConfig))
 }
 
 func (t *Tracer) Start() error {
@@ -49,7 +48,7 @@ func (t *Tracer) Start() error {
 		return err
 	}
 	if enabled {
-		
+
 	}
 	t.tracer.SetServiceName(ProductName)
 	return nil

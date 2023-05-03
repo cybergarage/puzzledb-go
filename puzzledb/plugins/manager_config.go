@@ -14,7 +14,9 @@
 
 package plugins
 
-import "strings"
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
+)
 
 const (
 	pluginsConfig = "plugins"
@@ -31,5 +33,5 @@ func NewManagerConfigWith(config Config) *ManagerConfig {
 }
 
 func (conf *ManagerConfig) EnabledConfig(t ServiceType) (string, error) {
-	return conf.Config.GetString(strings.Join([]string{pluginsConfig, t.String()}, "."))
+	return conf.Config.GetString(config.NewPathWith(pluginsConfig, t.String()))
 }
