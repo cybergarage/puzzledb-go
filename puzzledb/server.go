@@ -156,7 +156,7 @@ func (server *Server) setupPlugins() error {
 	}
 
 	for _, service := range server.QueryServices() {
-		service.SetConfig(server.Config)
+		service.SetConfig(server.Config.Config)
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
 		service.SetTracer(server.Tracer.Tracer())
