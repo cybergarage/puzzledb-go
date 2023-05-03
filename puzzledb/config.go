@@ -29,6 +29,7 @@ const (
 	queryConfig   = "query"
 	portConfig    = "port"
 	enabledConfig = "enabled"
+	tracingConfig = "tracing"
 )
 
 type Config struct {
