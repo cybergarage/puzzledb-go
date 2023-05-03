@@ -17,7 +17,6 @@ package puzzledb
 import (
 	"bytes"
 	_ "embed"
-	"strings"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/spf13/viper"
@@ -89,7 +88,7 @@ func NewConfigWithString(conString string) (config.Config, error) {
 
 // QueryPortConfig returns a port number for the specified query service name.
 func (conf *Config) QueryPortConfig(name string) (int, error) {
-	return conf.Config.GetInt(strings.Join([]string{pluginsConfig, queryConfig, name, portConfig}, "."))
+	return conf.Config.GetInt(config.NewPathWith(pluginsConfig, queryConfig, name, portConfig))
 }
 
 // GetString returns a string value for the specified name.
