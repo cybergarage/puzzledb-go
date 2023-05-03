@@ -21,15 +21,8 @@ import (
 )
 
 func init() { // nolint:gochecknoinits
-	rootCmd.AddCommand(listCmd)
 	listCmd.AddCommand(listDatabasesCmd)
 	listCmd.AddCommand(listCollectionsCmd)
-}
-
-var listCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:   "list",
-	Short: "List store resources",
-	Long:  `List store resources such as databases and collections.`,
 }
 
 var listDatabasesCmd = &cobra.Command{ // nolint:exhaustruct
