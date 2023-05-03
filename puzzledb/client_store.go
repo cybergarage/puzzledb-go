@@ -33,6 +33,7 @@ func (client *Client) CreateDatabase(name string) error {
 	return nil
 }
 
+// RemoveDatabase removes a specified database.
 func (client *Client) RemoveDatabase(name string) error {
 	c := pb.NewStoreClient(client.Conn)
 	req := &pb.RemoveDatabaseRequest{
