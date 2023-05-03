@@ -20,7 +20,6 @@ import (
 	"strconv"
 
 	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 	"google.golang.org/grpc"
 )
@@ -58,12 +57,12 @@ func (server *GrpcServer) SetPort(port int) {
 
 // EnabledConfig returns a port number for the specified query service name.
 func (server *GrpcServer) EnabledConfig() (bool, error) {
-	return server.Config.GetBool(config.NewPathWith(grpcConfig, enabledConfig))
+	return server.Config.GetBool(grpcConfig, enabledConfig)
 }
 
 // PortConfig returns a port number for the specified query service name.
 func (server *GrpcServer) PortConfig() (int, error) {
-	return server.Config.GetInt(config.NewPathWith(grpcConfig, portConfig))
+	return server.Config.GetInt(grpcConfig, portConfig)
 }
 
 // Start starts the server.
