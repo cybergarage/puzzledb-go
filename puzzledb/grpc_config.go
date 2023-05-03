@@ -16,7 +16,11 @@ package puzzledb
 
 import (
 	"context"
+	"fmt"
 	"strings"
+
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 )
@@ -27,7 +31,12 @@ func (server *GrpcServer) ListConfig(context.Context, *pb.ListConfigRequest) (*p
 	return &res, nil
 }
 
-func (server *GrpcServer) GetConfig(context.Context, *pb.GetConfigRequest) (*pb.GetConfigResponse, error) {
+func (server *GrpcServer) GetConfig(ctx context.Context, req *pb.GetConfigRequest) (*pb.GetConfigResponse, error) {
+	v, err := server.Config.Get(req.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.Name))
+	}
 	res := pb.GetConfigResponse{} //nolint:exhaustruct
+	res.Value = fmt.Sprintf("%v", v)
 	return &res, nil
 }
