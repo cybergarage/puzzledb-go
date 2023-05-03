@@ -30,7 +30,6 @@ type viperConfig struct {
 func NewConfigWith(productName string) Config {
 	viper.SetConfigName(productName)
 	viper.SetEnvPrefix(strings.ToUpper(productName))
-	viper.SetConfigType("yaml")
 	viper.AutomaticEnv()
 	return &viperConfig{}
 }
