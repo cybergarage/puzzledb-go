@@ -98,15 +98,14 @@ func (server *GrpcServer) Stop() error {
 	return nil
 }
 
-func loggingUnaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
-	resp, err = handler(ctx, req)
+func loggingUnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+	resp, err := handler(ctx, req)
 
 	if err == nil {
 		log.Infof("gRPC Method: %s, Request: %v, Response: %v",
 			info.FullMethod,
 			req,
 			resp)
-
 	} else {
 		log.Errorf("gRPC Method: %s, Request: %v, Response: %v",
 			info.FullMethod,
