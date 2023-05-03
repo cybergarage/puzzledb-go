@@ -38,6 +38,20 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   ❏ Added TLS with mTLS Support
 
+## v0.9.x
+
+-   New features
+
+    -   Distributed Tracer plug-ins
+
+        -   ❏ Added OpenTelemetry plug-in
+
+-   New plug-ins
+
+    -   Coordinator plug-ins
+
+        -   ❏ Added etcd plug-in
+
 ## v0.9.0
 
 -   New features
@@ -62,8 +76,6 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ✓ Added memdb plug-in
 
-        -   ❏ Added etcd plug-in
-
     -   Storage plug-ins
 
         -   Key-Value Store plug-ins
@@ -71,8 +83,6 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
             -   ✓ Added FoundationDB plug-in
 
     -   Distributed Tracer plug-ins
-
-        -   ✓ Added OpenTelemetry plug-in
 
         -   ✓ Added OpenTracing plug-in
 

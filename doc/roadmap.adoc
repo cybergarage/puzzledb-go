@@ -26,6 +26,14 @@ image:img/roadmap.png[doc/img/roadmap]
 * New features
 ** [ ] Added TLS with mTLS Support
 
+== v0.9.x
+* New features
+** Distributed Tracer plug-ins
+*** [ ] Added OpenTelemetry plug-in
+* New plug-ins
+** Coordinator plug-ins
+*** [ ] Added etcd plug-in
+
 == v0.9.0
 * New features
 ** CLI Utilities
@@ -38,12 +46,10 @@ image:img/roadmap.png[doc/img/roadmap]
 * New plug-ins
 ** Coordinator plug-ins
 *** [*] Added memdb plug-in
-*** [ ] Added etcd plug-in
 ** Storage plug-ins
 *** Key-Value Store plug-ins
 **** [*] Added FoundationDB plug-in
 ** Distributed Tracer plug-ins
-*** [*] Added OpenTelemetry plug-in
 *** [*] Added OpenTracing plug-in
 
 == v0.8.0
