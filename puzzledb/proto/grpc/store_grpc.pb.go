@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Store_CreateDatabase_FullMethodName  = "/grpc.Store/CreateDatabase"
-	Store_RemoveDatabase_FullMethodName  = "/grpc.Store/RemoveDatabase"
-	Store_ListDatabases_FullMethodName   = "/grpc.Store/ListDatabases"
-	Store_ListCollections_FullMethodName = "/grpc.Store/ListCollections"
+	Store_CreateDatabase_FullMethodName  = "/Store/CreateDatabase"
+	Store_RemoveDatabase_FullMethodName  = "/Store/RemoveDatabase"
+	Store_ListDatabases_FullMethodName   = "/Store/ListDatabases"
+	Store_ListCollections_FullMethodName = "/Store/ListCollections"
 )
 
 // StoreClient is the client API for Store service.
@@ -195,7 +195,7 @@ func _Store_ListCollections_Handler(srv interface{}, ctx context.Context, dec fu
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Store_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "grpc.Store",
+	ServiceName: "Store",
 	HandlerType: (*StoreServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
