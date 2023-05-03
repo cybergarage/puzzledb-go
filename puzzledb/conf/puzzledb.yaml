@@ -9,12 +9,10 @@ tracing:
     default: opentracing
     opentracing:
       enabled: true
-      host: localhost
-      port: 6831
-      endpoint:
+      endpoint: "localhost:6831"
     opentelemetry:
       enabled: true
-      endpoint:
+      endpoint: "http://localhost:14268/api/traces"
 plugins:
   coder:
     document:
