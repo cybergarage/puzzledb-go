@@ -16,7 +16,7 @@ RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/
 
 RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/bin/puzzledb-server
 
-COPY ./conf/puzzledb.yaml /
+COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
