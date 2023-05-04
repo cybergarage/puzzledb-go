@@ -171,16 +171,32 @@ func (server *Server) setupPlugins() error {
 
 // Start starts the server.
 func (server *Server) Start() error {
+	// Setup logger
+
+	ok, _ := server.Config.GetBool(loggingConfig, enabledConfig)
+	if ok {
+		level := log.LevelInfo
+		levelStr, err := server.Config.GetString(loggingConfig, levelConfig)
+		if err == nil {
+			level = log.GetLevelFromString(levelStr)
+		}
+		log.SetSharedLogger(log.NewStdoutLogger(level))
+	} else {
+		log.SetSharedLogger(nil)
+	}
+
+	// Output version
+
 	log.Infof("%s/%s", ProductName, Version)
 
-	if server.Config != nil {
-		log.Infof("configuration loaded")
-		log.Infof(server.Config.String())
-	}
+	// Setup configuration
+
+	log.Infof("configuration loaded")
+	log.Infof(server.Config.String())
 
 	// Setup gRPC server
 
-	ok, _ := server.GrpcServer.EnabledConfig()
+	ok, _ = server.GrpcServer.EnabledConfig()
 	if ok {
 		port, err := server.GrpcServer.PortConfig()
 		if err != nil {
