@@ -72,10 +72,10 @@ github.com/cybergarage/go-cbor v1.2.0 h1:lRmnGQszGm5qRUWu4cNVpcYj/ilMP3K0ul1zReK
 github.com/cybergarage/go-cbor v1.2.0/go.mod h1:ZBFG6UPO1UXvLDIFtjxjA+vT7zQb91LFZdJAYB7w3Jc=
 github.com/cybergarage/go-logger v1.3.4 h1:UTgYZr/LwQtYVOncS3NJ64We5kCe7ce6L85y/MOYfrM=
 github.com/cybergarage/go-logger v1.3.4/go.mod h1:2iMjinHam5oqyKEGsKIzeQQmmOPxpCgro95LOlEC2ks=
-github.com/cybergarage/go-mongo v1.0.1 h1:g5EkQbyaqVkofkI97+7RJIQ8X0ai2QOrVjfoV48pcXs=
-github.com/cybergarage/go-mongo v1.0.1/go.mod h1:aTn70gRASbarW8G0iKMh6SGVBlQtrQHXQZYw/nhnhgg=
-github.com/cybergarage/go-mysql v1.0.1 h1:t12xhbbtrt/tMwKq/bl997VzuIyRHI1pXJ5f37A0Vuk=
-github.com/cybergarage/go-mysql v1.0.1/go.mod h1:je9Na3sYzJTOFgpCqUE90yusnVbjhI4oZ4f8QyF3KhM=
+github.com/cybergarage/go-mongo v1.0.2 h1:KuviUFcjD0TKviEXDUh49o+n8dR089tsCaN30SXoBV0=
+github.com/cybergarage/go-mongo v1.0.2/go.mod h1:ZKgavW01jqInW/eJaqQzMuQu8S/VWoFCut0W74j2q8I=
+github.com/cybergarage/go-mysql v1.0.2 h1:Vlu8W2dK6Mdv90bgx/aT1Fp4DzpJvzeigSbycIEWDms=
+github.com/cybergarage/go-mysql v1.0.2/go.mod h1:L+gB5Q1tVu+Sv1xGuNOjqY45OMnhOSur5KLgaFXFszQ=
 github.com/cybergarage/go-pict v0.8.1 h1:qQivvxVUkxGhtuLHXKmEi1grXg5uNlZWie0bVyVyDmA=
 github.com/cybergarage/go-pict v0.8.1/go.mod h1:ukn4bXgVb/owpw5tllWRPE0AR5Fx/ucbw43dpvFM90w=
 github.com/cybergarage/go-redis v1.3.5 h1:9NUpTFWzwYd+pySK8RuT4SYN124xrcHYq/OmUbR2Utg=
@@ -84,8 +84,8 @@ github.com/cybergarage/go-safecast v1.1.0 h1:vBBrFIvsK5LvtIDSXXQbIdrtmJR5BmLpPkr
 github.com/cybergarage/go-safecast v1.1.0/go.mod h1:us/bjLPEfj6kR3DaY0HGhcW1WK0oDCqkpuYSTi+t7uY=
 github.com/cybergarage/go-sqltest v0.9.4 h1:Sxhp6MPZbTn0Zmmsgc7sY2t1WZXWzywmwhTiz7C6wek=
 github.com/cybergarage/go-sqltest v0.9.4/go.mod h1:CQkUZIyjHsxe0YqRRSvxiWanbDgLcFYAhz/6FQP7vqs=
-github.com/cybergarage/go-tracing v1.0.0 h1:IBwi48YcohXiz9vQEVLcjOS/+aBYInPOKOgIxjttod4=
-github.com/cybergarage/go-tracing v1.0.0/go.mod h1:smRez9HytS4YklbMMq5QoOu6l75ClrO4x+3UaRiSg5I=
+github.com/cybergarage/go-tracing v1.1.0 h1:E/cpfE9Pdehik0u+IQTg9htRhyfUU2TFfi/ETAznLbQ=
+github.com/cybergarage/go-tracing v1.1.0/go.mod h1:smRez9HytS4YklbMMq5QoOu6l75ClrO4x+3UaRiSg5I=
 github.com/cyphar/filepath-securejoin v0.2.3 h1:YX6ebbZCZP7VkM3scTTokDgBL2TY741X51MTk3ycuNI=
 github.com/cyphar/filepath-securejoin v0.2.3/go.mod h1:aPGpWjXOXUn2NCNjFvBE6aRxGGx79pTxQpKOJNYHHl4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
