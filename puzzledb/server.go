@@ -178,10 +178,33 @@ func (server *Server) Start() error {
 		log.Infof(server.Config.String())
 	}
 
+	// Setup gRPC server
+
+	ok, _ := server.GrpcServer.EnabledConfig()
+	if ok {
+		port, err := server.GrpcServer.PortConfig()
+		if err != nil {
+			server.GrpcServer.SetPort(port)
+		}
+		if err := server.GrpcServer.Start(); err != nil {
+			if stopErr := server.Stop(); stopErr != nil {
+				return errors.Join(err, stopErr)
+			}
+			return err
+		}
+	} else {
+		log.Infof("gRPC disabled")
+	}
+
 	// Setup tracer
 
-	if err := server.Tracer.Start(); err != nil {
-		return err
+	ok, _ = server.Tracer.EnabledConfig()
+	if ok {
+		if err := server.Tracer.Start(); err != nil {
+			return err
+		}
+	} else {
+		log.Infof("tracer disabled")
 	}
 
 	// Setup plugins
@@ -203,24 +226,6 @@ func (server *Server) Start() error {
 
 	log.Infof("%s", server.Manager.String())
 
-	// Setup gRPC server
-
-	ok, _ := server.GrpcServer.EnabledConfig()
-	if ok {
-		port, err := server.GrpcServer.PortConfig()
-		if err != nil {
-			server.GrpcServer.SetPort(port)
-		}
-		if err := server.GrpcServer.Start(); err != nil {
-			if stopErr := server.Stop(); stopErr != nil {
-				return errors.Join(err, stopErr)
-			}
-			return err
-		}
-	} else {
-		log.Infof("gRPC disabled")
-	}
-
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
 	return nil
@@ -232,11 +237,17 @@ func (server *Server) Stop() error {
 	if stopErr := server.Manager.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
 	}
-	if stopErr := server.GrpcServer.Stop(); stopErr != nil {
-		err = errors.Join(err, stopErr)
+	ok, _ := server.Tracer.EnabledConfig()
+	if ok {
+		if stopErr := server.Tracer.Stop(); stopErr != nil {
+			err = errors.Join(err, stopErr)
+		}
 	}
-	if stopErr := server.tracer.Stop(); stopErr != nil {
-		err = errors.Join(err, stopErr)
+	ok, _ = server.GrpcServer.EnabledConfig()
+	if ok {
+		if stopErr := server.GrpcServer.Stop(); stopErr != nil {
+			err = errors.Join(err, stopErr)
+		}
 	}
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
 	return err
