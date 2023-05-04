@@ -17,14 +17,11 @@ package mongo
 import (
 	"testing"
 
-	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mongo/mongotest"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
 func TestMongoEmbedSuite(t *testing.T) {
-	log.SetStdoutDebugEnbled(true)
-
 	server := puzzledbtest.NewServer()
 	err := server.Start()
 	if err != nil {
