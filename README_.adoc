@@ -52,7 +52,8 @@ For more information about the roadmap, please refer to link:doc/roadmap.adoc[Ro
 
 * Get Started
 ** link:doc/quick-start.md[Quick Start]
-** link:https://hub.docker.com/repository/docker/cybergarage/puzzledb/general[Docker Hub (cybergarage/puzzledb)]
+** Docker Hub
+*** link:https://hub.docker.com/repository/docker/cybergarage/puzzledb/general[cybergarage/puzzledb]
 * Configuration
 ** link:doc/configuring.md[Configuring PullzeDB]
 * Operation
