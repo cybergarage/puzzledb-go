@@ -18,8 +18,6 @@ import (
 	"fmt"
 	"testing"
 	"time"
-
-	"github.com/cybergarage/go-logger/log"
 )
 
 const (
@@ -27,8 +25,6 @@ const (
 )
 
 func TestClient(t *testing.T) {
-	log.SetStdoutDebugEnbled(true)
-
 	server := NewServer()
 	err := server.Start()
 	if err != nil {
