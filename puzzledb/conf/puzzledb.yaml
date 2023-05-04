@@ -1,8 +1,9 @@
+logging:
+  enabled: true
+  level: info
 grpc:
   enabled: true
   port: 50053
-logging:
-  level: info
 tracing:
   enabled: true
   default: opentelemetry
