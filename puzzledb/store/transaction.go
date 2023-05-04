@@ -34,17 +34,17 @@ type DatabaseOperation interface {
 
 type DocumentOperation interface {
 	// InsertDocument puts a document object with the specified primary key.
-	InsertDocument(docKey Key, obj Object) error
+	InsertDocument(ctx context.Context, docKey Key, obj Object) error
 	// FindDocuments returns a result set matching the specified key.
-	FindDocuments(docKey Key) (ResultSet, error)
+	FindDocuments(ctx context.Context, docKey Key) (ResultSet, error)
 	// UpdateDocument updates a document object with the specified primary key.
-	UpdateDocument(docKey Key, obj Object) error
+	UpdateDocument(ctx context.Context, docKey Key, obj Object) error
 	// RemoveDocument removes a document object with the specified primary key.
-	RemoveDocument(docKey Key) error
+	RemoveDocument(ctx context.Context, docKey Key) error
 	// RemoveDocuments removes document objects with the specified primary key.
-	RemoveDocuments(docKey Key) error
+	RemoveDocuments(ctx context.Context, docKey Key) error
 	// TruncateDocuments removes all document objects.
-	TruncateDocuments() error
+	TruncateDocuments(ctx context.Context) error
 }
 
 type IndexOperation interface {

@@ -148,7 +148,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		err = txn.InsertDocument(key, objs[n])
+		err = txn.InsertDocument(ctx, key, objs[n])
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -168,7 +168,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := txn.FindDocuments(key)
+		rs, err := txn.FindDocuments(ctx, key)
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -215,7 +215,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		err = txn.UpdateDocument(key, objs[n])
+		err = txn.UpdateDocument(ctx, key, objs[n])
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -235,7 +235,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := txn.FindDocuments(key)
+		rs, err := txn.FindDocuments(ctx, key)
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -266,7 +266,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		err = txn.RemoveDocument(key)
+		err = txn.RemoveDocument(ctx, key)
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -286,7 +286,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := txn.FindDocuments(key)
+		rs, err := txn.FindDocuments(ctx, key)
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)

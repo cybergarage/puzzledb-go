@@ -66,7 +66,7 @@ func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOpt
 	if err != nil {
 		return nil, err
 	}
-	err = txn.InsertDocument([]any{key}, val)
+	err = txn.InsertDocument(ctx, []any{key}, val)
 	if err != nil {
 		err = txn.Cancel(ctx)
 		if err != nil {
@@ -97,7 +97,7 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
-	rs, err := txn.FindDocuments([]any{key})
+	rs, err := txn.FindDocuments(ctx, []any{key})
 	if err != nil {
 		err = txn.Cancel(ctx)
 		if err != nil {
