@@ -29,9 +29,11 @@ const (
 	portConfig     = "port"
 	enabledConfig  = "enabled"
 	tracingConfig  = "tracing"
+	loggingConfig  = "logging"
 	tracerConfig   = "tracer"
 	endpointConfig = "endpoint"
 	defaultConfig  = "default"
+	levelConfig    = "level"
 )
 
 type Config struct {
