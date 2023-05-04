@@ -52,10 +52,12 @@ For more information about the roadmap, please refer to link:doc/roadmap.adoc[Ro
 
 * Get Started
 ** link:doc/quick-start.md[Quick Start]
-** link:doc/configuring.md[Configuring PullzeDB]
 ** link:https://hub.docker.com/repository/docker/cybergarage/puzzledb/general[Docker Hub (cybergarage/puzzledb)]
+* Configuration
+** link:doc/configuring.md[Configuring PullzeDB]
 * Operation
-** link:doc/cli/puzzledb-cli.md[PuzzleDB CLI - puzzledb-cli]
+** CLI
+*** link:doc/cli/puzzledb-cli.md[puzzledb-cli]
 ** link:doc/tracing.md[Tracing]
 
 = Developer Guides

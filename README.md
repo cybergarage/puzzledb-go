@@ -80,13 +80,17 @@ For more information about the roadmap, please refer to [Roadmap](doc/roadmap.ad
 
     -   [Quick Start](doc/quick-start.md)
 
-    -   [Configuring PullzeDB](doc/configuring.md)
-
     -   [Docker Hub (cybergarage/puzzledb)](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
+
+-   Configuration
+
+    -   [Configuring PullzeDB](doc/configuring.md)
 
 -   Operation
 
-    -   [PuzzleDB CLI - puzzledb-cli](doc/cli/puzzledb-cli.md)
+    -   CLI
+
+        -   [puzzledb-cli](doc/cli/puzzledb-cli.md)
 
     -   [Tracing](doc/tracing.md)
 
