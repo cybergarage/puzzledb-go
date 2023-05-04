@@ -1,6 +1,6 @@
 logging:
   enabled: true
-  level: info
+  level: debug
 grpc:
   enabled: true
   port: 50053
