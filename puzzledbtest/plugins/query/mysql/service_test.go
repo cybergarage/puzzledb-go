@@ -17,14 +17,11 @@ package sqltest
 import (
 	"testing"
 
-	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-sqltest/sqltest"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
 func TestMySQLTestSuite(t *testing.T) {
-	log.SetStdoutDebugEnbled(true)
-
 	server := puzzledbtest.NewServer()
 	err := server.Start()
 	if err != nil {
