@@ -6,7 +6,7 @@ COPY . /puzzledb
 WORKDIR /puzzledb
 
 RUN apt-get update && apt-get install -y \
-    golang wget \
+    golang wget adduser \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
