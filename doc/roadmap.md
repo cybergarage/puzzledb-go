@@ -52,6 +52,12 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ❏ Added etcd plug-in
 
+    -   Metrics plug-ins
+
+        -   ❏ Added Prometheus plug-in
+
+        -   ❏ Added Graphite plug-in
+
 ## v0.9.0
 
 -   New features
