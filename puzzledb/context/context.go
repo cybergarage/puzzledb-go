@@ -25,5 +25,7 @@ type Context interface {
 	// SetSpan sets a new root span context.
 	SetSpan(span tracer.SpanContext) Context
 	// StartSpan starts a new child span.
-	StartSpan(name string)
+	StartSpan(name string) bool
+	// FinishSpan ends the current span.
+	FinishSpan() bool
 }

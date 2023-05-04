@@ -45,13 +45,24 @@ func (ctx *ctx) SetSpan(span tracer.SpanContext) Context {
 }
 
 // StartSpan starts a new child span.
-func (ctx *ctx) StartSpan(name string) {
+func (ctx *ctx) StartSpan(name string) bool {
 	if len(ctx.spans) == 0 {
-		return
+		return false
 	}
 	span := ctx.spans[len(ctx.spans)-1]
 	childSpan := span.Span().StartSpan(name)
 	ctx.pushSpan(childSpan)
+	return true
+}
+
+// FinishSpan ends the current span.
+func (ctx *ctx) FinishSpan() bool {
+	span := ctx.popSpan()
+	if span == nil {
+		return false
+	}
+	span.Span().Finish()
+	return true
 }
 
 func (ctx *ctx) popSpan() tracer.SpanContext {
