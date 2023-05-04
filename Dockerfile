@@ -14,7 +14,7 @@ RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/
     apt install /tmp/foundationdb-clients_7.2.5-1_amd64.deb &&  \
     rm /tmp/*.deb
 
-RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/bin/puzzledb-server
+RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
 
 COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
