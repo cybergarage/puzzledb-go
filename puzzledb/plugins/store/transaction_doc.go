@@ -17,13 +17,17 @@ package store
 import (
 	"bytes"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // InsertDocument puts a document object with the primary key.
-func (txn *transaction) InsertDocument(docKey store.Key, obj store.Object) error {
+func (txn *transaction) InsertDocument(ctx context.Context, docKey store.Key, obj store.Object) error {
+	ctx.StartSpan("InsertDocument")
+	defer ctx.FinishSpan()
+
 	var encObj bytes.Buffer
 	err := txn.EncodeDocument(&encObj, obj)
 	if err != nil {
@@ -38,7 +42,10 @@ func (txn *transaction) InsertDocument(docKey store.Key, obj store.Object) error
 }
 
 // FindDocuments returns a result set matching the specified key.
-func (txn *transaction) FindDocuments(docKey store.Key) (store.ResultSet, error) {
+func (txn *transaction) FindDocuments(ctx context.Context, docKey store.Key) (store.ResultSet, error) {
+	ctx.StartSpan("FindDocuments")
+	defer ctx.FinishSpan()
+
 	kvRs, err := txn.kv.GetRange(kv.NewKeyWith(kv.DocumentKeyHeader, docKey))
 	if err != nil {
 		return nil, err
@@ -47,7 +54,10 @@ func (txn *transaction) FindDocuments(docKey store.Key) (store.ResultSet, error)
 }
 
 // UpdateDocument updates a document object with the specified primary key.
-func (txn *transaction) UpdateDocument(docKey store.Key, obj store.Object) error {
+func (txn *transaction) UpdateDocument(ctx context.Context, docKey store.Key, obj store.Object) error {
+	ctx.StartSpan("UpdateDocument")
+	defer ctx.FinishSpan()
+
 	var encObj bytes.Buffer
 	err := txn.EncodeDocument(&encObj, obj)
 	if err != nil {
@@ -62,18 +72,27 @@ func (txn *transaction) UpdateDocument(docKey store.Key, obj store.Object) error
 }
 
 // RemoveDocument removes a document object with the specified primary key.
-func (txn *transaction) RemoveDocument(docKey store.Key) error {
+func (txn *transaction) RemoveDocument(ctx context.Context, docKey store.Key) error {
+	ctx.StartSpan("RemoveDocument")
+	defer ctx.FinishSpan()
+
 	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
 	return wrapKeyNotExistError(docKey, txn.kv.Remove(kvDocKey))
 }
 
 // RemoveDocument removes document objects with the specified primary key.
-func (txn *transaction) RemoveDocuments(docKey store.Key) error {
+func (txn *transaction) RemoveDocuments(ctx context.Context, docKey store.Key) error {
+	ctx.StartSpan("RemoveDocuments")
+	defer ctx.FinishSpan()
+
 	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
 	return wrapKeyNotExistError(docKey, txn.kv.RemoveRange(kvDocKey))
 }
 
 // TruncateDocuments removes all document objects.
-func (txn *transaction) TruncateDocuments() error {
-	return txn.RemoveDocuments(document.NewKeyWith(txn.Database().Name()))
+func (txn *transaction) TruncateDocuments(ctx context.Context) error {
+	ctx.StartSpan("TruncateDocuments")
+	defer ctx.FinishSpan()
+
+	return txn.RemoveDocuments(ctx, document.NewKeyWith(txn.Database().Name()))
 }

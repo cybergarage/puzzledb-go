@@ -175,7 +175,7 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.InsertDocument(docKey, docObj)
+	err = txn.InsertDocument(ctx, docKey, docObj)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -279,7 +279,7 @@ func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.C
 	}
 	switch docKeyType {
 	case document.PrimaryIndex:
-		return txn.FindDocuments(docKey)
+		return txn.FindDocuments(ctx, docKey)
 	case document.SecondaryIndex:
 		return txn.FindDocumentsByIndex(docKey)
 	}
@@ -376,7 +376,7 @@ func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, tx
 		return err
 	}
 
-	err = txn.UpdateDocument(docKey, docObj)
+	err = txn.UpdateDocument(ctx, docKey, docObj)
 	if err != nil {
 		return err
 	}
@@ -470,7 +470,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 }
 
 func (service *Service) deleteDocument(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docKey document.Key) error {
-	err := txn.RemoveDocument(docKey)
+	err := txn.RemoveDocument(ctx, docKey)
 	if err != nil {
 		return err
 	}
@@ -482,7 +482,7 @@ func (service *Service) deleteDocument(ctx context.Context, conn *mysql.Conn, tx
 	if len(idxes) == 0 {
 		return nil
 	}
-	rs, err := txn.FindDocuments(docKey)
+	rs, err := txn.FindDocuments(ctx, docKey)
 	if err != nil {
 		return err
 	}

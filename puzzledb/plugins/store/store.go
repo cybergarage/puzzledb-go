@@ -198,7 +198,7 @@ func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
 		return err
 	}
 
-	err = dbTxn.TruncateDocuments()
+	err = dbTxn.TruncateDocuments(ctx)
 	if err != nil {
 		if err := dbTxn.Cancel(ctx); err != nil {
 			return err
