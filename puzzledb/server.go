@@ -189,6 +189,10 @@ func (server *Server) Start() error {
 
 	log.Infof("%s/%s", ProductName, Version)
 
+	// Output logger settings
+
+	log.Infof("logger (%s) started", log.GetLevelString(log.GetSharedLogger().Level()))
+
 	// Setup configuration
 
 	log.Infof("configuration loaded")
