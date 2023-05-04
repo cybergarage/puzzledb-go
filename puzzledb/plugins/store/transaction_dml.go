@@ -17,6 +17,7 @@ package store
 import (
 	"bytes"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -28,7 +29,10 @@ func (txn *transaction) createSchemaKey(schema string) store.Key {
 }
 
 // CreateSchema creates a new schema.
-func (txn *transaction) CreateSchema(schema store.Schema) error {
+func (txn *transaction) CreateSchema(ctx context.Context, schema store.Schema) error {
+	ctx.StartSpan("CreateSchema")
+	defer ctx.FinishSpan()
+
 	kvSchemaKey := txn.createSchemaKey(schema.Name())
 	var encSchema bytes.Buffer
 	err := txn.EncodeDocument(&encSchema, schema.Data())
@@ -43,7 +47,10 @@ func (txn *transaction) CreateSchema(schema store.Schema) error {
 }
 
 // GetSchema returns the specified schema.
-func (txn *transaction) GetSchema(name string) (store.Schema, error) {
+func (txn *transaction) GetSchema(ctx context.Context, name string) (store.Schema, error) {
+	ctx.StartSpan("GetSchema")
+	defer ctx.FinishSpan()
+
 	kvSchemaKey := txn.createSchemaKey(name)
 	kvRs, err := txn.kv.GetRange(kvSchemaKey)
 	if err != nil {
@@ -61,13 +68,19 @@ func (txn *transaction) GetSchema(name string) (store.Schema, error) {
 }
 
 // RemoveSchema removes the specified schema.
-func (txn *transaction) RemoveSchema(name string) error {
+func (txn *transaction) RemoveSchema(ctx context.Context, name string) error {
+	ctx.StartSpan("RemoveSchema")
+	defer ctx.FinishSpan()
+
 	kvSchemaKey := txn.createSchemaKey(name)
 	return txn.kv.Remove(kvSchemaKey)
 }
 
 // TruncateSchemas removes all schemas.
-func (txn *transaction) TruncateSchemas() error {
+func (txn *transaction) TruncateSchemas(ctx context.Context) error {
+	ctx.StartSpan("TruncateSchemas")
+	defer ctx.FinishSpan()
+
 	kvSchemaKey := kv.NewKeyWith(kv.SchemaKeyHeader, document.NewKeyWith(txn.Database().Name()))
 	return txn.kv.RemoveRange(kvSchemaKey)
 }
