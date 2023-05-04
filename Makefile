@@ -45,7 +45,7 @@ BINS=\
         ${BIN_SERVER_ID} \
         ${BIN_CLI_ID}
 
-.PHONY: test format vet lint clean docker cmd
+.PHONY: test format vet lint clean docker cmd doc_cli_gen
 
 all: test
 
@@ -89,13 +89,20 @@ clean:
 # Document
 #
 
+DOC_CLI_ROOT=doc/cli
+DOC_CLI_BIN=puzzledb-cli-doc
+
 %.md : %.adoc
 	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
 csvs := $(wildcard doc/**/*.csv)
 docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc))
 doc_touch: $(csvs)
 	touch doc/*.adoc
-doc: doc_touch $(docs)
+doc_cli_gen:
+	go build -o ${DOC_CLI_ROOT}/${DOC_CLI_BIN} ${MODULE_ROOT}/${DOC_CLI_ROOT}
+	pushd ${DOC_CLI_ROOT} && ./${DOC_CLI_BIN} && popd
+	git add ${DOC_CLI_ROOT}/*.md
+doc: doc_touch doc_cli_gen $(docs)
 	@mv README_.md README.md
 	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
 
