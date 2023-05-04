@@ -22,7 +22,7 @@ import (
 
 func init() { // nolint:gochecknoinits
 	listCmd.AddCommand(listDatabasesCmd)
-	listCmd.AddCommand(listCollectionsCmd)
+	//listCmd.AddCommand(listCollectionsCmd)
 }
 
 var listDatabasesCmd = &cobra.Command{ // nolint:exhaustruct
@@ -42,6 +42,7 @@ var listDatabasesCmd = &cobra.Command{ // nolint:exhaustruct
 }
 
 // nolint:forbidigo
+/*
 var listCollectionsCmd = &cobra.Command{ // nolint:exhaustruct
 	Use:   "collections [database]",
 	Short: "List collections in a database",
@@ -52,3 +53,4 @@ var listCollectionsCmd = &cobra.Command{ // nolint:exhaustruct
 		// fmt.Printf("Listing collections in database %s...\n", args[0])
 	},
 }
+*/
