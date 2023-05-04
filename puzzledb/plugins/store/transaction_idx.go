@@ -15,13 +15,17 @@
 package store
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 // InsertIndex puts a secondary index with the primary key.
-func (txn *transaction) InsertIndex(idxKey store.Key, docKey store.Key) error {
+func (txn *transaction) InsertIndex(ctx context.Context, idxKey store.Key, docKey store.Key) error {
+	ctx.StartSpan("InsertIndex")
+	defer ctx.FinishSpan()
+
 	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
 	kvDocKeyBytes, err := txn.EncodeKey(kvDocKey)
 	if err != nil {
@@ -36,13 +40,19 @@ func (txn *transaction) InsertIndex(idxKey store.Key, docKey store.Key) error {
 }
 
 // RemoveIndex removes the specified secondary index.
-func (txn *transaction) RemoveIndex(idxKey store.Key) error {
+func (txn *transaction) RemoveIndex(ctx context.Context, idxKey store.Key) error {
+	ctx.StartSpan("RemoveIndex")
+	defer ctx.FinishSpan()
+
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
 	return wrapKeyNotExistError(idxKey, txn.kv.Remove(kvIdxKey))
 }
 
 // FindDocumentsByIndex gets document objects matching the specified index key.
-func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet, error) {
+func (txn *transaction) FindDocumentsByIndex(ctx context.Context, idxKey store.Key) (store.ResultSet, error) {
+	ctx.StartSpan("FindDocumentsByIndex")
+	defer ctx.FinishSpan()
+
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
 	kvIdxRs, err := txn.kv.GetRange(kvIdxKey)
 	if err != nil {
@@ -52,7 +62,10 @@ func (txn *transaction) FindDocumentsByIndex(idxKey store.Key) (store.ResultSet,
 }
 
 // TruncateIndexes removes all secondary indexes.
-func (txn *transaction) TruncateIndexes() error {
+func (txn *transaction) TruncateIndexes(ctx context.Context) error {
+	ctx.StartSpan("TruncateIndexes")
+	defer ctx.FinishSpan()
+
 	kvSchemaKey := kv.NewKeyWith(kv.SecondaryIndexHeader, document.NewKeyWith(txn.Database().Name()))
 	return txn.kv.RemoveRange(kvSchemaKey)
 }

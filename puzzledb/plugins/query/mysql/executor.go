@@ -215,7 +215,7 @@ func (service *Service) insertSecondaryIndex(ctx context.Context, conn *mysql.Co
 	if err != nil {
 		return err
 	}
-	return txn.InsertIndex(secKey, prKey)
+	return txn.InsertIndex(ctx, secKey, prKey)
 }
 
 // Select should handle a SELECT statement.
@@ -281,7 +281,7 @@ func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.C
 	case document.PrimaryIndex:
 		return txn.FindDocuments(ctx, docKey)
 	case document.SecondaryIndex:
-		return txn.FindDocumentsByIndex(docKey)
+		return txn.FindDocumentsByIndex(ctx, docKey)
 	}
 	return nil, newIndexTypeNotSupportedError(docKeyType)
 }
@@ -437,7 +437,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
 	case document.SecondaryIndex:
-		rs, err := txn.FindDocumentsByIndex(docKey)
+		rs, err := txn.FindDocumentsByIndex(ctx, docKey)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
@@ -521,7 +521,7 @@ func (service *Service) removeSecondaryIndex(ctx context.Context, conn *mysql.Co
 	if err != nil {
 		return err
 	}
-	return txn.RemoveIndex(secKey)
+	return txn.RemoveIndex(ctx, secKey)
 }
 
 // ShowDatabases should handle a SHOW DATABASES statement.
