@@ -70,8 +70,8 @@ github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnht
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/cybergarage/go-cbor v1.2.0 h1:lRmnGQszGm5qRUWu4cNVpcYj/ilMP3K0ul1zReK6Zw8=
 github.com/cybergarage/go-cbor v1.2.0/go.mod h1:ZBFG6UPO1UXvLDIFtjxjA+vT7zQb91LFZdJAYB7w3Jc=
-github.com/cybergarage/go-logger v1.3.3 h1:ppR2jxOxjo5Q47HEAZdqfKEK84hRmtrhzedbxaoHeJw=
-github.com/cybergarage/go-logger v1.3.3/go.mod h1:2iMjinHam5oqyKEGsKIzeQQmmOPxpCgro95LOlEC2ks=
+github.com/cybergarage/go-logger v1.3.4 h1:UTgYZr/LwQtYVOncS3NJ64We5kCe7ce6L85y/MOYfrM=
+github.com/cybergarage/go-logger v1.3.4/go.mod h1:2iMjinHam5oqyKEGsKIzeQQmmOPxpCgro95LOlEC2ks=
 github.com/cybergarage/go-mongo v1.0.0 h1:xsSt0wVCckOenasqWq8F684KsdB/HseuQX/SU14dkgA=
 github.com/cybergarage/go-mongo v1.0.0/go.mod h1:pvtilnfAZexmU0uonROsmKbDmpWRxPRJZ20Dwhrzh8Y=
 github.com/cybergarage/go-mysql v1.0.0 h1:4wrXs8N4m3Wf0u/iy8+JdbFiq4rwYRvqNynQ0h4vS2Q=
