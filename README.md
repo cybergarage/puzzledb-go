@@ -86,6 +86,8 @@ For more information about the roadmap, please refer to [Roadmap](doc/roadmap.ad
 
 -   Operation
 
+    -   [PuzzleDB CLI - puzzledb-cli](doc/cli/puzzledb-cli.md)
+
     -   [Tracing](doc/tracing.md)
 
 # Developer Guides
