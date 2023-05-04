@@ -33,6 +33,9 @@ image:img/roadmap.png[doc/img/roadmap]
 * New plug-ins
 ** Coordinator plug-ins
 *** [ ] Added etcd plug-in
+** Metrics plug-ins
+*** [ ] Added Prometheus plug-in
+*** [ ] Added Graphite plug-in
 
 == v0.9.0
 * New features
