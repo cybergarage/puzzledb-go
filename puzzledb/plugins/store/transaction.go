@@ -17,6 +17,7 @@ package store
 import (
 	"fmt"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -44,12 +45,16 @@ func (txn *transaction) Database() store.Database {
 }
 
 // Commit commits this transaction.
-func (txn *transaction) Commit() error {
+func (txn *transaction) Commit(ctx context.Context) error {
+	ctx.StartSpan("Commit")
+	ctx.FinishSpan()
 	return txn.kv.Commit()
 }
 
 // Cancel cancels this transaction.
-func (txn *transaction) Cancel() error {
+func (txn *transaction) Cancel(ctx context.Context) error {
+	ctx.StartSpan("Cancel")
+	ctx.FinishSpan()
 	return txn.kv.Cancel()
 }
 

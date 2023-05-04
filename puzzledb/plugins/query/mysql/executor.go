@@ -93,7 +93,7 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 
 	_, err = txn.GetSchema(stmt.TableName())
 	if err == nil {
-		if err := txn.Cancel(); err != nil {
+		if err := txn.Cancel(ctx); err != nil {
 			return nil, err
 		}
 		if stmt.GetIfNotExists() {
@@ -104,15 +104,15 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 
 	schema, err := NewSchemaWith(stmt)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	err = txn.CreateSchema(schema)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -165,29 +165,29 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 
 	schema, err := txn.GetSchema(stmt.TableName())
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	// Inserts the object using the primary key/
 
 	docKey, docObj, err := NewObjectFromInsert(dbName, schema, stmt)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	err = txn.InsertDocument(docKey, docObj)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	// Inserts the secondary indexes.
 
 	err = service.insertSecondaryIndexes(ctx, conn, txn, schema, docObj, docKey)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -240,31 +240,31 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 	// TODO: Support multiple tables
 	tables := stmt.From()
 	if len(tables) != 1 {
-		return nil, service.CancelTransactionWithError(txn, newJoinQueryNotSupportedError(tables))
+		return nil, service.CancelTransactionWithError(ctx, txn, newJoinQueryNotSupportedError(tables))
 	}
 
 	table := tables[0]
 	tableName, err := table.Name()
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	schema, err := txn.GetSchema(tableName)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	res, err := NewResultFrom(dbName, schema, rs.Objects())
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -308,39 +308,39 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 	// TODO: Support multiple tables
 	tables := stmt.Tables()
 	if len(tables) != 1 {
-		return nil, service.CancelTransactionWithError(txn, newJoinQueryNotSupportedError(tables))
+		return nil, service.CancelTransactionWithError(ctx, txn, newJoinQueryNotSupportedError(tables))
 	}
 
 	table := tables[0]
 	tableName, err := table.Name()
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	schema, err := txn.GetSchema(tableName)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	updateCols, err := stmt.Columns()
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	for rs.Next() {
 		docObj := rs.Object()
 		err := service.updateDocument(ctx, conn, txn, schema, docObj, updateCols)
 		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -411,39 +411,39 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 	// TODO: Support multiple tables
 	tables := stmt.Tables()
 	if len(tables) != 1 {
-		return nil, service.CancelTransactionWithError(txn, newJoinQueryNotSupportedError(tables))
+		return nil, service.CancelTransactionWithError(ctx, txn, newJoinQueryNotSupportedError(tables))
 	}
 
 	table := tables[0]
 	tableName, err := table.Name()
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	schema, err := txn.GetSchema(tableName)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	docKey, docKeyType, err := NewKeyFromCond(dbName, schema, stmt.Where)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(txn, err)
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	switch docKeyType {
 	case document.PrimaryIndex:
 		err = service.deleteDocument(ctx, conn, txn, schema, docKey)
 		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
 	case document.SecondaryIndex:
 		rs, err := txn.FindDocumentsByIndex(docKey)
 		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
 		prIdx, err := schema.PrimaryIndex()
 		if err != nil {
-			return nil, service.CancelTransactionWithError(txn, err)
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
 		for rs.Next() {
 			docObj := rs.Object()
@@ -453,16 +453,16 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 			}
 			objKey, err := NewKeyFromIndex(dbName, schema, prIdx, obj)
 			if err != nil {
-				return nil, service.CancelTransactionWithError(txn, err)
+				return nil, service.CancelTransactionWithError(ctx, txn, err)
 			}
 			err = service.deleteDocument(ctx, conn, txn, schema, objKey)
 			if err != nil {
-				return nil, service.CancelTransactionWithError(txn, err)
+				return nil, service.CancelTransactionWithError(ctx, txn, err)
 			}
 		}
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, err
 	}

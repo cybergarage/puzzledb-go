@@ -15,6 +15,7 @@
 package store
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
@@ -69,7 +70,7 @@ type Transaction interface {
 	// Database returns the transaction database.
 	Database() Database
 	// Commit commits this transaction.
-	Commit() error
+	Commit(ctx context.Context) error
 	// Cancel cancels this transaction.
-	Cancel() error
+	Cancel(ctx context.Context) error
 }

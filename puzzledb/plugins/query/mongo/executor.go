@@ -63,7 +63,7 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	for _, queryDoc := range queryDocs {
 		err = service.insertDocument(txn, q, queryDoc)
 		if err != nil {
-			if err := txn.Cancel(); err != nil {
+			if err := txn.Cancel(ctx); err != nil {
 				return 0, err
 			}
 			return 0, err
@@ -71,7 +71,7 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 		nInserted++
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -148,13 +148,13 @@ func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document,
 
 	foundDoc, err := service.findDocuments(txn, q)
 	if err != nil {
-		if err := txn.Cancel(); err != nil {
+		if err := txn.Cancel(ctx); err != nil {
 			return nil, err
 		}
 		return nil, err
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, mongo.NewQueryError(q)
 	}
@@ -244,7 +244,7 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 
 	foundDocs, err := service.Find(conn, q)
 	if err != nil {
-		if err := txn.Cancel(); err != nil {
+		if err := txn.Cancel(ctx); err != nil {
 			return 0, err
 		}
 		return 0, err
@@ -252,13 +252,13 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 
 	nUpdated, err := service.updateDocumentsByQuery(txn, foundDocs, q)
 	if err != nil {
-		if err := txn.Cancel(); err != nil {
+		if err := txn.Cancel(ctx); err != nil {
 			return 0, err
 		}
 		return 0, err
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -344,7 +344,7 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 
 	foundDocs, err := service.Find(conn, q)
 	if err != nil {
-		if err := txn.Cancel(); err != nil {
+		if err := txn.Cancel(ctx); err != nil {
 			return 0, err
 		}
 		return 0, err
@@ -352,13 +352,13 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 
 	nDeleted, err := service.deleteDocuments(txn, q.Database, q.Collection, foundDocs)
 	if err != nil {
-		if err := txn.Cancel(); err != nil {
+		if err := txn.Cancel(ctx); err != nil {
 			return 0, err
 		}
 		return 0, err
 	}
 
-	err = txn.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}

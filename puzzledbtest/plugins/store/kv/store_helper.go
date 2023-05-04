@@ -60,9 +60,9 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
 	}
 
-	cancel := func(t *testing.T, tx store.Transaction) {
+	cancel := func(t *testing.T, txn store.Transaction) {
 		t.Helper()
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(); err != nil {
 			t.Error(err)
 		}
 	}
