@@ -71,6 +71,8 @@ test_only:
 
 image:
 	docker image build -t${BIN_SERVER_DOCKER_TAG} -t${BIN_SERVER_DOCKER_TAG_PRE} -t${BIN_SERVER_DOCKER_TAG_LATEST} .
+	docker push ${BIN_SERVER_DOCKER_TAG_PRE}
+	docker push ${BIN_SERVER_DOCKER_TAG_LATEST}
 
 cmd:
 	go build -v -gcflags=${GCFLAGS} ${BINS}
