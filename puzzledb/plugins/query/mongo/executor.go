@@ -19,6 +19,7 @@ import (
 
 	"github.com/cybergarage/go-mongo/mongo"
 	"github.com/cybergarage/go-mongo/mongo/bson"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
@@ -42,7 +43,11 @@ func (service *Service) createidxKey(txn store.Transaction, database string, col
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
 func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) {
-	db, err := service.GetDatabase(q.Database)
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Insert")
+	defer ctx.FinishSpan()
+
+	db, err := service.GetDatabase(ctx, q.Database)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -127,7 +132,11 @@ func (service *Service) insertDocumentIndex(txn store.Transaction, db string, co
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
 func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document, error) {
-	db, err := service.GetDatabase(q.Database)
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Find")
+	defer ctx.FinishSpan()
+
+	db, err := service.GetDatabase(ctx, q.Database)
 	if err != nil {
 		return nil, mongo.NewQueryError(q)
 	}
@@ -219,7 +228,11 @@ func (service *Service) findDocuments(txn store.Transaction, q *mongo.Query) ([]
 
 // Update hadles OP_UPDATE and 'update' query of OP_MSG or OP_QUERY.
 func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) {
-	db, err := service.GetDatabase(q.Database)
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Update")
+	defer ctx.FinishSpan()
+
+	db, err := service.GetDatabase(ctx, q.Database)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -315,7 +328,11 @@ func (service *Service) updateDocumentByQuery(txn store.Transaction, bsonDoc bso
 
 // Delete hadles OP_DELETE and 'delete' query of OP_MSG or OP_QUERY.
 func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) {
-	db, err := service.GetDatabase(q.Database)
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Delete")
+	defer ctx.FinishSpan()
+
+	db, err := service.GetDatabase(ctx, q.Database)
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}

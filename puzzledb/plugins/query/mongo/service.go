@@ -16,6 +16,7 @@ package mongo
 
 import (
 	"github.com/cybergarage/go-mongo/mongo"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -58,15 +59,15 @@ func (service *Service) MessageRespond(msg mongo.OpMessage) {
 }
 
 // GetDatabase returns the database with the specified name.
-func (service *Service) GetDatabase(name string) (store.Database, error) {
+func (service *Service) GetDatabase(ctx context.Context, name string) (store.Database, error) {
 	store := service.Store()
-	db, err := store.GetDatabase(name)
+	db, err := store.GetDatabase(ctx, name)
 	if err == nil {
 		return db, nil
 	}
-	err = store.CreateDatabase(name)
+	err = store.CreateDatabase(ctx, name)
 	if err != nil {
 		return nil, err
 	}
-	return store.GetDatabase(name)
+	return store.GetDatabase(ctx, name)
 }

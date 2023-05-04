@@ -17,6 +17,7 @@ package store
 import (
 	"bytes"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -82,7 +83,7 @@ func (s *Store) ServiceName() string {
 }
 
 // CreateDatabase creates a new database.
-func (s *Store) CreateDatabase(name string) error {
+func (s *Store) CreateDatabase(ctx context.Context, name string) error {
 	txn, err := s.kvStore.Transact(true)
 	if err != nil {
 		return err
@@ -131,7 +132,7 @@ func (s *Store) CreateDatabase(name string) error {
 }
 
 // GetDatabase retruns the specified database.
-func (s *Store) GetDatabase(name string) (store.Database, error) {
+func (s *Store) GetDatabase(ctx context.Context, name string) (store.Database, error) {
 	txn, err := s.kvStore.Transact(false)
 	if err != nil {
 		return nil, err
@@ -175,8 +176,8 @@ func (s *Store) GetDatabase(name string) (store.Database, error) {
 }
 
 // RemoveDatabase removes the specified database.
-func (s *Store) RemoveDatabase(name string) error {
-	db, err := s.GetDatabase(name)
+func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
+	db, err := s.GetDatabase(ctx, name)
 	if err != nil {
 		return err
 	}
@@ -248,7 +249,7 @@ func (s *Store) RemoveDatabase(name string) error {
 }
 
 // ListDatabases returns the all databases.
-func (s *Store) ListDatabases() ([]store.Database, error) {
+func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 	txn, err := s.kvStore.Transact(false)
 	if err != nil {
 		return nil, err

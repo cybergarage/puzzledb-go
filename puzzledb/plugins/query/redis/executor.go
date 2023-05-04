@@ -18,6 +18,7 @@ import (
 	"fmt"
 
 	"github.com/cybergarage/go-redis/redis"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 )
 
 type Conn = redis.Conn
@@ -52,7 +53,11 @@ func (service *Service) TTL(conn *Conn, key string) (*Message, error) {
 }
 
 func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOption) (*Message, error) {
-	db, err := service.GetDatabase(conn.Database())
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Set")
+	defer ctx.FinishSpan()
+
+	db, err := service.GetDatabase(ctx, conn.Database())
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +84,11 @@ func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOpt
 }
 
 func (service *Service) Get(conn *Conn, key string) (*Message, error) {
-	db, err := service.GetDatabase(conn.Database())
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Get")
+	defer ctx.FinishSpan()
+
+	db, err := service.GetDatabase(ctx, conn.Database())
 	if err != nil {
 		return nil, err
 	}

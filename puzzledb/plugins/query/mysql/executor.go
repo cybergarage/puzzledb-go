@@ -15,23 +15,26 @@
 package mysql
 
 import (
-	"context"
 	"errors"
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/go-mysql/mysql/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // CreateDatabase should handle a CREATE database statement.
-func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
+func (service *Service) CreateDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("CreateDatabase")
+	defer ctx.FinishSpan()
+
 	dbName := stmt.Name()
 
 	store := service.Store()
-	_, err := store.GetDatabase(dbName)
+	_, err := store.GetDatabase(ctx, dbName)
 	if err == nil {
 		if stmt.IfNotExists() {
 			return mysql.NewResult(), nil
@@ -39,7 +42,7 @@ func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, st
 		return mysql.NewResult(), newDatabaseExistError(dbName)
 	}
 
-	err = store.CreateDatabase(dbName)
+	err = store.CreateDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -48,17 +51,21 @@ func (service *Service) CreateDatabase(ctx context.Context, conn *mysql.Conn, st
 }
 
 // AlterDatabase should handle a ALTER database statement.
-func (service *Service) AlterDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
+func (service *Service) AlterDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return nil, newQueryNotSupportedError("AlterTable")
 }
 
 // DropDatabase should handle a DROP database statement.
-func (service *Service) DropDatabase(ctx context.Context, conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
+func (service *Service) DropDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("DropDatabase")
+	defer ctx.FinishSpan()
+
 	dbName := stmt.Name()
 
 	store := service.Store()
-	err := store.RemoveDatabase(dbName)
+	err := store.RemoveDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -67,11 +74,14 @@ func (service *Service) DropDatabase(ctx context.Context, conn *mysql.Conn, stmt
 }
 
 // CreateTable should handle a CREATE table statement.
-func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
+func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("CreateTable")
+	defer ctx.FinishSpan()
+
 	store := service.Store()
 
-	db, err := store.GetDatabase(conn.Database())
+	db, err := store.GetDatabase(ctx, conn.Database())
 	if err != nil {
 		return nil, err
 	}
@@ -111,36 +121,39 @@ func (service *Service) CreateTable(ctx context.Context, conn *mysql.Conn, stmt 
 }
 
 // AlterTable should handle a ALTER table statement.
-func (service *Service) AlterTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return nil, newQueryNotSupportedError("AlterTable")
 }
 
 // DropTable should handle a DROP table statement.
-func (service *Service) DropTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return nil, newQueryNotSupportedError("DropTable")
 }
 
 // RenameTable should handle a RENAME table statement.
-func (service *Service) RenameTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+func (service *Service) RenameTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return nil, newQueryNotSupportedError("RenameTable")
 }
 
 // TruncateTable should handle a TRUNCATE table statement.
-func (service *Service) TruncateTable(ctx context.Context, conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
+func (service *Service) TruncateTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
 	return nil, newQueryNotSupportedError("TruncateTable")
 }
 
 // Insert should handle a INSERT statement.
-func (service *Service) Insert(ctx context.Context, conn *mysql.Conn, stmt *query.Insert) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
+func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Result, error) {
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Insert")
+	defer ctx.FinishSpan()
+
 	store := service.Store()
 
 	dbName := conn.Database()
-	db, err := store.GetDatabase(dbName)
+	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -206,11 +219,15 @@ func (service *Service) insertSecondaryIndex(ctx context.Context, conn *mysql.Co
 }
 
 // Select should handle a SELECT statement.
-func (service *Service) Select(ctx context.Context, conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
+func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Select")
+	defer ctx.FinishSpan()
+
 	store := service.Store()
 
 	dbName := conn.Database()
-	db, err := store.GetDatabase(dbName)
+	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -270,11 +287,15 @@ func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.C
 }
 
 // Update should handle a UPDATE statement.
-func (service *Service) Update(ctx context.Context, conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
+func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Update")
+	defer ctx.FinishSpan()
+
 	store := service.Store()
 
 	dbName := conn.Database()
-	db, err := store.GetDatabase(dbName)
+	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -369,11 +390,15 @@ func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, tx
 }
 
 // Delete should handle a DELETE statement.
-func (service *Service) Delete(ctx context.Context, conn *mysql.Conn, stmt *query.Delete) (*mysql.Result, error) {
+func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Result, error) {
+	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx.StartSpan("Delete")
+	defer ctx.FinishSpan()
+
 	store := service.Store()
 
 	dbName := conn.Database()
-	db, err := store.GetDatabase(dbName)
+	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -500,11 +525,11 @@ func (service *Service) removeSecondaryIndex(ctx context.Context, conn *mysql.Co
 }
 
 // ShowDatabases should handle a SHOW DATABASES statement.
-func (service *Service) ShowDatabases(ctx context.Context, conn *mysql.Conn) (*mysql.Result, error) {
+func (service *Service) ShowDatabases(conn *mysql.Conn) (*mysql.Result, error) {
 	return nil, newQueryNotSupportedError("ShowDatabases")
 }
 
 // ShowTables should handle a SHOW TABLES statement.
-func (service *Service) ShowTables(ctx context.Context, conn *mysql.Conn, database string) (*mysql.Result, error) {
+func (service *Service) ShowTables(conn *mysql.Conn, database string) (*mysql.Result, error) {
 	return nil, newQueryNotSupportedError("ShowTables")
 }
