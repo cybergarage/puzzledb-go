@@ -91,7 +91,7 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 		return nil, err
 	}
 
-	_, err = txn.GetSchema(stmt.TableName())
+	_, err = txn.GetSchema(ctx, stmt.TableName())
 	if err == nil {
 		if err := txn.Cancel(ctx); err != nil {
 			return nil, err
@@ -107,7 +107,7 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.CreateSchema(schema)
+	err = txn.CreateSchema(ctx, schema)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -163,7 +163,7 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 		return nil, err
 	}
 
-	schema, err := txn.GetSchema(stmt.TableName())
+	schema, err := txn.GetSchema(ctx, stmt.TableName())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -249,7 +249,7 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetSchema(tableName)
+	schema, err := txn.GetSchema(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -317,7 +317,7 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetSchema(tableName)
+	schema, err := txn.GetSchema(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -420,7 +420,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetSchema(tableName)
+	schema, err := txn.GetSchema(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}

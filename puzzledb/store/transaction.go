@@ -23,13 +23,13 @@ type Schema = document.Schema
 
 type DatabaseOperation interface {
 	// CreateSchema creates a new schema.
-	CreateSchema(schema Schema) error
+	CreateSchema(ctx context.Context, schema Schema) error
 	// GetSchema returns the specified schema.
-	GetSchema(name string) (Schema, error)
+	GetSchema(ctx context.Context, name string) (Schema, error)
 	// RemoveSchema removes the specified schema.
-	RemoveSchema(name string) error
+	RemoveSchema(ctx context.Context, name string) error
 	// TruncateSchemas removes all schemas.
-	TruncateSchemas() error
+	TruncateSchemas(ctx context.Context) error
 }
 
 type DocumentOperation interface {
