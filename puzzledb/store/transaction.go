@@ -49,13 +49,13 @@ type DocumentOperation interface {
 
 type IndexOperation interface {
 	// InsertIndex puts a secondary index with the primary key.
-	InsertIndex(idxKey Key, key Key) error
+	InsertIndex(ctx context.Context, idxKey Key, key Key) error
 	// RemoveIndex removes the specified secondary index.
-	RemoveIndex(idxKey Key) error
+	RemoveIndex(ctx context.Context, idxKey Key) error
 	// FindDocumentsByIndex returns a result set matching the specified index key.
-	FindDocumentsByIndex(indexKey Key) (ResultSet, error)
+	FindDocumentsByIndex(ctx context.Context, indexKey Key) (ResultSet, error)
 	// TruncateIndexes removes all secondary indexes.
-	TruncateIndexes() error
+	TruncateIndexes(ctx context.Context) error
 }
 
 type TransactionOperation interface {

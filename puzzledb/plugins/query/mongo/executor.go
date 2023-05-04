@@ -115,7 +115,7 @@ func (service *Service) insertDocumentIndexes(ctx context.Context, txn store.Tra
 			if secKey == ObjectID {
 				continue
 			}
-			err := service.insertDocumentIndex(txn, db, col, secKey, secVal, docKey)
+			err := service.insertDocumentIndex(ctx, txn, db, col, secKey, secVal, docKey)
 			if err != nil {
 				return err
 			}
@@ -125,9 +125,9 @@ func (service *Service) insertDocumentIndexes(ctx context.Context, txn store.Tra
 	return newErrBSONTypeNotSupported(v)
 }
 
-func (service *Service) insertDocumentIndex(txn store.Transaction, db string, col string, secKey string, secVal any, docKey document.Key) error {
+func (service *Service) insertDocumentIndex(ctx context.Context, txn store.Transaction, db string, col string, secKey string, secVal any, docKey document.Key) error {
 	idxKey := service.createidxKey(txn, db, col, secKey, secVal)
-	return txn.InsertIndex(idxKey, docKey)
+	return txn.InsertIndex(ctx, idxKey, docKey)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
@@ -187,7 +187,7 @@ func (service *Service) findDocumentObjects(ctx context.Context, txn store.Trans
 					}
 					objs = rs.Objects()
 				} else {
-					rs, err := txn.FindDocumentsByIndex(idxKey)
+					rs, err := txn.FindDocumentsByIndex(ctx, idxKey)
 					if err != nil {
 						return nil, err
 					}
@@ -416,7 +416,7 @@ func (service *Service) deleteUpdateDocumentIndexes(ctx context.Context, txn sto
 			continue
 		}
 		idxKey := service.createidxKey(txn, db, col, updateBSONKey, updateBSONVal.Data)
-		err = txn.RemoveIndex(idxKey)
+		err = txn.RemoveIndex(ctx, idxKey)
 		if err != nil {
 			return err
 		}
@@ -440,5 +440,5 @@ func (service *Service) deleteDocumentIndexes(ctx context.Context, txn store.Tra
 
 func (service *Service) deleteDocumentIndex(ctx context.Context, txn store.Transaction, db string, col string, key string, val any) error {
 	idxKey := service.createidxKey(txn, db, col, key, val)
-	return txn.RemoveIndex(idxKey)
+	return txn.RemoveIndex(ctx, idxKey)
 }
