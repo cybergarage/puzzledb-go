@@ -14,16 +14,8 @@
 
 package context
 
-import (
-	"github.com/cybergarage/go-tracing/tracer"
-)
-
 // Context represents a context interface.
 type Context interface {
-	// Span returns a current span context.
-	Span() tracer.SpanContext
-	// SetSpan sets a new root span context.
-	SetSpan(span tracer.SpanContext) Context
 	// StartSpan starts a new child span.
 	StartSpan(name string) bool
 	// FinishSpan ends the current span.

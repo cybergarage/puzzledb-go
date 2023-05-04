@@ -24,7 +24,7 @@ import (
 func TestContext(t *testing.T) {
 	loopCnt := 10
 
-	ctx := NewContext().SetSpan(tracer.NullTracer.StartSpan("root"))
+	ctx := NewContextWith(tracer.NullTracer.StartSpan("root"))
 
 	for n := 0; n < loopCnt; n++ {
 		name := fmt.Sprintf("span%d", n)

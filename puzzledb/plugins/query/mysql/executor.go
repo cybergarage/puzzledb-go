@@ -27,7 +27,7 @@ import (
 
 // CreateDatabase should handle a CREATE database statement.
 func (service *Service) CreateDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CreateDatabase")
 	defer ctx.FinishSpan()
 
@@ -58,7 +58,7 @@ func (service *Service) AlterDatabase(conn *mysql.Conn, stmt *query.Database) (*
 
 // DropDatabase should handle a DROP database statement.
 func (service *Service) DropDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropDatabase")
 	defer ctx.FinishSpan()
 
@@ -75,7 +75,7 @@ func (service *Service) DropDatabase(conn *mysql.Conn, stmt *query.Database) (*m
 
 // CreateTable should handle a CREATE table statement.
 func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CreateTable")
 	defer ctx.FinishSpan()
 
@@ -146,7 +146,7 @@ func (service *Service) TruncateTable(conn *mysql.Conn, stmt *query.Schema) (*my
 
 // Insert should handle a INSERT statement.
 func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Result, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
 
@@ -220,7 +220,7 @@ func (service *Service) insertSecondaryIndex(ctx context.Context, conn *mysql.Co
 
 // Select should handle a SELECT statement.
 func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Result, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Select")
 	defer ctx.FinishSpan()
 
@@ -288,7 +288,7 @@ func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.C
 
 // Update should handle a UPDATE statement.
 func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Result, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
 
@@ -391,7 +391,7 @@ func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, tx
 
 // Delete should handle a DELETE statement.
 func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Result, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
 
