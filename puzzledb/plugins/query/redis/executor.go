@@ -62,20 +62,20 @@ func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOpt
 		return nil, err
 	}
 
-	tx, err := db.Transact(true)
+	txn, err := db.Transact(true)
 	if err != nil {
 		return nil, err
 	}
-	err = tx.InsertDocument([]any{key}, val)
+	err = txn.InsertDocument([]any{key}, val)
 	if err != nil {
-		err = tx.Cancel()
+		err = txn.Cancel(ctx)
 		if err != nil {
 			return nil, err
 		}
 		return nil, err
 	}
 
-	err = tx.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -93,13 +93,13 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 		return nil, err
 	}
 
-	tx, err := db.Transact(false)
+	txn, err := db.Transact(false)
 	if err != nil {
 		return nil, err
 	}
-	rs, err := tx.FindDocuments([]any{key})
+	rs, err := txn.FindDocuments([]any{key})
 	if err != nil {
-		err = tx.Cancel()
+		err = txn.Cancel(ctx)
 		if err != nil {
 			return nil, err
 		}
@@ -108,14 +108,14 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 
 	objs := rs.Objects()
 	if err != nil || len(objs) != 1 {
-		err = tx.Cancel()
+		err = txn.Cancel(ctx)
 		if err != nil {
 			return nil, err
 		}
 		return nil, err
 	}
 
-	err = tx.Commit()
+	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, err
 	}

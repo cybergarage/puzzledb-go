@@ -135,26 +135,26 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 
 	// Inserts objects
 
-	cancel := func(t *testing.T, tx store.Transaction) {
+	cancel := func(t *testing.T, txn store.Transaction) {
 		t.Helper()
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(ctx); err != nil {
 			t.Error(err)
 		}
 	}
 
 	for n, key := range keys {
-		tx, err := db.Transact(true)
+		txn, err := db.Transact(true)
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		err = tx.InsertDocument(key, objs[n])
+		err = txn.InsertDocument(key, objs[n])
 		if err != nil {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Error(err)
 			return
 		}
-		if err := tx.Commit(); err != nil {
+		if err := txn.Commit(ctx); err != nil {
 			t.Error(err)
 			return
 		}
@@ -163,29 +163,29 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	// Gets objects
 
 	for n, key := range keys {
-		tx, err := db.Transact(false)
+		txn, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		rs, err := tx.FindDocuments(key)
+		rs, err := txn.FindDocuments(key)
 		if err != nil {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Error(err)
 			return
 		}
 		rsObjs := rs.Objects()
 		if len(rsObjs) != 1 {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Errorf("objs != 1 (%d)", len(rsObjs))
 			return
 		}
 		if err := deepEqual(rsObjs[0], objs[n]); err != nil {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Error(err)
 			return
 		}
-		if err := tx.Commit(); err != nil {
+		if err := txn.Commit(ctx); err != nil {
 			t.Error(err)
 			return
 		}
@@ -210,18 +210,18 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	}
 
 	for n, key := range keys {
-		tx, err := db.Transact(true)
+		txn, err := db.Transact(true)
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		err = tx.UpdateDocument(key, objs[n])
+		err = txn.UpdateDocument(key, objs[n])
 		if err != nil {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Error(err)
 			return
 		}
-		if err := tx.Commit(); err != nil {
+		if err := txn.Commit(ctx); err != nil {
 			t.Error(err)
 			return
 		}
@@ -230,29 +230,29 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	// Gets updated objects
 
 	for n, key := range keys {
-		tx, err := db.Transact(false)
+		txn, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		rs, err := tx.FindDocuments(key)
+		rs, err := txn.FindDocuments(key)
 		if err != nil {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Error(err)
 			return
 		}
 		rsObjs := rs.Objects()
 		if len(rsObjs) != 1 {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Errorf("objs != 1 (%d)", len(rsObjs))
 			return
 		}
 		if err := deepEqual(rsObjs[0], objs[n]); err != nil {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Error(err)
 			return
 		}
-		if err := tx.Commit(); err != nil {
+		if err := txn.Commit(ctx); err != nil {
 			t.Error(err)
 			return
 		}
@@ -261,18 +261,18 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	// Removes objects
 
 	for _, key := range keys {
-		tx, err := db.Transact(true)
+		txn, err := db.Transact(true)
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		err = tx.RemoveDocument(key)
+		err = txn.RemoveDocument(key)
 		if err != nil {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Error(err)
 			return
 		}
-		if err := tx.Commit(); err != nil {
+		if err := txn.Commit(ctx); err != nil {
 			t.Error(err)
 			return
 		}
@@ -281,24 +281,24 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	// Gets removed objects
 
 	for _, key := range keys {
-		tx, err := db.Transact(false)
+		txn, err := db.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		rs, err := tx.FindDocuments(key)
+		rs, err := txn.FindDocuments(key)
 		if err != nil {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Error(err)
 			return
 		}
 		rsObjs := rs.Objects()
 		if len(rsObjs) != 0 {
-			cancel(t, tx)
+			cancel(t, txn)
 			t.Errorf("objs != 0 (%d)", len(rsObjs))
 			return
 		}
-		if err := tx.Commit(); err != nil {
+		if err := txn.Commit(ctx); err != nil {
 			t.Error(err)
 			return
 		}

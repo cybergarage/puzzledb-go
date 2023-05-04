@@ -100,9 +100,9 @@ func updateCoordinatorObjects(objs []coordinator.Object) ([]coordinator.Object, 
 func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	t.Helper()
 
-	cancel := func(t *testing.T, tx coordinator.Transaction) {
+	cancel := func(t *testing.T, txn coordinator.Transaction) {
 		t.Helper()
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(); err != nil {
 			t.Error(err)
 		}
 	}
@@ -279,9 +279,9 @@ func (w *testWatcher) IsEventReceived(e coordinator.Event) bool {
 func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 	t.Helper()
 
-	cancel := func(t *testing.T, tx coordinator.Transaction) {
+	cancel := func(t *testing.T, txn coordinator.Transaction) {
 		t.Helper()
-		if err := tx.Cancel(); err != nil {
+		if err := txn.Cancel(); err != nil {
 			t.Error(err)
 		}
 	}

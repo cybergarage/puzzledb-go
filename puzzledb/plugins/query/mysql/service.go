@@ -16,6 +16,7 @@ package mysql
 
 import (
 	"github.com/cybergarage/go-mysql/mysql"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -60,8 +61,8 @@ func (service *Service) Stop() error {
 }
 
 // Stop stops the service.
-func (service *Service) CancelTransactionWithError(txn store.Transaction, err error) error {
-	if txErr := txn.Cancel(); txErr != nil {
+func (service *Service) CancelTransactionWithError(ctx context.Context, txn store.Transaction, err error) error {
+	if txErr := txn.Cancel(ctx); txErr != nil {
 		return txErr
 	}
 	return err

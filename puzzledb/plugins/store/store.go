@@ -191,7 +191,7 @@ func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
 
 	err = dbTxn.TruncateDocuments()
 	if err != nil {
-		if err := dbTxn.Cancel(); err != nil {
+		if err := dbTxn.Cancel(ctx); err != nil {
 			return err
 		}
 		return err
@@ -199,7 +199,7 @@ func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
 
 	err = dbTxn.TruncateIndexes()
 	if err != nil {
-		if err := dbTxn.Cancel(); err != nil {
+		if err := dbTxn.Cancel(ctx); err != nil {
 			return err
 		}
 		return err
@@ -207,15 +207,15 @@ func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
 
 	err = dbTxn.TruncateSchemas()
 	if err != nil {
-		if err := dbTxn.Cancel(); err != nil {
+		if err := dbTxn.Cancel(ctx); err != nil {
 			return err
 		}
 		return err
 	}
 
-	err = dbTxn.Commit()
+	err = dbTxn.Commit(ctx)
 	if err != nil {
-		if err := dbTxn.Cancel(); err != nil {
+		if err := dbTxn.Cancel(ctx); err != nil {
 			return err
 		}
 		return err
