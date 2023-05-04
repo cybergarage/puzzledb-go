@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/cybergarage/go-pict/pict"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -49,18 +50,19 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	t.Helper()
 
 	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().UnixNano())
+	ctx := context.NewContext()
 
 	if err := service.Start(); err != nil {
 		t.Error(err)
 		return
 	}
-	if err := service.CreateDatabase(testDBName); err != nil {
+	if err := service.CreateDatabase(ctx, testDBName); err != nil {
 		t.Error(err)
 		return
 	}
 
 	hasDatabase := func(name string) bool {
-		dbs, err := service.ListDatabases()
+		dbs, err := service.ListDatabases(ctx)
 		if err != nil {
 			t.Error(err)
 			return false
@@ -78,14 +80,14 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 		return
 	}
 
-	db, err := service.GetDatabase(testDBName)
+	db, err := service.GetDatabase(ctx, testDBName)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
 	defer func() {
-		if err := service.RemoveDatabase(testDBName); err != nil {
+		if err := service.RemoveDatabase(ctx, testDBName); err != nil {
 			t.Error(err)
 		}
 		if err := service.Stop(); err != nil {

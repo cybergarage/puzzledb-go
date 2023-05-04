@@ -18,6 +18,7 @@ import (
 	"strconv"
 
 	"github.com/cybergarage/go-redis/redis"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -60,16 +61,16 @@ func (service *Service) Stop() error {
 }
 
 // GetDatabase returns the database with the specified ID.
-func (service *Service) GetDatabase(id int) (store.Database, error) {
+func (service *Service) GetDatabase(ctx context.Context, id int) (store.Database, error) {
 	store := service.Store()
 	name := strconv.Itoa(id)
-	db, err := store.GetDatabase(name)
+	db, err := store.GetDatabase(ctx, name)
 	if err == nil {
 		return db, nil
 	}
-	err = store.CreateDatabase(name)
+	err = store.CreateDatabase(ctx, name)
 	if err != nil {
 		return nil, err
 	}
-	return store.GetDatabase(name)
+	return store.GetDatabase(ctx, name)
 }

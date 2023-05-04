@@ -15,6 +15,7 @@
 package store
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
@@ -25,11 +26,11 @@ type Store interface {
 	// SetKeyCoder sets the key coder.
 	SetKeyCoder(coder document.KeyCoder)
 	// CreateDatabase creates a new database.
-	CreateDatabase(name string) error
+	CreateDatabase(ctx context.Context, name string) error
 	// GetDatabase retruns the specified database.
-	GetDatabase(name string) (Database, error)
+	GetDatabase(ctx context.Context, name string) (Database, error)
 	// RemoveDatabase removes the specified database.
-	RemoveDatabase(name string) error
+	RemoveDatabase(ctx context.Context, name string) error
 	// ListDatabases returns the all databases.
-	ListDatabases() ([]Database, error)
+	ListDatabases(ctx context.Context) ([]Database, error)
 }

@@ -17,6 +17,7 @@ package puzzledb
 import (
 	"context"
 
+	pc "github.com/cybergarage/puzzledb-go/puzzledb/context"
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 )
 
@@ -26,7 +27,7 @@ func (server *GrpcServer) CreateDatabase(ctx context.Context, req *pb.CreateData
 	if err != nil {
 		return &res, err
 	}
-	err = defaultStore.CreateDatabase(req.DatabaseName)
+	err = defaultStore.CreateDatabase(pc.NewContext(), req.DatabaseName)
 	if err != nil {
 		return &res, err
 	}
@@ -39,7 +40,7 @@ func (server *GrpcServer) RemoveDatabase(ctx context.Context, req *pb.RemoveData
 	if err != nil {
 		return &res, err
 	}
-	err = defaultStore.RemoveDatabase(req.DatabaseName)
+	err = defaultStore.RemoveDatabase(pc.NewContext(), req.DatabaseName)
 	if err != nil {
 		return &res, err
 	}
@@ -52,7 +53,7 @@ func (server *GrpcServer) ListDatabases(context.Context, *pb.ListDatabasesReques
 	if err != nil {
 		return &res, err
 	}
-	dbs, err := defaultStore.ListDatabases()
+	dbs, err := defaultStore.ListDatabases(pc.NewContext())
 	if err != nil {
 		return &res, err
 	}
