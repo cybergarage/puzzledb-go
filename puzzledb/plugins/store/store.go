@@ -84,6 +84,9 @@ func (s *Store) ServiceName() string {
 
 // CreateDatabase creates a new database.
 func (s *Store) CreateDatabase(ctx context.Context, name string) error {
+	ctx.StartSpan("CreateDatabase")
+	defer ctx.FinishSpan()
+
 	txn, err := s.kvStore.Transact(true)
 	if err != nil {
 		return err
@@ -133,6 +136,9 @@ func (s *Store) CreateDatabase(ctx context.Context, name string) error {
 
 // GetDatabase retruns the specified database.
 func (s *Store) GetDatabase(ctx context.Context, name string) (store.Database, error) {
+	ctx.StartSpan("GetDatabase")
+	defer ctx.FinishSpan()
+
 	txn, err := s.kvStore.Transact(false)
 	if err != nil {
 		return nil, err
@@ -177,6 +183,9 @@ func (s *Store) GetDatabase(ctx context.Context, name string) (store.Database, e
 
 // RemoveDatabase removes the specified database.
 func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
+	ctx.StartSpan("RemoveDatabase")
+	defer ctx.FinishSpan()
+
 	db, err := s.GetDatabase(ctx, name)
 	if err != nil {
 		return err
@@ -250,6 +259,9 @@ func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
 
 // ListDatabases returns the all databases.
 func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
+	ctx.StartSpan("ListDatabases")
+	defer ctx.FinishSpan()
+
 	txn, err := s.kvStore.Transact(false)
 	if err != nil {
 		return nil, err
