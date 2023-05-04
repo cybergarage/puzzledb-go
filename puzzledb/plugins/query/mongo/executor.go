@@ -43,7 +43,7 @@ func (service *Service) createidxKey(txn store.Transaction, database string, col
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
 func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
 
@@ -132,7 +132,7 @@ func (service *Service) insertDocumentIndex(ctx context.Context, txn store.Trans
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
 func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Find")
 	defer ctx.FinishSpan()
 
@@ -228,7 +228,7 @@ func (service *Service) findDocuments(ctx context.Context, txn store.Transaction
 
 // Update hadles OP_UPDATE and 'update' query of OP_MSG or OP_QUERY.
 func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
 
@@ -328,7 +328,7 @@ func (service *Service) updateDocumentByQuery(ctx context.Context, txn store.Tra
 
 // Delete hadles OP_DELETE and 'delete' query of OP_MSG or OP_QUERY.
 func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) {
-	ctx := context.NewContext().SetSpan(conn.SpanContext())
+	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
 

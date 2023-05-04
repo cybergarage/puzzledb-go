@@ -19,62 +19,19 @@ import (
 )
 
 type ctx struct {
-	spans []tracer.SpanContext
+	tracer.Context
 }
 
 // NewContext returns a new context.
 func NewContext() Context {
 	return &ctx{
-		spans: nil,
+		Context: tracer.NewNullTracer().StartSpan(""),
 	}
 }
 
-// Span returns a current span context.
-func (ctx *ctx) Span() tracer.SpanContext {
-	if len(ctx.spans) == 0 {
-		return nil
+// NewContextWith returns a new context with the specified tracer context.
+func NewContextWith(t tracer.Context) Context {
+	return &ctx{
+		Context: t,
 	}
-	return ctx.spans[len(ctx.spans)-1]
-}
-
-// SetSpan sets a new root span context.
-func (ctx *ctx) SetSpan(span tracer.SpanContext) Context {
-	ctx.spans = make([]tracer.SpanContext, 0)
-	ctx.pushSpan(span)
-	return ctx
-}
-
-// StartSpan starts a new child span.
-func (ctx *ctx) StartSpan(name string) bool {
-	if len(ctx.spans) == 0 {
-		return false
-	}
-	span := ctx.spans[len(ctx.spans)-1]
-	childSpan := span.Span().StartSpan(name)
-	ctx.pushSpan(childSpan)
-	return true
-}
-
-// FinishSpan ends the current span.
-func (ctx *ctx) FinishSpan() bool {
-	span := ctx.popSpan()
-	if span == nil {
-		return false
-	}
-	span.Span().Finish()
-	return true
-}
-
-func (ctx *ctx) popSpan() tracer.SpanContext {
-	if len(ctx.spans) == 0 {
-		return nil
-	}
-	lastSpanIndex := len(ctx.spans) - 1
-	span := ctx.spans[lastSpanIndex]
-	ctx.spans = ctx.spans[:lastSpanIndex]
-	return span
-}
-
-func (ctx *ctx) pushSpan(span tracer.SpanContext) {
-	ctx.spans = append(ctx.spans, span)
 }
