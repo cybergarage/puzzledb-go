@@ -7,9 +7,14 @@ PuzzleDB is configured using a configuration file. The default configuration fil
     logging:
       enabled: true
       level: info
-    grpc:
-      enabled: true
-      port: 50053
+    api:
+      grpc:
+        enabled: true
+        port: 50053
+    metrics:
+      prometheus:
+        enabled: true
+        port: 9181
     tracing:
       enabled: true
       default: opentelemetry
