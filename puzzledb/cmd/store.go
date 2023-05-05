@@ -22,7 +22,7 @@ import (
 
 func init() { // nolint:gochecknoinits
 	listCmd.AddCommand(listDatabasesCmd)
-	//listCmd.AddCommand(listCollectionsCmd)
+	// listCmd.AddCommand(listCollectionsCmd)
 }
 
 var listDatabasesCmd = &cobra.Command{ // nolint:exhaustruct

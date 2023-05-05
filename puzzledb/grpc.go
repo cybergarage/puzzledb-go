@@ -57,12 +57,12 @@ func (server *GrpcServer) SetPort(port int) {
 
 // EnabledConfig returns a port number for the specified query service name.
 func (server *GrpcServer) EnabledConfig() (bool, error) {
-	return server.Config.GetBool(grpcConfig, enabledConfig)
+	return server.Config.GetBool(apiConfig, grpcConfig, enabledConfig)
 }
 
 // PortConfig returns a port number for the specified query service name.
 func (server *GrpcServer) PortConfig() (int, error) {
-	return server.Config.GetInt(grpcConfig, portConfig)
+	return server.Config.GetInt(apiConfig, grpcConfig, portConfig)
 }
 
 // Start starts the server.
@@ -82,7 +82,7 @@ func (server *GrpcServer) Start() error {
 		}
 	}()
 
-	log.Infof("gRPC (%s) started", addr)
+	log.Infof("gRPC server (%s) started", addr)
 
 	return nil
 }
@@ -95,7 +95,7 @@ func (server *GrpcServer) Stop() error {
 	}
 
 	addr := net.JoinHostPort(server.Addr, strconv.Itoa(server.Port))
-	log.Infof("gRPC (%s) terminated", addr)
+	log.Infof("gRPC server (%s) terminated", addr)
 
 	return nil
 }
