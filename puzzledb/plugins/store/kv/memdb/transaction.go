@@ -16,6 +16,7 @@ package memdb
 
 import (
 	"errors"
+	"time"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -39,6 +40,7 @@ func newTransaction(txn *memdb.Txn, coder document.KeyCoder) *transaction {
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *transaction) Set(obj *kv.Object) error {
+	now := time.Now()
 	keyBytes, err := txn.EncodeKey(obj.Key)
 	if err != nil {
 		return err
@@ -47,11 +49,13 @@ func (txn *transaction) Set(obj *kv.Object) error {
 		Key:   string(keyBytes),
 		Value: obj.Value,
 	}
+	mWriteLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return txn.Txn.Insert(tableName, doc)
 }
 
 // Get returns a key-value object of the specified key.
 func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
+	now := time.Now()
 	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return nil, err
@@ -64,11 +68,13 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 	if !rs.Next() {
 		return nil, kv.NewObjectNotExistError(key)
 	}
+	mReadLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return rs.Object(), nil
 }
 
 // GetRange returns a result set of the specified key.
 func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
+	now := time.Now()
 	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return nil, err
@@ -77,6 +83,7 @@ func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
 	if err != nil {
 		return nil, err
 	}
+	mRangeReadLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return newResultSet(txn.KeyCoder, it), nil
 }
 
