@@ -41,7 +41,13 @@ func (s *Coder) ServiceName() string {
 
 // EncodeKey returns the encoded bytes from the specified key if available, otherwise returns an error.
 func (s *Coder) EncodeKey(key document.Key) ([]byte, error) {
-	return newTupleWith(key).Pack(), nil
+	var err error
+	defer func() {
+		if e := recover(); e != nil {
+			err = e.(error)
+		}
+	}()
+	return newTupleWith(key).Pack(), err
 }
 
 // DecodeKey returns the decoded key from the specified bytes if available, otherwise returns an error.
