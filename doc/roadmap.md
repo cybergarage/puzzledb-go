@@ -32,9 +32,17 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ❏ Added TiKV plug-in
 
+    -   Metrics plug-ins
+
+        -   ❏ Added Graphite plug-in
+
+    -   Distributed Tracer plug-ins
+
+        -   ❏ Added OpenTracing plug-in
+
 -   Kubernetes features
 
-    -   \[\] Operator
+    -   ❏ Operator
 
 ## v1.0.0
 
@@ -46,27 +54,19 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Document store plug-in
 
-    -   Key-Value Store plug-ins
+        -   Key-Value Store plug-ins
 
-        -   ❏ Key-Value cache plug-in
-
-## v0.9.x
-
--   New features
-
--   New plug-ins
+            -   ❏ Key-Value cache plug-in
 
     -   Coordinator plug-ins
 
         -   ❏ Added etcd plug-in
 
-    -   Metrics plug-ins
+    -   Storage plug-ins
 
-        -   ❏ Added Graphite plug-in
+        -   Key-Value Store plug-ins
 
-    -   Distributed Tracer plug-ins
-
-        -   ❏ Added OpenTracing plug-in
+            -   ✓ Added FoundationDB plug-in
 
 ## v0.9.0
 
@@ -93,12 +93,6 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
     -   Coordinator plug-ins
 
         -   ✓ Added memdb plug-in
-
-    -   Storage plug-ins
-
-        -   Key-Value Store plug-ins
-
-            -   ✓ Added FoundationDB plug-in
 
     -   Distributed Tracer plug-ins
 

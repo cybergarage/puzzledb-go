@@ -82,21 +82,21 @@ For more information about the roadmap, please refer to [Roadmap](doc/roadmap.ad
 
         -   [puzzledb-server](doc/cmd/server/puzzledb-server.md)
 
-    -   Docker Hub
-
-        -   [cybergarage/puzzledb](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
-
--   Configuration
-
     -   [Configuring PullzeDB](doc/configuring.md)
 
 -   Operation
 
-    -   CLI
-
-        -   [puzzledb-cli](doc/cmd/cli/puzzledb-cli.md)
+    -   [CLI (puzzledb-cli)](doc/cmd/cli/puzzledb-cli.md)
 
     -   [Distributed Tracing](doc/tracing.md)
+
+-   Benchmarking
+
+    -   [puzzledb-bench](https://github.com/cybergarage/puzzledb-go/puzzledb-bench)
+
+-   Distribution
+
+    -   [Docker Hub (cybergarage/puzzledb)](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
 
 # Developer Guides
 
