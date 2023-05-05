@@ -86,7 +86,7 @@ func (server *PrometheusExporter) Start() error {
 		err = nil
 	}
 
-	log.Infof("metrics server (%s) started", addr)
+	log.Infof("prometheus exporter (%s) started", addr)
 
 	return err
 }
@@ -103,7 +103,7 @@ func (server *PrometheusExporter) Stop() error {
 	}
 
 	addr := net.JoinHostPort(server.Addr, strconv.Itoa(server.Port))
-	log.Infof("metrics server (%s) terminated", addr)
+	log.Infof("prometheus exporter (%s) terminated", addr)
 
 	return nil
 }

@@ -235,7 +235,7 @@ func (server *Server) Start() error { //nolint:gocognit
 			return err
 		}
 	} else {
-		log.Infof("prometheus server disabled")
+		log.Infof("prometheus exporter disabled")
 	}
 
 	// Setup tracer
