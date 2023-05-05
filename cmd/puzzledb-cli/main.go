@@ -18,11 +18,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/cmd"
+	"github.com/cybergarage/puzzledb-go/puzzledb/cmd/cli"
 )
 
 func main() {
-	if err := cmd.Execute(); err != nil {
+	if err := cli.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

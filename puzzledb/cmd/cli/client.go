@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cmd
+package cli
 
 import (
-	"github.com/spf13/cobra"
+	"github.com/cybergarage/puzzledb-go/puzzledb"
 )
 
-func init() { // nolint:gochecknoinits
-	rootCmd.AddCommand(getCmd)
+var client *puzzledb.Client
+
+func SetClient(c *puzzledb.Client) {
+	client = c
 }
 
-var getCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:   "get",
-	Short: "Get the specified resource",
-	Long:  "Get the specified resource in the specified category.",
+func GetClient() *puzzledb.Client {
+	return client
 }
