@@ -42,7 +42,7 @@ func NewPrometheusExporterWith(server *Server) *PrometheusExporter {
 		Server:     server,
 		httpServer: nil,
 		Addr:       "",
-		Port:       DefaultGrpcPort,
+		Port:       DefaultPrometheusPort,
 	}
 }
 
