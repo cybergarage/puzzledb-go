@@ -32,10 +32,11 @@ var gRPCPort int
 
 // rootCmd represents the base command when called without any subcommands.
 var rootCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:     "puzzledb-cli",
-	Version: puzzledb.Version,
-	Short:   "",
-	Long:    "",
+	Use:               "puzzledb-cli",
+	Version:           puzzledb.Version,
+	Short:             "",
+	Long:              "",
+	DisableAutoGenTag: true,
 }
 
 // GetRootCommand returns the root command.
