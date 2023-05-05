@@ -15,8 +15,10 @@
 package puzzledb
 
 import (
+	"bufio"
 	"bytes"
 	_ "embed"
+	"os"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/spf13/viper"
@@ -87,6 +89,20 @@ func NewConfigWithPaths(paths ...string) (config.Config, error) {
 func NewConfigWithString(conString string) (config.Config, error) {
 	conf := config.NewConfigWith(ProductName)
 	if err := viper.ReadConfig(bytes.NewBuffer([]byte(conString))); err != nil {
+		return nil, err
+	}
+	return conf, nil
+}
+
+// NewConfigWithFile returns a new configuration with the specified file.
+func NewConfigWithFile(confFile string) (config.Config, error) {
+	f, err := os.Open(confFile)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	conf := config.NewConfigWith(ProductName)
+	if err := viper.ReadConfig(bufio.NewReader(f)); err != nil {
 		return nil, err
 	}
 	return conf, nil
