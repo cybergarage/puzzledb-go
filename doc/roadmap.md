@@ -42,10 +42,6 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 -   New features
 
-    -   Distributed Tracer plug-ins
-
-        -   ❏ Added OpenTelemetry plug-in
-
 -   New plug-ins
 
     -   Coordinator plug-ins
@@ -55,6 +51,10 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
     -   Metrics plug-ins
 
         -   ❏ Added Graphite plug-in
+
+    -   Distributed Tracer plug-ins
+
+        -   ❏ Added OpenTracing plug-in
 
 ## v0.9.0
 
@@ -67,6 +67,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
     -   Operator APIs
 
         -   ✓ Added gRPC services for operator APIs and CLI utilities.
+
+        -   ✓ Added Prometheus metrics expoter
 
     -   Configuration support
 
@@ -88,11 +90,17 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Distributed Tracer plug-ins
 
-        -   ✓ Added OpenTracing plug-in
+        -   ✓ Added OpenTelemetry plug-in
 
-    -   Metrics plug-ins
+-   Update plug-ins
 
-        -   ✓ Added Prometheus plug-in
+    -   Coder plug-ins
+
+        -   Key coder plug-ins
+
+            -   Tuple plug-in
+
+                -   Fix encoder not to panic on Ubuntu 20.04
 
 ## v0.8.0
 
@@ -117,3 +125,13 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
         -   Key-Value Store plug-ins
 
             -   ✓ memdb plug-in
+
+    -   Coder plug-ins
+
+        -   Document coder plug-ins
+
+            -   ✓ CBOR coder plug-in
+
+        -   Key coder plug-ins
+
+            -   ✓ Tuple plug-in
