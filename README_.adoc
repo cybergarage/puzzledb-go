@@ -59,7 +59,7 @@ For more information about the roadmap, please refer to link:doc/roadmap.adoc[Ro
 ** link:doc/configuring.md[Configuring PullzeDB]
 * Operation
 ** CLI
-*** link:doc/cli/puzzledb-cli.md[puzzledb-cli]
+*** link:doc/cmd/cli/puzzledb-cli.md[puzzledb-cli]
 ** link:doc/tracing.md[Tracing]
 
 = Developer Guides
