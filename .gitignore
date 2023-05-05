@@ -19,4 +19,5 @@
 
 # PuzzleDB
 puzzledb-server
-doc/cli/puzzledb-cli-doc
+doc/cmd/cli/puzzledb-cli-doc
+doc/cmd/cli/puzzledb-server-doc
