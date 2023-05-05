@@ -23,17 +23,20 @@ import (
 )
 
 const (
-	pluginsConfig  = "plugins"
-	grpcConfig     = "grpc"
-	queryConfig    = "query"
-	portConfig     = "port"
-	enabledConfig  = "enabled"
-	tracingConfig  = "tracing"
-	loggingConfig  = "logging"
-	tracerConfig   = "tracer"
-	endpointConfig = "endpoint"
-	defaultConfig  = "default"
-	levelConfig    = "level"
+	apiConfig        = "api"
+	pluginsConfig    = "plugins"
+	grpcConfig       = "grpc"
+	queryConfig      = "query"
+	portConfig       = "port"
+	enabledConfig    = "enabled"
+	tracingConfig    = "tracing"
+	loggingConfig    = "logging"
+	tracerConfig     = "tracer"
+	endpointConfig   = "endpoint"
+	defaultConfig    = "default"
+	levelConfig      = "level"
+	metricsConfig    = "metrics"
+	prometheusConfig = "prometheus"
 )
 
 type Config struct {
