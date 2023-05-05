@@ -15,6 +15,8 @@
 package fdb
 
 import (
+	"time"
+
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -35,16 +37,19 @@ func newTransaction(txn fdb.Transaction, coder document.KeyCoder) kv.Transaction
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *transaction) Set(obj *kv.Object) error {
+	now := time.Now()
 	keyBytes, err := txn.EncodeKey(obj.Key)
 	if err != nil {
 		return err
 	}
 	txn.Transaction.Set(fdb.Key(keyBytes), obj.Value)
+	mWriteLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return nil
 }
 
 // Get returns a key-value object of the specified key.
 func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
+	now := time.Now()
 	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return nil, err
@@ -58,6 +63,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 	if len(val) == 0 {
 		return nil, kv.NewObjectNotExistError(key)
 	}
+	mReadLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return &kv.Object{
 		Key:   key,
 		Value: val,
