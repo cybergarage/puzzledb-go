@@ -80,6 +80,8 @@ For more information about the roadmap, please refer to [Roadmap](doc/roadmap.ad
 
     -   [Quick Start](doc/quick-start.md)
 
+        -   [puzzledb-server](doc/cmd/server/puzzledb-server.md)
+
     -   Docker Hub
 
         -   [cybergarage/puzzledb](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
