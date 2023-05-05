@@ -36,6 +36,8 @@ BIN_ID=${MODULE_ROOT}/${BIN_SRC_ROOT}
 BIN_SERVER=${PKG_NAME}-server
 BIN_SERVER_ID=${BIN_ID}/${BIN_SERVER}
 BIN_SERVER_DOCKER_TAG=cybergarage/${PKG_NAME}:${PKG_VER}
+BIN_SERVER_DOCKER_TAG_PRE=cybergarage/${PKG_NAME}:${PKG_VER}-pre
+BIN_SERVER_DOCKER_TAG_LATEST=cybergarage/${PKG_NAME}:latest
 BIN_CLI=${PKG_NAME}-cli
 BIN_CLI_ID=${BIN_ID}/${BIN_CLI}
 BIN_SRCS=\
@@ -68,7 +70,9 @@ test_only:
 	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
 
 image:
-	docker image build -t${BIN_SERVER_DOCKER_TAG} .
+	docker image build -t${BIN_SERVER_DOCKER_TAG} -t${BIN_SERVER_DOCKER_TAG_PRE} -t${BIN_SERVER_DOCKER_TAG_LATEST} .
+	docker push ${BIN_SERVER_DOCKER_TAG_PRE}
+	docker push ${BIN_SERVER_DOCKER_TAG_LATEST}
 
 cmd:
 	go build -v -gcflags=${GCFLAGS} ${BINS}

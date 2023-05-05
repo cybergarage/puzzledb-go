@@ -40,15 +40,17 @@ type Server struct {
 	*PluginManager
 	*GrpcServer
 	*Tracer
+	*PrometheusExporter
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		GrpcServer:    nil,
-		Config:        nil,
-		PluginManager: NewPluginManagerWith(plugins.NewManager()),
-		Tracer:        nil,
+		GrpcServer:         nil,
+		Config:             nil,
+		PluginManager:      NewPluginManagerWith(plugins.NewManager()),
+		Tracer:             nil,
+		PrometheusExporter: nil,
 	}
 	conf, err := NewDefaultConfig()
 	if err != nil {
@@ -56,7 +58,9 @@ func NewServer() *Server {
 	}
 	server.SetConfig(conf)
 	server.GrpcServer = NewGrpcServerWith(server)
+	server.PrometheusExporter = NewPrometheusExporterWith(server)
 	server.Tracer = NewTracerWith(server)
+
 	return server
 }
 
@@ -170,7 +174,7 @@ func (server *Server) setupPlugins() error {
 }
 
 // Start starts the server.
-func (server *Server) Start() error {
+func (server *Server) Start() error { //nolint:gocognit
 	// Setup logger
 
 	ok, _ := server.Config.GetBool(loggingConfig, enabledConfig)
@@ -213,7 +217,25 @@ func (server *Server) Start() error {
 			return err
 		}
 	} else {
-		log.Infof("gRPC disabled")
+		log.Infof("gRPC server disabled")
+	}
+
+	// Setup metrics server
+
+	ok, _ = server.PrometheusExporter.EnabledConfig()
+	if ok {
+		port, err := server.PrometheusExporter.PortConfig()
+		if err != nil {
+			server.PrometheusExporter.SetPort(port)
+		}
+		if err := server.PrometheusExporter.Start(); err != nil {
+			if stopErr := server.Stop(); stopErr != nil {
+				return errors.Join(err, stopErr)
+			}
+			return err
+		}
+	} else {
+		log.Infof("prometheus server disabled")
 	}
 
 	// Setup tracer
@@ -260,6 +282,12 @@ func (server *Server) Stop() error {
 	ok, _ := server.Tracer.EnabledConfig()
 	if ok {
 		if stopErr := server.Tracer.Stop(); stopErr != nil {
+			err = errors.Join(err, stopErr)
+		}
+	}
+	ok, _ = server.PrometheusExporter.EnabledConfig()
+	if ok {
+		if stopErr := server.PrometheusExporter.Stop(); stopErr != nil {
 			err = errors.Join(err, stopErr)
 		}
 	}
