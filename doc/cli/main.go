@@ -18,12 +18,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/cmd"
+	"github.com/cybergarage/puzzledb-go/puzzledb/cmd/cli"
 	"github.com/spf13/cobra/doc"
 )
 
 func main() {
-	err := doc.GenMarkdownTree(cmd.GetRootCommand(), ".")
+	err := doc.GenMarkdownTree(cli.GetRootCommand(), ".")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

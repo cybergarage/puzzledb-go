@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cmd
+package cli
 
 import (
 	"fmt"
@@ -21,16 +21,16 @@ import (
 )
 
 func init() { // nolint:gochecknoinits
-	listCmd.AddCommand(listConfigCmd)
-	getCmd.AddCommand(getConfigCmd)
+	listCmd.AddCommand(listDatabasesCmd)
+	// listCmd.AddCommand(listCollectionsCmd)
 }
 
-var listConfigCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:   "config",
-	Short: "List configurations",
-	Long:  "List all the configurations.",
+var listDatabasesCmd = &cobra.Command{ // nolint:exhaustruct
+	Use:   "databases",
+	Short: "List databases",
+	Long:  `List all the databases.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		dbs, err := GetClient().ListConfig()
+		dbs, err := GetClient().ListDatabases()
 		if err != nil {
 			fmt.Println(err.Error())
 			return
@@ -42,22 +42,15 @@ var listConfigCmd = &cobra.Command{ // nolint:exhaustruct
 }
 
 // nolint:forbidigo
-var getConfigCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:   "config [name]",
-	Short: "Get configuration",
-	Long:  "Get the specified configurateion.",
+/*
+var listCollectionsCmd = &cobra.Command{ // nolint:exhaustruct
+	Use:   "collections [database]",
+	Short: "List collections in a database",
+	Long:  `List all the collections in the specified database.`,
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 1 {
-			fmt.Println("No name specified")
-			return
-		}
-		name := args[0]
-		v, err := GetClient().GetConfig(name)
-		if err != nil {
-			fmt.Println(err.Error())
-			return
-		}
-		fmt.Println(v)
+		// TODO: Add logic to list collections in the specified database
+		// fmt.Printf("Listing collections in database %s...\n", args[0])
 	},
 }
+*/
