@@ -21,26 +21,25 @@ image:img/roadmap.png[doc/img/roadmap]
 *** [ ] Added PostgreSQL plug-in
 ** Storage plug-ins
 *** [ ] Added TiKV plug-in
+** Metrics plug-ins
+*** [ ] Added Graphite plug-in
+** Distributed Tracer plug-ins
+*** [ ] Added OpenTracing plug-in
 * Kubernetes features
-** [] Operator
+** [ ] Operator
 
 == v1.0.0
 * New features
 ** [ ] Added TLS with mTLS Support
 * New plug-ins
-*** Document store plug-in
+** Document store plug-in
 *** Key-Value Store plug-ins
 **** [ ] Key-Value cache plug-in
-
-== v0.9.x
-* New features
-* New plug-ins
 ** Coordinator plug-ins
 *** [ ] Added etcd plug-in
-** Metrics plug-ins
-*** [ ] Added Graphite plug-in
-** Distributed Tracer plug-ins
-*** [ ] Added OpenTracing plug-in
+** Storage plug-ins
+*** Key-Value Store plug-ins
+**** [*] Added FoundationDB plug-in
 
 == v0.9.0
 * New features
@@ -55,9 +54,6 @@ image:img/roadmap.png[doc/img/roadmap]
 * New plug-ins
 ** Coordinator plug-ins
 *** [*] Added memdb plug-in
-** Storage plug-ins
-*** Key-Value Store plug-ins
-**** [*] Added FoundationDB plug-in
 ** Distributed Tracer plug-ins
 *** [*] Added OpenTelemetry plug-in
 * Update plug-ins
