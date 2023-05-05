@@ -115,7 +115,7 @@ func init() { // nolint:gochecknoinits
 	// when this action is called directly.
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	rootCmd.PersistentFlags().StringVar(&gRPCHost, "host", "", fmt.Sprintf("gRPC host or address for a %v instance", puzzledb.ProductName))
+	rootCmd.PersistentFlags().StringVar(&gRPCHost, "host", "localhost", fmt.Sprintf("gRPC host or address for a %v instance", puzzledb.ProductName))
 	rootCmd.PersistentFlags().IntVar(&gRPCPort, "port", puzzledb.DefaultGrpcPort, fmt.Sprintf("gRPC port number for a %v instance", puzzledb.ProductName))
 }
 
