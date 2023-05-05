@@ -60,7 +60,7 @@ For more information about the roadmap, please refer to link:doc/roadmap.adoc[Ro
 * Operation
 ** CLI
 *** link:doc/cmd/cli/puzzledb-cli.md[puzzledb-cli]
-** link:doc/tracing.md[Tracing]
+** link:doc/tracing.md[Distributed Tracing]
 
 = Developer Guides
 
