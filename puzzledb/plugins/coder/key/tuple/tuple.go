@@ -42,7 +42,9 @@ func newTupleWith(key document.Key) (tuple.Tuple, error) {
 			tpl[n] = v
 		case big.Int, *big.Int:
 			tpl[n] = v
-		case fdb.KeyConvertible, tuple.Tuple, tuple.UUID, tuple.Versionstamp:
+		case tuple.Tuple, tuple.UUID, tuple.Versionstamp:
+			tpl[n] = v
+		case fdb.KeyConvertible:
 			tpl[n] = v
 		default:
 			return nil, newErrUnsupportedKeyType(e)
