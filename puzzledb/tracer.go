@@ -46,15 +46,15 @@ func (t *Tracer) Tracer() tracer.Tracer {
 }
 
 func (t *Tracer) EnabledConfig(name string) (bool, error) {
-	return t.Server.Config.GetBool(tracingConfig, tracerConfig, name, enabledConfig)
+	return t.Server.Config.GetBool(tracerConfig, name, enabledConfig)
 }
 
 func (t *Tracer) DefaultConfig() (string, error) {
-	return t.Server.Config.GetString(tracingConfig, defaultConfig)
+	return t.Server.Config.GetString(tracerConfig, defaultConfig)
 }
 
 func (t *Tracer) EndpointConfig(name string) (string, error) {
-	return t.Server.Config.GetString(tracingConfig, tracerConfig, name, endpointConfig)
+	return t.Server.Config.GetString(tracerConfig, name, endpointConfig)
 }
 
 func (t *Tracer) Start() error {
