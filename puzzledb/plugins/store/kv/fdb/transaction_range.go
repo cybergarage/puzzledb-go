@@ -15,6 +15,8 @@
 package fdb
 
 import (
+	"time"
+
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -60,6 +62,7 @@ func (rs *rangeResultSet) Object() *kv.Object {
 
 // GetRange returns a result set of the specified key.
 func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
+	now := time.Now()
 	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
 		return nil, err
@@ -74,5 +77,6 @@ func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
 		Reverse: false,
 	}
 	rs := txn.Transaction.GetRange(r, ro)
+	mReadLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return newRangeResultSet(txn.KeyCoder, rs), nil
 }
