@@ -45,8 +45,8 @@ func (t *Tracer) Tracer() tracer.Tracer {
 	return t.tracer
 }
 
-func (t *Tracer) EnabledConfig() (bool, error) {
-	return t.Server.Config.GetBool(tracingConfig, enabledConfig)
+func (t *Tracer) EnabledConfig(name string) (bool, error) {
+	return t.Server.Config.GetBool(tracingConfig, tracerConfig, name, enabledConfig)
 }
 
 func (t *Tracer) DefaultConfig() (string, error) {
