@@ -207,7 +207,7 @@ func (server *Server) Start() error { //nolint:gocognit
 	ok, _ = server.GrpcServer.EnabledConfig()
 	if ok {
 		port, err := server.GrpcServer.PortConfig()
-		if err != nil {
+		if err == nil {
 			server.GrpcServer.SetPort(port)
 		}
 		if err := server.GrpcServer.Start(); err != nil {
@@ -225,7 +225,7 @@ func (server *Server) Start() error { //nolint:gocognit
 	ok, _ = server.PrometheusExporter.EnabledConfig()
 	if ok {
 		port, err := server.PrometheusExporter.PortConfig()
-		if err != nil {
+		if err == nil {
 			server.PrometheusExporter.SetPort(port)
 		}
 		if err := server.PrometheusExporter.Start(); err != nil {
