@@ -96,7 +96,7 @@ For more information about the roadmap, please refer to [Roadmap](doc/roadmap.ad
 
         -   [puzzledb-cli](doc/cmd/cli/puzzledb-cli.md)
 
-    -   [Tracing](doc/tracing.md)
+    -   [Distributed Tracing](doc/tracing.md)
 
 # Developer Guides
 
