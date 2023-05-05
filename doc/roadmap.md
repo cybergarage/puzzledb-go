@@ -32,11 +32,23 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ❏ Added TiKV plug-in
 
+-   Kubernetes features
+
+    -   \[\] Operator
+
 ## v1.0.0
 
 -   New features
 
     -   ❏ Added TLS with mTLS Support
+
+-   New plug-ins
+
+    -   Document store plug-in
+
+    -   Key-Value Store plug-ins
+
+        -   ❏ Key-Value cache plug-in
 
 ## v0.9.x
 
