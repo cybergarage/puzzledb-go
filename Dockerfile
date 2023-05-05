@@ -19,7 +19,7 @@ RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb
 COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
 
-ENV PUZZLEDB_TRACER_OPENTELEMETRY_ENABLED false
-ENV PUZZLEDB_TRACER_OPENTRACING_ENABLED false
+ENV PUZZLEDB_TRACER.OPENTELEMETRY.ENABLED false
+ENV PUZZLEDB_TRACER.OPENTRACING.ENABLED false
 
 ENTRYPOINT ["/entrypoint.sh"]
