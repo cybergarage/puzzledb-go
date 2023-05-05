@@ -1,4 +1,4 @@
-logging:
+logger:
   enabled: true
   level: debug
 api:
@@ -9,15 +9,14 @@ metrics:
   prometheus:
     enabled: true
     port: 9181
-tracing:
+tracer:
   default: opentelemetry
-  tracer: 
-    opentelemetry:
-      enabled: true
-      endpoint: "http://localhost:14268/api/traces"
-    opentracing:
-      enabled: true
-      endpoint: "localhost:6831"
+  opentelemetry:
+    enabled: true
+    endpoint: "http://localhost:14268/api/traces"
+  opentracing:
+    enabled: true
+    endpoint: "localhost:6831"
 plugins:
   coder:
     document:
