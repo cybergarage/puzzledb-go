@@ -6,7 +6,7 @@ PuzzleDB is configured using a configuration file. The configuration file is a Y
 
 The configuration file is divided into sections. Each section is a YAML map. PuzzleDB will activate a default configuration if a configuration file is not specified or if there is no puzzledb.yaml in the local directory. The following is the default configuration file:
 
-    logging:
+    logger:
       enabled: true
       level: info
     api:
@@ -17,14 +17,14 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
       prometheus:
         enabled: true
         port: 9181
-    tracing:
-      enabled: true
+    tracer:
       default: opentelemetry
-      tracer: 
-        opentelemetry:
-          endpoint: "http://localhost:14268/api/traces"
-        opentracing:
-          endpoint: "localhost:6831"
+      opentelemetry:
+        enabled: true
+        endpoint: "http://localhost:14268/api/traces"
+      opentracing:
+        enabled: true
+        endpoint: "localhost:6831"
     plugins:
       coder:
         document:
