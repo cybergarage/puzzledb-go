@@ -4,7 +4,7 @@ PuzzleDB is configured using a configuration file. The configuration file is a Y
 
 ## Configuration File (puzzledb.yaml)
 
-The configuration file is divided into sections. Each section is a YAML map. PuzzleDB will activate a default configuration if a configuration file is not specified or if there is no puzzledb.yaml in the local directory. The following is a default configuration file:
+The configuration file is divided into sections. Each section is a YAML map. PuzzleDB will activate a default configuration if a configuration file is not specified or if there is no puzzledb.yaml in the local directory. The following is the default configuration file:
 
     logging:
       enabled: true
