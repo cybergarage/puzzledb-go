@@ -67,6 +67,7 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
+github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/cybergarage/go-cbor v1.2.0 h1:lRmnGQszGm5qRUWu4cNVpcYj/ilMP3K0ul1zReK6Zw8=
 github.com/cybergarage/go-cbor v1.2.0/go.mod h1:ZBFG6UPO1UXvLDIFtjxjA+vT7zQb91LFZdJAYB7w3Jc=
@@ -76,8 +77,8 @@ github.com/cybergarage/go-mongo v1.0.2 h1:KuviUFcjD0TKviEXDUh49o+n8dR089tsCaN30S
 github.com/cybergarage/go-mongo v1.0.2/go.mod h1:ZKgavW01jqInW/eJaqQzMuQu8S/VWoFCut0W74j2q8I=
 github.com/cybergarage/go-mysql v1.0.2 h1:Vlu8W2dK6Mdv90bgx/aT1Fp4DzpJvzeigSbycIEWDms=
 github.com/cybergarage/go-mysql v1.0.2/go.mod h1:L+gB5Q1tVu+Sv1xGuNOjqY45OMnhOSur5KLgaFXFszQ=
-github.com/cybergarage/go-pict v0.8.1 h1:qQivvxVUkxGhtuLHXKmEi1grXg5uNlZWie0bVyVyDmA=
-github.com/cybergarage/go-pict v0.8.1/go.mod h1:ukn4bXgVb/owpw5tllWRPE0AR5Fx/ucbw43dpvFM90w=
+github.com/cybergarage/go-pict v0.8.2 h1:NkyBSYohJM2zTPggc89l9sijJRPqGolAMjLXqZvJYxY=
+github.com/cybergarage/go-pict v0.8.2/go.mod h1:ukn4bXgVb/owpw5tllWRPE0AR5Fx/ucbw43dpvFM90w=
 github.com/cybergarage/go-redis v1.3.6 h1:BcMzeznUmCrnZZOkHfZXvR+0/fe61qNH33zAvjuiiqs=
 github.com/cybergarage/go-redis v1.3.6/go.mod h1:eZsZZxtYRJNSpIEozeod6TfXL6MKS8DLwxxRdt/GXy8=
 github.com/cybergarage/go-safecast v1.1.0 h1:vBBrFIvsK5LvtIDSXXQbIdrtmJR5BmLpPkrvaPHuFZ8=
@@ -335,6 +336,7 @@ github.com/prometheus/procfs v0.8.0 h1:ODq8ZFEaYeCaZOJlZZdJA2AbQR98dSHSM1KW/You5
 github.com/prometheus/procfs v0.8.0/go.mod h1:z7EfXMXOkbkqb9IINtpCn86r/to3BnA0uaxHdg830/4=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.6.1 h1:/FiVV8dS/e+YqF2JvO3yXRFbBLTIuSDkuC7aBOAvL+k=
+github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
