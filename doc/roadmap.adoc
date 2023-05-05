@@ -34,7 +34,6 @@ image:img/roadmap.png[doc/img/roadmap]
 ** Coordinator plug-ins
 *** [ ] Added etcd plug-in
 ** Metrics plug-ins
-*** [ ] Added Prometheus plug-in
 *** [ ] Added Graphite plug-in
 
 == v0.9.0
@@ -54,6 +53,8 @@ image:img/roadmap.png[doc/img/roadmap]
 **** [*] Added FoundationDB plug-in
 ** Distributed Tracer plug-ins
 *** [*] Added OpenTracing plug-in
+** Metrics plug-ins
+*** [*] Added Prometheus plug-in
 
 == v0.8.0
 
