@@ -54,8 +54,6 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Metrics plug-ins
 
-        -   ❏ Added Prometheus plug-in
-
         -   ❏ Added Graphite plug-in
 
 ## v0.9.0
@@ -91,6 +89,10 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
     -   Distributed Tracer plug-ins
 
         -   ✓ Added OpenTracing plug-in
+
+    -   Metrics plug-ins
+
+        -   ✓ Added Prometheus plug-in
 
 ## v0.8.0
 
