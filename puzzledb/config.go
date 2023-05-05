@@ -32,7 +32,7 @@ const (
 	portConfig       = "port"
 	enabledConfig    = "enabled"
 	tracingConfig    = "tracing"
-	loggingConfig    = "logging"
+	loggerConfig     = "logger"
 	tracerConfig     = "tracer"
 	endpointConfig   = "endpoint"
 	defaultConfig    = "default"

@@ -177,10 +177,10 @@ func (server *Server) setupPlugins() error {
 func (server *Server) Start() error { //nolint:gocognit
 	// Setup logger
 
-	ok, _ := server.Config.GetBool(loggingConfig, enabledConfig)
+	ok, _ := server.Config.GetBool(loggerConfig, enabledConfig)
 	if ok {
 		level := log.LevelInfo
-		levelStr, err := server.Config.GetString(loggingConfig, levelConfig)
+		levelStr, err := server.Config.GetString(loggerConfig, levelConfig)
 		if err == nil {
 			level = log.GetLevelFromString(levelStr)
 		}
