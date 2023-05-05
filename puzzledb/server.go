@@ -240,10 +240,15 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	// Setup tracer
 
-	ok, _ = server.Tracer.EnabledConfig()
-	if ok {
-		if err := server.Tracer.Start(); err != nil {
-			return err
+	tracerName, err := server.Tracer.DefaultConfig()
+	if err == nil {
+		ok, _ := server.Tracer.EnabledConfig(tracerName)
+		if ok {
+			if err := server.Tracer.Start(); err != nil {
+				return err
+			}
+		} else {
+			log.Infof("tracer disabled")
 		}
 	} else {
 		log.Infof("tracer disabled")
@@ -279,13 +284,16 @@ func (server *Server) Stop() error {
 	if stopErr := server.Manager.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
 	}
-	ok, _ := server.Tracer.EnabledConfig()
-	if ok {
-		if stopErr := server.Tracer.Stop(); stopErr != nil {
-			err = errors.Join(err, stopErr)
+	tracerName, tracerErr := server.Tracer.DefaultConfig()
+	if tracerErr == nil {
+		ok, _ := server.Tracer.EnabledConfig(tracerName)
+		if ok {
+			if stopErr := server.Tracer.Stop(); stopErr != nil {
+				err = errors.Join(err, stopErr)
+			}
 		}
 	}
-	ok, _ = server.PrometheusExporter.EnabledConfig()
+	ok, _ := server.PrometheusExporter.EnabledConfig()
 	if ok {
 		if stopErr := server.PrometheusExporter.Stop(); stopErr != nil {
 			err = errors.Join(err, stopErr)
