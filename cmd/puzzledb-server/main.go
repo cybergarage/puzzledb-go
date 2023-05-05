@@ -12,100 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
-	puzzledb-server is the server process for PuzzleDB.
-	NAME
-	 puzzledb-server
-
-	SYNOPSIS
-	 puzzledb-server [OPTIONS]
-
-	OPTIONS
-	-v      : Enable verbose output.
-	-p      : Enable profiling.
-
-	RETURN VALUE
-	  Return EXIT_SUCCESS or EXIT_FAILURE
-*/
-
 package main
 
 import (
-	"flag"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-
-	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/puzzledb-go/puzzledb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/cmd/server"
 )
 
 func main() {
-	isDebugEnabled := flag.Bool("d", false, "enable debugging log output")
-	isProfileEnabled := flag.Bool("p", false, "enable profiling server")
-	flag.Parse()
-
-	logLevel := log.LevelInfo
-	if *isDebugEnabled {
-		logLevel = log.LevelDebug
-	}
-	log.SetSharedLogger(log.NewStdoutLogger(logLevel))
-
-	if *isProfileEnabled {
-		go func() {
-			// nolint: gosec
-			http.ListenAndServe("localhost:6060", nil)
-		}()
-	}
-
-	var server *puzzledb.Server
-
-	// paths := []string{".", "./conf", fmt.Sprintf("/etc/%s", puzzledb.ProductName)}
-	conf, err := puzzledb.NewConfigWithPath(".")
-	if err == nil {
-		server = puzzledb.NewServerWithConfig(conf)
-	} else {
-		server = puzzledb.NewServer()
-	}
-
-	if err := server.Start(); err != nil {
-		log.Errorf("%s couldn't be started (%s)", puzzledb.ProductName, err.Error())
-		os.Exit(1)
-	}
-
-	sigCh := make(chan os.Signal, 1)
-
-	signal.Notify(sigCh,
-		os.Interrupt,
-		syscall.SIGHUP,
-		syscall.SIGINT,
-		syscall.SIGTERM)
-
-	exitCh := make(chan int)
-
-	go func() {
-		for {
-			s := <-sigCh
-			switch s {
-			case syscall.SIGHUP:
-				log.Infof("caught %s, restarting...", s.String())
-				if err := server.Restart(); err != nil {
-					log.Errorf("%s couldn't be restarted (%s)", puzzledb.ProductName, err.Error())
-					os.Exit(1)
-				}
-			case syscall.SIGINT, syscall.SIGTERM:
-				log.Infof("caught %s, terminating...", s.String())
-				if err := server.Stop(); err != nil {
-					log.Errorf("%s couldn't be terminated (%s)", puzzledb.ProductName, err.Error())
-					os.Exit(1)
-				}
-				exitCh <- 0
-			}
-		}
-	}()
-
-	code := <-exitCh
-
-	os.Exit(code)
+	server.Execute()
 }
