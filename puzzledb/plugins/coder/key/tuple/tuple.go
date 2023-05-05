@@ -15,14 +15,17 @@
 package tuple
 
 import (
+	"math/big"
+
+	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/apple/foundationdb/bindings/go/src/fdb/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-func newTupleWith(key document.Key) tuple.Tuple {
+func newTupleWith(key document.Key) (tuple.Tuple, error) {
 	tpl := make([]tuple.TupleElement, len(key))
-	for n, keyElem := range key {
-		switch v := keyElem.(type) {
+	for n, e := range key {
+		switch v := e.(type) {
 		case int8:
 			tpl[n] = int(v)
 		case int16:
@@ -35,11 +38,17 @@ func newTupleWith(key document.Key) tuple.Tuple {
 			tpl[n] = int(v)
 		case uint32:
 			tpl[n] = int(v)
-		default:
+		case int, int64, uint, uint64, nil, []byte, string, float32, float64, bool:
 			tpl[n] = v
+		case big.Int, *big.Int:
+			tpl[n] = v
+		case fdb.KeyConvertible, tuple.Tuple, tuple.UUID, tuple.Versionstamp:
+			tpl[n] = v
+		default:
+			return nil, newErrUnsupportedKeyType(e)
 		}
 	}
-	return tpl
+	return tpl, nil
 }
 
 func newKeyWith(tpl tuple.Tuple) document.Key {
