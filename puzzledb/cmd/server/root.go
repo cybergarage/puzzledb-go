@@ -21,6 +21,7 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/spf13/cobra"
 )
 
@@ -39,10 +40,25 @@ func GetRootCommand() *cobra.Command {
 }
 
 func Execute() {
-	var server *puzzledb.Server
-	var conf *puzzledb.Config
+	var conf config.Config
+	if cfgFile != "" {
+		fileConf, err := puzzledb.NewConfigWithFile(cfgFile)
+		if err != nil {
+			log.Errorf("%s couldn't be loaded (%s)", cfgFile, err.Error())
+			os.Exit(1)
+		}
+		conf = fileConf
+	} else {
+		localConf, err := puzzledb.NewConfigWithPath(".")
+		if err == nil {
+			conf = localConf
+		}
+	}
 
-	if conf == nil {
+	var server *puzzledb.Server
+	if conf != nil {
+		server = puzzledb.NewServerWithConfig(conf)
+	} else {
 		server = puzzledb.NewServer()
 	}
 
