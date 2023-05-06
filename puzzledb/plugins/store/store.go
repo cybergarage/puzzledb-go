@@ -214,7 +214,7 @@ func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
 		return err
 	}
 
-	err = dbTxn.TruncateSchemas(ctx)
+	err = dbTxn.TruncateCollections(ctx)
 	if err != nil {
 		if err := dbTxn.Cancel(ctx); err != nil {
 			return err

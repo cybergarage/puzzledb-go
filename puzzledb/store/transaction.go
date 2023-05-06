@@ -22,14 +22,14 @@ import (
 type Schema = document.Schema
 
 type DatabaseOperation interface {
-	// CreateSchema creates a new schema.
-	CreateSchema(ctx context.Context, schema Schema) error
-	// GetSchema returns the specified schema.
-	GetSchema(ctx context.Context, name string) (Schema, error)
-	// RemoveSchema removes the specified schema.
-	RemoveSchema(ctx context.Context, name string) error
-	// TruncateSchemas removes all schemas.
-	TruncateSchemas(ctx context.Context) error
+	// CreateCollection creates a new schema.
+	CreateCollection(ctx context.Context, schema Schema) error
+	// GetCollection returns the specified schema.
+	GetCollection(ctx context.Context, name string) (Schema, error)
+	// RemoveCollection removes the specified schema.
+	RemoveCollection(ctx context.Context, name string) error
+	// TruncateCollections removes all schemas.
+	TruncateCollections(ctx context.Context) error
 }
 
 type DocumentOperation interface {

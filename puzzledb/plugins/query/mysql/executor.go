@@ -91,7 +91,7 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 		return nil, err
 	}
 
-	_, err = txn.GetSchema(ctx, stmt.TableName())
+	_, err = txn.GetCollection(ctx, stmt.TableName())
 	if err == nil {
 		if err := txn.Cancel(ctx); err != nil {
 			return nil, err
@@ -107,7 +107,7 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.CreateSchema(ctx, schema)
+	err = txn.CreateCollection(ctx, schema)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -128,8 +128,34 @@ func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql
 
 // DropTable should handle a DROP table statement.
 func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
-	return nil, newQueryNotSupportedError("DropTable")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("DropTable")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = txn.GetCollection(ctx, stmt.TableName())
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return mysql.NewResultWithRowsAffected(1), nil
 }
 
 // RenameTable should handle a RENAME table statement.
@@ -163,7 +189,7 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 		return nil, err
 	}
 
-	schema, err := txn.GetSchema(ctx, stmt.TableName())
+	schema, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -249,7 +275,7 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetSchema(ctx, tableName)
+	schema, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -317,7 +343,7 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetSchema(ctx, tableName)
+	schema, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -420,7 +446,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetSchema(ctx, tableName)
+	schema, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}

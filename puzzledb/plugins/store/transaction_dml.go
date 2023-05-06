@@ -28,9 +28,9 @@ func (txn *transaction) createSchemaKey(schema string) store.Key {
 	return kv.NewKeyWith(kv.SchemaKeyHeader, colKey)
 }
 
-// CreateSchema creates a new schema.
-func (txn *transaction) CreateSchema(ctx context.Context, schema store.Schema) error {
-	ctx.StartSpan("CreateSchema")
+// CreateCollection creates a new schema.
+func (txn *transaction) CreateCollection(ctx context.Context, schema store.Schema) error {
+	ctx.StartSpan("CreateCollection")
 	defer ctx.FinishSpan()
 
 	kvSchemaKey := txn.createSchemaKey(schema.Name())
@@ -46,9 +46,9 @@ func (txn *transaction) CreateSchema(ctx context.Context, schema store.Schema) e
 	return txn.kv.Set(&kvObj)
 }
 
-// GetSchema returns the specified schema.
-func (txn *transaction) GetSchema(ctx context.Context, name string) (store.Schema, error) {
-	ctx.StartSpan("GetSchema")
+// GetCollection returns the specified schema.
+func (txn *transaction) GetCollection(ctx context.Context, name string) (store.Schema, error) {
+	ctx.StartSpan("GetCollection")
 	defer ctx.FinishSpan()
 
 	kvSchemaKey := txn.createSchemaKey(name)
@@ -67,18 +67,18 @@ func (txn *transaction) GetSchema(ctx context.Context, name string) (store.Schem
 	return document.NewSchemaWith(obj)
 }
 
-// RemoveSchema removes the specified schema.
-func (txn *transaction) RemoveSchema(ctx context.Context, name string) error {
-	ctx.StartSpan("RemoveSchema")
+// RemoveCollection removes the specified schema.
+func (txn *transaction) RemoveCollection(ctx context.Context, name string) error {
+	ctx.StartSpan("RemoveCollection")
 	defer ctx.FinishSpan()
 
 	kvSchemaKey := txn.createSchemaKey(name)
 	return txn.kv.Remove(kvSchemaKey)
 }
 
-// TruncateSchemas removes all schemas.
-func (txn *transaction) TruncateSchemas(ctx context.Context) error {
-	ctx.StartSpan("TruncateSchemas")
+// TruncateCollections removes all schemas.
+func (txn *transaction) TruncateCollections(ctx context.Context) error {
+	ctx.StartSpan("TruncateCollections")
 	defer ctx.FinishSpan()
 
 	kvSchemaKey := kv.NewKeyWith(kv.SchemaKeyHeader, document.NewKeyWith(txn.Database().Name()))
