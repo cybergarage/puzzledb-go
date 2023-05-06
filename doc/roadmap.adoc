@@ -68,7 +68,7 @@ image:img/roadmap.png[doc/img/roadmap]
 == v0.8.0
 
 * Initial public release
-* Initial plug-ins
+* Initial release plug-ins
 ** Query plug-ins
 *** [*] MySQL plug-in
 *** [*] Redis plug-in
