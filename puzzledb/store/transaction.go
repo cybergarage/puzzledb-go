@@ -19,19 +19,22 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
+type Collection = document.Collection
 type Schema = document.Schema
 
+// DatabaseOperation represents a database operation.
 type DatabaseOperation interface {
-	// CreateCollection creates a new schema.
-	CreateCollection(ctx context.Context, schema Schema) error
-	// GetCollection returns the specified schema.
-	GetCollection(ctx context.Context, name string) (Schema, error)
-	// RemoveCollection removes the specified schema.
+	// CreateCollection creates a new collection.
+	CreateCollection(ctx context.Context, col Collection) error
+	// GetCollection returns the specified collection.
+	GetCollection(ctx context.Context, name string) (Collection, error)
+	// RemoveCollection removes the specified collection.
 	RemoveCollection(ctx context.Context, name string) error
-	// TruncateCollections removes all schemas.
+	// TruncateCollections removes all collections.
 	TruncateCollections(ctx context.Context) error
 }
 
+// DocumentOperation represents a document operation.
 type DocumentOperation interface {
 	// InsertDocument puts a document object with the specified primary key.
 	InsertDocument(ctx context.Context, docKey Key, obj Object) error
@@ -47,6 +50,7 @@ type DocumentOperation interface {
 	TruncateDocuments(ctx context.Context) error
 }
 
+// IndexOperation represents a secondary index operation.
 type IndexOperation interface {
 	// InsertIndex puts a secondary index with the primary key.
 	InsertIndex(ctx context.Context, idxKey Key, key Key) error
@@ -58,6 +62,7 @@ type IndexOperation interface {
 	TruncateIndexes(ctx context.Context) error
 }
 
+// TransactionOperation represents a transaction operation.
 type TransactionOperation interface {
 	DatabaseOperation
 	DocumentOperation

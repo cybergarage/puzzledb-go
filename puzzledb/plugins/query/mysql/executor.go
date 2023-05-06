@@ -102,12 +102,12 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 		return mysql.NewResult(), newSchemaExistError(stmt.TableName())
 	}
 
-	schema, err := NewSchemaWith(stmt)
+	col, err := NewCollectionWith(stmt)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.CreateCollection(ctx, schema)
+	err = txn.CreateCollection(ctx, col)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -189,14 +189,14 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 		return nil, err
 	}
 
-	schema, err := txn.GetCollection(ctx, stmt.TableName())
+	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	// Inserts the object using the primary key/
 
-	docKey, docObj, err := NewObjectFromInsert(dbName, schema, stmt)
+	docKey, docObj, err := NewObjectFromInsert(dbName, col, stmt)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -208,7 +208,7 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 
 	// Inserts the secondary indexes.
 
-	err = service.insertSecondaryIndexes(ctx, conn, txn, schema, docObj, docKey)
+	err = service.insertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -275,17 +275,17 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetCollection(ctx, tableName)
+	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
+	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	res, err := NewResultFrom(dbName, schema, rs.Objects())
+	res, err := NewResultFrom(dbName, col, rs.Objects())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -343,7 +343,7 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetCollection(ctx, tableName)
+	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -353,14 +353,14 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	rs, err := service.selectDocumentObjects(ctx, conn, txn, schema, stmt.Where)
+	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	for rs.Next() {
 		docObj := rs.Object()
-		err := service.updateDocument(ctx, conn, txn, schema, docObj, updateCols)
+		err := service.updateDocument(ctx, conn, txn, col, docObj, updateCols)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
@@ -446,19 +446,19 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	schema, err := txn.GetCollection(ctx, tableName)
+	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	docKey, docKeyType, err := NewKeyFromCond(dbName, schema, stmt.Where)
+	docKey, docKeyType, err := NewKeyFromCond(dbName, col, stmt.Where)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	switch docKeyType {
 	case document.PrimaryIndex:
-		err = service.deleteDocument(ctx, conn, txn, schema, docKey)
+		err = service.deleteDocument(ctx, conn, txn, col, docKey)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
@@ -467,7 +467,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
-		prIdx, err := schema.PrimaryIndex()
+		prIdx, err := col.PrimaryIndex()
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
@@ -477,11 +477,11 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 			if err != nil {
 				return nil, err
 			}
-			objKey, err := NewKeyFromIndex(dbName, schema, prIdx, obj)
+			objKey, err := NewKeyFromIndex(dbName, col, prIdx, obj)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(ctx, txn, err)
 			}
-			err = service.deleteDocument(ctx, conn, txn, schema, objKey)
+			err = service.deleteDocument(ctx, conn, txn, col, objKey)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(ctx, txn, err)
 			}
