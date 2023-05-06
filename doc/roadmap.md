@@ -84,7 +84,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   CLI Utilities
 
-        -   ✓ Added puzzledb-cli
+        -   ✓ Added [puzzledb-cli](cmd/cli/puzzledb-cli.md)
 
     -   Operator APIs
 
@@ -124,9 +124,9 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
             -   Supported queries
 
-                -   \[X\] DROP DATABASE
+                -   ✓ DROP DATABASE
 
-                -   \[X\] DROP TABLE
+                -   ✓ DROP TABLE
 
 ## v0.8.0 (2023-04-10)
 
