@@ -29,13 +29,13 @@ func (txn *transaction) createSchemaKey(schema string) store.Key {
 }
 
 // CreateCollection creates a new schema.
-func (txn *transaction) CreateCollection(ctx context.Context, schema store.Schema) error {
+func (txn *transaction) CreateCollection(ctx context.Context, col store.Collection) error {
 	ctx.StartSpan("CreateCollection")
 	defer ctx.FinishSpan()
 
-	kvSchemaKey := txn.createSchemaKey(schema.Name())
+	kvSchemaKey := txn.createSchemaKey(col.Name())
 	var encSchema bytes.Buffer
-	err := txn.EncodeDocument(&encSchema, schema.Data())
+	err := txn.EncodeDocument(&encSchema, col.Data())
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func (txn *transaction) CreateCollection(ctx context.Context, schema store.Schem
 }
 
 // GetCollection returns the specified schema.
-func (txn *transaction) GetCollection(ctx context.Context, name string) (store.Schema, error) {
+func (txn *transaction) GetCollection(ctx context.Context, name string) (store.Collection, error) {
 	ctx.StartSpan("GetCollection")
 	defer ctx.FinishSpan()
 
@@ -64,7 +64,7 @@ func (txn *transaction) GetCollection(ctx context.Context, name string) (store.S
 	if err != nil {
 		return nil, err
 	}
-	return document.NewSchemaWith(obj)
+	return document.NewCollectionWith(obj)
 }
 
 // RemoveCollection removes the specified schema.
