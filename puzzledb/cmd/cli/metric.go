@@ -26,7 +26,7 @@ func init() { // nolint:gochecknoinits
 }
 
 var listMetricCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:   "config",
+	Use:   "metric",
 	Short: "List metrics",
 	Long:  "List all the metrics.",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -43,7 +43,7 @@ var listMetricCmd = &cobra.Command{ // nolint:exhaustruct
 
 // nolint:forbidigo
 var getMetricCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:   "config [name]",
+	Use:   "metric [name]",
 	Short: "Get metric",
 	Long:  "Get the specified metric.",
 	Args:  cobra.ExactArgs(1),
