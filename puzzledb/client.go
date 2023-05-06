@@ -76,7 +76,7 @@ func (client *Client) Close() error {
 
 func (client *Client) Check() (bool, error) {
 	c := pb.NewHealthClient(client.Conn)
-	req := &pb.HealthCheckRequest{}
+	req := &pb.HealthCheckRequest{} //nolint:exhaustruct
 	res, err := c.Check(context.Background(), req)
 	if err != nil {
 		return false, err
