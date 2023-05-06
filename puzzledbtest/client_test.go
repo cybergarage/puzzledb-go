@@ -55,6 +55,18 @@ func TestClient(t *testing.T) {
 		}
 	}()
 
+	// Checks health services
+
+	ok, err := client.Check()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if !ok {
+		t.Errorf("%s", "Check failed")
+		return
+	}
+
 	// Checks config services
 
 	_, err = client.GetVersion()
