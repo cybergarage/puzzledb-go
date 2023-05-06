@@ -137,6 +137,9 @@ func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.
 	dbName := conn.Database()
 	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
+		if stmt.GetIfExists() {
+			return mysql.NewResult(), nil
+		}
 		return nil, err
 	}
 
@@ -146,6 +149,14 @@ func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.
 	}
 
 	_, err = txn.GetCollection(ctx, stmt.TableName())
+	if err != nil {
+		if stmt.GetIfExists() {
+			return mysql.NewResult(), service.CancelTransactionWithError(ctx, txn, err)
+		}
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	err = txn.RemoveCollection(ctx, stmt.TableName())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
