@@ -87,6 +87,14 @@ func TestClient(t *testing.T) {
 		return
 	}
 
+	// Checks metrics services
+
+	_, err = client.ListMetric()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
 	// Checks store services
 
 	testDBName := fmt.Sprintf("%s%d", testDBPrefix, time.Now().UnixNano())

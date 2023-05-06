@@ -118,6 +118,27 @@ func (client *Client) ListConfig() ([]string, error) {
 	return res.Values, nil
 }
 
+func (client *Client) GetMetric(name string) (string, error) {
+	c := pb.NewMetricClient(client.Conn)
+	req := &pb.GetMetricRequest{
+		Name: name,
+	}
+	res, err := c.GetMetric(context.Background(), req)
+	if err != nil {
+		return "", err
+	}
+	return res.Value, nil
+}
+
+func (client *Client) ListMetric() ([]string, error) {
+	c := pb.NewMetricClient(client.Conn)
+	res, err := c.ListMetric(context.Background(), &pb.ListMetricRequest{})
+	if err != nil {
+		return []string{}, err
+	}
+	return res.Values, nil
+}
+
 // CreateDatabase creates a specified database.
 func (client *Client) CreateDatabase(name string) error {
 	c := pb.NewStoreClient(client.Conn)
