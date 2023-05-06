@@ -14,6 +14,7 @@
 
 package document
 
+// Schema represents a schema.
 type Schema interface {
 	// Version returns the schema version.
 	Version() int
