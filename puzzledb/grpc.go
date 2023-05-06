@@ -36,6 +36,7 @@ type GrpcServer struct {
 	Port       int
 	pb.UnimplementedStoreServer
 	pb.UnimplementedConfigServer
+	pb.UnimplementedHealthServer
 }
 
 // NewGrpcServerWith returns a new GrpcServer.
@@ -47,6 +48,7 @@ func NewGrpcServerWith(server *Server) *GrpcServer {
 		Port:                      DefaultGrpcPort,
 		UnimplementedStoreServer:  pb.UnimplementedStoreServer{},
 		UnimplementedConfigServer: pb.UnimplementedConfigServer{},
+		UnimplementedHealthServer: pb.UnimplementedHealthServer{},
 	}
 }
 
@@ -76,6 +78,7 @@ func (server *GrpcServer) Start() error {
 	server.grpcServer = grpc.NewServer(grpc.UnaryInterceptor(loggingUnaryInterceptor))
 	pb.RegisterStoreServer(server.grpcServer, server)
 	pb.RegisterConfigServer(server.grpcServer, server)
+	pb.RegisterHealthServer(server.grpcServer, server)
 	go func() {
 		if err := server.grpcServer.Serve(listener); err != nil {
 			log.Error(err)
