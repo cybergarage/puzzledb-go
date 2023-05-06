@@ -40,3 +40,9 @@ func (server *GrpcServer) GetConfig(ctx context.Context, req *pb.GetConfigReques
 	res.Value = fmt.Sprintf("%v", v)
 	return &res, nil
 }
+
+func (server *GrpcServer) GetVersion(context.Context, *pb.GetVersionRequest) (*pb.GetVersionResponse, error) {
+	res := pb.GetVersionResponse{} //nolint:exhaustruct
+	res.Value = fmt.Sprintf("%v", Version)
+	return &res, nil
+}

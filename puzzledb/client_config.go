@@ -20,6 +20,16 @@ import (
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 )
 
+func (client *Client) GetVersion() (string, error) {
+	c := pb.NewConfigClient(client.Conn)
+	req := &pb.GetVersionRequest{}
+	res, err := c.GetVersion(context.Background(), req)
+	if err != nil {
+		return "", err
+	}
+	return res.Value, nil
+}
+
 func (client *Client) GetConfig(name string) (string, error) {
 	c := pb.NewConfigClient(client.Conn)
 	req := &pb.GetConfigRequest{

@@ -7,6 +7,7 @@ option go_package = "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc";
 service Config {
   rpc ListConfig (ListConfigRequest) returns (ListConfigResponse);
   rpc GetConfig (GetConfigRequest) returns (GetConfigResponse);
+  rpc GetVersion (GetVersionRequest) returns (GetVersionResponse);
 }
 
 message ListConfigRequest {
@@ -24,3 +25,9 @@ message GetConfigResponse {
   string value = 1;
 }
 
+message GetVersionRequest {
+}
+
+message GetVersionResponse {
+  string value = 1;
+}
