@@ -165,9 +165,8 @@ func (server *GrpcServer) ListMetric(context.Context, *pb.ListMetricRequest) (*p
 		return &res, err
 	}
 	for _, metric := range metrics {
-		res.Values = append(res.Values, metric.String())
+		res.Values = append(res.Values, metric.GetName())
 	}
-	res.Values = strings.Split(server.Config.String(), "\n")
 	return &res, nil
 }
 
