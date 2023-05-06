@@ -23,6 +23,6 @@ List all resources in the specified category
 
 * [puzzledb-cli](puzzledb-cli.md)	 - 
 * [puzzledb-cli list config](puzzledb-cli_list_config.md)	 - List configurations
-* [puzzledb-cli list config](puzzledb-cli_list_config.md)	 - List metrics
 * [puzzledb-cli list databases](puzzledb-cli_list_databases.md)	 - List databases
+* [puzzledb-cli list metric](puzzledb-cli_list_metric.md)	 - List metrics
 

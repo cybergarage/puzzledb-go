@@ -1,10 +1,10 @@
 ## puzzledb-cli list config
 
-List metrics
+List configurations
 
 ### Synopsis
 
-List all the metrics.
+List all the configurations.
 
 ```
 puzzledb-cli list config [flags]

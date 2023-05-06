@@ -1,19 +1,19 @@
-## puzzledb-cli get config
+## puzzledb-cli list metric
 
-Get configuration
+List metrics
 
 ### Synopsis
 
-Get the specified configurateion.
+List all the metrics.
 
 ```
-puzzledb-cli get config [name] [flags]
+puzzledb-cli list metric [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help   help for config
+  -h, --help   help for metric
 ```
 
 ### Options inherited from parent commands
@@ -25,5 +25,5 @@ puzzledb-cli get config [name] [flags]
 
 ### SEE ALSO
 
-* [puzzledb-cli get](puzzledb-cli_get.md)	 - Get the specified resource
+* [puzzledb-cli list](puzzledb-cli_list.md)	 - List all resources
 
