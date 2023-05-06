@@ -116,15 +116,9 @@ func loggingUnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServe
 	resp, err := handler(ctx, req)
 
 	if err == nil {
-		log.Infof("gRPC Method: %s, Request: %v, Response: %v",
-			info.FullMethod,
-			req,
-			resp)
+		log.Infof("gRPC Request: %s", info.FullMethod)
 	} else {
-		log.Errorf("gRPC Method: %s, Request: %v, Response: %v",
-			info.FullMethod,
-			req,
-			err.Error())
+		log.Errorf("gRPC Request: %s", info.FullMethod)
 	}
 
 	return resp, err
