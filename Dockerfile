@@ -20,6 +20,9 @@ COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
 
 ENV PUZZLEDB_TRACER_OPENTELEMETRY_ENABLED false
+ENV PUZZLEDB_TRACER_OPENTELEMETRY_ENDPOINT4 http://host.docker.internal:14268/api/traces
 ENV PUZZLEDB_TRACER_OPENTRACING_ENABLED false
+ENV PUZZLEDB_TRACER_OPENTELEMETRY_ENDPOINT host.docker.internal:6831
+
 
 ENTRYPOINT ["/entrypoint.sh"]
