@@ -49,7 +49,7 @@ image:img/roadmap.png[doc/img/roadmap]
 == v0.9.0 ((2023-05-xx)
 * New features
 ** CLI Utilities
-*** [*] Added puzzledb-cli
+*** [*] Added link:cmd/cli/puzzledb-cli.md[puzzledb-cli]
 ** Operator APIs
 *** [*] Added gRPC services for operator APIs and CLI utilities.
 *** [*] Added Prometheus metrics expoter
@@ -69,8 +69,8 @@ image:img/roadmap.png[doc/img/roadmap]
 ** Query plug-ins
 *** [*] MySQL plug-in
 **** Supported queries
-***** [X] DROP DATABASE
-***** [X] DROP TABLE 
+***** [*] DROP DATABASE
+***** [*] DROP TABLE 
 
 == v0.8.0 (2023-04-10)
 
