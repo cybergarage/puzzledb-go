@@ -108,6 +108,12 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
                 -   Fix encoder not to panic on Ubuntu 20.04
 
+    -   Query plug-ins
+
+        -   ✓ MySQL plug-in
+
+            -   Supported DROP DATABASE and TABLE queries
+
 ## v0.8.0
 
 -   Initial public release
