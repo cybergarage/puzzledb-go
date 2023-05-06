@@ -62,10 +62,18 @@ func (service *Service) DropDatabase(conn *mysql.Conn, stmt *query.Database) (*m
 	ctx.StartSpan("DropDatabase")
 	defer ctx.FinishSpan()
 
-	dbName := stmt.Name()
-
 	store := service.Store()
-	err := store.RemoveDatabase(ctx, dbName)
+
+	dbName := stmt.Name()
+	_, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		if stmt.IfExists() {
+			return mysql.NewResult(), nil
+		}
+		return nil, err
+	}
+
+	err = store.RemoveDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
