@@ -148,17 +148,20 @@ func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.
 		return nil, err
 	}
 
-	_, err = txn.GetCollection(ctx, stmt.TableName())
-	if err != nil {
-		if stmt.GetIfExists() {
-			return mysql.NewResult(), service.CancelTransactionWithError(ctx, txn, err)
+	tables := stmt.GetFromTables()
+	for _, table := range tables {
+		tblName := table.Name.String()
+		_, err = txn.GetCollection(ctx, tblName)
+		if err != nil {
+			if stmt.GetIfExists() {
+				return mysql.NewResult(), service.CancelTransactionWithError(ctx, txn, err)
+			}
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
-	}
-
-	err = txn.RemoveCollection(ctx, stmt.TableName())
-	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		err = txn.RemoveCollection(ctx, tblName)
+		if err != nil {
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
+		}
 	}
 
 	err = txn.Commit(ctx)
