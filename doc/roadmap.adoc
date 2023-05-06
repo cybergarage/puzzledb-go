@@ -40,13 +40,14 @@ image:img/roadmap.png[doc/img/roadmap]
 ** Storage plug-ins
 *** Key-Value Store plug-ins
 **** [*] Added FoundationDB plug-in
+* Update plug-ins
 ** Query plug-ins
-*** [ ] MySQL plug-in
+*** MySQL plug-in
 **** Supported queries
 ***** [ ] ALTER TABLE
 ***** [ ] CREATE INDEX
 
-== v0.9.0 ((2023-05-xx)
+== v0.9.0 (2023-05-xx)
 * New features
 ** CLI Utilities
 *** [*] Added link:cmd/cli/puzzledb-cli.md[puzzledb-cli]
