@@ -28,7 +28,7 @@ image:img/roadmap.png[doc/img/roadmap]
 * Kubernetes features
 ** [ ] Operator
 
-== v1.0.0
+== v1.0.0 (2023-06-xx)
 * New features
 ** [ ] Added TLS with mTLS Support
 * New plug-ins
@@ -40,8 +40,13 @@ image:img/roadmap.png[doc/img/roadmap]
 ** Storage plug-ins
 *** Key-Value Store plug-ins
 **** [*] Added FoundationDB plug-in
+** Query plug-ins
+*** [ ] MySQL plug-in
+**** Supported queries
+***** [ ] ALTER TABLE
+***** [ ] CREATE INDEX
 
-== v0.9.0
+== v0.9.0 ((2023-05-xx)
 * New features
 ** CLI Utilities
 *** [*] Added puzzledb-cli
@@ -54,7 +59,7 @@ image:img/roadmap.png[doc/img/roadmap]
 * New plug-ins
 ** Coordinator plug-ins
 *** [*] Added memdb plug-in
-** Distributed Tracer plug-ins
+** Distributed tracer plug-ins
 *** [*] Added OpenTelemetry plug-in
 * Update plug-ins
 ** Coder plug-ins
@@ -63,9 +68,11 @@ image:img/roadmap.png[doc/img/roadmap]
 ***** Fix encoder not to panic on Ubuntu 20.04
 ** Query plug-ins
 *** [*] MySQL plug-in
-**** Supported DROP DATABASE and TABLE queries
+**** Supported queries
+***** [X] DROP DATABASE
+***** [X] DROP TABLE 
 
-== v0.8.0
+== v0.8.0 (2023-04-10)
 
 * Initial public release
 * Initial release plug-ins
