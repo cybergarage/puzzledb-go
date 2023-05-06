@@ -61,6 +61,9 @@ image:img/roadmap.png[doc/img/roadmap]
 *** Key coder plug-ins
 **** Tuple plug-in
 ***** Fix encoder not to panic on Ubuntu 20.04
+** Query plug-ins
+*** [*] MySQL plug-in
+**** Supported DROP DATABASE and TABLE queries
 
 == v0.8.0
 
