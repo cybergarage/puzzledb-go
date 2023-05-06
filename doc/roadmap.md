@@ -44,7 +44,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   ❏ Operator
 
-## v1.0.0
+## v1.0.0 (2023-06-xx)
 
 -   New features
 
@@ -68,7 +68,17 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
             -   ✓ Added FoundationDB plug-in
 
-## v0.9.0
+    -   Query plug-ins
+
+        -   ❏ MySQL plug-in
+
+            -   Supported queries
+
+                -   ❏ ALTER TABLE
+
+                -   ❏ CREATE INDEX
+
+## v0.9.0 ((2023-05-xx)
 
 -   New features
 
@@ -94,7 +104,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ✓ Added memdb plug-in
 
-    -   Distributed Tracer plug-ins
+    -   Distributed tracer plug-ins
 
         -   ✓ Added OpenTelemetry plug-in
 
@@ -112,13 +122,17 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ✓ MySQL plug-in
 
-            -   Supported DROP DATABASE and TABLE queries
+            -   Supported queries
 
-## v0.8.0
+                -   \[X\] DROP DATABASE
+
+                -   \[X\] DROP TABLE
+
+## v0.8.0 (2023-04-10)
 
 -   Initial public release
 
--   Initial plug-ins
+-   Initial release plug-ins
 
     -   Query plug-ins
 
