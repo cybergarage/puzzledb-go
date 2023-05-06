@@ -1,19 +1,15 @@
-## puzzledb-cli get config
+## puzzledb-cli check
 
-Get metric
+Check the specified resource
 
 ### Synopsis
 
-Get the specified metric.
-
-```
-puzzledb-cli get config [name] [flags]
-```
+Check the specified resource in the specified category.
 
 ### Options
 
 ```
-  -h, --help   help for config
+  -h, --help   help for check
 ```
 
 ### Options inherited from parent commands
@@ -25,5 +21,6 @@ puzzledb-cli get config [name] [flags]
 
 ### SEE ALSO
 
-* [puzzledb-cli get](puzzledb-cli_get.md)	 - Get the specified resource
+* [puzzledb-cli](puzzledb-cli.md)	 - 
+* [puzzledb-cli check health](puzzledb-cli_check_health.md)	 - Check server health
 

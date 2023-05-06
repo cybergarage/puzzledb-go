@@ -12,6 +12,7 @@
 
 ### SEE ALSO
 
+* [puzzledb-cli check](puzzledb-cli_check.md)	 - Check the specified resource
 * [puzzledb-cli get](puzzledb-cli_get.md)	 - Get the specified resource
 * [puzzledb-cli list](puzzledb-cli_list.md)	 - List all resources
 
