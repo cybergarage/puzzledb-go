@@ -57,13 +57,19 @@ func TestClient(t *testing.T) {
 
 	// Checks config services
 
+	_, err = client.GetVersion()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
 	_, err = client.ListConfig()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	_, err = client.GetConfig("logging.level")
+	_, err = client.GetConfig("logger.level")
 	if err != nil {
 		t.Error(err)
 		return
