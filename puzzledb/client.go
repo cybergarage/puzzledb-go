@@ -15,9 +15,11 @@
 package puzzledb
 
 import (
+	"context"
 	"net"
 	"strconv"
 
+	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -72,6 +74,82 @@ func (client *Client) Close() error {
 	return nil
 }
 
-func (client *Client) Execute(args []string) error {
+func (client *Client) Check() (bool, error) {
+	c := pb.NewHealthClient(client.Conn)
+	req := &pb.HealthCheckRequest{}
+	res, err := c.Check(context.Background(), req)
+	if err != nil {
+		return false, err
+	}
+	if res.Status != pb.HealthCheckResponse_SERVING {
+		return false, nil
+	}
+	return true, nil
+}
+
+func (client *Client) GetVersion() (string, error) {
+	c := pb.NewConfigClient(client.Conn)
+	req := &pb.GetVersionRequest{}
+	res, err := c.GetVersion(context.Background(), req)
+	if err != nil {
+		return "", err
+	}
+	return res.Value, nil
+}
+
+func (client *Client) GetConfig(name string) (string, error) {
+	c := pb.NewConfigClient(client.Conn)
+	req := &pb.GetConfigRequest{
+		Name: name,
+	}
+	res, err := c.GetConfig(context.Background(), req)
+	if err != nil {
+		return "", err
+	}
+	return res.Value, nil
+}
+
+func (client *Client) ListConfig() ([]string, error) {
+	c := pb.NewConfigClient(client.Conn)
+	res, err := c.ListConfig(context.Background(), &pb.ListConfigRequest{})
+	if err != nil {
+		return []string{}, err
+	}
+	return res.Values, nil
+}
+
+// CreateDatabase creates a specified database.
+func (client *Client) CreateDatabase(name string) error {
+	c := pb.NewStoreClient(client.Conn)
+	req := &pb.CreateDatabaseRequest{
+		DatabaseName: name,
+	}
+	_, err := c.CreateDatabase(context.Background(), req)
+	if err != nil {
+		return err
+	}
 	return nil
+}
+
+// RemoveDatabase removes a specified database.
+func (client *Client) RemoveDatabase(name string) error {
+	c := pb.NewStoreClient(client.Conn)
+	req := &pb.RemoveDatabaseRequest{
+		DatabaseName: name,
+	}
+	_, err := c.RemoveDatabase(context.Background(), req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// ListDatabases returns a list of database names.
+func (client *Client) ListDatabases() ([]string, error) {
+	c := pb.NewStoreClient(client.Conn)
+	res, err := c.ListDatabases(context.Background(), &pb.ListDatabasesRequest{})
+	if err != nil {
+		return []string{}, err
+	}
+	return res.Databases, nil
 }
