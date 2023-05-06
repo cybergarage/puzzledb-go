@@ -117,6 +117,16 @@ PuzzleDB currently supports [MySQL statements](https://dev.mysql.com/doc/refman/
 <td style="text-align: left;"><p>CREATE TABLE</p></td>
 <td style="text-align: left;"></td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>DROP DATABASE</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>DROP TABLE</p></td>
+<td style="text-align: left;"></td>
+</tr>
 </tbody>
 </table>
 
@@ -144,7 +154,7 @@ PuzzleDB currently supports [MySQL statements](https://dev.mysql.com/doc/refman/
 <tr class="even">
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>INSERT</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Does not perform constraint checking on foreign keys</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>O</p></td>
