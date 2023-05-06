@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+// package grpc;
+
+option go_package = "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc";
+
+service Metric {
+  rpc ListMetric (ListMetricRequest) returns (ListMetricResponse);
+  rpc GetMetric (GetMetricRequest) returns (GetMetricResponse);
+}
+
+message ListMetricRequest {
+}
+
+message ListMetricResponse {
+  repeated string values = 1;
+}
+
+message GetMetricRequest {
+  string name = 1;
+}
+
+message GetMetricResponse {
+  string value = 1;
+}
