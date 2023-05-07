@@ -1,0 +1,21 @@
+= Key-Value Store Specification
+
+In PuzzleDB, not only are records represented as key-value pairs, but schemas and indices are also represented as key-value data. This section describes the format of the key-value data used in PuzzleDB.
+
+== Key-Value Record Types
+
+The key-value store is a collection of key-value records. Each key-value record is a key-value pair, where the key is a header. The key-value store supports the following types of key-value records:
+
+[format="csv", options="header, autowidth"]
+|====
+include::csv/kv-store-header-s.csv[]
+|====
+
+== Key Header Specification
+
+The key header is a 16-byte header that is prepended to every key in the key-value store. The key header is defined as follows:
+
+[format="csv", options="header, autowidth"]
+|====
+include::csv/kv-store-header.csv[]
+|====
