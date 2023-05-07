@@ -63,6 +63,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHH
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/cybergarage/go-cbor v1.2.0 h1:lRmnGQszGm5qRUWu4cNVpcYj/ilMP3K0ul1zReK6Zw8=
 github.com/cybergarage/go-cbor v1.2.0/go.mod h1:ZBFG6UPO1UXvLDIFtjxjA+vT7zQb91LFZdJAYB7w3Jc=
+github.com/cybergarage/go-cbor v1.2.1 h1:qwAvJHXH4dwOxNLN3vjRiPVZQODptQ521mAMp9NEd2g=
+github.com/cybergarage/go-cbor v1.2.1/go.mod h1:INgb05jZmXTv8jbexLGBLx1Uu203YKngGCxUIPxVRR4=
 github.com/cybergarage/go-logger v1.3.4 h1:UTgYZr/LwQtYVOncS3NJ64We5kCe7ce6L85y/MOYfrM=
 github.com/cybergarage/go-logger v1.3.4/go.mod h1:2iMjinHam5oqyKEGsKIzeQQmmOPxpCgro95LOlEC2ks=
 github.com/cybergarage/go-mongo v1.0.2 h1:KuviUFcjD0TKviEXDUh49o+n8dR089tsCaN30SXoBV0=
