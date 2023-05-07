@@ -1,0 +1,52 @@
+# Changelog
+
+## v1.0.0 (2023-xx-xx)
+* Official release
+* New features
+** Distributed plug-ins
+*** Storage plug-ins
+**** Add FoundationDB plug-in
+**** Add cache store plug-in
+*** Coordinator plug-ins
+**** Added etcd plug-in
+
+## v0.9.0 (2023-05-07)
+* New features
+** CLI Utilities
+*** Added link:doc/cmd/cli/puzzledb-cli.md[puzzledb-cli]
+** Operator APIs
+*** Added gRPC services for operator APIs and CLI utilities
+*** Added Prometheus metrics expoter
+** Coordinator plug-ins
+*** Added memdb plug-in (standalone)
+** Distributed tracer plug-ins
+*** Added OpenTelemetry plug-in
+* Improvements
+** Configuration
+*** Added support for configuration with environment variables
+*** Added support for configuration with puzzledb.yaml
+** Query plug-ins
+*** MySQL plug-in
+**** New supported queries
+***** DROP DATABASE
+***** DROP TABLE 
+* Bug Fixes
+** Coder plug-ins
+*** Key coder plug-ins
+**** Tuple plug-in
+***** Fix encoder not to panic on Ubuntu 20.04
+
+## v0.8.0 (2023-04-10)
+* Initial public technology preview release
+* New Features
+** Coderr plug-ins
+*** Key coder plug-ins
+**** Tuple plug-in
+*** Document coder plug-ins
+**** CBOR plug-in
+** Store plug-ins
+*** go-memdb plug-in (standalone)
+** Query plug-ins
+*** MySQL plug-in
+*** MongoDB plug-in
+*** Redis plug-in
