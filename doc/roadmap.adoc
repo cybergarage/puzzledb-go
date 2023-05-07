@@ -7,6 +7,8 @@ plugin for the next release. The development roadmap for PuzzleDB is shown below
 image:img/roadmap.png[doc/img/roadmap]
 
 == v2.0.0
+* New features
+** [ ] GUI Console
 * New plug-ins
 ** Enterprise plug-ins
 *** [ ] Added QoS plug-ins

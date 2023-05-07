@@ -6,6 +6,10 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ## v2.0.0
 
+-   New features
+
+    -   ❏ GUI Console
+
 -   New plug-ins
 
     -   Enterprise plug-ins
