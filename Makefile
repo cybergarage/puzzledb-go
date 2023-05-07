@@ -119,6 +119,7 @@ doc_touch: $(csvs)
 doc: doc_touch $(docs) cmd_docs
 	@mv README_.md README.md
 	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
+	@rm ChangeLog.md
 
 #
 # Protos
