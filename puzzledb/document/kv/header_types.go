@@ -23,10 +23,10 @@ const (
 )
 
 const (
-	DatabaseObject = HeaderType('D')
-	SchemaObject   = HeaderType('S')
-	DocumentObject = HeaderType('O')
-	IndexObject    = HeaderType('I')
+	DatabaseObject   = HeaderType('D')
+	CollectionObject = HeaderType('C')
+	DocumentObject   = HeaderType('O')
+	IndexObject      = HeaderType('I')
 )
 
 const (
@@ -35,7 +35,7 @@ const (
 )
 
 var DatabaseKeyHeader = [2]byte{byte(DatabaseObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-var SchemaKeyHeader = [2]byte{byte(SchemaObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+var CollectionKeyHeader = [2]byte{byte(CollectionObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
 var DocumentKeyHeader = [2]byte{byte(DocumentObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
 var PrimaryIndexHeader = [2]byte{byte(IndexObject), byte(byte(PrimaryIndex) | HeaderByteFromVersion(V1))}
 var SecondaryIndexHeader = [2]byte{byte(IndexObject), byte(byte(SecondaryIndex) | HeaderByteFromVersion(V1))}
