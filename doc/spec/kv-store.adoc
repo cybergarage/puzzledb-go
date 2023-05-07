@@ -20,4 +20,4 @@ The key header is a 2-byte header that is prepended to every key in the key-valu
 include::csv/kv-store-header.csv[]
 |====
 
-The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. The value type is then defined for each key type.
+The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.

@@ -3,4 +3,4 @@ Category,Key Order,,,,Value
 Database,Header,Database,-,-,CBOR (Options)
 Collection,Header,Database,Collection,-,CBOR (Schema)
 Object,Header,Database,Collection,Element,CBOR (Object)
-Index,Header,Database,Collection,Element,Key
+Index,Header,Database,Collection,Element,Tuple (Key)
