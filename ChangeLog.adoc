@@ -9,6 +9,14 @@
 **** Add cache store plug-in
 *** Coordinator plug-ins
 **** Added etcd plug-in
+* Improvements
+** Query plug-ins
+*** MySQL plug-in
+**** Added support for new queries
+*** MongoDB plug-in
+**** Added support for new queries
+*** Redis plug-in
+**** Added support for new queries
 
 ## v0.9.0 (2023-05-07)
 * New features
@@ -27,7 +35,7 @@
 *** Added support for configuration with puzzledb.yaml
 ** Query plug-ins
 *** MySQL plug-in
-**** New supported queries
+**** Added support for new queries
 ***** DROP DATABASE
 ***** DROP TABLE 
 * Bug Fixes
