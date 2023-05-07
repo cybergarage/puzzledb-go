@@ -68,6 +68,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
             -   ✓ Added FoundationDB plug-in
 
+            -   ❏ Added cache store plug-in
+
 -   Update plug-ins
 
     -   Query plug-ins
@@ -80,7 +82,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
                 -   ❏ CREATE INDEX
 
-## v0.9.0 (2023-05-xx)
+## v0.9.0 (2023-05-07)
 
 -   New features
 
