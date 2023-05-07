@@ -1,0 +1,12 @@
+= Coordinator Store Specification
+
+Coordinators has a key-value store to store cluster states and notification events. 
+
+== Key Header
+
+The key header is a 16-byte header that is prepended to every key in the key-value store. The key header is defined as follows:
+
+[format="csv", options="header, autowidth"]
+|====
+include::csv/coodinator-store-header.csv[]
+|====

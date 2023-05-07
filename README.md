@@ -124,4 +124,6 @@ For more information about the roadmap, please refer to [Roadmap](doc/roadmap.ad
 
 -   Specification
 
-    -   [Key-Value Store Specification](doc/storage-kv.md)
+    -   [Key-Value Store Specification](doc/spec/kv-store.md)
+
+    -   [Coordinator Store Specification](doc/spec/coordinator-store.md)
