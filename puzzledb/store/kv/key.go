@@ -28,7 +28,7 @@ type HeaderType = kv.HeaderType
 type KeyHeader = kv.KeyHeader
 
 var DatabaseKeyHeader = kv.DatabaseKeyHeader
-var SchemaKeyHeader = kv.SchemaKeyHeader
+var SchemaKeyHeader = kv.CollectionKeyHeader
 var DocumentKeyHeader = kv.DocumentKeyHeader
 var PrimaryIndexHeader = kv.PrimaryIndexHeader
 var SecondaryIndexHeader = kv.SecondaryIndexHeader

@@ -39,9 +39,9 @@ func TestKeyHeader(t *testing.T) {
 			},
 		},
 		{
-			header: SchemaKeyHeader,
+			header: CollectionKeyHeader,
 			expected: expected{
-				tp:  SchemaObject,
+				tp:  CollectionObject,
 				ver: V1,
 				doc: CBOR,
 				idx: IndexType(0),
