@@ -71,7 +71,7 @@ func (s *Store) String() string {
 			keyHeader := dockv.NewKeyHeaderFrom(keyHeaderBytes)
 
 			switch keyHeader.Type() {
-			case dockv.DatabaseObject, dockv.SchemaObject, dockv.DocumentObject:
+			case dockv.DatabaseObject, dockv.CollectionObject, dockv.DocumentObject:
 				r := bytes.NewReader(obj.Value)
 				val, err := docStore.DecodeDocument(r)
 				if err != nil {

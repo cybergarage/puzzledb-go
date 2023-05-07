@@ -1,5 +1,0 @@
-Type,Key Order,,,,Value
-,0,1,2,3,
-Object,Header,Database,Collection,Element,Object
-Index,Header,Database,Collection,Element,Key
-Schema,Header,Database,Collection,-,CBOR

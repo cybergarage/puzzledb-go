@@ -1,0 +1,6 @@
+Category,Key Order,,,,Value
+,0,1,2,3,
+Database,Header,Database,-,-,CBOR (Options)
+Collection,Header,Database,Collection,-,CBOR (Schema)
+Object,Header,Database,Collection,Element,CBOR (Object)
+Index,Header,Database,Collection,Element,Key
