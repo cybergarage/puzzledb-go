@@ -122,11 +122,11 @@ func (mgr *Manager) Start() error {
 	log.Infof("plug-ins loading...")
 
 	for _, srv := range mgr.services {
+		if !mgr.IsEnabled(srv) {
+			log.Infof("%s (%s) skipped", srv.ServiceName(), srv.ServiceType().String())
+			continue
+		}
 		if err := srv.Start(); err != nil {
-			if !mgr.IsEnabled(srv) {
-				log.Infof("%s (%s) skipped", srv.ServiceName(), srv.ServiceType().String())
-				continue
-			}
 			if err := mgr.Stop(); err != nil {
 				return err
 			}
