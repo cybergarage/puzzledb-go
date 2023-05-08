@@ -124,12 +124,6 @@ func (server *Server) setupPlugins() error {
 		return err
 	}
 
-	defaultTracer, err := server.DefaultTracingService()
-	if err != nil {
-		return err
-	}
-	defaultTracer.SetServiceName(ProductName)
-
 	// KV store services
 
 	for _, service := range server.KvStoreServices() {
@@ -182,6 +176,12 @@ func (server *Server) setupPlugins() error {
 	if err != nil {
 		return err
 	}
+
+	defaultTracer, err := server.DefaultTracingService()
+	if err != nil {
+		return err
+	}
+	defaultTracer.SetServiceName(ProductName)
 
 	for _, service := range server.QueryServices() {
 		service.SetConfig(server.Config.Config)
