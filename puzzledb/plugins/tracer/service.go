@@ -42,7 +42,7 @@ func NewService() *BaseService {
 
 // ServiceType returns the plug-in service type.
 func (service *BaseService) ServiceType() plugins.ServiceType {
-	return plugins.QueryService
+	return plugins.TracingService
 }
 
 func (service *BaseService) SetConfig(config config.Config) {
