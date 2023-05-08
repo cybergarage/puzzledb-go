@@ -15,7 +15,6 @@
 package ot
 
 import (
-	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/go-tracing/tracer/ot"
 )
@@ -47,8 +46,6 @@ func (t *Tracer) Start() error {
 		return err
 	}
 
-	log.Infof("%s tracer (%s) started", t.ServiceName(), t.tracer.Endpoint())
-
 	return nil
 }
 
@@ -56,8 +53,6 @@ func (t *Tracer) Stop() error {
 	if err := t.tracer.Stop(); err != nil {
 		return err
 	}
-
-	log.Infof("%s tracer (%s) terminated", t.ServiceName(), t.tracer.Endpoint())
 
 	return nil
 }
