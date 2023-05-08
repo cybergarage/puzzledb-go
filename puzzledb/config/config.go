@@ -16,8 +16,6 @@ package config
 
 // Config represents a configuration interface.
 type Config interface {
-	// Set sets a value to the specified path.
-	Set(path string, v any) error
 	// Get returns a value for the specified name.
 	Get(path string) (any, error)
 	// GetString returns a string value for the specified name.

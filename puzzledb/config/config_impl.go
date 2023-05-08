@@ -36,11 +36,6 @@ func NewConfigWith(productName string) Config {
 	return &viperConfig{}
 }
 
-// Set sets a value to the specified path.
-func (conf *viperConfig) Set(path string, v any) error {
-	return nil
-}
-
 func (conf *viperConfig) Get(path string) (any, error) {
 	v := viper.Get(path)
 	if v == nil {
