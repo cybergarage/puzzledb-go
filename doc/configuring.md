@@ -17,14 +17,6 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
       prometheus:
         enabled: true
         port: 9181
-    tracer:
-      default: opentelemetry
-      opentelemetry:
-        enabled: true
-        endpoint: "http://localhost:14268/api/traces"
-      opentracing:
-        enabled: true
-        endpoint: "localhost:6831"
     plugins:
       coder:
         document:
@@ -69,6 +61,14 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
         mysql:
           enabled: true
           port: 3306
+      tracer:
+        default: opentelemetry
+        opentelemetry:
+          enabled: true
+          endpoint: "http://localhost:14268/api/traces"
+        opentracing:
+          enabled: false
+          endpoint: "localhost:6831"
 
 ## Environment Variables
 
