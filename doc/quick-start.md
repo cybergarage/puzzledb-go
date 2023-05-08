@@ -23,6 +23,8 @@ docker run -it --rm \
  -p 6379:6379 \
  -p 27017:27017 \
  -p 3306:3306 \
+ -p 50053:50053 \
+ -p 9181:9181 \
  cybergarage/puzzledb
 ```
 

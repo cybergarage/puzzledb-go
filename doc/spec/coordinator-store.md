@@ -1,6 +1,6 @@
 # Coordinator Store Specification
 
-The Coordinator service provides distributed synchronization and coordination for PuzzleDB nodes, as well as a distributed key-value store. This document describes the specifications of the information stored in the key-value store provided by the Coordinator service.
+The coordinator service provides distributed synchronization and coordination for PuzzleDB nodes, as well as a distributed key-value store. This document describes the specifications of the information stored in the key-value store provided by The coordinator service.
 
 ## Key Categories
 
