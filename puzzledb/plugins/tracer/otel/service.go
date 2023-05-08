@@ -17,31 +17,34 @@ package ot
 import (
 	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/go-tracing/tracer/otel"
+	tracer_plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer"
 )
 
-// Tracer represents a tracer.
-type Tracer struct {
+// Service represents a tracer service.
+type Service struct {
+	*tracer_plugin.BaseService
 	tracer tracer.Tracer
 }
 
-// NewTracer returns a new tracer.
-func NewTracerWith() *Tracer {
-	return &Tracer{
-		tracer: otel.NewTracer(),
+// NewService returns a new tracer service.
+func NewService() *Service {
+	return &Service{
+		BaseService: tracer_plugin.NewBaseService(),
+		tracer:      otel.NewTracer(),
 	}
 }
 
 // ServiceName returns the plug-in service name.
-func (t *Tracer) ServiceName() string {
+func (t *Service) ServiceName() string {
 	return "opentelemetry"
 }
 
 // Tracer returns an enabled tracer.
-func (t *Tracer) Tracer() tracer.Tracer {
+func (t *Service) Tracer() tracer.Tracer {
 	return t.tracer
 }
 
-func (t *Tracer) Start() error {
+func (t *Service) Start() error {
 	if err := t.tracer.Start(); err != nil {
 		return err
 	}
@@ -49,7 +52,7 @@ func (t *Tracer) Start() error {
 	return nil
 }
 
-func (t *Tracer) Stop() error {
+func (t *Service) Stop() error {
 	if err := t.tracer.Stop(); err != nil {
 		return err
 	}
