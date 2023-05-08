@@ -13,10 +13,6 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
       grpc:
         enabled: true
         port: 50053
-    metrics:
-      prometheus:
-        enabled: true
-        port: 9181
     plugins:
       coder:
         document:
@@ -69,6 +65,10 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
         opentracing:
           enabled: false
           endpoint: "localhost:6831"
+      metrics:
+        prometheus:
+          enabled: true
+          port: 9181
 
 ## Environment Variables
 

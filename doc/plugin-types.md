@@ -163,7 +163,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>Metrics services</p></td>
 <td style="text-align: left;"><p>Prometheus</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
@@ -171,7 +171,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Graphite (Planning)</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
