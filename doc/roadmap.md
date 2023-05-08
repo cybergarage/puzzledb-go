@@ -10,6 +10,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   ❏ GUI Console
 
+    -   ❏ Added TLS with mTLS Support
+
 -   New plug-ins
 
     -   Enterprise plug-ins
@@ -52,7 +54,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 -   New features
 
-    -   ❏ Added TLS with mTLS Support
+-   Addeed
 
 -   New plug-ins
 

@@ -1,9 +1,12 @@
 = Coordinator Concept
-In distributed mode, PuzzleDB assumes that it will be launched as multiple distributed instances, and each plug-in service (such as query plug-ins) launched on each instance should be coordinated using the coordinator service plug-in.
+
+Coordinator services, such as Zookeeper and etcd, are distributed systems that play a crucial role in managing configuration data, synchronization, and coordination of distributed applications. They are designed to address the challenges of maintaining consistency and ensuring high availability in distributed environments.
+
+In distributed mode, PuzzleDB operates under the assumption that it will be launched as multiple distributed instances. Each plugin service (such as query plugins) running on each instance should be coordinated using the coordinator service plugin.
 
 image:img/architecture.png[]
 
-The coordinator service plug-in is used to manage and synchronize the distributed PuzzleDB nodes.
+The coordinator service provides distributed synchronization and coordination for PuzzleDB nodes. It is used to manage the distributed PuzzleDB nodes and synchronize the states of the nodes. The coordinator service plug-in is used to manage and synchronize the distributed PuzzleDB nodes.
 
 == References
 

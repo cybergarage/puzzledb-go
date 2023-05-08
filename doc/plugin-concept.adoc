@@ -6,10 +6,7 @@ image:img/architecture.png[]
 
 PuzzleDB defines the coordinator and storage function interfaces to run as standalone and distributed databases. PuzzleDB runs as a distributed multi-API and multi-model database with the distributed coordinator and storage plug-ins.
 
-
 include::plugin-types.adoc[leveloffset=+1]
-
-== References
 
 == References
 

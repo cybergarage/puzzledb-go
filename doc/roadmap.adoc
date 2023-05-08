@@ -9,6 +9,7 @@ image:img/roadmap.png[doc/img/roadmap]
 == v2.0.0
 * New features
 ** [ ] GUI Console
+** [ ] Added TLS with mTLS Support
 * New plug-ins
 ** Enterprise plug-ins
 *** [ ] Added QoS plug-ins
@@ -32,7 +33,7 @@ image:img/roadmap.png[doc/img/roadmap]
 
 == v1.0.0 (2023-06-xx)
 * New features
-** [ ] Added TLS with mTLS Support
+* Addeed 
 * New plug-ins
 ** Document store plug-in
 *** Key-Value Store plug-ins
