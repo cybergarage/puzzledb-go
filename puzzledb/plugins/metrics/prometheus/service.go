@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package puzzledb
+package prometheus
 
 import (
 	"net"
@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/metrics"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -30,35 +31,30 @@ const (
 )
 
 type PrometheusExporter struct {
-	*Server
+	*metrics.BaseService
 	httpServer *http.Server
 	Addr       string
 	Port       int
 }
 
-// NewPrometheusExporterWith returns a new PrometheusExporter.
-func NewPrometheusExporterWith(server *Server) *PrometheusExporter {
+// NewService returns a new prometheus exporter service.
+func NewService() *PrometheusExporter {
 	return &PrometheusExporter{
-		Server:     server,
-		httpServer: nil,
-		Addr:       "",
-		Port:       DefaultPrometheusPort,
+		BaseService: metrics.NewBaseService(),
+		httpServer:  nil,
+		Addr:        "",
+		Port:        DefaultPrometheusPort,
 	}
+}
+
+// ServiceName returns the plug-in service name.
+func (server *PrometheusExporter) ServiceName() string {
+	return "prometheus"
 }
 
 // SetPort sets a port number of the server.
 func (server *PrometheusExporter) SetPort(port int) {
 	server.Port = port
-}
-
-// EnabledConfig returns a port number for the specified query service name.
-func (server *PrometheusExporter) EnabledConfig() (bool, error) {
-	return server.Config.GetBool(metricsConfig, prometheusConfig, enabledConfig)
-}
-
-// PortConfig returns a port number for the specified query service name.
-func (server *PrometheusExporter) PortConfig() (int, error) {
-	return server.Config.GetInt(metricsConfig, prometheusConfig, portConfig)
 }
 
 // Start starts the server.
