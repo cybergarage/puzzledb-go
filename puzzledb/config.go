@@ -132,6 +132,12 @@ func (conf *Config) TracerEndpointConfig(name string) (string, error) {
 	return conf.Config.GetString(config.NewPathWith(pluginsConfig, tracerConfig, name, endpointConfig))
 }
 
+// MetricsPortConfig returns a port number for the specified metrics service name.
+func (conf *Config) MetricsPortConfig(name string) (int, error) {
+	return conf.Config.GetInt(config.NewPathWith(pluginsConfig, metricsConfig, name, portConfig))
+}
+
+// String returns a string representation of the configuration.
 func (conf *Config) String() string {
 	if conf.Config == nil {
 		return ""
