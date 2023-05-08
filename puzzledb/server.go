@@ -96,8 +96,8 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		mysql.NewService(),
 		redis.NewService(),
 		mongo.NewService(),
-		opentracing.NewService(),
 		opentelemetry.NewService(),
+		opentracing.NewService(),
 	}
 
 	server.Manager.ReloadServices(services)
@@ -129,6 +129,7 @@ func (server *Server) setupPlugins() error {
 	if err != nil {
 		return err
 	}
+	defaultTracer.SetServiceName(ProductName)
 
 	// KV store services
 
