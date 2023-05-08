@@ -61,3 +61,11 @@ plugins:
     mysql:
       enabled: true
       port: 3306
+  tracer:
+    default: opentelemetry
+    opentelemetry:
+      enabled: true
+      endpoint: "http://localhost:14268/api/traces"
+    opentracing:
+      enabled: true
+      endpoint: "localhost:6831"
