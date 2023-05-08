@@ -20,6 +20,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/metrics"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
@@ -106,10 +107,20 @@ func (mgr *PluginManager) QueryServices() []query.Service {
 	return services
 }
 
-func (mgr *PluginManager) TracintServices() []tracer.Service {
+func (mgr *PluginManager) TracingServices() []tracer.Service {
 	services := []tracer.Service{}
 	for _, service := range mgr.ServicesByType(plugins.TracingService) {
 		if s, ok := service.(tracer.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) MetricsServices() []metrics.Service {
+	services := []metrics.Service{}
+	for _, service := range mgr.ServicesByType(plugins.MetricsService) {
+		if s, ok := service.(metrics.Service); ok {
 			services = append(services, s)
 		}
 	}
