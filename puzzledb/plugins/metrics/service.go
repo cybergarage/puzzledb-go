@@ -22,8 +22,10 @@ import (
 // Service represents a query service.
 type Service interface {
 	plugins.Service
-	// SetConfig sets the config.
+	// SetConfig sets the specified config.
 	SetConfig(config config.Config)
+	// SetPort sets the specified port number.
+	SetPort(port int)
 }
 
 type BaseService struct {
