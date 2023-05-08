@@ -26,6 +26,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 	etcd_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/etcd"
 	memdb_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/memdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/metrics/prometheus"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mongo"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/redis"
@@ -41,16 +42,14 @@ type Server struct {
 	*Config
 	*PluginManager
 	*GrpcServer
-	*PrometheusExporter
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		GrpcServer:         nil,
-		Config:             nil,
-		PluginManager:      NewPluginManagerWith(plugins.NewManager()),
-		PrometheusExporter: nil,
+		GrpcServer:    nil,
+		Config:        nil,
+		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 	}
 	conf, err := NewDefaultConfig()
 	if err != nil {
@@ -58,7 +57,6 @@ func NewServer() *Server {
 	}
 	server.SetConfig(conf)
 	server.GrpcServer = NewGrpcServerWith(server)
-	server.PrometheusExporter = NewPrometheusExporterWith(server)
 
 	return server
 }
@@ -98,6 +96,7 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		mongo.NewService(),
 		opentelemetry.NewService(),
 		opentracing.NewService(),
+		prometheus.NewService(),
 	}
 
 	server.Manager.ReloadServices(services)
@@ -156,10 +155,19 @@ func (server *Server) setupPlugins() error {
 
 	// Tracer services
 
-	for _, service := range server.TracintServices() {
+	for _, service := range server.TracingServices() {
 		ep, err := server.TracerEndpointConfig(service.ServiceName())
 		if err == nil {
 			service.SetEndpoint(ep)
+		}
+	}
+
+	// Metrics services
+
+	for _, service := range server.MetricsServices() {
+		port, err := server.MetricsPortConfig(service.ServiceName())
+		if err == nil {
+			service.SetPort(port)
 		}
 	}
 
@@ -236,24 +244,6 @@ func (server *Server) Start() error { //nolint:gocognit
 		log.Infof("gRPC server disabled")
 	}
 
-	// Setup metrics server
-
-	ok, _ = server.PrometheusExporter.EnabledConfig()
-	if ok {
-		port, err := server.PrometheusExporter.PortConfig()
-		if err == nil {
-			server.PrometheusExporter.SetPort(port)
-		}
-		if err := server.PrometheusExporter.Start(); err != nil {
-			if stopErr := server.Stop(); stopErr != nil {
-				return errors.Join(err, stopErr)
-			}
-			return err
-		}
-	} else {
-		log.Infof("prometheus exporter disabled")
-	}
-
 	// Setup plugins
 
 	if err := server.LoadPlugins(); err != nil {
@@ -284,13 +274,7 @@ func (server *Server) Stop() error {
 	if stopErr := server.Manager.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
 	}
-	ok, _ := server.PrometheusExporter.EnabledConfig()
-	if ok {
-		if stopErr := server.PrometheusExporter.Stop(); stopErr != nil {
-			err = errors.Join(err, stopErr)
-		}
-	}
-	ok, _ = server.GrpcServer.EnabledConfig()
+	ok, _ := server.GrpcServer.EnabledConfig()
 	if ok {
 		if stopErr := server.GrpcServer.Stop(); stopErr != nil {
 			err = errors.Join(err, stopErr)
