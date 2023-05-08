@@ -1,4 +1,4 @@
-# Plug-In Services
+# Plug-In Service Types
 
 PuzzleDB provides default plug-in services that include query, storage, and coordinator plug-ins and defines the default plug-in types as follows:
 
