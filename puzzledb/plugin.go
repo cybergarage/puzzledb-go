@@ -23,6 +23,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer"
 )
 
 type PluginManager struct {
@@ -209,6 +210,16 @@ func (mgr *PluginManager) EnabledKvStoreServices() []kv.Service {
 	services := []kv.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvService) {
 		if s, ok := service.(kv.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) EnabledTracingServices() []tracer.Service {
+	services := []tracer.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.TracingService) {
+		if s, ok := service.(tracer.Service); ok {
 			services = append(services, s)
 		}
 	}
