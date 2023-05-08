@@ -76,7 +76,7 @@ func (t ServiceType) String() string {
 	case CoordinatorService:
 		return "coordinator"
 	case TracingService:
-		return "tracing"
+		return "tracer"
 	case ExtendService:
 		return "extend"
 	default:
