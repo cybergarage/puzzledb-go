@@ -182,7 +182,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>Metrics services</p></td>
 <td style="text-align: left;"><p>Prometheus</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
@@ -190,7 +190,7 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Graphite (Planning)</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
