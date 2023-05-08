@@ -1,4 +1,4 @@
-# Builing User Plug-ins
+# Builing New Plug-ins
 
 This section describes the plug-in interface for adding your own plug-in services and registering them into PuzzleDB.
 

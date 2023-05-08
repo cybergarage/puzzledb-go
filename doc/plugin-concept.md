@@ -6,7 +6,7 @@ PuzzleDB is a pluggable database that combines components, and a pluggable compo
 
 PuzzleDB defines the coordinator and storage function interfaces to run as standalone and distributed databases. PuzzleDB runs as a distributed multi-API and multi-model database with the distributed coordinator and storage plug-ins.
 
-# Plug-In Services
+# Plug-In Service Types
 
 PuzzleDB provides default plug-in services that include query, storage, and coordinator plug-ins and defines the default plug-in types as follows:
 
