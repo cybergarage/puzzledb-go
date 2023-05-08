@@ -166,6 +166,18 @@ func (mgr *PluginManager) DefaultStoreService() (store.Service, error) {
 	return service, nil
 }
 
+func (mgr *PluginManager) DefaultTracingService() (tracer.Service, error) {
+	defaultService, err := mgr.DefaultService(plugins.TracingService)
+	if err != nil {
+		return nil, errors.Wrap(err)
+	}
+	service, ok := defaultService.(tracer.Service)
+	if !ok {
+		return nil, plugins.NewErrDefaultServiceNotFound(plugins.TracingService)
+	}
+	return service, nil
+}
+
 func (mgr *PluginManager) EnabledKeyCoderServices() []key.Service {
 	services := []key.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
