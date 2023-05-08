@@ -106,6 +106,16 @@ func (mgr *PluginManager) QueryServices() []query.Service {
 	return services
 }
 
+func (mgr *PluginManager) TracintServices() []tracer.Service {
+	services := []tracer.Service{}
+	for _, service := range mgr.ServicesByType(plugins.TracingService) {
+		if s, ok := service.(tracer.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
 func (mgr *PluginManager) DefaultCoordinatorService() (coordinator.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.CoordinatorService)
 	if err != nil {
