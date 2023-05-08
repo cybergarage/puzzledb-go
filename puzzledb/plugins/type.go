@@ -35,6 +35,8 @@ const (
 	StoreKvService ServiceType = 0x05 | ExclusiveServiceType
 	// CoordinatorService represents a coordinator service.
 	CoordinatorService ServiceType = 0x06 | ExclusiveServiceType
+	// TracingService represents a distributed tracing service.
+	TracingService ServiceType = 0x07 | ExclusiveServiceType
 	// ExtendService represents an uncategorized service.
 	ExtendService ServiceType = 0x0F
 )
@@ -48,6 +50,7 @@ func ServiceTypes() []ServiceType {
 		StoreDocumentService,
 		StoreKvService,
 		CoordinatorService,
+		TracingService,
 		ExtendService,
 	}
 }
@@ -72,6 +75,8 @@ func (t ServiceType) String() string {
 		return "store.kv"
 	case CoordinatorService:
 		return "coordinator"
+	case TracingService:
+		return "tracing"
 	case ExtendService:
 		return "extend"
 	default:
