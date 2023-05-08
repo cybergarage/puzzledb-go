@@ -5,10 +5,6 @@ api:
   grpc:
     enabled: true
     port: 50053
-metrics:
-  prometheus:
-    enabled: true
-    port: 9181
 plugins:
   coder:
     document:
@@ -61,3 +57,7 @@ plugins:
     opentracing:
       enabled: false
       endpoint: "localhost:6831"
+  metrics:
+    prometheus:
+      enabled: true
+      port: 9181
