@@ -107,34 +107,19 @@ func NewConfigWithFile(confFile string) (config.Config, error) {
 	return conf, nil
 }
 
-// GetString returns a string value for the specified name.
-func (conf *Config) GetString(paths ...string) (string, error) {
-	return conf.Config.GetString(config.NewPathWith(paths...))
-}
-
-// GetInt returns an integer value for the specified name.
-func (conf *Config) GetInt(paths ...string) (int, error) {
-	return conf.Config.GetInt(config.NewPathWith(paths...))
-}
-
-// GetBool returns a boolean value for the specified name.
-func (conf *Config) GetBool(paths ...string) (bool, error) {
-	return conf.Config.GetBool(config.NewPathWith(paths...))
-}
-
 // QueryPortConfig returns a port number for the specified query service name.
 func (conf *Config) QueryPortConfig(name string) (int, error) {
-	return conf.Config.GetInt(config.NewPathWith(pluginsConfig, queryConfig, name, portConfig))
+	return conf.Config.GetInt(pluginsConfig, queryConfig, name, portConfig)
 }
 
 // TracerEnabledConfig returns a boolean value for the specified tracer service name.
 func (conf *Config) TracerEndpointConfig(name string) (string, error) {
-	return conf.Config.GetString(config.NewPathWith(pluginsConfig, tracerConfig, name, endpointConfig))
+	return conf.Config.GetString(pluginsConfig, tracerConfig, name, endpointConfig)
 }
 
 // MetricsPortConfig returns a port number for the specified metrics service name.
 func (conf *Config) MetricsPortConfig(name string) (int, error) {
-	return conf.Config.GetInt(config.NewPathWith(pluginsConfig, metricsConfig, name, portConfig))
+	return conf.Config.GetInt(pluginsConfig, metricsConfig, name, portConfig)
 }
 
 // String returns a string representation of the configuration.
