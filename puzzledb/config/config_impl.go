@@ -36,7 +36,9 @@ func NewConfigWith(productName string) Config {
 	return &viperConfig{}
 }
 
-func (conf *viperConfig) Get(path string) (any, error) {
+// GetString returns a string value for the specified name.
+func (conf *viperConfig) Get(paths ...string) (any, error) {
+	path := NewPathWith(paths...)
 	v := viper.Get(path)
 	if v == nil {
 		return nil, newErrNotFound(path)
@@ -44,7 +46,9 @@ func (conf *viperConfig) Get(path string) (any, error) {
 	return v, nil
 }
 
-func (conf *viperConfig) GetString(path string) (string, error) {
+// GetString returns a string value for the specified name.
+func (conf *viperConfig) GetString(paths ...string) (string, error) {
+	path := NewPathWith(paths...)
 	v := viper.GetString(path)
 	if len(v) == 0 {
 		return "", newErrNotFound(path)
@@ -52,7 +56,9 @@ func (conf *viperConfig) GetString(path string) (string, error) {
 	return v, nil
 }
 
-func (conf *viperConfig) GetInt(path string) (int, error) {
+// GetInt returns an integer value for the specified name.
+func (conf *viperConfig) GetInt(paths ...string) (int, error) {
+	path := NewPathWith(paths...)
 	v := viper.GetInt(path)
 	if v == 0 {
 		return 0, newErrNotFound(path)
@@ -60,7 +66,9 @@ func (conf *viperConfig) GetInt(path string) (int, error) {
 	return v, nil
 }
 
-func (conf *viperConfig) GetBool(path string) (bool, error) {
+// GetBool returns a boolean value for the specified name.
+func (conf *viperConfig) GetBool(paths ...string) (bool, error) {
+	path := NewPathWith(paths...)
 	v := viper.GetString(path)
 	if len(v) == 0 {
 		return false, newErrNotFound(path)
