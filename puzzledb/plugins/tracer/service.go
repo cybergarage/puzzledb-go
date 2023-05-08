@@ -30,12 +30,14 @@ type Service interface {
 
 type BaseService struct {
 	Config *Config
+	tracer.Tracer
 }
 
-// NewBaseService returns a new query base service.
-func NewBaseService() *BaseService {
+// NewBaseServiceWith returns a new tracer base service.
+func NewBaseServiceWith(t tracer.Tracer) *BaseService {
 	server := &BaseService{
 		Config: nil,
+		Tracer: t,
 	}
 	return server
 }
