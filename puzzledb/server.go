@@ -32,6 +32,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
+	opentracing "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer/ot"
+	opentelemetry "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer/otel"
 )
 
 // Server represents a server instance.
@@ -39,7 +41,6 @@ type Server struct {
 	*Config
 	*PluginManager
 	*GrpcServer
-	*Tracer
 	*PrometheusExporter
 }
 
@@ -49,7 +50,6 @@ func NewServer() *Server {
 		GrpcServer:         nil,
 		Config:             nil,
 		PluginManager:      NewPluginManagerWith(plugins.NewManager()),
-		Tracer:             nil,
 		PrometheusExporter: nil,
 	}
 	conf, err := NewDefaultConfig()
@@ -59,7 +59,6 @@ func NewServer() *Server {
 	server.SetConfig(conf)
 	server.GrpcServer = NewGrpcServerWith(server)
 	server.PrometheusExporter = NewPrometheusExporterWith(server)
-	server.Tracer = NewTracerWith(server)
 
 	return server
 }
@@ -97,6 +96,8 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		mysql.NewService(),
 		redis.NewService(),
 		mongo.NewService(),
+		opentracing.NewService(),
+		opentelemetry.NewService(),
 	}
 
 	server.Manager.ReloadServices(services)
@@ -120,6 +121,11 @@ func (server *Server) setupPlugins() error {
 	}
 
 	defaultDocCoder, err := server.DefaultDocumentCoderService()
+	if err != nil {
+		return err
+	}
+
+	defaultTracer, err := server.DefaultTracingService()
 	if err != nil {
 		return err
 	}
@@ -163,7 +169,7 @@ func (server *Server) setupPlugins() error {
 		service.SetConfig(server.Config.Config)
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
-		service.SetTracer(server.Tracer.Tracer())
+		service.SetTracer(defaultTracer)
 		port, err := server.QueryPortConfig(service.ServiceName())
 		if err != nil {
 			service.SetPort(port)
@@ -238,22 +244,6 @@ func (server *Server) Start() error { //nolint:gocognit
 		log.Infof("prometheus exporter disabled")
 	}
 
-	// Setup tracer
-
-	tracerName, err := server.Tracer.DefaultConfig()
-	if err == nil {
-		ok, _ := server.Tracer.EnabledConfig(tracerName)
-		if ok {
-			if err := server.Tracer.Start(); err != nil {
-				return err
-			}
-		} else {
-			log.Infof("tracer disabled")
-		}
-	} else {
-		log.Infof("tracer disabled")
-	}
-
 	// Setup plugins
 
 	if err := server.LoadPlugins(); err != nil {
@@ -283,15 +273,6 @@ func (server *Server) Stop() error {
 	var err error
 	if stopErr := server.Manager.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
-	}
-	tracerName, tracerErr := server.Tracer.DefaultConfig()
-	if tracerErr == nil {
-		ok, _ := server.Tracer.EnabledConfig(tracerName)
-		if ok {
-			if stopErr := server.Tracer.Stop(); stopErr != nil {
-				err = errors.Join(err, stopErr)
-			}
-		}
 	}
 	ok, _ := server.PrometheusExporter.EnabledConfig()
 	if ok {
