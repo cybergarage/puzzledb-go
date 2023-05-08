@@ -32,8 +32,8 @@ type BaseService struct {
 	Config *Config
 }
 
-// NewService returns a new query base service.
-func NewService() *BaseService {
+// NewBaseService returns a new query base service.
+func NewBaseService() *BaseService {
 	server := &BaseService{
 		Config: nil,
 	}
