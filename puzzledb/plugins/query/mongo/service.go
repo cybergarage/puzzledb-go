@@ -31,7 +31,7 @@ type Service struct {
 func NewService() *Service {
 	server := &Service{
 		Server:      mongo.NewServer(),
-		BaseService: query.NewService(),
+		BaseService: query.NewBaseService(),
 		Coder:       NewCoder(),
 	}
 

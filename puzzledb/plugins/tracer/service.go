@@ -16,7 +16,6 @@ package tracer
 
 import (
 	"github.com/cybergarage/go-tracing/tracer"
-	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
@@ -27,7 +26,7 @@ type Service interface {
 }
 
 type BaseService struct {
-	Config *Config
+	*plugins.Config
 	tracer.Tracer
 }
 
@@ -43,8 +42,4 @@ func NewBaseServiceWith(t tracer.Tracer) *BaseService {
 // ServiceType returns the plug-in service type.
 func (service *BaseService) ServiceType() plugins.ServiceType {
 	return plugins.TracingService
-}
-
-func (service *BaseService) SetConfig(config config.Config) {
-	service.Config = NewConfigWith(config)
 }
