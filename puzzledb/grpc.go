@@ -67,12 +67,12 @@ func (server *GrpcServer) SetPort(port int) {
 
 // EnabledConfig returns a port number for the specified query service name.
 func (server *GrpcServer) EnabledConfig() (bool, error) {
-	return server.Config.GetConfigBool(apiConfig, grpcConfig, enabledConfig)
+	return server.Config.GetConfigBool(ConfigAPI, ConfigGrpc, ConfigEnabled)
 }
 
 // PortConfig returns a port number for the specified query service name.
 func (server *GrpcServer) PortConfig() (int, error) {
-	return server.Config.GetConfigInt(apiConfig, grpcConfig, portConfig)
+	return server.Config.GetConfigInt(ConfigAPI, ConfigGrpc, ConfigPort)
 }
 
 // Start starts the server.

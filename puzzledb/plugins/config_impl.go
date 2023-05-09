@@ -19,10 +19,10 @@ import (
 )
 
 const (
-	configPlugins = "plugins"
-	configDefault = "default"
-	configEnabled = "enabled"
-	configPort    = "port"
+	ConfigPlugins = "plugins"
+	ConfigDefault = "default"
+	ConfigEnabled = "enabled"
+	ConfigPort    = "port"
 )
 
 type configImpl struct {
@@ -50,7 +50,7 @@ func (conf *configImpl) Object() config.Config {
 }
 
 func newServiceConfigPath(service Service, paths ...string) []string {
-	servicePaths := []string{configPlugins, service.ServiceType().String(), service.ServiceName()}
+	servicePaths := []string{ConfigPlugins, service.ServiceType().String(), service.ServiceName()}
 	servicePaths = append(servicePaths, paths...)
 	return servicePaths
 }
@@ -77,7 +77,7 @@ func (conf *configImpl) GetServiceConfigBool(service Service, paths ...string) (
 
 // IsServiceEnabled returns true if the service is enabled.
 func (conf *configImpl) IsServiceEnabled(service Service) bool {
-	enabled, err := conf.GetServiceConfigBool(service, configEnabled)
+	enabled, err := conf.GetServiceConfigBool(service, ConfigEnabled)
 	if err != nil {
 		return true
 	}
@@ -86,7 +86,7 @@ func (conf *configImpl) IsServiceEnabled(service Service) bool {
 
 // GetServiceConfigPort returns a port number for the service.
 func (conf *configImpl) GetServiceConfigPort(service Service) (int, error) {
-	port, err := conf.GetServiceConfigInt(service, configPort)
+	port, err := conf.GetServiceConfigInt(service, ConfigPort)
 	if err != nil {
 		return 0, err
 	}

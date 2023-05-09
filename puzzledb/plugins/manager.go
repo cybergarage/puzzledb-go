@@ -86,7 +86,7 @@ func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 	if mgr.Config == nil {
 		return services[lastIdx], nil
 	}
-	configName, err := mgr.GetConfigString(configPlugins, t.String(), configDefault)
+	configName, err := mgr.GetConfigString(ConfigPlugins, t.String(), ConfigDefault)
 	if err != nil {
 		return services[lastIdx], nil //nolint:nilerr
 	}
