@@ -42,7 +42,3 @@ func NewConfigWith(config config.Config) *Config {
 func (conf *Config) SetConfig(config config.Config) {
 	conf.Config = conf
 }
-
-func (conf *Config) EnabledConfig(t ServiceType) (string, error) {
-	return conf.GetString(config.NewPathWith(configPlugins, t.String()))
-}
