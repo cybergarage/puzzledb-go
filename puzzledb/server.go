@@ -204,7 +204,7 @@ func (server *Server) Start() error { //nolint:gocognit
 	ok, _ := server.Config.GetBool(loggerConfig, enabledConfig)
 	if ok {
 		level := log.LevelInfo
-		levelStr, err := server.Config.GetString(loggerConfig, levelConfig)
+		levelStr, err := server.GetString(loggerConfig, levelConfig)
 		if err == nil {
 			level = log.GetLevelFromString(levelStr)
 		}
