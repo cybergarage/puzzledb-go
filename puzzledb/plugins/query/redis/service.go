@@ -50,22 +50,6 @@ func (service *Service) ServiceName() string {
 	return "redis"
 }
 
-// Start starts the service.
-func (service *Service) Start() error {
-	if err := service.Server.Start(); err != nil {
-		return err
-	}
-	return nil
-}
-
-// Stop stops the service.
-func (service *Service) Stop() error {
-	if err := service.Server.Stop(); err != nil {
-		return err
-	}
-	return nil
-}
-
 // GetDatabase returns the database with the specified ID.
 func (service *Service) GetDatabase(ctx context.Context, id int) (store.Database, error) {
 	store := service.Store()
@@ -79,4 +63,24 @@ func (service *Service) GetDatabase(ctx context.Context, id int) (store.Database
 		return nil, err
 	}
 	return store.GetDatabase(ctx, name)
+}
+
+// Start starts the service.
+func (service *Service) Start() error {
+	port, err := service.GetServicePort(service)
+	if err == nil {
+		service.SetPort(port)
+	}
+	if err := service.Server.Start(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Stop stops the service.
+func (service *Service) Stop() error {
+	if err := service.Server.Stop(); err != nil {
+		return err
+	}
+	return nil
 }

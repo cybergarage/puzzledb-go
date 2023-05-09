@@ -50,6 +50,8 @@ type ServiceConfig interface {
 type ServiceExtConfig interface {
 	// IsServiceEnabled returns true if the service is enabled.
 	IsServiceEnabled(service Service) bool
+	// GetServicePort returns a port number for the service.
+	GetServicePort(service Service) (int, error)
 }
 
 // Config represents a plug-in configuration interface.

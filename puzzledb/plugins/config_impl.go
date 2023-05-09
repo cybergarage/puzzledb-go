@@ -22,6 +22,7 @@ const (
 	configPlugins = "plugins"
 	configDefault = "default"
 	configEnabled = "enabled"
+	configPort    = "port"
 )
 
 type configImpl struct {
@@ -81,4 +82,13 @@ func (conf *configImpl) IsServiceEnabled(service Service) bool {
 		return true
 	}
 	return enabled
+}
+
+// GetServicePort returns a port number for the service.
+func (conf *configImpl) GetServicePort(service Service) (int, error) {
+	port, err := conf.GetServiceConfigInt(service, configPort)
+	if err != nil {
+		return 0, err
+	}
+	return port, nil
 }
