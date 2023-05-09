@@ -33,7 +33,7 @@ type BaseService struct {
 // NewBaseServiceWith returns a new tracer base service.
 func NewBaseServiceWith(t tracer.Tracer) *BaseService {
 	server := &BaseService{
-		Config: nil,
+		Config: plugins.NewConfig(),
 		Tracer: t,
 	}
 	return server
