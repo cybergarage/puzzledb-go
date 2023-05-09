@@ -11,7 +11,7 @@ require (
 	github.com/cybergarage/go-pict v0.8.2
 	github.com/cybergarage/go-redis v1.3.6
 	github.com/cybergarage/go-sqltest v0.9.4
-	github.com/cybergarage/go-tracing v1.1.1
+	github.com/cybergarage/go-tracing v1.1.2
 	github.com/hashicorp/go-memdb v1.3.2
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/prometheus/client_golang v1.15.1

@@ -83,6 +83,8 @@ github.com/cybergarage/go-tracing v1.1.0 h1:E/cpfE9Pdehik0u+IQTg9htRhyfUU2TFfi/E
 github.com/cybergarage/go-tracing v1.1.0/go.mod h1:smRez9HytS4YklbMMq5QoOu6l75ClrO4x+3UaRiSg5I=
 github.com/cybergarage/go-tracing v1.1.1 h1:Nyqeu+YR6bxyr1YbT5YAajIAUg12WzGmn9wsvGY2vVc=
 github.com/cybergarage/go-tracing v1.1.1/go.mod h1:smRez9HytS4YklbMMq5QoOu6l75ClrO4x+3UaRiSg5I=
+github.com/cybergarage/go-tracing v1.1.2 h1:ISn5eeJF6myu9u8b0rpIvECujAZOBqvyKzexc0rcPmE=
+github.com/cybergarage/go-tracing v1.1.2/go.mod h1:zv2DMzPbVvJsatV+ZNbIQhDNRJnMxSCDXiiSf3/VQYU=
 github.com/cyphar/filepath-securejoin v0.2.3 h1:YX6ebbZCZP7VkM3scTTokDgBL2TY741X51MTk3ycuNI=
 github.com/cyphar/filepath-securejoin v0.2.3/go.mod h1:aPGpWjXOXUn2NCNjFvBE6aRxGGx79pTxQpKOJNYHHl4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
