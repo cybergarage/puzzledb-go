@@ -158,15 +158,6 @@ func (server *Server) setupPlugins() error {
 		}
 	}
 
-	// Metrics services
-
-	for _, service := range server.MetricsServices() {
-		port, err := server.MetricsPortConfig(service.ServiceName())
-		if err == nil {
-			service.SetPort(port)
-		}
-	}
-
 	// Query services
 
 	defaultCoodinator, err := server.DefaultCoordinatorService()
@@ -190,10 +181,6 @@ func (server *Server) setupPlugins() error {
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
 		service.SetTracer(defaultTracer)
-		port, err := server.QueryPortConfig(service.ServiceName())
-		if err == nil {
-			service.SetPort(port)
-		}
 	}
 
 	return nil

@@ -30,6 +30,7 @@ const (
 	DefaultPrometheusConnectionTimeout time.Duration = time.Second * 60
 )
 
+// PrometheusExporter is a prometheus exporter service.
 type PrometheusExporter struct {
 	*metrics.BaseService
 	httpServer *http.Server
@@ -48,24 +49,29 @@ func NewService() *PrometheusExporter {
 }
 
 // ServiceName returns the plug-in service name.
-func (server *PrometheusExporter) ServiceName() string {
+func (exp *PrometheusExporter) ServiceName() string {
 	return "prometheus"
 }
 
-// SetPort sets a port number of the server.
-func (server *PrometheusExporter) SetPort(port int) {
-	server.Port = port
+// SetPort sets a port number of the exp.
+func (exp *PrometheusExporter) SetPort(port int) {
+	exp.Port = port
 }
 
-// Start starts the server.
-func (server *PrometheusExporter) Start() error {
-	err := server.Stop()
+// Start starts the exp.
+func (exp *PrometheusExporter) Start() error {
+	err := exp.Stop()
 	if err != nil {
 		return err
 	}
 
-	addr := net.JoinHostPort(server.Addr, strconv.Itoa(server.Port))
-	server.httpServer = &http.Server{ // nolint:exhaustruct
+	port, err := exp.GetServicePort(exp)
+	if err == nil {
+		exp.SetPort(port)
+	}
+
+	addr := net.JoinHostPort(exp.Addr, strconv.Itoa(exp.Port))
+	exp.httpServer = &http.Server{ // nolint:exhaustruct
 		Addr:        addr,
 		ReadTimeout: DefaultPrometheusConnectionTimeout,
 		Handler:     promhttp.Handler(),
@@ -73,7 +79,7 @@ func (server *PrometheusExporter) Start() error {
 
 	c := make(chan error)
 	go func() {
-		c <- server.httpServer.ListenAndServe()
+		c <- exp.httpServer.ListenAndServe()
 	}()
 
 	select {
@@ -87,18 +93,18 @@ func (server *PrometheusExporter) Start() error {
 	return err
 }
 
-// Stop stops the Grpc server.
-func (server *PrometheusExporter) Stop() error {
-	if server.httpServer == nil {
+// Stop stops the Grpc exp.
+func (exp *PrometheusExporter) Stop() error {
+	if exp.httpServer == nil {
 		return nil
 	}
 
-	err := server.httpServer.Close()
+	err := exp.httpServer.Close()
 	if err != nil {
 		return err
 	}
 
-	addr := net.JoinHostPort(server.Addr, strconv.Itoa(server.Port))
+	addr := net.JoinHostPort(exp.Addr, strconv.Itoa(exp.Port))
 	log.Infof("prometheus exporter (%s) terminated", addr)
 
 	return nil

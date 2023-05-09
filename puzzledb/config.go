@@ -107,19 +107,9 @@ func NewConfigWithFile(confFile string) (*Config, error) {
 	return NewConfigWith(conf), nil
 }
 
-// QueryPortConfig returns a port number for the specified query service name.
-func (conf *Config) QueryPortConfig(name string) (int, error) {
-	return conf.GetConfigInt(configPlugins, queryConfig, name, portConfig)
-}
-
 // TracerEnabledConfig returns a boolean value for the specified tracer service name.
 func (conf *Config) TracerEndpointConfig(name string) (string, error) {
 	return conf.GetConfigString(configPlugins, tracerConfig, name, endpointConfig)
-}
-
-// MetricsPortConfig returns a port number for the specified metrics service name.
-func (conf *Config) MetricsPortConfig(name string) (int, error) {
-	return conf.GetConfigInt(configPlugins, metricsConfig, name, portConfig)
 }
 
 // String returns a string representation of the configuration.
