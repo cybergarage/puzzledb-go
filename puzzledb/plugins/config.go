@@ -18,26 +18,43 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
-// Config represents a plug-in configuration interface.
-type Config interface {
-	// Get returns a value for the specified name.
-	Get(paths ...string) (any, error)
-	// GetString returns a string value for the specified name.
-	GetString(paths ...string) (string, error)
-	// GetInt returns an integer value for the specified name.
-	GetInt(paths ...string) (int, error)
-	// GetBool returns a boolean value for the specified name.
-	GetBool(paths ...string) (bool, error)
+// ConfigBase represents a basic configuration interface.
+type ConfigBase interface {
+	// GetConfig returns a value for the specified name.
+	GetConfig(paths ...string) (any, error)
+	// GetConfigString returns a string value for the specified name.
+	GetConfigString(paths ...string) (string, error)
+	// GetConfigInt returns an integer value for the specified name.
+	GetConfigInt(paths ...string) (int, error)
+	// GetConfigBool returns a boolean value for the specified name.
+	GetConfigBool(paths ...string) (bool, error)
 	// String returns a string representation of the configuration.
 	SetConfig(c config.Config)
 	// Object returns a raw configuration object.
 	Object() config.Config
 }
 
-func (conf *Config) IsEnabled(s Service) bool {
-	enabled, err := conf.GetConfigBool(configPlugins, s.ServiceType().String(), s.ServiceName(), configEnabled)
-	if err != nil {
-		return true
-	}
-	return enabled
+// ServiceConfig represents a configuration interface for service.
+type ServiceConfig interface {
+	// GetServiceConfig returns a value for the specified name in the service.
+	GetServiceConfig(service Service, paths ...string) (any, error)
+	// GetServiceConfigString returns a string value for the specified name in the service.
+	GetServiceConfigString(service Service, paths ...string) (string, error)
+	// GetServiceConfigInt returns an integer value for the specified name in the service.
+	GetServiceConfigInt(service Service, paths ...string) (int, error)
+	// GetServiceConfigBool returns a boolean value for the specified name in the service.
+	GetServiceConfigBool(service Service, paths ...string) (bool, error)
+}
+
+// ServiceExtConfig represents an extension configuration interface for service.
+type ServiceExtConfig interface {
+	// IsServiceEnabled returns true if the service is enabled.
+	IsServiceEnabled(service Service) bool
+}
+
+// Config represents a plug-in configuration interface.
+type Config interface {
+	ConfigBase
+	ServiceConfig
+	ServiceExtConfig
 }

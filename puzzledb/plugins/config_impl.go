@@ -47,3 +47,38 @@ func (conf *configImpl) SetConfig(c config.Config) {
 func (conf *configImpl) Object() config.Config {
 	return conf.Config
 }
+
+func newServiceConfigPath(service Service, paths ...string) []string {
+	servicePaths := []string{configPlugins, service.ServiceType().String(), service.ServiceName()}
+	servicePaths = append(servicePaths, paths...)
+	return servicePaths
+}
+
+// GetServiceConfig returns a value for the specified name in the service.
+func (conf *configImpl) GetServiceConfig(service Service, paths ...string) (any, error) {
+	return conf.GetConfig(newServiceConfigPath(service, paths...)...)
+}
+
+// GetServiceConfigString returns a string value for the specified name in the service.
+func (conf *configImpl) GetServiceConfigString(service Service, paths ...string) (string, error) {
+	return conf.GetConfigString(newServiceConfigPath(service, paths...)...)
+}
+
+// GetServiceConfigInt returns an integer value for the specified name in the service.
+func (conf *configImpl) GetServiceConfigInt(service Service, paths ...string) (int, error) {
+	return conf.GetConfigInt(newServiceConfigPath(service, paths...)...)
+}
+
+// GetServiceConfigBool returns a boolean value for the specified name in the service.
+func (conf *configImpl) GetServiceConfigBool(service Service, paths ...string) (bool, error) {
+	return conf.GetConfigBool(newServiceConfigPath(service, paths...)...)
+}
+
+// IsEnabled returns true if the service is enabled.
+func (conf *configImpl) IsServiceEnabled(service Service) bool {
+	enabled, err := conf.GetServiceConfigBool(service, configEnabled)
+	if err != nil {
+		return true
+	}
+	return enabled
+}
