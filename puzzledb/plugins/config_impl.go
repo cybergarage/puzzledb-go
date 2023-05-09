@@ -84,8 +84,8 @@ func (conf *configImpl) IsServiceEnabled(service Service) bool {
 	return enabled
 }
 
-// GetServicePort returns a port number for the service.
-func (conf *configImpl) GetServicePort(service Service) (int, error) {
+// GetServiceConfigPort returns a port number for the service.
+func (conf *configImpl) GetServiceConfigPort(service Service) (int, error) {
 	port, err := conf.GetServiceConfigInt(service, configPort)
 	if err != nil {
 		return 0, err

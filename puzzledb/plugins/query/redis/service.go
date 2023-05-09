@@ -67,7 +67,7 @@ func (service *Service) GetDatabase(ctx context.Context, id int) (store.Database
 
 // Start starts the service.
 func (service *Service) Start() error {
-	port, err := service.GetServicePort(service)
+	port, err := service.GetServiceConfigPort(service)
 	if err == nil {
 		service.SetPort(port)
 	}
