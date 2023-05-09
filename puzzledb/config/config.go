@@ -16,14 +16,14 @@ package config
 
 // Config represents a configuration interface.
 type Config interface {
-	// Get returns a value for the specified name.
-	Get(paths ...string) (any, error)
-	// GetString returns a string value for the specified name.
-	GetString(paths ...string) (string, error)
-	// GetInt returns an integer value for the specified name.
-	GetInt(paths ...string) (int, error)
-	// GetBool returns a boolean value for the specified name.
-	GetBool(paths ...string) (bool, error)
+	// GetConfig returns a value for the specified name.
+	GetConfig(paths ...string) (any, error)
+	// GetConfigString returns a string value for the specified name.
+	GetConfigString(paths ...string) (string, error)
+	// GetConfigInt returns an integer value for the specified name.
+	GetConfigInt(paths ...string) (int, error)
+	// GetConfigBool returns a boolean value for the specified name.
+	GetConfigBool(paths ...string) (bool, error)
 	// String returns a string representation of the configuration.
 	String() string
 }

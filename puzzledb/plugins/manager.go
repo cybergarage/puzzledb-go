@@ -46,7 +46,7 @@ func (mgr *Manager) ReloadServices(srvs []Service) {
 }
 
 func (mgr *Manager) IsEnabled(s Service) bool {
-	enabled, err := mgr.GetBool(configPlugins, s.ServiceType().String(), s.ServiceName(), configEnabled)
+	enabled, err := mgr.GetConfigBool(configPlugins, s.ServiceType().String(), s.ServiceName(), configEnabled)
 	if err != nil {
 		return true
 	}
@@ -94,7 +94,7 @@ func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 	if mgr.Config == nil {
 		return services[lastIdx], nil
 	}
-	configName, err := mgr.GetString(configPlugins, t.String(), configDefault)
+	configName, err := mgr.GetConfigString(configPlugins, t.String(), configDefault)
 	if err != nil {
 		return services[lastIdx], nil //nolint:nilerr
 	}
