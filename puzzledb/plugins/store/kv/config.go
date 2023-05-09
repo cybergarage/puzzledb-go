@@ -12,25 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package coordinator
+package kv
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
-type Service interface {
-	coordinator.Coordinator
-	plugins.Service
+// Config represents a service configuration.
+type Config struct {
+	config.Config
 }
 
-type serviceImpl struct {
-	core.CoordinatorService
-}
-
-func NewServiceWith(c core.CoordinatorService) Service {
-	return &serviceImpl{
-		CoordinatorService: c,
+// NewConfig returns a new configuration.
+func NewConfig() *Config {
+	return &Config{
+		Config: nil,
 	}
+}
+
+// NewConfig returns a new service configuration with the specified configuration.
+func NewConfigWith(config config.Config) *Config {
+	return &Config{
+		Config: config,
+	}
+}
+
+// SetConfig sets the specified configuration.
+func (config *Config) SetConfig(conf config.Config) {
+	config.Config = conf
 }

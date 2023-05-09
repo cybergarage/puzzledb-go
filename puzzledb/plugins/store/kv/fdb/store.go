@@ -26,8 +26,8 @@ const RequiredAPIVersion int = 630
 
 // Store represents a FoundationDB store service instance.
 type Store struct {
+	*kvPlugin.BaseStore
 	fdb.Database
-	document.KeyCoder
 }
 
 // NewStore returns a new FoundationDB store instance.
@@ -38,13 +38,8 @@ func NewStore() kvPlugin.Service {
 // NewStoreWith returns a new FoundationDB store instance with the specified key coder.
 func NewStoreWith(coder document.KeyCoder) kvPlugin.Service {
 	return &Store{ //nolint:all
-		KeyCoder: coder,
+		BaseStore: kvPlugin.NewBaseStoreWith(coder),
 	}
-}
-
-// SetKeyCoder sets the key coder.
-func (store *Store) SetKeyCoder(coder document.KeyCoder) {
-	store.KeyCoder = coder
 }
 
 // ServiceType returns the plug-in service type.

@@ -25,8 +25,6 @@ import (
 // Service represents a query service.
 type Service interface {
 	plugins.Service
-	// SetConfig sets the config.
-	SetConfig(config config.Config)
 	// SetCoordinator sets the coordinator.
 	SetCoordinator(coordinator coordinator.Coordinator)
 	// Coordinator returns the coordinator.

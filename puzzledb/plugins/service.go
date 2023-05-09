@@ -14,8 +14,14 @@
 
 package plugins
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
+)
+
 // Service represents a plugin service.
 type Service interface {
+	// SetConfig sets the specified config.
+	SetConfig(config config.Config)
 	// ServiceType returns the service type.
 	ServiceType() ServiceType
 	// ServiceName returns the service name.

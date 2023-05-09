@@ -16,6 +16,7 @@ package tuple
 
 import (
 	"github.com/apple/foundationdb/bindings/go/src/fdb/tuple"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
@@ -27,6 +28,10 @@ type Coder struct {
 // NewCoder returns a new CBOR erializer instance.
 func NewCoder() *Coder {
 	return &Coder{}
+}
+
+// SetConfig sets the specified configuration.
+func (s *Coder) SetConfig(conf config.Config) {
 }
 
 // ServiceType returns the plug-in service type.

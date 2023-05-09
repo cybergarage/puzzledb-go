@@ -15,35 +15,28 @@
 package metrics
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 // Service represents a query service.
 type Service interface {
 	plugins.Service
-	// SetConfig sets the specified config.
-	SetConfig(config config.Config)
 	// SetPort sets the specified port number.
 	SetPort(port int)
 }
 
 type BaseService struct {
-	Config *Config
+	*Config
 }
 
 // NewBaseService returns a new tracer base service.
 func NewBaseService() *BaseService {
 	return &BaseService{
-		Config: nil,
+		Config: NewConfig(),
 	}
 }
 
 // ServiceType returns the plug-in service type.
 func (service *BaseService) ServiceType() plugins.ServiceType {
 	return plugins.MetricsService
-}
-
-func (service *BaseService) SetConfig(config config.Config) {
-	service.Config = NewConfigWith(config)
 }

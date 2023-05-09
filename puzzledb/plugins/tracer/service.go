@@ -24,8 +24,6 @@ import (
 type Service interface {
 	plugins.Service
 	tracer.Tracer
-	// SetConfig sets the config.
-	SetConfig(config config.Config)
 }
 
 type BaseService struct {

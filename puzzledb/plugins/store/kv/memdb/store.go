@@ -16,13 +16,12 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 )
 
 // Store represents a Memdb store service instance.
 type Store struct {
-	document.KeyCoder
+	*kv.BaseStore
 	*Database
 }
 
@@ -34,19 +33,9 @@ func NewStore() kv.Service {
 // NewStoreWith returns a new memdb store instance with the specified key coder.
 func NewStoreWith(coder document.KeyCoder) kv.Service {
 	return &Store{
-		KeyCoder: coder,
-		Database: nil,
+		BaseStore: kv.NewBaseStoreWith(coder),
+		Database:  nil,
 	}
-}
-
-// SetKeyCoder sets the key coder.
-func (store *Store) SetKeyCoder(coder document.KeyCoder) {
-	store.KeyCoder = coder
-}
-
-// ServiceType returns the plug-in service type.
-func (store *Store) ServiceType() plugins.ServiceType {
-	return plugins.StoreKvService
 }
 
 // ServiceName returns the plug-in service name.
@@ -56,7 +45,7 @@ func (store *Store) ServiceName() string {
 
 // Start starts this memdb.
 func (store *Store) Start() error {
-	db, err := NewDatabaseWith(store.KeyCoder)
+	db, err := NewDatabaseWith(store.BaseStore.KeyCoder)
 	if err != nil {
 		return err
 	}
