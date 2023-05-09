@@ -62,16 +62,16 @@ func NewServer() *Server {
 }
 
 // NewServerWithConfig returns a new server instance with the specified configuradtion.
-func NewServerWithConfig(config config.Config) *Server {
+func NewServerWithConfig(conf config.Config) *Server {
 	server := NewServer()
-	server.SetConfig(config)
+	server.SetConfig(NewConfigWith(conf))
 	return server
 }
 
-// SetConfig sets the specified configuration.
-func (server *Server) SetConfig(config config.Config) {
-	server.Config = NewConfigWith(config)
-	server.Manager.SetConfig(config)
+// SetConfig sets a server configuration.
+func (server *Server) SetConfig(conf *Config) {
+	server.Config = conf
+	server.Manager.SetConfig(conf)
 }
 
 // Restart restarts the server.
@@ -112,6 +112,8 @@ func (server *Server) LoadPlugins() error {
 }
 
 func (server *Server) setupPlugins() error {
+	server.PluginManager.SetConfig(server.Config)
+
 	// Default services
 
 	defaultKeyCoder, err := server.DefaultKeyCoderService()

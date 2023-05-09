@@ -16,13 +16,11 @@ package puzzledb
 
 import (
 	_ "embed"
-
-	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
 //go:embed conf/puzzledb.yaml
 var defaultConfigString string
 
-func NewDefaultConfig() (config.Config, error) {
+func NewDefaultConfig() (*Config, error) {
 	return NewConfigWithString(defaultConfigString)
 }
