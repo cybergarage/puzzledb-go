@@ -18,6 +18,7 @@ import (
 	"strconv"
 
 	"github.com/cybergarage/go-redis/redis"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -30,13 +31,18 @@ type Service struct {
 }
 
 // NewService returns a new Redis service instance.
-func NewService() Service {
+func NewService() query.Service {
 	service := &Service{
 		Server:      redis.NewServer(),
 		BaseService: query.NewBaseService(),
 	}
 	service.Server.SetCommandHandler(service)
 	return service
+}
+
+// SetConfig overrides redis.Server::SetConfig() to sets the specified plug-in configuration.
+func (service *Service) SetConfig(conf config.Config) {
+	service.BaseService.SetConfig(conf)
 }
 
 // ServiceName returns the plug-in service name.
