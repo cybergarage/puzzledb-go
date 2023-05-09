@@ -30,13 +30,13 @@ type Service struct {
 
 // NewService returns a new MySQL service.
 func NewService() query.Service {
-	srv := &Service{
+	service := &Service{
 		BaseExecutor: mysql.NewBaseExecutor(),
 		Server:       mysql.NewServer(),
 		BaseService:  query.NewBaseService(),
 	}
-	srv.Server.SetQueryExecutor(srv)
-	return srv
+	service.Server.SetQueryExecutor(service)
+	return service
 }
 
 // ServiceName returns the plug-in service name.
