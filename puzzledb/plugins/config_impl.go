@@ -12,21 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package core
+package plugins
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
-type BaseCoordinator struct {
-	plugins.Config
-	*NotifyManager
+const (
+	configPlugins = "plugins"
+	configDefault = "default"
+	configEnabled = "enabled"
+)
+
+type configImpl struct {
+	config.Config
 }
 
-// NewBaseCoordinator returns a new base coordinator instance.
-func NewBaseCoordinator() *BaseCoordinator {
-	return &BaseCoordinator{
-		Config:        plugins.NewConfig(),
-		NotifyManager: NewNotifyManager(),
+func NewConfig() Config {
+	return NewConfigWith(nil)
+}
+
+func NewConfigWith(conf config.Config) Config {
+	return &configImpl{
+		Config: conf,
 	}
+}
+
+// SetConfig sets a manager configuration.
+func (conf *configImpl) SetConfig(c config.Config) {
+	conf.Config = c
+}
+
+// Object returns a raw configuration object.
+func (conf *configImpl) Object() config.Config {
+	return conf.Config
 }

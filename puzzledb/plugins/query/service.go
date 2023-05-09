@@ -39,7 +39,7 @@ type Service interface {
 }
 
 type BaseService struct {
-	*plugins.Config
+	plugins.Config
 	coordinator coordinator.Coordinator
 	store       store.Store
 }

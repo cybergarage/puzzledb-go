@@ -26,7 +26,7 @@ type Service interface {
 }
 
 type BaseService struct {
-	*plugins.Config
+	plugins.Config
 }
 
 // NewBaseService returns a new tracer base service.
