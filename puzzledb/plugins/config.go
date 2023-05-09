@@ -24,5 +24,25 @@ const (
 	configEnabled = "enabled"
 )
 
-// Config represents a configuration interface.
-type Config = config.Config
+type Config struct {
+	config.Config
+}
+
+func NewConfig() *Config {
+	return NewConfigWith(nil)
+}
+
+func NewConfigWith(config config.Config) *Config {
+	return &Config{
+		Config: config,
+	}
+}
+
+// SetConfig sets a manager configuration.
+func (conf *Config) SetConfig(config config.Config) {
+	conf.Config = conf
+}
+
+func (conf *Config) EnabledConfig(t ServiceType) (string, error) {
+	return conf.GetString(config.NewPathWith(configPlugins, t.String()))
+}
