@@ -41,7 +41,7 @@ func TestConfig(t *testing.T) {
 				},
 			}
 			for _, port := range ports {
-				portNum, err := conf.QueryPortConfig(port.name)
+				portNum, err := conf.GetConfigInt(puzzledb.ConfigPlugins, puzzledb.ConfigQuery, port.name, puzzledb.ConfigPort)
 				if err != nil {
 					t.Error(err)
 					t.Log(conf.String())
