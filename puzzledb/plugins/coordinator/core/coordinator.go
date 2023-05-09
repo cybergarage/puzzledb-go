@@ -15,12 +15,14 @@
 package core
 
 type BaseCoordinator struct {
+	*Config
 	*NotifyManager
 }
 
 // NewBaseCoordinator returns a new base coordinator instance.
 func NewBaseCoordinator() *BaseCoordinator {
 	return &BaseCoordinator{
+		Config:        NewConfig(),
 		NotifyManager: NewNotifyManager(),
 	}
 }

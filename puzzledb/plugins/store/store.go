@@ -17,6 +17,7 @@ package store
 import (
 	"bytes"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -46,6 +47,10 @@ func NewStoreWith(kvs kv.Store) *Store {
 		Coder:    nil,
 		KeyCoder: nil,
 	}
+}
+
+// SetConfig sets the specified configuration.
+func (s *Store) SetConfig(conf config.Config) {
 }
 
 // SetKvStore sets the key-value store service.

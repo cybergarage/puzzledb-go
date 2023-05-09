@@ -15,6 +15,7 @@
 package kv
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -22,4 +23,32 @@ import (
 type Service interface {
 	kv.Store
 	plugins.Service
+}
+
+type BaseStore struct {
+	*Config
+	document.KeyCoder
+}
+
+// NewBaseStore returns a new base store instance.
+func NewBaseStoreWith(coder document.KeyCoder) *BaseStore {
+	return &BaseStore{
+		Config:   NewConfig(),
+		KeyCoder: coder,
+	}
+}
+
+// NewBaseStore returns a new base store instance.
+func NewBaseStore() *BaseStore {
+	return NewBaseStoreWith(nil)
+}
+
+// ServiceType returns the plug-in service type.
+func (store *BaseStore) ServiceType() plugins.ServiceType {
+	return plugins.StoreKvService
+}
+
+// SetKeyCoder sets the key coder.
+func (store *BaseStore) SetKeyCoder(coder document.KeyCoder) {
+	store.KeyCoder = coder
 }

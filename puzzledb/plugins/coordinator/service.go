@@ -34,13 +34,3 @@ func NewServiceWith(c core.CoordinatorService) Service {
 		CoordinatorService: c,
 	}
 }
-
-// Start starts this service.
-func (service *serviceImpl) Start() error {
-	return service.CoordinatorService.Start()
-}
-
-// Stop stops this service.
-func (service *serviceImpl) Stop() error {
-	return service.CoordinatorService.Stop()
-}

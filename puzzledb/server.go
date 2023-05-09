@@ -68,7 +68,7 @@ func NewServerWithConfig(config config.Config) *Server {
 	return server
 }
 
-// SetConfig sets the server configuration.
+// SetConfig sets the specified configuration.
 func (server *Server) SetConfig(config config.Config) {
 	server.Config = NewConfigWith(config)
 	server.Manager.SetConfig(config)
