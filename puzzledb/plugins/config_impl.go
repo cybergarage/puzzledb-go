@@ -12,34 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package tracer
+package plugins
 
 import (
-	"github.com/cybergarage/go-tracing/tracer"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
-// Service represents a query service.
-type Service interface {
-	plugins.Service
-	tracer.Tracer
+const (
+	configPlugins = "plugins"
+	configDefault = "default"
+	configEnabled = "enabled"
+)
+
+type configImpl struct {
+	config.Config
 }
 
-type BaseService struct {
-	plugins.Config
-	tracer.Tracer
+func NewConfig() Config {
+	return NewConfigWith(nil)
 }
 
-// NewBaseServiceWith returns a new tracer base service.
-func NewBaseServiceWith(t tracer.Tracer) *BaseService {
-	server := &BaseService{
-		Config: nil,
-		Tracer: t,
+func NewConfigWith(conf config.Config) Config {
+	return &configImpl{
+		Config: conf,
 	}
-	return server
 }
 
-// ServiceType returns the plug-in service type.
-func (service *BaseService) ServiceType() plugins.ServiceType {
-	return plugins.TracingService
+// SetConfig sets a manager configuration.
+func (conf *configImpl) SetConfig(c config.Config) {
+	conf.Config = c
+}
+
+// Object returns a raw configuration object.
+func (conf *configImpl) Object() config.Config {
+	return conf.Config
 }

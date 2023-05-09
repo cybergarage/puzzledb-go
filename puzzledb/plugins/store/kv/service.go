@@ -26,7 +26,7 @@ type Service interface {
 }
 
 type BaseStore struct {
-	*plugins.Config
+	plugins.Config
 	document.KeyCoder
 }
 

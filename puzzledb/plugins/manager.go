@@ -23,7 +23,7 @@ import (
 
 // Manager represents a plug-in manager.
 type Manager struct {
-	*Config
+	Config
 	services []Service
 }
 
@@ -115,7 +115,7 @@ func (mgr *Manager) Start() error {
 	log.Infof("plug-ins loading...")
 
 	for _, service := range mgr.services {
-		service.SetConfig(mgr.Config)
+		service.SetConfig(mgr.Config.Object())
 		if !mgr.IsEnabled(service) {
 			log.Infof("%s (%s) skipped", service.ServiceName(), service.ServiceType().String())
 			continue

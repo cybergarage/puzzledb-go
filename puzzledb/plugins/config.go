@@ -18,27 +18,18 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
-const (
-	configPlugins = "plugins"
-	configDefault = "default"
-	configEnabled = "enabled"
-)
-
-type Config struct {
-	config.Config
-}
-
-func NewConfig() *Config {
-	return NewConfigWith(nil)
-}
-
-func NewConfigWith(config config.Config) *Config {
-	return &Config{
-		Config: config,
-	}
-}
-
-// SetConfig sets a manager configuration.
-func (conf *Config) SetConfig(c config.Config) {
-	conf.Config = c
+// Config represents a plug-in configuration interface.
+type Config interface {
+	// Get returns a value for the specified name.
+	Get(paths ...string) (any, error)
+	// GetString returns a string value for the specified name.
+	GetString(paths ...string) (string, error)
+	// GetInt returns an integer value for the specified name.
+	GetInt(paths ...string) (int, error)
+	// GetBool returns a boolean value for the specified name.
+	GetBool(paths ...string) (bool, error)
+	// String returns a string representation of the configuration.
+	SetConfig(c config.Config)
+	// Object returns a raw configuration object.
+	Object() config.Config
 }

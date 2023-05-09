@@ -19,7 +19,7 @@ import (
 )
 
 type BaseCoordinator struct {
-	*plugins.Config
+	plugins.Config
 	*NotifyManager
 }
 
