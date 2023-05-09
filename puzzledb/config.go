@@ -45,34 +45,34 @@ type Config struct {
 }
 
 // NewConfig returns a new configuration.
-func NewConfig() (config.Config, error) {
+func NewConfig() (*Config, error) {
 	conf := config.NewConfigWith(ProductName)
 	err := viper.ReadInConfig()
 	if err != nil {
 		return nil, err
 	}
-	return conf, nil
+	return NewConfigWith(conf), nil
 }
 
 // NewConfigWith returns a new configuration with the specified configuration.
-func NewConfigWith(config config.Config) *Config {
+func NewConfigWith(conf config.Config) *Config {
 	return &Config{
-		Config: config,
+		Config: conf,
 	}
 }
 
 // NewConfigWithPath returns a new configuration with the specified path.
-func NewConfigWithPath(path string) (config.Config, error) {
+func NewConfigWithPath(path string) (*Config, error) {
 	conf := config.NewConfigWith(ProductName)
 	viper.AddConfigPath(path)
 	err := viper.ReadInConfig()
 	if err != nil {
 		return nil, err
 	}
-	return conf, nil
+	return NewConfigWith(conf), nil
 }
 
-func NewConfigWithPaths(paths ...string) (config.Config, error) {
+func NewConfigWithPaths(paths ...string) (*Config, error) {
 	conf := config.NewConfigWith(ProductName)
 	for _, path := range paths {
 		viper.AddConfigPath(path)
@@ -81,20 +81,20 @@ func NewConfigWithPaths(paths ...string) (config.Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	return conf, nil
+	return NewConfigWith(conf), nil
 }
 
 // NewConfigWithString returns a new configuration with the specified string.
-func NewConfigWithString(conString string) (config.Config, error) {
+func NewConfigWithString(conString string) (*Config, error) {
 	conf := config.NewConfigWith(ProductName)
 	if err := viper.ReadConfig(bytes.NewBuffer([]byte(conString))); err != nil {
 		return nil, err
 	}
-	return conf, nil
+	return NewConfigWith(conf), nil
 }
 
 // NewConfigWithFile returns a new configuration with the specified file.
-func NewConfigWithFile(confFile string) (config.Config, error) {
+func NewConfigWithFile(confFile string) (*Config, error) {
 	f, err := os.Open(confFile)
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func NewConfigWithFile(confFile string) (config.Config, error) {
 	if err := viper.ReadConfig(bufio.NewReader(f)); err != nil {
 		return nil, err
 	}
-	return conf, nil
+	return NewConfigWith(conf), nil
 }
 
 // QueryPortConfig returns a port number for the specified query service name.
