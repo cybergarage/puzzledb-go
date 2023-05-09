@@ -45,14 +45,6 @@ func (mgr *Manager) ReloadServices(srvs []Service) {
 	mgr.services = srvs
 }
 
-func (mgr *Manager) IsEnabled(s Service) bool {
-	enabled, err := mgr.GetConfigBool(configPlugins, s.ServiceType().String(), s.ServiceName(), configEnabled)
-	if err != nil {
-		return true
-	}
-	return enabled
-}
-
 // Services returns all registered plug-in services.
 func (mgr *Manager) Services() []Service {
 	return mgr.services
@@ -73,7 +65,7 @@ func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 func (mgr *Manager) EnabledServicesByType(t ServiceType) []Service {
 	services := []Service{}
 	for _, srv := range mgr.ServicesByType(t) {
-		if !mgr.IsEnabled(srv) {
+		if !mgr.IsServiceEnabled(srv) {
 			continue
 		}
 		services = append(services, srv)
@@ -102,7 +94,7 @@ func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 		if srv.ServiceName() != configName {
 			continue
 		}
-		if !mgr.IsEnabled(srv) {
+		if !mgr.IsServiceEnabled(srv) {
 			return nil, NewErrDisabledService(srv)
 		}
 		return srv, nil
@@ -116,7 +108,7 @@ func (mgr *Manager) Start() error {
 
 	for _, service := range mgr.services {
 		service.SetConfig(mgr.Config.Object())
-		if !mgr.IsEnabled(service) {
+		if !mgr.IsServiceEnabled(service) {
 			log.Infof("%s (%s) skipped", service.ServiceName(), service.ServiceType().String())
 			continue
 		}
@@ -139,7 +131,7 @@ func (mgr Manager) Stop() error {
 	log.Infof("plug-ins terminating...")
 	var lastErr error
 	for _, service := range mgr.services {
-		if !mgr.IsEnabled(service) {
+		if !mgr.IsServiceEnabled(service) {
 			log.Infof("%s (%s) skipped", service.ServiceName(), service.ServiceType().String())
 			continue
 		}
@@ -168,7 +160,7 @@ func (mgr *Manager) String() string {
 					name = fmt.Sprintf("%s*", name)
 				}
 			}
-			if !mgr.IsEnabled(service) {
+			if !mgr.IsServiceEnabled(service) {
 				name = fmt.Sprintf("%s-", name)
 			}
 			names = append(names, name)
