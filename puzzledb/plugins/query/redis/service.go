@@ -30,14 +30,14 @@ type Service struct {
 }
 
 // NewService returns a new Redis service instance.
-// func NewService() query.Service {
-// 	service := &Service{
-// 		Server:      redis.NewServer(),
-// 		BaseService: query.NewBaseService(),
-// 	}
-// 	service.Server.SetCommandHandler(service)
-// 	return service
-// }
+func NewService() Service {
+	service := &Service{
+		Server:      redis.NewServer(),
+		BaseService: query.NewBaseService(),
+	}
+	service.Server.SetCommandHandler(service)
+	return service
+}
 
 // ServiceName returns the plug-in service name.
 func (service *Service) ServiceName() string {
