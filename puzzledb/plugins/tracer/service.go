@@ -19,6 +19,10 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
+const (
+	EndpointConfig = "endpoint"
+)
+
 // Service represents a query service.
 type Service interface {
 	plugins.Service

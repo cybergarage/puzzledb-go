@@ -32,6 +32,35 @@ func NewService() *Service {
 }
 
 // ServiceName returns the plug-in service name.
-func (t *Service) ServiceName() string {
+func (service *Service) ServiceName() string {
 	return "opentelemetry"
+}
+
+// GetServiceEndpoint returns the service endpoint.
+func (service *Service) GetServiceEndpoint() (string, error) {
+	e, err := service.GetServiceConfigString(service, tracer_plugin.EndpointConfig)
+	if err != nil {
+		return "", err
+	}
+	return e, nil
+}
+
+// Start starts the service.
+func (service *Service) Start() error {
+	endpoint, err := service.GetServiceEndpoint()
+	if err == nil {
+		service.SetEndpoint(endpoint)
+	}
+	if err := service.Tracer.Start(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Stop stops the service.
+func (service *Service) Stop() error {
+	if err := service.Tracer.Stop(); err != nil {
+		return err
+	}
+	return nil
 }
