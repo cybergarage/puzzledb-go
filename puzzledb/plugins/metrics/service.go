@@ -26,13 +26,13 @@ type Service interface {
 }
 
 type BaseService struct {
-	*Config
+	*plugins.Config
 }
 
 // NewBaseService returns a new tracer base service.
 func NewBaseService() *BaseService {
 	return &BaseService{
-		Config: NewConfig(),
+		Config: plugins.NewConfig(),
 	}
 }
 

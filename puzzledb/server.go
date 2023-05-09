@@ -29,7 +29,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/metrics/prometheus"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mongo"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mysql"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
@@ -92,7 +91,7 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		coordinator.NewServiceWith(etcd_coordinator.NewCoordinator()),
 		coordinator.NewServiceWith(memdb_coordinator.NewCoordinator()),
 		mysql.NewService(),
-		redis.NewService(),
+		// redis.NewService(),
 		mongo.NewService(),
 		opentelemetry.NewService(),
 		opentracing.NewService(),

@@ -33,7 +33,7 @@ func NewService() query.Service {
 	srv := &Service{
 		BaseExecutor: mysql.NewBaseExecutor(),
 		Server:       mysql.NewServer(),
-		BaseService:  query.NewService(),
+		BaseService:  query.NewBaseService(),
 	}
 	srv.Server.SetQueryExecutor(srv)
 	return srv
