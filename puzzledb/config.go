@@ -25,16 +25,16 @@ import (
 )
 
 const (
-	apiConfig     = "api"
-	configPlugins = "plugins"
-	grpcConfig    = "grpc"
-	queryConfig   = "query"
-	portConfig    = "port"
-	enabledConfig = "enabled"
-	tracerConfig  = "tracer"
-	loggerConfig  = "logger"
-	defaultConfig = "default"
-	levelConfig   = "level"
+	ConfigAPI     = "api"
+	ConfigPlugins = "plugins"
+	ConfigGrpc    = "grpc"
+	ConfigQuery   = "query"
+	ConfigPort    = "port"
+	ConfigEnabled = "enabled"
+	ConfigTracer  = "tracer"
+	ConfigLogger  = "logger"
+	ConfigDefault = "default"
+	ConfigLevel   = "level"
 )
 
 type Config struct {
