@@ -39,6 +39,6 @@ func NewConfigWith(config config.Config) *Config {
 }
 
 // SetConfig sets a manager configuration.
-func (conf *Config) SetConfig(config config.Config) {
-	conf.Config = conf
+func (c *Config) SetConfig(conf config.Config) {
+	c.Config = conf
 }
