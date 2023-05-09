@@ -74,7 +74,7 @@ func (conf *configImpl) GetServiceConfigBool(service Service, paths ...string) (
 	return conf.GetConfigBool(newServiceConfigPath(service, paths...)...)
 }
 
-// IsEnabled returns true if the service is enabled.
+// IsServiceEnabled returns true if the service is enabled.
 func (conf *configImpl) IsServiceEnabled(service Service) bool {
 	enabled, err := conf.GetServiceConfigBool(service, configEnabled)
 	if err != nil {

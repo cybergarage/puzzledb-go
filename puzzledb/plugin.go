@@ -40,7 +40,7 @@ func NewPluginManagerWith(mgr *plugins.Manager) *PluginManager {
 func (mgr *PluginManager) RemoveDisabledServices(services []plugins.Service) []plugins.Service {
 	enabledServices := []plugins.Service{}
 	for _, service := range services {
-		if mgr.IsEnabled(service) {
+		if mgr.IsServiceEnabled(service) {
 			enabledServices = append(enabledServices, service)
 		}
 	}
