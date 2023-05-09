@@ -65,7 +65,7 @@ func (exp *PrometheusExporter) Start() error {
 		return err
 	}
 
-	port, err := exp.GetServicePort(exp)
+	port, err := exp.GetServiceConfigPort(exp)
 	if err == nil {
 		exp.SetPort(port)
 	}

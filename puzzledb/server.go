@@ -149,15 +149,6 @@ func (server *Server) setupPlugins() error {
 		store.SetKvStore(defaultKvStore)
 	}
 
-	// Tracer services
-
-	for _, service := range server.TracingServices() {
-		ep, err := server.TracerEndpointConfig(service.ServiceName())
-		if err == nil {
-			service.SetEndpoint(ep)
-		}
-	}
-
 	// Query services
 
 	defaultCoodinator, err := server.DefaultCoordinatorService()
@@ -177,7 +168,6 @@ func (server *Server) setupPlugins() error {
 	defaultTracer.SetServiceName(ProductName)
 
 	for _, service := range server.QueryServices() {
-		service.SetConfig(server.Config.Config)
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
 		service.SetTracer(defaultTracer)

@@ -25,19 +25,16 @@ import (
 )
 
 const (
-	apiConfig        = "api"
-	configPlugins    = "plugins"
-	grpcConfig       = "grpc"
-	queryConfig      = "query"
-	portConfig       = "port"
-	enabledConfig    = "enabled"
-	tracerConfig     = "tracer"
-	loggerConfig     = "logger"
-	endpointConfig   = "endpoint"
-	defaultConfig    = "default"
-	levelConfig      = "level"
-	metricsConfig    = "metrics"
-	prometheusConfig = "prometheus"
+	apiConfig     = "api"
+	configPlugins = "plugins"
+	grpcConfig    = "grpc"
+	queryConfig   = "query"
+	portConfig    = "port"
+	enabledConfig = "enabled"
+	tracerConfig  = "tracer"
+	loggerConfig  = "logger"
+	defaultConfig = "default"
+	levelConfig   = "level"
 )
 
 type Config struct {
@@ -105,11 +102,6 @@ func NewConfigWithFile(confFile string) (*Config, error) {
 		return nil, err
 	}
 	return NewConfigWith(conf), nil
-}
-
-// TracerEnabledConfig returns a boolean value for the specified tracer service name.
-func (conf *Config) TracerEndpointConfig(name string) (string, error) {
-	return conf.GetConfigString(configPlugins, tracerConfig, name, endpointConfig)
 }
 
 // String returns a string representation of the configuration.
