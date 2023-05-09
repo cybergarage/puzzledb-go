@@ -33,3 +33,11 @@ type Config interface {
 	// Object returns a raw configuration object.
 	Object() config.Config
 }
+
+func (conf *Config) IsEnabled(s Service) bool {
+	enabled, err := conf.GetConfigBool(configPlugins, s.ServiceType().String(), s.ServiceName(), configEnabled)
+	if err != nil {
+		return true
+	}
+	return enabled
+}
