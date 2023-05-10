@@ -16,3 +16,15 @@ package kv
 
 // Option represents a option.
 type Option = any
+
+// LimitOption represents a limit option.
+type LimitOption struct {
+	Limit int
+}
+
+// NewLimitOption returns a new limit option.
+func NewLimitOption(limit int) *LimitOption {
+	return &LimitOption{
+		Limit: limit,
+	}
+}
