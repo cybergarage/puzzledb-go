@@ -39,7 +39,7 @@ type DocumentOperation interface {
 	// InsertDocument puts a document object with the specified primary key.
 	InsertDocument(ctx context.Context, docKey Key, obj Object) error
 	// FindDocuments returns a result set matching the specified key.
-	FindDocuments(ctx context.Context, docKey Key) (ResultSet, error)
+	FindDocuments(ctx context.Context, docKey Key, opts ...any) (ResultSet, error)
 	// UpdateDocument updates a document object with the specified primary key.
 	UpdateDocument(ctx context.Context, docKey Key, obj Object) error
 	// RemoveDocument removes a document object with the specified primary key.
