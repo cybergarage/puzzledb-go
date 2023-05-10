@@ -1,0 +1,3 @@
+Field Name,Data Type,Description
+type,int,Message type
+timestamp,time.Time,Generated phisical time

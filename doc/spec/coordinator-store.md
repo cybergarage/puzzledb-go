@@ -86,10 +86,47 @@ The key header is a 2-byte header that is prepended to every key in the key-valu
 
 The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
 
-## Message Clock
+## Message
+
+The message key-value record is used to store messages sent between PuzzleDB nodes in the cluster to notify any node and store status changes.
+
+### Message Clock
 
 Logical clocks, like the Lamport Clock, are important in distributed systems because they allow events to be ordered across different nodes. PuzzleDB uses the Lamport Clock algorithm to manage the message clock in the coordinator service as follows:
 
-![coordinator clock](img/coordinator_clock.png)
+![coordinator store clock](img/coordinator_store_clock.png)
 
 The coordinator service uses a message clock to provide a total ordering of messages across all nodes in the system. To manage the message clock, PuzzleDB uses the Lamport Clock algorithm, which assigns a unique timestamp to each message sent by a node.
+
+### Message Object
+
+The message object is encoded as a CBOR object and stored as the value of the message key-value record. The message objects are defined for each type of message, but all message objects have the following required fields.
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Field Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>type</p></td>
+<td style="text-align: left;"><p>int</p></td>
+<td style="text-align: left;"><p>Message type</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>timestamp</p></td>
+<td style="text-align: left;"><p>time.Time</p></td>
+<td style="text-align: left;"><p>Generated phisical time</p></td>
+</tr>
+</tbody>
+</table>
+
+The type field is used to identify messages and the timestamp field is used to discard old messages.
