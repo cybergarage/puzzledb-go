@@ -76,7 +76,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
             -   ❏ Added cache store plug-in
 
--   Update plug-ins
+-   Plug-in improvements
 
     -   Query plug-ins
 
@@ -87,6 +87,42 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
                 -   ❏ ALTER TABLE
 
                 -   ❏ CREATE INDEX
+
+                -   ❏ LIMIT and ORDER BY in SELECT queries
+
+        -   MongoDB plug-in
+
+            -   Supported queries
+
+                -   ❏ createIndex (Only single field and Comound indexes)
+
+            -   Disabled features
+
+                -   ❏ Auto Indexing
+
+        -   Redis plug-in
+
+            -   Supported queries
+
+                -   ❏ HASH commands
+
+    -   Storage plug-ins
+
+        -   Key-Value Store plug-ins
+
+            -   ✓ Update store interface to Support limit and order options in Range queries
+
+            -   memdb plug-in
+
+                -   ✓ Support limit and order options in Range queries
+
+            -   FoundationDB plug-in
+
+                -   ✓ Support limit and order options in Range queries
+
+        -   Document store plug-in
+
+            -   ✓ Support limit and order options in Range queries based on key-value Store plug-ins
 
 ## v0.9.0 (2023-05-07)
 
@@ -118,7 +154,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ✓ Added OpenTelemetry plug-in
 
--   Update plug-ins
+-   Plug-in improvements
 
     -   Coder plug-ins
 
