@@ -22,9 +22,51 @@ type LimitOption struct {
 	Limit int
 }
 
-// NewLimitOption returns a new limit option.
-func NewLimitOption(limit int) *LimitOption {
+// NewLimitOptionWith returns a new limit option.
+func NewLimitOptionWith(limit int) *LimitOption {
 	return &LimitOption{
 		Limit: limit,
+	}
+}
+
+// Order represents a order.
+type Order = int
+
+// NoLimit represents a no limit option.
+var NoLimit = int(0)
+
+// Order options.
+const (
+	OrderNone = Order(0)
+	OrderAsc  = Order(1)
+	OrderDesc = Order(2)
+)
+
+// OrderOption represents a order option.
+type OrderOption struct {
+	Order Order
+}
+
+var orderOptionNone = &OrderOption{
+	Order: OrderNone,
+}
+
+var orderOptionAsc = &OrderOption{
+	Order: OrderAsc,
+}
+
+var orderOptionDesc = &OrderOption{
+	Order: OrderDesc,
+}
+
+// NewOrderOptionWith returns a new order option.
+func NewOrderOptionWith(order Order) *OrderOption {
+	switch order {
+	case OrderAsc:
+		return orderOptionAsc
+	case OrderDesc:
+		return orderOptionDesc
+	default:
+		return orderOptionNone
 	}
 }
