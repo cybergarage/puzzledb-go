@@ -73,7 +73,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 }
 
 // GetRange returns a result set of the specified key.
-func (txn *transaction) GetRange(key kv.Key) (kv.ResultSet, error) {
+func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, error) {
 	now := time.Now()
 	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
