@@ -42,7 +42,7 @@ func (txn *transaction) InsertDocument(ctx context.Context, docKey store.Key, ob
 }
 
 // FindDocuments returns a result set matching the specified key.
-func (txn *transaction) FindDocuments(ctx context.Context, docKey store.Key) (store.ResultSet, error) {
+func (txn *transaction) FindDocuments(ctx context.Context, docKey store.Key, opts ...any) (store.ResultSet, error) {
 	ctx.StartSpan("FindDocuments")
 	defer ctx.FinishSpan()
 
