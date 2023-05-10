@@ -23,24 +23,34 @@ import (
 // Memdb represents a Memdb instance.
 type resultSet struct {
 	document.KeyCoder
-	it  memdb.ResultIterator
-	obj *kv.Object
+	it    memdb.ResultIterator
+	obj   *kv.Object
+	limit int
+	nRead int
 }
 
-func newResultSet(coder document.KeyCoder, it memdb.ResultIterator) kv.ResultSet {
+func newResultSetWith(coder document.KeyCoder, it memdb.ResultIterator, limit int) kv.ResultSet {
 	return &resultSet{
 		KeyCoder: coder,
 		it:       it,
 		obj:      nil,
+		limit:    limit,
+		nRead:    0,
 	}
 }
 
 // Next moves the cursor forward next object from its current position.
 func (rs *resultSet) Next() bool {
+	if kv.NoLimit < rs.limit && rs.limit <= rs.nRead {
+		return false
+	}
+
 	elem := rs.it.Next()
 	if elem == nil {
 		return false
 	}
+	rs.nRead++
+
 	doc, ok := elem.(*Document)
 	if !ok {
 		return false
