@@ -21,3 +21,15 @@ include::csv/coodinator-store-header.csv[]
 |====
 
 The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
+
+== Message
+
+The message key-value record is used to store messages sent between PuzzleDB nodes in the cluster to nodify any status changes. 
+
+=== Message Clock
+
+Logical clocks, like the Lamport Clock, are important in distributed systems because they allow events to be ordered across different nodes. PuzzleDB uses the Lamport Clock algorithm to manage the message clock in the coordinator service as follows:
+
+image:img/coordinator_clock.png[]
+
+The coordinator service uses a message clock to provide a total ordering of messages across all nodes in the system. To manage the message clock, PuzzleDB uses the Lamport Clock algorithm, which assigns a unique timestamp to each message sent by a node. 
