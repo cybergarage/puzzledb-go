@@ -42,14 +42,14 @@ type Server struct {
 	*StatusService
 	*Config
 	*PluginManager
-	*GrpcServer
+	*gRPCService
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		Status:        NewStatus(),
-		GrpcServer:    nil,
+		StatusService: NewStatus(),
+		gRPCService:   nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 	}
@@ -58,7 +58,7 @@ func NewServer() *Server {
 		panic(err)
 	}
 	server.SetConfig(conf)
-	server.GrpcServer = NewGrpcServerWith(server)
+	server.gRPCService = NewgRPCServiceWith(server)
 
 	return server
 }
@@ -209,13 +209,13 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	// Setup gRPC server
 
-	ok, _ = server.GrpcServer.EnabledConfig()
+	ok, _ = server.gRPCService.EnabledConfig()
 	if ok {
-		port, err := server.GrpcServer.PortConfig()
+		port, err := server.gRPCService.PortConfig()
 		if err == nil {
-			server.GrpcServer.SetPort(port)
+			server.gRPCService.SetPort(port)
 		}
-		if err := server.GrpcServer.Start(); err != nil {
+		if err := server.gRPCService.Start(); err != nil {
 			if stopErr := server.Stop(); stopErr != nil {
 				return errors.Join(err, stopErr)
 			}
@@ -255,9 +255,9 @@ func (server *Server) Stop() error {
 	if stopErr := server.Manager.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
 	}
-	ok, _ := server.GrpcServer.EnabledConfig()
+	ok, _ := server.gRPCService.EnabledConfig()
 	if ok {
-		if stopErr := server.GrpcServer.Stop(); stopErr != nil {
+		if stopErr := server.gRPCService.Stop(); stopErr != nil {
 			err = errors.Join(err, stopErr)
 		}
 	}
