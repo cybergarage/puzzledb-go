@@ -43,5 +43,6 @@ Logical clocks, like the Lamport Clock, are important in distributed systems bec
 
 image:img/coordinator_store_clock.png[]
 
-The coordinator service uses a message clock to provide a total ordering of messages across all nodes in the system. To manage the message clock, PuzzleDB uses the Lamport Clock algorithm, which assigns a unique timestamp to each message sent by a node. 
+The coordinator node behaves as a virtual PuzzleDB node。 The coordinator node sends a message to itself to increment the clock. The coordinator node also sends a message to other nodes to increment their clocks.
 
+The coordinator service uses a message clock to provide a total ordering of messages across all nodes in the system. To manage the message clock, PuzzleDB uses the Lamport Clock algorithm, which assigns a unique timestamp to each message sent by a node. 

@@ -44,7 +44,10 @@ image:img/roadmap.png[doc/img/roadmap]
 *** Key-Value Store plug-ins
 **** [*] Added FoundationDB plug-in
 **** [ ] Added cache store plug-in
+* Iprovements
 * Plug-in improvements
+** CLI Utilities
+*** [*] Added status commands to link:cmd/cli/puzzledb-cli.md[puzzledb-cli]
 ** Query plug-ins
 *** MySQL plug-in
 **** Supported queries
