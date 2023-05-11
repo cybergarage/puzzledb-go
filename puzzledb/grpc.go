@@ -61,7 +61,7 @@ func NewgRPCServiceWith(server *Server) *gRPCService {
 	}
 }
 
-// SetPort sets a port number of the server.
+// SetPort sets a port number of the service.
 func (service *gRPCService) SetPort(port int) {
 	service.Port = port
 }
@@ -76,7 +76,7 @@ func (service *gRPCService) PortConfig() (int, error) {
 	return service.Config.GetConfigInt(ConfigAPI, ConfigGrpc, ConfigPort)
 }
 
-// Start starts the server.
+// Start starts the service.
 func (service *gRPCService) Start() error {
 	var err error
 	addr := net.JoinHostPort(service.Addr, strconv.Itoa(service.Port))
@@ -126,8 +126,13 @@ func loggingUnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServe
 }
 
 func (service *gRPCService) Check(context.Context, *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
-	res := pb.HealthCheckResponse{} //nolint:exhaustruct
-	res.Status = pb.HealthCheckResponse_SERVING
+	res := pb.HealthCheckResponse{}         //nolint:exhaustruct
+	switch service.Server.ServiceStatus() { //nolint:exhaustive
+	case ServiceStatusRunning:
+		res.Status = pb.HealthCheckResponse_SERVING
+	default:
+		res.Status = pb.HealthCheckResponse_NOT_SERVING
+	}
 	return &res, nil
 }
 
