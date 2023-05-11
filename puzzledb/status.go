@@ -14,35 +14,49 @@
 
 package puzzledb
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
+)
+
 // ServiceStatus represents a server status.
 type ServiceStatus int
 
 const (
 	ServiceStatusUnknown ServiceStatus = iota
-	ServiceStatusStarting
 	ServiceStatusRunning
-	ServiceStatusStopping
 	ServiceStatusStopped
 )
 
 // StatusService represents a server status service.
 type StatusService struct {
+	coordinator.Service
 	serviceStatus ServiceStatus
 }
 
-// NewStatus returns a new server status service.
-func NewStatus() *StatusService {
+// NewStatuServiceWith returns a new server status service.
+func NewStatuServiceWith(coordinator coordinator.Service) *StatusService {
 	return &StatusService{
+		Service:       coordinator,
 		serviceStatus: ServiceStatusStopped,
 	}
 }
 
-// SetServiceStatus sets a server status.
-func (status *StatusService) SetServiceStatus(serviceStatus ServiceStatus) {
+// SetStatus sets a server status.
+func (status *StatusService) SetStatus(serviceStatus ServiceStatus) { // nolint: stylecheck
 	status.serviceStatus = serviceStatus
 }
 
-// ServiceStatus returns a server status.
-func (status *StatusService) ServiceStatus() ServiceStatus {
+// Status returns a server status.
+func (status *StatusService) Status() ServiceStatus {
 	return status.serviceStatus
+}
+
+// Start starts the service.
+func (service *StatusService) Start() error {
+	return nil
+}
+
+// Stop stops the Grpc server.
+func (service *StatusService) Stop() error {
+	return nil
 }
