@@ -126,8 +126,8 @@ func loggingUnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServe
 }
 
 func (service *gRPCService) Check(context.Context, *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
-	res := pb.HealthCheckResponse{}         //nolint:exhaustruct
-	switch service.Server.ServiceStatus() { //nolint:exhaustive
+	res := pb.HealthCheckResponse{}  //nolint:exhaustruct
+	switch service.Server.Status() { //nolint:exhaustive
 	case ServiceStatusRunning:
 		res.Status = pb.HealthCheckResponse_SERVING
 	default:
