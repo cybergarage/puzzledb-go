@@ -39,7 +39,7 @@ import (
 
 // Server represents a server instance.
 type Server struct {
-	*StatusService
+	*ActorService
 	*Config
 	*PluginManager
 	*gRPCService
@@ -48,7 +48,7 @@ type Server struct {
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		StatusService: nil,
+		ActorService:  nil,
 		gRPCService:   nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
@@ -254,8 +254,8 @@ func (server *Server) Start() error { //nolint:gocognit
 		return err
 	}
 
-	server.StatusService = NewStatuServiceWith(defaultCoodinator)
-	if err := server.StatusService.Start(); err != nil {
+	server.ActorService = NewActorServiceWith(defaultCoodinator)
+	if err := server.ActorService.Start(); err != nil {
 		if stopErr := server.Stop(); stopErr != nil {
 			return errors.Join(err, stopErr)
 		}
