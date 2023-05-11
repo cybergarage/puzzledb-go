@@ -35,7 +35,8 @@ const (
 	DefaultGrpcPort = 50053
 )
 
-type GrpcServer struct {
+// gRPCService represents a gRPC service.
+type gRPCService struct {
 	*Server
 	grpcServer *grpc.Server
 	Addr       string
@@ -46,9 +47,9 @@ type GrpcServer struct {
 	pb.UnimplementedMetricServer
 }
 
-// NewGrpcServerWith returns a new GrpcServer.
-func NewGrpcServerWith(server *Server) *GrpcServer {
-	return &GrpcServer{
+// NewgRPCServiceWith returns a new GrpcServer.
+func NewgRPCServiceWith(server *Server) *gRPCService {
+	return &gRPCService{
 		Server:                    server,
 		grpcServer:                nil,
 		Addr:                      "",
@@ -61,35 +62,35 @@ func NewGrpcServerWith(server *Server) *GrpcServer {
 }
 
 // SetPort sets a port number of the server.
-func (server *GrpcServer) SetPort(port int) {
-	server.Port = port
+func (service *gRPCService) SetPort(port int) {
+	service.Port = port
 }
 
 // EnabledConfig returns a port number for the specified query service name.
-func (server *GrpcServer) EnabledConfig() (bool, error) {
-	return server.Config.GetConfigBool(ConfigAPI, ConfigGrpc, ConfigEnabled)
+func (service *gRPCService) EnabledConfig() (bool, error) {
+	return service.Config.GetConfigBool(ConfigAPI, ConfigGrpc, ConfigEnabled)
 }
 
 // PortConfig returns a port number for the specified query service name.
-func (server *GrpcServer) PortConfig() (int, error) {
-	return server.Config.GetConfigInt(ConfigAPI, ConfigGrpc, ConfigPort)
+func (service *gRPCService) PortConfig() (int, error) {
+	return service.Config.GetConfigInt(ConfigAPI, ConfigGrpc, ConfigPort)
 }
 
 // Start starts the server.
-func (server *GrpcServer) Start() error {
+func (service *gRPCService) Start() error {
 	var err error
-	addr := net.JoinHostPort(server.Addr, strconv.Itoa(server.Port))
+	addr := net.JoinHostPort(service.Addr, strconv.Itoa(service.Port))
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		return err
 	}
-	server.grpcServer = grpc.NewServer(grpc.UnaryInterceptor(loggingUnaryInterceptor))
-	pb.RegisterStoreServer(server.grpcServer, server)
-	pb.RegisterConfigServer(server.grpcServer, server)
-	pb.RegisterHealthServer(server.grpcServer, server)
-	pb.RegisterMetricServer(server.grpcServer, server)
+	service.grpcServer = grpc.NewServer(grpc.UnaryInterceptor(loggingUnaryInterceptor))
+	pb.RegisterStoreServer(service.grpcServer, service)
+	pb.RegisterConfigServer(service.grpcServer, service)
+	pb.RegisterHealthServer(service.grpcServer, service)
+	pb.RegisterMetricServer(service.grpcServer, service)
 	go func() {
-		if err := server.grpcServer.Serve(listener); err != nil {
+		if err := service.grpcServer.Serve(listener); err != nil {
 			log.Error(err)
 		}
 	}()
@@ -100,13 +101,13 @@ func (server *GrpcServer) Start() error {
 }
 
 // Stop stops the Grpc server.
-func (server *GrpcServer) Stop() error {
-	if server.grpcServer != nil {
-		server.grpcServer.Stop()
-		server.grpcServer = nil
+func (service *gRPCService) Stop() error {
+	if service.grpcServer != nil {
+		service.grpcServer.Stop()
+		service.grpcServer = nil
 	}
 
-	addr := net.JoinHostPort(server.Addr, strconv.Itoa(server.Port))
+	addr := net.JoinHostPort(service.Addr, strconv.Itoa(service.Port))
 	log.Infof("gRPC server (%s) terminated", addr)
 
 	return nil
@@ -124,20 +125,20 @@ func loggingUnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServe
 	return resp, err
 }
 
-func (server *GrpcServer) Check(context.Context, *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
+func (service *gRPCService) Check(context.Context, *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
 	res := pb.HealthCheckResponse{} //nolint:exhaustruct
 	res.Status = pb.HealthCheckResponse_SERVING
 	return &res, nil
 }
 
-func (server *GrpcServer) ListConfig(context.Context, *pb.ListConfigRequest) (*pb.ListConfigResponse, error) {
+func (service *gRPCService) ListConfig(context.Context, *pb.ListConfigRequest) (*pb.ListConfigResponse, error) {
 	res := pb.ListConfigResponse{} //nolint:exhaustruct
-	res.Values = strings.Split(server.Config.String(), "\n")
+	res.Values = strings.Split(service.Config.String(), "\n")
 	return &res, nil
 }
 
-func (server *GrpcServer) GetConfig(ctx context.Context, req *pb.GetConfigRequest) (*pb.GetConfigResponse, error) {
-	v, err := server.Config.GetConfig(req.Name)
+func (service *gRPCService) GetConfig(ctx context.Context, req *pb.GetConfigRequest) (*pb.GetConfigResponse, error) {
+	v, err := service.Config.GetConfig(req.Name)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.Name))
 	}
@@ -146,13 +147,13 @@ func (server *GrpcServer) GetConfig(ctx context.Context, req *pb.GetConfigReques
 	return &res, nil
 }
 
-func (server *GrpcServer) GetVersion(context.Context, *pb.GetVersionRequest) (*pb.GetVersionResponse, error) {
+func (service *gRPCService) GetVersion(context.Context, *pb.GetVersionRequest) (*pb.GetVersionResponse, error) {
 	res := pb.GetVersionResponse{} //nolint:exhaustruct
 	res.Value = fmt.Sprintf("%v", Version)
 	return &res, nil
 }
 
-func (server *GrpcServer) ListMetric(context.Context, *pb.ListMetricRequest) (*pb.ListMetricResponse, error) {
+func (service *gRPCService) ListMetric(context.Context, *pb.ListMetricRequest) (*pb.ListMetricResponse, error) {
 	res := pb.ListMetricResponse{} //nolint:exhaustruct
 	metrics, err := prometheus.DefaultGatherer.Gather()
 	if err != nil {
@@ -164,7 +165,7 @@ func (server *GrpcServer) ListMetric(context.Context, *pb.ListMetricRequest) (*p
 	return &res, nil
 }
 
-func (server *GrpcServer) GetMetric(ctx context.Context, req *pb.GetMetricRequest) (*pb.GetMetricResponse, error) {
+func (service *gRPCService) GetMetric(ctx context.Context, req *pb.GetMetricRequest) (*pb.GetMetricResponse, error) {
 	res := pb.GetMetricResponse{} //nolint:exhaustruct
 	metrics, err := prometheus.DefaultGatherer.Gather()
 	if err != nil {
@@ -179,9 +180,9 @@ func (server *GrpcServer) GetMetric(ctx context.Context, req *pb.GetMetricReques
 	return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.Name))
 }
 
-func (server *GrpcServer) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*pb.StatusResponse, error) {
+func (service *gRPCService) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*pb.StatusResponse, error) {
 	res := pb.StatusResponse{} //nolint:exhaustruct
-	defaultStore, err := server.DefaultStoreService()
+	defaultStore, err := service.DefaultStoreService()
 	if err != nil {
 		return &res, err
 	}
@@ -192,9 +193,9 @@ func (server *GrpcServer) CreateDatabase(ctx context.Context, req *pb.CreateData
 	return &res, nil
 }
 
-func (server *GrpcServer) RemoveDatabase(ctx context.Context, req *pb.RemoveDatabaseRequest) (*pb.StatusResponse, error) {
+func (service *gRPCService) RemoveDatabase(ctx context.Context, req *pb.RemoveDatabaseRequest) (*pb.StatusResponse, error) {
 	res := pb.StatusResponse{} //nolint:exhaustruct
-	defaultStore, err := server.DefaultStoreService()
+	defaultStore, err := service.DefaultStoreService()
 	if err != nil {
 		return &res, err
 	}
@@ -205,9 +206,9 @@ func (server *GrpcServer) RemoveDatabase(ctx context.Context, req *pb.RemoveData
 	return &res, nil
 }
 
-func (server *GrpcServer) ListDatabases(context.Context, *pb.ListDatabasesRequest) (*pb.ListDatabasesResponse, error) {
+func (service *gRPCService) ListDatabases(context.Context, *pb.ListDatabasesRequest) (*pb.ListDatabasesResponse, error) {
 	res := pb.ListDatabasesResponse{} //nolint:exhaustruct
-	defaultStore, err := server.DefaultStoreService()
+	defaultStore, err := service.DefaultStoreService()
 	if err != nil {
 		return &res, err
 	}
@@ -222,7 +223,7 @@ func (server *GrpcServer) ListDatabases(context.Context, *pb.ListDatabasesReques
 	return &res, nil
 }
 
-func (server *GrpcServer) ListCollections(context.Context, *pb.ListCollectionsRequest) (*pb.ListCollectionsResponse, error) {
+func (service *gRPCService) ListCollections(context.Context, *pb.ListCollectionsRequest) (*pb.ListCollectionsResponse, error) {
 	res := pb.ListCollectionsResponse{} //nolint:exhaustruct
 	return &res, nil
 }
