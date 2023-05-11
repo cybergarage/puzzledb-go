@@ -48,7 +48,7 @@ type Server struct {
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		StatusService: NewStatus(),
+		StatusService: nil,
 		gRPCService:   nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
@@ -207,7 +207,7 @@ func (server *Server) Start() error { //nolint:gocognit
 	log.Infof("configuration loaded")
 	log.Infof(server.Config.String())
 
-	// Setup gRPC server
+	// Setup gRPC service
 
 	ok, _ = server.gRPCService.EnabledConfig()
 	if ok {
@@ -244,7 +244,29 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	log.Infof("%s", server.Manager.String())
 
+	// Setup status service
+
+	defaultCoodinator, err := server.DefaultCoordinatorService()
+	if err != nil {
+		if stopErr := server.Stop(); stopErr != nil {
+			return errors.Join(err, stopErr)
+		}
+		return err
+	}
+
+	server.StatusService = NewStatuServiceWith(defaultCoodinator)
+	if err := server.StatusService.Start(); err != nil {
+		if stopErr := server.Stop(); stopErr != nil {
+			return errors.Join(err, stopErr)
+		}
+		return err
+	}
+
+	// Output success message
+
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
+
+	server.SetStatus(ServiceStatusRunning)
 
 	return nil
 }
@@ -262,5 +284,10 @@ func (server *Server) Stop() error {
 		}
 	}
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
+
+	if err == nil {
+		server.SetStatus(ServiceStatusStopped)
+	}
+
 	return err
 }
