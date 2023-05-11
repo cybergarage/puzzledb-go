@@ -39,6 +39,7 @@ import (
 
 // Server represents a server instance.
 type Server struct {
+	*StatusService
 	*Config
 	*PluginManager
 	*GrpcServer
@@ -47,6 +48,7 @@ type Server struct {
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
+		Status:        NewStatus(),
 		GrpcServer:    nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
