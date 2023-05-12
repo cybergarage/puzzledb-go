@@ -42,6 +42,22 @@ For the plugin services specified in the standards listed in the following table
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;"><p>System</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>System services</p></td>
+<td style="text-align: left;"><p>gRPC</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Actor</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Coordinator</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p>Query</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>Query handler services</p></td>

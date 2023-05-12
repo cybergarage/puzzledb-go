@@ -8,15 +8,17 @@ The key-value store is a collection of key-value records, where each record is a
 
 <table>
 <colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Category</th>
 <th style="text-align: left;">Key Order</th>
+<th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
 <th style="text-align: left;">Value</th>
 </tr>
@@ -26,18 +28,21 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>0</p></td>
 <td style="text-align: left;"><p>1</p></td>
+<td style="text-align: left;"><p>2</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Node</p></td>
 <td style="text-align: left;"><p>Header</p></td>
 <td style="text-align: left;"><p>Host (IP address)</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (State)</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>Message</p></td>
 <td style="text-align: left;"><p>Header</p></td>
 <td style="text-align: left;"><p>Logical Clock</p></td>
+<td style="text-align: left;"><p>Message Type</p></td>
 <td style="text-align: left;"><p>CBOR (Message)</p></td>
 </tr>
 </tbody>
@@ -90,14 +95,6 @@ The key header begins with a 1-byte identifier for the key type, enabling key ty
 
 The message key-value record is used to store messages sent between PuzzleDB nodes in the cluster to notify any node and store status changes.
 
-### Message Clock
-
-Logical clocks, like the Lamport Clock, are important in distributed systems because they allow events to be ordered across different nodes. PuzzleDB uses the Lamport Clock algorithm to manage the message clock in the coordinator service as follows:
-
-![coordinator store clock](img/coordinator_store_clock.png)
-
-The coordinator service uses a message clock to provide a total ordering of messages across all nodes in the system. To manage the message clock, PuzzleDB uses the Lamport Clock algorithm, which assigns a unique timestamp to each message sent by a node.
-
 ### Message Object
 
 The message object is encoded as a CBOR object and stored as the value of the message key-value record. The message objects are defined for each type of message, but all message objects have the following required fields.
@@ -130,3 +127,13 @@ The message object is encoded as a CBOR object and stored as the value of the me
 </table>
 
 The type field is used to identify messages and the timestamp field is used to discard old messages.
+
+### Message Clock
+
+Logical clocks, like the Lamport Clock, are important in distributed systems because they allow events to be ordered across different nodes. PuzzleDB uses the Lamport Clock algorithm to manage the message clock in the coordinator service as follows:
+
+![coordinator store clock](img/coordinator_store_clock.png)
+
+The coordinator node behaves as a virtual PuzzleDB node。 The coordinator node sends a message to itself to increment the clock. The coordinator node also sends a message to other nodes to increment their clocks.
+
+The coordinator service uses a message clock to provide a total ordering of messages across all nodes in the system. To manage the message clock, PuzzleDB uses the Lamport Clock algorithm, which assigns a unique timestamp to each message sent by a node.

@@ -1,5 +1,7 @@
 # Plug-In Service Types
 
+PuzzleDB offers various types of plug-ins, including query, storage, and coordinator. These are categorized based on their support for distributed operations and their dependencies on other plug-ins. System plug-ins, responsible for managing configuration data and coordinating distributed nodes, are always activated by default. The database optimizes storage, retrieval, and update operations through a query interface that supports any database protocol, and a storage interface that employs an ordered key-value store, thereby maintaining consistency in distributed environments.
+
 PuzzleDB provides default plug-in services that include query, storage, and coordinator plug-ins and defines the default plug-in types as follows:
 
 <table style="width:100%;">
@@ -22,6 +24,22 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>System</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>System services</p></td>
+<td style="text-align: left;"><p>gRPC</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Actor</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Coordinator</p></td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;"><p>Query</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -191,7 +209,13 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 
 ## Plug-In Interfaces
 
-PuzzleDB defines the core plug-in interfaces based on the following concepts.
+PuzzleDB defines the plug-in categories and interfaces based on the following concepts.
+
+### System Plug-Ins
+
+System plug-ins are used to manage the PuzzleDB system. They are used to manage the configuration data, synchronization, and coordination of distributed PuzzleDB nodes. System plug-ins are used to manage and synchronize the distributed PuzzleDB nodes.
+
+Unlike other plugins, system plugins are always activated as default plugins. Some, such as the gRPC plugin, work independently, while others, such as the Actor service, depend on other plugins to function.
 
 ### Query Interface
 
