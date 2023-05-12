@@ -164,7 +164,7 @@ func (mgr *Manager) String() string {
 					}
 				}
 			}
-			name = fmt.Sprintf("%s+", serviceStatus)
+			name = fmt.Sprintf("%s%s", name, serviceStatus)
 			names = append(names, name)
 		}
 		if len(names) == 0 {
