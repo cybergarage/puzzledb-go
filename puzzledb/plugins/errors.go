@@ -40,7 +40,7 @@ func NewErrServiceNotFound(t ServiceType) error {
 }
 
 func NewErrDefaultServiceNotFound(t ServiceType) error {
-	return NewErrInvalid(fmt.Sprintf("default %s", t.String()))
+	return NewErrNotFound(fmt.Sprintf("default %s service", t.String()))
 }
 
 func NewErrInvalidService(s Service) error {
