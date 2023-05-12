@@ -76,7 +76,13 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
             -   ❏ Added cache store plug-in
 
+-   Iprovements
+
 -   Plug-in improvements
+
+    -   CLI Utilities
+
+        -   ✓ Added status commands to [puzzledb-cli](cmd/cli/puzzledb-cli.md)
 
     -   Query plug-ins
 

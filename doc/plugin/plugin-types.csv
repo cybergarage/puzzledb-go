@@ -1,4 +1,6 @@
 Major Type,Sub Type,Description,Plug-ins,Distributed,Dependency
+System,-,System services,gRPC,O,
+,,,Actor,O,Coordinator
 Query,-,Query handler services,Redis,O,Store (Document)
 ,,,MongoDB,O,Store (Document)
 ,,,MySQL,O,Store (Document)

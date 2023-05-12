@@ -292,13 +292,15 @@ PuzzleDB encodes a document data with a coder and stores it as a key-value data.
 
 # Plug-In Concepts
 
-PuzzleDB is a pluggable database that combines components, and a pluggable component interface is defined based on a FoundationDB-like layering concept. PuzzleDB separates the query layer and data model from the storage layer, the lowest storage layer is defined as a simple Key-Value store like FoundationDB and early Google Spanner.
+PuzzleDB is a pluggable database that amalgamates various components. It defines a pluggable component interface following a layering concept similar to FoundationDB. PuzzleDB separates the query layer and data model from the storage layer. The most basic storage layer is defined as a simple key-value store, much like FoundationDB and early Google Spanner.
 
 ![architecture](img/architecture.png)
 
-PuzzleDB defines the coordinator and storage function interfaces to run as standalone and distributed databases. PuzzleDB runs as a distributed multi-API and multi-model database with the distributed coordinator and storage plug-ins.
+PuzzleDB defines the coordinator and storage function interfaces to operate as standalone and distributed databases. Running with distributed coordinator and storage plug-ins, PuzzleDB functions as a distributed multi-API and multi-model database.
 
 # Plug-In Service Types
+
+PuzzleDB offers various types of plug-ins, including query, storage, and coordinator. These are categorized based on their support for distributed operations and their dependencies on other plug-ins. System plug-ins, responsible for managing configuration data and coordinating distributed nodes, are always activated by default. The database optimizes storage, retrieval, and update operations through a query interface that supports any database protocol, and a storage interface that employs an ordered key-value store, thereby maintaining consistency in distributed environments.
 
 PuzzleDB provides default plug-in services that include query, storage, and coordinator plug-ins and defines the default plug-in types as follows:
 
@@ -322,6 +324,22 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>System</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>System services</p></td>
+<td style="text-align: left;"><p>gRPC</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Actor</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Coordinator</p></td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;"><p>Query</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -491,7 +509,13 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 
 ## Plug-In Interfaces
 
-PuzzleDB defines the core plug-in interfaces based on the following concepts.
+PuzzleDB defines the plug-in categories and interfaces based on the following concepts.
+
+### System Plug-Ins
+
+System plug-ins are used to manage the PuzzleDB system. They are used to manage the configuration data, synchronization, and coordination of distributed PuzzleDB nodes. System plug-ins are used to manage and synchronize the distributed PuzzleDB nodes.
+
+Unlike other plugins, system plugins are always activated as default plugins. Some, such as the gRPC plugin, work independently, while others, such as the Actor service, depend on other plugins to function.
 
 ### Query Interface
 
