@@ -36,13 +36,13 @@ func NewManager() *Manager {
 }
 
 // RegisterService adds a plug-in service.
-func (mgr *Manager) RegisterService(srv Service) {
-	mgr.services = append(mgr.services, srv)
+func (mgr *Manager) RegisterService(service Service) {
+	mgr.services = append(mgr.services, service)
 }
 
 // ReloadServices reloads all plug-in services.
-func (mgr *Manager) ReloadServices(srvs []Service) {
-	mgr.services = srvs
+func (mgr *Manager) ReloadServices(services []Service) {
+	mgr.services = services
 }
 
 // Services returns all registered plug-in services.
@@ -53,9 +53,9 @@ func (mgr *Manager) Services() []Service {
 // ServicesByType returns all registered plug-in services with the specified type.
 func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 	services := []Service{}
-	for _, srv := range mgr.services {
-		if srv.ServiceType() == t {
-			services = append(services, srv)
+	for _, service := range mgr.services {
+		if service.ServiceType() == t {
+			services = append(services, service)
 		}
 	}
 	return services
@@ -64,11 +64,11 @@ func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 // EnabledServicesByType returns all enabled plug-in services with the specified type.
 func (mgr *Manager) EnabledServicesByType(t ServiceType) []Service {
 	services := []Service{}
-	for _, srv := range mgr.ServicesByType(t) {
-		if !mgr.IsServiceEnabled(srv) {
+	for _, service := range mgr.ServicesByType(t) {
+		if !mgr.IsServiceEnabled(service) {
 			continue
 		}
-		services = append(services, srv)
+		services = append(services, service)
 	}
 	return services
 }
@@ -90,14 +90,14 @@ func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 	if err != nil {
 		return services[lastIdx], nil //nolint:nilerr
 	}
-	for _, srv := range services {
-		if srv.ServiceName() != configName {
+	for _, service := range services {
+		if service.ServiceName() != configName {
 			continue
 		}
-		if !mgr.IsServiceEnabled(srv) {
-			return nil, NewErrDisabledService(srv)
+		if !mgr.IsServiceEnabled(service) {
+			return nil, NewErrDisabledService(service)
 		}
-		return srv, nil
+		return service, nil
 	}
 	return nil, NewErrNotFound(fmt.Sprintf("%s (%s)", configName, t.String()))
 }
