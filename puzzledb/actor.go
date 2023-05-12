@@ -18,45 +18,45 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 )
 
-// ServiceStatus represents a server status.
-type ServiceStatus int
+// ActorStatus represents an actor status.
+type ActorStatus int
 
 const (
-	ServiceStatusUnknown ServiceStatus = iota
-	ServiceStatusRunning
-	ServiceStatusStopped
+	ActorStatusUnknown ActorStatus = iota
+	ActorStatusRunning
+	ActorStatusStopped
 )
 
-// ActorService represents a server status service.
+// ActorService represents a actor service.
 type ActorService struct {
 	coordinator.Service
-	serviceStatus ServiceStatus
+	serviceStatus ActorStatus
 }
 
-// NewActorServiceWith returns a new server status service.
+// NewActorServiceWith returns a new actor service.
 func NewActorServiceWith(coordinator coordinator.Service) *ActorService {
 	return &ActorService{
 		Service:       coordinator,
-		serviceStatus: ServiceStatusStopped,
+		serviceStatus: ActorStatusStopped,
 	}
 }
 
-// SetStatus sets a server status.
-func (status *ActorService) SetStatus(serviceStatus ServiceStatus) { // nolint: stylecheck
+// SetStatus sets a actor status.
+func (status *ActorService) SetStatus(serviceStatus ActorStatus) { // nolint: stylecheck
 	status.serviceStatus = serviceStatus
 }
 
-// Status returns a server status.
-func (status *ActorService) Status() ServiceStatus {
+// Status returns a actor status.
+func (status *ActorService) Status() ActorStatus {
 	return status.serviceStatus
 }
 
-// Start starts the service.
+// Start starts the actor service.
 func (service *ActorService) Start() error {
 	return nil
 }
 
-// Stop stops the Grpc server.
+// Stop stops the actor server.
 func (service *ActorService) Stop() error {
 	return nil
 }

@@ -266,7 +266,7 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
-	server.SetStatus(ServiceStatusRunning)
+	server.SetStatus(ActorStatusRunning)
 
 	return nil
 }
@@ -286,7 +286,7 @@ func (server *Server) Stop() error {
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
 
 	if err == nil {
-		server.SetStatus(ServiceStatusStopped)
+		server.SetStatus(ActorStatusStopped)
 	}
 
 	return err
