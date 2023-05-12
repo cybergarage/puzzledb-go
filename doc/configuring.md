@@ -9,11 +9,13 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
     logger:
       enabled: true
       level: info
-    api:
-      grpc:
-        enabled: true
-        port: 50053
     plugins:
+      system:
+        grpc:
+          enabled: true
+          port: 50053
+        actor:
+          enabled: true
       coder:
         document:
           default: cbor
