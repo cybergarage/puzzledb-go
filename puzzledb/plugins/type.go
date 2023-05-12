@@ -23,22 +23,24 @@ const (
 )
 
 const (
+	// SystemService represents a system service.
+	SystemService ServiceType = 0x01
 	// CoderDocumentService represents a serializer service for document.
-	CoderDocumentService ServiceType = 0x01 | ExclusiveServiceType
+	CoderDocumentService ServiceType = 0x02 | ExclusiveServiceType
 	// CoderKeyService represents a serializer service for key.
-	CoderKeyService ServiceType = 0x02 | ExclusiveServiceType
+	CoderKeyService ServiceType = 0x03 | ExclusiveServiceType
 	// QueryService represents a query service.
-	QueryService ServiceType = 0x03
+	QueryService ServiceType = 0x04
 	// StoreDocumentService represents a document store service.
-	StoreDocumentService ServiceType = 0x04 | ExclusiveServiceType
+	StoreDocumentService ServiceType = 0x05 | ExclusiveServiceType
 	// StoreKvService represents a key-value store service.
-	StoreKvService ServiceType = 0x05 | ExclusiveServiceType
+	StoreKvService ServiceType = 0x06 | ExclusiveServiceType
 	// CoordinatorService represents a coordinator service.
-	CoordinatorService ServiceType = 0x06 | ExclusiveServiceType
+	CoordinatorService ServiceType = 0x07 | ExclusiveServiceType
 	// TracingService represents a distributed tracing service.
-	TracingService ServiceType = 0x07 | ExclusiveServiceType
+	TracingService ServiceType = 0x08 | ExclusiveServiceType
 	// MetricsService represents a metrics service.
-	MetricsService ServiceType = 0x08
+	MetricsService ServiceType = 0x09
 	// ExtendService represents an uncategorized service.
 	ExtendService ServiceType = 0x0F
 )
@@ -46,6 +48,7 @@ const (
 // ServiceTypes returns all service types.
 func ServiceTypes() []ServiceType {
 	return []ServiceType{
+		SystemService,
 		CoderDocumentService,
 		CoderKeyService,
 		QueryService,
@@ -66,6 +69,8 @@ func (t ServiceType) IsExclusive() bool {
 // String returns a string representation of the service type.
 func (t ServiceType) String() string {
 	switch t {
+	case SystemService:
+		return "system"
 	case CoderDocumentService:
 		return "coder.document"
 	case CoderKeyService:
