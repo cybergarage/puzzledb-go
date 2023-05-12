@@ -32,8 +32,8 @@ const (
 // Service represents a actor service.
 type Service struct {
 	plugins.Config
-	coordinator.Service
 	serviceStatus Status
+	*MessageBox
 }
 
 // NewService returns a new actor service.
@@ -45,8 +45,8 @@ func NewService() *Service {
 func NewServiceWith(coordinator coordinator.Service) *Service {
 	return &Service{
 		Config:        plugins.NewConfig(),
-		Service:       coordinator,
 		serviceStatus: StatusStopped,
+		MessageBox:    NewMessageBox(),
 	}
 }
 
@@ -63,11 +63,6 @@ func (service *Service) ServiceName() string {
 // ServiceType returns the plug-in service type.
 func (service *Service) ServiceType() plugins.ServiceType {
 	return plugins.SystemService
-}
-
-// SetStatus sets a actor status.
-func (service *Service) SetCoordinator(c coordinator.Service) { // nolint: stylecheck
-	service.Service = c
 }
 
 // SetStatus sets a actor status.
