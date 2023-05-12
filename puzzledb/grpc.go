@@ -22,7 +22,10 @@ import (
 	"strings"
 
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	pc "github.com/cybergarage/puzzledb-go/puzzledb/context"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/system/actor"
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
@@ -37,6 +40,7 @@ const (
 
 // gRPCService represents a gRPC service.
 type gRPCService struct {
+	plugins.Config
 	*Server
 	grpcServer *grpc.Server
 	Addr       string
@@ -47,9 +51,10 @@ type gRPCService struct {
 	pb.UnimplementedMetricServer
 }
 
-// NewgRPCServiceWith returns a new GrpcServer.
-func NewgRPCServiceWith(server *Server) *gRPCService {
+// NewGrpcServiceWith returns a new GrpcServer.
+func NewGrpcServiceWith(server *Server) *gRPCService {
 	return &gRPCService{
+		Config:                    plugins.NewConfig(),
 		Server:                    server,
 		grpcServer:                nil,
 		Addr:                      "",
@@ -59,6 +64,21 @@ func NewgRPCServiceWith(server *Server) *gRPCService {
 		UnimplementedHealthServer: pb.UnimplementedHealthServer{},
 		UnimplementedMetricServer: pb.UnimplementedMetricServer{},
 	}
+}
+
+// SetConfig sets a manager configuration.
+func (service *gRPCService) SetConfig(c config.Config) {
+	service.Config.SetConfig(c)
+}
+
+// ServiceName returns the plug-in service name.
+func (service *gRPCService) ServiceName() string {
+	return "grpc"
+}
+
+// ServiceType returns the plug-in service type.
+func (service *gRPCService) ServiceType() plugins.ServiceType {
+	return plugins.SystemService
 }
 
 // SetPort sets a port number of the service.
@@ -79,6 +99,10 @@ func (service *gRPCService) PortConfig() (int, error) {
 // Start starts the service.
 func (service *gRPCService) Start() error {
 	var err error
+	port, err := service.GetServiceConfigPort(service)
+	if err == nil {
+		service.SetPort(port)
+	}
 	addr := net.JoinHostPort(service.Addr, strconv.Itoa(service.Port))
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -126,9 +150,9 @@ func loggingUnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServe
 }
 
 func (service *gRPCService) Check(context.Context, *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
-	res := pb.HealthCheckResponse{}  //nolint:exhaustruct
-	switch service.Server.Status() { //nolint:exhaustive
-	case ActorStatusRunning:
+	res := pb.HealthCheckResponse{}               //nolint:exhaustruct
+	switch service.Server.actorService.Status() { //nolint:exhaustive
+	case actor.StatusRunning:
 		res.Status = pb.HealthCheckResponse_SERVING
 	default:
 		res.Status = pb.HealthCheckResponse_NOT_SERVING
@@ -138,7 +162,7 @@ func (service *gRPCService) Check(context.Context, *pb.HealthCheckRequest) (*pb.
 
 func (service *gRPCService) ListConfig(context.Context, *pb.ListConfigRequest) (*pb.ListConfigResponse, error) {
 	res := pb.ListConfigResponse{} //nolint:exhaustruct
-	res.Values = strings.Split(service.Config.String(), "\n")
+	res.Values = strings.Split(service.Server.Config.String(), "\n")
 	return &res, nil
 }
 
