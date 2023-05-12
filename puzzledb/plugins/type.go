@@ -25,10 +25,10 @@ const (
 const (
 	// SystemService represents a system service.
 	SystemService ServiceType = 0x01
-	// CoderDocumentService represents a serializer service for document.
-	CoderDocumentService ServiceType = 0x02 | ExclusiveServiceType
 	// CoderKeyService represents a serializer service for key.
-	CoderKeyService ServiceType = 0x03 | ExclusiveServiceType
+	CoderKeyService ServiceType = 0x02 | ExclusiveServiceType
+	// CoderDocumentService represents a serializer service for document.
+	CoderDocumentService ServiceType = 0x03 | ExclusiveServiceType
 	// QueryService represents a query service.
 	QueryService ServiceType = 0x04
 	// StoreDocumentService represents a document store service.
@@ -49,8 +49,8 @@ const (
 func ServiceTypes() []ServiceType {
 	return []ServiceType{
 		SystemService,
-		CoderDocumentService,
 		CoderKeyService,
+		CoderDocumentService,
 		QueryService,
 		StoreDocumentService,
 		StoreKvService,

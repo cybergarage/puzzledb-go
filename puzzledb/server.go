@@ -33,23 +33,22 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/system/actor"
 	opentracing "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer/ot"
 	opentelemetry "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer/otel"
 )
 
 // Server represents a server instance.
 type Server struct {
-	*ActorService
+	actorService *actor.Service
 	*Config
 	*PluginManager
-	*gRPCService
 }
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		ActorService:  nil,
-		gRPCService:   nil,
+		actorService:  nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 	}
@@ -58,7 +57,6 @@ func NewServer() *Server {
 		panic(err)
 	}
 	server.SetConfig(conf)
-	server.gRPCService = NewgRPCServiceWith(server)
 
 	return server
 }
@@ -85,7 +83,10 @@ func (server *Server) Restart() error {
 }
 
 func (server *Server) reloadEmbeddedPlugins() error {
+	server.actorService = actor.NewService()
 	services := []plugins.Service{
+		server.actorService,
+		NewGrpcServiceWith(server),
 		cbor.NewCoder(),
 		tuple.NewCoder(),
 		store.NewStore(),
@@ -128,6 +129,26 @@ func (server *Server) setupPlugins() error {
 		return err
 	}
 
+	defaultCoodinator, err := server.DefaultCoordinatorService()
+	if err != nil {
+		return err
+	}
+
+	defaultStore, err := server.DefaultStoreService()
+	if err != nil {
+		return err
+	}
+
+	defaultTracer, err := server.DefaultTracingService()
+	if err != nil {
+		return err
+	}
+	defaultTracer.SetServiceName(ProductName)
+
+	// Actor service
+
+	server.actorService.SetCoordinator(defaultCoodinator)
+
 	// KV store services
 
 	for _, service := range server.KvStoreServices() {
@@ -153,22 +174,6 @@ func (server *Server) setupPlugins() error {
 
 	// Query services
 
-	defaultCoodinator, err := server.DefaultCoordinatorService()
-	if err != nil {
-		return err
-	}
-
-	defaultStore, err := server.DefaultStoreService()
-	if err != nil {
-		return err
-	}
-
-	defaultTracer, err := server.DefaultTracingService()
-	if err != nil {
-		return err
-	}
-	defaultTracer.SetServiceName(ProductName)
-
 	for _, service := range server.QueryServices() {
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
@@ -185,7 +190,7 @@ func (server *Server) Start() error { //nolint:gocognit
 	ok, _ := server.Config.GetConfigBool(ConfigLogger, ConfigEnabled)
 	if ok {
 		level := log.LevelInfo
-		levelStr, err := server.GetConfigString(ConfigLogger, ConfigLevel)
+		levelStr, err := server.Config.GetConfigString(ConfigLogger, ConfigLevel)
 		if err == nil {
 			level = log.GetLevelFromString(levelStr)
 		}
@@ -207,24 +212,6 @@ func (server *Server) Start() error { //nolint:gocognit
 	log.Infof("configuration loaded")
 	log.Infof(server.Config.String())
 
-	// Setup gRPC service
-
-	ok, _ = server.gRPCService.EnabledConfig()
-	if ok {
-		port, err := server.gRPCService.PortConfig()
-		if err == nil {
-			server.gRPCService.SetPort(port)
-		}
-		if err := server.gRPCService.Start(); err != nil {
-			if stopErr := server.Stop(); stopErr != nil {
-				return errors.Join(err, stopErr)
-			}
-			return err
-		}
-	} else {
-		log.Infof("gRPC server disabled")
-	}
-
 	// Setup plugins
 
 	if err := server.LoadPlugins(); err != nil {
@@ -244,29 +231,11 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	log.Infof("%s", server.Manager.String())
 
-	// Setup status service
-
-	defaultCoodinator, err := server.DefaultCoordinatorService()
-	if err != nil {
-		if stopErr := server.Stop(); stopErr != nil {
-			return errors.Join(err, stopErr)
-		}
-		return err
-	}
-
-	server.ActorService = NewActorServiceWith(defaultCoodinator)
-	if err := server.ActorService.Start(); err != nil {
-		if stopErr := server.Stop(); stopErr != nil {
-			return errors.Join(err, stopErr)
-		}
-		return err
-	}
-
 	// Output success message
 
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
-	server.SetStatus(ActorStatusRunning)
+	server.actorService.SetStatus(actor.StatusRunning)
 
 	return nil
 }
@@ -277,16 +246,11 @@ func (server *Server) Stop() error {
 	if stopErr := server.Manager.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
 	}
-	ok, _ := server.gRPCService.EnabledConfig()
-	if ok {
-		if stopErr := server.gRPCService.Stop(); stopErr != nil {
-			err = errors.Join(err, stopErr)
-		}
-	}
+
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
 
 	if err == nil {
-		server.SetStatus(ActorStatusStopped)
+		server.actorService.SetStatus(actor.StatusStopped)
 	}
 
 	return err
