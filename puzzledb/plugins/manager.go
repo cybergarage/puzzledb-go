@@ -148,7 +148,7 @@ func (mgr Manager) Stop() error {
 func (mgr *Manager) String() string {
 	var s string
 	for _, servieType := range ServiceTypes() {
-		defaultService, hasDefaultService := mgr.DefaultService(servieType)
+		defaultService, _ := mgr.DefaultService(servieType)
 		names := []string{}
 		for _, service := range mgr.services {
 			if service.ServiceType() != servieType {
@@ -158,7 +158,7 @@ func (mgr *Manager) String() string {
 			serviceStatus := "-"
 			if mgr.IsServiceEnabled(service) {
 				serviceStatus = "+"
-				if hasDefaultService == nil {
+				if defaultService != nil {
 					if name == defaultService.ServiceName() {
 						serviceStatus = "*"
 					}
