@@ -39,6 +39,7 @@ image:img/roadmap.png[doc/img/roadmap]
 *** Key-Value Store plug-ins
 **** [ ] Key-Value cache plug-in
 ** Coordinator plug-ins
+*** [ ] Added FoundationDB plug-in
 *** [ ] Added etcd plug-in
 ** Storage plug-ins
 *** Key-Value Store plug-ins
