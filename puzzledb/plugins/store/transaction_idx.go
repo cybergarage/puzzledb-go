@@ -54,7 +54,8 @@ func (txn *transaction) FindDocumentsByIndex(ctx context.Context, idxKey store.K
 	defer ctx.FinishSpan()
 
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
-	kvIdxRs, err := txn.kv.GetRange(kvIdxKey)
+	kvOpts := NewKvOptionsWith(opts...)
+	kvIdxRs, err := txn.kv.GetRange(kvIdxKey, kvOpts...)
 	if err != nil {
 		return nil, err
 	}
