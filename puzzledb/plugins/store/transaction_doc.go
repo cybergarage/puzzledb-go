@@ -49,6 +49,8 @@ func (txn *transaction) FindDocuments(ctx context.Context, docKey store.Key, opt
 	kvOpts := []store.Option{}
 	for _, opt := range opts {
 		switch v := opt.(type) {
+		case *store.OffsetOption:
+			kvOpts = append(kvOpts, kv.NewOffsetOption(v.Offset))
 		case *store.LimitOption:
 			kvOpts = append(kvOpts, kv.NewLimitOption(v.Limit))
 		case *store.OrderOption:
