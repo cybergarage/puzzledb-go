@@ -18,15 +18,17 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"math/rand"
 	"testing"
+	"time"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 const (
-	testDBPrefix  = "testkv"
 	testKeyCount  = 10
 	testValBufMax = 8
 )
@@ -34,6 +36,8 @@ const (
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
 func StoreTest(t *testing.T, kvStore plugins.Service) {
 	t.Helper()
+
+	testKeyPrefix := fmt.Sprintf("testkv%d", time.Now().UnixNano())
 
 	// Starts the key-value store service.
 
@@ -51,11 +55,10 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 
 	// Generates test keys and values.
 
-	keys := make([][]byte, testKeyCount)
+	keys := make([]document.Key, testKeyCount)
 	vals := make([][]byte, testKeyCount)
 	for n := 0; n < testKeyCount; n++ {
-		keys[n] = make([]byte, testValBufMax)
-		binary.LittleEndian.PutUint64(keys[n], rand.Uint64())
+		keys[n] = document.NewKeyWith(testKeyPrefix, fmt.Sprintf("key%d", n))
 		vals[n] = make([]byte, testValBufMax)
 		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
 	}
@@ -75,10 +78,9 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		val := vals[n]
 		obj := &store.Object{
-			Key:   []any{key},
-			Value: val,
+			Key:   key,
+			Value: vals[n],
 		}
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
@@ -99,7 +101,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		obj, err := tx.Get([]any{key})
+		obj, err := tx.Get(key)
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -123,7 +125,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := tx.GetRange([]any{key})
+		rs, err := tx.GetRange(key)
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -163,10 +165,9 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		val := vals[n]
 		obj := &store.Object{
-			Key:   []any{key},
-			Value: val,
+			Key:   key,
+			Value: vals[n],
 		}
 		if err := tx.Set(obj); err != nil {
 			cancel(t, tx)
@@ -187,7 +188,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		obj, err := tx.Get([]any{key})
+		obj, err := tx.Get(key)
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -212,7 +213,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := tx.GetRange([]any{key})
+		rs, err := tx.GetRange(key)
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -248,7 +249,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		err = tx.Remove([]any{key})
+		err = tx.Remove(key)
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -268,7 +269,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		_, err = tx.Get([]any{key})
+		_, err = tx.Get(key)
 		if err == nil {
 			t.Errorf("key (%v) is found", key)
 			cancel(t, tx)
@@ -295,7 +296,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := tx.GetRange([]any{key})
+		rs, err := tx.GetRange(key)
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
