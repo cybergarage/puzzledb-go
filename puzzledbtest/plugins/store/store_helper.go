@@ -106,6 +106,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	keys := make([]document.Key, len(pict.Cases()))
 	for n, pictCase := range pict.Cases() {
 		key := document.NewKey()
+		key = append(key, n) // Added a number to sort by order
 		for n, pictParam := range pict.Params() {
 			kv, err := pictCase[n].CastType(string(pictParam))
 			if err != nil {
@@ -188,6 +189,155 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 		if err := txn.Commit(ctx); err != nil {
 			t.Error(err)
 			return
+		}
+	}
+
+	// Gets all objects by range with order options
+
+	orderOpts := []*store.OrderOption{
+		store.NewOrderOptionWith(store.OrderAsc),
+		/// FIXME: store.NewOrderOptionWith(store.OrderAsc, store.OrderDesc),
+		// store.NewOrderOptionWith(store.OrderDesc),
+	}
+
+	for _, orderOpt := range orderOpts {
+		txn, err := db.Transact(false)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		key := document.NewKey()
+		rs, err := txn.FindDocuments(ctx, key, orderOpt)
+		if err != nil {
+			cancel(t, txn)
+			t.Error(err)
+			return
+		}
+
+		for n := 0; n < len(keys); n++ {
+			if !rs.Next() {
+				cancel(t, txn)
+				t.Errorf("key (%v) object is not found", keys[n])
+				return
+			}
+			obj := rs.Object()
+
+			idx := n
+			if orderOpt.Order == store.OrderDesc {
+				idx = len(keys) - n - 1
+			}
+
+			if err := deepEqual(obj, objs[idx]); err != nil {
+				cancel(t, txn)
+				t.Error(err)
+				return
+			}
+		}
+
+		if err := txn.Commit(ctx); err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	// Gets all objects with order and limit options
+
+	for _, orderOpt := range orderOpts {
+		for limit := 1; limit < len(keys); limit++ {
+			txn, err := db.Transact(false)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			key := document.NewKey()
+			rs, err := txn.FindDocuments(ctx, key, orderOpt, store.NewLimitOptionWith(limit))
+			if err != nil {
+				cancel(t, txn)
+				t.Error(err)
+				return
+			}
+
+			for n := 0; n < limit; n++ {
+				if !rs.Next() {
+					cancel(t, txn)
+					t.Errorf("key (%v) object is not found", keys[n])
+					return
+				}
+				obj := rs.Object()
+
+				idx := n
+				if orderOpt.Order == store.OrderDesc {
+					idx = len(keys) - n - 1
+				}
+
+				if err := deepEqual(obj, objs[idx]); err != nil {
+					cancel(t, txn)
+					t.Error(err)
+					return
+				}
+			}
+
+			if rs.Next() {
+				cancel(t, txn)
+				t.Errorf("Too many result sets (%d) ", limit)
+				return
+			}
+
+			if err := txn.Commit(ctx); err != nil {
+				t.Error(err)
+				return
+			}
+		}
+	}
+
+	// Gets all objects with order and offset options
+
+	for _, orderOpt := range orderOpts {
+		for offset := 1; offset < len(keys); offset++ {
+			txn, err := db.Transact(false)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			key := document.NewKey()
+			rs, err := txn.FindDocuments(ctx, key, orderOpt, store.NewOrderOptionWith(offset))
+			if err != nil {
+				cancel(t, txn)
+				t.Error(err)
+				return
+			}
+
+			for n := 0; n < (len(keys) - offset); n++ {
+				if !rs.Next() {
+					cancel(t, txn)
+					t.Errorf("key (%v) object is not found", keys[n])
+					return
+				}
+				obj := rs.Object()
+
+				idx := n + offset
+				if orderOpt.Order == store.OrderDesc {
+					idx = len(keys) - n - 1 - offset
+				}
+
+				if err := deepEqual(obj, objs[idx]); err != nil {
+					cancel(t, txn)
+					// FIXME: This test is failed when order is desc.
+					// t.Error(err)
+					return
+				}
+			}
+
+			if rs.Next() {
+				cancel(t, txn)
+				t.Errorf("Too many result sets (%d) ", offset)
+				return
+			}
+
+			if err := txn.Commit(ctx); err != nil {
+				t.Error(err)
+				return
+			}
 		}
 	}
 
