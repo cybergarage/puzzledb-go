@@ -57,7 +57,7 @@ type IndexOperation interface {
 	// RemoveIndex removes the specified secondary index.
 	RemoveIndex(ctx context.Context, idxKey Key) error
 	// FindDocumentsByIndex returns a result set matching the specified index key.
-	FindDocumentsByIndex(ctx context.Context, indexKey Key) (ResultSet, error)
+	FindDocumentsByIndex(ctx context.Context, indexKey Key, opts ...Option) (ResultSet, error)
 	// TruncateIndexes removes all secondary indexes.
 	TruncateIndexes(ctx context.Context) error
 }
