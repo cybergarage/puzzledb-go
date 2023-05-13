@@ -235,7 +235,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 
 	// Selects all inserted test objects by range with asc order and limit options
 
-	for n := 0; n < testKeyCount; n++ {
+	for limit := 1; limit < testKeyCount; limit++ {
 		tx, err = kvStore.Transact(false)
 		if err != nil {
 			t.Error(err)
@@ -243,25 +243,36 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 
 		prefixKey = document.NewKeyWith(testKeyPrefix)
-		rs, err = tx.GetRange(prefixKey, kv.NewOrderOptionWith(kv.OrderAsc), kv.NewLimitOption(n))
+		rs, err = tx.GetRange(prefixKey, kv.NewOrderOptionWith(kv.OrderAsc), kv.NewLimitOption(limit))
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
 			return
 		}
 
-		for i := 0; i < n; i++ {
+		for n := 0; n < limit; n++ {
 			if !rs.Next() {
 				cancel(t, tx)
-				t.Errorf("key (%v) is not found", keys[i])
+				t.Errorf("key (%v) is not found", keys[n])
 				return
 			}
 			obj := rs.Object()
-			if !bytes.Equal(obj.Value, vals[i]) {
+			if !obj.Key.Equals(keys[n]) {
+				cancel(t, tx)
+				t.Errorf("%s != %s", obj.Key, keys[n])
+				return
+			}
+			if !bytes.Equal(obj.Value, vals[n]) {
 				cancel(t, tx)
 				t.Errorf("%s != %s", obj.Value, vals[n])
 				return
 			}
+		}
+
+		if rs.Next() {
+			cancel(t, tx)
+			t.Errorf("Too many result sets (%d) ", limit)
+			return
 		}
 
 		if err := tx.Commit(); err != nil {
