@@ -46,19 +46,9 @@ func (txn *transaction) FindDocuments(ctx context.Context, docKey store.Key, opt
 	ctx.StartSpan("FindDocuments")
 	defer ctx.FinishSpan()
 
-	kvOpts := []store.Option{}
-	for _, opt := range opts {
-		switch v := opt.(type) {
-		case *store.OffsetOption:
-			kvOpts = append(kvOpts, kv.NewOffsetOption(v.Offset))
-		case *store.LimitOption:
-			kvOpts = append(kvOpts, kv.NewLimitOption(v.Limit))
-		case *store.OrderOption:
-			kvOpts = append(kvOpts, kv.NewOrderOptionWith(v.Order))
-		}
-	}
-
-	kvRs, err := txn.kv.GetRange(kv.NewKeyWith(kv.DocumentKeyHeader, docKey), kvOpts...)
+	kvIdxKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
+	kvOpts := NewKvOptionsWith(opts...)
+	kvRs, err := txn.kv.GetRange(kvIdxKey, kvOpts...)
 	if err != nil {
 		return nil, err
 	}
