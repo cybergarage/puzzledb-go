@@ -153,131 +153,112 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 	}
 
-	// Selects all inserted test objects by range with asc order option
+	// Selects all inserted test objects by range with order options
 
-	tx, err := kvStore.Transact(false)
-	if err != nil {
-		t.Error(err)
-		return
+	orderOpts := []*kv.OrderOption{
+		kv.NewOrderOptionWith(kv.OrderAsc),
+		kv.NewOrderOptionWith(kv.OrderDesc),
 	}
 
-	prefixKey := document.NewKeyWith(testKeyPrefix)
-	rs, err := tx.GetRange(prefixKey, kv.NewOrderOptionWith(kv.OrderAsc))
-	if err != nil {
-		cancel(t, tx)
-		t.Error(err)
-		return
-	}
-
-	for n := 0; n < testKeyCount; n++ {
-		if !rs.Next() {
-			cancel(t, tx)
-			t.Errorf("key (%v) is not found", keys[n])
-			return
-		}
-		obj := rs.Object()
-		if !obj.Key.Equals(keys[n]) {
-			cancel(t, tx)
-			t.Errorf("%s != %s", obj.Key, keys[n])
-			return
-		}
-		if !bytes.Equal(obj.Value, vals[n]) {
-			cancel(t, tx)
-			t.Errorf("%s != %s", obj.Value, vals[n])
-			return
-		}
-	}
-
-	if err := tx.Commit(); err != nil {
-		t.Error(err)
-		return
-	}
-
-	// Selects all inserted test objects by range with desc order option
-
-	tx, err = kvStore.Transact(false)
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	prefixKey = document.NewKeyWith(testKeyPrefix)
-	rs, err = tx.GetRange(prefixKey, kv.NewOrderOptionWith(kv.OrderDesc))
-	if err != nil {
-		cancel(t, tx)
-		t.Error(err)
-		return
-	}
-
-	for n := (testKeyCount - 1); 0 < n; n-- {
-		if !rs.Next() {
-			cancel(t, tx)
-			t.Errorf("key (%v) is not found", keys[n])
-			return
-		}
-		obj := rs.Object()
-		if !obj.Key.Equals(keys[n]) {
-			cancel(t, tx)
-			t.Errorf("%s != %s", obj.Key, keys[n])
-			return
-		}
-		if !bytes.Equal(obj.Value, vals[n]) {
-			cancel(t, tx)
-			t.Errorf("%s != %s", obj.Value, vals[n])
-			return
-		}
-	}
-
-	if err := tx.Commit(); err != nil {
-		t.Error(err)
-		return
-	}
-
-	// Selects all inserted test objects by range with asc order and limit options
-
-	for limit := 1; limit < testKeyCount; limit++ {
-		tx, err = kvStore.Transact(false)
+	for _, orderOpt := range orderOpts {
+		tx, err := kvStore.Transact(false)
 		if err != nil {
 			t.Error(err)
 			return
 		}
 
-		prefixKey = document.NewKeyWith(testKeyPrefix)
-		rs, err = tx.GetRange(prefixKey, kv.NewOrderOptionWith(kv.OrderAsc), kv.NewLimitOption(limit))
+		prefixKey := document.NewKeyWith(testKeyPrefix)
+		rs, err := tx.GetRange(prefixKey, orderOpt)
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
 			return
 		}
 
-		for n := 0; n < limit; n++ {
+		for n := 0; n < testKeyCount; n++ {
 			if !rs.Next() {
 				cancel(t, tx)
 				t.Errorf("key (%v) is not found", keys[n])
 				return
 			}
 			obj := rs.Object()
-			if !obj.Key.Equals(keys[n]) {
-				cancel(t, tx)
-				t.Errorf("%s != %s", obj.Key, keys[n])
-				return
-			}
-			if !bytes.Equal(obj.Value, vals[n]) {
-				cancel(t, tx)
-				t.Errorf("%s != %s", obj.Value, vals[n])
-				return
-			}
-		}
 
-		if rs.Next() {
-			cancel(t, tx)
-			t.Errorf("Too many result sets (%d) ", limit)
-			return
+			idx := n
+			if orderOpt.Order == kv.OrderDesc {
+				idx = testKeyCount - n - 1
+			}
+
+			if !obj.Key.Equals(keys[idx]) {
+				cancel(t, tx)
+				t.Errorf("%s != %s", obj.Key, keys[idx])
+				return
+			}
+			if !bytes.Equal(obj.Value, vals[idx]) {
+				cancel(t, tx)
+				t.Errorf("%s != %s", obj.Value, vals[idx])
+				return
+			}
 		}
 
 		if err := tx.Commit(); err != nil {
 			t.Error(err)
 			return
+		}
+	}
+
+	// Selects all inserted test objects by range with desc order and limit options
+
+	for _, orderOpt := range orderOpts {
+		for limit := 1; limit < testKeyCount; limit++ {
+			tx, err := kvStore.Transact(false)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			prefixKey := document.NewKeyWith(testKeyPrefix)
+			rs, err := tx.GetRange(prefixKey, orderOpt, kv.NewLimitOption(limit))
+			if err != nil {
+				cancel(t, tx)
+				t.Error(err)
+				return
+			}
+
+			for n := 0; n < limit; n++ {
+				if !rs.Next() {
+					cancel(t, tx)
+					t.Errorf("key (%v) is not found", keys[n])
+					return
+				}
+				obj := rs.Object()
+
+				idx := n
+				if orderOpt.Order == kv.OrderDesc {
+					idx = testKeyCount - n - 1
+				}
+
+				if !obj.Key.Equals(keys[idx]) {
+					cancel(t, tx)
+					t.Errorf("%s != %s", obj.Key, keys[idx])
+					return
+				}
+				if !bytes.Equal(obj.Value, vals[idx]) {
+					cancel(t, tx)
+					t.Errorf("%s != %s", obj.Value, vals[idx])
+					return
+				}
+			}
+
+			if rs.Next() {
+				cancel(t, tx)
+				t.Errorf("Too many result sets (%d) ", limit)
+				return
+			}
+
+			if err := tx.Commit(); err != nil {
+				t.Error(err)
+				return
+			}
 		}
 	}
 
