@@ -20,7 +20,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Security plug-ins
 
-        -   ❏ Added Authenticator plug-ins﻿
+        -   ❏ Added Authenticator plug-ins
 
         -   ❏ Added Audit plug-ins
 
@@ -76,7 +76,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
             -   ❏ Added cache store plug-in
 
--   Iprovements
+-   Improvements
 
 -   Plug-in improvements
 
