@@ -14,7 +14,7 @@ image:img/roadmap.png[doc/img/roadmap]
 ** Enterprise plug-ins
 *** [ ] Added QoS plug-ins
 ** Security plug-ins
-*** [ ] Added Authenticator plug-ins﻿
+*** [ ] Added Authenticator plug-ins
 *** [ ] Added Audit plug-ins
 *** [ ] Added Encrypt plug-ins
 
@@ -44,7 +44,7 @@ image:img/roadmap.png[doc/img/roadmap]
 *** Key-Value Store plug-ins
 **** [*] Added FoundationDB plug-in
 **** [ ] Added cache store plug-in
-* Iprovements
+* Improvements
 * Plug-in improvements
 ** CLI Utilities
 *** [*] Added status commands to link:cmd/cli/puzzledb-cli.md[puzzledb-cli]
