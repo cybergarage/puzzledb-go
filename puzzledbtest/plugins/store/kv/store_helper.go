@@ -24,8 +24,8 @@ import (
 	"time"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
-	store "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	kvPlugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 const (
@@ -34,7 +34,7 @@ const (
 )
 
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx
-func StoreTest(t *testing.T, kvStore plugins.Service) {
+func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 	t.Helper()
 
 	testKeyPrefix := fmt.Sprintf("testkv%d", time.Now().UnixNano())
@@ -53,24 +53,24 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}()
 
-	// Generates test keys and values.
+	// Generates test objects and values.
 
 	keys := make([]document.Key, testKeyCount)
 	vals := make([][]byte, testKeyCount)
 	for n := 0; n < testKeyCount; n++ {
 		keys[n] = document.NewKeyWith(testKeyPrefix, fmt.Sprintf("key%d", n))
 		vals[n] = make([]byte, testValBufMax)
-		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
+		binary.LittleEndian.PutUint64(vals[n], uint64(n))
 	}
 
-	cancel := func(t *testing.T, txn store.Transaction) {
+	cancel := func(t *testing.T, txn kv.Transaction) {
 		t.Helper()
 		if err := txn.Cancel(); err != nil {
 			t.Error(err)
 		}
 	}
 
-	// Inserts test keys and values.
+	// Inserts test objects and values.
 
 	for n, key := range keys {
 		tx, err := kvStore.Transact(true)
@@ -78,7 +78,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		obj := &store.Object{
+		obj := &kv.Object{
 			Key:   key,
 			Value: vals[n],
 		}
@@ -93,7 +93,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}
 
-	// Selects inserted test keys.
+	// Selects inserted test objects.
 
 	for n, key := range keys {
 		tx, err := kvStore.Transact(false)
@@ -117,7 +117,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}
 
-	// Selects inserted test keys by range
+	// Selects inserted test objects by range
 
 	for n, key := range keys {
 		tx, err := kvStore.Transact(false)
@@ -153,7 +153,124 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}
 
-	// Updates inserted test values.
+	// Selects all inserted test objects by range with asc order option
+
+	tx, err := kvStore.Transact(false)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	prefixKey := document.NewKeyWith(testKeyPrefix)
+	rs, err := tx.GetRange(prefixKey, kv.NewOrderOptionWith(kv.OrderAsc))
+	if err != nil {
+		cancel(t, tx)
+		t.Error(err)
+		return
+	}
+
+	for n := 0; n < testKeyCount; n++ {
+		if !rs.Next() {
+			cancel(t, tx)
+			t.Errorf("key (%v) is not found", keys[n])
+			return
+		}
+		obj := rs.Object()
+		if !obj.Key.Equals(keys[n]) {
+			cancel(t, tx)
+			t.Errorf("%s != %s", obj.Key, keys[n])
+			return
+		}
+		if !bytes.Equal(obj.Value, vals[n]) {
+			cancel(t, tx)
+			t.Errorf("%s != %s", obj.Value, vals[n])
+			return
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		t.Error(err)
+		return
+	}
+
+	// Selects all inserted test objects by range with desc order option
+
+	tx, err = kvStore.Transact(false)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	prefixKey = document.NewKeyWith(testKeyPrefix)
+	rs, err = tx.GetRange(prefixKey, kv.NewOrderOptionWith(kv.OrderDesc))
+	if err != nil {
+		cancel(t, tx)
+		t.Error(err)
+		return
+	}
+
+	for n := (testKeyCount - 1); 0 < n; n-- {
+		if !rs.Next() {
+			cancel(t, tx)
+			t.Errorf("key (%v) is not found", keys[n])
+			return
+		}
+		obj := rs.Object()
+		if !obj.Key.Equals(keys[n]) {
+			cancel(t, tx)
+			t.Errorf("%s != %s", obj.Key, keys[n])
+			return
+		}
+		if !bytes.Equal(obj.Value, vals[n]) {
+			cancel(t, tx)
+			t.Errorf("%s != %s", obj.Value, vals[n])
+			return
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		t.Error(err)
+		return
+	}
+
+	// Selects all inserted test objects by range with asc order and limit options
+
+	for n := 0; n < testKeyCount; n++ {
+		tx, err = kvStore.Transact(false)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		prefixKey = document.NewKeyWith(testKeyPrefix)
+		rs, err = tx.GetRange(prefixKey, kv.NewOrderOptionWith(kv.OrderAsc), kv.NewLimitOption(n))
+		if err != nil {
+			cancel(t, tx)
+			t.Error(err)
+			return
+		}
+
+		for i := 0; i < n; i++ {
+			if !rs.Next() {
+				cancel(t, tx)
+				t.Errorf("key (%v) is not found", keys[i])
+				return
+			}
+			obj := rs.Object()
+			if !bytes.Equal(obj.Value, vals[i]) {
+				cancel(t, tx)
+				t.Errorf("%s != %s", obj.Value, vals[n])
+				return
+			}
+		}
+
+		if err := tx.Commit(); err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	// Updates inserted test object values.
 
 	for n := 0; n < testKeyCount; n++ {
 		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
@@ -165,7 +282,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		obj := &store.Object{
+		obj := &kv.Object{
 			Key:   key,
 			Value: vals[n],
 		}
@@ -180,7 +297,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}
 
-	// Selects updated test keys.
+	// Selects updated test objects.
 
 	for n, key := range keys {
 		tx, err := kvStore.Transact(false)
@@ -205,7 +322,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}
 
-	// Selects updated test keys by range.
+	// Selects updated test objects by range.
 
 	for n, key := range keys {
 		tx, err := kvStore.Transact(false)
@@ -241,7 +358,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}
 
-	// Removes inserted test keys.
+	// Removes inserted test objects.
 
 	for _, key := range keys {
 		tx, err := kvStore.Transact(true)
@@ -261,7 +378,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}
 
-	// Selects removed test keys.
+	// Selects removed test objects.
 
 	for _, key := range keys {
 		tx, err := kvStore.Transact(false)
@@ -276,7 +393,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 			t.Error(err)
 			return
 		}
-		if !errors.Is(err, store.ErrNotExist) {
+		if !errors.Is(err, kv.ErrNotExist) {
 			t.Errorf("key (%v): %s", key, err.Error())
 			cancel(t, tx)
 			t.Error(err)
@@ -288,7 +405,7 @@ func StoreTest(t *testing.T, kvStore plugins.Service) {
 		}
 	}
 
-	// Selects removed test keys by range.
+	// Selects removed test objects by range.
 
 	for _, key := range keys {
 		tx, err := kvStore.Transact(false)
