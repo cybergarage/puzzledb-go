@@ -17,6 +17,21 @@ package store
 // Option represents a option.
 type Option = any
 
+// OffsetOption represents an offset option.
+type OffsetOption struct {
+	Offset uint
+}
+
+// NoOffset represents a no offset option.
+var NoOffset = uint(0)
+
+// NewLimitOption returns a new offset option.
+func NewOffsetOption(offset uint) *OffsetOption {
+	return &OffsetOption{
+		Offset: offset,
+	}
+}
+
 // LimitOption represents a limit option.
 type LimitOption struct {
 	Limit int
