@@ -302,7 +302,7 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where)
+	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where, stmt.OrderBy, stmt.Limit)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -320,16 +320,25 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 	return res, nil
 }
 
-func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, cond *query.Condition) (store.ResultSet, error) {
+func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, cond *query.Condition, orderby query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
 	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
 	if err != nil {
 		return nil, err
 	}
+
+	opts := []store.Option{}
+	if limit != nil { // nolint:staticcheck
+	}
+	if orderby != nil {
+		if len(orderby) == 1 { // nolint:staticcheck
+		}
+	}
+
 	switch docKeyType {
 	case document.PrimaryIndex:
-		return txn.FindDocuments(ctx, docKey)
+		return txn.FindDocuments(ctx, docKey, opts...)
 	case document.SecondaryIndex:
-		return txn.FindDocumentsByIndex(ctx, docKey)
+		return txn.FindDocumentsByIndex(ctx, docKey, opts...)
 	}
 	return nil, newIndexTypeNotSupportedError(docKeyType)
 }
@@ -375,7 +384,7 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where)
+	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where, stmt.OrderBy, stmt.Limit)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
