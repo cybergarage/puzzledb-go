@@ -27,23 +27,36 @@ type rangeResultSet struct {
 	obj *kv.Object
 	*fdb.RangeIterator
 	document.KeyCoder
-	limit int
-	nRead int
+	offset uint
+	limit  int
+	nRead  uint
 }
 
-func newRangeResultSetWith(coder document.KeyCoder, rs fdb.RangeResult, limit int) kv.ResultSet {
+func newRangeResultSetWith(coder document.KeyCoder, rs fdb.RangeResult, offset uint, limit int) kv.ResultSet {
 	return &rangeResultSet{
 		KeyCoder:      coder,
 		RangeResult:   rs,
 		RangeIterator: rs.Iterator(),
+		offset:        offset,
 		limit:         limit,
 		nRead:         0,
 		obj:           nil}
 }
 
 func (rs *rangeResultSet) Next() bool {
-	if kv.NoLimit < rs.limit && rs.limit <= rs.nRead {
+	if kv.NoLimit < rs.limit && uint(rs.limit) <= rs.nRead {
 		return false
+	}
+
+	for rs.nRead < rs.offset {
+		if !rs.RangeIterator.Advance() {
+			return false
+		}
+		_, err := rs.RangeIterator.Get()
+		if err != nil {
+			return false
+		}
+		rs.nRead++
 	}
 
 	if !rs.RangeIterator.Advance() {
@@ -83,10 +96,13 @@ func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, e
 		return nil, err
 	}
 
+	offset := uint(0)
 	limit := -1
 	reverseOrder := false
 	for _, opt := range opts {
 		switch v := opt.(type) {
+		case *kv.OffsetOption:
+			offset = v.Offset
 		case *kv.LimitOption:
 			limit = v.Limit
 		case *kv.OrderOption:
@@ -105,5 +121,5 @@ func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, e
 
 	mReadLatency.Observe(float64(time.Since(now).Milliseconds()))
 
-	return newRangeResultSetWith(txn.KeyCoder, rs, limit), nil
+	return newRangeResultSetWith(txn.KeyCoder, rs, offset, limit), nil
 }
