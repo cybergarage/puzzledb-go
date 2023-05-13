@@ -327,12 +327,8 @@ func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.C
 	}
 
 	opts := []store.Option{}
-	if limit != nil { // nolint:staticcheck
-	}
-	if orderby != nil {
-		if len(orderby) == 1 { // nolint:staticcheck
-		}
-	}
+	opts = append(opts, NewLimitWith(limit)...)
+	opts = append(opts, NewOrderWith(orderby)...)
 
 	switch docKeyType {
 	case document.PrimaryIndex:
