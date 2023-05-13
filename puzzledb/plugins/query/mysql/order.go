@@ -19,14 +19,17 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// NewLimitWith returns a new store option with the specified limit option.
-func NewLimitWith(limit *query.Limit) []store.Option {
-	// TODO: Convert query.Limit to store.Option
+// NewOrderWith returns a new store option with the specified orderby option.
+func NewOrderWith(orderBy query.OrderBy) []store.Option {
+	// TODO: Convert query.OrderBy to store.Option
 	// https://github.com/vitessio/vitess/blob/v0.12.6/go/vt/sqlparser/ast.go
-	// // Limit represents a LIMIT clause.
-	// type Limit struct {
-	// 	Offset, Rowcount Expr
+	// // Order represents an ordering expression.
+	// type Order struct {
+	// 	Expr      Exprd
+	// 	Direction OrderDirection
 	// }
+	// // OrderDirection is an enum for the direction in which to order - asc or desc.
+	// type OrderDirection int8
 	opts := []store.Option{}
 	return opts
 }
