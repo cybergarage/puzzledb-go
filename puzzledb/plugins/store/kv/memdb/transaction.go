@@ -64,7 +64,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 	if err != nil {
 		return nil, err
 	}
-	rs := newResultSetWith(txn.KeyCoder, it, kv.NoLimit)
+	rs := newResultSetWith(txn.KeyCoder, it, 0, kv.NoLimit)
 	if !rs.Next() {
 		return nil, kv.NewObjectNotExistError(key)
 	}
@@ -82,10 +82,13 @@ func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, e
 		return nil, err
 	}
 
-	limit := -1
+	offset := uint(0)
+	limit := int(-1)
 	order := kv.OrderNone
 	for _, opt := range opts {
 		switch v := opt.(type) {
+		case *kv.OffsetOption:
+			offset = v.Offset
 		case *kv.LimitOption:
 			limit = v.Limit
 		case *kv.OrderOption:
@@ -105,7 +108,7 @@ func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, e
 
 	mRangeReadLatency.Observe(float64(time.Since(now).Milliseconds()))
 
-	return newResultSetWith(txn.KeyCoder, it, limit), nil
+	return newResultSetWith(txn.KeyCoder, it, offset, limit), nil
 }
 
 // Remove removes the specified key-value object.
