@@ -262,6 +262,62 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 	}
 
+	// Selects all inserted test objects by range with desc order and offset options
+
+	for _, orderOpt := range orderOpts {
+		for offset := 0; offset < testKeyCount; offset++ {
+			tx, err := kvStore.Transact(false)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			prefixKey := document.NewKeyWith(testKeyPrefix)
+			rs, err := tx.GetRange(prefixKey, orderOpt, kv.NewOffsetOption(uint(offset)))
+			if err != nil {
+				cancel(t, tx)
+				t.Error(err)
+				return
+			}
+
+			for n := 0; n < (testKeyCount - offset); n++ {
+				if !rs.Next() {
+					cancel(t, tx)
+					t.Errorf("key (%v) is not found", keys[n])
+					return
+				}
+				obj := rs.Object()
+
+				idx := n + offset
+				if orderOpt.Order == kv.OrderDesc {
+					idx = testKeyCount - n - 1 - offset
+				}
+
+				if !obj.Key.Equals(keys[idx]) {
+					cancel(t, tx)
+					t.Errorf("%s != %s", obj.Key, keys[idx])
+					return
+				}
+				if !bytes.Equal(obj.Value, vals[idx]) {
+					cancel(t, tx)
+					t.Errorf("%s != %s", obj.Value, vals[idx])
+					return
+				}
+			}
+
+			if rs.Next() {
+				cancel(t, tx)
+				t.Errorf("Too many result sets (%d) ", offset)
+				return
+			}
+
+			if err := tx.Commit(); err != nil {
+				t.Error(err)
+				return
+			}
+		}
+	}
+
 	// Updates inserted test object values.
 
 	for n := 0; n < testKeyCount; n++ {
