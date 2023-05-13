@@ -66,6 +66,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Coordinator plug-ins
 
+        -   ❏ Added FoundationDB plug-in
+
         -   ❏ Added etcd plug-in
 
     -   Storage plug-ins
