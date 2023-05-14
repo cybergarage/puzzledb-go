@@ -15,10 +15,12 @@
 package core
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 type BaseCoordinator struct {
+	coordinator.Process
 	plugins.Config
 	*NotifyManager
 }
@@ -26,6 +28,7 @@ type BaseCoordinator struct {
 // NewBaseCoordinator returns a new base coordinator instance.
 func NewBaseCoordinator() *BaseCoordinator {
 	return &BaseCoordinator{
+		Process:       coordinator.NewProcess(),
 		Config:        plugins.NewConfig(),
 		NotifyManager: NewNotifyManager(),
 	}

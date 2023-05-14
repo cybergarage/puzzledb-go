@@ -36,4 +36,5 @@ type Store interface {
 // Coordinator represents a coordination service.
 type Coordinator interface {
 	Store
+	Process
 }
