@@ -48,7 +48,7 @@ func (mgr *NotifyManager) Watch(key coordinator.Key, watcher coordinator.Watcher
 	return nil
 }
 
-func (mgr *NotifyManager) NofifyEvent(e coordinator.Event) error {
+func (mgr *NotifyManager) NofifyEvent(e coordinator.Message) error {
 	keyStr, err := e.Object().Key().Encode()
 	if err != nil {
 		return err

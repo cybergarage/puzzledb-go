@@ -14,14 +14,14 @@
 
 package coordinator
 
-// Event represents a  coordinator event.
-type Event interface {
+// Message represents a  coordinator event.
+type Message interface {
 	// Type returns the event type.
 	Type() MessageType
 	// Object returns the object of the event.
 	Object() Object
 	// Equals returns true if the event is equal to the specified event.
-	Equals(Event) bool
+	Equals(Message) bool
 	// String returns the string representation of the event.
 	String() string
 }

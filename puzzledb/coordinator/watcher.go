@@ -17,5 +17,5 @@ package coordinator
 // Watcher is an interface for watching events.
 type Watcher interface {
 	// ProcessEvent processes the watching event.
-	ProcessEvent(evt Event)
+	ProcessEvent(evt Message)
 }

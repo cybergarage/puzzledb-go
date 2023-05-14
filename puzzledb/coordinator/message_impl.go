@@ -16,32 +16,32 @@ package coordinator
 
 import "fmt"
 
-// event represents a coordinator event.
-type event struct {
+// messageImpl represents a coordinator messageImpl.
+type messageImpl struct {
 	typ MessageType
 	obj Object
 }
 
-// NewEventWith returns a new event with the specified type and object.
-func NewEventWith(t MessageType, obj Object) Event {
-	return &event{
+// NewMessageWith returns a new event with the specified type and object.
+func NewMessageWith(t MessageType, obj Object) Message {
+	return &messageImpl{
 		typ: t,
 		obj: obj,
 	}
 }
 
 // Type returns the event type.
-func (e *event) Type() MessageType {
+func (e *messageImpl) Type() MessageType {
 	return e.typ
 }
 
 // Object returns the object of the event.
-func (e *event) Object() Object {
+func (e *messageImpl) Object() Object {
 	return e.obj
 }
 
 // Equals returns true if the event is equal to the specified event.
-func (e *event) Equals(other Event) bool {
+func (e *messageImpl) Equals(other Message) bool {
 	if e.Type() != other.Type() {
 		return false
 	}
@@ -52,6 +52,6 @@ func (e *event) Equals(other Event) bool {
 }
 
 // String returns the string representation of the event.
-func (e *event) String() string {
+func (e *messageImpl) String() string {
 	return fmt.Sprintf("%s %s", e.typ.String(), e.obj.String())
 }

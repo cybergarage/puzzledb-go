@@ -253,20 +253,20 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 }
 
 type testWatcher struct {
-	receivedEvents []coordinator.Event
+	receivedEvents []coordinator.Message
 }
 
 func newqTestWatcher() *testWatcher {
 	return &testWatcher{
-		receivedEvents: []coordinator.Event{},
+		receivedEvents: []coordinator.Message{},
 	}
 }
 
-func (w *testWatcher) ProcessEvent(e coordinator.Event) {
+func (w *testWatcher) ProcessEvent(e coordinator.Message) {
 	w.receivedEvents = append(w.receivedEvents, e)
 }
 
-func (w *testWatcher) IsEventReceived(e coordinator.Event) bool {
+func (w *testWatcher) IsEventReceived(e coordinator.Message) bool {
 	for _, event := range w.receivedEvents {
 		if e.Equals(event) {
 			return true
@@ -349,7 +349,7 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 
 	for _, obj := range objs {
 		for _, w := range watchers {
-			e := coordinator.NewEventWith(coordinator.ObjectCreated, obj)
+			e := coordinator.NewMessageWith(coordinator.ObjectCreated, obj)
 			if !w.IsEventReceived(e) {
 				t.Errorf("watcher did not receive event: %s", e.String())
 				return
@@ -386,7 +386,7 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 
 	for _, obj := range objs {
 		for _, w := range watchers {
-			e := coordinator.NewEventWith(coordinator.ObjectUpdated, obj)
+			e := coordinator.NewMessageWith(coordinator.ObjectUpdated, obj)
 			if !w.IsEventReceived(e) {
 				t.Errorf("watcher did not receive event: %s", e.String())
 				return
@@ -433,7 +433,7 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 
 	for _, obj := range objs {
 		for _, w := range watchers {
-			e := coordinator.NewEventWith(coordinator.ObjectDeleted, obj)
+			e := coordinator.NewMessageWith(coordinator.ObjectDeleted, obj)
 			if !w.IsEventReceived(e) {
 				t.Errorf("watcher did not receive event: %s", e.String())
 				return

@@ -68,11 +68,11 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 		return err
 	}
 
-	var evt coordinator.Event
+	var evt coordinator.Message
 	if hasObj {
-		evt = coordinator.NewEventWith(coordinator.ObjectUpdated, obj)
+		evt = coordinator.NewMessageWith(coordinator.ObjectUpdated, obj)
 	} else {
-		evt = coordinator.NewEventWith(coordinator.ObjectCreated, obj)
+		evt = coordinator.NewMessageWith(coordinator.ObjectCreated, obj)
 	}
 	err = txn.NotifyManager.NofifyEvent(evt)
 	if err != nil {
@@ -122,7 +122,7 @@ func (txn *transaction) Delete(key coordinator.Key) error {
 		return err
 	}
 
-	evt := coordinator.NewEventWith(coordinator.ObjectDeleted, obj)
+	evt := coordinator.NewMessageWith(coordinator.ObjectDeleted, obj)
 	err = txn.NotifyManager.NofifyEvent(evt)
 	if err != nil {
 		return err
