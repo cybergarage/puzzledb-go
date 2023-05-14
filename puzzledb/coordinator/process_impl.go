@@ -14,26 +14,18 @@
 
 package coordinator
 
-// Clock represents a logical clock.
-type Clock uint64
-
-// Process represents a coordinator process.
-type Process interface {
-	// SetClock sets a coordinator logical clock.
-	SetClock(clock Clock)
-	// Clock returns a coordinator logical clock.
-	Clock() Clock
+type processImpl struct {
 }
 
-// Store represents a coordination store inteface.
-type Store interface {
-	// Transact begin a new transaction.
-	Transact() (Transaction, error)
-	// Watch adds a watcher to the coordinator.
-	Watch(key Key, w Watcher) error
+func NewProcess() Process {
+	return &processImpl{}
 }
 
-// Coordinator represents a coordination service.
-type Coordinator interface {
-	Store
+// SetClock sets a coordinator logical clock.
+func (process *processImpl) SetClock(clock Clock) {
+}
+
+// Clock returns a coordinator logical clock.
+func (process *processImpl) Clock() Clock {
+	return 0
 }
