@@ -18,12 +18,12 @@ import "fmt"
 
 // event represents a coordinator event.
 type event struct {
-	typ EventType
+	typ MessageType
 	obj Object
 }
 
 // NewEventWith returns a new event with the specified type and object.
-func NewEventWith(t EventType, obj Object) Event {
+func NewEventWith(t MessageType, obj Object) Event {
 	return &event{
 		typ: t,
 		obj: obj,
@@ -31,7 +31,7 @@ func NewEventWith(t EventType, obj Object) Event {
 }
 
 // Type returns the event type.
-func (e *event) Type() EventType {
+func (e *event) Type() MessageType {
 	return e.typ
 }
 
