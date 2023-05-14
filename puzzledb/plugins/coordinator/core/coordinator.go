@@ -22,14 +22,14 @@ import (
 type BaseCoordinator struct {
 	coordinator.Process
 	plugins.Config
-	*NotifyManager
+	*MessageBox
 }
 
 // NewBaseCoordinator returns a new base coordinator instance.
 func NewBaseCoordinator() *BaseCoordinator {
 	return &BaseCoordinator{
-		Process:       coordinator.NewProcess(),
-		Config:        plugins.NewConfig(),
-		NotifyManager: NewNotifyManager(),
+		Process:    coordinator.NewProcess(),
+		Config:     plugins.NewConfig(),
+		MessageBox: NewMessageBox(),
 	}
 }
