@@ -114,10 +114,10 @@ cmd_docs: doc_cmd_cli doc_cmd_server
 
 %.md : %.adoc
 	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
-csvs := $(wildcard doc/**/*.csv doc/**/**/*.csv)
-docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc doc/spec/*.adoc))
+csvs := $(wildcard doc/*/*.csv doc/*/*/*.csv)
+docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc doc/*/*.adoc))
 doc_touch: $(csvs)
-	touch doc/*.adoc doc/spec/*.adoc
+	touch doc/*.adoc doc/*/*.adoc
 
 doc: doc_touch $(docs) cmd_docs
 	@mv README_.md README.md
