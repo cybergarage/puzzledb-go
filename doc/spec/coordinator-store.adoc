@@ -22,6 +22,7 @@ include::csv/coodinator-store-header.csv[]
 
 The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
 
+
 == Message
 
 The message key-value record is used to store messages sent between PuzzleDB nodes in the cluster to notify any node and store status changes.
