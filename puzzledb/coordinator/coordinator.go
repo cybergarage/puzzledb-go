@@ -14,10 +14,15 @@
 
 package coordinator
 
-// Coordinator represents a coordination service.
-type Coordinator interface {
+// Store represents a coordination store inteface.
+type Store interface {
 	// Transact begin a new transaction.
 	Transact() (Transaction, error)
 	// Watch adds a watcher to the coordinator.
 	Watch(key Key, w Watcher) error
+}
+
+// Coordinator represents a coordination service.
+type Coordinator interface {
+	Store
 }
