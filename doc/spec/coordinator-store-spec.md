@@ -1,8 +1,12 @@
-# Coordinator Store Specification
+# Coordinator Specification
 
 The coordinator service provides distributed synchronization and coordination for PuzzleDB nodes, as well as a distributed key-value store. This document describes the specifications of the information stored in the key-value store provided by The coordinator service.
 
-## Key Categories
+## Store
+
+The coordinator service provides a distributed key-value store for PuzzleDB nodes. The key-value store is a collection of key-value records, where each record is a key-value pair, consisting of a header as the key and a value as the value.
+
+### Key Categories
 
 The key-value store is a collection of key-value records, where each record is a key-value pair, consisting of a header as the key. The key-value store supports the following categories of key-value records:
 
@@ -48,7 +52,7 @@ The key-value store is a collection of key-value records, where each record is a
 </tbody>
 </table>
 
-## Key Header Specification
+### Key Header Specification
 
 The key header is a 2-byte header that is prepended to every key in the key-value store. The key header is defined as follows:
 
@@ -91,9 +95,9 @@ The key header is a 2-byte header that is prepended to every key in the key-valu
 
 The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
 
-## Message
+## Message Box
 
-The message key-value record is used to store messages sent between PuzzleDB nodes in the cluster to notify any node and store status changes.
+The message box is used to store messages sent between PuzzleDB nodes in the cluster to notify any node and store status changes using the message key-value store.
 
 ### Message Object
 
@@ -132,7 +136,7 @@ The type field is used to identify messages and the timestamp field is used to d
 
 Logical clocks, like the Lamport Clock, are important in distributed systems because they allow events to be ordered across different nodes. PuzzleDB uses the Lamport Clock algorithm to manage the message clock in the coordinator service as follows:
 
-![coordinator store clock](img/coordinator_store_clock.png)
+![coordinator clock](img/coordinator_clock.png)
 
 The coordinator node behaves as a virtual PuzzleDB node。 The coordinator node sends a message to itself to increment the clock. The coordinator node also sends a message to other nodes to increment their clocks.
 
