@@ -117,7 +117,7 @@ cmd_docs: doc_cmd_cli doc_cmd_server
 csvs := $(wildcard doc/**/*.csv doc/**/**/*.csv)
 docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc doc/spec/*.adoc))
 doc_touch: $(csvs)
-	touch doc/*.adoc
+	touch doc/*.adoc doc/spec/*.adoc
 
 doc: doc_touch $(docs) cmd_docs
 	@mv README_.md README.md
