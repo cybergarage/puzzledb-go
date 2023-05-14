@@ -14,19 +14,19 @@
 
 package coordinator
 
-// EventType represents a coordinator event type.
-type EventType uint8
+// MessageType represents a coordinator event type.
+type MessageType uint8
 
 const (
 	// ObjectCreated represents a object created event.
-	ObjectCreated EventType = iota
+	ObjectCreated MessageType = iota
 	// ObjectUpdated represents a object updated event.
 	ObjectUpdated
 	// ObjectDeleted represents a object deleted event.
 	ObjectDeleted
 )
 
-func (t EventType) String() string {
+func (t MessageType) String() string {
 	switch t {
 	case ObjectCreated:
 		return "created"

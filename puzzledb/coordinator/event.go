@@ -17,7 +17,7 @@ package coordinator
 // Event represents a  coordinator event.
 type Event interface {
 	// Type returns the event type.
-	Type() EventType
+	Type() MessageType
 	// Object returns the object of the event.
 	Object() Object
 	// Equals returns true if the event is equal to the specified event.
