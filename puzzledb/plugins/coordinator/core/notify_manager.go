@@ -32,7 +32,7 @@ func NewNotifyManager() *NotifyManager {
 	}
 }
 
-// Watch adds a watcher to the coordinator.
+// Watch registers a watcher for the specified key.
 func (mgr *NotifyManager) Watch(key coordinator.Key, watcher coordinator.Watcher) error {
 	keyStr, err := key.Encode()
 	if err != nil {
@@ -48,7 +48,8 @@ func (mgr *NotifyManager) Watch(key coordinator.Key, watcher coordinator.Watcher
 	return nil
 }
 
-func (mgr *NotifyManager) NofifyEvent(e coordinator.Message) error {
+// NotifyMessage notifies the specified event to the watchers.
+func (mgr *NotifyManager) NotifyMessage(e coordinator.Message) error {
 	keyStr, err := e.Object().Key().Encode()
 	if err != nil {
 		return err
