@@ -76,5 +76,6 @@ For more information about the roadmap, please refer to link:doc/roadmap.adoc[Ro
 ** link:doc/plugin-types.md[Plug-in Services]
 *** link:doc/plugin-tutorial.md[Building User Plug-ins]
 * Specification
-** link:doc/spec/kv-store.md[Key-Value Store Specification]
-** link:doc/spec/coordinator-store.md[Coordinator Store Specification]
+** link:doc/spec/coordinator-spec.md[Coordinator Specification]
+** Store Specification
+*** link:doc/spec/kv-store-spec.md[Key-Value Store Specification]
