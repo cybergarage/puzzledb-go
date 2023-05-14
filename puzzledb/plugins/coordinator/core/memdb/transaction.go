@@ -26,15 +26,15 @@ type Document struct {
 }
 
 type transaction struct {
-	*core.NotifyManager
+	*core.MessageBox
 	*memdb.Txn
 }
 
 // NewTransaction returns a new transaction.
-func newTransactionWith(mgr *core.NotifyManager, txn *memdb.Txn) coordinator.Transaction {
+func newTransactionWith(mbox *core.MessageBox, txn *memdb.Txn) coordinator.Transaction {
 	return &transaction{
-		NotifyManager: mgr,
-		Txn:           txn,
+		MessageBox: mbox,
+		Txn:        txn,
 	}
 }
 
@@ -74,7 +74,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 	} else {
 		evt = coordinator.NewMessageWith(coordinator.ObjectCreated, obj)
 	}
-	err = txn.NotifyManager.NotifyMessage(evt)
+	err = txn.PostMessage(evt)
 	if err != nil {
 		return err
 	}
@@ -123,7 +123,7 @@ func (txn *transaction) Delete(key coordinator.Key) error {
 	}
 
 	evt := coordinator.NewMessageWith(coordinator.ObjectDeleted, obj)
-	err = txn.NotifyManager.NotifyMessage(evt)
+	err = txn.PostMessage(evt)
 	if err != nil {
 		return err
 	}

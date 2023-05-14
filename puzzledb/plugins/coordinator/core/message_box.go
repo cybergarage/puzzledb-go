@@ -22,18 +22,18 @@ import (
 
 type watchersMap = map[string][]coordinator.Watcher
 
-type NotifyManager struct {
+type MessageBox struct {
 	watchersMap watchersMap
 }
 
-func NewNotifyManager() *NotifyManager {
-	return &NotifyManager{
+func NewMessageBox() *MessageBox {
+	return &MessageBox{
 		watchersMap: watchersMap{},
 	}
 }
 
 // Watch registers a watcher for the specified key.
-func (mgr *NotifyManager) Watch(key coordinator.Key, watcher coordinator.Watcher) error {
+func (mgr *MessageBox) Watch(key coordinator.Key, watcher coordinator.Watcher) error {
 	keyStr, err := key.Encode()
 	if err != nil {
 		return err
@@ -48,8 +48,8 @@ func (mgr *NotifyManager) Watch(key coordinator.Key, watcher coordinator.Watcher
 	return nil
 }
 
-// NotifyMessage notifies the specified event to the watchers.
-func (mgr *NotifyManager) NotifyMessage(e coordinator.Message) error {
+// PostMessage posts the specified event to the watchers.
+func (mgr *MessageBox) PostMessage(e coordinator.Message) error {
 	keyStr, err := e.Object().Key().Encode()
 	if err != nil {
 		return err
