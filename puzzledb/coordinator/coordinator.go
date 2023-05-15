@@ -14,14 +14,20 @@
 
 package coordinator
 
+import (
+	"github.com/google/uuid"
+)
+
 // Clock represents a logical clock.
 type Clock uint64
 
 // Process represents a coordinator process.
 type Process interface {
-	// SetClock sets a coordinator logical clock.
+	// ID returns a UUID of the coordinator process.
+	ID() uuid.UUID
+	// SetClock sets a logical clock to the coordinator process.
 	SetClock(clock Clock)
-	// Clock returns a coordinator logical clock.
+	// Clock returns a logical clock of the coordinator process.
 	Clock() Clock
 }
 
