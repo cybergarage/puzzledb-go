@@ -66,8 +66,8 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 	return coordinator.NewObjectWith(key, val), nil
 }
 
-// Delete removes the specified key-value object.
-func (txn *transaction) Delete(key coordinator.Key) error {
+// Remove removes the specified key-value object.
+func (txn *transaction) Remove(key coordinator.Key) error {
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return err

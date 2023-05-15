@@ -41,8 +41,8 @@ func (txn *etcdTransaction) GetRange(key coordinator.Key) (coordinator.ResultSet
 	return nil, nil
 }
 
-// Delete deletes the object for the specified key.
-func (txn *etcdTransaction) Delete(key coordinator.Key) error {
+// Remove removes the object for the specified key.
+func (txn *etcdTransaction) Remove(key coordinator.Key) error {
 	return nil
 }
 

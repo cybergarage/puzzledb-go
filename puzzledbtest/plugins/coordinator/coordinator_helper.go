@@ -225,7 +225,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 		}
 	}
 
-	// Deletes updated objects
+	// Removes updated objects
 
 	for _, obj := range objs {
 		tx, err := s.Transact()
@@ -233,7 +233,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 			t.Error(err)
 			return
 		}
-		err = tx.Delete(obj.Key())
+		err = tx.Remove(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
@@ -394,7 +394,7 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 		}
 	}
 
-	// Deletes updated objects
+	// Removes updated objects
 
 	for _, obj := range objs {
 		tx, err := s.Transact()
@@ -402,7 +402,7 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 			t.Error(err)
 			return
 		}
-		err = tx.Delete(obj.Key())
+		err = tx.Remove(obj.Key())
 		if err != nil {
 			cancel(t, tx)
 			t.Error(err)
