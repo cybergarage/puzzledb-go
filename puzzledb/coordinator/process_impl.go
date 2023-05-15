@@ -25,10 +25,12 @@ type processImpl struct {
 	sync.Mutex
 	clock Clock
 	uuid  uuid.UUID
+	host  string
 }
 
 func NewProcess() Process {
 	return &processImpl{
+		host:  "",
 		Mutex: sync.Mutex{},
 		clock: 0,
 		uuid:  uuid.New(),
@@ -38,6 +40,16 @@ func NewProcess() Process {
 // ID returns a UUID of the coordinator process.
 func (process *processImpl) ID() uuid.UUID {
 	return process.uuid
+}
+
+// SetHost sets a host name to the coordinator process.
+func (process *processImpl) SetHost(host string) {
+	process.host = host
+}
+
+// Host returns a host name of the coordinator process.
+func (process *processImpl) Host() string {
+	return process.host
 }
 
 // SetClock sets a logical clock to the coordinator process.
