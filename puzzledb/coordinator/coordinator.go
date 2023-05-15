@@ -18,9 +18,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// Clock represents a logical clock.
-type Clock uint64
-
 // Process represents a coordinator process.
 type Process interface {
 	// ID returns a UUID of the coordinator process.
