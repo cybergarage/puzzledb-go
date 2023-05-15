@@ -36,8 +36,8 @@ func (txn *etcdTransaction) Get(key coordinator.Key) (coordinator.Object, error)
 	return nil, nil
 }
 
-// Range gets the resultset for the specified key range.
-func (txn *etcdTransaction) Range(key coordinator.Key) (coordinator.ResultSet, error) {
+// GetRange gets the result set for the specified key.
+func (txn *etcdTransaction) GetRange(key coordinator.Key) (coordinator.ResultSet, error) {
 	return nil, nil
 }
 

@@ -83,7 +83,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 
 // Get gets the object for the specified key.
 func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
-	rs, err := txn.Range(key)
+	rs, err := txn.GetRange(key)
 	if err != nil {
 		return nil, err
 	}
@@ -93,8 +93,8 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 	return rs.Object(), nil
 }
 
-// Range gets the resultset for the specified key range.
-func (txn *transaction) Range(key coordinator.Key) (coordinator.ResultSet, error) {
+// GetRange gets the result set for the specified key.
+func (txn *transaction) GetRange(key coordinator.Key) (coordinator.ResultSet, error) {
 	keyStr, err := key.Encode()
 	if err != nil {
 		return nil, err
