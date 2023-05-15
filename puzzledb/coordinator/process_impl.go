@@ -15,16 +15,21 @@
 package coordinator
 
 import (
+	"math"
+	"sync"
+
 	"github.com/google/uuid"
 )
 
 type processImpl struct {
+	sync.Mutex
 	clock Clock
 	uuid  uuid.UUID
 }
 
 func NewProcess() Process {
 	return &processImpl{
+		Mutex: sync.Mutex{},
 		clock: 0,
 		uuid:  uuid.New(),
 	}
@@ -36,7 +41,14 @@ func (process *processImpl) ID() uuid.UUID {
 }
 
 // SetClock sets a logical clock to the coordinator process.
-func (process *processImpl) SetClock(clock Clock) {
+func (process *processImpl) SetClock(newClock Clock) {
+	if newClock < process.clock {
+		newClock = process.clock
+	}
+	if (math.MaxUint64 - 1) <= newClock {
+		newClock = 0
+	}
+	process.clock = newClock + 1
 }
 
 // Clock returns a logical clock of the coordinator process.
