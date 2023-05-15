@@ -42,7 +42,7 @@ func (process *processImpl) ID() uuid.UUID {
 
 // SetClock sets a logical clock to the coordinator process.
 func (process *processImpl) SetClock(newClock Clock) {
-	if newClock < process.clock {
+	if 0 < process.clock.Compare(newClock) {
 		newClock = process.clock
 	}
 	if (math.MaxUint64 - 1) <= newClock {
