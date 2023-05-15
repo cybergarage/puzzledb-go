@@ -14,18 +14,32 @@
 
 package coordinator
 
+import (
+	"github.com/google/uuid"
+)
+
 type processImpl struct {
+	clock Clock
+	uuid  uuid.UUID
 }
 
 func NewProcess() Process {
-	return &processImpl{}
+	return &processImpl{
+		clock: 0,
+		uuid:  uuid.New(),
+	}
 }
 
-// SetClock sets a coordinator logical clock.
+// ID returns a UUID of the coordinator process.
+func (process *processImpl) ID() uuid.UUID {
+	return process.uuid
+}
+
+// SetClock sets a logical clock to the coordinator process.
 func (process *processImpl) SetClock(clock Clock) {
 }
 
-// Clock returns a coordinator logical clock.
+// Clock returns a logical clock of the coordinator process.
 func (process *processImpl) Clock() Clock {
-	return 0
+	return process.clock
 }
