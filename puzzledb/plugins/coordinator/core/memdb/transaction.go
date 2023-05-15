@@ -106,8 +106,8 @@ func (txn *transaction) GetRange(key coordinator.Key) (coordinator.ResultSet, er
 	return newResultSet(key, it), nil
 }
 
-// Delete deletes the object for the specified key.
-func (txn *transaction) Delete(key coordinator.Key) error {
+// Remove removes the object for the specified key.
+func (txn *transaction) Remove(key coordinator.Key) error {
 	obj, hasObj := txn.Exists(key)
 	if !hasObj {
 		return coordinator.NewKeyNotExistError(key)
