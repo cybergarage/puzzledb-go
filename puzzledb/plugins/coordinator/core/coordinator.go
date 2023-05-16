@@ -20,16 +20,40 @@ import (
 )
 
 type BaseCoordinator struct {
+	observers []coordinator.Observer
 	coordinator.Process
 	plugins.Config
-	*MessageBox
 }
 
 // NewBaseCoordinator returns a new base coordinator instance.
 func NewBaseCoordinator() *BaseCoordinator {
 	return &BaseCoordinator{
-		Process:    coordinator.NewProcess(),
-		Config:     plugins.NewConfig(),
-		MessageBox: NewMessageBox(),
+		Process:   coordinator.NewProcess(),
+		Config:    plugins.NewConfig(),
+		observers: []coordinator.Observer{},
 	}
+}
+
+// AddObserver adds the specified observer.
+func (coord *BaseCoordinator) AddObserver(newObserver coordinator.Observer) error {
+	for _, observer := range coord.observers {
+		if observer == newObserver {
+			return nil
+		}
+	}
+	coord.observers = append(coord.observers, newObserver)
+	return nil
+}
+
+// PostMessage posts the specified message to the coordinator.
+func (coord *BaseCoordinator) PostMessage(msg coordinator.Message) error {
+	return nil
+}
+
+// NofityMessage posts the specified message to the observers.
+func (coord *BaseCoordinator) NofityMessage(msg coordinator.Message) error {
+	for _, observer := range coord.observers {
+		observer.MessageReceived(msg)
+	}
+	return nil
 }
