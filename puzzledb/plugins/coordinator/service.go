@@ -26,11 +26,49 @@ type Service interface {
 }
 
 type serviceImpl struct {
+	observers []coordinator.Observer
+	coordinator.Process
 	core.CoordinatorService
 }
 
 func NewServiceWith(c core.CoordinatorService) Service {
 	return &serviceImpl{
+		Process:            coordinator.NewProcess(),
+		observers:          make([]coordinator.Observer, 0),
 		CoordinatorService: c,
 	}
+}
+
+// AddObserver adds the specified observer.
+func (coord *serviceImpl) AddObserver(newObserver coordinator.Observer) error {
+	for _, observer := range coord.observers {
+		if observer == newObserver {
+			return nil
+		}
+	}
+	coord.observers = append(coord.observers, newObserver)
+	return nil
+}
+
+// PostMessage posts the specified message to the coordinator.
+func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
+	return nil
+}
+
+// NofityMessage posts the specified message to the observers.
+func (coord *serviceImpl) NofityMessage(msg coordinator.Message) error {
+	for _, observer := range coord.observers {
+		observer.MessageReceived(msg)
+	}
+	return nil
+}
+
+// Start starts this etcd coordinator.
+func (coord *serviceImpl) Start() error {
+	return nil
+}
+
+// Stop stops this etcd coordinator.
+func (coord *serviceImpl) Stop() error {
+	return nil
 }

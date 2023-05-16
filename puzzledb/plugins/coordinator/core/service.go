@@ -20,6 +20,6 @@ import (
 )
 
 type CoordinatorService interface {
-	coordinator.Coordinator
+	coordinator.Store
 	plugins.Service
 }
