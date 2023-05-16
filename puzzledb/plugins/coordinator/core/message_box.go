@@ -24,10 +24,12 @@ type watchersMap = map[string][]coordinator.Watcher
 
 type MessageBox struct {
 	watchersMap watchersMap
+	observers   []coordinator.Observer
 }
 
 func NewMessageBox() *MessageBox {
 	return &MessageBox{
+		observers:   []coordinator.Observer{},
 		watchersMap: watchersMap{},
 	}
 }
@@ -48,9 +50,25 @@ func (mgr *MessageBox) Watch(key coordinator.Key, watcher coordinator.Watcher) e
 	return nil
 }
 
-// PostMessage posts the specified event to the watchers.
-func (mgr *MessageBox) PostMessage(e coordinator.Message) error {
-	keyStr, err := e.Object().Key().Encode()
+// AddObserver adds the specified observer.
+func (mgr *MessageBox) AddObserver(newObserver coordinator.Observer) error {
+	for _, observer := range mgr.observers {
+		if observer == newObserver {
+			return nil
+		}
+	}
+	mgr.observers = append(mgr.observers, newObserver)
+	return nil
+}
+
+// PostMessage posts the specified message to the coordinator.
+func (mgr *MessageBox) PostMessage(msg coordinator.Message) error {
+	return nil
+}
+
+// NofityMessage posts the specified message to the observers.
+func (mgr *MessageBox) NofityMessage(msg coordinator.Message) error {
+	keyStr, err := msg.Object().Key().Encode()
 	if err != nil {
 		return err
 	}
@@ -59,8 +77,11 @@ func (mgr *MessageBox) PostMessage(e coordinator.Message) error {
 			continue
 		}
 		for _, w := range watcheres {
-			w.ProcessEvent(e)
+			w.ProcessEvent(msg)
 		}
+	}
+	for _, observer := range mgr.observers {
+		observer.MessageReceived(msg)
 	}
 	return nil
 }
