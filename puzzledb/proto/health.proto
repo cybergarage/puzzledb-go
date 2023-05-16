@@ -6,7 +6,6 @@ option go_package = "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc";
 
 service Health {
   rpc Check(HealthCheckRequest) returns (HealthCheckResponse);
-  // rpc Watch(HealthCheckRequest) returns (stream HealthCheckResponse);
 }
 
 message HealthCheckRequest {
