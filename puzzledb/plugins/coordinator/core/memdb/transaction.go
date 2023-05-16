@@ -74,7 +74,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 	} else {
 		evt = coordinator.NewMessageWith(coordinator.ObjectCreated, obj)
 	}
-	err = txn.PostMessage(evt)
+	err = txn.NofityMessage(evt)
 	if err != nil {
 		return err
 	}
@@ -123,7 +123,7 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 	}
 
 	evt := coordinator.NewMessageWith(coordinator.ObjectDeleted, obj)
-	err = txn.PostMessage(evt)
+	err = txn.NofityMessage(evt)
 	if err != nil {
 		return err
 	}

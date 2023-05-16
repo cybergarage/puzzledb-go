@@ -14,16 +14,8 @@
 
 package coordinator
 
-// Message represents a  coordinator event.
-type Message interface {
-	// From returns the destination process of the message.
-	From() Process
-	// Type returns the message type.
-	Type() MessageType
-	// Object returns the object of the message.
-	Object() Object
-	// Equals returns true if the message is equal to the specified event.
-	Equals(Message) bool
-	// String returns the string representation of the message.
-	String() string
+// Observer is an interface to receive a message.
+type Observer interface {
+	// MessageReceived is called when a message is received.
+	MessageReceived(evt Message)
 }

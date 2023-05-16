@@ -18,40 +18,47 @@ import "fmt"
 
 // messageImpl represents a coordinator messageImpl.
 type messageImpl struct {
+	Process
 	typ MessageType
 	obj Object
 }
 
-// NewMessageWith returns a new event with the specified type and object.
+// NewMessageWith returns a new message with the specified type and object.
 func NewMessageWith(t MessageType, obj Object) Message {
 	return &messageImpl{
-		typ: t,
-		obj: obj,
+		Process: NewProcess(),
+		typ:     t,
+		obj:     obj,
 	}
 }
 
-// Type returns the event type.
-func (e *messageImpl) Type() MessageType {
-	return e.typ
+// From returns the destination process of the message.
+func (msg *messageImpl) From() Process {
+	return msg.Process
 }
 
-// Object returns the object of the event.
-func (e *messageImpl) Object() Object {
-	return e.obj
+// Type returns the message type.
+func (msg *messageImpl) Type() MessageType {
+	return msg.typ
 }
 
-// Equals returns true if the event is equal to the specified event.
-func (e *messageImpl) Equals(other Message) bool {
-	if e.Type() != other.Type() {
+// Object returns the object of the message.
+func (msg *messageImpl) Object() Object {
+	return msg.obj
+}
+
+// Equals returns true if the message is equal to the specified message.
+func (msg *messageImpl) Equals(other Message) bool {
+	if msg.Type() != other.Type() {
 		return false
 	}
-	if e.Object().Equals(other.Object()) {
+	if msg.Object().Equals(other.Object()) {
 		return true
 	}
 	return false
 }
 
-// String returns the string representation of the event.
-func (e *messageImpl) String() string {
-	return fmt.Sprintf("%s %s", e.typ.String(), e.obj.String())
+// String returns the string representation of the message.
+func (msg *messageImpl) String() string {
+	return fmt.Sprintf("%s %s", msg.typ.String(), msg.obj.String())
 }
