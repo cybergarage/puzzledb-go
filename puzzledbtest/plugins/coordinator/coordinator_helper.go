@@ -262,10 +262,6 @@ func newqTestObserver() *testObserver {
 	}
 }
 
-func (observer *testObserver) ProcessEvent(msg coordinator.Message) {
-	observer.receivedEvents = append(observer.receivedEvents, msg)
-}
-
 func (observer *testObserver) MessageReceived(msg coordinator.Message) {
 	observer.receivedEvents = append(observer.receivedEvents, msg)
 }
