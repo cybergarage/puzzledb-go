@@ -22,6 +22,7 @@ import (
 
 	"github.com/cybergarage/go-pict/pict"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
@@ -97,7 +98,7 @@ func updateCoordinatorObjects(objs []coordinator.Object) ([]coordinator.Object, 
 }
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
+func CoordinatorStoreTest(t *testing.T, coord core.CoordinatorService) {
 	t.Helper()
 
 	cancel := func(t *testing.T, txn coordinator.Transaction) {
@@ -109,7 +110,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 
 	// Starts the coordinator service
 
-	if err := s.Start(); err != nil {
+	if err := coord.Start(); err != nil {
 		t.Error(err)
 		return
 	}
@@ -117,7 +118,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	// Terminates the coordinator service
 
 	defer func() {
-		if err := s.Stop(); err != nil {
+		if err := coord.Stop(); err != nil {
 			t.Error(err)
 		}
 	}()
@@ -133,7 +134,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	// Inserts new objects
 
 	for _, obj := range objs {
-		tx, err := s.Transact()
+		tx, err := coord.Transact()
 		if err != nil {
 			t.Error(err)
 			return
@@ -152,7 +153,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	// Selects inserted objects
 
 	for _, obj := range objs {
-		tx, err := s.Transact()
+		tx, err := coord.Transact()
 		if err != nil {
 			t.Error(err)
 			return
@@ -183,7 +184,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	}
 
 	for _, obj := range objs {
-		tx, err := s.Transact()
+		tx, err := coord.Transact()
 		if err != nil {
 			t.Error(err)
 			return
@@ -202,7 +203,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	// Selects update objects
 
 	for _, obj := range objs {
-		tx, err := s.Transact()
+		tx, err := coord.Transact()
 		if err != nil {
 			t.Error(err)
 			return
@@ -228,7 +229,7 @@ func CoordinatorStoreTest(t *testing.T, s core.CoordinatorService) {
 	// Removes updated objects
 
 	for _, obj := range objs {
-		tx, err := s.Transact()
+		tx, err := coord.Transact()
 		if err != nil {
 			t.Error(err)
 			return
@@ -276,8 +277,10 @@ func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
 }
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorObserverTest(t *testing.T, coord core.CoordinatorService) {
+func CoordinatorObserverTest(t *testing.T, core core.CoordinatorService) {
 	t.Helper()
+
+	coord := plugins.NewServiceWith(core)
 
 	cancel := func(t *testing.T, txn coordinator.Transaction) {
 		t.Helper()
