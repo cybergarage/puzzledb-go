@@ -15,22 +15,16 @@
 package core
 
 import (
-	"strings"
-
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 )
 
-type watchersMap = map[string][]coordinator.Watcher
-
 type MessageBox struct {
-	watchersMap watchersMap
-	observers   []coordinator.Observer
+	observers []coordinator.Observer
 }
 
 func NewMessageBox() *MessageBox {
 	return &MessageBox{
-		observers:   []coordinator.Observer{},
-		watchersMap: watchersMap{},
+		observers: []coordinator.Observer{},
 	}
 }
 
@@ -52,18 +46,6 @@ func (mgr *MessageBox) PostMessage(msg coordinator.Message) error {
 
 // NofityMessage posts the specified message to the observers.
 func (mgr *MessageBox) NofityMessage(msg coordinator.Message) error {
-	keyStr, err := msg.Object().Key().Encode()
-	if err != nil {
-		return err
-	}
-	for key, watcheres := range mgr.watchersMap {
-		if !strings.HasPrefix(key, keyStr) {
-			continue
-		}
-		for _, w := range watcheres {
-			w.ProcessEvent(msg)
-		}
-	}
 	for _, observer := range mgr.observers {
 		observer.MessageReceived(msg)
 	}
