@@ -266,6 +266,10 @@ func (w *testWatcher) ProcessEvent(e coordinator.Message) {
 	w.receivedEvents = append(w.receivedEvents, e)
 }
 
+func (w *testWatcher) MessageReceived(e coordinator.Message) {
+	w.receivedEvents = append(w.receivedEvents, e)
+}
+
 func (w *testWatcher) IsEventReceived(e coordinator.Message) bool {
 	for _, event := range w.receivedEvents {
 		if e.Equals(event) {
@@ -314,15 +318,10 @@ func CoordinatorWatcherTest(t *testing.T, s core.CoordinatorService) {
 	watchers := make([]*testWatcher, 10)
 	for n := range watchers {
 		watchers[n] = newqTestWatcher()
-	}
-
-	for _, obj := range objs {
-		for _, w := range watchers {
-			err := s.Watch(obj.Key(), w)
-			if err != nil {
-				t.Error(err)
-				return
-			}
+		err := s.AddObserver(watchers[n])
+		if err != nil {
+			t.Error(err)
+			return
 		}
 	}
 

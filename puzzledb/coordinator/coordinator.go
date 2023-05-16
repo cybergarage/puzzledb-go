@@ -36,8 +36,6 @@ type Process interface {
 type Store interface {
 	// Transact begin a new transaction.
 	Transact() (Transaction, error)
-	// Watch adds a watcher to the coordinator.
-	Watch(key Key, w Watcher) error
 }
 
 // MessageBox represents a message box.

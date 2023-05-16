@@ -34,22 +34,6 @@ func NewMessageBox() *MessageBox {
 	}
 }
 
-// Watch registers a watcher for the specified key.
-func (mgr *MessageBox) Watch(key coordinator.Key, watcher coordinator.Watcher) error {
-	keyStr, err := key.Encode()
-	if err != nil {
-		return err
-	}
-
-	watchers, ok := mgr.watchersMap[keyStr]
-	if !ok {
-		watchers = []coordinator.Watcher{}
-	}
-	mgr.watchersMap[keyStr] = append(watchers, watcher)
-
-	return nil
-}
-
 // AddObserver adds the specified observer.
 func (mgr *MessageBox) AddObserver(newObserver coordinator.Observer) error {
 	for _, observer := range mgr.observers {
