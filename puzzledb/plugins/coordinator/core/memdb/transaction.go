@@ -16,7 +16,6 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 	"github.com/hashicorp/go-memdb"
 )
 
@@ -26,15 +25,13 @@ type Document struct {
 }
 
 type transaction struct {
-	*core.MessageBox
 	*memdb.Txn
 }
 
 // NewTransaction returns a new transaction.
-func newTransactionWith(mbox *core.MessageBox, txn *memdb.Txn) coordinator.Transaction {
+func newTransactionWith(txn *memdb.Txn) coordinator.Transaction {
 	return &transaction{
-		MessageBox: mbox,
-		Txn:        txn,
+		Txn: txn,
 	}
 }
 
@@ -49,8 +46,6 @@ func (txn *transaction) Exists(key coordinator.Key) (coordinator.Object, bool) {
 
 // Set sets the object for the specified key.
 func (txn *transaction) Set(obj coordinator.Object) error {
-	_, hasObj := txn.Exists(obj.Key())
-
 	keyStr, err := obj.Key().Encode()
 	if err != nil {
 		return err
@@ -68,16 +63,6 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 		return err
 	}
 
-	var evt coordinator.Message
-	if hasObj {
-		evt = coordinator.NewMessageWith(coordinator.ObjectUpdated, obj)
-	} else {
-		evt = coordinator.NewMessageWith(coordinator.ObjectCreated, obj)
-	}
-	err = txn.NofityMessage(evt)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -108,11 +93,6 @@ func (txn *transaction) GetRange(key coordinator.Key) (coordinator.ResultSet, er
 
 // Remove removes the object for the specified key.
 func (txn *transaction) Remove(key coordinator.Key) error {
-	obj, hasObj := txn.Exists(key)
-	if !hasObj {
-		return coordinator.NewKeyNotExistError(key)
-	}
-
 	keyBytes, err := key.Encode()
 	if err != nil {
 		return err
@@ -121,13 +101,6 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 	if err != nil {
 		return err
 	}
-
-	evt := coordinator.NewMessageWith(coordinator.ObjectDeleted, obj)
-	err = txn.NofityMessage(evt)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
