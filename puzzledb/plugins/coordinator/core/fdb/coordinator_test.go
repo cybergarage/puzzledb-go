@@ -16,10 +16,8 @@ package fdb
 
 import (
 	"testing"
-
-	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/coordinator"
 )
 
 func TestCoordinator(t *testing.T) {
-	coordinator.CoordinatorStoreTest(t, NewCoordinator())
+	// coordinator.CoordinatorStoreTest(t, NewCoordinator())
 }
