@@ -38,17 +38,12 @@ type Store interface {
 	Transact() (Transaction, error)
 }
 
-// MessageBox represents a message box.
-type MessageBox interface {
-	// PostMessage posts the specified message to the coordinator.
-	PostMessage(msg Message) error
-	// AddObserver adds the specified observer to the coordinator.
-	AddObserver(observer Observer) error
-}
-
 // Coordinator represents a coordination service.
 type Coordinator interface {
 	Store
 	Process
-	MessageBox
+	// PostMessage posts the specified message to the coordinator.
+	PostMessage(msg Message) error
+	// AddObserver adds the specified observer to the coordinator.
+	AddObserver(observer Observer) error
 }
