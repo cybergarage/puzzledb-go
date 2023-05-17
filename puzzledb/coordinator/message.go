@@ -14,6 +14,31 @@
 
 package coordinator
 
+// MessageType represents a coordinator event type.
+type MessageType uint8
+
+const (
+	// ObjectCreated represents a object created event.
+	ObjectCreated MessageType = 1
+	// ObjectUpdated represents a object updated event.
+	ObjectUpdated MessageType = 2
+	// ObjectDeleted represents a object deleted event.
+	ObjectDeleted MessageType = 3
+)
+
+func (t MessageType) String() string {
+	switch t {
+	case ObjectCreated:
+		return "created"
+	case ObjectUpdated:
+		return "updated"
+	case ObjectDeleted:
+		return "deleted"
+	default:
+		return "unknown"
+	}
+}
+
 // Message represents a  coordinator event.
 type Message interface {
 	// From returns the destination process of the message.
