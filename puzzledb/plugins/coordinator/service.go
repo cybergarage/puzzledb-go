@@ -16,7 +16,10 @@ package coordinator
 
 import (
 	"errors"
+	"math/rand"
+	"time"
 
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
@@ -28,16 +31,18 @@ type Service interface {
 }
 
 type serviceImpl struct {
+	core.CoordinatorService
 	observers []coordinator.Observer
 	coordinator.Process
-	core.CoordinatorService
+	*time.Ticker
 }
 
-func NewServiceWith(c core.CoordinatorService) Service {
+func NewServiceWith(service core.CoordinatorService) Service {
 	return &serviceImpl{
+		CoordinatorService: service,
 		Process:            coordinator.NewProcess(),
 		observers:          make([]coordinator.Observer, 0),
-		CoordinatorService: c,
+		Ticker:             time.NewTicker(time.Second),
 	}
 }
 
@@ -98,20 +103,39 @@ func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 	return nil
 }
 
+func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, error) {
+	msgs := []coordinator.Message{}
+	return msgs, nil
+}
+
 // NofityMessage posts the specified message to the observers.
-func (coord *serviceImpl) NofityMessage(msg coordinator.Message) error {
+func (coord *serviceImpl) NofityMessage(msg coordinator.Message) {
 	for _, observer := range coord.observers {
 		observer.MessageReceived(msg)
 	}
-	return nil
 }
 
 // Start starts this etcd coordinator.
 func (coord *serviceImpl) Start() error {
+	go func() {
+		for range coord.Ticker.C {
+			msgs, err := coord.GetUpdateMessages()
+			if err != nil {
+				log.Errorf("Failed to get the update coordinator messages : %s", err)
+				continue
+			}
+			for _, msg := range msgs {
+				coord.NofityMessage(msg)
+			}
+			// Reset the timer with a random jitter.
+			coord.Ticker.Reset(time.Second + time.Duration(rand.Intn(100))*time.Millisecond)
+		}
+	}()
 	return nil
 }
 
 // Stop stops this etcd coordinator.
 func (coord *serviceImpl) Stop() error {
+	coord.Ticker.Stop()
 	return nil
 }
