@@ -42,6 +42,12 @@ type Store interface {
 type Coordinator interface {
 	Store
 	Process
+	// SetObject sets the object for the specified key.
+	SetObject(obj Object) error
+	// GetObject gets the object for the specified key.
+	GetObject(key Key) (Object, error)
+	// GetRangeObjects gets the result set for the specified key.
+	GetRangeObjects(key Key) (ResultSet, error)
 	// PostMessage posts the specified message to the coordinator.
 	PostMessage(msg Message) error
 	// AddObserver adds the specified observer to the coordinator.
