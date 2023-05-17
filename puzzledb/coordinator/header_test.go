@@ -30,16 +30,16 @@ func TestKeyHeader(t *testing.T) {
 		expected expected
 	}{
 		{
-			header: NodeKeyHeader,
+			header: StateObjectKeyHeader,
 			expected: expected{
-				tp:  NodeObject,
+				tp:  StateObject,
 				ver: V1,
 				doc: CBOR,
 				idx: IndexType(0),
 			},
 		},
 		{
-			header: MessageKeyHeader,
+			header: MessageObjectKeyHeader,
 			expected: expected{
 				tp:  MessageObject,
 				ver: V1,
