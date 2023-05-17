@@ -40,3 +40,7 @@ func NewKeyNotExistError(v any) error {
 func NewErrNotSupported(v any) error {
 	return fmt.Errorf("%v is %w", v, ErrNotSupported)
 }
+
+func NewErrObjectNotSupported(v any) error {
+	return fmt.Errorf("%T is %w", v, ErrNotSupported)
+}
