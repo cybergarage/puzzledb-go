@@ -1,4 +1,4 @@
 Category,Key Order,,,Value
 ,0,1,2,
-Node,Header,Logical Clock,Hostname,CBOR (State)
+Node,Header,Hostname,,CBOR (State)
 Message,Header,Logical Clock,Message Type,CBOR (Message)

@@ -42,8 +42,8 @@ The key-value store is a collection of key-value records, where each record is a
 <tr class="even">
 <td style="text-align: left;"><p>Node</p></td>
 <td style="text-align: left;"><p>Header</p></td>
-<td style="text-align: left;"><p>Logical Clock</p></td>
 <td style="text-align: left;"><p>Hostname</p></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>CBOR (State)</p></td>
 </tr>
 <tr class="odd">
