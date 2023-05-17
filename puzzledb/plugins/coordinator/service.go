@@ -25,6 +25,10 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
+const (
+	DefaultStoreScanInterval = time.Second
+)
+
 type Service interface {
 	coordinator.Coordinator
 	plugins.Service
@@ -42,7 +46,7 @@ func NewServiceWith(service core.CoordinatorService) Service {
 		CoordinatorService: service,
 		Process:            coordinator.NewProcess(),
 		observers:          make([]coordinator.Observer, 0),
-		Ticker:             time.NewTicker(time.Second),
+		Ticker:             time.NewTicker(DefaultStoreScanInterval),
 	}
 }
 
@@ -128,7 +132,7 @@ func (coord *serviceImpl) Start() error {
 				coord.NofityMessage(msg)
 			}
 			// Reset the timer with a random jitter.
-			coord.Ticker.Reset(time.Second + time.Duration(rand.Intn(100))*time.Millisecond)
+			coord.Ticker.Reset(DefaultStoreScanInterval + time.Duration(rand.Intn(100))*time.Millisecond) //nolint:gosec
 		}
 	}()
 	return nil
