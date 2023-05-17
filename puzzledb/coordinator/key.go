@@ -14,10 +14,6 @@
 
 package coordinator
 
-const (
-	sep = " "
-)
-
 // Key represents an unique key for a key-value object.
 type Key []any
 
