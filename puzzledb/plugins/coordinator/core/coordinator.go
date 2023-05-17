@@ -15,16 +15,25 @@
 package core
 
 import (
+	"time"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 type BaseCoordinator struct {
 	plugins.Config
+	*time.Ticker
 }
 
 // NewBaseCoordinator returns a new base coordinator instance.
 func NewBaseCoordinator() *BaseCoordinator {
 	return &BaseCoordinator{
 		Config: plugins.NewConfig(),
+		Ticker: time.NewTicker(time.Second),
 	}
+}
+
+// ServiceType returns the plug-in service type.
+func (coord *BaseCoordinator) ServiceType() plugins.ServiceType {
+	return plugins.CoordinatorService
 }
