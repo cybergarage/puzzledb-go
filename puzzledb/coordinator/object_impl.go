@@ -79,5 +79,5 @@ func (obj *object) Equals(other Object) bool {
 
 // String returns the string representation of the event.
 func (obj *object) String() string {
-	return fmt.Sprintf("%v %v", obj.key.String(), obj.value)
+	return fmt.Sprintf("%v %v", obj.key, obj.value)
 }
