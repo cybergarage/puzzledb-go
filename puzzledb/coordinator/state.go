@@ -14,26 +14,19 @@
 
 package coordinator
 
-// MessageType represents a coordinator event type.
-type MessageType uint8
+// StateType is a type of the state object.
+type StateType uint8
 
 const (
-	// ObjectCreated represents a object created event.
-	ObjectCreated MessageType = iota
-	// ObjectUpdated represents a object updated event.
-	ObjectUpdated
-	// ObjectDeleted represents a object deleted event.
-	ObjectDeleted
+	// NodeState represents a node state type.
+	NodeState StateType = 1
 )
 
-func (t MessageType) String() string {
+// String returns a string representation of the state type.
+func (t StateType) String() string {
 	switch t {
-	case ObjectCreated:
-		return "created"
-	case ObjectUpdated:
-		return "updated"
-	case ObjectDeleted:
-		return "deleted"
+	case NodeState:
+		return "node"
 	default:
 		return "unknown"
 	}
