@@ -14,24 +14,6 @@
 
 package coordinator
 
-import (
-	"github.com/google/uuid"
-)
-
-// Process represents a coordinator process.
-type Process interface {
-	// ID returns a UUID of the coordinator process.
-	ID() uuid.UUID
-	// SetHost sets a host name to the coordinator process.
-	SetHost(host string)
-	// Host returns a host name of the coordinator process.
-	Host() string
-	// SetClock sets a logical clock to the coordinator process.
-	SetClock(clock Clock)
-	// Clock returns a logical clock of the coordinator process.
-	Clock() Clock
-}
-
 // Store represents a coordination store inteface.
 type Store interface {
 	// Transact begin a new transaction.
