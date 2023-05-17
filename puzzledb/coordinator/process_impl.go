@@ -21,6 +21,13 @@ import (
 	"github.com/google/uuid"
 )
 
+// ProcessObject represents a store process state object.
+type ProcessObject struct {
+	ID    uuid.UUID
+	Host  string
+	Clock Clock
+}
+
 type processImpl struct {
 	sync.Mutex
 	clock Clock
