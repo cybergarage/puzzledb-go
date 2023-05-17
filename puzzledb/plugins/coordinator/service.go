@@ -41,6 +41,7 @@ type serviceImpl struct {
 	*time.Ticker
 }
 
+// NewService returns a new coordinator service with the specified core coordinator service.
 func NewServiceWith(service core.CoordinatorService) Service {
 	return &serviceImpl{
 		CoordinatorService: service,
@@ -61,8 +62,8 @@ func (coord *serviceImpl) AddObserver(newObserver coordinator.Observer) error {
 	return nil
 }
 
-// SetObject sets the object for the specified key.
-func (coord *serviceImpl) SetObject(obj coordinator.Object) error {
+// SetStateObject sets the state object for the specified key.
+func (coord *serviceImpl) SetStateObject(t coordinator.StateType, obj coordinator.Object) error {
 	txn, err := coord.Transact()
 	if err != nil {
 		return err
@@ -74,8 +75,8 @@ func (coord *serviceImpl) SetObject(obj coordinator.Object) error {
 	return txn.Commit()
 }
 
-// GetObject gets the object for the specified key.
-func (coord *serviceImpl) GetObject(key coordinator.Key) (coordinator.Object, error) {
+// GetObject gets the object for the specified key and state type.
+func (coord *serviceImpl) GetStateObject(t coordinator.StateType, key coordinator.Key) (coordinator.Object, error) {
 	txn, err := coord.Transact()
 	if err != nil {
 		return nil, err
@@ -88,8 +89,8 @@ func (coord *serviceImpl) GetObject(key coordinator.Key) (coordinator.Object, er
 	return obj, err
 }
 
-// GetRangeObjects gets the result set for the specified key.
-func (coord *serviceImpl) GetRangeObjects(key coordinator.Key) (coordinator.ResultSet, error) {
+// GetRangeObjects gets the result set for the specified key and state type.
+func (coord *serviceImpl) GetStateObjects(t coordinator.StateType, key coordinator.Key) (coordinator.ResultSet, error) {
 	txn, err := coord.Transact()
 	if err != nil {
 		return nil, err
