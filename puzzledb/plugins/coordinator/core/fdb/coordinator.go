@@ -15,9 +15,10 @@
 package fdb
 
 import (
+	"errors"
+
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
@@ -33,11 +34,6 @@ func NewCoordinator() core.CoordinatorService {
 	return &Coordinator{ //nolint:all
 		BaseCoordinator: core.NewBaseCoordinator(),
 	}
-}
-
-// ServiceType returns the plug-in service type.
-func (coord *Coordinator) ServiceType() plugins.ServiceType {
-	return plugins.CoordinatorService
 }
 
 // ServiceName returns the plug-in service name.
@@ -62,11 +58,11 @@ func (coord *Coordinator) Transact() (coordinator.Transaction, error) {
 func (coord *Coordinator) Start() error {
 	err := fdb.APIVersion(RequiredAPIVersion)
 	if err != nil {
-		return err
+		return errors.Join(err, coord.Stop())
 	}
 	db, err := fdb.OpenDefault()
 	if err != nil {
-		return err
+		return errors.Join(err, coord.Stop())
 	}
 	coord.Database = db
 	return nil

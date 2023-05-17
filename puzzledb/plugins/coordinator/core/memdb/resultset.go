@@ -21,25 +21,45 @@ import (
 
 // Memdb represents a Memdb instance.
 type resultSet struct {
-	it  memdb.ResultIterator
-	key coordinator.Key
-	obj coordinator.Object
+	it     memdb.ResultIterator
+	key    coordinator.Key
+	obj    coordinator.Object
+	offset uint
+	limit  int
+	nRead  uint
 }
 
-func newResultSet(key coordinator.Key, it memdb.ResultIterator) coordinator.ResultSet {
+func newResultSet(key coordinator.Key, it memdb.ResultIterator, offset uint, limit int) coordinator.ResultSet {
 	return &resultSet{
-		it:  it,
-		key: key,
-		obj: nil,
+		it:     it,
+		key:    key,
+		obj:    nil,
+		offset: offset,
+		limit:  limit,
+		nRead:  0,
 	}
 }
 
 // Next moves the cursor forward next object from its current position.
 func (rs *resultSet) Next() bool {
+	if coordinator.NoLimit < rs.limit && uint(rs.limit) <= rs.nRead {
+		return false
+	}
+
+	for rs.nRead < rs.offset {
+		elem := rs.it.Next()
+		if elem == nil {
+			return false
+		}
+		rs.nRead++
+	}
+
 	elem := rs.it.Next()
 	if elem == nil {
 		return false
 	}
+	rs.nRead++
+
 	doc, ok := elem.(*Document)
 	if !ok {
 		return false

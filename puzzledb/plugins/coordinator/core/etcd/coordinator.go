@@ -16,7 +16,6 @@ package etcd
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
@@ -29,11 +28,6 @@ func NewCoordinator() core.CoordinatorService {
 	return &etcdCoordinator{
 		BaseCoordinator: core.NewBaseCoordinator(),
 	}
-}
-
-// ServiceType returns the plug-in service type.
-func (coord *etcdCoordinator) ServiceType() plugins.ServiceType {
-	return plugins.CoordinatorService
 }
 
 // ServiceName returns the plug-in service name.
