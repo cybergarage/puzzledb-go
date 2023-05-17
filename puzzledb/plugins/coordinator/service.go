@@ -15,6 +15,8 @@
 package coordinator
 
 import (
+	"errors"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
@@ -48,6 +50,47 @@ func (coord *serviceImpl) AddObserver(newObserver coordinator.Observer) error {
 	}
 	coord.observers = append(coord.observers, newObserver)
 	return nil
+}
+
+// SetObject sets the object for the specified key.
+func (coord *serviceImpl) SetObject(obj coordinator.Object) error {
+	txn, err := coord.Transact()
+	if err != nil {
+		return err
+	}
+	err = txn.Set(obj)
+	if err != nil {
+		return errors.Join(err, txn.Cancel())
+	}
+	return txn.Commit()
+}
+
+// GetObject gets the object for the specified key.
+func (coord *serviceImpl) GetObject(key coordinator.Key) (coordinator.Object, error) {
+	txn, err := coord.Transact()
+	if err != nil {
+		return nil, err
+	}
+	obj, err := txn.Get(key)
+	if err != nil {
+		return nil, errors.Join(err, txn.Cancel())
+	}
+	err = txn.Commit()
+	return obj, err
+}
+
+// GetRangeObjects gets the result set for the specified key.
+func (coord *serviceImpl) GetRangeObjects(key coordinator.Key) (coordinator.ResultSet, error) {
+	txn, err := coord.Transact()
+	if err != nil {
+		return nil, err
+	}
+	rs, err := txn.GetRange(key)
+	if err != nil {
+		return nil, errors.Join(err, txn.Cancel())
+	}
+	err = txn.Commit()
+	return rs, err
 }
 
 // PostMessage posts the specified message to the coordinator.
