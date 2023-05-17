@@ -23,7 +23,7 @@ const (
 )
 
 const (
-	NodeObject    = HeaderType('N')
+	StateObject   = HeaderType('S')
 	MessageObject = HeaderType('M')
 )
 
@@ -32,8 +32,8 @@ const (
 	SecondaryIndex = IndexType(2)
 )
 
-var NodeKeyHeader = [2]byte{byte(NodeObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-var MessageKeyHeader = [2]byte{byte(MessageObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+var StateObjectKeyHeader = [2]byte{byte(StateObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+var MessageObjectKeyHeader = [2]byte{byte(MessageObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
 
 func HeaderByteFromVersion(v Version) byte {
 	return (byte(v<<4) & 0x70)
