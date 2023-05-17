@@ -16,6 +16,7 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/hashicorp/go-memdb"
 )
 
@@ -79,16 +80,39 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 }
 
 // GetRange gets the result set for the specified key.
-func (txn *transaction) GetRange(key coordinator.Key) (coordinator.ResultSet, error) {
+func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
+	var err error
+
 	keyStr, err := key.Encode()
 	if err != nil {
 		return nil, err
 	}
-	it, err := txn.Txn.Get(tableName, idName+prefix, keyStr)
+
+	offset := uint(0)
+	limit := int(-1)
+	order := kv.OrderNone
+	for _, opt := range opts {
+		switch v := opt.(type) {
+		case *kv.OffsetOption:
+			offset = v.Offset
+		case *kv.LimitOption:
+			limit = v.Limit
+		case *kv.OrderOption:
+			order = v.Order
+		}
+	}
+
+	var it memdb.ResultIterator
+	if order != kv.OrderDesc {
+		it, err = txn.Txn.Get(tableName, idName+prefix, keyStr)
+	} else {
+		it, err = txn.Txn.GetReverse(tableName, idName+prefix, keyStr)
+	}
 	if err != nil {
 		return nil, err
 	}
-	return newResultSet(key, it), nil
+
+	return newResultSet(key, it, offset, limit), nil
 }
 
 // Remove removes the object for the specified key.
