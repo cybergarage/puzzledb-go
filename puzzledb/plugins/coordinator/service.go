@@ -19,6 +19,7 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/cybergarage/go-cbor/cbor"
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -64,11 +65,30 @@ func (coord *serviceImpl) AddObserver(newObserver coordinator.Observer) error {
 
 // SetStateObject sets the state object for the specified key.
 func (coord *serviceImpl) SetStateObject(t coordinator.StateType, obj coordinator.Object) error {
+	var err error
+	var key coordinator.Key
+	var objBytes []byte
+	switch v := obj.(type) {
+	case coordinator.Process:
+		key = coordinator.NewStateKeyWith(t, v.Host())
+		p := &coordinator.ProcessObject{
+			ID:    v.ID(),
+			Host:  v.Host(),
+			Clock: v.Clock(),
+		}
+		objBytes, err = cbor.Marshal(p)
+		if err != nil {
+			return err
+		}
+	default:
+		return coordinator.NewErrObjectNotSupported(obj)
+	}
+
 	txn, err := coord.Transact()
 	if err != nil {
 		return err
 	}
-	err = txn.Set(obj)
+	err = txn.Set(coordinator.NewObjectWith(key, objBytes))
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
