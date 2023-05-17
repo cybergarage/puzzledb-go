@@ -31,3 +31,9 @@ func (t StateType) String() string {
 		return "unknown"
 	}
 }
+
+// NewStateKey returns a new state key.
+func NewStateKeyWith(elems ...any) Key {
+	storeKey := []any{StateObjectKeyHeader}
+	return append(storeKey, elems...)
+}
