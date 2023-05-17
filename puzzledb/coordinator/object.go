@@ -22,6 +22,8 @@ type Object interface {
 	Value() Value
 	// Encode encodes the object.
 	Encode() ([]byte, error)
+	// Unmarshal decodes the value of the object to the specified object.
+	Unmarshal(toj any) error
 	// Equals returns true if the object is equal to the specified object.
 	Equals(Object) bool
 	// String returns the string representation of the event.

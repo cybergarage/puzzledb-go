@@ -49,6 +49,17 @@ func (obj *object) Encode() ([]byte, error) {
 	return cbor.Marshal(obj.value)
 }
 
+// Unmarshal unmarshals the value to the specified object.
+func (obj *object) Unmarshal(to any) error {
+	switch v := obj.value.(type) {
+	case string:
+		return cbor.UnmarshalTo([]byte(v), to)
+	case []byte:
+		return cbor.UnmarshalTo(v, to)
+	}
+	return newValueInvalidError(obj.value)
+}
+
 // Equals returns true if the object is equal to the specified object.
 func (obj *object) Equals(other Object) bool {
 	if obj == nil || other == nil {
