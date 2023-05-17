@@ -14,17 +14,12 @@
 
 package coordinator
 
-import (
-	"fmt"
-	"strings"
-)
-
 const (
 	sep = " "
 )
 
 // Key represents an unique key for a key-value object.
-type Key []string
+type Key []any
 
 // NewKey returns a new blank key.
 func NewKey() Key {
@@ -32,29 +27,14 @@ func NewKey() Key {
 }
 
 // NewKeyWith returns a new key from the specified key elements.
-func NewKeyWith(elems ...string) Key {
-	elemArray := make([]string, len(elems))
+func NewKeyWith(elems ...any) Key {
+	elemArray := make([]any, len(elems))
 	copy(elemArray, elems)
 	return elemArray
 }
 
-// NewKeyFrom returns a new key from the specified value.
-func NewKeyFrom(v any) (Key, error) {
-	switch v := v.(type) {
-	case string:
-		return NewKeyWith(strings.Split(v, sep)...), nil
-	case []string:
-		return NewKeyWith(v...), nil
-	case []byte:
-		return NewKeyWith(strings.Split(string(v), sep)...), nil
-	case Key:
-		return v, nil
-	}
-	return nil, newKeyInvalidError(v)
-}
-
 // Elements returns all elements of the key.
-func (key Key) Elements() []string {
+func (key Key) Elements() []any {
 	return key
 }
 
@@ -69,14 +49,4 @@ func (key Key) Equals(other Key) bool {
 		}
 	}
 	return true
-}
-
-// Encode encodes the key to a byte array.
-func (key Key) Encode() (string, error) {
-	return strings.Join(key, sep), nil
-}
-
-// String returns the string representation of the key.
-func (key Key) String() string {
-	return fmt.Sprintf("[%s]", strings.Join(key, " "))
 }
