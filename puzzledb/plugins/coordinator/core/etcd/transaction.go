@@ -18,40 +18,45 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 )
 
-type etcdTransaction struct {
+type transaction struct {
 }
 
 // NewTransaction returns a new transaction.
 func NewTransaction() coordinator.Transaction {
-	return &etcdTransaction{}
+	return &transaction{}
 }
 
 // Set sets the object for the specified key.
-func (txn *etcdTransaction) Set(obj coordinator.Object) error {
+func (txn *transaction) Set(obj coordinator.Object) error {
 	return nil
 }
 
 // Get gets the object for the specified key.
-func (txn *etcdTransaction) Get(key coordinator.Key) (coordinator.Object, error) {
+func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 	return nil, nil
 }
 
 // GetRange gets the result set for the specified key.
-func (txn *etcdTransaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
+func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
 	return nil, nil
 }
 
 // Remove removes the object for the specified key.
-func (txn *etcdTransaction) Remove(key coordinator.Key) error {
+func (txn *transaction) Remove(key coordinator.Key) error {
+	return nil
+}
+
+// Truncate removes all objects.
+func (txn *transaction) Truncate() error {
 	return nil
 }
 
 // Commit commits this transaction.
-func (txn *etcdTransaction) Commit() error {
+func (txn *transaction) Commit() error {
 	return nil
 }
 
 // Cancel cancels this transaction.
-func (txn *etcdTransaction) Cancel() error {
+func (txn *transaction) Cancel() error {
 	return nil
 }
