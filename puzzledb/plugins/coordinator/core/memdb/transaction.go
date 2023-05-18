@@ -21,7 +21,7 @@ import (
 )
 
 type Document struct {
-	Key   string
+	Key   []byte
 	Value []byte
 }
 
@@ -58,7 +58,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 		return err
 	}
 	doc := &Document{
-		Key:   string(keyBytes),
+		Key:   keyBytes,
 		Value: objBytes,
 	}
 	err = txn.Txn.Insert(tableName, doc)
@@ -85,7 +85,7 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
 	var err error
 
-	keyStr, err := txn.KeyCoder.EncodeKey(key)
+	keyBytes, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return nil, err
 	}
@@ -106,20 +106,20 @@ func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option
 
 	var it memdb.ResultIterator
 	if order != kv.OrderDesc {
-		it, err = txn.Txn.Get(tableName, idName+prefix, keyStr)
+		it, err = txn.Txn.Get(tableName, idName+prefix, keyBytes)
 	} else {
-		it, err = txn.Txn.GetReverse(tableName, idName+prefix, keyStr)
+		it, err = txn.Txn.GetReverse(tableName, idName+prefix, keyBytes)
 	}
 	if err != nil {
 		return nil, err
 	}
 
-	return newResultSet(key, it, offset, limit), nil
+	return newResultSet(txn.KeyCoder, key, it, offset, limit), nil
 }
 
 // Remove removes the object for the specified key.
 func (txn *transaction) Remove(key coordinator.Key) error {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return err
 	}
