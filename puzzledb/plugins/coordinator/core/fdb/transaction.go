@@ -21,18 +21,20 @@ import (
 
 // transaction represents a transaction instance.
 type transaction struct {
+	coordinator.KeyCoder
 	fdb.Transaction
 }
 
-func newTransaction(txn fdb.Transaction) coordinator.Transaction {
+func newTransaction(coder coordinator.KeyCoder, txn fdb.Transaction) coordinator.Transaction {
 	return &transaction{
+		KeyCoder:    coder,
 		Transaction: txn,
 	}
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *transaction) Set(obj coordinator.Object) error {
-	keyBytes, err := obj.Key().Encode()
+	keyBytes, err := txn.KeyCoder.EncodeKey(obj.Key())
 	if err != nil {
 		return err
 	}
@@ -46,7 +48,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 
 // Get returns a key-value object of the specified key.
 func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +70,7 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 
 // Remove removes the specified key-value object.
 func (txn *transaction) Remove(key coordinator.Key) error {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return err
 	}
