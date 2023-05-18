@@ -83,7 +83,7 @@ func (rs *rangeResultSet) Objects() []coordinator.Object {
 
 // GetRange gets the result set for the specified key.
 func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
-	keyBytes, err := key.Encode()
+	keyBytes, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return nil, err
 	}
