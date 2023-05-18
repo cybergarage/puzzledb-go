@@ -257,4 +257,22 @@ func CoordinatorStoreTest(t *testing.T, coord core.CoordinatorService) {
 			return
 		}
 	}
+
+	// Truncates all objects
+
+	tx, err := coord.Transact()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	err = tx.Truncate()
+	if err != nil {
+		cancel(t, tx)
+		t.Error(err)
+		return
+	}
+	if err := tx.Commit(); err != nil {
+		t.Error(err)
+		return
+	}
 }
