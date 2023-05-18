@@ -16,6 +16,8 @@ package coordinator
 
 // Store represents a coordination store inteface.
 type Store interface {
+	// SetKeyCoder sets the key coder.
+	SetKeyCoder(coder KeyCoder)
 	// Transact begin a new transaction.
 	Transact() (Transaction, error)
 }
