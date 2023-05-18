@@ -66,7 +66,7 @@ func (rs *resultSet) Next() bool {
 	if !ok {
 		return false
 	}
-	key, err := rs.KeyCoder.DecodeKey(doc.Key)
+	key, err := rs.DecodeKey([]byte(doc.Key))
 	if err != nil {
 		return false
 	}
