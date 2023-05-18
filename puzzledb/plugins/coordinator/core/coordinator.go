@@ -17,11 +17,13 @@ package core
 import (
 	"time"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 type BaseCoordinator struct {
 	plugins.Config
+	coordinator.KeyCoder
 	*time.Ticker
 }
 
@@ -36,4 +38,9 @@ func NewBaseCoordinator() *BaseCoordinator {
 // ServiceType returns the plug-in service type.
 func (coord *BaseCoordinator) ServiceType() plugins.ServiceType {
 	return plugins.CoordinatorService
+}
+
+// SetKeyCoder sets the key coder.
+func (coord *BaseCoordinator) SetKeyCoder(coder coordinator.KeyCoder) {
+	coord.KeyCoder = coder
 }
