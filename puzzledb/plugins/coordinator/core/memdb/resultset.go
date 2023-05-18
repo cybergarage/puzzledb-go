@@ -21,6 +21,7 @@ import (
 
 // Memdb represents a Memdb instance.
 type resultSet struct {
+	coordinator.KeyCoder
 	it     memdb.ResultIterator
 	key    coordinator.Key
 	obj    coordinator.Object
@@ -29,14 +30,15 @@ type resultSet struct {
 	nRead  uint
 }
 
-func newResultSet(key coordinator.Key, it memdb.ResultIterator, offset uint, limit int) coordinator.ResultSet {
+func newResultSet(coder coordinator.KeyCoder, key coordinator.Key, it memdb.ResultIterator, offset uint, limit int) coordinator.ResultSet {
 	return &resultSet{
-		it:     it,
-		key:    key,
-		obj:    nil,
-		offset: offset,
-		limit:  limit,
-		nRead:  0,
+		KeyCoder: coder,
+		it:       it,
+		key:      key,
+		obj:      nil,
+		offset:   offset,
+		limit:    limit,
+		nRead:    0,
 	}
 }
 
@@ -64,7 +66,7 @@ func (rs *resultSet) Next() bool {
 	if !ok {
 		return false
 	}
-	key, err := coordinator.NewKeyFrom(doc.Key)
+	key, err := rs.KeyCoder.DecodeKey(doc.Key)
 	if err != nil {
 		return false
 	}
