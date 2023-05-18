@@ -26,13 +26,15 @@ type Document struct {
 }
 
 type transaction struct {
+	coordinator.KeyCoder
 	*memdb.Txn
 }
 
 // NewTransaction returns a new transaction.
-func newTransactionWith(txn *memdb.Txn) coordinator.Transaction {
+func newTransactionWith(coder coordinator.KeyCoder, txn *memdb.Txn) coordinator.Transaction {
 	return &transaction{
-		Txn: txn,
+		KeyCoder: coder,
+		Txn:      txn,
 	}
 }
 
@@ -47,7 +49,7 @@ func (txn *transaction) Exists(key coordinator.Key) (coordinator.Object, bool) {
 
 // Set sets the object for the specified key.
 func (txn *transaction) Set(obj coordinator.Object) error {
-	keyStr, err := obj.Key().Encode()
+	keyBytes, err := txn.KeyCoder.EncodeKey(obj.Key())
 	if err != nil {
 		return err
 	}
@@ -56,7 +58,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 		return err
 	}
 	doc := &Document{
-		Key:   keyStr,
+		Key:   string(keyBytes),
 		Value: objBytes,
 	}
 	err = txn.Txn.Insert(tableName, doc)
@@ -83,7 +85,7 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
 	var err error
 
-	keyStr, err := key.Encode()
+	keyStr, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return nil, err
 	}
