@@ -28,4 +28,6 @@ type Transaction interface {
 	Commit() error
 	// Cancel cancels this transaction.
 	Cancel() error
+	// Truncate removes all objects.
+	Truncate() error
 }
