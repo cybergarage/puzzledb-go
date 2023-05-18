@@ -80,12 +80,14 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 
 // Truncate removes all objects.
 func (txn *transaction) Truncate() error {
-	// Get all keys in the transaction
-	r := fdb.KeyRange{
-		Begin: fdb.Key([]byte{0x00}),
-		End:   fdb.Key([]byte{0xFF}),
+	// Truncates only coordinatoer objects
+	for _, headerByte := range coordinator.GetAllHeaderTypes() {
+		r, err := fdb.PrefixRange(fdb.Key([]byte{byte(headerByte)}))
+		if err != nil {
+			return err
+		}
+		txn.Transaction.ClearRange(r)
 	}
-	txn.Transaction.ClearRange(r)
 	return nil
 }
 
