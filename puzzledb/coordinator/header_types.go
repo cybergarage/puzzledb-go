@@ -46,3 +46,11 @@ func VertionFromHeaderByte(b byte) Version {
 func TypeFromHeaderByte(b byte) byte {
 	return (b & 0x07)
 }
+
+// GetAllHeaderTypes returns all header types.
+func GetAllHeaderTypes() []HeaderType {
+	return []HeaderType{
+		StateObject,
+		MessageObject,
+	}
+}
