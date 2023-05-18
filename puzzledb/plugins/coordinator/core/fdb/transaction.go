@@ -78,6 +78,26 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 	return nil
 }
 
+// Truncate removes all objects.
+func (txn *transaction) Truncate() error {
+	// Get all keys in the transaction
+	rangeQuery := fdb.KeyRange{
+		Begin: fdb.Key(txn.KeyCoder.EncodeKey(coordinator.NewKey(""))),
+		End:   fdb.Key(txn.KeyCoder.EncodeKey(coordinator.NewKey("\xff"))),
+	}
+	kvs, err := txn.Transaction.GetRange(rangeQuery, fdb.RangeOptions{}).GetSliceWithError()
+	if err != nil {
+		return err
+	}
+
+	// Remove all keys in the transaction
+	for _, kv := range kvs {
+		txn.Transaction.Clear(kv.Key)
+	}
+
+	return nil
+}
+
 // Commit commits this transaction.
 func (txn *transaction) Commit() error {
 	err := txn.Transaction.Commit().Get()
