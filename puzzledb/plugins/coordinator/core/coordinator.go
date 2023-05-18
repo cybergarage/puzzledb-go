@@ -30,8 +30,9 @@ type BaseCoordinator struct {
 // NewBaseCoordinator returns a new base coordinator instance.
 func NewBaseCoordinator() *BaseCoordinator {
 	return &BaseCoordinator{
-		Config: plugins.NewConfig(),
-		Ticker: time.NewTicker(time.Second),
+		KeyCoder: nil,
+		Config:   plugins.NewConfig(),
+		Ticker:   time.NewTicker(time.Second),
 	}
 }
 
