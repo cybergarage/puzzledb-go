@@ -20,8 +20,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
-func CoordinatorTest(t *testing.T, s core.CoordinatorService) {
+// nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
+func CoordinatorMessageTest(t *testing.T, core core.CoordinatorService) {
 	t.Helper()
-	CoordinatorMessageTest(t, s)
-	CoordinatorObserverTest(t, s)
 }
