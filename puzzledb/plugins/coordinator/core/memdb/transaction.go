@@ -21,7 +21,7 @@ import (
 )
 
 type Document struct {
-	Key   []byte
+	Key   string
 	Value []byte
 }
 
@@ -58,7 +58,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 		return err
 	}
 	doc := &Document{
-		Key:   keyBytes,
+		Key:   string(keyBytes),
 		Value: objBytes,
 	}
 	err = txn.Txn.Insert(tableName, doc)
@@ -106,9 +106,9 @@ func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option
 
 	var it memdb.ResultIterator
 	if order != kv.OrderDesc {
-		it, err = txn.Txn.Get(tableName, idName+prefix, keyBytes)
+		it, err = txn.Txn.Get(tableName, idName+prefix, string(keyBytes))
 	} else {
-		it, err = txn.Txn.GetReverse(tableName, idName+prefix, keyBytes)
+		it, err = txn.Txn.GetReverse(tableName, idName+prefix, string(keyBytes))
 	}
 	if err != nil {
 		return nil, err
@@ -123,7 +123,20 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 	if err != nil {
 		return err
 	}
-	_, err = txn.Txn.DeleteAll(tableName, idName, keyBytes)
+	_, err = txn.Txn.DeleteAll(tableName, idName, string(keyBytes))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Truncate removes all objects.
+func (txn *transaction) Truncate() error {
+	err := txn.Txn.Drop(tableName)
+	if err != nil {
+		return err
+	}
+	err = txn.Txn.Create(tableName)
 	if err != nil {
 		return err
 	}
