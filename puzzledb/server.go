@@ -145,6 +145,12 @@ func (server *Server) setupPlugins() error {
 	}
 	defaultTracer.SetServiceName(ProductName)
 
+	// Coordinator services
+
+	for _, service := range server.CoordinatorServices() {
+		service.SetKeyCoder(defaultKeyCoder)
+	}
+
 	// Actor service
 
 	server.actorService.SetCoordinator(defaultCoodinator)
