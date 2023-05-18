@@ -14,35 +14,19 @@
 
 package coordinator
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
 // Key represents an unique key for a key-value object.
-type Key []any
+type Key = document.Key
 
 // NewKey returns a new blank key.
 func NewKey() Key {
-	return Key{}
+	return document.NewKey()
 }
 
 // NewKeyWith returns a new key from the specified key elements.
 func NewKeyWith(elems ...any) Key {
-	elemArray := make([]any, len(elems))
-	copy(elemArray, elems)
-	return elemArray
-}
-
-// Elements returns all elements of the key.
-func (key Key) Elements() []any {
-	return key
-}
-
-// Equals returns true if the key is equal to the specified key.
-func (key Key) Equals(other Key) bool {
-	if len(key) != len(other) {
-		return false
-	}
-	for n, elem := range key {
-		if elem != other[n] {
-			return false
-		}
-	}
-	return true
+	return document.NewKeyWith(elems...)
 }
