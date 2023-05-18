@@ -15,8 +15,32 @@
 package coordinator
 
 import (
+	"fmt"
 	"testing"
+
+	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
 func TestCoordinator(t *testing.T) {
+	mgr := puzzledbtest.NewPluginManager()
+	for _, keyCoder := range mgr.EnabledKeyCoderServices() {
+		for _, coord := range mgr.EnabledCoordinatorServices() {
+			coord.SetKeyCoder(keyCoder)
+			testName := fmt.Sprintf("%s(%s)", coord.ServiceName(), keyCoder.ServiceName())
+			t.Run(testName, func(t *testing.T) {
+				if err := coord.Start(); err != nil {
+					t.Skip(err)
+					return
+				}
+				defer func() {
+					if err := coord.Stop(); err != nil {
+						t.Error(err)
+					}
+				}()
+				t.Run("message", func(t *testing.T) {
+					CoordinatorMessageTest(t, coord)
+				})
+			})
+		}
+	}
 }
