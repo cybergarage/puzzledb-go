@@ -132,11 +132,7 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 
 // Truncate removes all objects.
 func (txn *transaction) Truncate() error {
-	err := txn.Txn.Drop(tableName)
-	if err != nil {
-		return err
-	}
-	err = txn.Txn.Create(tableName)
+	_, err := txn.Txn.DeleteAll(tableName, idName)
 	if err != nil {
 		return err
 	}
