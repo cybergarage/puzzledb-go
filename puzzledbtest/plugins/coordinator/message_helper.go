@@ -17,10 +17,24 @@ package coordinator
 import (
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 )
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorMessageTest(t *testing.T, core core.CoordinatorService) {
+func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 	t.Helper()
+
+	for n := 0; n < 10; n++ {
+		obj := coordinator.NewObjectWith(
+			coordinator.NewKeyWith(n),
+			coordinator.NewValueWith(n))
+		msg := coordinator.NewMessageWith(
+			coordinator.ObjectCreated,
+			obj)
+		err := coord.PostMessage(msg)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}
 }
