@@ -34,7 +34,7 @@ func truncateCoordinatorStore(coord coordinator.Coordinator) error {
 }
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorProcessTest(t *testing.T, coord coordinator.Coordinator) {
+func CoordinatorStateTest(t *testing.T, coord coordinator.Coordinator) {
 	t.Helper()
 
 	if err := truncateCoordinatorStore(coord); err != nil {
