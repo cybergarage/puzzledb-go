@@ -92,6 +92,8 @@ log:
 clean:
 	go clean -i ${PKG}
 
+watch:
+	fswatch -o . -e ".*" -i "\\.go$$" | xargs -n1 -I{} make test
 #
 # Document
 #
