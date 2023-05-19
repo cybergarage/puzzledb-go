@@ -30,6 +30,7 @@ const (
 	DefaultStoreScanInterval = time.Second
 )
 
+// Service is an interface for the coordinator service.
 type Service interface {
 	coordinator.Coordinator
 	plugins.Service
@@ -50,6 +51,11 @@ func NewServiceWith(service core.CoordinatorService) Service {
 		observers:          make([]coordinator.Observer, 0),
 		Ticker:             time.NewTicker(DefaultStoreScanInterval),
 	}
+}
+
+// SetProcess sets the coordinator process.
+func (coord *serviceImpl) SetProcess(process coordinator.Process) {
+	coord.Process = process
 }
 
 // AddObserver adds the specified observer.
@@ -125,12 +131,21 @@ func (coord *serviceImpl) GetStateObjects(t coordinator.StateType, key coordinat
 
 // PostMessage posts the specified message to the coordinator.
 func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
-	return nil
+	txn, err := coord.Transact()
+	if err != nil {
+		return err
+	}
+	return txn.Commit()
 }
 
 func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, error) {
 	msgs := []coordinator.Message{}
-	return msgs, nil
+	txn, err := coord.Transact()
+	if err != nil {
+		return nil, err
+	}
+	err = txn.Commit()
+	return msgs, err
 }
 
 // NofityMessage posts the specified message to the observers.
