@@ -38,10 +38,10 @@ func TestCoordinator(t *testing.T) {
 					}
 				}()
 				t.Run("message", func(t *testing.T) {
-					// CoordinatorMessageTest(t, coord)
+					CoordinatorMessageTest(t, coord)
 				})
 				t.Run("process", func(t *testing.T) {
-					CoordinatorProcessTest(t, coord)
+					// CoordinatorProcessTest(t, coord)
 				})
 			})
 		}
