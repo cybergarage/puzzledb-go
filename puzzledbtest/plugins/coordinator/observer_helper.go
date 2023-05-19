@@ -19,8 +19,6 @@ import (
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
 type testObserver struct {
@@ -47,11 +45,8 @@ func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
 }
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorObserverTest(t *testing.T, core core.CoordinatorService) {
+func CoordinatorObserverTest(t *testing.T, coord coordinator.Coordinator) {
 	t.Helper()
-
-	coord := plugins.NewServiceWith(core)
-	coord.SetKeyCoder(newTestKeyCoder())
 
 	cancel := func(t *testing.T, txn coordinator.Transaction) {
 		t.Helper()
@@ -59,21 +54,6 @@ func CoordinatorObserverTest(t *testing.T, core core.CoordinatorService) {
 			t.Error(err)
 		}
 	}
-
-	// Starts the coordinator service
-
-	if err := coord.Start(); err != nil {
-		t.Error(err)
-		return
-	}
-
-	// Terminates the coordinator service
-
-	defer func() {
-		if err := coord.Stop(); err != nil {
-			t.Error(err)
-		}
-	}()
 
 	// Generates test keys and objects
 
