@@ -16,6 +16,7 @@ package coordinator
 
 import (
 	"math"
+	"os"
 	"sync"
 
 	"github.com/google/uuid"
@@ -36,12 +37,17 @@ type processImpl struct {
 }
 
 func NewProcess() Process {
-	return &processImpl{
+	p := &processImpl{
 		host:  "",
 		Mutex: sync.Mutex{},
 		clock: 0,
 		uuid:  uuid.New(),
 	}
+	host, err := os.Hostname()
+	if err == nil {
+		p.host = host
+	}
+	return p
 }
 
 // ID returns a UUID of the coordinator process.
