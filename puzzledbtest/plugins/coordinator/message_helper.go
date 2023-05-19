@@ -20,10 +20,42 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 )
 
+type testObserver struct {
+	receivedEvents []coordinator.Message
+}
+
+func newqTestObserver() *testObserver {
+	return &testObserver{
+		receivedEvents: []coordinator.Message{},
+	}
+}
+
+func (observer *testObserver) MessageReceived(msg coordinator.Message) {
+	observer.receivedEvents = append(observer.receivedEvents, msg)
+}
+
+func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
+	for _, event := range observer.receivedEvents {
+		if msg.Equals(event) {
+			return true
+		}
+	}
+	return false
+}
+
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
 func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 	t.Helper()
 
+	observer := newqTestObserver()
+	err := coord.AddObserver(observer)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	// Generates test messages
+	msgs := []coordinator.Message{}
 	for n := 0; n < 10; n++ {
 		obj := coordinator.NewObjectWith(
 			coordinator.NewKeyWith(n),
@@ -31,9 +63,22 @@ func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 		msg := coordinator.NewMessageWith(
 			coordinator.ObjectCreated,
 			obj)
+		msgs = append(msgs, msg)
+	}
+
+	// Posts test messages
+	for _, msg := range msgs {
 		err := coord.PostMessage(msg)
 		if err != nil {
 			t.Error(err)
+			return
+		}
+	}
+
+	// Checks the received messages
+	for _, msg := range msgs {
+		if !observer.IsEventReceived(msg) {
+			t.Errorf("message (%v) is not received", msg.Object().Key())
 			return
 		}
 	}
