@@ -16,8 +16,10 @@ package coordinator
 
 import (
 	"testing"
+	"time"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 )
 
 type testObserver struct {
@@ -74,6 +76,10 @@ func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 			return
 		}
 	}
+
+	// Waits for the received messages
+
+	time.Sleep(plugin.DefaultStoreScanInterval * 2)
 
 	// Checks the received messages
 	for _, msg := range msgs {
