@@ -74,12 +74,13 @@ func (process *processImpl) SetClock(newClock Clock) {
 }
 
 // IncrementClock increments a logical clock of the coordinator process.
-func (process *processImpl) IncrementClock() {
+func (process *processImpl) IncrementClock() Clock {
 	if (ClockMax - 1) <= process.clock {
 		process.clock = 0
 	} else {
 		process.clock += ClockDiffrent
 	}
+	return process.clock
 }
 
 // Clock returns a logical clock of the coordinator process.
