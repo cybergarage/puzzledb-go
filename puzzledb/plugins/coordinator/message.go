@@ -18,6 +18,13 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 )
 
+// ProcessObject represents a store process state object.
+type MessageObject struct {
+	From   ProcessObject
+	Type   uint8
+	Object []byte
+}
+
 // NewScanMessageKey returns a new scan message key to get the latest message clock.
 func NewScanMessageKey() coordinator.Key {
 	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader)
