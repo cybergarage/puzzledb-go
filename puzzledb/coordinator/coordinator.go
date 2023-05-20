@@ -18,6 +18,10 @@ package coordinator
 type Store interface {
 	// SetKeyCoder sets the key coder.
 	SetKeyCoder(coder KeyCoder)
+	// DecodeKey returns the decoded key from the specified bytes if available, otherwise returns an error.
+	DecodeKey([]byte) (Key, error)
+	// EncodeKey returns the encoded bytes from the specified key if available, otherwise returns an error.
+	EncodeKey(Key) ([]byte, error)
 	// Transact begin a new transaction.
 	Transact() (Transaction, error)
 }
