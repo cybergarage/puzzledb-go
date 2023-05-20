@@ -37,3 +37,8 @@ func NewStateKeyWith(elems ...any) Key {
 	storeKey := []any{StateObjectKeyHeader}
 	return append(storeKey, elems...)
 }
+
+// NewScanStateKeyWith returns a new state key with the specified state type for the scan.
+func NewScanStateKeyWith(t StateType) Key {
+	return NewStateKeyWith(t)
+}
