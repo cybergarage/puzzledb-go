@@ -20,6 +20,8 @@ import (
 
 // Process represents a coordinator process.
 type Process interface {
+	// SetID sets a UUID to the coordinator process.
+	SetID(uuid uuid.UUID)
 	// ID returns a UUID of the coordinator process.
 	ID() uuid.UUID
 	// SetHost sets a host name to the coordinator process.

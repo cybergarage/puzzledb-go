@@ -50,6 +50,11 @@ func NewProcess() Process {
 	return p
 }
 
+// SetID sets a UUID to the coordinator process.
+func (process *processImpl) SetID(uuid uuid.UUID) {
+	process.uuid = uuid
+}
+
 // ID returns a UUID of the coordinator process.
 func (process *processImpl) ID() uuid.UUID {
 	return process.uuid
