@@ -77,10 +77,10 @@ func (coord *serviceImpl) SetStateObject(t coordinator.StateType, obj coordinato
 	switch v := obj.(type) {
 	case coordinator.Process:
 		key = coordinator.NewStateKeyWith(t, v.Host())
-		p := &coordinator.ProcessObject{
+		p := &ProcessObject{
 			ID:    v.ID(),
 			Host:  v.Host(),
-			Clock: v.Clock(),
+			Clock: uint64(v.Clock()),
 		}
 		objBytes, err = cbor.Marshal(p)
 		if err != nil {
