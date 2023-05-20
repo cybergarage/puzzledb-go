@@ -15,7 +15,6 @@
 package coordinator
 
 import (
-	"math"
 	"os"
 	"sync"
 
@@ -68,10 +67,15 @@ func (process *processImpl) SetClock(newClock Clock) {
 	if 0 < process.clock.Compare(newClock) {
 		newClock = process.clock
 	}
-	if (math.MaxUint64 - 1) <= newClock {
+	if (ClockMax - 1) <= newClock {
 		newClock = 0
 	}
 	process.clock = newClock + 1
+}
+
+// IncrementClock increments a logical clock of the coordinator process.
+func (process *processImpl) IncrementClock() {
+	process.SetClock(process.clock + 1)
 }
 
 // Clock returns a logical clock of the coordinator process.

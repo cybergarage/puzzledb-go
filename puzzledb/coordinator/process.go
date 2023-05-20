@@ -32,6 +32,8 @@ type Process interface {
 	SetClock(clock Clock)
 	// Clock returns a logical clock of the coordinator process.
 	Clock() Clock
+	// IncrementClock increments a logical clock of the coordinator process.
+	IncrementClock()
 	// Lock locks the coordinator process.
 	Lock()
 	// Unlock unlocks the coordinator process.
