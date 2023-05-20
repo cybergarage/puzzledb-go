@@ -116,12 +116,12 @@ func (coord *serviceImpl) GetStateObject(t coordinator.StateType, key coordinato
 }
 
 // GetRangeObjects gets the result set for the specified key and state type.
-func (coord *serviceImpl) GetStateObjects(t coordinator.StateType, key coordinator.Key) (coordinator.ResultSet, error) {
+func (coord *serviceImpl) GetStateObjects(t coordinator.StateType) (coordinator.ResultSet, error) {
 	txn, err := coord.Transact()
 	if err != nil {
 		return nil, err
 	}
-	rs, err := txn.GetRange(key)
+	rs, err := txn.GetRange(coordinator.NewScanStateKeyWith(t))
 	if err != nil {
 		return nil, errors.Join(err, txn.Cancel())
 	}
