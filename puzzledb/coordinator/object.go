@@ -16,16 +16,16 @@ package coordinator
 
 // Object represents a key-value object.
 type Object interface {
-	// Key returns the key of the object.
+	// Key returns the object key.
 	Key() Key
-	// Value returns the value of the object.
+	// Value returns the decoded object value.
 	Value() Value
 	// Encode encodes the object.
 	Encode() ([]byte, error)
-	// Unmarshal decodes the value of the object to the specified object.
+	// Unmarshal unmarshals the object value to the specified object.
 	Unmarshal(toj any) error
 	// Equals returns true if the object is equal to the specified object.
 	Equals(Object) bool
-	// String returns the string representation of the event.
+	// String returns the string representation.
 	String() string
 }

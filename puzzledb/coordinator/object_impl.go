@@ -49,15 +49,14 @@ func (obj *object) Encode() ([]byte, error) {
 	return cbor.Marshal(obj.value)
 }
 
-// Unmarshal unmarshals the value to the specified object.
+// Unmarshal unmarshals the object value to the specified object.
 func (obj *object) Unmarshal(to any) error {
-	switch v := obj.value.(type) {
-	case string:
-		return cbor.UnmarshalTo([]byte(v), to)
-	case []byte:
-		return cbor.UnmarshalTo(v, to)
+	// FIXME: Unmarshal the object values directry not to use the CBOR encoding.
+	encodedBytes, err := cbor.Marshal(obj.value)
+	if err != nil {
+		return err
 	}
-	return newValueInvalidError(obj.value)
+	return cbor.UnmarshalTo(encodedBytes, to)
 }
 
 // Equals returns true if the object is equal to the specified object.
