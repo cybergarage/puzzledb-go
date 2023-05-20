@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20230317231317-e330030d07af
-	github.com/cybergarage/go-cbor v1.2.1
+	github.com/cybergarage/go-cbor v1.3.0
 	github.com/cybergarage/go-logger v1.3.4
 	github.com/cybergarage/go-mongo v1.0.2
 	github.com/cybergarage/go-mysql v1.0.3
@@ -12,8 +12,8 @@ require (
 	github.com/cybergarage/go-redis v1.3.6
 	github.com/cybergarage/go-sqltest v0.9.4
 	github.com/cybergarage/go-tracing v1.1.2
+	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-memdb v1.3.2
-	github.com/mitchellh/go-homedir v1.1.0
 	github.com/prometheus/client_golang v1.15.1
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0
@@ -27,7 +27,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/cybergarage/go-safecast v1.1.0 // indirect
+	github.com/cybergarage/go-safecast v1.2.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
@@ -37,7 +37,6 @@ require (
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
