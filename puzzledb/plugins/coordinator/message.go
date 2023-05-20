@@ -33,6 +33,11 @@ func NewScanMessageKey() coordinator.Key {
 	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader)
 }
 
+// NewScanMessageKeyWith returns a new scan message key to get the latest message clock.
+func NewScanMessageKeyWith(clock coordinator.Clock) coordinator.Key {
+	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader, clock)
+}
+
 // NewMessageKeyWith returns a new message key with the specified message.
 func NewMessageKeyWith(msg coordinator.Message, clock coordinator.Clock) coordinator.Key {
 	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader, clock, uint8(msg.Type()))
