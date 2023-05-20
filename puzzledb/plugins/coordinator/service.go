@@ -147,7 +147,7 @@ func (coord *serviceImpl) ScanLatestMessageClock(txn coordinator.Transaction) (c
 	if err != nil {
 		return 0, err
 	}
-	return coordinator.Clock(msgObj.From.Clock), nil
+	return coordinator.Clock(msgObj.Clock), nil
 }
 
 // GetLatestMessageClock returns the latest message clock.
@@ -165,10 +165,32 @@ func (coord *serviceImpl) GetLatestMessageClock() (coordinator.Clock, error) {
 
 // PostMessage posts the specified message to the coordinator.
 func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
+	coord.Lock()
+	defer coord.Unlock()
+
 	txn, err := coord.Transact()
 	if err != nil {
 		return err
 	}
+
+	localClock := coord.IncrementClock()
+	coordClock, err := coord.ScanLatestMessageClock(txn)
+	if err != nil {
+		return errors.Join(err, txn.Cancel())
+	}
+	nextClock := coordinator.NextClock(coordClock, localClock)
+
+	key := NewMessageKeyWith(msg, nextClock)
+	val, err := NewMessageValueWith(msg, coord, nextClock)
+	if err != nil {
+		return errors.Join(err, txn.Cancel())
+	}
+
+	err = txn.Set(coordinator.NewObjectWith(key, val))
+	if err != nil {
+		return errors.Join(err, txn.Cancel())
+	}
+
 	return txn.Commit()
 }
 
