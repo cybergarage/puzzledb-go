@@ -41,6 +41,8 @@ func (t MessageType) String() string {
 
 // Message represents a  coordinator event.
 type Message interface {
+	// Clock returns the message clock.
+	Clock() Clock
 	// From returns the destination process of the message.
 	From() Process
 	// Type returns the message type.
