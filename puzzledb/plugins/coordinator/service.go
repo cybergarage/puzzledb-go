@@ -200,8 +200,24 @@ func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = txn.Commit()
-	return msgs, err
+
+	localClock := coord.Clock()
+	key := NewScanMessageKeyWith(localClock)
+	rs, err := txn.GetRange(key)
+	if err != nil {
+		return msgs, errors.Join(err, txn.Cancel())
+	}
+
+	for rs.Next() {
+		var msgObj MessageObject
+		err = rs.Object().Unmarshal(&msgObj)
+		if err != nil {
+			return msgs, errors.Join(err, txn.Cancel())
+		}
+		// msgs = append(msgs, msgObj.Message)
+	}
+
+	return msgs, txn.Commit()
 }
 
 // NofityMessage posts the specified message to the observers.
