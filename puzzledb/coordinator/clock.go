@@ -28,6 +28,11 @@ const (
 // Clock represents a logical clock.
 type Clock uint64
 
+// NewClock returns a new clock.
+func NewClock() Clock {
+	return 0
+}
+
 // CompareClocks compares two clocks. If c1 and c2 are equal, returns 0.
 // If c1 is greater than c2, returns 1. If c2 is greater than c1, returns -1.
 // However, if the difference between c1 and c2 is greater than half of the maximum UNIT64 value,
