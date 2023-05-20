@@ -18,6 +18,11 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 )
 
+// NewScanMessageKey returns a new scan message key to get the latest message clock.
+func NewScanMessageKey() coordinator.Key {
+	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader)
+}
+
 // NewMessageObjectWith returns a new message object.
 func NewMessageObjectWith(msg coordinator.Message) coordinator.Object {
 	key := coordinator.NewKey()
