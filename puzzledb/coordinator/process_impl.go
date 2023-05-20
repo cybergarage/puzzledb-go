@@ -32,7 +32,7 @@ func NewProcess() Process {
 	p := &processImpl{
 		host:  "",
 		Mutex: sync.Mutex{},
-		clock: 0,
+		clock: NewClock(),
 		uuid:  uuid.New(),
 	}
 	host, err := os.Hostname()
@@ -75,7 +75,11 @@ func (process *processImpl) SetClock(newClock Clock) {
 
 // IncrementClock increments a logical clock of the coordinator process.
 func (process *processImpl) IncrementClock() {
-	process.SetClock(process.clock + 1)
+	if (ClockMax - 1) <= process.clock {
+		process.clock = 0
+	} else {
+		process.clock += ClockDiffrent
+	}
 }
 
 // Clock returns a logical clock of the coordinator process.
