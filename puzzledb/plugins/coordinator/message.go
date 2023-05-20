@@ -16,11 +16,14 @@ package coordinator
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/google/uuid"
 )
 
 // ProcessObject represents a store process state object.
 type MessageObject struct {
-	From   ProcessObject
+	ID     uuid.UUID
+	Host   string
+	Clock  uint64
 	Type   uint8
 	Object []byte
 }
@@ -30,8 +33,7 @@ func NewScanMessageKey() coordinator.Key {
 	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader)
 }
 
-// NewMessageObjectWith returns a new message object.
-func NewMessageObjectWith(msg coordinator.Message) coordinator.Object {
-	key := coordinator.NewKey()
-	return coordinator.NewObjectWith(key, msg)
+// NewMessageKeyWith returns a new message key with the specified message.
+func NewMessageKeyWith(msg coordinator.Message) coordinator.Key {
+	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader, uint8(msg.Type()))
 }
