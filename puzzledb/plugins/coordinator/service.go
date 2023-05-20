@@ -213,6 +213,9 @@ func (coord *serviceImpl) NofityMessage(msg coordinator.Message) {
 
 // Start starts this etcd coordinator.
 func (coord *serviceImpl) Start() error {
+	if err := coord.CoordinatorService.Start(); err != nil {
+		return err
+	}
 	go func() {
 		for range coord.Ticker.C {
 			msgs, err := coord.GetUpdateMessages()
@@ -232,6 +235,9 @@ func (coord *serviceImpl) Start() error {
 
 // Stop stops this etcd coordinator.
 func (coord *serviceImpl) Stop() error {
+	if err := coord.CoordinatorService.Stop(); err != nil {
+		return err
+	}
 	coord.Ticker.Stop()
 	return nil
 }
