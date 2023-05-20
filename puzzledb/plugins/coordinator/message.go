@@ -34,6 +34,22 @@ func NewScanMessageKey() coordinator.Key {
 }
 
 // NewMessageKeyWith returns a new message key with the specified message.
-func NewMessageKeyWith(msg coordinator.Message) coordinator.Key {
-	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader, uint8(msg.Type()))
+func NewMessageKeyWith(msg coordinator.Message, clock coordinator.Clock) coordinator.Key {
+	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader, clock, uint8(msg.Type()))
+}
+
+// NewMessageValueWith returns a new message value with the specified message.
+func NewMessageValueWith(msg coordinator.Message, process coordinator.Process, clock coordinator.Clock) (coordinator.Value, error) {
+	objBytes, err := msg.Object().Encode()
+	if err != nil {
+		return nil, err
+	}
+	obj := &MessageObject{
+		ID:     process.ID(),
+		Host:   process.Host(),
+		Clock:  uint64(clock),
+		Type:   uint8(msg.Type()),
+		Object: objBytes,
+	}
+	return coordinator.NewValueWith(obj), nil
 }
