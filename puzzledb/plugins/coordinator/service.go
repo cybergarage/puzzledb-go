@@ -142,6 +142,11 @@ func (coord *serviceImpl) ScanLatestMessageClock(txn coordinator.Transaction) (c
 	if !rs.Next() {
 		return 0, nil
 	}
+	// var msgObj MessageObject
+	// err = cbor.UnmarshalTo(rs.Object(), &msgObj)
+	// if err != nil {
+	// 	return 0, err
+	// }
 	return 0, nil
 }
 
