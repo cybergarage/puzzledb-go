@@ -33,6 +33,15 @@ func NewClock() Clock {
 	return 0
 }
 
+// NextClock returns the next clock.
+func NextClock(c1 Clock, c2 Clock) Clock {
+	c := c1
+	if c1 < c2 {
+		c = c2
+	}
+	return (c + ClockDiffrent)
+}
+
 // CompareClocks compares two clocks. If c1 and c2 are equal, returns 0.
 // If c1 is greater than c2, returns 1. If c2 is greater than c1, returns -1.
 // However, if the difference between c1 and c2 is greater than half of the maximum UNIT64 value,
