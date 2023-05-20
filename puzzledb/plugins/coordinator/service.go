@@ -129,6 +129,35 @@ func (coord *serviceImpl) GetStateObjects(t coordinator.StateType, key coordinat
 	return rs, err
 }
 
+// GetLatestMessageClock returns the latest message clock.
+func (coord *serviceImpl) ScanLatestMessageClock(txn coordinator.Transaction) (coordinator.Clock, error) {
+	key := NewScanMessageKey()
+	rs, err := txn.GetRange(
+		key,
+		coordinator.NewLimitOption(1),
+		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
+	if err != nil {
+		return 0, err
+	}
+	if !rs.Next() {
+		return 0, nil
+	}
+	return 0, nil
+}
+
+// GetLatestMessageClock returns the latest message clock.
+func (coord *serviceImpl) GetLatestMessageClock() (coordinator.Clock, error) {
+	txn, err := coord.Transact()
+	if err != nil {
+		return 0, err
+	}
+	clock, err := coord.ScanLatestMessageClock(txn)
+	if err != nil {
+		return 0, errors.Join(err, txn.Cancel())
+	}
+	return clock, txn.Commit()
+}
+
 // PostMessage posts the specified message to the coordinator.
 func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 	txn, err := coord.Transact()
