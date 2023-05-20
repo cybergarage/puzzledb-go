@@ -19,7 +19,7 @@ import (
 	"testing"
 )
 
-func TestClock(t *testing.T) {
+func TestClockCompare(t *testing.T) {
 	testClocks := []struct {
 		c1       Clock
 		c2       Clock
