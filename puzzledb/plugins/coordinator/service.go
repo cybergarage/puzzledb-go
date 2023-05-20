@@ -129,7 +129,7 @@ func (coord *serviceImpl) GetStateObjects(t coordinator.StateType) (coordinator.
 	return rs, err
 }
 
-// GetLatestMessageClock returns the latest message clock.
+// ScanLatestMessageClock returns the latest message clock.
 func (coord *serviceImpl) ScanLatestMessageClock(txn coordinator.Transaction) (coordinator.Clock, error) {
 	key := NewScanMessageKey()
 	rs, err := txn.GetRange(
@@ -142,12 +142,12 @@ func (coord *serviceImpl) ScanLatestMessageClock(txn coordinator.Transaction) (c
 	if !rs.Next() {
 		return 0, nil
 	}
-	// var msgObj MessageObject
-	// err = cbor.UnmarshalTo(rs.Object(), &msgObj)
-	// if err != nil {
-	// 	return 0, err
-	// }
-	return 0, nil
+	var msgObj MessageObject
+	err = rs.Object().Unmarshal(&msgObj)
+	if err != nil {
+		return 0, err
+	}
+	return coordinator.Clock(msgObj.From.Clock), nil
 }
 
 // GetLatestMessageClock returns the latest message clock.
