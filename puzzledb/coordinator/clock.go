@@ -14,13 +14,22 @@
 
 package coordinator
 
-import "math"
+import (
+	"math"
+)
+
+const (
+	// ClockDiffrent is a clock difference.
+	ClockDiffrent = 1
+	// ClockMax is a maximum clock value.
+	ClockMax = math.MaxUint64
+)
 
 // Clock represents a logical clock.
 type Clock uint64
 
 // CompareClocks compares two clocks. If c1 and c2 are equal, returns 0.
-// If c1 is greater than c2, returns 1. // If c2 is greater than c1, returns -1.
+// If c1 is greater than c2, returns 1. If c2 is greater than c1, returns -1.
 // However, if the difference between c1 and c2 is greater than half of the maximum UNIT64 value,
 // the clock is considered to be back to zero and the comparison results are reversed.
 func (c1 Clock) Compare(c2 Clock) int {
@@ -29,14 +38,14 @@ func (c1 Clock) Compare(c2 Clock) int {
 	}
 
 	if c1 > c2 {
-		if c1-c2 > math.MaxUint64/2 {
+		if c1-c2 > (ClockMax / 2) {
 			return -1
 		} else {
 			return 1
 		}
 	}
 
-	if c2-c1 > math.MaxUint64/2 {
+	if c2-c1 > (ClockMax / 2) {
 		return 1
 	} else {
 		return -1
