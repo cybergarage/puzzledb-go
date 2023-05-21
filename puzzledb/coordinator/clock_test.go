@@ -52,8 +52,8 @@ func TestClockCompare(t *testing.T) {
 		},
 	}
 	for _, test := range testClocks {
-		if test.c1.Compare(test.c2) != test.expected {
-			t.Errorf("%v != %v", test.c1.Compare(test.c2), test.expected)
+		if CompareClocks(test.c1, test.c2) != test.expected {
+			t.Errorf("%v != %v", CompareClocks(test.c1, test.c2), test.expected)
 		}
 	}
 

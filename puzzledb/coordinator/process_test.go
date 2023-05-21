@@ -24,7 +24,7 @@ func TestProcessClock(t *testing.T) {
 	c1 := p.Clock()
 	p.IncrementClock()
 	c2 := p.Clock()
-	if c2.Compare(c1) != 1 {
+	if CompareClocks(c2, c1) != 1 {
 		t.Errorf("%d < %d", c2, c1)
 	}
 	d := c2 - c1
