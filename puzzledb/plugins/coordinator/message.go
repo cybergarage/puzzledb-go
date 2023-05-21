@@ -38,17 +38,17 @@ func NewMessageWith(key coordinator.Key, obj *MessageObject) coordinator.Message
 
 // NewScanMessageKey returns a new scan message key to get the latest message clock.
 func NewScanMessageKey() coordinator.Key {
-	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader)
+	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader[:])
 }
 
 // NewScanMessageKeyWith returns a new scan message key to get the latest message clock.
 func NewScanMessageKeyWith(clock coordinator.Clock) coordinator.Key {
-	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader, clock)
+	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader[:], clock)
 }
 
 // NewMessageKeyWith returns a new message key with the specified message.
 func NewMessageKeyWith(msg coordinator.Message, clock coordinator.Clock) coordinator.Key {
-	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader, clock, uint8(msg.Type()))
+	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader[:], clock, uint8(msg.Type()))
 }
 
 // NewMessageObjectWith returns a new message value with the specified message.
