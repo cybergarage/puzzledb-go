@@ -147,7 +147,7 @@ func (coord *serviceImpl) ScanLatestMessageClock(txn coordinator.Transaction) (c
 	if err != nil {
 		return 0, err
 	}
-	return coordinator.Clock(msgObj.Clock), nil
+	return msgObj.Clock, nil
 }
 
 // GetLatestMessageClock returns the latest message clock.
