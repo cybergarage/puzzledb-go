@@ -23,14 +23,14 @@ import (
 
 type object struct {
 	key   Key
-	value Value
+	bytes []byte
 }
 
 // NewObjectWith creates a new object with the specified key and value.
-func NewObjectWith(key Key, value Value) Object {
+func NewObjectWith(key Key, bytes []byte) Object {
 	return &object{
 		key:   key,
-		value: value,
+		bytes: bytes,
 	}
 }
 
@@ -39,24 +39,14 @@ func (obj *object) Key() Key {
 	return obj.key
 }
 
-// Value returns the value of the object.
-func (obj *object) Value() Value {
-	return obj.value
-}
-
-// Encode encodes the object.
-func (obj *object) Encode() ([]byte, error) {
-	return cbor.Marshal(obj.value)
+// Bytes returns the encoded object value.
+func (obj *object) Bytes() []byte {
+	return obj.bytes
 }
 
 // Unmarshal unmarshals the object value to the specified object.
 func (obj *object) Unmarshal(to any) error {
-	// FIXME: Unmarshal the object values directry not to use the CBOR encoding.
-	encodedBytes, err := cbor.Marshal(obj.value)
-	if err != nil {
-		return err
-	}
-	return cbor.UnmarshalTo(encodedBytes, to)
+	return cbor.UnmarshalTo(obj.bytes, to)
 }
 
 // Equals returns true if the object is equal to the specified object.
@@ -67,10 +57,7 @@ func (obj *object) Equals(other Object) bool {
 	if !obj.key.Equals(other.Key()) {
 		return false
 	}
-	if reflect.DeepEqual(obj.value, other.Value()) {
-		return true
-	}
-	if fmt.Sprintf("%v", obj.value) == fmt.Sprintf("%v", other.Value()) {
+	if reflect.DeepEqual(obj.bytes, other.Bytes()) {
 		return true
 	}
 	return false
@@ -78,5 +65,5 @@ func (obj *object) Equals(other Object) bool {
 
 // String returns the string representation of the event.
 func (obj *object) String() string {
-	return fmt.Sprintf("%v %v", obj.key, obj.value)
+	return fmt.Sprintf("%v %v", obj.key, obj.bytes)
 }

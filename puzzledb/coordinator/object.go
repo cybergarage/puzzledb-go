@@ -18,10 +18,8 @@ package coordinator
 type Object interface {
 	// Key returns the object key.
 	Key() Key
-	// Value returns the decoded object value.
-	Value() Value
-	// Encode encodes the object.
-	Encode() ([]byte, error)
+	// Bytes returns the encoded object value.
+	Bytes() []byte
 	// Unmarshal unmarshals the object value to the specified object.
 	Unmarshal(toj any) error
 	// Equals returns true if the object is equal to the specified object.

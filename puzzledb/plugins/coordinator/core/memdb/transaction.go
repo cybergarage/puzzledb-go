@@ -53,13 +53,9 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 	if err != nil {
 		return err
 	}
-	objBytes, err := obj.Encode()
-	if err != nil {
-		return err
-	}
 	doc := &Document{
 		Key:   string(keyBytes),
-		Value: objBytes,
+		Value: obj.Bytes(),
 	}
 	err = txn.Txn.Insert(tableName, doc)
 	if err != nil {

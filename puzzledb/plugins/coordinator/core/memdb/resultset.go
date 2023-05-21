@@ -70,11 +70,7 @@ func (rs *resultSet) Next() bool {
 	if err != nil {
 		return false
 	}
-	val, err := coordinator.NewValueFrom(doc.Value)
-	if err != nil {
-		return false
-	}
-	rs.obj = coordinator.NewObjectWith(key, val)
+	rs.obj = coordinator.NewObjectWith(key, doc.Value)
 	return true
 }
 

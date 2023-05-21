@@ -38,11 +38,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 	if err != nil {
 		return err
 	}
-	objBytes, err := obj.Encode()
-	if err != nil {
-		return err
-	}
-	txn.Transaction.Set(fdb.Key(keyBytes), objBytes)
+	txn.Transaction.Set(fdb.Key(keyBytes), obj.Bytes())
 	return nil
 }
 
@@ -61,11 +57,7 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 	if len(v) == 0 {
 		return nil, coordinator.NewKeyNotExistError(key)
 	}
-	val, err := coordinator.NewValueFrom(v)
-	if err != nil {
-		return nil, err
-	}
-	return coordinator.NewObjectWith(key, val), nil
+	return coordinator.NewObjectWith(key, v), nil
 }
 
 // Remove removes the specified key-value object.

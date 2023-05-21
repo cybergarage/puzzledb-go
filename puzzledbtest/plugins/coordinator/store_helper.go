@@ -54,7 +54,7 @@ func generateCoordinatorObjects() ([]coordinator.Object, error) {
 		keys[i] = key
 	}
 
-	vals := make([]coordinator.Value, len(pict.Cases()))
+	vals := make([]any, len(pict.Cases()))
 	for i, pictCase := range pict.Cases() {
 		val := map[string]any{}
 		for j, pictParam := range pict.Params() {
@@ -66,7 +66,7 @@ func generateCoordinatorObjects() ([]coordinator.Object, error) {
 			}
 			val[name] = v
 		}
-		vals[i] = coordinator.NewValueWith(val)
+		vals[i] = val
 	}
 
 	objs := make([]coordinator.Object, len(pict.Cases()))

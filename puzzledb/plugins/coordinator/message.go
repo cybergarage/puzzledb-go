@@ -32,7 +32,7 @@ type MessageObject struct {
 func NewMessageWith(key coordinator.Key, obj *MessageObject) coordinator.Message {
 	msg := coordinator.NewMessageWith(
 		coordinator.MessageType(obj.Type),
-		coordinator.NewObjectWith(key, nil))
+		coordinator.NewObjectWith(key, obj.Bytes))
 	return msg
 }
 
@@ -51,18 +51,13 @@ func NewMessageKeyWith(msg coordinator.Message, clock coordinator.Clock) coordin
 	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader, clock, uint8(msg.Type()))
 }
 
-// NewMessageValueWith returns a new message value with the specified message.
-func NewMessageValueWith(msg coordinator.Message, process coordinator.Process, clock coordinator.Clock) (coordinator.Value, error) {
-	objBytes, err := msg.Object().Encode()
-	if err != nil {
-		return nil, err
-	}
-	obj := &MessageObject{
+// NewMessageObjectWith returns a new message value with the specified message.
+func NewMessageObjectWith(msg coordinator.Message, process coordinator.Process, clock coordinator.Clock) (*MessageObject, error) {
+	return &MessageObject{
 		ID:    process.ID(),
 		Host:  process.Host(),
 		Clock: uint64(clock),
 		Type:  uint8(msg.Type()),
-		Bytes: objBytes,
-	}
-	return coordinator.NewValueWith(obj), nil
+		Bytes: msg.Object().Bytes(),
+	}, nil
 }
