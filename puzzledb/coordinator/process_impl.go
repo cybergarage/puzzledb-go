@@ -64,7 +64,7 @@ func (process *processImpl) Host() string {
 
 // SetClock sets a logical clock to the coordinator process.
 func (process *processImpl) SetClock(newClock Clock) {
-	if 0 < process.clock.Compare(newClock) {
+	if 0 < CompareClocks(process.clock, newClock) {
 		newClock = process.clock
 	}
 	if (ClockMax - 1) <= newClock {

@@ -26,7 +26,7 @@ const (
 )
 
 // Clock represents a logical clock.
-type Clock uint64
+type Clock = uint64
 
 // NewClock returns a new clock.
 func NewClock() Clock {
@@ -46,7 +46,7 @@ func NextClock(c1 Clock, c2 Clock) Clock {
 // If c1 is greater than c2, returns 1. If c2 is greater than c1, returns -1.
 // However, if the difference between c1 and c2 is greater than half of the maximum UNIT64 value,
 // the clock is considered to be back to zero and the comparison results are reversed.
-func (c1 Clock) Compare(c2 Clock) int {
+func CompareClocks(c1 Clock, c2 Clock) int {
 	if c1 == c2 {
 		return 0
 	}
