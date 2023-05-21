@@ -19,13 +19,21 @@ import (
 	"github.com/google/uuid"
 )
 
-// ProcessObject represents a store process state object.
+// MessageObject represents a message object.
 type MessageObject struct {
 	ID     uuid.UUID
 	Host   string
 	Clock  uint64
 	Type   uint8
 	Object []byte
+}
+
+// NewMessageWith returns a new message with the specified message object.
+func NewMessageWith(key coordinator.Key, obj *MessageObject) coordinator.Message {
+	msg := coordinator.NewMessageWith(
+		coordinator.MessageType(obj.Type),
+		coordinator.NewObjectWith(key, nil))
+	return msg
 }
 
 // NewScanMessageKey returns a new scan message key to get the latest message clock.
