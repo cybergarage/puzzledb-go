@@ -21,11 +21,11 @@ import (
 
 // MessageObject represents a message object.
 type MessageObject struct {
-	ID     uuid.UUID
-	Host   string
-	Clock  uint64
-	Type   uint8
-	Object []byte
+	ID    uuid.UUID
+	Host  string
+	Clock uint64
+	Type  uint8
+	Bytes []byte
 }
 
 // NewMessageWith returns a new message with the specified message object.
@@ -58,11 +58,11 @@ func NewMessageValueWith(msg coordinator.Message, process coordinator.Process, c
 		return nil, err
 	}
 	obj := &MessageObject{
-		ID:     process.ID(),
-		Host:   process.Host(),
-		Clock:  uint64(clock),
-		Type:   uint8(msg.Type()),
-		Object: objBytes,
+		ID:    process.ID(),
+		Host:  process.Host(),
+		Clock: uint64(clock),
+		Type:  uint8(msg.Type()),
+		Bytes: objBytes,
 	}
 	return coordinator.NewValueWith(obj), nil
 }
