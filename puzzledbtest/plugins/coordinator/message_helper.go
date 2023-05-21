@@ -59,9 +59,11 @@ func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 	// Generates test messages
 	msgs := []coordinator.Message{}
 	for n := 0; n < 10; n++ {
-		obj := coordinator.NewObjectWith(
-			coordinator.NewKeyWith(n),
-			n)
+		obj, err := coordinator.NewObjectFrom(coordinator.NewKeyWith(n), n)
+		if err != nil {
+			t.Error(err)
+			return
+		}
 		msg := coordinator.NewMessageWith(
 			coordinator.ObjectCreated,
 			obj)

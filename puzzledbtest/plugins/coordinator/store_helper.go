@@ -71,7 +71,11 @@ func generateCoordinatorObjects() ([]coordinator.Object, error) {
 
 	objs := make([]coordinator.Object, len(pict.Cases()))
 	for n, key := range keys {
-		objs[n] = coordinator.NewObjectWith(key, vals[n])
+		obj, err := coordinator.NewObjectFrom(key, vals[n])
+		if err != nil {
+			return []coordinator.Object{}, err
+		}
+		objs[n] = obj
 	}
 
 	return objs, nil
@@ -95,7 +99,11 @@ func updateCoordinatorObjects(objs []coordinator.Object) ([]coordinator.Object, 
 			}
 			val = append(val, v)
 		}
-		objs[i] = coordinator.NewObjectWith(objs[i].Key(), val)
+		obj, err := coordinator.NewObjectFrom(objs[i].Key(), val)
+		if err != nil {
+			return []coordinator.Object{}, err
+		}
+		objs[i] = obj
 	}
 
 	return objs, nil
