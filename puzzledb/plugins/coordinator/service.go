@@ -181,12 +181,17 @@ func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 	nextClock := coordinator.NextClock(coordClock, localClock)
 
 	key := NewMessageKeyWith(msg, nextClock)
-	val, err := NewMessageValueWith(msg, coord, nextClock)
+	obj, err := NewMessageObjectWith(msg, coord, nextClock)
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
 
-	err = txn.Set(coordinator.NewObjectWith(key, val))
+	objBytes, err := cbor.Marshal(obj)
+	if err != nil {
+		return errors.Join(err, txn.Cancel())
+	}
+
+	err = txn.Set(coordinator.NewObjectWith(key, objBytes))
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
@@ -210,11 +215,13 @@ func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, error) {
 
 	for rs.Next() {
 		var msgObj MessageObject
-		err = rs.Object().Unmarshal(&msgObj)
+		obj := rs.Object()
+		err = obj.Unmarshal(&msgObj)
 		if err != nil {
 			return msgs, errors.Join(err, txn.Cancel())
 		}
-		// msgs = append(msgs, msgObj.Message)
+		msg := NewMessageWith(obj.Key(), &msgObj)
+		msgs = append(msgs, msg)
 	}
 
 	return msgs, txn.Commit()

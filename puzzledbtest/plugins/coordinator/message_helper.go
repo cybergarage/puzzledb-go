@@ -61,7 +61,7 @@ func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 	for n := 0; n < 10; n++ {
 		obj := coordinator.NewObjectWith(
 			coordinator.NewKeyWith(n),
-			coordinator.NewValueWith(n))
+			n)
 		msg := coordinator.NewMessageWith(
 			coordinator.ObjectCreated,
 			obj)
