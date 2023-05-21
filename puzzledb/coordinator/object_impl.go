@@ -34,6 +34,18 @@ func NewObjectWith(key Key, bytes []byte) Object {
 	}
 }
 
+// NewObjectFrom creates a new object with the specified key and value.
+func NewObjectFrom(key Key, val any) (Object, error) {
+	bytes, err := cbor.Marshal(val)
+	if err != nil {
+		return nil, err
+	}
+	return &object{
+		key:   key,
+		bytes: bytes,
+	}, nil
+}
+
 // Key returns the key of the object.
 func (obj *object) Key() Key {
 	return obj.key
