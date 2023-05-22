@@ -15,6 +15,7 @@
 package coordinator
 
 import (
+	"sync"
 	"testing"
 	"time"
 
@@ -23,22 +24,26 @@ import (
 )
 
 type testObserver struct {
-	receivedEvents []coordinator.Message
+	sync.Mutex
+	receivedMsgs []coordinator.Message
 }
 
 func newqTestObserver() *testObserver {
 	return &testObserver{
-		receivedEvents: []coordinator.Message{},
+		Mutex:        sync.Mutex{},
+		receivedMsgs: []coordinator.Message{},
 	}
 }
 
 func (observer *testObserver) MessageReceived(msg coordinator.Message) {
-	observer.receivedEvents = append(observer.receivedEvents, msg)
+	observer.Lock()
+	defer observer.Unlock()
+	observer.receivedMsgs = append(observer.receivedMsgs, msg)
 }
 
 func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
-	for _, event := range observer.receivedEvents {
-		if msg.Equals(event) {
+	for _, msg := range observer.receivedMsgs {
+		if msg.Equals(msg) {
 			return true
 		}
 	}
