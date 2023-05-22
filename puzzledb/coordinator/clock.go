@@ -33,13 +33,12 @@ func NewClock() Clock {
 	return 0
 }
 
-// NextClock returns the next clock.
-func NextClock(c1 Clock, c2 Clock) Clock {
-	c := c1
+// MaxClock returns the maximum clock.
+func MaxClock(c1 Clock, c2 Clock) Clock {
 	if c1 < c2 {
-		c = c2
+		return c2
 	}
-	return (c + ClockDiffrent)
+	return c1
 }
 
 // CompareClocks compares two clocks. If c1 and c2 are equal, returns 0.
