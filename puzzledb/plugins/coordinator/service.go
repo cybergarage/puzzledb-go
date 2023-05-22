@@ -173,15 +173,22 @@ func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 		return err
 	}
 
-	localClock := coord.IncrementClock()
+	// Receive the latest message clock
+
+	localClock := coord.Clock()
 	coordClock, err := coord.ScanLatestMessageClock(txn)
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
-	nextClock := coordinator.NextClock(coordClock, localClock)
+	coord.SetClock(coordinator.MaxClock(coordClock, localClock))
+	coord.IncrementClock()
 
-	key := NewMessageKeyWith(msg, nextClock)
-	obj, err := NewMessageObjectWith(msg, coord, nextClock)
+	// Post a new message
+
+	localClock = coord.IncrementClock()
+
+	key := NewMessageKeyWith(msg, localClock)
+	obj, err := NewMessageObjectWith(msg, coord, localClock)
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
