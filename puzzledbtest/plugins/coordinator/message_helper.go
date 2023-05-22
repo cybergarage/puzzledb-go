@@ -42,8 +42,8 @@ func (observer *testObserver) MessageReceived(msg coordinator.Message) {
 }
 
 func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
-	for _, msg := range observer.receivedMsgs {
-		if msg.Equals(msg) {
+	for _, receivedMsg := range observer.receivedMsgs {
+		if msg.Equals(receivedMsg) {
 			return true
 		}
 	}
