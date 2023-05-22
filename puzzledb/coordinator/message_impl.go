@@ -53,9 +53,9 @@ func (msg *messageImpl) Equals(other Message) bool {
 		return false
 	}
 	if msg.Object().Equals(other.Object()) {
-		return true
+		return false
 	}
-	return false
+	return true
 }
 
 // String returns the string representation of the message.
