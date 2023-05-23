@@ -38,6 +38,11 @@ func (key Key) Elements() []any {
 	return key
 }
 
+// Len returns the number of elements of the key.
+func (key Key) Len() int {
+	return len(key)
+}
+
 // Equals returns true if the specified key is equal to the key.
 func (key Key) Equals(other Key) bool {
 	if len(key) != len(other) {
