@@ -23,16 +23,8 @@ var (
 	ErrInvalid      = errors.New("invalid")
 	ErrNotExist     = errors.New("not exist")
 	ErrNotSupported = errors.New("not supported")
-	ErrorNoMessage  = errors.New("no message")
+	ErrNoMessage    = errors.New("no message")
 )
-
-func newKeyInvalidError(v any) error {
-	return fmt.Errorf("key type (%s:%T) is %w", v, v, ErrInvalid)
-}
-
-func newValueInvalidError(v any) error {
-	return fmt.Errorf("value type (%s:%T) is %w", v, v, ErrInvalid)
-}
 
 func NewKeyNotExistError(v any) error {
 	return fmt.Errorf("key (%s) is %w", v, ErrNotExist)
