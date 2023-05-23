@@ -35,10 +35,10 @@ func NewClock() Clock {
 
 // MaxClock returns the maximum clock.
 func MaxClock(c1 Clock, c2 Clock) Clock {
-	if c1 < c2 {
-		return c2
+	if 0 <= CompareClocks(c1, c2) {
+		return c1
 	}
-	return c1
+	return c2
 }
 
 // CompareClocks compares two clocks. If c1 and c2 are equal, returns 0.
