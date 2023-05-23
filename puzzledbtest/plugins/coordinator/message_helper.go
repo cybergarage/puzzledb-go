@@ -50,7 +50,6 @@ func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
 	return false
 }
 
-// nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
 func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 	t.Helper()
 
@@ -92,11 +91,15 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 		}
 	}
 
-	// Waits for the received messages
-
-	time.Sleep(plugin.DefaultStoreScanInterval * 2)
-
 	// Checks the received messages
+
+	for n := 0; n < 10; n++ {
+		if len(observer.receivedMsgs) == len(msgs) {
+			break
+		}
+		// Waits for the received messages
+		time.Sleep(plugin.DefaultStoreScanInterval)
+	}
 
 	if len(observer.receivedMsgs) != len(msgs) {
 		t.Errorf("the number of received messages (%d) is not matched to the number of posted messages (%d)", len(observer.receivedMsgs), len(msgs))

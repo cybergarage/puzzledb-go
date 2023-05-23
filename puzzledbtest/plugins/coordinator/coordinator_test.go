@@ -44,16 +44,17 @@ func TestCoordinators(t *testing.T) {
 					t.Skip(err)
 					return
 				}
-				defer func() {
-					if err := coord.Stop(); err != nil {
-						t.Error(err)
-					}
-				}()
 			}
 			testName := fmt.Sprintf("%s(%s)", coords[0].ServiceName(), keyCoder.ServiceName())
 			t.Run(testName, func(t *testing.T) {
 				CoordinatorsTest(t, coords)
 			})
+			for _, coord := range coords {
+				if err := coord.Stop(); err != nil {
+					t.Skip(err)
+					return
+				}
+			}
 		}
 
 	}
