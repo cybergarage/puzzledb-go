@@ -18,10 +18,13 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
 func TestCoordinator(t *testing.T) {
+	log.SetSharedLogger(log.NewStdoutLogger(log.LevelInfo))
+
 	mgr := puzzledbtest.NewPluginManager()
 	for _, keyCoder := range mgr.EnabledKeyCoderServices() {
 		for _, coord := range mgr.EnabledCoordinatorServices() {
