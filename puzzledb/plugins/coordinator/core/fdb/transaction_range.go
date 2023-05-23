@@ -17,7 +17,6 @@ package fdb
 import (
 	"github.com/apple/foundationdb/bindings/go/src/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 type rangeResultSet struct {
@@ -42,7 +41,7 @@ func newRangeResultSet(key coordinator.Key, rs fdb.RangeResult, offset uint, lim
 }
 
 func (rs *rangeResultSet) Next() bool {
-	if kv.NoLimit < rs.limit && uint(rs.limit) <= rs.nRead {
+	if coordinator.NoLimit < rs.limit && uint(rs.limit) <= rs.nRead {
 		return false
 	}
 
@@ -102,7 +101,7 @@ func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option
 		case *coordinator.LimitOption:
 			limit = v.Limit
 		case *coordinator.OrderOption:
-			if v.Order == kv.OrderDesc {
+			if v.Order == coordinator.OrderDesc {
 				reverseOrder = true
 			}
 		}
