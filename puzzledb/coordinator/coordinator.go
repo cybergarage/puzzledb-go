@@ -40,8 +40,6 @@ type Coordinator interface {
 	GetStateObjects(t StateType) (ResultSet, error)
 	// PostMessage posts the specified message to the coordinator.
 	PostMessage(msg Message) error
-	// GetLatestMessageClock returns the latest message clock.
-	GetLatestMessageClock() (Clock, error)
 	// AddObserver adds the specified observer to the coordinator.
 	AddObserver(observer Observer) error
 }
