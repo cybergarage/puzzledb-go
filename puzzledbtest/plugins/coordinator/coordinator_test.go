@@ -35,10 +35,10 @@ func TestCoordinators(t *testing.T) {
 	coords02 := mgr02.EnabledCoordinatorServices()
 
 	for _, keyCoder := range mgr.EnabledKeyCoderServices() {
-		for n, coords01 := range coords01 {
-			coords := []coordinator.Service{coords01, coords02[n]}
-			for _, coord := range coords {
-				coord.SetHost(fmt.Sprintf("localhost%02d", n))
+		for i, coords01 := range coords01 {
+			coords := []coordinator.Service{coords01, coords02[i]}
+			for j, coord := range coords {
+				coord.SetHost(fmt.Sprintf("coodinator%02d", j))
 				coord.SetKeyCoder(keyCoder)
 				if err := coord.Start(); err != nil {
 					t.Error(err)
