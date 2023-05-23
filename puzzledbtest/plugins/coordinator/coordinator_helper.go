@@ -17,11 +17,12 @@ package coordinator
 import (
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 )
 
-func CoordinatorTest(t *testing.T, coord coordinator.Coordinator) {
+func CoordinatorsTest(t *testing.T, coord []plugin.Service) {
 	t.Helper()
-	CoordinatorMessageTest(t, coord)
-	// CoordinatorObserverTest(t, coord)
+	t.Run("message", func(t *testing.T) {
+		CoordinatorMessageTest(t, coord)
+	})
 }

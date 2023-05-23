@@ -38,6 +38,7 @@ func TestCoordinators(t *testing.T) {
 		for n, coords01 := range coords01 {
 			coords := []coordinator.Service{coords01, coords02[n]}
 			for _, coord := range coords {
+				coord.SetHost(fmt.Sprintf("localhost%02d", n))
 				coord.SetKeyCoder(keyCoder)
 				if err := coord.Start(); err != nil {
 					t.Skip(err)
