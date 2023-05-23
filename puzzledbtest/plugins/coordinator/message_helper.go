@@ -51,22 +51,24 @@ func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
 }
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
+func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 	t.Helper()
 
-	if err := truncateCoordinatorStore(coord); err != nil {
-		t.Error(err)
-		return
-	}
-
 	observer := newTestObserver()
-	err := coord.AddObserver(observer)
-	if err != nil {
-		t.Error(err)
-		return
+	for _, coord := range coords {
+		if err := truncateCoordinatorStore(coord); err != nil {
+			t.Error(err)
+			return
+		}
+		err := coord.AddObserver(observer)
+		if err != nil {
+			t.Error(err)
+			return
+		}
 	}
 
 	// Generates test messages
+
 	msgs := []coordinator.Message{}
 	for n := 0; n < 10; n++ {
 		obj, err := coordinator.NewObjectFrom(coordinator.NewKeyWith(n), n)
@@ -81,8 +83,9 @@ func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 	}
 
 	// Posts test messages
+
 	for _, msg := range msgs {
-		err := coord.PostMessage(msg)
+		err := coords[0].PostMessage(msg)
 		if err != nil {
 			t.Error(err)
 			return
