@@ -41,7 +41,7 @@ func TestCoordinators(t *testing.T) {
 				coord.SetHost(fmt.Sprintf("localhost%02d", n))
 				coord.SetKeyCoder(keyCoder)
 				if err := coord.Start(); err != nil {
-					t.Skip(err)
+					t.Error(err)
 					return
 				}
 			}
@@ -51,7 +51,7 @@ func TestCoordinators(t *testing.T) {
 			})
 			for _, coord := range coords {
 				if err := coord.Stop(); err != nil {
-					t.Skip(err)
+					t.Error(err)
 					return
 				}
 			}
