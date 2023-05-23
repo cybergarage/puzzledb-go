@@ -129,6 +129,48 @@ func (coord *serviceImpl) GetStateObjects(t coordinator.StateType) (coordinator.
 	return rs, err
 }
 
+func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, coordinator.Clock, error) {
+	txn, err := coord.Transact()
+	if err != nil {
+		return nil, 0, err
+	}
+
+	localClock := coord.Clock()
+	key := NewScanMessageKeyWith(localClock)
+	rs, err := txn.GetRange(
+		key,
+		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
+	if err != nil {
+		return nil, 0, errors.Join(err, txn.Cancel())
+	}
+
+	msgs := []coordinator.Message{}
+	msgCnt := 0
+	latestClock := localClock
+	for rs.Next() {
+		msgObj := NewMessageObject()
+		obj := rs.Object()
+		err = obj.Unmarshal(msgObj)
+		if err != nil {
+			return msgs, 0, errors.Join(err, txn.Cancel())
+		}
+		msg := NewMessageWith(obj.Key(), msgObj)
+		msgs = append([]coordinator.Message{msg}, msgs...)
+		msgCnt++
+	}
+
+	err = txn.Commit()
+	if err != nil {
+		return nil, 0, err
+	}
+
+	if msgCnt == 0 {
+		return nil, 0, coordinator.ErrorNoMessage
+	}
+
+	return msgs, latestClock, nil
+}
+
 // ScanLatestMessageClock returns the latest message clock.
 func (coord *serviceImpl) ScanLatestMessageClock(txn coordinator.Transaction) (coordinator.Clock, error) {
 	key := NewScanMessageKey()
@@ -206,34 +248,6 @@ func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 	return txn.Commit()
 }
 
-func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, error) {
-	msgs := []coordinator.Message{}
-	txn, err := coord.Transact()
-	if err != nil {
-		return nil, err
-	}
-
-	localClock := coord.Clock()
-	key := NewScanMessageKeyWith(localClock)
-	rs, err := txn.GetRange(key)
-	if err != nil {
-		return msgs, errors.Join(err, txn.Cancel())
-	}
-
-	for rs.Next() {
-		var msgObj MessageObject
-		obj := rs.Object()
-		err = obj.Unmarshal(&msgObj)
-		if err != nil {
-			return msgs, errors.Join(err, txn.Cancel())
-		}
-		msg := NewMessageWith(obj.Key(), &msgObj)
-		msgs = append(msgs, msg)
-	}
-
-	return msgs, txn.Commit()
-}
-
 // NofityMessage posts the specified message to the observers.
 func (coord *serviceImpl) NofityMessage(msg coordinator.Message) {
 	for _, observer := range coord.observers {
@@ -248,7 +262,7 @@ func (coord *serviceImpl) Start() error {
 	}
 	go func() {
 		for range coord.Ticker.C {
-			msgs, err := coord.GetUpdateMessages()
+			msgs, _, err := coord.GetUpdateMessages()
 			if err != nil {
 				log.Errorf("Failed to get the update coordinator messages : %s", err)
 				continue
