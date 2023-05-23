@@ -29,6 +29,8 @@ const (
 	prefix      = "_prefix"
 )
 
+var sharedMemDB *memdb.MemDB = nil
+
 type Coordinator struct {
 	*core.BaseCoordinator
 	*memdb.MemDB
@@ -53,6 +55,11 @@ func (coord *Coordinator) Transact() (coordinator.Transaction, error) {
 
 // Start starts this etcd coordinator.
 func (coord *Coordinator) Start() error {
+	if sharedMemDB != nil {
+		coord.MemDB = sharedMemDB
+		return nil
+	}
+
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
 			tableName: {
@@ -75,7 +82,8 @@ func (coord *Coordinator) Start() error {
 	if err != nil {
 		return errors.Join(err, coord.Stop())
 	}
-	coord.MemDB = memDB
+	sharedMemDB = memDB
+	coord.MemDB = sharedMemDB
 	return nil
 }
 
