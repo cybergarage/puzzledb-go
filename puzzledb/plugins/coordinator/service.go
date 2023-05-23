@@ -234,28 +234,41 @@ func (coord *serviceImpl) Start() error {
 		logError := func(err error) {
 			log.Errorf("Failed to get the update coordinator messages : %s", err)
 		}
+
 		for range coord.Ticker.C {
+			log.Infof("Ticker (%s)", coord.Host())
+
 			coord.Lock()
 
+			jitter := time.Duration(rand.Intn(100)) * time.Millisecond //nolint:gosec
+
 			txn, err := coord.Transact()
-			if err == nil {
-				err := coord.GetUpdateMessages(txn)
-				if err == nil {
-					err := txn.Commit()
-					if err != nil {
-						logError(err)
-					}
-				} else {
-					logError(errors.Join(err, txn.Cancel()))
+			if err != nil {
+				coord.Unlock()
+				coord.Ticker.Reset(jitter)
+				continue
+			}
+
+			err = coord.GetUpdateMessages(txn)
+			if err != nil {
+				coord.Unlock()
+				err := txn.Cancel()
+				if err != nil {
+					logError(err)
 				}
-			} else {
+				coord.Ticker.Reset(jitter)
+				continue
+			}
+
+			err = txn.Commit()
+			if err != nil {
 				logError(err)
 			}
 
 			coord.Unlock()
 
 			// Reset the timer with a random jitter.
-			coord.Ticker.Reset(DefaultStoreScanInterval + time.Duration(rand.Intn(100))*time.Millisecond) //nolint:gosec
+			coord.Ticker.Reset(DefaultStoreScanInterval + jitter)
 		}
 	}()
 	return nil
