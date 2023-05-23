@@ -28,7 +28,7 @@ type testObserver struct {
 	receivedMsgs []coordinator.Message
 }
 
-func newqTestObserver() *testObserver {
+func newTestObserver() *testObserver {
 	return &testObserver{
 		Mutex:        sync.Mutex{},
 		receivedMsgs: []coordinator.Message{},
@@ -59,7 +59,7 @@ func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 		return
 	}
 
-	observer := newqTestObserver()
+	observer := newTestObserver()
 	err := coord.AddObserver(observer)
 	if err != nil {
 		t.Error(err)
@@ -94,6 +94,12 @@ func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 	time.Sleep(plugin.DefaultStoreScanInterval * 2)
 
 	// Checks the received messages
+
+	if len(observer.receivedMsgs) != len(msgs) {
+		t.Errorf("the number of received messages (%d) is not matched to the number of posted messages (%d)", len(observer.receivedMsgs), len(msgs))
+		return
+	}
+
 	for _, msg := range msgs {
 		if !observer.IsEventReceived(msg) {
 			t.Errorf("message (%v) is not received", msg.Object().Key())
