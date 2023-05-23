@@ -129,88 +129,42 @@ func (coord *serviceImpl) GetStateObjects(t coordinator.StateType) (coordinator.
 	return rs, err
 }
 
-func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, coordinator.Clock, error) {
-	txn, err := coord.Transact()
-	if err != nil {
-		return nil, 0, err
-	}
-
-	localClock := coord.Clock()
+func (coord *serviceImpl) GetUpdateMessages(txn coordinator.Transaction) error {
 	key := NewScanMessageKey()
 	rs, err := txn.GetRange(
 		key,
 		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
 	if err != nil {
-		return nil, 0, errors.Join(err, txn.Cancel())
+		return err
 	}
 
-	latestClock := localClock
-	msgs := []coordinator.Message{}
-	msgCnt := 0
+	localClock := coord.Clock()
 
+	msgs := []coordinator.Message{}
 	for rs.Next() {
 		msgObj := NewMessageObject()
 		obj := rs.Object()
 		err = obj.Unmarshal(msgObj)
 		if err != nil {
-			return msgs, 0, errors.Join(err, txn.Cancel())
+			return err
 		}
-
 		if 0 <= coordinator.CompareClocks(msgObj.Clock, localClock) {
 			break
 		}
 
 		msg := NewMessageWith(obj.Key(), msgObj)
 		msgs = append([]coordinator.Message{msg}, msgs...)
-		latestClock = coordinator.MaxClock(latestClock, msgObj.Clock)
 
-		msgCnt++
-	}
+		coord.SetReceivedClock(msgObj.Clock)
 
-	err = txn.Commit()
-	if err != nil {
-		return nil, 0, err
+		log.Infof("Received a message: %s %s (%d)", msg.From(), msg.Type().String(), msg.Clock())
 	}
 
-	if msgCnt == 0 {
-		return nil, 0, coordinator.ErrorNoMessage
+	for _, msg := range msgs {
+		coord.NofityMessage(msg)
 	}
 
-	return msgs, latestClock, nil
-}
-
-// ScanLatestMessageClock returns the latest message clock.
-func (coord *serviceImpl) ScanLatestMessageClock(txn coordinator.Transaction) (coordinator.Clock, error) {
-	key := NewScanMessageKey()
-	rs, err := txn.GetRange(
-		key,
-		coordinator.NewLimitOption(1),
-		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
-	if err != nil {
-		return 0, err
-	}
-	if !rs.Next() {
-		return 0, nil
-	}
-	var msgObj MessageObject
-	err = rs.Object().Unmarshal(&msgObj)
-	if err != nil {
-		return 0, err
-	}
-	return msgObj.Clock, nil
-}
-
-// GetLatestMessageClock returns the latest message clock.
-func (coord *serviceImpl) GetLatestMessageClock() (coordinator.Clock, error) {
-	txn, err := coord.Transact()
-	if err != nil {
-		return 0, err
-	}
-	clock, err := coord.ScanLatestMessageClock(txn)
-	if err != nil {
-		return 0, errors.Join(err, txn.Cancel())
-	}
-	return clock, txn.Commit()
+	return nil
 }
 
 // PostMessage posts the specified message to the coordinator.
@@ -223,19 +177,16 @@ func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 		return err
 	}
 
-	// Receive the latest message clock
+	// Receive update messages and update local clock
 
-	localClock := coord.Clock()
-	coordClock, err := coord.ScanLatestMessageClock(txn)
+	err = coord.GetUpdateMessages(txn)
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
-	coord.SetClock(coordinator.MaxClock(coordClock, localClock))
-	coord.IncrementClock()
 
 	// Post a new message
 
-	localClock = coord.IncrementClock()
+	localClock := coord.IncrementClock()
 
 	key := NewMessageKeyWith(msg, localClock)
 	obj, err := NewMessageObjectWith(msg, coord, localClock)
@@ -269,15 +220,29 @@ func (coord *serviceImpl) Start() error {
 		return err
 	}
 	go func() {
+		logError := func(err error) {
+			log.Errorf("Failed to get the update coordinator messages : %s", err)
+		}
 		for range coord.Ticker.C {
-			msgs, _, err := coord.GetUpdateMessages()
-			if err != nil {
-				log.Errorf("Failed to get the update coordinator messages : %s", err)
-				continue
+			coord.Lock()
+
+			txn, err := coord.Transact()
+			if err == nil {
+				err := coord.GetUpdateMessages(txn)
+				if err == nil {
+					err := txn.Commit()
+					if err != nil {
+						logError(err)
+					}
+				} else {
+					logError(errors.Join(err, txn.Cancel()))
+				}
+			} else {
+				logError(err)
 			}
-			for _, msg := range msgs {
-				coord.NofityMessage(msg)
-			}
+
+			coord.Unlock()
+
 			// Reset the timer with a random jitter.
 			coord.Ticker.Reset(DefaultStoreScanInterval + time.Duration(rand.Intn(100))*time.Millisecond) //nolint:gosec
 		}
