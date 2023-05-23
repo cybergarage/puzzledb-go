@@ -19,18 +19,26 @@ import (
 	"testing"
 
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestCoordinator(t *testing.T) {
+func TestCoordinators(t *testing.T) {
 	log.SetSharedLogger(log.NewStdoutLogger(log.LevelInfo))
 
 	mgr := puzzledbtest.NewPluginManager()
+
+	mgr01 := puzzledbtest.NewPluginManager()
+	mgr02 := puzzledbtest.NewPluginManager()
+
+	coords01 := mgr01.EnabledCoordinatorServices()
+	coords02 := mgr02.EnabledCoordinatorServices()
+
 	for _, keyCoder := range mgr.EnabledKeyCoderServices() {
-		for _, coord := range mgr.EnabledCoordinatorServices() {
-			coord.SetKeyCoder(keyCoder)
-			testName := fmt.Sprintf("%s(%s)", coord.ServiceName(), keyCoder.ServiceName())
-			t.Run(testName, func(t *testing.T) {
+		for n, coords01 := range coords01 {
+			coords := []coordinator.Service{coords01, coords02[n]}
+			for _, coord := range coords {
+				coord.SetKeyCoder(keyCoder)
 				if err := coord.Start(); err != nil {
 					t.Skip(err)
 					return
@@ -40,13 +48,12 @@ func TestCoordinator(t *testing.T) {
 						t.Error(err)
 					}
 				}()
-				t.Run("message", func(t *testing.T) {
-					CoordinatorMessageTest(t, coord)
-				})
-				t.Run("process", func(t *testing.T) {
-					// CoordinatorProcessTest(t, coord)
-				})
+			}
+			testName := fmt.Sprintf("%s(%s)", coords[0].ServiceName(), keyCoder.ServiceName())
+			t.Run(testName, func(t *testing.T) {
+				CoordinatorsTest(t, coords)
 			})
 		}
+
 	}
 }
