@@ -54,6 +54,11 @@ func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
 func CoordinatorMessageTest(t *testing.T, coord coordinator.Coordinator) {
 	t.Helper()
 
+	if err := truncateCoordinatorStore(coord); err != nil {
+		t.Error(err)
+		return
+	}
+
 	observer := newqTestObserver()
 	err := coord.AddObserver(observer)
 	if err != nil {
