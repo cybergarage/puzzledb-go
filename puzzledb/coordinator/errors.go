@@ -23,6 +23,7 @@ var (
 	ErrInvalid      = errors.New("invalid")
 	ErrNotExist     = errors.New("not exist")
 	ErrNotSupported = errors.New("not supported")
+	ErrorNoMessage  = errors.New("no message")
 )
 
 func newKeyInvalidError(v any) error {
