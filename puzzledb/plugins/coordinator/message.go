@@ -51,6 +51,17 @@ func NewMessageKeyWith(msg coordinator.Message, clock coordinator.Clock) coordin
 	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader[:], clock, uint8(msg.Type()))
 }
 
+// NewMessageObject returns a new empty message.
+func NewMessageObject() *MessageObject {
+	return &MessageObject{
+		ID:    uuid.Nil,
+		Host:  "",
+		Clock: 0,
+		Type:  0,
+		Bytes: nil,
+	}
+}
+
 // NewMessageObjectWith returns a new message value with the specified message.
 func NewMessageObjectWith(msg coordinator.Message, process coordinator.Process, clock coordinator.Clock) (*MessageObject, error) {
 	return &MessageObject{
