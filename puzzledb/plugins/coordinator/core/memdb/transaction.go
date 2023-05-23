@@ -16,7 +16,6 @@ package memdb
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/hashicorp/go-memdb"
 )
 
@@ -88,20 +87,20 @@ func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option
 
 	offset := uint(0)
 	limit := int(-1)
-	order := kv.OrderNone
+	order := coordinator.OrderNone
 	for _, opt := range opts {
 		switch v := opt.(type) {
-		case *kv.OffsetOption:
+		case *coordinator.OffsetOption:
 			offset = v.Offset
-		case *kv.LimitOption:
+		case *coordinator.LimitOption:
 			limit = v.Limit
-		case *kv.OrderOption:
+		case *coordinator.OrderOption:
 			order = v.Order
 		}
 	}
 
 	var it memdb.ResultIterator
-	if order != kv.OrderDesc {
+	if order != coordinator.OrderDesc {
 		it, err = txn.Txn.Get(tableName, idName+prefix, string(keyBytes))
 	} else {
 		it, err = txn.Txn.GetReverse(tableName, idName+prefix, string(keyBytes))
