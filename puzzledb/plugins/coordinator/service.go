@@ -136,7 +136,7 @@ func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, coordinato
 	}
 
 	localClock := coord.Clock()
-	key := NewScanMessageKeyWith(localClock)
+	key := NewScanMessageKey()
 	rs, err := txn.GetRange(
 		key,
 		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
@@ -144,9 +144,10 @@ func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, coordinato
 		return nil, 0, errors.Join(err, txn.Cancel())
 	}
 
+	latestClock := localClock
 	msgs := []coordinator.Message{}
 	msgCnt := 0
-	latestClock := localClock
+
 	for rs.Next() {
 		msgObj := NewMessageObject()
 		obj := rs.Object()
@@ -154,8 +155,15 @@ func (coord *serviceImpl) GetUpdateMessages() ([]coordinator.Message, coordinato
 		if err != nil {
 			return msgs, 0, errors.Join(err, txn.Cancel())
 		}
+
+		if 0 <= coordinator.CompareClocks(msgObj.Clock, localClock) {
+			break
+		}
+
 		msg := NewMessageWith(obj.Key(), msgObj)
 		msgs = append([]coordinator.Message{msg}, msgs...)
+		latestClock = coordinator.MaxClock(latestClock, msgObj.Clock)
+
 		msgCnt++
 	}
 
