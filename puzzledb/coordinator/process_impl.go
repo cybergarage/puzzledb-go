@@ -63,19 +63,20 @@ func (process *processImpl) Host() string {
 }
 
 // SetClock sets a logical clock to the coordinator process.
-func (process *processImpl) SetClock(newClock Clock) {
-	if 0 < CompareClocks(process.clock, newClock) {
-		newClock = process.clock
-	}
-	if (ClockMax - 1) <= newClock {
-		newClock = 0
-	}
-	process.clock = newClock + 1
+func (process *processImpl) SetClock(clock Clock) {
+	process.clock = clock
+}
+
+// SetReceivedClock sets a received logical clock to the coordinator process.
+func (process *processImpl) SetReceivedClock(clock Clock) Clock {
+	process.clock = MaxClock(clock, process.clock)
+	process.IncrementClock()
+	return process.clock
 }
 
 // IncrementClock increments a logical clock of the coordinator process.
 func (process *processImpl) IncrementClock() Clock {
-	if (ClockMax - 1) <= process.clock {
+	if (ClockMax - ClockDiffrent) <= process.clock {
 		process.clock = 0
 	} else {
 		process.clock += ClockDiffrent
