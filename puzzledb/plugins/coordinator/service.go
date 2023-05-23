@@ -236,8 +236,6 @@ func (coord *serviceImpl) Start() error {
 		}
 
 		for range coord.Ticker.C {
-			log.Infof("Ticker (%s)", coord.Host())
-
 			coord.Lock()
 
 			jitter := time.Duration(rand.Intn(100)) * time.Millisecond //nolint:gosec
@@ -245,6 +243,7 @@ func (coord *serviceImpl) Start() error {
 			txn, err := coord.Transact()
 			if err != nil {
 				coord.Unlock()
+				logError(err)
 				coord.Ticker.Reset(jitter)
 				continue
 			}
