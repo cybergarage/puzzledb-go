@@ -148,7 +148,11 @@ func (coord *serviceImpl) GetUpdateMessages(txn coordinator.Transaction) error {
 		if err != nil {
 			return err
 		}
-		if 0 <= coordinator.CompareClocks(msgObj.Clock, localClock) {
+
+		log.Infof("Scan message: %d %s %s (%d)", localClock, msgObj.Host, msgObj.Host, msgObj.Clock)
+
+		// Skip the message if the message clock is older than the local clock
+		if 0 <= coordinator.CompareClocks(localClock, msgObj.Clock) {
 			break
 		}
 
@@ -157,7 +161,7 @@ func (coord *serviceImpl) GetUpdateMessages(txn coordinator.Transaction) error {
 
 		coord.SetReceivedClock(msgObj.Clock)
 
-		log.Infof("Received a message: %s %s (%d)", msg.From(), msg.Type().String(), msg.Clock())
+		log.Infof("Received message: %s %s (%d)", msg.From().Host(), msg.Type().String(), msg.Clock())
 	}
 
 	for _, msg := range msgs {
