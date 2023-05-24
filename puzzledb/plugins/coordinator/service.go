@@ -81,7 +81,8 @@ func (coord *serviceImpl) SetStateObject(t coordinator.StateType, obj coordinato
 	if err != nil {
 		return err
 	}
-	err = txn.Set(coordinator.NewObjectWith(obj.Key(), obj.Bytes()))
+	steteKey := coordinator.NewStateKeyWith(t, obj.Key()...)
+	err = txn.Set(coordinator.NewObjectWith(steteKey, obj.Bytes()))
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
