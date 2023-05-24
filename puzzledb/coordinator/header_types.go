@@ -25,6 +25,7 @@ const (
 const (
 	StateObject   = HeaderType('S')
 	MessageObject = HeaderType('M')
+	JobObject     = HeaderType('J')
 )
 
 const (
@@ -32,8 +33,11 @@ const (
 	SecondaryIndex = IndexType(2)
 )
 
-var StateObjectKeyHeader = [2]byte{byte(StateObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-var MessageObjectKeyHeader = [2]byte{byte(MessageObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+var (
+	StateObjectKeyHeader   = [2]byte{byte(StateObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+	MessageObjectKeyHeader = [2]byte{byte(MessageObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+	JobObjectKeyHeader     = [2]byte{byte(JobObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+)
 
 func HeaderByteFromVersion(v Version) byte {
 	return (byte(v<<4) & 0x70)
@@ -52,5 +56,6 @@ func GetAllHeaderTypes() []HeaderType {
 	return []HeaderType{
 		StateObject,
 		MessageObject,
+		JobObject,
 	}
 }
