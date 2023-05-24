@@ -220,7 +220,7 @@ func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinat
 }
 
 // Start starts this etcd coordinator.
-func (coord *serviceImpl) Start() error {
+func (coord *serviceImpl) Start() error { // nolint:gocognit
 	if err := coord.CoordinatorService.Start(); err != nil {
 		return err
 	}
@@ -247,9 +247,7 @@ func (coord *serviceImpl) Start() error {
 
 				err = coord.notifyUpdateMessages(txn)
 				if err != nil {
-					if err != nil {
-						logError(errors.Join(err, txn.Cancel()))
-					}
+					logError(errors.Join(err, txn.Cancel()))
 					coord.Unlock()
 					continue
 				}
