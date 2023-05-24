@@ -38,6 +38,7 @@ linters:
     - nosnakecase
     - gci
     - forbidigo
+    - containedctx
 
 linters-settings:
   revive:
