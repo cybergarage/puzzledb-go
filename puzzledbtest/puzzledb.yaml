@@ -25,7 +25,7 @@ plugins:
       enabled: false
       endpoints: null
     fdb:
-      enabled: false
+      enabled: true
       cluseterFile: null
   store:
     document:
