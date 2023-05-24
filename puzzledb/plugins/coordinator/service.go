@@ -95,7 +95,8 @@ func (coord *serviceImpl) GetStateObject(t coordinator.StateType, key coordinato
 	if err != nil {
 		return nil, err
 	}
-	obj, err := txn.Get(key)
+	steteKey := coordinator.NewStateKeyWith(t, key...)
+	obj, err := txn.Get(steteKey)
 	if err != nil {
 		return nil, errors.Join(err, txn.Cancel())
 	}
