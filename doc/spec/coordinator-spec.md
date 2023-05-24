@@ -53,6 +53,13 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"><p>Message Type</p></td>
 <td style="text-align: left;"><p>CBOR (Message)</p></td>
 </tr>
+<tr class="even">
+<td style="text-align: left;"><p>Job</p></td>
+<td style="text-align: left;"><p>Header</p></td>
+<td style="text-align: left;"><p>Job ID</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>CBOR (Job)</p></td>
+</tr>
 </tbody>
 </table>
 
@@ -80,7 +87,7 @@ The key header is a 2-byte header that is prepended to every key in the key-valu
 <td style="text-align: left;"><p>Key category</p></td>
 <td style="text-align: left;"><p>8</p></td>
 <td style="text-align: left;"><p>The record key type</p></td>
-<td style="text-align: left;"><p>N:Node M:Message</p></td>
+<td style="text-align: left;"><p>N:Node M:Message J:Job</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Version</p></td>
