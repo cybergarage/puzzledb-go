@@ -40,6 +40,7 @@ type serviceImpl struct {
 	core.CoordinatorService
 	observers []coordinator.Observer
 	coordinator.Process
+	*MessageQueue
 	*time.Ticker
 }
 
@@ -49,6 +50,7 @@ func NewServiceWith(service core.CoordinatorService) Service {
 		CoordinatorService: service,
 		Process:            coordinator.NewProcess(),
 		observers:          make([]coordinator.Observer, 0),
+		MessageQueue:       NewMessageQueue(),
 		Ticker:             time.NewTicker(DefaultStoreScanInterval),
 	}
 }
@@ -178,20 +180,13 @@ func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 	coord.Lock()
 	defer coord.Unlock()
 
-	txn, err := coord.Transact()
-	if err != nil {
-		return err
-	}
+	coord.EnqueueMessage(msg)
 
-	// Receive update messages and update local clock
+	return nil
+}
 
-	err = coord.GetUpdateMessages(txn)
-	if err != nil {
-		return errors.Join(err, txn.Cancel())
-	}
-
-	// Post a new message
-
+// postMessage posts the specified message to the coordinator.
+func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinator.Message) error {
 	localClock := coord.IncrementClock()
 
 	key := NewMessageKeyWith(msg, localClock)
@@ -202,15 +197,15 @@ func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 
 	objBytes, err := cbor.Marshal(obj)
 	if err != nil {
-		return errors.Join(err, txn.Cancel())
+		return err
 	}
 
 	err = txn.Set(coordinator.NewObjectWith(key, objBytes))
 	if err != nil {
-		return errors.Join(err, txn.Cancel())
+		return err
 	}
 
-	return txn.Commit()
+	return nil
 }
 
 // NofityMessage posts the specified message to the observers.
@@ -227,12 +222,11 @@ func (coord *serviceImpl) Start() error {
 	}
 	go func() {
 		logError := func(err error) {
-			log.Errorf("Failed to get the update coordinator messages : %s", err)
+			log.Errorf("Failed to update coordinator messages : %s", err)
 		}
 
 		for range coord.Ticker.C {
 			coord.Lock()
-
 			jitter := time.Duration(rand.Intn(100)) * time.Millisecond //nolint:gosec
 
 			txn, err := coord.Transact()
@@ -243,15 +237,31 @@ func (coord *serviceImpl) Start() error {
 				continue
 			}
 
+			// Receive update messages and update local clock
+
 			err = coord.GetUpdateMessages(txn)
 			if err != nil {
-				coord.Unlock()
-				err := txn.Cancel()
 				if err != nil {
 					logError(err)
 				}
-				coord.Ticker.Reset(jitter)
 				continue
+			}
+
+			// Post message if there is no message in the queue
+
+			msg, err := coord.PopMessage()
+			for msg != nil {
+				err = coord.postMessage(txn, msg)
+				if err != nil {
+					coord.PushMessage(msg)
+					logError(err)
+					break
+				}
+				msg, err = coord.PopMessage()
+			}
+
+			if err != nil && !errors.Is(err, coordinator.ErrNoMessage) {
+				logError(err)
 			}
 
 			err = txn.Commit()
@@ -262,6 +272,7 @@ func (coord *serviceImpl) Start() error {
 			coord.Unlock()
 
 			// Reset the timer with a random jitter.
+
 			coord.Ticker.Reset(DefaultStoreScanInterval + jitter)
 		}
 	}()
