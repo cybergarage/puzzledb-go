@@ -20,6 +20,7 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
+	coord "github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
@@ -44,6 +45,7 @@ type Server struct {
 	actorService *actor.Service
 	*Config
 	*PluginManager
+	coord.Process
 }
 
 // NewServer returns a new server instance.
@@ -52,6 +54,7 @@ func NewServer() *Server {
 		actorService:  nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
+		Process:       coord.NewProcess(),
 	}
 	conf, err := NewDefaultConfig()
 	if err != nil {
@@ -150,6 +153,7 @@ func (server *Server) setupPlugins() error {
 	// Coordinator services
 
 	for _, service := range server.CoordinatorServices() {
+		service.SetProcess(server.Process)
 		service.SetKeyCoder(defaultKeyCoder)
 	}
 
