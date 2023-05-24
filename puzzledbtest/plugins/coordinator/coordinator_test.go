@@ -56,6 +56,5 @@ func TestCoordinators(t *testing.T) {
 				}
 			}
 		}
-
 	}
 }
