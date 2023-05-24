@@ -142,11 +142,16 @@ func (coord *serviceImpl) nofityMessage(msg coordinator.Message) {
 	}
 }
 
-func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) error {
+func (coord *serviceImpl) getLatestMessages(txn coordinator.Transaction) (coordinator.ResultSet, error) {
 	key := NewScanMessageKey()
 	rs, err := txn.GetRange(
 		key,
 		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
+	return rs, err
+}
+
+func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) error {
+	rs, err := coord.getLatestMessages(txn)
 	if err != nil {
 		return err
 	}
@@ -184,6 +189,26 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 	}
 
 	return nil
+}
+
+func (coord *serviceImpl) getLatestMessageClock(txn coordinator.Transaction) (coordinator.Clock, error) {
+	rs, err := coord.getLatestMessages(txn)
+	if err != nil {
+		return 0, err
+	}
+
+	if !rs.Next() {
+		return 0, nil
+	}
+
+	msgObj := NewMessageObject()
+	obj := rs.Object()
+	err = obj.Unmarshal(msgObj)
+	if err != nil {
+		return 0, err
+	}
+
+	return msgObj.Clock, nil
 }
 
 // PostMessage posts the specified message to the coordinator.
@@ -224,6 +249,29 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 	if err := coord.CoordinatorService.Start(); err != nil {
 		return err
 	}
+
+	txn, err := coord.Transact()
+	if err != nil {
+		return err
+	}
+
+	// Set latest message clock to the local clock
+
+	clock, err := coord.getLatestMessageClock(txn)
+	if err != nil {
+		return errors.Join(err, txn.Cancel())
+	}
+
+	err = txn.Commit()
+	if err != nil {
+		return err
+	}
+
+	coord.SetClock(clock)
+	coord.IncrementClock()
+
+	// Start coordinator worker
+
 	go func() {
 		logError := func(err error) {
 			log.Errorf("coordinator worker: %s", err)
@@ -259,14 +307,15 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 					err = coord.postMessage(txn, msg)
 					if err != nil {
 						coord.PushMessage(msg)
-						logError(err)
 						break
 					}
 					msg, err = coord.PopMessage()
 				}
 
 				if err != nil && !errors.Is(err, coordinator.ErrNoMessage) {
-					logError(err)
+					logError(errors.Join(err, txn.Cancel()))
+					coord.Unlock()
+					continue
 				}
 
 				err = txn.Commit()
@@ -280,6 +329,7 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 			}
 		}
 	}()
+
 	return nil
 }
 
