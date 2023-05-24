@@ -15,6 +15,7 @@
 package coordinator
 
 import (
+	"context"
 	"errors"
 	"math/rand"
 	"time"
@@ -41,17 +42,20 @@ type serviceImpl struct {
 	observers []coordinator.Observer
 	coordinator.Process
 	*MessageQueue
-	*time.Ticker
+	ctx       context.Context
+	ctxCancel context.CancelFunc
 }
 
 // NewService returns a new coordinator service with the specified core coordinator service.
 func NewServiceWith(service core.CoordinatorService) Service {
+	ctx, cancel := context.WithCancel(context.Background())
 	return &serviceImpl{
 		CoordinatorService: service,
 		Process:            coordinator.NewProcess(),
 		observers:          make([]coordinator.Observer, 0),
 		MessageQueue:       NewMessageQueue(),
-		Ticker:             time.NewTicker(DefaultStoreScanInterval),
+		ctx:                ctx,
+		ctxCancel:          cancel,
 	}
 }
 
@@ -131,7 +135,14 @@ func (coord *serviceImpl) GetStateObjects(t coordinator.StateType) (coordinator.
 	return rs, err
 }
 
-func (coord *serviceImpl) GetUpdateMessages(txn coordinator.Transaction) error {
+// nofityMessage posts the specified message to the observers.
+func (coord *serviceImpl) nofityMessage(msg coordinator.Message) {
+	for _, observer := range coord.observers {
+		observer.MessageReceived(msg)
+	}
+}
+
+func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) error {
 	key := NewScanMessageKey()
 	rs, err := txn.GetRange(
 		key,
@@ -169,7 +180,7 @@ func (coord *serviceImpl) GetUpdateMessages(txn coordinator.Transaction) error {
 
 	for _, msg := range msgs {
 		log.Infof("Received message: %s %s (%d)", msg.From().Host(), msg.Type().String(), msg.Clock())
-		coord.NofityMessage(msg)
+		coord.nofityMessage(msg)
 	}
 
 	return nil
@@ -208,13 +219,6 @@ func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinat
 	return nil
 }
 
-// NofityMessage posts the specified message to the observers.
-func (coord *serviceImpl) NofityMessage(msg coordinator.Message) {
-	for _, observer := range coord.observers {
-		observer.MessageReceived(msg)
-	}
-}
-
 // Start starts this etcd coordinator.
 func (coord *serviceImpl) Start() error {
 	if err := coord.CoordinatorService.Start(); err != nil {
@@ -222,58 +226,60 @@ func (coord *serviceImpl) Start() error {
 	}
 	go func() {
 		logError := func(err error) {
-			log.Errorf("Failed to update coordinator messages : %s", err)
+			log.Errorf("coordinator worker: %s", err)
 		}
 
-		for range coord.Ticker.C {
-			coord.Lock()
-			jitter := time.Duration(rand.Intn(100)) * time.Millisecond //nolint:gosec
+		for {
+			jitter := time.Duration(rand.Intn(int(DefaultStoreScanInterval/time.Millisecond/2))) * time.Millisecond //nolint:gosec
+			select {
+			case <-time.After(DefaultStoreScanInterval + jitter):
+				var err error
+				coord.Lock()
 
-			txn, err := coord.Transact()
-			if err != nil {
+				txn, err := coord.Transact()
+				if err != nil {
+					logError(err)
+					coord.Unlock()
+					continue
+				}
+
+				// Receive update messages and update local clock
+
+				err = coord.notifyUpdateMessages(txn)
+				if err != nil {
+					if err != nil {
+						logError(errors.Join(err, txn.Cancel()))
+					}
+					coord.Unlock()
+					continue
+				}
+
+				// Post message if there is no message in the queue
+
+				msg, err := coord.PopMessage()
+				for msg != nil {
+					err = coord.postMessage(txn, msg)
+					if err != nil {
+						coord.PushMessage(msg)
+						logError(err)
+						break
+					}
+					msg, err = coord.PopMessage()
+				}
+
+				if err != nil && !errors.Is(err, coordinator.ErrNoMessage) {
+					logError(err)
+				}
+
+				err = txn.Commit()
+				if err != nil {
+					logError(err)
+				}
+
 				coord.Unlock()
-				logError(err)
-				coord.Ticker.Reset(jitter)
-				continue
+			case <-coord.ctx.Done():
+				return
 			}
-
-			// Receive update messages and update local clock
-
-			err = coord.GetUpdateMessages(txn)
-			if err != nil {
-				if err != nil {
-					logError(err)
-				}
-				continue
-			}
-
-			// Post message if there is no message in the queue
-
-			msg, err := coord.PopMessage()
-			for msg != nil {
-				err = coord.postMessage(txn, msg)
-				if err != nil {
-					coord.PushMessage(msg)
-					logError(err)
-					break
-				}
-				msg, err = coord.PopMessage()
-			}
-
-			if err != nil && !errors.Is(err, coordinator.ErrNoMessage) {
-				logError(err)
-			}
-
-			err = txn.Commit()
-			if err != nil {
-				logError(err)
-			}
-
-			coord.Unlock()
-
-			// Reset the timer with a random jitter.
-
-			coord.Ticker.Reset(DefaultStoreScanInterval + jitter)
 		}
 	}()
 	return nil
@@ -281,9 +287,12 @@ func (coord *serviceImpl) Start() error {
 
 // Stop stops this etcd coordinator.
 func (coord *serviceImpl) Stop() error {
+	coord.ctxCancel()
+	<-coord.ctx.Done()
+
 	if err := coord.CoordinatorService.Stop(); err != nil {
 		return err
 	}
-	coord.Ticker.Stop()
+
 	return nil
 }
