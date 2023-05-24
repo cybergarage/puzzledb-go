@@ -33,8 +33,8 @@ func (t StateType) String() string {
 }
 
 // NewStateKey returns a new state key.
-func NewStateKeyWith(elems ...any) Key {
-	storeKey := []any{StateObjectKeyHeader}
+func NewStateKeyWith(t StateType, elems ...any) Key {
+	storeKey := []any{StateObjectKeyHeader, t}
 	return append(storeKey, elems...)
 }
 
