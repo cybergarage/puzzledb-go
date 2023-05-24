@@ -274,7 +274,13 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 
 	go func() {
 		logError := func(err error) {
-			log.Errorf("coordinator worker: %s", err)
+			log.Warnf("coordinator worker: %s", err)
+		}
+
+		pushPostedMessages := func(postedMsgs []coordinator.Message) {
+			for n := len(postedMsgs) - 1; 0 <= n; n-- {
+				coord.PushMessage(postedMsgs[n])
+			}
 		}
 
 		for {
@@ -302,13 +308,16 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 
 				// Post message if there is no message in the queue
 
+				postedMsgs := []coordinator.Message{}
 				msg, err := coord.PopMessage()
 				for msg != nil {
 					err = coord.postMessage(txn, msg)
 					if err != nil {
 						coord.PushMessage(msg)
+						pushPostedMessages(postedMsgs)
 						break
 					}
+					postedMsgs = append(postedMsgs, msg)
 					msg, err = coord.PopMessage()
 				}
 
@@ -320,6 +329,7 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 
 				err = txn.Commit()
 				if err != nil {
+					pushPostedMessages(postedMsgs)
 					logError(err)
 				}
 
