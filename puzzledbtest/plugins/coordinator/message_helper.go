@@ -83,15 +83,20 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 
 	// Posts test messages
 
-	for _, msg := range msgs {
-		err := coords[0].PostMessage(msg)
+	for n, msg := range msgs {
+		var err error
+		if (n % 2) == 0 {
+			err = coords[0].PostMessage(msg)
+		} else {
+			err = coords[1].PostMessage(msg)
+		}
 		if err != nil {
 			t.Error(err)
 			return
 		}
 	}
 
-	// Checks the received messages
+	// Wait messages
 
 	for n := 0; n < 10; n++ {
 		if len(observer.receivedMsgs) == len(msgs) {
@@ -100,6 +105,8 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 		// Waits for the received messages
 		time.Sleep(plugin.DefaultStoreScanInterval)
 	}
+
+	// Checks the received messages
 
 	if len(observer.receivedMsgs) != len(msgs) {
 		t.Errorf("the number of received messages (%d) is not matched to the number of posted messages (%d)", len(observer.receivedMsgs), len(msgs))
@@ -111,5 +118,16 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 			t.Errorf("message (%v) is not received", msg.Object().Key())
 			return
 		}
+	}
+
+	// Checks the received messages order
+
+	lastClock := coordinator.Clock(0)
+	for _, msg := range msgs {
+		if msg.Clock() < lastClock {
+			t.Errorf("the received messages are not sorted by clock")
+			return
+		}
+		lastClock = msg.Clock()
 	}
 }
