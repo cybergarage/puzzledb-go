@@ -59,3 +59,12 @@ func GetAllHeaderTypes() []HeaderType {
 		JobObject,
 	}
 }
+
+// GetAllHeaderPrefixes returns all header prefixes.
+func GetAllHeaderPrefixes() [][]byte {
+	return [][]byte{
+		StateObjectKeyHeader[:],
+		MessageObjectKeyHeader[:],
+		JobObjectKeyHeader[:],
+	}
+}
