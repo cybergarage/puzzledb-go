@@ -15,6 +15,8 @@
 package coordinator
 
 import (
+	"time"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/google/uuid"
 )
@@ -24,6 +26,7 @@ type ProcessObject struct {
 	ID    string
 	Host  string
 	Clock uint64
+	Time  time.Time
 }
 
 // NewProcessWith returns a new process with the specified process object.
@@ -36,6 +39,7 @@ func NewProcessWith(obj *ProcessObject) (coordinator.Process, error) {
 	process.SetID(uuid)
 	process.SetHost(obj.Host)
 	process.SetClock(obj.Clock)
+	process.SetTimestamp(obj.Time)
 	return process, nil
 }
 
@@ -55,5 +59,6 @@ func NewProcessObjectWith(process coordinator.Process) *ProcessObject {
 		ID:    process.ID().String(),
 		Host:  process.Host(),
 		Clock: uint64(process.Clock()),
+		Time:  process.Timestamp(),
 	}
 }
