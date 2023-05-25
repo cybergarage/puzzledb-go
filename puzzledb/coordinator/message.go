@@ -15,15 +15,15 @@
 package coordinator
 
 // MessageType represents a coordinator event type.
-type MessageType uint8
+type MessageType byte
 
 const (
 	// ObjectCreated represents a object created event.
-	ObjectCreated MessageType = 1
+	ObjectCreated MessageType = 'C'
 	// ObjectUpdated represents a object updated event.
-	ObjectUpdated MessageType = 2
+	ObjectUpdated MessageType = 'U'
 	// ObjectDeleted represents a object deleted event.
-	ObjectDeleted MessageType = 3
+	ObjectDeleted MessageType = 'O'
 )
 
 // String returns the string representation of the message type.
