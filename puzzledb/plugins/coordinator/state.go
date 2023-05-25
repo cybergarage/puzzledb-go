@@ -14,13 +14,20 @@
 
 package coordinator
 
-import (
-	"github.com/google/uuid"
+// StateType represents a coordinator state type.
+type StateType byte
+
+const (
+	// ProcessState represents a process state.
+	ProcessState StateType = 'P'
 )
 
-// ProcessObject represents a store process state object.
-type ProcessObject struct {
-	ID    uuid.UUID
-	Host  string
-	Clock uint64
+// String returns the string representation of the state type.
+func (t StateType) String() string {
+	switch t {
+	case ProcessState:
+		return "process"
+	default:
+		return "unknown"
+	}
 }
