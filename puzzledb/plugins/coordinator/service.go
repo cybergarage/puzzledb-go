@@ -126,7 +126,7 @@ func (coord *serviceImpl) nofityMessage(msg coordinator.Message) {
 }
 
 func (coord *serviceImpl) getLatestMessages(txn coordinator.Transaction) (coordinator.ResultSet, error) {
-	key := NewScanMessageKey()
+	key := NewMessageScanKey()
 	rs, err := txn.GetRange(
 		key,
 		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
