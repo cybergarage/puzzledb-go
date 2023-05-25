@@ -26,6 +26,7 @@ const (
 	ObjectDeleted MessageType = 3
 )
 
+// String returns the string representation of the message type.
 func (t MessageType) String() string {
 	switch t {
 	case ObjectCreated:
