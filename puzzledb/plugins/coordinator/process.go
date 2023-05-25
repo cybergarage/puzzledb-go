@@ -35,15 +35,21 @@ func NewProcessWith(obj *ProcessObject) coordinator.Process {
 	return process
 }
 
+// NewProcessScanKey returns a new scan process key to get all process states.
 func NewProcessScanKey() coordinator.Key {
-	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:])
+	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(ProcessState))
+}
+
+// NewProcessKeyWith returns a new process key with the specified process.
+func NewProcessKeyWith(process coordinator.Process) coordinator.Key {
+	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(ProcessState), process.ID())
 }
 
 // NewProcessObjectWith returns a new process object with the specified process.
-func NewProcessObjectWith(process coordinator.Process) (*ProcessObject, error) {
+func NewProcessObjectWith(process coordinator.Process) *ProcessObject {
 	return &ProcessObject{
 		ID:    process.ID(),
 		Host:  process.Host(),
 		Clock: uint64(process.Clock()),
-	}, nil
+	}
 }
