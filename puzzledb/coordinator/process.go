@@ -15,6 +15,8 @@
 package coordinator
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 )
 
@@ -36,6 +38,10 @@ type Process interface {
 	SetReceivedClock(clock Clock) Clock
 	// IncrementClock increments a logical clock of the coordinator process.
 	IncrementClock() Clock
+	// SetTimestamp sets a phisical timestamp to the coordinator process.
+	SetTimestamp(ts time.Time)
+	// Timestamp returns a phisical timestamp of the coordinator process.
+	Timestamp() time.Time
 	// Lock locks the coordinator process.
 	Lock()
 	// Unlock unlocks the coordinator process.

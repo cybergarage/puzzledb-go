@@ -17,6 +17,7 @@ package coordinator
 import (
 	"os"
 	"sync"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -26,6 +27,7 @@ type processImpl struct {
 	clock Clock
 	uuid  uuid.UUID
 	host  string
+	ts    time.Time
 }
 
 func NewProcess() Process {
@@ -34,6 +36,7 @@ func NewProcess() Process {
 		Mutex: sync.Mutex{},
 		clock: NewClock(),
 		uuid:  uuid.New(),
+		ts:    time.Now(),
 	}
 	host, err := os.Hostname()
 	if err == nil {
@@ -65,12 +68,14 @@ func (process *processImpl) Host() string {
 // SetClock sets a logical clock to the coordinator process.
 func (process *processImpl) SetClock(clock Clock) {
 	process.clock = clock
+	process.ts = time.Now()
 }
 
 // SetReceivedClock sets a received logical clock to the coordinator process.
 func (process *processImpl) SetReceivedClock(clock Clock) Clock {
 	process.clock = MaxClock(clock, process.clock)
 	process.IncrementClock()
+	process.ts = time.Now()
 	return process.clock
 }
 
@@ -81,10 +86,21 @@ func (process *processImpl) IncrementClock() Clock {
 	} else {
 		process.clock += ClockDiffrent
 	}
+	process.ts = time.Now()
 	return process.clock
 }
 
 // Clock returns a logical clock of the coordinator process.
 func (process *processImpl) Clock() Clock {
 	return process.clock
+}
+
+// SetTimestamp sets a phisical timestamp to the coordinator process.
+func (process *processImpl) SetTimestamp(ts time.Time) {
+	process.ts = ts
+}
+
+// Timestamp returns a phisical timestamp of the coordinator process.
+func (process *processImpl) Timestamp() time.Time {
+	return process.ts
 }
