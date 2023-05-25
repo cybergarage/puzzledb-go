@@ -24,7 +24,7 @@ type MessageObject struct {
 	ID    uuid.UUID
 	Host  string
 	Clock uint64
-	Type  uint8
+	Type  byte
 	Bytes []byte
 }
 
@@ -65,7 +65,7 @@ func NewMessageObjectWith(msg coordinator.Message, process coordinator.Process, 
 		ID:    process.ID(),
 		Host:  process.Host(),
 		Clock: uint64(clock),
-		Type:  uint8(msg.Type()),
+		Type:  byte(msg.Type()),
 		Bytes: msg.Object().Bytes(),
 	}, nil
 }
