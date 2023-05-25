@@ -72,12 +72,13 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 
 // Truncate removes all objects.
 func (txn *transaction) Truncate() error {
-	// FIXME: Truncates only coordinatoer objects
-	// r := fdb.KeyRange{fdb.Key(""), fdb.Key{0xFF}}
-	// txn.Transaction.ClearRange(r)
-	// FIXME: The following code does not work exactly as intended.
-	for _, headerByte := range coordinator.GetAllHeaderTypes() {
-		r, err := fdb.PrefixRange(fdb.Key([]byte{byte(headerByte)}))
+	for _, prefix := range coordinator.GetAllHeaderPrefixes() {
+		key := coordinator.NewKeyWith(prefix)
+		keyBytes, err := txn.KeyCoder.EncodeKey(key)
+		if err != nil {
+			return err
+		}
+		r, err := fdb.PrefixRange(fdb.Key(keyBytes))
 		if err != nil {
 			return err
 		}
