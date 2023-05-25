@@ -227,6 +227,22 @@ func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinat
 	return nil
 }
 
+func (coord *serviceImpl) postProcessState(txn coordinator.Transaction) error {
+	key := NewProcessKeyWith(coord.Process)
+	obj := NewProcessObjectWith(coord.Process)
+	objBytes, err := cbor.Marshal(obj)
+	if err != nil {
+		return err
+	}
+
+	err = txn.Set(coordinator.NewObjectWith(key, objBytes))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Start starts this etcd coordinator.
 func (coord *serviceImpl) Start() error { // nolint:gocognit
 	if err := coord.CoordinatorService.Start(); err != nil {
@@ -273,6 +289,10 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 				var err error
 				coord.Lock()
 
+				startClock := coord.Clock()
+
+				// Start transaction
+
 				txn, err := coord.Transact()
 				if err != nil {
 					logError(err)
@@ -309,6 +329,15 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 					coord.Unlock()
 					continue
 				}
+
+				// Update process state
+
+				if 0 < coordinator.CompareClocks(coord.Clock(), startClock) {
+					err := coord.postProcessState(txn)
+					logError(errors.Join(err, txn.Cancel()))
+				}
+
+				// Commit transaction
 
 				err = txn.Commit()
 				if err != nil {
