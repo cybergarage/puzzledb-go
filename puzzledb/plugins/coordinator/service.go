@@ -313,7 +313,7 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 
 				postedMsgs := []coordinator.Message{}
 				msg, err := coord.PopMessage()
-				for msg != nil {
+				for msg != nil && err == nil {
 					err = coord.postMessage(txn, msg)
 					if err != nil {
 						coord.PushMessage(msg)
@@ -334,7 +334,9 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 
 				if 0 < coordinator.CompareClocks(coord.Clock(), startClock) {
 					err := coord.postProcessState(txn)
-					logError(errors.Join(err, txn.Cancel()))
+					if err != nil {
+						logError(errors.Join(err, txn.Cancel()))
+					}
 				}
 
 				// Commit transaction
