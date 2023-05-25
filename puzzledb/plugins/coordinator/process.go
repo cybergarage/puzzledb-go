@@ -21,18 +21,22 @@ import (
 
 // ProcessObject represents a store process state object.
 type ProcessObject struct {
-	ID    uuid.UUID
+	ID    string
 	Host  string
 	Clock uint64
 }
 
 // NewProcessWith returns a new process with the specified process object.
-func NewProcessWith(obj *ProcessObject) coordinator.Process {
+func NewProcessWith(obj *ProcessObject) (coordinator.Process, error) {
+	uuid, err := uuid.Parse(obj.ID)
+	if err != nil {
+		return nil, err
+	}
 	process := coordinator.NewProcess()
-	process.SetID(obj.ID)
+	process.SetID(uuid)
 	process.SetHost(obj.Host)
 	process.SetClock(obj.Clock)
-	return process
+	return process, nil
 }
 
 // NewProcessScanKey returns a new scan process key to get all process states.
@@ -42,13 +46,13 @@ func NewProcessScanKey() coordinator.Key {
 
 // NewProcessKeyWith returns a new process key with the specified process.
 func NewProcessKeyWith(process coordinator.Process) coordinator.Key {
-	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(ProcessState), process.ID())
+	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(ProcessState), process.ID().String())
 }
 
 // NewProcessObjectWith returns a new process object with the specified process.
 func NewProcessObjectWith(process coordinator.Process) *ProcessObject {
 	return &ProcessObject{
-		ID:    process.ID(),
+		ID:    process.ID().String(),
 		Host:  process.Host(),
 		Clock: uint64(process.Clock()),
 	}
