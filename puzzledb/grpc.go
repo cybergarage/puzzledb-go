@@ -24,8 +24,8 @@ import (
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	pc "github.com/cybergarage/puzzledb-go/puzzledb/context"
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/system/actor"
 	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
@@ -152,7 +152,7 @@ func loggingUnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServe
 func (service *gRPCService) Check(context.Context, *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
 	res := pb.HealthCheckResponse{}               //nolint:exhaustruct
 	switch service.Server.actorService.Status() { //nolint:exhaustive
-	case actor.StatusRunning:
+	case coordinator.ProcessRunning:
 		res.Status = pb.HealthCheckResponse_SERVING
 	default:
 		res.Status = pb.HealthCheckResponse_NOT_SERVING
