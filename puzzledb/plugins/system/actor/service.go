@@ -34,7 +34,6 @@ type Service struct {
 	coordinator.Service
 	plugins.Config
 	serviceStatus Status
-	*MessageBox
 }
 
 // NewService returns a new actor service.
@@ -48,7 +47,6 @@ func NewServiceWith(coordinator coordinator.Service) *Service {
 		Service:       nil,
 		Config:        plugins.NewConfig(),
 		serviceStatus: StatusStopped,
-		MessageBox:    NewMessageBox(),
 	}
 }
 
