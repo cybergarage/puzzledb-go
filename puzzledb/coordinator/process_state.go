@@ -54,7 +54,7 @@ func NewProcessStatusWith(s string) ProcessStatus {
 	return ProcessUnknown
 }
 
-// State represents a coordinator state.
+// String represents a string of the process status.
 func (t ProcessStatus) String() string {
 	s, ok := processStatuses[t]
 	if ok {
