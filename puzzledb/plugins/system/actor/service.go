@@ -16,26 +16,22 @@ package actor
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
+	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
+	coordinator_plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 )
 
 // Service represents a actor service.
 type Service struct {
-	coordinator.Service
+	coordinator coordinator_plugin.Service
 	plugins.Config
 }
 
 // NewService returns a new actor service.
 func NewService() *Service {
-	return NewServiceWith(nil)
-}
-
-// NewServiceWith returns a new actor service with the specified coordinator.
-func NewServiceWith(coordinator coordinator.Service) *Service {
 	return &Service{
-		Service: nil,
-		Config:  plugins.NewConfig(),
+		coordinator: nil,
+		Config:      plugins.NewConfig(),
 	}
 }
 
@@ -45,8 +41,8 @@ func (service *Service) SetConfig(c config.Config) {
 }
 
 // SetCoordinator sets a coordinator service.
-func (service *Service) SetCoordinator(coord coordinator.Service) {
-	service.Service = coord
+func (service *Service) SetCoordinator(coord coordinator_plugin.Service) {
+	service.coordinator = coord
 }
 
 // ServiceName returns the plug-in service name.
@@ -60,13 +56,13 @@ func (service *Service) ServiceType() plugins.ServiceType {
 }
 
 // SetStatus sets a actor status.
-func (service *Service) SetStatus(serviceStatus Status) { // nolint: stylecheck
-	service.serviceStatus = serviceStatus
+func (service *Service) SetStatus(status coordinator.ProcessStatus) { // nolint: stylecheck
+	service.coordinator.SetStatus(status)
 }
 
 // Status returns a actor status.
-func (service *Service) Status() Status {
-	return service.serviceStatus
+func (service *Service) Status() coordinator.ProcessStatus {
+	return service.coordinator.Status()
 }
 
 // Start starts the actor service.
