@@ -23,10 +23,11 @@ import (
 
 // ProcessObject represents a store process state object.
 type ProcessObject struct {
-	ID    string
-	Host  string
-	Clock uint64
-	Time  time.Time
+	ID     string
+	Host   string
+	Clock  uint64
+	Time   time.Time
+	Status string
 }
 
 // NewProcessWith returns a new process with the specified process object.
@@ -40,6 +41,7 @@ func NewProcessWith(obj *ProcessObject) (coordinator.Process, error) {
 	process.SetHost(obj.Host)
 	process.SetClock(obj.Clock)
 	process.SetTimestamp(obj.Time)
+	process.SetStatus(coordinator.NewProcessStatusWith(obj.Status))
 	return process, nil
 }
 
@@ -56,9 +58,10 @@ func NewProcessKeyWith(process coordinator.Process) coordinator.Key {
 // NewProcessObjectWith returns a new process object with the specified process.
 func NewProcessObjectWith(process coordinator.Process) *ProcessObject {
 	return &ProcessObject{
-		ID:    process.ID().String(),
-		Host:  process.Host(),
-		Clock: uint64(process.Clock()),
-		Time:  process.Timestamp(),
+		ID:     process.ID().String(),
+		Host:   process.Host(),
+		Clock:  uint64(process.Clock()),
+		Time:   process.Timestamp(),
+		Status: process.Status().String(),
 	}
 }
