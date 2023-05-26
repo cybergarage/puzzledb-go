@@ -1,23 +1,19 @@
 = Key-Value Store Specification
 
-In PuzzleDB, records, schemas, and indices are all represented as key-value pairs. This section explains the format of the key-value data used in PuzzleDB.
+In PuzzleDB, both the coordinator service and the store service use key-value stores to store data. The coordinator uses a key-value store to store states, messages, jobs, and indices, while the store uses a key-value store to store to store records, schemas, and indices.
 
-== Key Categories
+Since both services may use the same key-value store implementation, the key-value store specifications are designed not to affect each other. This document provides a list of these specifications.
 
-The key-value store is a collection of key-value records, where each record is a key-value pair, consisting of a header as the key. The key-value store supports the following categories of key-value records:
+== Coordinator Key-Value Specification
+
+[format="csv", options="header, autowidth"]
+|====
+include::csv/coodinator-store-category.csv[]
+|====
+
+== Store Key-Value Specification
 
 [format="csv", options="header, autowidth"]
 |====
 include::csv/kv-store-category.csv[]
 |====
-
-== Key Header Specification
-
-The key header is a 2-byte header that is prepended to every key in the key-value store. The key header is defined as follows:
-
-[format="csv", options="header, autowidth"]
-|====
-include::csv/kv-store-header.csv[]
-|====
-
-The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
