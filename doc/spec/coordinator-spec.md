@@ -50,7 +50,7 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"><p>Message</p></td>
 <td style="text-align: left;"><p>Header</p></td>
 <td style="text-align: left;"><p>Logical Clock</p></td>
-<td style="text-align: left;"><p>Message Type</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Message)</p></td>
 </tr>
 <tr class="even">

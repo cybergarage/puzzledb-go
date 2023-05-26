@@ -1,5 +1,5 @@
 Category,Key Order,,,Value
 ,0,1,2,
 State,Header,State Type,(Key),CBOR (State)
-Message,Header,Logical Clock,Message Type,CBOR (Message)
+Message,Header,Logical Clock,-,CBOR (Message)
 Job,Header,Job ID,-,CBOR (Job)
