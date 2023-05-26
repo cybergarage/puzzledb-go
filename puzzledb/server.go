@@ -197,8 +197,6 @@ func (server *Server) setupPlugins() error {
 
 // Start starts the server.
 func (server *Server) Start() error { //nolint:gocognit
-	server.actorService.SetStatus(coord.ProcessStarting)
-
 	// Setup logger
 
 	ok, _ := server.Config.GetConfigBool(ConfigLogger, ConfigEnabled)
@@ -235,6 +233,8 @@ func (server *Server) Start() error { //nolint:gocognit
 	if err := server.setupPlugins(); err != nil {
 		return err
 	}
+
+	server.actorService.SetStatus(coord.ProcessStarting)
 
 	if err := server.Manager.Start(); err != nil {
 		if stopErr := server.Stop(); stopErr != nil {
