@@ -42,6 +42,10 @@ type Process interface {
 	SetTimestamp(ts time.Time)
 	// Timestamp returns a phisical timestamp of the coordinator process.
 	Timestamp() time.Time
+	// SetStatus sets a status to the coordinator process.
+	SetStatus(state ProcessStatus)
+	// Status returns a status of the coordinator process.
+	Status() ProcessStatus
 	// Lock locks the coordinator process.
 	Lock()
 	// Unlock unlocks the coordinator process.

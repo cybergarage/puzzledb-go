@@ -24,19 +24,21 @@ import (
 
 type processImpl struct {
 	sync.Mutex
-	clock Clock
-	uuid  uuid.UUID
-	host  string
-	ts    time.Time
+	clock  Clock
+	uuid   uuid.UUID
+	host   string
+	ts     time.Time
+	status ProcessStatus
 }
 
 func NewProcess() Process {
 	p := &processImpl{
-		host:  "",
-		Mutex: sync.Mutex{},
-		clock: NewClock(),
-		uuid:  uuid.New(),
-		ts:    time.Now(),
+		host:   "",
+		Mutex:  sync.Mutex{},
+		clock:  NewClock(),
+		uuid:   uuid.New(),
+		ts:     time.Now(),
+		status: ProcessIdle,
 	}
 	host, err := os.Hostname()
 	if err == nil {
@@ -103,4 +105,14 @@ func (process *processImpl) SetTimestamp(ts time.Time) {
 // Timestamp returns a phisical timestamp of the coordinator process.
 func (process *processImpl) Timestamp() time.Time {
 	return process.ts
+}
+
+// SetStatus sets a status to the coordinator process.
+func (process *processImpl) SetStatus(status ProcessStatus) {
+	process.status = status
+}
+
+// Status returns a status of the coordinator process.
+func (process *processImpl) Status() ProcessStatus {
+	return process.status
 }
