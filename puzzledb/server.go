@@ -254,6 +254,8 @@ func (server *Server) Start() error { //nolint:gocognit
 
 // Stop stops the server.
 func (server *Server) Stop() error {
+	server.actorService.SetStatus(coord.ProcessStopping)
+
 	var err error
 	if stopErr := server.Manager.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
