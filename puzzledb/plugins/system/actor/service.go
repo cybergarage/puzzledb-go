@@ -56,8 +56,9 @@ func (service *Service) ServiceType() plugins.ServiceType {
 }
 
 // SetStatus sets a actor status.
-func (service *Service) SetStatus(status coordinator.ProcessStatus) { // nolint: stylecheck
+func (service *Service) SetStatus(status coordinator.ProcessStatus) {
 	service.coordinator.SetStatus(status)
+	service.coordinator.SetProcessState(service.coordinator)
 }
 
 // Status returns a actor status.
