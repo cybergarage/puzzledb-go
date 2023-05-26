@@ -20,20 +20,10 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 )
 
-// Status represents an actor status.
-type Status int
-
-const (
-	StatusUnknown Status = iota
-	StatusRunning
-	StatusStopped
-)
-
 // Service represents a actor service.
 type Service struct {
 	coordinator.Service
 	plugins.Config
-	serviceStatus Status
 }
 
 // NewService returns a new actor service.
@@ -44,9 +34,8 @@ func NewService() *Service {
 // NewServiceWith returns a new actor service with the specified coordinator.
 func NewServiceWith(coordinator coordinator.Service) *Service {
 	return &Service{
-		Service:       nil,
-		Config:        plugins.NewConfig(),
-		serviceStatus: StatusStopped,
+		Service: nil,
+		Config:  plugins.NewConfig(),
 	}
 }
 
