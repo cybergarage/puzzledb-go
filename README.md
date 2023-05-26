@@ -126,6 +126,14 @@ For more information about the roadmap, please refer to [Roadmap](doc/roadmap.ad
 
     -   [Coordinator Specification](doc/spec/coordinator-spec.md)
 
+        -   [Coordinator Messaging Specification](doc/spec/coordinator-msg-spec.adoc)
+
+        -   [Coordinator Key-Value Store Specification](doc/spec/coordinator-spec.md)
+
     -   Store Specification
+
+        -   [Store Key-Value Specification](doc/spec/store-kv-spec.md)
+
+    -   Transversed Specifications
 
         -   [Key-Value Store Specification](doc/spec/kv-store-spec.md)
