@@ -15,6 +15,7 @@
 package actor
 
 import (
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -58,7 +59,10 @@ func (service *Service) ServiceType() plugins.ServiceType {
 // SetStatus sets a actor status.
 func (service *Service) SetStatus(status coordinator.ProcessStatus) {
 	service.coordinator.SetStatus(status)
-	service.coordinator.SetProcessState(service.coordinator)
+	err := service.coordinator.SetProcessState(service.coordinator)
+	if err != nil {
+		log.Error(err)
+	}
 }
 
 // Status returns a actor status.
