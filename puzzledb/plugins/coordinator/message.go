@@ -45,7 +45,7 @@ func NewMessageScanKey() coordinator.Key {
 
 // NewMessageKeyWith returns a new message key with the specified message.
 func NewMessageKeyWith(msg coordinator.Message, clock coordinator.Clock) coordinator.Key {
-	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader[:], clock, uint8(msg.Type()))
+	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader[:], clock)
 }
 
 // NewMessageObject returns a new empty message.
