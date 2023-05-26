@@ -227,15 +227,38 @@ func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinat
 	return nil
 }
 
-func (coord *serviceImpl) postProcessState(txn coordinator.Transaction) error {
-	key := NewProcessKeyWith(coord.Process)
-	obj := NewProcessObjectWith(coord.Process)
+func (coord *serviceImpl) postProcessState(txn coordinator.Transaction, process coordinator.Process) error {
+	key := NewProcessKeyWith(process)
+	obj := NewProcessObjectWith(process)
 	objBytes, err := cbor.Marshal(obj)
 	if err != nil {
 		return err
 	}
 
 	err = txn.Set(coordinator.NewObjectWith(key, objBytes))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// PostProcessState posts the specified process state to the coordinator.
+func (coord *serviceImpl) PostProcessState(process coordinator.Process) error {
+	coord.Lock()
+	defer coord.Unlock()
+
+	txn, err := coord.Transact()
+	if err != nil {
+		return err
+	}
+
+	err = coord.postProcessState(txn, process)
+	if err != nil {
+		return errors.Join(err, txn.Cancel())
+	}
+
+	err = txn.Commit()
 	if err != nil {
 		return err
 	}
@@ -333,7 +356,7 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 				// Update process state
 
 				if 0 < coordinator.CompareClocks(coord.Clock(), startClock) {
-					err := coord.postProcessState(txn)
+					err := coord.postProcessState(txn, coord.Process)
 					if err != nil {
 						logError(errors.Join(err, txn.Cancel()))
 					}
