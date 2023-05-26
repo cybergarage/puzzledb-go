@@ -234,8 +234,6 @@ func (server *Server) Start() error { //nolint:gocognit
 		return err
 	}
 
-	server.actorService.SetStatus(coord.ProcessStarting)
-
 	if err := server.Manager.Start(); err != nil {
 		if stopErr := server.Stop(); stopErr != nil {
 			return errors.Join(err, stopErr)
