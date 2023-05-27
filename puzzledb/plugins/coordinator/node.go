@@ -53,6 +53,11 @@ func NewNodeScanKey() coordinator.Key {
 	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(NodeState))
 }
 
+// NewNodeScanKeyWith returns a new scan node key to get all node states with the specified cluster.
+func NewNodeScanKeyWith(cluster string) coordinator.Key {
+	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(NodeState), cluster)
+}
+
 // NewNodeKeyWith returns a new node key with the specified node.
 func NewNodeKeyWith(node cluster.Node) coordinator.Key {
 	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(NodeState), node.Cluster(), node.ID().String())
