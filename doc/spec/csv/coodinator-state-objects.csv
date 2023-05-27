@@ -1,3 +1,3 @@
 Category,Key Order,,,,Value
 ,0,1,2,3,
-Process,Header (S),State Type (P),Cluster ID,Process ID,CBOR (State)
+Node,Header (S),State Type (N),Cluster ID,Node ID,CBOR (State)
