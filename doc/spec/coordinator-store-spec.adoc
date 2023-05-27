@@ -25,3 +25,12 @@ include::csv/coodinator-store-header.csv[]
 |====
 
 The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
+
+== State Objects
+
+The coordinator service maintains a set of state objects to manage the state of the coordinator service. The state objects are defined as follows:
+
+[format="csv", options="header, autowidth"]
+|====
+include::csv/coodinator-state-objects.csv[]
+|====

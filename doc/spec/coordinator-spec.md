@@ -154,3 +154,46 @@ The key header is a 2-byte header that is prepended to every key in the key-valu
 </table>
 
 The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
+
+## State Objects
+
+The coordinator service maintains a set of state objects to manage the state of the coordinator service. The state objects are defined as follows:
+
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Key Order</th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>0</p></td>
+<td style="text-align: left;"><p>1</p></td>
+<td style="text-align: left;"><p>2</p></td>
+<td style="text-align: left;"><p>3</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Process</p></td>
+<td style="text-align: left;"><p>Header (S)</p></td>
+<td style="text-align: left;"><p>State Type (P)</p></td>
+<td style="text-align: left;"><p>Cluster ID</p></td>
+<td style="text-align: left;"><p>Process ID</p></td>
+<td style="text-align: left;"><p>CBOR (State)</p></td>
+</tr>
+</tbody>
+</table>
