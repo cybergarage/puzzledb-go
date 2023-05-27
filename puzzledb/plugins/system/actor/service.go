@@ -57,7 +57,7 @@ func (service *Service) ServiceType() plugins.ServiceType {
 }
 
 // SetStatus sets a actor status.
-func (service *Service) SetStatus(status coordinator.ProcessStatus) {
+func (service *Service) SetStatus(status coordinator.NodeStatus) {
 	service.coordinator.SetStatus(status)
 	err := service.coordinator.SetProcessState(service.coordinator)
 	if err != nil {
@@ -66,7 +66,7 @@ func (service *Service) SetStatus(status coordinator.ProcessStatus) {
 }
 
 // Status returns a actor status.
-func (service *Service) Status() coordinator.ProcessStatus {
+func (service *Service) Status() coordinator.NodeStatus {
 	return service.coordinator.Status()
 }
 

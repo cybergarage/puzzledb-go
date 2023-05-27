@@ -18,7 +18,7 @@ import (
 	"testing"
 )
 
-func TestProcessClock(t *testing.T) {
+func TestNodeClocks(t *testing.T) {
 	p := NewProcess()
 	p.Lock()
 	c1 := p.Clock()
