@@ -22,26 +22,35 @@ const (
 	NodeUnknown NodeStatus = iota
 	// NodeIdle represents an idle node status.
 	NodeIdle
-	// NodeStarting represents a starting node status.
-	NodeStarting
-	// NodeRunning represents a running node status.
-	NodeRunning
-	// NodeStopping represents a stopping node status.
-	NodeStopping
-	// NodeStopped represents a stopped node status.
-	NodeStopped
+	// NodeJoining represents a joining node status.
+	NodeJoining
+	// NodeUp represents a running node status.
+	NodeUp
+	// NodeDown represents a down node status.
+	NodeDown
+	// NodeLeaving represents a leaving node status.
+	NodeLeaving
+	// NodeExiting represents an exiting node status.
+	NodeExiting
+	// NodeRemoved represents a removed node status.
+	NodeRemoved
 	// NodeAborted represents an aborted node status.
 	NodeAborted
+	// NodeUnreachable represents an unreachable node status.
+	NodeUnreachable
 )
 
 var processStatuses = map[NodeStatus]string{
-	NodeUnknown:  "unknown",
-	NodeIdle:     "idle",
-	NodeStarting: "starting",
-	NodeRunning:  "running",
-	NodeStopping: "stopping",
-	NodeStopped:  "stopped",
-	NodeAborted:  "aborted",
+	NodeUnknown:     "unknown",
+	NodeIdle:        "idle",
+	NodeJoining:     "joining",
+	NodeUp:          "up",
+	NodeDown:        "down",
+	NodeLeaving:     "leaving",
+	NodeExiting:     "exiting",
+	NodeRemoved:     "removed",
+	NodeAborted:     "aborted",
+	NodeUnreachable: "unreachable",
 }
 
 // NewNodeStatusWith returns a new node status with the specified string.
