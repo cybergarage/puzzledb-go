@@ -42,7 +42,7 @@ import (
 
 // Server represents a server instance.
 type Server struct {
-	actorService *actor.Service
+	actor *actor.Service
 	*Config
 	*PluginManager
 	coord.Process
@@ -51,7 +51,7 @@ type Server struct {
 // NewServer returns a new server instance.
 func NewServer() *Server {
 	server := &Server{
-		actorService:  nil,
+		actor:         nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 		Process:       coord.NewProcess(),
@@ -87,9 +87,9 @@ func (server *Server) Restart() error {
 }
 
 func (server *Server) reloadEmbeddedPlugins() error {
-	server.actorService = actor.NewService()
+	server.actor = actor.NewService()
 	services := []plugins.Service{
-		server.actorService,
+		server.actor,
 		NewGrpcServiceWith(server),
 		cbor.NewCoder(),
 		tuple.NewCoder(),
@@ -159,7 +159,7 @@ func (server *Server) setupPlugins() error {
 
 	// Actor service
 
-	server.actorService.SetCoordinator(defaultCoodinator)
+	server.actor.SetCoordinator(defaultCoodinator)
 
 	// KV store services
 
@@ -247,14 +247,14 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
-	server.actorService.SetStatus(coord.ProcessRunning)
+	server.actor.SetStatus(coord.ProcessRunning)
 
 	return nil
 }
 
 // Stop stops the server.
 func (server *Server) Stop() error {
-	server.actorService.SetStatus(coord.ProcessStopping)
+	server.actor.SetStatus(coord.ProcessStopping)
 
 	var err error
 	if stopErr := server.Manager.Stop(); stopErr != nil {
@@ -264,7 +264,7 @@ func (server *Server) Stop() error {
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
 
 	if err == nil {
-		server.actorService.SetStatus(coord.ProcessStopped)
+		server.actor.SetStatus(coord.ProcessStopped)
 	}
 
 	return err
