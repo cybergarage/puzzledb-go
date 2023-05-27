@@ -24,11 +24,12 @@ import (
 
 // NodeObject represents a store node state object.
 type NodeObject struct {
-	ID     string
-	Host   string
-	Clock  uint64
-	Time   time.Time
-	Status string
+	ID      string
+	Cluster string
+	Host    string
+	Clock   uint64
+	Time    time.Time
+	Status  string
 }
 
 // NewNodeWith returns a new node with the specified node object.
@@ -38,6 +39,7 @@ func NewNodeWith(obj *NodeObject) (cluster.Node, error) {
 		return nil, err
 	}
 	node := cluster.NewNode()
+	node.SetCluster(obj.Cluster)
 	node.SetID(uuid)
 	node.SetHost(obj.Host)
 	node.SetClock(obj.Clock)
@@ -53,16 +55,17 @@ func NewNodeScanKey() coordinator.Key {
 
 // NewNodeKeyWith returns a new node key with the specified node.
 func NewNodeKeyWith(node cluster.Node) coordinator.Key {
-	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(NodeState), node.ID().String())
+	return coordinator.NewKeyWith(coordinator.StateObjectKeyHeader[:], byte(NodeState), node.Cluster(), node.ID().String())
 }
 
 // NewNodeObjectWith returns a new node object with the specified node.
 func NewNodeObjectWith(node cluster.Node) *NodeObject {
 	return &NodeObject{
-		ID:     node.ID().String(),
-		Host:   node.Host(),
-		Clock:  uint64(node.Clock()),
-		Time:   node.Timestamp(),
-		Status: node.Status().String(),
+		Cluster: node.Cluster(),
+		ID:      node.ID().String(),
+		Host:    node.Host(),
+		Clock:   uint64(node.Clock()),
+		Time:    node.Timestamp(),
+		Status:  node.Status().String(),
 	}
 }
