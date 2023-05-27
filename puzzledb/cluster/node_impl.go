@@ -24,27 +24,39 @@ import (
 
 type nodeImpl struct {
 	sync.Mutex
-	clock  Clock
-	uuid   uuid.UUID
-	host   string
-	ts     time.Time
-	status NodeStatus
+	clock   Clock
+	cluster string
+	uuid    uuid.UUID
+	host    string
+	ts      time.Time
+	status  NodeStatus
 }
 
 func NewNode() Node {
 	p := &nodeImpl{
-		host:   "",
-		Mutex:  sync.Mutex{},
-		clock:  NewClock(),
-		uuid:   uuid.New(),
-		ts:     time.Now(),
-		status: NodeIdle,
+		host:    "",
+		Mutex:   sync.Mutex{},
+		clock:   NewClock(),
+		cluster: DefaultClusterName,
+		uuid:    uuid.New(),
+		ts:      time.Now(),
+		status:  NodeIdle,
 	}
 	host, err := os.Hostname()
 	if err == nil {
 		p.host = host
 	}
 	return p
+}
+
+// SetCluster sets a cluster name to the cluster node.
+func (node *nodeImpl) SetCluster(cluster string) {
+	node.cluster = cluster
+}
+
+// Cluster returns a cluster name of the cluster node.
+func (node *nodeImpl) Cluster() string {
+	return node.cluster
 }
 
 // SetID sets a UUID to the cluster node.
