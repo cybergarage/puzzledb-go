@@ -15,7 +15,6 @@
 package actor
 
 import (
-	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -57,12 +56,13 @@ func (service *Service) ServiceType() plugins.ServiceType {
 }
 
 // SetStatus sets a actor status.
-func (service *Service) SetStatus(status cluster.NodeStatus) {
-	service.coordinator.SetStatus(status)
+func (service *Service) SetStatus(status cluster.NodeStatus) error {
 	err := service.coordinator.SetNodeState(service.coordinator)
 	if err != nil {
-		log.Error(err)
+		return err
 	}
+	service.coordinator.SetStatus(status)
+	return nil
 }
 
 // Status returns a actor status.
@@ -70,12 +70,40 @@ func (service *Service) Status() cluster.NodeStatus {
 	return service.coordinator.Status()
 }
 
+// Join joins the actor service to the cluster.
+func (service *Service) Join() error {
+	if err := service.SetStatus(cluster.NodeJoining); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Leave leaves the actor service from the cluster.
+func (service *Service) Leave() error {
+	if err := service.SetStatus(cluster.NodeLeaving); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Start starts the actor service.
 func (service *Service) Start() error {
+	if err := service.Join(); err != nil {
+		return err
+	}
+	if err := service.SetStatus(cluster.NodeUp); err != nil {
+		return err
+	}
 	return nil
 }
 
 // Stop stops the actor server.
 func (service *Service) Stop() error {
+	if err := service.Leave(); err != nil {
+		return err
+	}
+	if err := service.SetStatus(cluster.NodeDown); err != nil {
+		return err
+	}
 	return nil
 }

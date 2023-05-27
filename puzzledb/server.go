@@ -89,8 +89,6 @@ func (server *Server) Restart() error {
 func (server *Server) reloadEmbeddedPlugins() error {
 	server.actor = actor.NewService()
 	services := []plugins.Service{
-		server.actor,
-		NewGrpcServiceWith(server),
 		cbor.NewCoder(),
 		tuple.NewCoder(),
 		store.NewStore(),
@@ -105,6 +103,8 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		opentelemetry.NewService(),
 		opentracing.NewService(),
 		prometheus.NewService(),
+		NewGrpcServiceWith(server),
+		server.actor,
 	}
 
 	server.Manager.ReloadServices(services)
@@ -247,25 +247,17 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
-	server.actor.SetStatus(cluster.NodeUp)
-
 	return nil
 }
 
 // Stop stops the server.
 func (server *Server) Stop() error {
-	server.actor.SetStatus(cluster.NodeLeaving)
-
 	var err error
 	if stopErr := server.Manager.Stop(); stopErr != nil {
 		err = errors.Join(err, stopErr)
 	}
 
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
-
-	if err == nil {
-		server.actor.SetStatus(cluster.NodeRemoved)
-	}
 
 	return err
 }
