@@ -247,14 +247,14 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
-	server.actor.SetStatus(coord.ProcessRunning)
+	server.actor.SetStatus(coord.NodeRunning)
 
 	return nil
 }
 
 // Stop stops the server.
 func (server *Server) Stop() error {
-	server.actor.SetStatus(coord.ProcessStopping)
+	server.actor.SetStatus(coord.NodeStopping)
 
 	var err error
 	if stopErr := server.Manager.Stop(); stopErr != nil {
@@ -264,7 +264,7 @@ func (server *Server) Stop() error {
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
 
 	if err == nil {
-		server.actor.SetStatus(coord.ProcessStopped)
+		server.actor.SetStatus(coord.NodeStopped)
 	}
 
 	return err

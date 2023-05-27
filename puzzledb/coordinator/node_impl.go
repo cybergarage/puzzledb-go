@@ -28,7 +28,7 @@ type processImpl struct {
 	uuid   uuid.UUID
 	host   string
 	ts     time.Time
-	status ProcessStatus
+	status NodeStatus
 }
 
 func NewProcess() Process {
@@ -38,7 +38,7 @@ func NewProcess() Process {
 		clock:  NewClock(),
 		uuid:   uuid.New(),
 		ts:     time.Now(),
-		status: ProcessIdle,
+		status: NodeIdle,
 	}
 	host, err := os.Hostname()
 	if err == nil {
@@ -108,11 +108,11 @@ func (process *processImpl) Timestamp() time.Time {
 }
 
 // SetStatus sets a status to the coordinator process.
-func (process *processImpl) SetStatus(status ProcessStatus) {
+func (process *processImpl) SetStatus(status NodeStatus) {
 	process.status = status
 }
 
 // Status returns a status of the coordinator process.
-func (process *processImpl) Status() ProcessStatus {
+func (process *processImpl) Status() NodeStatus {
 	return process.status
 }
