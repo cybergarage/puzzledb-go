@@ -15,6 +15,7 @@
 package coordinator
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
@@ -23,6 +24,6 @@ import (
 type Service interface {
 	coordinator.Coordinator
 	plugins.Service
-	// SetProcessState posts the specified process state to the coordinator.
-	SetProcessState(process coordinator.Process) error
+	// SetNodeState posts the specified node status to the coordinator.
+	SetNodeState(node cluster.Node) error
 }

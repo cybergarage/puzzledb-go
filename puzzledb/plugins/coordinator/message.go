@@ -15,6 +15,7 @@
 package coordinator
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/google/uuid"
 )
@@ -44,7 +45,7 @@ func NewMessageScanKey() coordinator.Key {
 }
 
 // NewMessageKeyWith returns a new message key with the specified message.
-func NewMessageKeyWith(msg coordinator.Message, clock coordinator.Clock) coordinator.Key {
+func NewMessageKeyWith(msg coordinator.Message, clock cluster.Clock) coordinator.Key {
 	return coordinator.NewKeyWith(coordinator.MessageObjectKeyHeader[:], clock)
 }
 
@@ -60,10 +61,10 @@ func NewMessageObject() *MessageObject {
 }
 
 // NewMessageObjectWith returns a new message value with the specified message.
-func NewMessageObjectWith(msg coordinator.Message, process coordinator.Process, clock coordinator.Clock) (*MessageObject, error) {
+func NewMessageObjectWith(msg coordinator.Message, node cluster.Node, clock cluster.Clock) (*MessageObject, error) {
 	return &MessageObject{
-		ID:    process.ID(),
-		Host:  process.Host(),
+		ID:    node.ID(),
+		Host:  node.Host(),
 		Clock: uint64(clock),
 		Type:  byte(msg.Type()),
 		Bytes: msg.Object().Bytes(),

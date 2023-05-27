@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package coordinator
+package cluster
 
 import (
 	"time"
@@ -20,34 +20,34 @@ import (
 	"github.com/google/uuid"
 )
 
-// Process represents a coordinator process.
-type Process interface {
-	// SetID sets a UUID to the coordinator process.
+// Node represents a cluster node.
+type Node interface {
+	// SetID sets a UUID to the cluster node.
 	SetID(uuid uuid.UUID)
-	// ID returns a UUID of the coordinator process.
+	// ID returns a UUID of the cluster node.
 	ID() uuid.UUID
-	// SetHost sets a host name to the coordinator process.
+	// SetHost sets a host name to the cluster node.
 	SetHost(host string)
-	// Host returns a host name of the coordinator process.
+	// Host returns a host name of the cluster node.
 	Host() string
-	// SetClock sets a logical clock to the coordinator process.
+	// SetClock sets a logical clock to the cluster node.
 	SetClock(clock Clock)
-	// Clock returns a logical clock of the coordinator process.
+	// Clock returns a logical clock of the cluster node.
 	Clock() Clock
-	// SetReceivedClock sets a received logical clock to the coordinator process.
+	// SetReceivedClock sets a received logical clock to the cluster node.
 	SetReceivedClock(clock Clock) Clock
-	// IncrementClock increments a logical clock of the coordinator process.
+	// IncrementClock increments a logical clock of the cluster node.
 	IncrementClock() Clock
-	// SetTimestamp sets a phisical timestamp to the coordinator process.
+	// SetTimestamp sets a phisical timestamp to the cluster node.
 	SetTimestamp(ts time.Time)
-	// Timestamp returns a phisical timestamp of the coordinator process.
+	// Timestamp returns a phisical timestamp of the cluster node.
 	Timestamp() time.Time
-	// SetStatus sets a status to the coordinator process.
+	// SetStatus sets a status to the cluster node.
 	SetStatus(state NodeStatus)
-	// Status returns a status of the coordinator process.
+	// Status returns a status of the cluster node.
 	Status() NodeStatus
-	// Lock locks the coordinator process.
+	// Lock locks the cluster node.
 	Lock()
-	// Unlock unlocks the coordinator process.
+	// Unlock unlocks the cluster node.
 	Unlock()
 }

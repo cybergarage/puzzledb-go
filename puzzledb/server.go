@@ -19,8 +19,8 @@ import (
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
-	coord "github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
@@ -45,7 +45,7 @@ type Server struct {
 	actor *actor.Service
 	*Config
 	*PluginManager
-	coord.Process
+	cluster.Node
 }
 
 // NewServer returns a new server instance.
@@ -54,7 +54,7 @@ func NewServer() *Server {
 		actor:         nil,
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
-		Process:       coord.NewProcess(),
+		Node:          cluster.NewNode(),
 	}
 	conf, err := NewDefaultConfig()
 	if err != nil {
@@ -153,7 +153,7 @@ func (server *Server) setupPlugins() error {
 	// Coordinator services
 
 	for _, service := range server.CoordinatorServices() {
-		service.SetProcess(server.Process)
+		service.SetNode(server.Node)
 		service.SetKeyCoder(defaultKeyCoder)
 	}
 
@@ -247,14 +247,14 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	log.Infof("%s (PID:%d) started", ProductName, os.Getpid())
 
-	server.actor.SetStatus(coord.NodeRunning)
+	server.actor.SetStatus(cluster.NodeRunning)
 
 	return nil
 }
 
 // Stop stops the server.
 func (server *Server) Stop() error {
-	server.actor.SetStatus(coord.NodeStopping)
+	server.actor.SetStatus(cluster.NodeStopping)
 
 	var err error
 	if stopErr := server.Manager.Stop(); stopErr != nil {
@@ -264,7 +264,7 @@ func (server *Server) Stop() error {
 	log.Infof("%s (PID:%d) terminated", ProductName, os.Getpid())
 
 	if err == nil {
-		server.actor.SetStatus(coord.NodeStopped)
+		server.actor.SetStatus(cluster.NodeStopped)
 	}
 
 	return err
