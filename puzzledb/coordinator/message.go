@@ -14,6 +14,10 @@
 
 package coordinator
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
+)
+
 // MessageType represents a coordinator event type.
 type MessageType byte
 
@@ -42,11 +46,11 @@ func (t MessageType) String() string {
 
 // Message represents a  coordinator event.
 type Message interface {
-	Process
+	cluster.Node
 	// Clock returns the message clock.
-	Clock() Clock
-	// From returns the destination process of the message.
-	From() Process
+	Clock() cluster.Clock
+	// From returns the destination node of the message.
+	From() cluster.Node
 	// Type returns the message type.
 	Type() MessageType
 	// Object returns the object of the message.

@@ -18,15 +18,15 @@ package coordinator
 type StateType byte
 
 const (
-	// ProcessState represents a process state.
-	ProcessState StateType = 'P'
+	// NodeState represents a node state.
+	NodeState StateType = 'N'
 )
 
 // String returns the string representation of the state type.
 func (t StateType) String() string {
 	switch t {
-	case ProcessState:
-		return "process"
+	case NodeState:
+		return "node"
 	default:
 		return "unknown"
 	}

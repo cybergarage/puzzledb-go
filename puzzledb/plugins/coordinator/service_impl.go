@@ -22,6 +22,7 @@ import (
 
 	"github.com/cybergarage/go-cbor/cbor"
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
@@ -33,7 +34,7 @@ const (
 type serviceImpl struct {
 	core.CoordinatorService
 	observers []coordinator.Observer
-	coordinator.Process
+	cluster.Node
 	*MessageQueue
 	ctx       context.Context
 	ctxCancel context.CancelFunc
@@ -44,7 +45,7 @@ func NewServiceWith(service core.CoordinatorService) Service {
 	ctx, cancel := context.WithCancel(context.Background())
 	return &serviceImpl{
 		CoordinatorService: service,
-		Process:            coordinator.NewProcess(),
+		Node:               cluster.NewNode(),
 		observers:          make([]coordinator.Observer, 0),
 		MessageQueue:       NewMessageQueue(),
 		ctx:                ctx,
@@ -52,9 +53,9 @@ func NewServiceWith(service core.CoordinatorService) Service {
 	}
 }
 
-// SetProcess sets the coordinator process.
-func (coord *serviceImpl) SetProcess(process coordinator.Process) {
-	coord.Process = process
+// SetNode sets the coordinator node.
+func (coord *serviceImpl) SetNode(node cluster.Node) {
+	coord.Node = node
 }
 
 // AddObserver adds the specified observer.
@@ -144,7 +145,7 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 		}
 
 		// Skip the message if the message clock is older than the local clock
-		if 0 < coordinator.CompareClocks(localClock, msgObj.Clock) {
+		if 0 < cluster.CompareClocks(localClock, msgObj.Clock) {
 			break
 		}
 
@@ -167,7 +168,7 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 	return nil
 }
 
-func (coord *serviceImpl) getLatestMessageClock(txn coordinator.Transaction) (coordinator.Clock, error) {
+func (coord *serviceImpl) getLatestMessageClock(txn coordinator.Transaction) (cluster.Clock, error) {
 	rs, err := coord.getLatestMessages(txn)
 	if err != nil {
 		return 0, err
@@ -220,9 +221,9 @@ func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinat
 	return nil
 }
 
-func (coord *serviceImpl) postProcessState(txn coordinator.Transaction, process coordinator.Process) error {
-	key := NewProcessKeyWith(process)
-	obj := NewProcessObjectWith(process)
+func (coord *serviceImpl) postNodeState(txn coordinator.Transaction, node cluster.Node) error {
+	key := NewNodeKeyWith(node)
+	obj := NewNodeObjectWith(node)
 	objBytes, err := cbor.Marshal(obj)
 	if err != nil {
 		return err
@@ -236,8 +237,8 @@ func (coord *serviceImpl) postProcessState(txn coordinator.Transaction, process 
 	return nil
 }
 
-// SetProcessState posts the specified process state to the coordinator.
-func (coord *serviceImpl) SetProcessState(process coordinator.Process) error {
+// SetNodeState posts the specified node state to the coordinator.
+func (coord *serviceImpl) SetNodeState(node cluster.Node) error {
 	coord.Lock()
 	defer coord.Unlock()
 
@@ -246,7 +247,7 @@ func (coord *serviceImpl) SetProcessState(process coordinator.Process) error {
 		return err
 	}
 
-	err = coord.postProcessState(txn, process)
+	err = coord.postNodeState(txn, node)
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
@@ -346,10 +347,10 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 					continue
 				}
 
-				// Update process state
+				// Update node status
 
-				if 0 < coordinator.CompareClocks(coord.Clock(), startClock) {
-					err := coord.postProcessState(txn, coord.Process)
+				if 0 < cluster.CompareClocks(coord.Clock(), startClock) {
+					err := coord.postNodeState(txn, coord.Node)
 					if err != nil {
 						logError(errors.Join(err, txn.Cancel()))
 					}

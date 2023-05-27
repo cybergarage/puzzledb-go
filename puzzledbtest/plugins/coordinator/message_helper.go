@@ -19,6 +19,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 )
@@ -122,7 +123,7 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 
 	// Checks the received messages order
 
-	lastClock := coordinator.Clock(0)
+	lastClock := cluster.Clock(0)
 	for _, msg := range msgs {
 		if msg.Clock() < lastClock {
 			t.Errorf("the received messages are not sorted by clock")

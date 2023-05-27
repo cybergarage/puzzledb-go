@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package coordinator
+package cluster
 
-// NodeStatus represents a coordinator process status.
+// NodeStatus represents a cluster node status.
 type NodeStatus int
 
 const (
-	// NodeUnknown represents an unknown process status.
+	// NodeUnknown represents an unknown node status.
 	NodeUnknown NodeStatus = iota
-	// NodeIdle represents an idle process status.
+	// NodeIdle represents an idle node status.
 	NodeIdle
-	// NodeStarting represents a starting process status.
+	// NodeStarting represents a starting node status.
 	NodeStarting
-	// NodeRunning represents a running process status.
+	// NodeRunning represents a running node status.
 	NodeRunning
-	// NodeStopping represents a stopping process status.
+	// NodeStopping represents a stopping node status.
 	NodeStopping
-	// NodeStopped represents a stopped process status.
+	// NodeStopped represents a stopped node status.
 	NodeStopped
-	// NodeAborted represents an aborted process status.
+	// NodeAborted represents an aborted node status.
 	NodeAborted
 )
 
@@ -44,8 +44,8 @@ var processStatuses = map[NodeStatus]string{
 	NodeAborted:  "aborted",
 }
 
-// NewProcessStatusWith returns a new process status with the specified string.
-func NewProcessStatusWith(s string) NodeStatus {
+// NewNodeStatusWith returns a new node status with the specified string.
+func NewNodeStatusWith(s string) NodeStatus {
 	for status, statusString := range processStatuses {
 		if statusString == s {
 			return status
@@ -54,7 +54,7 @@ func NewProcessStatusWith(s string) NodeStatus {
 	return NodeUnknown
 }
 
-// String represents a string of the process status.
+// String represents a string of the node status.
 func (t NodeStatus) String() string {
 	s, ok := processStatuses[t]
 	if ok {

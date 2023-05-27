@@ -14,11 +14,15 @@
 
 package coordinator
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
+)
 
 // messageImpl represents a coordinator messageImpl.
 type messageImpl struct {
-	Process
+	cluster.Node
 	typ MessageType
 	obj Object
 }
@@ -26,15 +30,15 @@ type messageImpl struct {
 // NewMessageWith returns a new message with the specified type and object.
 func NewMessageWith(t MessageType, obj Object) Message {
 	return &messageImpl{
-		Process: NewProcess(),
-		typ:     t,
-		obj:     obj,
+		Node: cluster.NewNode(),
+		typ:  t,
+		obj:  obj,
 	}
 }
 
-// From returns the destination process of the message.
-func (msg *messageImpl) From() Process {
-	return msg.Process
+// From returns the destination node of the message.
+func (msg *messageImpl) From() cluster.Node {
+	return msg.Node
 }
 
 // Type returns the message type.

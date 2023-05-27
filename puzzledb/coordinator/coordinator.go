@@ -14,6 +14,10 @@
 
 package coordinator
 
+import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
+)
+
 // Store represents a coordination store inteface.
 type Store interface {
 	// SetKeyCoder sets the key coder.
@@ -29,9 +33,9 @@ type Store interface {
 // Coordinator represents a coordination service.
 type Coordinator interface {
 	Store
-	Process
-	// SetProcess sets the coordinator process.
-	SetProcess(process Process)
+	cluster.Node
+	// SetNode sets the coordinator node.
+	SetNode(node cluster.Node)
 	// SetStateObject sets the state object for the specified key.
 	SetStateObject(t StateType, obj Object) error
 	// GetObject gets the object for the specified key and state type.

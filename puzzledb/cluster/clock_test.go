@@ -12,24 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package coordinator
+package cluster
 
 import (
+	"math"
 	"testing"
 )
 
-func TestNodeClocks(t *testing.T) {
-	p := NewProcess()
-	p.Lock()
-	c1 := p.Clock()
-	p.IncrementClock()
-	c2 := p.Clock()
-	if CompareClocks(c2, c1) != 1 {
-		t.Errorf("%d < %d", c2, c1)
+func TestClockCompare(t *testing.T) {
+	testClocks := []struct {
+		c1       Clock
+		c2       Clock
+		expected int
+	}{
+		{
+			c1:       1,
+			c2:       1,
+			expected: 0,
+		},
+		{
+			c1:       1,
+			c2:       0,
+			expected: 1,
+		},
+		{
+			c1:       0,
+			c2:       1,
+			expected: -1,
+		},
+		{
+			c1:       1,
+			c2:       math.MaxUint64,
+			expected: 1,
+		},
+		{
+			c1:       math.MaxUint64,
+			c2:       1,
+			expected: -1,
+		},
 	}
-	d := c2 - c1
-	if d != ClockDiffrent {
-		t.Errorf("%d != %d", d, ClockDiffrent)
+	for _, test := range testClocks {
+		if CompareClocks(test.c1, test.c2) != test.expected {
+			t.Errorf("%v != %v", CompareClocks(test.c1, test.c2), test.expected)
+		}
 	}
-	p.Unlock()
+
 }
