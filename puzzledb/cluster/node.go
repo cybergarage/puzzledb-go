@@ -22,6 +22,10 @@ import (
 
 // Node represents a cluster node.
 type Node interface {
+	// SetCluster sets a cluster name to the cluster node.
+	SetCluster(cluster string)
+	// Cluster returns a cluster name of the cluster node.
+	Cluster() string
 	// SetID sets a UUID to the cluster node.
 	SetID(uuid uuid.UUID)
 	// ID returns a UUID of the cluster node.
