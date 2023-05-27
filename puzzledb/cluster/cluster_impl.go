@@ -19,22 +19,31 @@ const (
 )
 
 type clusterImpl struct {
-	name string
+	name  string
+	nodes []Node
 }
 
 // NewCluster returns a new cluster.
 func NewCluster() Cluster {
 	return &clusterImpl{
-		name: DefaultClusterName,
+		name:  DefaultClusterName,
+		nodes: make([]Node, 0),
 	}
 }
 
-// SetName sets a name to the cluster.
-func (cluster *clusterImpl) SetName(name string) {
-	cluster.name = name
+func NewClusterWith(name string, nodes []Node) Cluster {
+	return &clusterImpl{
+		name:  name,
+		nodes: nodes,
+	}
 }
 
 // Name returns a name of the cluster.
 func (cluster *clusterImpl) Name() string {
 	return cluster.name
+}
+
+// Nodes returns nodes in the cluster.
+func (cluster *clusterImpl) Nodes() []Node {
+	return cluster.nodes
 }
