@@ -16,8 +16,8 @@ package cluster
 
 // Cluster represents a cluster.
 type Cluster interface {
-	// SetName sets a name to the cluster.
-	SetName(name string)
 	// Name returns a name of the cluster.
 	Name() string
+	// Nodes returns nodes in the cluster.
+	Nodes() []Node
 }
