@@ -26,4 +26,6 @@ type Service interface {
 	plugins.Service
 	// SetNodeState posts the specified node status to the coordinator.
 	SetNodeState(node cluster.Node) error
+	// GetClusterState gets the current cluster state.
+	GetClusterState(cluster string) (cluster.Cluster, error)
 }
