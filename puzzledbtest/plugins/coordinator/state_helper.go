@@ -16,12 +16,14 @@ package coordinator
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
 )
 
-func truncateCoordinatorStore(coord coordinator.Coordinator) error {
+func truncateCoordinatorStore(coord coordinator.Service) error {
 	txn, err := coord.Transact()
 	if err != nil {
 		return err
@@ -34,11 +36,61 @@ func truncateCoordinatorStore(coord coordinator.Coordinator) error {
 }
 
 // nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorStateTest(t *testing.T, coord coordinator.Coordinator) {
+func CoordinatorClusterTest(t *testing.T, coords []coordinator.Service) {
 	t.Helper()
 
-	if err := truncateCoordinatorStore(coord); err != nil {
-		t.Error(err)
-		return
+	for _, coord := range coords {
+		if err := truncateCoordinatorStore(coord); err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	testCluster := "test_cluster"
+
+	for n, coord := range coords {
+		coord.SetCluster(testCluster)
+		coord.SetHost(fmt.Sprintf("coord%d", n))
+	}
+
+	for _, coord := range coords {
+		coord.SetStatus(cluster.NodeUp)
+		err := coord.SetNodeState(coord)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}
+
+	for _, coord := range coords {
+		cluster, err := coord.GetClusterState(testCluster)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		clusterNodes := cluster.Nodes()
+		if len(clusterNodes) != len(coords) {
+			t.Errorf("cluster node count (%d) is invalid", len(clusterNodes))
+			return
+		}
+
+		for _, clusterNode := range clusterNodes {
+			if clusterNode.Cluster() != testCluster {
+				t.Errorf("cluster node cluster (%s) is invalid", clusterNode.Cluster())
+				return
+			}
+			foundNode := false
+			for _, coord := range coords {
+				if coord.Equals(clusterNode) {
+					foundNode = true
+					break
+				}
+			}
+			if !foundNode {
+				t.Errorf("cluster node (%v) is not found", clusterNode)
+				return
+			}
+		}
 	}
 }

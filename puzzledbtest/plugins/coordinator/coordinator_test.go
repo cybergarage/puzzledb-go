@@ -53,7 +53,7 @@ func TestCoordinators(t *testing.T) {
 				fn   func(t *testing.T, coords []coordinator.Service)
 			}{
 				{"messaging", CoordinatorsTest},
-				{"clustring", CoordinatorStateTest},
+				{"clustring", CoordinatorClusterTest},
 			}
 			for _, test := range tests {
 				t.Run(test.name+testSuffix, func(t *testing.T) {
