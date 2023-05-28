@@ -46,7 +46,6 @@ func (t MessageType) String() string {
 
 // Message represents a  coordinator event.
 type Message interface {
-	cluster.Node
 	// Clock returns the message clock.
 	Clock() cluster.Clock
 	// From returns the destination node of the message.

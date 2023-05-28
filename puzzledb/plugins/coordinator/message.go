@@ -34,8 +34,8 @@ func NewMessageWith(key coordinator.Key, obj *MessageObject) coordinator.Message
 	msg := coordinator.NewMessageWith(
 		coordinator.MessageType(obj.Type),
 		coordinator.NewObjectWith(key, obj.Bytes))
-	msg.SetHost(obj.Host)
-	msg.SetClock(obj.Clock)
+	msg.From().SetHost(obj.Host)
+	msg.From().SetClock(obj.Clock)
 	return msg
 }
 
