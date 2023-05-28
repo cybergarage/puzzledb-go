@@ -260,6 +260,45 @@ func (coord *serviceImpl) SetNodeState(node cluster.Node) error {
 	return nil
 }
 
+// GetClusterState gets the current cluster state.
+func (coord *serviceImpl) GetClusterState(name string) (cluster.Cluster, error) {
+	coord.Lock()
+	defer coord.Unlock()
+
+	txn, err := coord.Transact()
+	if err != nil {
+		return nil, err
+	}
+
+	rs, err := txn.GetRange(NewClusterScanKeyWith(name))
+	if err != nil {
+		return nil, errors.Join(err, txn.Cancel())
+	}
+
+	nodes := []cluster.Node{}
+	for rs.Next() {
+		nodeObj := NewNodeObject()
+		obj := rs.Object()
+		err = obj.Unmarshal(nodeObj)
+		if err != nil {
+			return nil, errors.Join(err, txn.Cancel())
+		}
+
+		node, err := NewNodeWith(nodeObj)
+		if err != nil {
+			return nil, errors.Join(err, txn.Cancel())
+		}
+		nodes = append(nodes, node)
+	}
+
+	err = txn.Commit()
+	if err != nil {
+		return nil, err
+	}
+
+	return cluster.NewClusterWith(name, nodes), nil
+}
+
 // Start starts this etcd coordinator.
 func (coord *serviceImpl) Start() error { // nolint:gocognit
 	if err := coord.CoordinatorService.Start(); err != nil {
@@ -350,7 +389,7 @@ func (coord *serviceImpl) Start() error { // nolint:gocognit
 				// Update node status
 
 				if 0 < cluster.CompareClocks(coord.Clock(), startClock) {
-					err := coord.postNodeState(txn, coord.Node)
+					err := coord.postNodeState(txn, coord)
 					if err != nil {
 						logError(errors.Join(err, txn.Cancel()))
 					}
