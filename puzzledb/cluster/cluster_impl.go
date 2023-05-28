@@ -31,6 +31,7 @@ func NewCluster() Cluster {
 	}
 }
 
+// NewClusterWith returns a new cluster with the specified name and nodes.
 func NewClusterWith(name string, nodes []Node) Cluster {
 	return &clusterImpl{
 		name:  name,
