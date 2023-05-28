@@ -45,10 +45,22 @@ func TestCoordinators(t *testing.T) {
 					return
 				}
 			}
-			testName := fmt.Sprintf("%s(%s)", coords[0].ServiceName(), keyCoder.ServiceName())
-			t.Run(testName, func(t *testing.T) {
-				CoordinatorsTest(t, coords)
-			})
+
+			testSuffix := fmt.Sprintf("(%s,%s)", coords[0].ServiceName(), keyCoder.ServiceName())
+
+			tests := []struct {
+				name string
+				fn   func(t *testing.T, coords []coordinator.Service)
+			}{
+				{"messaging", CoordinatorsTest},
+				{"clustring", CoordinatorStateTest},
+			}
+			for _, test := range tests {
+				t.Run(test.name+testSuffix, func(t *testing.T) {
+					test.fn(t, coords)
+				})
+			}
+
 			for _, coord := range coords {
 				if err := coord.Stop(); err != nil {
 					t.Error(err)
