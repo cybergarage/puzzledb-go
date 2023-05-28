@@ -128,3 +128,14 @@ func (node *nodeImpl) SetStatus(status NodeStatus) {
 func (node *nodeImpl) Status() NodeStatus {
 	return node.status
 }
+
+// Equals returns true if the specified cluster node is same as this node.
+func (node *nodeImpl) Equals(other Node) bool {
+	if node.cluster != other.Cluster() {
+		return false
+	}
+	if node.uuid != other.ID() {
+		return false
+	}
+	return true
+}
