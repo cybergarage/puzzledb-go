@@ -59,6 +59,8 @@ The key-value store is a collection of key-value records, where each record is a
 </tbody>
 </table>
 
+The value of the coordinator store object is encoded and decoded in CBOR format as standard.
+
 ## Key Header Specification
 
 The key header is a 2-byte header that is prepended to every key in the key-value store. The key header is defined as follows:
@@ -204,7 +206,7 @@ The coordinator service defines standard message category and type ot the messag
 
 ## State Objects
 
-The coordinator service defines standard state objects to share state among the PuzzleDB nodes. The standard state object is defined as follows:
+The coordinator service defines standard state objects to share state among the PuzzleDB nodes. he state object values are defined by category, but the standard state object header and key order are defined as follows:
 
 <table style="width:100%;">
 <colgroup>

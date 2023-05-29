@@ -161,7 +161,7 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 	}
 
 	for _, msg := range msgs {
-		log.Infof("Received message: %s %s (%d)", msg.From().Host(), msg.Type().String(), msg.Clock())
+		log.Infof("Received message: %s %s (%d)", msg.From().Host(), msg.EventType().String(), msg.Clock())
 		coord.nofityMessage(msg)
 	}
 
