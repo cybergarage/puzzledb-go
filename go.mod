@@ -29,6 +29,8 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/cybergarage/go-safecast v1.2.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
+	github.com/dgraph-io/ristretto v0.1.1 // indirect
+	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
