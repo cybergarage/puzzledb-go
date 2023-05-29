@@ -23,12 +23,12 @@ import (
 // messageImpl represents a coordinator messageImpl.
 type messageImpl struct {
 	cluster.Node
-	typ MessageType
+	typ EventType
 	obj Object
 }
 
 // NewMessageWith returns a new message with the specified type and object.
-func NewMessageWith(t MessageType, obj Object) Message {
+func NewMessageWith(t EventType, obj Object) Message {
 	return &messageImpl{
 		Node: cluster.NewNode(),
 		typ:  t,
@@ -41,8 +41,8 @@ func (msg *messageImpl) From() cluster.Node {
 	return msg.Node
 }
 
-// Type returns the message type.
-func (msg *messageImpl) Type() MessageType {
+// EventType returns the message event type.
+func (msg *messageImpl) EventType() EventType {
 	return msg.typ
 }
 
@@ -53,7 +53,7 @@ func (msg *messageImpl) Object() Object {
 
 // Equals returns true if the message is equal to the specified message.
 func (msg *messageImpl) Equals(other Message) bool {
-	if msg.Type() != other.Type() {
+	if msg.EventType() != other.EventType() {
 		return false
 	}
 	if msg.Object().Equals(other.Object()) {

@@ -77,7 +77,7 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 			return
 		}
 		msg := coordinator.NewMessageWith(
-			coordinator.ObjectCreated,
+			coordinator.CreatedEvent,
 			obj)
 		msgs = append(msgs, msg)
 	}

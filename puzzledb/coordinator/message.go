@@ -18,26 +18,26 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 )
 
-// MessageType represents a coordinator event type.
-type MessageType byte
+// EventType represents a coordinator event type.
+type EventType byte
 
 const (
-	// ObjectCreated represents a object created event.
-	ObjectCreated MessageType = 'C'
-	// ObjectUpdated represents a object updated event.
-	ObjectUpdated MessageType = 'U'
-	// ObjectDeleted represents a object deleted event.
-	ObjectDeleted MessageType = 'O'
+	// CreatedEvent represents a created event.
+	CreatedEvent EventType = 'C'
+	// UpdatedEvent represents a object updated event.
+	UpdatedEvent EventType = 'U'
+	// DeletedEvent represents a object deleted event.
+	DeletedEvent EventType = 'O'
 )
 
 // String returns the string representation of the message type.
-func (t MessageType) String() string {
+func (t EventType) String() string {
 	switch t {
-	case ObjectCreated:
+	case CreatedEvent:
 		return "created"
-	case ObjectUpdated:
+	case UpdatedEvent:
 		return "updated"
-	case ObjectDeleted:
+	case DeletedEvent:
 		return "deleted"
 	default:
 		return "unknown"
@@ -50,8 +50,8 @@ type Message interface {
 	Clock() cluster.Clock
 	// From returns the destination node of the message.
 	From() cluster.Node
-	// Type returns the message type.
-	Type() MessageType
+	// EventType returns the message event type.
+	EventType() EventType
 	// Object returns the object of the message.
 	Object() Object
 	// Equals returns true if the message is equal to the specified event.
