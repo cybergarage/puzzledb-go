@@ -191,14 +191,14 @@ The coordinator service defines standard message objects for communication betwe
 <td style="text-align: left;"><p>Destination logical clock</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>Category</p></td>
-<td style="text-align: left;"><p>byte</p></td>
-<td style="text-align: left;"><p>Message category</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p>Type</p></td>
+<td style="text-align: left;"><p>Message Type</p></td>
 <td style="text-align: left;"><p>byte</p></td>
 <td style="text-align: left;"><p>Message type</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Event Type</p></td>
+<td style="text-align: left;"><p>byte</p></td>
+<td style="text-align: left;"><p>Event type</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Object</p></td>
@@ -208,7 +208,7 @@ The coordinator service defines standard message objects for communication betwe
 </tbody>
 </table>
 
-The coordinator service defines standard message category and type ot the message objects too. The standard message category and type are defined as follows:
+The coordinator service defines standard message and event types of the message objects too. The standard message and event types are defined as follows:
 
 <table>
 <colgroup>
@@ -218,8 +218,8 @@ The coordinator service defines standard message category and type ot the messag
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Category</th>
-<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Message Type</th>
+<th style="text-align: left;">Event Type</th>
 <th style="text-align: left;">Occurrence Condition</th>
 </tr>
 </thead>
