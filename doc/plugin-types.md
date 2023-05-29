@@ -148,17 +148,17 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"><p>Key-value Cahche (Planning)</p></td>
-<td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>Store (Key-value), Coordinator</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>TiKV (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Key-Value Cache</p></td>
+<td style="text-align: left;"><p>Key-value cache store services</p></td>
+<td style="text-align: left;"><p>Ristretto</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Key-value)</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Tracer</p></td>
