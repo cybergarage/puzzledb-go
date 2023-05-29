@@ -72,6 +72,8 @@ type Message interface {
 	Clock() cluster.Clock
 	// From returns the destination node of the message.
 	From() cluster.Node
+	// Type returns the message type.
+	Type() MessageType
 	// EventType returns the message event type.
 	EventType() EventType
 	// Object returns the object of the message.
