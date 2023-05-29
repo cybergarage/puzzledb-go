@@ -26,13 +26,15 @@ type MessageObject struct {
 	Host   string
 	Clock  uint64
 	Type   byte
+	Event  byte
 	Object []byte
 }
 
 // NewMessageWith returns a new message with the specified message object.
 func NewMessageWith(key coordinator.Key, obj *MessageObject) coordinator.Message {
 	msg := coordinator.NewMessageWith(
-		coordinator.EventType(obj.Type),
+		coordinator.MessageType(obj.Type),
+		coordinator.EventType(obj.Event),
 		coordinator.NewObjectWith(key, obj.Object))
 	msg.From().SetHost(obj.Host)
 	msg.From().SetClock(obj.Clock)
@@ -55,6 +57,7 @@ func NewMessageObject() *MessageObject {
 		ID:     uuid.Nil,
 		Host:   "",
 		Clock:  0,
+		Event:  0,
 		Type:   0,
 		Object: nil,
 	}
@@ -66,7 +69,8 @@ func NewMessageObjectWith(msg coordinator.Message, node cluster.Node, clock clus
 		ID:     node.ID(),
 		Host:   node.Host(),
 		Clock:  uint64(clock),
-		Type:   byte(msg.EventType()),
+		Type:   byte(msg.Type()),
+		Event:  byte(msg.EventType()),
 		Object: msg.Object().Bytes(),
 	}, nil
 }
