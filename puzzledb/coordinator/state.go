@@ -28,7 +28,7 @@ func (t StateType) String() string {
 	case NodeState:
 		return "node"
 	default:
-		return "unknown"
+		return Unknown
 	}
 }
 

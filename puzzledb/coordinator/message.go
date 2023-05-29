@@ -18,6 +18,28 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 )
 
+// MessageType represents a coordinator message type.
+type MessageType byte
+
+const (
+	// ObjectMessage represents a object message type.
+	ObjectMessage MessageType = 'O'
+	// SchemaMessage represents a schema message type.
+	SchemaMessage MessageType = 'S'
+)
+
+// String returns the string representation of the message type.
+func (t MessageType) String() string {
+	switch t {
+	case ObjectMessage:
+		return "object"
+	case SchemaMessage:
+		return "schema"
+	default:
+		return Unknown
+	}
+}
+
 // EventType represents a coordinator event type.
 type EventType byte
 
@@ -30,7 +52,7 @@ const (
 	DeletedEvent EventType = 'O'
 )
 
-// String returns the string representation of the message type.
+// String returns the string representation of the message event type.
 func (t EventType) String() string {
 	switch t {
 	case CreatedEvent:
@@ -40,7 +62,7 @@ func (t EventType) String() string {
 	case DeletedEvent:
 		return "deleted"
 	default:
-		return "unknown"
+		return Unknown
 	}
 }
 
