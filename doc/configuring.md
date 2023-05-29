@@ -34,7 +34,7 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
           endpoints: null
         fdb:
           enabled: true
-          cluseterFile: null
+          cluster_file: null
       store:
         document:
           default: dockv
@@ -48,7 +48,14 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
             endpoints: null
           fdb:
             enabled: true
-            cluseterFile: null
+            cluster_file: null
+        kvcache:
+          default: ristretto
+          ristretto:
+            enabled: true
+            num_counters: 1000
+            max_cost: 1000000
+            buffer_items: 64 
       query:
         redis:
           enabled: true
