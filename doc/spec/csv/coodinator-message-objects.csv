@@ -1,0 +1,7 @@
+Category,Type,Occurrence Condition
+Object (O),Created (C),Object created
+,Update (U),Object updated
+,Delete (D),Object deleted
+Schema (S),Created (C),Schema created
+,Update (U),Shcema updated
+,Delete (D),Schema deleted
