@@ -1,4 +1,4 @@
-Category,Type,Occurrence Condition
+Message Type,Event Type,Occurrence Condition
 Object (O),Created (C),Object created
 ,Update (U),Object updated
 ,Delete (D),Object deleted

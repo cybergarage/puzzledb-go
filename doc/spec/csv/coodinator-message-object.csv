@@ -2,6 +2,6 @@ Field,Type,Value
 ID,UUID,Destination node  ID
 Host,string,Destination host name
 Clock,uint64,Destination logical clock
-Category,byte,Message category
-Type,byte,Message type
+Message Type,byte,Message type
+Event Type,byte,Event type
 Object,[]byte,Message object (CBOR)
