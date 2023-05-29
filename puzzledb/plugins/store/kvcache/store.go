@@ -12,18 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cache
+package kvcache
 
 import (
-	"testing"
-
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
-	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 )
 
-func TestStore(t *testing.T) {
-	store := NewStoreWith(memdb.NewStore())
-	store.SetKeyCoder(tuple.NewCoder())
-	kv.StoreTest(t, store)
+// Store represents a cache store service instance.
+type Store struct {
+	kv.Service
+}
+
+// NewStore returns a new FoundationDB store instance.
+func NewStore() kv.Service {
+	return NewStoreWith(nil)
+}
+
+// NewStoreWith returns a new FoundationDB store instance with the specified key coder.
+func NewStoreWith(service kv.Service) kv.Service {
+	return &Store{
+		Service: service,
+	}
 }
