@@ -22,18 +22,18 @@ import (
 
 // MessageObject represents a message object.
 type MessageObject struct {
-	ID    uuid.UUID
-	Host  string
-	Clock uint64
-	Type  byte
-	Bytes []byte
+	ID     uuid.UUID
+	Host   string
+	Clock  uint64
+	Type   byte
+	Object []byte
 }
 
 // NewMessageWith returns a new message with the specified message object.
 func NewMessageWith(key coordinator.Key, obj *MessageObject) coordinator.Message {
 	msg := coordinator.NewMessageWith(
 		coordinator.MessageType(obj.Type),
-		coordinator.NewObjectWith(key, obj.Bytes))
+		coordinator.NewObjectWith(key, obj.Object))
 	msg.From().SetHost(obj.Host)
 	msg.From().SetClock(obj.Clock)
 	return msg
@@ -52,21 +52,21 @@ func NewMessageKeyWith(msg coordinator.Message, clock cluster.Clock) coordinator
 // NewMessageObject returns a new empty message.
 func NewMessageObject() *MessageObject {
 	return &MessageObject{
-		ID:    uuid.Nil,
-		Host:  "",
-		Clock: 0,
-		Type:  0,
-		Bytes: nil,
+		ID:     uuid.Nil,
+		Host:   "",
+		Clock:  0,
+		Type:   0,
+		Object: nil,
 	}
 }
 
 // NewMessageObjectWith returns a new message value with the specified message.
 func NewMessageObjectWith(msg coordinator.Message, node cluster.Node, clock cluster.Clock) (*MessageObject, error) {
 	return &MessageObject{
-		ID:    node.ID(),
-		Host:  node.Host(),
-		Clock: uint64(clock),
-		Type:  byte(msg.Type()),
-		Bytes: msg.Object().Bytes(),
+		ID:     node.ID(),
+		Host:   node.Host(),
+		Clock:  uint64(clock),
+		Type:   byte(msg.Type()),
+		Object: msg.Object().Bytes(),
 	}, nil
 }
