@@ -14,8 +14,8 @@ Coder,Document,Document coder services,CBOR,O,-
 Store,Document,Doument store services,Key-value based store,O,"Store (Key-value), Coder (Document), Coder (Key)"
 ,Key-value,Key-value store services,memdb,X,"Coder (Document), Coder (Key)"
 ,,,FoundationDB,O,"Coder (Document), Coder (Key)"
-,,,Key-value Cahche (Planning),O,"Store (Key-value), Coordinator"
 ,,,TiKV (Planning),O,-
+,Key-Value Cache,Key-value cache store services,Ristretto,O,Store (Key-value)
 Tracer,-,Distributed tracing services,OpenTelemetry,O,
 ,,,OpenTracing,O,
 Metric,-,Metrics services,Prometheus,O,
