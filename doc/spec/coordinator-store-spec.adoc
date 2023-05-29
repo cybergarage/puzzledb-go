@@ -36,7 +36,7 @@ The coordinator service defines standard message objects for communication betwe
 include::csv/coodinator-message-object.csv[]
 |====
 
-The coordinator service defines standard message category and type for communication between PuzzleDB nodes. The standard message category and type are defined as follows:
+The coordinator service defines standard message category and type ot the message objects too. The standard message category and type are defined as follows:
 
 [format="csv", options="header, autowidth"]
 |====

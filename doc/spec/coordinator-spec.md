@@ -89,18 +89,18 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>State</p></td>
-<td style="text-align: left;"><p>Header (S)</p></td>
-<td style="text-align: left;"><p>State Type</p></td>
-<td style="text-align: left;"><p>(Key)</p></td>
-<td style="text-align: left;"><p>CBOR (State)</p></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><p>Message</p></td>
 <td style="text-align: left;"><p>Header (M)</p></td>
 <td style="text-align: left;"><p>Logical Clock</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Message)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>State</p></td>
+<td style="text-align: left;"><p>Header (S)</p></td>
+<td style="text-align: left;"><p>State Type</p></td>
+<td style="text-align: left;"><p>(Key)</p></td>
+<td style="text-align: left;"><p>CBOR (State)</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Job</p></td>
@@ -155,9 +155,109 @@ The key header is a 2-byte header that is prepended to every key in the key-valu
 
 The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
 
+## Message Objects
+
+The coordinator service defines standard message objects for communication between PuzzleDB nodes. The standard message object is defined as follows:
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>ID</p></td>
+<td style="text-align: left;"><p>UUID</p></td>
+<td style="text-align: left;"><p>Destination node ID</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Host</p></td>
+<td style="text-align: left;"><p>string</p></td>
+<td style="text-align: left;"><p>Destination host name</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Clock</p></td>
+<td style="text-align: left;"><p>uint64</p></td>
+<td style="text-align: left;"><p>Destination logical clock</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Category</p></td>
+<td style="text-align: left;"><p>byte</p></td>
+<td style="text-align: left;"><p>Message category</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Type</p></td>
+<td style="text-align: left;"><p>byte</p></td>
+<td style="text-align: left;"><p>Message type</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Object</p></td>
+<td style="text-align: left;"><p>[]byte</p></td>
+<td style="text-align: left;"><p>Message object (CBOR)</p></td>
+</tr>
+</tbody>
+</table>
+
+The coordinator service defines standard message category and type ot the message objects too. The standard message category and type are defined as follows:
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Occurrence Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>Object (O)</p></td>
+<td style="text-align: left;"><p>Created ©</p></td>
+<td style="text-align: left;"><p>Object created</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Update (U)</p></td>
+<td style="text-align: left;"><p>Object updated</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Delete (D)</p></td>
+<td style="text-align: left;"><p>Object deleted</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Schema (S)</p></td>
+<td style="text-align: left;"><p>Created ©</p></td>
+<td style="text-align: left;"><p>Schema created</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Update (U)</p></td>
+<td style="text-align: left;"><p>Shcema updated</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Delete (D)</p></td>
+<td style="text-align: left;"><p>Schema deleted</p></td>
+</tr>
+</tbody>
+</table>
+
 ## State Objects
 
-The coordinator service maintains a set of state objects to manage the state of the coordinator service. The state objects are defined as follows:
+The coordinator service defines standard state objects to share state among the PuzzleDB nodes. The standard state object is defined as follows:
 
 <table style="width:100%;">
 <colgroup>
@@ -188,12 +288,12 @@ The coordinator service maintains a set of state objects to manage the state of 
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>Process</p></td>
+<td style="text-align: left;"><p>Node</p></td>
 <td style="text-align: left;"><p>Header (S)</p></td>
-<td style="text-align: left;"><p>State Type (P)</p></td>
+<td style="text-align: left;"><p>State Type (N)</p></td>
 <td style="text-align: left;"><p>Cluster ID</p></td>
-<td style="text-align: left;"><p>Process ID</p></td>
-<td style="text-align: left;"><p>CBOR (State)</p></td>
+<td style="text-align: left;"><p>Node ID</p></td>
+<td style="text-align: left;"><p>CBOR (Node Object)</p></td>
 </tr>
 </tbody>
 </table>

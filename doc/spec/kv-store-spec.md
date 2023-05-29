@@ -32,18 +32,18 @@ Since both services may use the same key-value store implementation, the key-val
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>State</p></td>
-<td style="text-align: left;"><p>Header (S)</p></td>
-<td style="text-align: left;"><p>State Type</p></td>
-<td style="text-align: left;"><p>(Key)</p></td>
-<td style="text-align: left;"><p>CBOR (State)</p></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><p>Message</p></td>
 <td style="text-align: left;"><p>Header (M)</p></td>
 <td style="text-align: left;"><p>Logical Clock</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Message)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>State</p></td>
+<td style="text-align: left;"><p>Header (S)</p></td>
+<td style="text-align: left;"><p>State Type</p></td>
+<td style="text-align: left;"><p>(Key)</p></td>
+<td style="text-align: left;"><p>CBOR (State)</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Job</p></td>
