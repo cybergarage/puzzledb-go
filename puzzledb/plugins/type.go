@@ -35,12 +35,14 @@ const (
 	StoreDocumentService ServiceType = 0x05 | ExclusiveServiceType
 	// StoreKvService represents a key-value store service.
 	StoreKvService ServiceType = 0x06 | ExclusiveServiceType
+	// StoreKvCacheService represents a key-value cache store service.
+	StoreKvCacheService ServiceType = 0x07 | ExclusiveServiceType
 	// CoordinatorService represents a coordinator service.
-	CoordinatorService ServiceType = 0x07 | ExclusiveServiceType
+	CoordinatorService ServiceType = 0x08 | ExclusiveServiceType
 	// TracingService represents a distributed tracing service.
-	TracingService ServiceType = 0x08 | ExclusiveServiceType
+	TracingService ServiceType = 0x09 | ExclusiveServiceType
 	// MetricsService represents a metrics service.
-	MetricsService ServiceType = 0x09
+	MetricsService ServiceType = 0x0A
 	// ExtendService represents an uncategorized service.
 	ExtendService ServiceType = 0x0F
 )
@@ -54,6 +56,7 @@ func ServiceTypes() []ServiceType {
 		QueryService,
 		StoreDocumentService,
 		StoreKvService,
+		StoreKvCacheService,
 		CoordinatorService,
 		TracingService,
 		MetricsService,
@@ -81,6 +84,8 @@ func (t ServiceType) String() string {
 		return "store.document"
 	case StoreKvService:
 		return "store.kv"
+	case StoreKvCacheService:
+		return "store.kv.cache"
 	case CoordinatorService:
 		return "coordinator"
 	case TracingService:
