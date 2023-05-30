@@ -24,6 +24,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer"
 )
 
@@ -91,6 +92,16 @@ func (mgr *PluginManager) KvStoreServices() []kv.Service {
 	services := []kv.Service{}
 	for _, service := range mgr.ServicesByType(plugins.StoreKvService) {
 		if s, ok := service.(kv.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+func (mgr *PluginManager) KvCacheStoreServices() []kvcache.Service {
+	services := []kvcache.Service{}
+	for _, service := range mgr.ServicesByType(plugins.StoreKvCacheService) {
+		if s, ok := service.(kvcache.Service); ok {
 			services = append(services, s)
 		}
 	}
@@ -171,6 +182,18 @@ func (mgr *PluginManager) DefaultKvStoreService() (kv.Service, error) {
 	service, ok := defaultService.(kv.Service)
 	if !ok {
 		return nil, plugins.NewErrDefaultServiceNotFound(plugins.StoreKvService)
+	}
+	return service, nil
+}
+
+func (mgr *PluginManager) DefaultKvCacheStoreService() (kvcache.Service, error) {
+	defaultService, err := mgr.DefaultService(plugins.StoreKvCacheService)
+	if err != nil {
+		return nil, errors.Wrap(err)
+	}
+	service, ok := defaultService.(kvcache.Service)
+	if !ok {
+		return nil, plugins.NewErrDefaultServiceNotFound(plugins.StoreKvCacheService)
 	}
 	return service, nil
 }
