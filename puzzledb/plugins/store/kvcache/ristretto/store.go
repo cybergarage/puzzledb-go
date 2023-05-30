@@ -35,11 +35,13 @@ func NewStore() kv.Service {
 
 // NewStoreWith returns a new FoundationDB store instance with the specified key coder.
 func NewStoreWith(service kv.Service) kv.Service {
-	return &Store{
+	store := &Store{
 		BaseStore: kvcache.NewBaseStore(),
 		Service:   service,
 		Cache:     nil,
 	}
+	store.SetStore(store)
+	return store
 }
 
 // ServiceType returns the plug-in service type.
@@ -52,8 +54,54 @@ func (store *Store) ServiceName() string {
 	return "ristretto"
 }
 
+func (store *Store) GetNumCounters() (int64, error) {
+	v, err := store.GetServiceConfigInt(store, NumCounters)
+	if err != nil {
+		return DefaultNumCounters, err
+	}
+	return int64(v), err
+}
+
+func (store *Store) GetMaxCost() (int64, error) {
+	v, err := store.GetServiceConfigInt(store, MaxCost)
+	if err != nil {
+		return DefaultMaxCost, err
+	}
+	return int64(v), err
+}
+
+func (store *Store) GeBufferItems() (int64, error) {
+	v, err := store.GetServiceConfigInt(store, BufferItems)
+	if err != nil {
+		return DefaultBufferItems, err
+	}
+	return int64(v), err
+}
+
 // Start starts the ristretto store.
 func (store *Store) Start() error {
+	numCounters, err := store.GetNumCounters()
+	if err != nil {
+		return err
+	}
+	maxCost, err := store.GetMaxCost()
+	if err != nil {
+		return err
+	}
+	bufferItems, err := store.GeBufferItems()
+	if err != nil {
+		return err
+	}
+	conf := &ristretto.Config{
+		NumCounters: numCounters,
+		MaxCost:     maxCost,
+		BufferItems: bufferItems,
+	}
+	cache, err := ristretto.NewCache(conf)
+	if err != nil {
+		return err
+	}
+	store.Cache = cache
 	return nil
 }
 
