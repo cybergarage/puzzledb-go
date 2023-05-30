@@ -22,20 +22,26 @@ import (
 // Store represents a key-value cache store interface.
 type Store interface {
 	kv.Store
-	plugins.Service
-	// SetStore sets the key-value store.
 	SetStore(s kv.Store)
+}
+
+// Service represents a key-value cache store service interface.
+type Service interface {
+	Store
+	plugins.Service
 }
 
 // BaseStore represents a cache store service instance.
 type BaseStore struct {
+	plugins.Config
 	kv.Store
 }
 
 // NewStore returns a new FoundationDB store instance.
 func NewBaseStore() *BaseStore {
 	return &BaseStore{
-		Store: nil,
+		Config: plugins.NewConfig(),
+		Store:  nil,
 	}
 }
 
