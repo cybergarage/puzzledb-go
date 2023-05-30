@@ -15,22 +15,33 @@
 package kvcache
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-// Store represents a cache store service instance.
-type Store struct {
-	kv.Service
+// Store represents a key-value cache store interface.
+type Store interface {
+	// SetStore sets the key-value store.
+	SetStore(s kv.Store)
+}
+
+// BaseStore represents a cache store service instance.
+type BaseStore struct {
+	store kv.Store
 }
 
 // NewStore returns a new FoundationDB store instance.
-func NewStore() kv.Service {
-	return NewStoreWith(nil)
+func NewBaseStore() *BaseStore {
+	return &BaseStore{
+		store: nil,
+	}
 }
 
-// NewStoreWith returns a new FoundationDB store instance with the specified key coder.
-func NewStoreWith(service kv.Service) kv.Service {
-	return &Store{
-		Service: service,
-	}
+// SetStore sets the key-value store service.
+func (store *BaseStore) SetStore(s kv.Store) {
+	store.store = s
+}
+
+// Store returns the key-value store.
+func (store *BaseStore) Store() kv.Store {
+	return store.store
 }
