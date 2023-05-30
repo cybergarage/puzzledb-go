@@ -37,3 +37,8 @@ func NewStoreWith(service kv.Service) kv.Service {
 		Cache:   nil,
 	}
 }
+
+// ServiceName returns the plug-in service name.
+func (store *Store) ServiceName() string {
+	return "ristretto"
+}
