@@ -35,7 +35,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache/ristretto"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/system/actor"
 	opentracing "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer/ot"
 	opentelemetry "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer/otel"
@@ -95,7 +94,7 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		store.NewStore(),
 		fdb.NewStore(),
 		memdb.NewStore(),
-		ristretto.NewStore(),
+		// ristretto.NewStore(),
 		coordinator.NewServiceWith(etcd_coordinator.NewCoordinator()),
 		coordinator.NewServiceWith(memdb_coordinator.NewCoordinator()),
 		coordinator.NewServiceWith(fdb_coordinator.NewCoordinator()),
