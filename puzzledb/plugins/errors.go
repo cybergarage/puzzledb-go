@@ -17,6 +17,7 @@ package plugins
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 var ErrNotFound = errors.New("not found")
@@ -37,6 +38,15 @@ func NewErrDisabled(target string) error {
 
 func NewErrServiceNotFound(t ServiceType) error {
 	return NewErrInvalid(t.String())
+}
+
+func NewErrCounfigNotFound(s any) error {
+	switch v := s.(type) {
+	case []string:
+		return NewErrNotFound(fmt.Sprintf("config (%s)", strings.Join(v, ".")))
+	default:
+		return NewErrNotFound(fmt.Sprintf("config (%v)", v))
+	}
 }
 
 func NewErrDefaultServiceNotFound(t ServiceType) error {

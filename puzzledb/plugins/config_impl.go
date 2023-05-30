@@ -57,22 +57,29 @@ func newServiceConfigPath(service Service, paths ...string) []string {
 
 // GetServiceConfig returns a value for the specified name in the service.
 func (conf *configImpl) GetServiceConfig(service Service, paths ...string) (any, error) {
-	return conf.GetConfig(newServiceConfigPath(service, paths...)...)
+	path := newServiceConfigPath(service, paths...)
+	if conf == nil {
+		return nil, NewErrCounfigNotFound(path)
+	}
+	return conf.GetConfig(path...)
 }
 
 // GetServiceConfigString returns a string value for the specified name in the service.
 func (conf *configImpl) GetServiceConfigString(service Service, paths ...string) (string, error) {
-	return conf.GetConfigString(newServiceConfigPath(service, paths...)...)
+	path := newServiceConfigPath(service, paths...)
+	return conf.GetConfigString(path...)
 }
 
 // GetServiceConfigInt returns an integer value for the specified name in the service.
 func (conf *configImpl) GetServiceConfigInt(service Service, paths ...string) (int, error) {
-	return conf.GetConfigInt(newServiceConfigPath(service, paths...)...)
+	path := newServiceConfigPath(service, paths...)
+	return conf.GetConfigInt(path...)
 }
 
 // GetServiceConfigBool returns a boolean value for the specified name in the service.
 func (conf *configImpl) GetServiceConfigBool(service Service, paths ...string) (bool, error) {
-	return conf.GetConfigBool(newServiceConfigPath(service, paths...)...)
+	path := newServiceConfigPath(service, paths...)
+	return conf.GetConfigBool(path...)
 }
 
 // IsServiceEnabled returns true if the service is enabled.
