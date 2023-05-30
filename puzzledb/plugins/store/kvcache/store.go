@@ -43,3 +43,8 @@ func NewBaseStore() *BaseStore {
 func (store *BaseStore) SetStore(s kv.Store) {
 	store.Store = s
 }
+
+// ServiceType returns the plug-in service type.
+func (store *BaseStore) ServiceType() plugins.ServiceType {
+	return plugins.StoreKvCacheService
+}
