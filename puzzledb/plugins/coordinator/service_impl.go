@@ -161,7 +161,7 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 	}
 
 	for _, msg := range msgs {
-		log.Infof("Received message: %s %s (%d)", msg.From().Host(), msg.EventType().String(), msg.Clock())
+		log.Infof("RECV message: %s %s (%d)", msg.From().Host(), msg.EventType().String(), msg.Clock())
 		coord.nofityMessage(msg)
 	}
 
@@ -212,6 +212,8 @@ func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinat
 	if err != nil {
 		return err
 	}
+
+	log.Infof("SEND message: %s %s (%d)", obj.Host, msg.EventType().String(), obj.Clock)
 
 	err = txn.Set(coordinator.NewObjectWith(key, objBytes))
 	if err != nil {
