@@ -24,7 +24,7 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	prefixes := []any{
+	prefixes := []kv.KeyHeader{
 		kv.DatabaseKeyHeader,
 		kv.CollectionKeyHeader,
 	}
@@ -32,16 +32,17 @@ func TestConfig(t *testing.T) {
 	conf := kvcache.NewCacheConfig()
 
 	for _, prefix := range prefixes {
-		conf.RegisterCacheKeyPrefix(prefix)
+		conf.RegisterCacheKeyHeader(prefix)
 	}
 
 	testKeys := []kv.Key{
+		kv.NewKeyWith(kv.DatabaseKeyHeader, document.NewKey()),
 		kv.NewKeyWith(kv.DatabaseKeyHeader, document.NewKey()),
 	}
 
 	for _, testKey := range testKeys {
 		if !conf.IsRegisteredCacheKey(testKey) {
-			t.Errorf("The key (%s) must be cached", testKey)
+			t.Errorf("The key (%s) must be cached", testKey.String())
 		}
 	}
 }
