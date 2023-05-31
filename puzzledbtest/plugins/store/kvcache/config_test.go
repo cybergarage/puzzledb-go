@@ -45,4 +45,16 @@ func TestConfig(t *testing.T) {
 			t.Errorf("The key (%s) must be cached", testKey.String())
 		}
 	}
+
+	testKeys = []kv.Key{
+		kv.NewKeyWith(kv.DocumentKeyHeader, document.NewKey()),
+		kv.NewKeyWith(kv.PrimaryIndexHeader, document.NewKey()),
+		kv.NewKeyWith(kv.SecondaryIndexHeader, document.NewKey()),
+	}
+
+	for _, testKey := range testKeys {
+		if conf.IsRegisteredCacheKey(testKey) {
+			t.Errorf("The key (%s) must not be cached", testKey.String())
+		}
+	}
 }
