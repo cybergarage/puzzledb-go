@@ -49,7 +49,7 @@ func (s *Store) String() string {
 
 	keys := []kv.Key{
 		kv.NewKeyWith(kv.DatabaseKeyHeader, kv.Key{}),
-		kv.NewKeyWith(kv.SchemaKeyHeader, kv.Key{}),
+		kv.NewKeyWith(kv.CollectionKeyHeader, kv.Key{}),
 		kv.NewKeyWith(kv.PrimaryIndexHeader, kv.Key{}),
 		kv.NewKeyWith(kv.SecondaryIndexHeader, kv.Key{}),
 		kv.NewKeyWith(kv.DocumentKeyHeader, kv.Key{}),
