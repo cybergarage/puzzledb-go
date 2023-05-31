@@ -25,7 +25,7 @@ import (
 
 func (txn *transaction) createSchemaKey(schema string) store.Key {
 	colKey := document.NewKeyWith(txn.Database().Name(), schema)
-	return kv.NewKeyWith(kv.SchemaKeyHeader, colKey)
+	return kv.NewKeyWith(kv.CollectionKeyHeader, colKey)
 }
 
 // CreateCollection creates a new schema.
@@ -81,6 +81,6 @@ func (txn *transaction) TruncateCollections(ctx context.Context) error {
 	ctx.StartSpan("TruncateCollections")
 	defer ctx.FinishSpan()
 
-	kvSchemaKey := kv.NewKeyWith(kv.SchemaKeyHeader, document.NewKeyWith(txn.Database().Name()))
+	kvSchemaKey := kv.NewKeyWith(kv.CollectionKeyHeader, document.NewKeyWith(txn.Database().Name()))
 	return txn.kv.RemoveRange(kvSchemaKey)
 }
