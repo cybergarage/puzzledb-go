@@ -19,15 +19,15 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-// Store represents a key-value cache store interface.
-type Store interface {
+// CacheStore represents a key-value cache store interface.
+type CacheStore interface {
 	kv.Store
 	SetStore(s kv.Store)
 }
 
 // Service represents a key-value cache store service interface.
 type Service interface {
-	Store
+	CacheStore
 	plugins.Service
 }
 
