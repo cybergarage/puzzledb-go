@@ -44,7 +44,7 @@ func (conf *CacheConfig) UnregisterCacheKeyPrefix(keyPrefix any) {
 
 // IsRegisteredCacheKey returns true if the specified key is registered to the cache store.
 func (conf *CacheConfig) IsRegisteredCacheKey(key kv.Key) bool {
-	if len(key) <= 0 {
+	if len(key) == 0 {
 		return false
 	}
 	_, ok := conf.keyPrefixMap.Load(key[0])
