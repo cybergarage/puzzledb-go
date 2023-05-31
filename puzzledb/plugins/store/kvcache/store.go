@@ -35,13 +35,15 @@ type Service interface {
 type BaseStore struct {
 	plugins.Config
 	kv.Store
+	*CacheConfig
 }
 
 // NewStore returns a new FoundationDB store instance.
 func NewBaseStore() *BaseStore {
 	return &BaseStore{
-		Config: plugins.NewConfig(),
-		Store:  nil,
+		Config:      plugins.NewConfig(),
+		Store:       nil,
+		CacheConfig: NewCacheConfig(),
 	}
 }
 
