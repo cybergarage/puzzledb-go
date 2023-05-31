@@ -16,25 +16,26 @@ package ristretto
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
+	pluginkv "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/dgraph-io/ristretto"
 )
 
 // Store represents a cache store service instance.
 type Store struct {
 	*kvcache.BaseStore
-	kv.Service
+	pluginkv.Service
 	Cache *ristretto.Cache
 }
 
 // NewStore returns a new FoundationDB store instance.
-func NewStore() kv.Service {
+func NewStore() pluginkv.Service {
 	return NewStoreWith(nil)
 }
 
 // NewStoreWith returns a new FoundationDB store instance with the specified key coder.
-func NewStoreWith(service kv.Service) kv.Service {
+func NewStoreWith(service pluginkv.Service) pluginkv.Service {
 	store := &Store{
 		BaseStore: kvcache.NewBaseStore(),
 		Service:   service,
@@ -84,6 +85,15 @@ func (store *Store) GeMetrics() (bool, error) {
 		return DefalutMetrics, nil //nolint: nilerr
 	}
 	return v, err
+}
+
+// Transact begin a new transaction.
+func (store *Store) Transact(write bool) (kv.Transaction, error) {
+	txn, err := store.Service.Transact(write)
+	if err != nil {
+		return nil, err
+	}
+	return NewTransaction(txn, store.CacheConfig), nil
 }
 
 // Start starts the ristretto store.
