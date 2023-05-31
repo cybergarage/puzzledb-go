@@ -14,11 +14,39 @@
 
 package kvcache
 
+import (
+	"sync"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+)
+
 // CacheConfig represents a key-value cache store configuration.
 type CacheConfig struct {
+	keyPrefixMap sync.Map
 }
 
 // NewCacheConfig returns a new key-value cache store configuration.
 func NewCacheConfig() *CacheConfig {
-	return &CacheConfig{}
+	return &CacheConfig{
+		keyPrefixMap: sync.Map{},
+	}
+}
+
+// RegisterCacheKeyPrefix registers a key prefix for the cache store.
+func (conf *CacheConfig) RegisterCacheKeyPrefix(keyPrefix any) {
+	conf.keyPrefixMap.Store(keyPrefix, true)
+}
+
+// UnregisterCacheKeyPrefix unregisters a key prefix for the cache store.
+func (conf *CacheConfig) UnregisterCacheKeyPrefix(keyPrefix any) {
+	conf.keyPrefixMap.Delete(keyPrefix)
+}
+
+// IsRegisteredCacheKey returns true if the specified key is registered to the cache store.
+func (conf *CacheConfig) IsRegisteredCacheKey(key kv.Key) bool {
+	if len(key) <= 0 {
+		return false
+	}
+	_, ok := conf.keyPrefixMap.Load(key[0])
+	return ok
 }
