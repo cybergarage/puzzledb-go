@@ -18,10 +18,12 @@ const (
 	NumCounters = "num_counters"
 	MaxCost     = "max_cost"
 	BufferItems = "buffer_items"
+	Metrics     = "metrics"
 )
 
 const (
 	DefaultNumCounters = 1000
 	DefaultMaxCost     = 1000000
 	DefaultBufferItems = 64
+	DefalutMetrics     = false
 )
