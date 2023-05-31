@@ -22,8 +22,10 @@ import (
 // CacheStore represents a key-value cache store interface.
 type CacheStore interface {
 	kv.Store
+	// SetStore sets a base key-value store.
 	SetStore(s kv.Store)
-	RegisterCacheKeyPrefix(keyPrefix any)
+	// RegisterCacheKeyPrefix registers a key header for the cache store.
+	RegisterCacheKeyHeader(header kv.KeyHeader)
 }
 
 // Service represents a key-value cache store service interface.
