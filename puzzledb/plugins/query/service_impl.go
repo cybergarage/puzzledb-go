@@ -68,8 +68,8 @@ func (service *BaseService) SetStore(store store.Store) {
 	if !ok {
 		return
 	}
-	cacheStore.RegisterCacheKeyPrefix(kv.DatabaseKeyHeader)
-	cacheStore.RegisterCacheKeyPrefix(kv.CollectionKeyHeader)
+	cacheStore.RegisterCacheKeyHeader(kv.DatabaseKeyHeader)
+	cacheStore.RegisterCacheKeyHeader(kv.CollectionKeyHeader)
 }
 
 // Store returns the store.
