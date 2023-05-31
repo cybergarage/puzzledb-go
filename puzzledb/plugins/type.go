@@ -85,7 +85,7 @@ func (t ServiceType) String() string {
 	case StoreKvService:
 		return "store.kv"
 	case StoreKvCacheService:
-		return "store.kv.cache"
+		return "store.kvcache"
 	case CoordinatorService:
 		return "coordinator"
 	case TracingService:
