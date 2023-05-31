@@ -23,6 +23,7 @@ import (
 type CacheStore interface {
 	kv.Store
 	SetStore(s kv.Store)
+	RegisterCacheKeyPrefix(keyPrefix any)
 }
 
 // Service represents a key-value cache store service interface.
