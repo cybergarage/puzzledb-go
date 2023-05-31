@@ -57,7 +57,7 @@ func (store *Store) ServiceName() string {
 func (store *Store) GetNumCounters() (int64, error) {
 	v, err := store.GetServiceConfigInt(store, NumCounters)
 	if err != nil {
-		return DefaultNumCounters, err
+		return DefaultNumCounters, nil
 	}
 	return int64(v), err
 }
@@ -65,7 +65,7 @@ func (store *Store) GetNumCounters() (int64, error) {
 func (store *Store) GetMaxCost() (int64, error) {
 	v, err := store.GetServiceConfigInt(store, MaxCost)
 	if err != nil {
-		return DefaultMaxCost, err
+		return DefaultMaxCost, nil
 	}
 	return int64(v), err
 }
@@ -73,7 +73,7 @@ func (store *Store) GetMaxCost() (int64, error) {
 func (store *Store) GeBufferItems() (int64, error) {
 	v, err := store.GetServiceConfigInt(store, BufferItems)
 	if err != nil {
-		return DefaultBufferItems, err
+		return DefaultBufferItems, nil
 	}
 	return int64(v), err
 }
