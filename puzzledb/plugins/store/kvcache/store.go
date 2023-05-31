@@ -30,29 +30,3 @@ type Service interface {
 	CacheStore
 	plugins.Service
 }
-
-// BaseStore represents a cache store service instance.
-type BaseStore struct {
-	plugins.Config
-	kv.Store
-	*CacheConfig
-}
-
-// NewStore returns a new FoundationDB store instance.
-func NewBaseStore() *BaseStore {
-	return &BaseStore{
-		Config:      plugins.NewConfig(),
-		Store:       nil,
-		CacheConfig: NewCacheConfig(),
-	}
-}
-
-// SetStore sets the key-value store service.
-func (store *BaseStore) SetStore(s kv.Store) {
-	store.Store = s
-}
-
-// ServiceType returns the plug-in service type.
-func (store *BaseStore) ServiceType() plugins.ServiceType {
-	return plugins.StoreKvCacheService
-}
