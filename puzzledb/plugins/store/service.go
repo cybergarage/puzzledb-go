@@ -16,10 +16,10 @@ package store
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// Service represents a document store service interface.
 type Service interface {
-	store.Store
+	DocumentStore
 	plugins.Service
 }
