@@ -57,7 +57,7 @@ func (store *Store) ServiceName() string {
 func (store *Store) GetNumCounters() (int64, error) {
 	v, err := store.GetServiceConfigInt(store, NumCounters)
 	if err != nil {
-		return DefaultNumCounters, nil
+		return DefaultNumCounters, nil //nolint: nilerr
 	}
 	return int64(v), err
 }
@@ -65,7 +65,7 @@ func (store *Store) GetNumCounters() (int64, error) {
 func (store *Store) GetMaxCost() (int64, error) {
 	v, err := store.GetServiceConfigInt(store, MaxCost)
 	if err != nil {
-		return DefaultMaxCost, nil
+		return DefaultMaxCost, nil //nolint: nilerr
 	}
 	return int64(v), err
 }
@@ -73,9 +73,17 @@ func (store *Store) GetMaxCost() (int64, error) {
 func (store *Store) GeBufferItems() (int64, error) {
 	v, err := store.GetServiceConfigInt(store, BufferItems)
 	if err != nil {
-		return DefaultBufferItems, nil
+		return DefaultBufferItems, nil //nolint: nilerr
 	}
 	return int64(v), err
+}
+
+func (store *Store) GeMetrics() (bool, error) {
+	v, err := store.GetServiceConfigBool(store, Metrics)
+	if err != nil {
+		return DefalutMetrics, nil //nolint: nilerr
+	}
+	return v, err
 }
 
 // Start starts the ristretto store.
@@ -92,10 +100,21 @@ func (store *Store) Start() error {
 	if err != nil {
 		return err
 	}
+	metrics, err := store.GeMetrics()
+	if err != nil {
+		return err
+	}
 	conf := &ristretto.Config{
-		NumCounters: numCounters,
-		MaxCost:     maxCost,
-		BufferItems: bufferItems,
+		NumCounters:        numCounters,
+		MaxCost:            maxCost,
+		BufferItems:        bufferItems,
+		Metrics:            metrics,
+		OnEvict:            nil,
+		OnReject:           nil,
+		OnExit:             nil,
+		KeyToHash:          nil,
+		Cost:               nil,
+		IgnoreInternalCost: false,
 	}
 	cache, err := ristretto.NewCache(conf)
 	if err != nil {
