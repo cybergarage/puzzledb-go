@@ -58,7 +58,7 @@ func newServiceConfigPath(service Service, paths ...string) []string {
 // GetServiceConfig returns a value for the specified name in the service.
 func (conf *configImpl) GetServiceConfig(service Service, paths ...string) (any, error) {
 	path := newServiceConfigPath(service, paths...)
-	if conf == nil {
+	if conf.Config == nil {
 		return nil, NewErrCounfigNotFound(path)
 	}
 	return conf.GetConfig(path...)
@@ -67,18 +67,27 @@ func (conf *configImpl) GetServiceConfig(service Service, paths ...string) (any,
 // GetServiceConfigString returns a string value for the specified name in the service.
 func (conf *configImpl) GetServiceConfigString(service Service, paths ...string) (string, error) {
 	path := newServiceConfigPath(service, paths...)
+	if conf.Config == nil {
+		return "", NewErrCounfigNotFound(path)
+	}
 	return conf.GetConfigString(path...)
 }
 
 // GetServiceConfigInt returns an integer value for the specified name in the service.
 func (conf *configImpl) GetServiceConfigInt(service Service, paths ...string) (int, error) {
 	path := newServiceConfigPath(service, paths...)
+	if conf.Config == nil {
+		return 0, NewErrCounfigNotFound(path)
+	}
 	return conf.GetConfigInt(path...)
 }
 
 // GetServiceConfigBool returns a boolean value for the specified name in the service.
 func (conf *configImpl) GetServiceConfigBool(service Service, paths ...string) (bool, error) {
 	path := newServiceConfigPath(service, paths...)
+	if conf.Config == nil {
+		return false, NewErrCounfigNotFound(path)
+	}
 	return conf.GetConfigBool(path...)
 }
 
