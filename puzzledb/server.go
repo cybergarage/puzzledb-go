@@ -177,6 +177,7 @@ func (server *Server) setupPlugins() error {
 
 	for _, service := range server.KvCacheStoreServices() {
 		service.SetStore(defaultKvStore)
+		service.SetKeyCoder(defaultKeyCoder)
 	}
 
 	defaultKvCacheStore, err := server.DefaultKvCacheStoreService()
