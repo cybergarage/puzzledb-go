@@ -15,6 +15,7 @@
 package kvcache
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -26,6 +27,8 @@ type CacheStore interface {
 	SetStore(s kv.Store)
 	// RegisterCacheKeyPrefix registers a key header for the cache store.
 	RegisterCacheKeyHeader(header kv.KeyHeader)
+	// SetKeyCoder sets the key coder.
+	SetKeyCoder(coder document.KeyCoder)
 }
 
 // Service represents a key-value cache store service interface.

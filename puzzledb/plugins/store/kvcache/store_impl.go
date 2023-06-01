@@ -15,6 +15,7 @@
 package kvcache
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -24,6 +25,7 @@ type BaseStore struct {
 	plugins.Config
 	kv.Store
 	*CacheConfig
+	document.KeyCoder
 }
 
 // NewStore returns a new FoundationDB store instance.
@@ -38,6 +40,11 @@ func NewBaseStore() *BaseStore {
 // SetStore sets the key-value store service.
 func (store *BaseStore) SetStore(s kv.Store) {
 	store.Store = s
+}
+
+// SetKeyCoder sets the key coder.
+func (store *BaseStore) SetKeyCoder(coder document.KeyCoder) {
+	store.KeyCoder = coder
 }
 
 // ServiceType returns the plug-in service type.
