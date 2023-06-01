@@ -126,7 +126,7 @@ For more information about the roadmap, please refer to [Roadmap](doc/roadmap.ad
 
     -   [Coordinator Specification](doc/spec/coordinator-spec.md)
 
-        -   [Coordinator Messaging Specification](doc/spec/coordinator-msg-spec.adoc)
+        -   [Coordinator Messaging Specification](doc/spec/coordinator-msg-spec.md)
 
         -   [Coordinator Key-Value Store Specification](doc/spec/coordinator-spec.md)
 
