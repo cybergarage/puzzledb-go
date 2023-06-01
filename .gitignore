@@ -21,3 +21,4 @@
 puzzledb-server
 doc/cmd/cli/puzzledb-cli-doc
 doc/cmd/server/puzzledb-server-doc
+puzzledb-cover.*
