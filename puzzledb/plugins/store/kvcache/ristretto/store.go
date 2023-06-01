@@ -96,6 +96,12 @@ func (store *Store) Transact(write bool) (kv.Transaction, error) {
 	return NewTransaction(txn, store.CacheConfig), nil
 }
 
+// DeleteCache deletes a cache for the specified key.
+func (store *Store) DeleteCache(key kv.Key) error {
+	store.Cache.Del(key)
+	return nil
+}
+
 // Start starts the ristretto store.
 func (store *Store) Start() error {
 	numCounters, err := store.GetNumCounters()

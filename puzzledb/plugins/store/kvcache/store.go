@@ -29,6 +29,8 @@ type CacheStore interface {
 	RegisterCacheKeyHeader(header kv.KeyHeader)
 	// SetKeyCoder sets the key coder.
 	SetKeyCoder(coder document.KeyCoder)
+	// DeleteCache deletes a cache for the specified key.
+	DeleteCache(key kv.Key) error
 }
 
 // Service represents a key-value cache store service interface.
