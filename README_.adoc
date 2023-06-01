@@ -77,7 +77,7 @@ For more information about the roadmap, please refer to link:doc/roadmap.adoc[Ro
 *** link:doc/plugin-tutorial.md[Building User Plug-ins]
 * Specification
 ** link:doc/spec/coordinator-spec.md[Coordinator Specification]
-*** link:doc/spec/coordinator-msg-spec.adoc[Coordinator Messaging Specification]
+*** link:doc/spec/coordinator-msg-spec.md[Coordinator Messaging Specification]
 *** link:doc/spec/coordinator-spec.md[Coordinator Key-Value Store Specification]
 ** Store Specification
 *** link:doc/spec/store-kv-spec.md[Store Key-Value Specification]
