@@ -19,6 +19,7 @@ PATH := $(GOBIN):$(PATH)
 
 PKG_NAME=puzzledb
 PKG_VER=$(shell git describe --abbrev=0 --tags)
+PKG_COVER=${PKG_NAME}-cover
 
 MODULE_ROOT=github.com/cybergarage/puzzledb-go
 PKG_ROOT=${MODULE_ROOT}/${PKG_NAME}
@@ -64,7 +65,8 @@ lint: format
 	golangci-lint run ${PKG_SRC_ROOT}/... ${TEST_SRC_ROOT}/...
 
 test: lint
-	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
+	go test -v -p 1 -cover -timeout 60s -coverprofile=${PKG_COVER}.out ${PKG}/... ${TEST_PKG}/...
+	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
 test_only:
 	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
