@@ -34,6 +34,7 @@ func NewBaseStore() *BaseStore {
 		Config:      plugins.NewConfig(),
 		Store:       nil,
 		CacheConfig: NewCacheConfig(),
+		KeyCoder:    nil,
 	}
 }
 
