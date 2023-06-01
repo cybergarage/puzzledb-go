@@ -69,7 +69,8 @@ test: lint
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
 test_only:
-	go test -v -p 1 -cover -timeout 60s ${PKG}/... ${TEST_PKG}/...
+	go test -v -p 1 -cover -timeout 60s -coverprofile=${PKG_COVER}.out ${PKG}/... ${TEST_PKG}/...
+	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
 image:
 	docker image build -t${BIN_SERVER_DOCKER_TAG} -t${BIN_SERVER_DOCKER_TAG_PRE} -t${BIN_SERVER_DOCKER_TAG_LATEST} .
