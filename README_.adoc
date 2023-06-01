@@ -4,6 +4,7 @@ image:https://img.shields.io/github/v/tag/cybergarage/puzzledb-go[GitHub tag (la
 https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml[image:https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg[Go]]
 https://pkg.go.dev/github.com/cybergarage/puzzledb-go[image:https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg[Go Reference]]
 https://goreportcard.com/report/github.com/cybergarage/puzzledb-go[image:https://img.shields.io/badge/go%20report-A%2B-brightgreen[Go Report Card]]
+https://codecov.io/gh/cybergarage/puzzledb-go[image:https://codecov.io/gh/cybergarage/puzzledb-go/branch/main/graph/badge.svg?token=C3Q82XPE44[codecov]]
 
 PuzzleDB aims to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version is developed in the Go language.
 

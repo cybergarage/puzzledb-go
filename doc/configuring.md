@@ -56,6 +56,7 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
             num_counters: 1000
             max_cost: 1000000
             buffer_items: 64 
+            metrics: false
       query:
         redis:
           enabled: true
