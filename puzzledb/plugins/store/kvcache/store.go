@@ -26,6 +26,8 @@ type CacheStore interface {
 	SetStore(s kv.Store)
 	// RegisterCacheKeyPrefix registers a key header for the cache store.
 	RegisterCacheKeyHeader(header kv.KeyHeader)
+	// IsRegisteredCacheKey returns true if the specified key is registered to the cache store.
+	IsRegisteredCacheKey(key kv.Key) bool
 	// DeleteCache deletes a cache for the specified key.
 	DeleteCache(key kv.Key) error
 }
