@@ -20,6 +20,7 @@ import (
 
 // Store represents a store interface.
 type Store interface {
+	document.KeyCoder
 	// SetKeyCoder sets the key coder.
 	SetKeyCoder(coder document.KeyCoder)
 	// Transact begin a new transaction.
