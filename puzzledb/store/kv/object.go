@@ -19,3 +19,12 @@ type Object struct {
 	Key   Key
 	Value []byte
 }
+
+// NewObject returns a new object.
+func NewObject(key Key, value []byte) *Object {
+	obj := &Object{
+		Key:   key,
+		Value: value,
+	}
+	return obj
+}
