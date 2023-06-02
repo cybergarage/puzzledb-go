@@ -15,30 +15,62 @@
 package ristretto
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 type Transaction struct {
 	kv.Transaction
-	*kvcache.CacheConfig
+	*Store
 }
 
-func NewTransaction(txn kv.Transaction, config *kvcache.CacheConfig) kv.Transaction {
+func NewTransaction(txn kv.Transaction, store *Store) kv.Transaction {
 	return &Transaction{
 		Transaction: txn,
-		CacheConfig: config,
+		Store:       store,
 	}
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
 func (txn *Transaction) Set(obj *kv.Object) error {
+	key := obj.Key
+	if txn.IsRegisteredCacheKey(key) {
+		err := txn.SetCache(obj)
+		if err != nil {
+			return err
+		}
+	}
 	return txn.Transaction.Set(obj)
 }
 
 // Get returns a key-value object of the specified key.
 func (txn *Transaction) Get(key kv.Key) (*kv.Object, error) {
-	return txn.Transaction.Get(key)
+	if txn.IsRegisteredCacheKey(key) {
+		kb, err := txn.EncodeKey(key)
+		if err != nil {
+			return nil, err
+		}
+		v, ok := txn.Cache.Get(kb)
+		if ok {
+			vb, ok := v.([]byte)
+			if !ok {
+				return kv.NewObject(key, vb), nil
+			}
+		}
+	}
+
+	obj, err := txn.Transaction.Get(key)
+	if err != nil {
+		return nil, err
+	}
+
+	if txn.IsRegisteredCacheKey(key) {
+		err := txn.SetCache(obj)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return obj, nil
 }
 
 // GetRange returns a result set of the specified key.
