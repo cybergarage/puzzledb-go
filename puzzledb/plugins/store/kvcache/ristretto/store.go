@@ -41,7 +41,7 @@ func NewStoreWith(service pluginkv.Service) pluginkv.Service {
 		Service:   service,
 		Cache:     nil,
 	}
-	store.SetStore(store)
+	store.BaseStore.SetStore(store)
 	return store
 }
 
@@ -93,12 +93,16 @@ func (store *Store) Transact(write bool) (kv.Transaction, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewTransaction(txn, store.CacheConfig), nil
+	return NewTransaction(txn, store), nil
 }
 
 // DeleteCache deletes a cache for the specified key.
 func (store *Store) DeleteCache(key kv.Key) error {
-	store.Cache.Del(key)
+	b, err := store.EncodeKey(key)
+	if err != nil {
+		return err
+	}
+	store.Cache.Del(b)
 	return nil
 }
 
