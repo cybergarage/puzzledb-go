@@ -54,6 +54,10 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 	return service.coordinator
 }
 
+// MessageReceived is called when a message is received from the coordinator.
+func (service *BaseService) MessageReceived(msg coordinator.Message) {
+}
+
 // SetStore sets the store.
 func (service *BaseService) SetStore(store store.Store) {
 	service.store = store
