@@ -203,6 +203,10 @@ func (server *Server) setupPlugins() error {
 		service.SetCoordinator(defaultCoodinator)
 		service.SetStore(defaultStore)
 		service.SetTracer(defaultTracer)
+		err := defaultCoodinator.AddObserver(service)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
