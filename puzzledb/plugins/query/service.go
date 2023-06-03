@@ -26,6 +26,8 @@ type Service interface {
 	plugins.Service
 	// SetCoordinator sets the coordinator.
 	SetCoordinator(coordinator coordinator.Coordinator)
+	// Observer is an interface to receive a message from the coordinator.
+	coordinator.Observer
 	// Coordinator returns the coordinator.
 	Coordinator() coordinator.Coordinator
 	// SetStore sets the store.
