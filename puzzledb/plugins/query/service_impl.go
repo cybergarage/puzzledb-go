@@ -54,8 +54,8 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 	return service.coordinator
 }
 
-// MessageReceived is called when a message is received from the coordinator.
-func (service *BaseService) MessageReceived(msg coordinator.Message) {
+// OnMessageReceived is called when a message is received from the coordinator.
+func (service *BaseService) OnMessageReceived(msg coordinator.Message) {
 }
 
 // SetStore sets the store.

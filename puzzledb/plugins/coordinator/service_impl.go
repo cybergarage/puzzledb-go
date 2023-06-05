@@ -115,7 +115,7 @@ func (coord *serviceImpl) GetStateObjects(t coordinator.StateType) (coordinator.
 // nofityMessage posts the specified message to the observers.
 func (coord *serviceImpl) nofityMessage(msg coordinator.Message) {
 	for _, observer := range coord.observers {
-		observer.MessageReceived(msg)
+		observer.OnMessageReceived(msg)
 	}
 }
 
