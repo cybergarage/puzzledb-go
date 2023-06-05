@@ -17,6 +17,8 @@ package puzzledb
 import (
 	"errors"
 	"fmt"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 var (
@@ -30,4 +32,8 @@ func newErrNotFound(target string) error {
 
 func newErrInvalid(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrInvalid)
+}
+
+func newErrInvalidService(s plugins.Service, t plugins.ServiceType) error {
+	return fmt.Errorf("%w %s service (%s)", ErrInvalid, t.String(), s.ServiceName())
 }
