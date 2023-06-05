@@ -153,9 +153,13 @@ func (server *Server) setupPlugins() error {
 
 	// Coordinator services
 
-	for _, service := range server.CoordinatorServices() {
-		service.SetNode(server.Node)
-		service.SetKeyCoder(defaultKeyCoder)
+	if services, err := server.CoordinatorServices(); err != nil {
+		return err
+	} else {
+		for _, service := range services {
+			service.SetNode(server.Node)
+			service.SetKeyCoder(defaultKeyCoder)
+		}
 	}
 
 	// Actor service
@@ -164,8 +168,12 @@ func (server *Server) setupPlugins() error {
 
 	// KV store services
 
-	for _, service := range server.KvStoreServices() {
-		service.SetKeyCoder(defaultKeyCoder)
+	if services, err := server.KvStoreServices(); err != nil {
+		return err
+	} else {
+		for _, service := range services {
+			service.SetKeyCoder(defaultKeyCoder)
+		}
 	}
 
 	defaultKvStore, err := server.DefaultKvStoreService()
@@ -175,9 +183,13 @@ func (server *Server) setupPlugins() error {
 
 	// KV cache store services
 
-	for _, service := range server.KvCacheStoreServices() {
-		service.SetStore(defaultKvStore)
-		service.SetKeyCoder(defaultKeyCoder)
+	if services, err := server.KvCacheStoreServices(); err != nil {
+		return err
+	} else {
+		for _, service := range services {
+			service.SetStore(defaultKvStore)
+			service.SetKeyCoder(defaultKeyCoder)
+		}
 	}
 
 	defaultKvCacheStore, err := server.DefaultKvCacheStoreService()
@@ -187,25 +199,33 @@ func (server *Server) setupPlugins() error {
 
 	// Document store services
 
-	for _, service := range server.DocumentStoreServices() {
-		service.SetKeyCoder(defaultKeyCoder)
-		service.SetDocumentCoder(defaultDocCoder)
-		store, ok := service.(*store.Store)
-		if !ok {
-			return plugins.NewErrInvalidService(service)
+	if services, err := server.DocumentStoreServices(); err != nil {
+		return err
+	} else {
+		for _, service := range services {
+			service.SetKeyCoder(defaultKeyCoder)
+			service.SetDocumentCoder(defaultDocCoder)
+			store, ok := service.(*store.Store)
+			if !ok {
+				return plugins.NewErrInvalidService(service)
+			}
+			store.SetKvStore(defaultKvStore)
 		}
-		store.SetKvStore(defaultKvStore)
 	}
 
 	// Query services
 
-	for _, service := range server.QueryServices() {
-		service.SetCoordinator(defaultCoodinator)
-		service.SetStore(defaultStore)
-		service.SetTracer(defaultTracer)
-		err := defaultCoodinator.AddObserver(service)
-		if err != nil {
-			return err
+	if services, err := server.QueryServices(); err != nil {
+		return err
+	} else {
+		for _, service := range services {
+			service.SetCoordinator(defaultCoodinator)
+			service.SetStore(defaultStore)
+			service.SetTracer(defaultTracer)
+			err := defaultCoodinator.AddObserver(service)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
