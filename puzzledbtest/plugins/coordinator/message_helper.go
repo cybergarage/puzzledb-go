@@ -36,7 +36,7 @@ func newTestObserver() *testObserver {
 	}
 }
 
-func (observer *testObserver) MessageReceived(msg coordinator.Message) {
+func (observer *testObserver) OnMessageReceived(msg coordinator.Message) {
 	observer.Lock()
 	defer observer.Unlock()
 	observer.receivedMsgs = append(observer.receivedMsgs, msg)

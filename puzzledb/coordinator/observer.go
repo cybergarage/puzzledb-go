@@ -16,6 +16,6 @@ package coordinator
 
 // Observer is an interface to receive a message.
 type Observer interface {
-	// MessageReceived is called when a message is received.
-	MessageReceived(msg Message)
+	// OnMessageReceived is called when a message is received.
+	OnMessageReceived(msg Message)
 }
