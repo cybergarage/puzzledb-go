@@ -48,94 +48,112 @@ func (mgr *PluginManager) RemoveDisabledServices(services []plugins.Service) []p
 	return enabledServices
 }
 
-func (mgr *PluginManager) KeyCoderServices() []key.Service {
+func (mgr *PluginManager) KeyCoderServices() ([]key.Service, error) {
 	services := []key.Service{}
 	for _, service := range mgr.ServicesByType(plugins.CoderKeyService) {
 		if s, ok := service.(key.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
-func (mgr *PluginManager) DocumentCoderServices() []document.Service {
+func (mgr *PluginManager) DocumentCoderServices() ([]document.Service, error) {
 	services := []document.Service{}
 	for _, service := range mgr.ServicesByType(plugins.CoderDocumentService) {
 		if s, ok := service.(document.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
-func (mgr *PluginManager) CoordinatorServices() []coordinator.Service {
+func (mgr *PluginManager) CoordinatorServices() ([]coordinator.Service, error) {
 	services := []coordinator.Service{}
 	for _, service := range mgr.ServicesByType(plugins.CoordinatorService) {
 		if s, ok := service.(coordinator.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
-func (mgr *PluginManager) DocumentStoreServices() []store.Service {
+func (mgr *PluginManager) DocumentStoreServices() ([]store.Service, error) {
 	services := []store.Service{}
 	for _, service := range mgr.ServicesByType(plugins.StoreDocumentService) {
 		if s, ok := service.(store.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
-func (mgr *PluginManager) KvStoreServices() []kv.Service {
+func (mgr *PluginManager) KvStoreServices() ([]kv.Service, error) {
 	services := []kv.Service{}
 	for _, service := range mgr.ServicesByType(plugins.StoreKvService) {
 		if s, ok := service.(kv.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
-func (mgr *PluginManager) KvCacheStoreServices() []kvcache.Service {
+func (mgr *PluginManager) KvCacheStoreServices() ([]kvcache.Service, error) {
 	services := []kvcache.Service{}
 	for _, service := range mgr.ServicesByType(plugins.StoreKvCacheService) {
 		if s, ok := service.(kvcache.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
-func (mgr *PluginManager) QueryServices() []query.Service {
+func (mgr *PluginManager) QueryServices() ([]query.Service, error) {
 	services := []query.Service{}
 	for _, service := range mgr.ServicesByType(plugins.QueryService) {
 		if s, ok := service.(query.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
-func (mgr *PluginManager) TracingServices() []tracer.Service {
+func (mgr *PluginManager) TracingServices() ([]tracer.Service, error) {
 	services := []tracer.Service{}
 	for _, service := range mgr.ServicesByType(plugins.TracingService) {
 		if s, ok := service.(tracer.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
-func (mgr *PluginManager) MetricsServices() []metrics.Service {
+func (mgr *PluginManager) MetricsServices() ([]metrics.Service, error) {
 	services := []metrics.Service{}
 	for _, service := range mgr.ServicesByType(plugins.MetricsService) {
 		if s, ok := service.(metrics.Service); ok {
 			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.CoderKeyService)
 		}
 	}
-	return services
+	return services, nil
 }
 
 func (mgr *PluginManager) DefaultCoordinatorService() (coordinator.Service, error) {
