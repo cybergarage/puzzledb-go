@@ -28,8 +28,8 @@ type CacheStore interface {
 	RegisterCacheKeyHeader(header kv.KeyHeader)
 	// IsRegisteredCacheKey returns true if the specified key is registered to the cache store.
 	IsRegisteredCacheKey(key kv.Key) bool
-	// DeleteCache deletes a cache for the specified key.
-	DeleteCache(key kv.Key) error
+	// EraseCache deletes a cache for the specified key.
+	EraseCache(key kv.Key) error
 }
 
 // Service represents a key-value cache store service interface.
