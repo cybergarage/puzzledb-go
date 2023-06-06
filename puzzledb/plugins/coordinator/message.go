@@ -15,6 +15,7 @@
 package coordinator
 
 import (
+	"github.com/cybergarage/go-cbor/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/google/uuid"
@@ -73,4 +74,14 @@ func NewMessageObjectWith(msg coordinator.Message, node cluster.Node, clock clus
 		Event:  byte(msg.EventType()),
 		Object: msg.Object().Bytes(),
 	}, nil
+}
+
+// Bytes returns the encoded object value.
+func (obj *MessageObject) Bytes() []byte {
+	return obj.Object
+}
+
+// Unmarshal unmarshals the object value to the specified object.
+func (obj *MessageObject) Unmarshal(to any) error {
+	return cbor.UnmarshalTo(obj.Object, to)
 }
