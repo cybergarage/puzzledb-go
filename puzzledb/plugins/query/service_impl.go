@@ -58,6 +58,14 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 
 // PostSchemaMessage posts a schema message to the coordinator.
 func (service *BaseService) PostSchemaMessage(key document.Key, e coordinator.EventType) error {
+	// schemaObj, err := NewSchemaMessageObjectWith(key)
+	// if err != nil {
+	// 	return err
+	// }
+	// obj, err := coordinator.NewMessageObjectFrom(schemaObj)
+	// if err != nil {
+	// 	return err
+	// }
 	msg := coordinator.NewMessageWith(
 		coordinator.SchemaMessage,
 		e,
