@@ -43,6 +43,18 @@ func (key Key) Len() int {
 	return len(key)
 }
 
+// Database returns the database name of the key.
+func (key Key) Database() (string, error) {
+	if key.Len() < 1 {
+		return "", newDatabaseKeyNotFoundError(key)
+	}
+	v, ok := key[0].(string)
+	if !ok {
+		return "", newDatabaseKeyNotFoundError(key)
+	}
+	return v, nil
+}
+
 // Equals returns true if the specified key is equal to the key.
 func (key Key) Equals(other Key) bool {
 	if len(key) != len(other) {
