@@ -23,6 +23,7 @@ var (
 	ErrNotSupported = errors.New("not supported")
 	ErrInvalid      = errors.New("invalid")
 	ErrNotExist     = errors.New("not exist")
+	ErrNotFound     = errors.New("not found")
 )
 
 func newNotSupportedError(target string) error {
@@ -51,4 +52,12 @@ func newPrimaryIndexNotExistErrorr() error {
 
 func newElementTypeInvalidError(v any) error {
 	return fmt.Errorf("element type (%s:%v) is %w", v, v, ErrInvalid)
+}
+
+func newDatabaseKeyNotFoundError(key Key) error {
+	return fmt.Errorf("database ken (%s) is %w", key.String(), ErrNotFound)
+}
+
+func newCollectionKeyNotFoundError(key Key) error {
+	return fmt.Errorf("collection ken (%s) is %w", key.String(), ErrNotFound)
 }
