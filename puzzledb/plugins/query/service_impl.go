@@ -15,7 +15,9 @@
 package query
 
 import (
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	docStore "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
@@ -54,8 +56,33 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 	return service.coordinator
 }
 
+// PostSchemaMessage posts a schema message to the coordinator.
+func (service *BaseService) PostSchemaMessage(key document.Key, e coordinator.EventType) error {
+	msg := coordinator.NewMessageWith(
+		coordinator.SchemaMessage,
+		e,
+		coordinator.NewObjectWith(key, []byte{}),
+	)
+	return service.coordinator.PostMessage(msg)
+}
+
 // OnMessageReceived is called when a message is received from the coordinator.
 func (service *BaseService) OnMessageReceived(msg coordinator.Message) {
+	msgObj := msg.Object()
+	switch msg.Type() { // nolint:gocritic, exhaustive
+	case coordinator.SchemaMessage:
+		switch msg.EventType() {
+		case coordinator.CreatedEvent:
+		case coordinator.UpdatedEvent, coordinator.DeletedEvent:
+			store := service.Store()
+			kvStore, ok := store.(kvcache.CacheStore)
+			if !ok {
+				if err := kvStore.EraseCache(msgObj.Key()); err != nil {
+					log.Error(err)
+				}
+			}
+		}
+	}
 }
 
 // SetStore sets the store.
