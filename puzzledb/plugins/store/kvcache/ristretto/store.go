@@ -109,8 +109,8 @@ func (store *Store) SetCache(obj *kv.Object) error {
 	return nil
 }
 
-// DeleteCache deletes a cache for the specified key.
-func (store *Store) DeleteCache(key kv.Key) error {
+// EraseCache deletes a cache for the specified key.
+func (store *Store) EraseCache(key kv.Key) error {
 	b, err := store.EncodeKey(key)
 	if err != nil {
 		return err
