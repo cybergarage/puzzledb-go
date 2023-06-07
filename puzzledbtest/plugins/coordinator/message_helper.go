@@ -29,11 +29,27 @@ type testObserver struct {
 	receivedMsgs []coordinator.Message
 }
 
+type testMessage struct {
+	Value int
+}
+
 func newTestObserver() *testObserver {
 	return &testObserver{
 		Mutex:        sync.Mutex{},
 		receivedMsgs: []coordinator.Message{},
 	}
+}
+
+func (observer *testObserver) TotalValue() int {
+	totalValue := 0
+	for _, msg := range observer.receivedMsgs {
+		var testObj testMessage
+		if err := msg.Unmarshal(&testObj); err != nil {
+			continue
+		}
+		totalValue += testObj.Value
+	}
+	return totalValue
 }
 
 func (observer *testObserver) OnMessageReceived(msg coordinator.Message) {
@@ -70,16 +86,21 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 	// Generates test messages
 
 	msgs := []coordinator.Message{}
+	expectedTotalMessageValue := 0
 	for n := 0; n < 10; n++ {
+		obj := &testMessage{
+			Value: n,
+		}
 		msg, err := coordinator.NewMessageWith(
 			coordinator.UserMessage,
 			coordinator.CreatedEvent,
-			n)
+			obj)
 		if err != nil {
 			t.Error(err)
 			return
 		}
 		msgs = append(msgs, msg)
+		expectedTotalMessageValue += obj.Value
 	}
 
 	// Posts test messages
@@ -119,6 +140,13 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 			t.Errorf("message (%v) is not received", msg.String())
 			return
 		}
+	}
+
+	// Checks the received message value
+
+	if observer.TotalValue() != expectedTotalMessageValue {
+		t.Errorf("the total value of received messages (%d) is not matched to the expected value (%d)", observer.TotalValue(), expectedTotalMessageValue)
+		return
 	}
 
 	// Checks the received messages order
