@@ -17,7 +17,6 @@ package query
 import (
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
-	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	docStore "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
@@ -55,11 +54,11 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 	return service.coordinator
 }
 
-// PostSchemaMessage posts a schema message to the coordinator.
-func (service *BaseService) PostSchemaMessage(key document.Key, e coordinator.EventType) error {
-	obj, err := NewSchemaMessageObjectWith(key)
-	if err != nil {
-		return err
+// PostCollectionMessage posts a schema message to the coordinator.
+func (service *BaseService) PostCollectionMessage(e coordinator.EventType, database string, collection string) error {
+	obj := &CollectionMessageObject{
+		Database:   database,
+		Collection: collection,
 	}
 	msg, err := coordinator.NewMessageWith(
 		coordinator.CollectionMessage,
