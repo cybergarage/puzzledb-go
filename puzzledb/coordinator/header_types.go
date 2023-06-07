@@ -23,9 +23,9 @@ const (
 )
 
 const (
-	StateObject   = HeaderType('S')
-	MessageObject = HeaderType('M')
-	JobObject     = HeaderType('J')
+	StateHeaderObject   = HeaderType('S')
+	MessageHeaderObject = HeaderType('M')
+	JobHeaderObject     = HeaderType('J')
 )
 
 const (
@@ -34,9 +34,9 @@ const (
 )
 
 var (
-	StateObjectKeyHeader   = [2]byte{byte(StateObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-	MessageObjectKeyHeader = [2]byte{byte(MessageObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-	JobObjectKeyHeader     = [2]byte{byte(JobObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+	StateObjectKeyHeader   = [2]byte{byte(StateHeaderObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+	MessageObjectKeyHeader = [2]byte{byte(MessageHeaderObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+	JobObjectKeyHeader     = [2]byte{byte(JobHeaderObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
 )
 
 func HeaderByteFromVersion(v Version) byte {
@@ -54,9 +54,9 @@ func TypeFromHeaderByte(b byte) byte {
 // GetAllHeaderTypes returns all header types.
 func GetAllHeaderTypes() []HeaderType {
 	return []HeaderType{
-		StateObject,
-		MessageObject,
-		JobObject,
+		StateHeaderObject,
+		MessageHeaderObject,
+		JobHeaderObject,
 	}
 }
 

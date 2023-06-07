@@ -18,22 +18,12 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 )
 
-// Message represents a  coordinator event.
-type Message interface {
-	// Clock returns the message clock.
-	Clock() cluster.Clock
-	// From returns the destination node of the message.
-	From() cluster.Node
-	// Type returns the message type.
-	Type() MessageType
-	// Event returns the message event type.
-	Event() EventType
-	// Object returns the object of the message.
-	Object() (any, error)
-	// Unmarshal unmarshals the object value to the specified object.
-	Unmarshal(to any) error
-	// Equals returns true if the message is equal to the specified event.
-	Equals(Message) bool
-	// String returns the string representation of the message.
-	String() string
+// NewMessageScanKey returns a new scan message key to get the latest message clock.
+func NewMessageScanKey() Key {
+	return NewKeyWith(MessageObjectKeyHeader[:])
+}
+
+// NewMessageKeyWith returns a new message key with the specified message.
+func NewMessageKeyWith(msg Message, clock cluster.Clock) Key {
+	return NewKeyWith(MessageObjectKeyHeader[:], clock)
 }
