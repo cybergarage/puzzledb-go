@@ -18,7 +18,6 @@ import (
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	docStore "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
@@ -58,14 +57,14 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 
 // PostSchemaMessage posts a schema message to the coordinator.
 func (service *BaseService) PostSchemaMessage(key document.Key, e coordinator.EventType) error {
-	schemaObj, err := NewSchemaMessageObjectWith(key)
+	obj, err := NewSchemaMessageObjectWith(key)
 	if err != nil {
 		return err
 	}
 	msg, err := coordinator.NewMessageWith(
 		coordinator.CollectionMessage,
 		e,
-		schemaObj,
+		obj,
 	)
 	if err != nil {
 		return err
@@ -82,18 +81,15 @@ func (service *BaseService) OnMessageReceived(msg coordinator.Message) {
 		if !ok {
 			return
 		}
-		var schemaObj SchemaMessageObject
-		if err := msg.UnmarshalTo(&schemaObj); err != nil {
+		var msgObj CollectionMessageObject
+		if err := msg.UnmarshalTo(&msgObj); err != nil {
 			log.Error(err)
 			return
 		}
 		switch msg.Event() {
 		case coordinator.CreatedEvent:
 		case coordinator.UpdatedEvent, coordinator.DeletedEvent:
-			key := kv.NewKeyWith(
-				kv.CollectionKeyHeader,
-				document.NewKeyWith(schemaObj.Database, schemaObj.Collection))
-			if err := kvStore.EraseCache(key); err != nil {
+			if err := kvStore.EraseCollectionCache(msgObj.Database, msgObj.Collection); err != nil {
 				log.Error(err)
 			}
 		}
