@@ -58,36 +58,43 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 
 // PostSchemaMessage posts a schema message to the coordinator.
 func (service *BaseService) PostSchemaMessage(key document.Key, e coordinator.EventType) error {
-	// schemaObj, err := NewSchemaMessageObjectWith(key)
-	// if err != nil {
-	// 	return err
-	// }
-	// obj, err := coordinator.NewMessageObjectFrom(schemaObj)
-	// if err != nil {
-	// 	return err
-	// }
-	msg := coordinator.NewMessageWith(
-		coordinator.SchemaMessage,
+	schemaObj, err := NewSchemaMessageObjectWith(key)
+	if err != nil {
+		return err
+	}
+	msg, err := coordinator.NewMessageWith(
+		coordinator.CollectionMessage,
 		e,
-		coordinator.NewObjectWith(key, []byte{}),
+		schemaObj,
 	)
+	if err != nil {
+		return err
+	}
 	return service.coordinator.PostMessage(msg)
 }
 
 // OnMessageReceived is called when a message is received from the coordinator.
 func (service *BaseService) OnMessageReceived(msg coordinator.Message) {
-	msgObj := msg.Object()
 	switch msg.Type() { // nolint:gocritic, exhaustive
-	case coordinator.SchemaMessage:
-		switch msg.EventType() {
+	case coordinator.CollectionMessage:
+		store := service.Store()
+		kvStore, ok := store.(kvcache.CacheStore)
+		if !ok {
+			return
+		}
+		var schemaObj SchemaMessageObject
+		if err := msg.Unmarshal(&schemaObj); err != nil {
+			log.Error(err)
+			return
+		}
+		switch msg.Event() {
 		case coordinator.CreatedEvent:
 		case coordinator.UpdatedEvent, coordinator.DeletedEvent:
-			store := service.Store()
-			kvStore, ok := store.(kvcache.CacheStore)
-			if !ok {
-				if err := kvStore.EraseCache(msgObj.Key()); err != nil {
-					log.Error(err)
-				}
+			key := kv.NewKeyWith(
+				kv.CollectionKeyHeader,
+				document.NewKeyWith(schemaObj.Database, schemaObj.Collection))
+			if err := kvStore.EraseCache(key); err != nil {
+				log.Error(err)
 			}
 		}
 	}
@@ -107,8 +114,8 @@ func (service *BaseService) SetStore(store store.Store) {
 	if !ok {
 		return
 	}
-	cacheStore.RegisterCacheKeyHeader(kv.DatabaseKeyHeader)
-	cacheStore.RegisterCacheKeyHeader(kv.CollectionKeyHeader)
+	cacheStore.EnableDatabaseCache()
+	cacheStore.EnableCollectionCache()
 }
 
 // Store returns the store.

@@ -15,6 +15,7 @@
 package ristretto
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	pluginkv "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
@@ -117,6 +118,16 @@ func (store *Store) EraseCache(key kv.Key) error {
 	}
 	store.Cache.Del(b)
 	return nil
+}
+
+// EraseDatabaseCache deletes a cache for the specified database.
+func (store *Store) EraseDatabaseCache(database string) error {
+	return store.EraseCache(kv.NewKeyWith(kv.DatabaseKeyHeader, document.NewKeyWith(database)))
+}
+
+// EraseCollectionCache deletes a cache for the specified collection.
+func (store *Store) EraseCollectionCache(database string, collection string) error {
+	return store.EraseCache(kv.NewKeyWith(kv.CollectionKeyHeader, document.NewKeyWith(database, collection)))
 }
 
 // Start starts the ristretto store.

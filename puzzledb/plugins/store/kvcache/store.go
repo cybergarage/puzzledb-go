@@ -19,8 +19,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-// CacheStore represents a key-value cache store interface.
-type CacheStore interface {
+// BaseCacheStore represents a base key-value cache store interface.
+type BaseCacheStore interface {
 	kv.Store
 	// SetStore sets a base key-value store.
 	SetStore(s kv.Store)
@@ -30,6 +30,19 @@ type CacheStore interface {
 	IsRegisteredCacheKey(key kv.Key) bool
 	// EraseCache deletes a cache for the specified key.
 	EraseCache(key kv.Key) error
+}
+
+// CacheStore represents a key-value cache store interface.
+type CacheStore interface {
+	BaseCacheStore
+	// EnableDatabaseCache enables a cache for all databases.
+	EnableDatabaseCache()
+	// EnableCollectionCache enables a cache for all database collections.
+	EnableCollectionCache()
+	// EraseDatabaseCache deletes a cache for the specified database.
+	EraseDatabaseCache(database string) error
+	// EraseCollectionCache deletes a cache for the specified collection.
+	EraseCollectionCache(database string, collection string) error
 }
 
 // Service represents a key-value cache store service interface.

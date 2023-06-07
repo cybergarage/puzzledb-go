@@ -55,3 +55,13 @@ func (conf *CacheConfig) IsRegisteredCacheKey(key kv.Key) bool {
 	_, ok = conf.keyPrefixMap[header[0]]
 	return ok
 }
+
+// EnableDatabaseCache enables a cache for all databases.
+func (conf *CacheConfig) EnableDatabaseCache() {
+	conf.RegisterCacheKeyHeader(kv.DatabaseKeyHeader)
+}
+
+// EnableCollectionCache enables a cache for all database collections.
+func (conf *CacheConfig) EnableCollectionCache() {
+	conf.RegisterCacheKeyHeader(kv.CollectionKeyHeader)
+}
