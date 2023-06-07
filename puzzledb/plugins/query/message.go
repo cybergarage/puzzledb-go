@@ -16,12 +16,12 @@ package query
 
 import "github.com/cybergarage/puzzledb-go/puzzledb/document"
 
-type SchemaMessageObject struct {
+type CollectionMessageObject struct {
 	Database   string
 	Collection string
 }
 
-func NewSchemaMessageObjectWith(key document.Key) (*SchemaMessageObject, error) {
+func NewSchemaMessageObjectWith(key document.Key) (*CollectionMessageObject, error) {
 	database, err := key.Database()
 	if err != nil {
 		return nil, err
@@ -30,7 +30,7 @@ func NewSchemaMessageObjectWith(key document.Key) (*SchemaMessageObject, error) 
 	if err != nil {
 		return nil, err
 	}
-	obj := &SchemaMessageObject{
+	obj := &CollectionMessageObject{
 		Database:   database,
 		Collection: collection,
 	}
