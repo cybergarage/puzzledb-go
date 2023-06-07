@@ -14,25 +14,7 @@
 
 package query
 
-import "github.com/cybergarage/puzzledb-go/puzzledb/document"
-
 type CollectionMessageObject struct {
 	Database   string
 	Collection string
-}
-
-func NewSchemaMessageObjectWith(key document.Key) (*CollectionMessageObject, error) {
-	database, err := key.Database()
-	if err != nil {
-		return nil, err
-	}
-	collection, err := key.Collection()
-	if err != nil {
-		return nil, err
-	}
-	obj := &CollectionMessageObject{
-		Database:   database,
-		Collection: collection,
-	}
-	return obj, nil
 }
