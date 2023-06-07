@@ -71,15 +71,14 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 
 	msgs := []coordinator.Message{}
 	for n := 0; n < 10; n++ {
-		obj, err := coordinator.NewObjectFrom(coordinator.NewKeyWith(n), n)
+		msg, err := coordinator.NewMessageWith(
+			coordinator.UserMessage,
+			coordinator.CreatedEvent,
+			n)
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		msg := coordinator.NewMessageWith(
-			coordinator.ObjectMessage,
-			coordinator.CreatedEvent,
-			obj)
 		msgs = append(msgs, msg)
 	}
 
@@ -117,7 +116,7 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 
 	for _, msg := range msgs {
 		if !observer.IsEventReceived(msg) {
-			t.Errorf("message (%v) is not received", msg.Object().Key())
+			t.Errorf("message (%v) is not received", msg.String())
 			return
 		}
 	}

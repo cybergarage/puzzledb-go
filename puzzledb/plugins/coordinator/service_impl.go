@@ -120,7 +120,7 @@ func (coord *serviceImpl) nofityMessage(msg coordinator.Message) {
 }
 
 func (coord *serviceImpl) getLatestMessages(txn coordinator.Transaction) (coordinator.ResultSet, error) {
-	key := NewMessageScanKey()
+	key := coordinator.NewMessageScanKey()
 	rs, err := txn.GetRange(
 		key,
 		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
@@ -137,7 +137,7 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 
 	msgs := []coordinator.Message{}
 	for rs.Next() {
-		msgObj := NewMessageObject()
+		msgObj := coordinator.NewMessageObject()
 		obj := rs.Object()
 		err = obj.Unmarshal(msgObj)
 		if err != nil {
@@ -145,23 +145,23 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 		}
 
 		// Skip the message if the message clock is older than the local clock
-		if 0 < cluster.CompareClocks(localClock, msgObj.Clock) {
+		if 0 < cluster.CompareClocks(localClock, msgObj.MsgClock) {
 			break
 		}
 
 		// Skip the self messages
-		if msgObj.Host == coord.Host() {
+		if msgObj.FromHost == coord.Host() {
 			continue
 		}
 
-		msg := NewMessageWith(obj.Key(), msgObj)
+		msg := coordinator.NewMessageFrom(msgObj)
 		msgs = append([]coordinator.Message{msg}, msgs...)
 
-		coord.SetReceivedClock(msgObj.Clock)
+		coord.SetReceivedClock(msgObj.MsgClock)
 	}
 
 	for _, msg := range msgs {
-		log.Infof("RECV message: %s %s (%d)", msg.From().Host(), msg.EventType().String(), msg.Clock())
+		log.Infof("RECV message: %s %s (%d)", msg.From().Host(), msg.Event().String(), msg.Clock())
 		coord.nofityMessage(msg)
 	}
 
@@ -178,14 +178,14 @@ func (coord *serviceImpl) getLatestMessageClock(txn coordinator.Transaction) (cl
 		return 0, nil
 	}
 
-	msgObj := NewMessageObject()
+	msgObj := coordinator.NewMessageObject()
 	obj := rs.Object()
 	err = obj.Unmarshal(msgObj)
 	if err != nil {
 		return 0, err
 	}
 
-	return msgObj.Clock, nil
+	return msgObj.MsgClock, nil
 }
 
 // PostMessage posts the specified message to the coordinator.
@@ -202,8 +202,7 @@ func (coord *serviceImpl) PostMessage(msg coordinator.Message) error {
 func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinator.Message) error {
 	localClock := coord.IncrementClock()
 
-	key := NewMessageKeyWith(msg, localClock)
-	obj, err := NewMessageObjectWith(msg, coord, localClock)
+	obj, err := coordinator.NewMessageObjectWith(msg, coord, localClock)
 	if err != nil {
 		return errors.Join(err, txn.Cancel())
 	}
@@ -213,8 +212,9 @@ func (coord *serviceImpl) postMessage(txn coordinator.Transaction, msg coordinat
 		return err
 	}
 
-	log.Infof("SEND message: %s %s (%d)", obj.Host, msg.EventType().String(), obj.Clock)
+	log.Infof("SEND message: %s %s (%d)", obj.FromHost, msg.Event().String(), obj.MsgClock)
 
+	key := coordinator.NewMessageKeyWith(msg, localClock)
 	err = txn.Set(coordinator.NewObjectWith(key, objBytes))
 	if err != nil {
 		return err

@@ -32,7 +32,7 @@ func TestKeyHeader(t *testing.T) {
 		{
 			header: StateObjectKeyHeader,
 			expected: expected{
-				tp:  StateObject,
+				tp:  StateHeaderObject,
 				ver: V1,
 				doc: CBOR,
 				idx: IndexType(0),
@@ -41,7 +41,7 @@ func TestKeyHeader(t *testing.T) {
 		{
 			header: MessageObjectKeyHeader,
 			expected: expected{
-				tp:  MessageObject,
+				tp:  MessageHeaderObject,
 				ver: V1,
 				doc: CBOR,
 				idx: IndexType(0),
