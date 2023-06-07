@@ -83,7 +83,7 @@ func (service *BaseService) OnMessageReceived(msg coordinator.Message) {
 			return
 		}
 		var schemaObj SchemaMessageObject
-		if err := msg.Unmarshal(&schemaObj); err != nil {
+		if err := msg.UnmarshalTo(&schemaObj); err != nil {
 			log.Error(err)
 			return
 		}

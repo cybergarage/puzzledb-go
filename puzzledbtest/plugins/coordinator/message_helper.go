@@ -44,7 +44,7 @@ func (observer *testObserver) TotalValue() int {
 	totalValue := 0
 	for _, msg := range observer.receivedMsgs {
 		var testObj testMessage
-		if err := msg.Unmarshal(&testObj); err != nil {
+		if err := msg.UnmarshalTo(&testObj); err != nil {
 			continue
 		}
 		totalValue += testObj.Value
