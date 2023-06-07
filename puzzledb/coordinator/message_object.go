@@ -123,8 +123,8 @@ func (obj *MessageObject) Object() (any, error) {
 	return cbor.Unmarshal(obj.EncBytes)
 }
 
-// Unmarshal unmarshals the object value to the specified object.
-func (obj *MessageObject) Unmarshal(to any) error {
+// UnmarshalTo unmarshals the object value to the specified object.
+func (obj *MessageObject) UnmarshalTo(to any) error {
 	return cbor.UnmarshalTo(obj.EncBytes, to)
 }
 
