@@ -54,6 +54,22 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 	return service.coordinator
 }
 
+// PostDatabaseMessage posts a schema message to the coordinator.
+func (service *BaseService) PostDatabaseMessage(e coordinator.EventType, database string) error {
+	obj := &DatabaseMessageObject{
+		Database: database,
+	}
+	msg, err := coordinator.NewMessageWith(
+		coordinator.DatabaseMessage,
+		e,
+		obj,
+	)
+	if err != nil {
+		return err
+	}
+	return service.coordinator.PostMessage(msg)
+}
+
 // PostCollectionMessage posts a schema message to the coordinator.
 func (service *BaseService) PostCollectionMessage(e coordinator.EventType, database string, collection string) error {
 	obj := &CollectionMessageObject{
@@ -73,21 +89,29 @@ func (service *BaseService) PostCollectionMessage(e coordinator.EventType, datab
 
 // OnMessageReceived is called when a message is received from the coordinator.
 func (service *BaseService) OnMessageReceived(msg coordinator.Message) {
-	switch msg.Type() { // nolint:gocritic, exhaustive
-	case coordinator.CollectionMessage:
+	switch msg.Event() { // nolint:exhaustive
+	case coordinator.UpdatedEvent, coordinator.DeletedEvent:
 		store := service.Store()
 		kvStore, ok := store.(kvcache.CacheStore)
 		if !ok {
 			return
 		}
-		var msgObj CollectionMessageObject
-		if err := msg.UnmarshalTo(&msgObj); err != nil {
-			log.Error(err)
-			return
-		}
-		switch msg.Event() {
-		case coordinator.CreatedEvent:
-		case coordinator.UpdatedEvent, coordinator.DeletedEvent:
+		switch msg.Type() { // nolint:gocritic, exhaustive
+		case coordinator.DatabaseMessage:
+			var msgObj DatabaseMessageObject
+			if err := msg.UnmarshalTo(&msgObj); err != nil {
+				log.Error(err)
+				return
+			}
+			if err := kvStore.EraseDatabaseCache(msgObj.Database); err != nil {
+				log.Error(err)
+			}
+		case coordinator.CollectionMessage:
+			var msgObj CollectionMessageObject
+			if err := msg.UnmarshalTo(&msgObj); err != nil {
+				log.Error(err)
+				return
+			}
 			if err := kvStore.EraseCollectionCache(msgObj.Database, msgObj.Collection); err != nil {
 				log.Error(err)
 			}
