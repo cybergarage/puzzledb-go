@@ -71,7 +71,7 @@ The key-value store is a collection of key-value records, where each record is a
 
 ## Key Header Specification
 
-The key header is a 2-byte header that is prepended to every key in the key-value store. The key header is defined as follows:
+The key header is a 2-byte header that is prepended to every key in the key-value store. The key header is reserved as follows:
 
 <table>
 <colgroup>
@@ -110,4 +110,4 @@ The key header is a 2-byte header that is prepended to every key in the key-valu
 </tbody>
 </table>
 
-The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is defined for each key type.
+The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is reserved for each key type.
