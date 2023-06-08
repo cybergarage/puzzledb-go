@@ -14,6 +14,10 @@
 
 package query
 
+type DatabaseMessageObject struct {
+	Database string
+}
+
 type CollectionMessageObject struct {
 	Database   string
 	Collection string
