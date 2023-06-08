@@ -19,7 +19,7 @@ Each plug-in service should implement the following `Service` interface, which i
 
 ## Standard Plug-in interfaces
 
-For the plugin services specified in the standards listed in the following table, refer to each plugin interface that is defined in the `plugins` directory.
+For the plugin services specified in the standards listed in the following table, refer to each plugin interface that is reserved in the `plugins` directory.
 
 <table style="width:100%;">
 <colgroup>

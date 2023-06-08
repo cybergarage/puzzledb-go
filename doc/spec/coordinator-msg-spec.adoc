@@ -2,17 +2,6 @@
 
 The message box is used to store messages sent between PuzzleDB nodes in the cluster to notify any node and store status changes using the message key-value store.
 
-=== Message Object
-
-The message object is encoded as a CBOR object and stored as the value of the message key-value record. The message objects are defined for each type of message, but all message objects have the following required fields.
-
-[format="csv", options="header, autowidth"]
-|====
-include::csv/coodinator-store-object.csv[]
-|====
-
-The type field is used to identify messages and the timestamp field is used to discard old messages.
-
 === Message Clock
 
 Logical clocks, such as the Lamport Clock, are important in distributed systems because they can order events across different nodes; in PuzzleDB, to manage the message clock for the coordinator service, the conceptual Lamport Clock algorithm:
@@ -24,3 +13,42 @@ In practice, the coordinator node acts as a virtual message relay node between P
 image:img/coordinator_message_clock.png[]
 
 When sending a message, a PuzzleDB node obtains the latest logical clock from the coordinator node and uses it to timestamp the message. When a PuzzleDB node receives or retrieves a message from a coordinator node, it updates its own logical clock with the logical clock included in the message.
+
+== Message Object
+
+The message object is encoded as a CBOR object and stored as the value of the message key-value record. 
+
+=== Message Object Header
+
+The message object has the following required header fields:
+
+[format="csv", options="header, autowidth"]
+|====
+include::csv/coodinator-store-object.csv[]
+|====
+
+The type field is used to identify messages and the timestamp field is used to discard old messages. 
+
+=== Message Object Value
+
+The message value object is encoded as a CBOR object and stored as the value of the message key-value record to the coordinator service. The message object has a message type, an event type and a CBOR encoded message object, and the standard message object is defined as follows:
+
+[format="csv", options="header, autowidth"]
+|====
+include::csv/coodinator-message-object.csv[]
+|====
+
+The message value object has a defined object for each type of message, and the object is stored as a simple byte sequence encoded in CBOR in the message value.
+
+=== Message Type and Event Type
+
+The message types and the event types are reserved as follows:
+
+[format="csv", options="header, autowidth"]
+|====
+include::csv/coodinator-message-objects.csv[]
+|====
+
+The object (O) message is notified when a store object is created, updated, or deleted in the coordinator store. The database (D) and collection (C) messages are notified by query services such as Redis, MySQL, and MongoDB.
+
+The user (U) message preserves only the message type, and the event type and message value object are defined by the user.

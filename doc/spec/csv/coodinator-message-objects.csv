@@ -1,7 +1,11 @@
-Message Type,Event Type,Occurrence Condition
-Object (O),Created (C),Object created
-,Update (U),Object updated
-,Delete (D),Object deleted
-Schema (S),Created (C),Schema created
-,Update (U),Shcema updated
-,Delete (D),Schema deleted
+Message Type,Event Type,Occurrence Condition,Note
+Object (O),Created (C),Object created,
+,Update (U),Object updated,
+,Delete (D),Object deleted,
+Database (D),Created (C),Database created,
+,Update (U),Database updated,
+,Delete (D),Database deleted,
+Collection (C),Created (C),Schema created,
+,Update (U),Shcema updated,
+,Delete (D),Schema deleted,
+User Defined (U),-,-,User-defined message. Event types are not defined.
