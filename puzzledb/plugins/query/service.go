@@ -43,6 +43,12 @@ type CoordinatorService interface {
 	PostDatabaseUpdateMessage(database string) error
 	// PostDatabaseDropMessage posts a drop database message to the coordinator.
 	PostDatabaseDropMessage(database string) error
+	// PostCollectionCreateMessage posts a create collection message to the coordinator.
+	PostCollectionCreateMessage(database string, collection string) error
+	// PostCollectionDeleteMessage posts a update collection message to the coordinator.
+	PostCollectionUpdateMessage(database string, collection string) error
+	// PostCollectionDropMessage posts a drop collection message to the coordinator.
+	PostCollectionDropMessage(database string, collection string) error
 }
 
 // Service represents a query service.
