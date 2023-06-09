@@ -107,7 +107,8 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 
 	store := service.Store()
 
-	db, err := store.GetDatabase(ctx, conn.Database())
+	dbName := conn.Database()
+	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +118,8 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 		return nil, err
 	}
 
-	_, err = txn.GetCollection(ctx, stmt.TableName())
+	tblName := stmt.TableName()
+	_, err = txn.GetCollection(ctx, tblName)
 	if err == nil {
 		if err := txn.Cancel(ctx); err != nil {
 			return nil, err
@@ -143,12 +145,26 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 		return nil, err
 	}
 
+	err = service.PostCollectionCreateMessage(dbName, tblName)
+	if err != nil {
+		log.Error(err)
+	}
+
 	return mysql.NewResult(), nil
 }
 
 // AlterTable should handle a ALTER table statement.
 func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
+
+	dbName := conn.Database()
+	tblName := stmt.TableName()
+
+	err := service.PostCollectionCreateMessage(dbName, tblName)
+	if err != nil {
+		log.Error(err)
+	}
+
 	return nil, newQueryNotSupportedError("AlterTable")
 }
 
@@ -193,6 +209,14 @@ func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.
 	err = txn.Commit(ctx)
 	if err != nil {
 		return nil, err
+	}
+
+	for _, table := range tables {
+		tblName := table.Name.String()
+		err := service.PostCollectionDropMessage(dbName, tblName)
+		if err != nil {
+			log.Error(err)
+		}
 	}
 
 	return mysql.NewResultWithRowsAffected(1), nil
