@@ -85,8 +85,8 @@ func (service *BaseService) PostDatabaseDropMessage(database string) error {
 	return service.postDatabaseMessage(coordinator.DeletedEvent, database)
 }
 
-// PostCollectionMessage posts a schema message to the coordinator.
-func (service *BaseService) PostCollectionMessage(e coordinator.EventType, database string, collection string) error {
+// postCollectionMessage posts a schema message to the coordinator.
+func (service *BaseService) postCollectionMessage(e coordinator.EventType, database string, collection string) error {
 	obj := &CollectionMessageObject{
 		Database:   database,
 		Collection: collection,
@@ -100,6 +100,21 @@ func (service *BaseService) PostCollectionMessage(e coordinator.EventType, datab
 		return err
 	}
 	return service.coordinator.PostMessage(msg)
+}
+
+// PostCollectionCreateMessage posts a create collection message to the coordinator.
+func (service *BaseService) PostCollectionCreateMessage(database string, collection string) error {
+	return service.postCollectionMessage(coordinator.UpdatedEvent, database, collection)
+}
+
+// PostCollectionDeleteMessage posts a update collection message to the coordinator.
+func (service *BaseService) PostCollectionUpdateMessage(database string, collection string) error {
+	return service.postCollectionMessage(coordinator.UpdatedEvent, database, collection)
+}
+
+// PostCollectionDropMessage posts a drop collection message to the coordinator.
+func (service *BaseService) PostCollectionDropMessage(database string, collection string) error {
+	return service.postCollectionMessage(coordinator.DeletedEvent, database, collection)
 }
 
 // OnMessageReceived is called when a message is received from the coordinator.
