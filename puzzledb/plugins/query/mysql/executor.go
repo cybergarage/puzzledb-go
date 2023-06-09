@@ -47,12 +47,25 @@ func (service *Service) CreateDatabase(conn *mysql.Conn, stmt *query.Database) (
 		return nil, err
 	}
 
+	err = service.PostDatabaseCreateMessage(dbName)
+	if err != nil {
+		log.Error(err)
+	}
+
 	return mysql.NewResult(), nil
 }
 
 // AlterDatabase should handle a ALTER database statement.
 func (service *Service) AlterDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
 	log.Debugf("%v", stmt)
+
+	dbName := stmt.Name()
+
+	err := service.PostDatabaseUpdateMessage(dbName)
+	if err != nil {
+		log.Error(err)
+	}
+
 	return nil, newQueryNotSupportedError("AlterTable")
 }
 
@@ -76,6 +89,11 @@ func (service *Service) DropDatabase(conn *mysql.Conn, stmt *query.Database) (*m
 	err = store.RemoveDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
+	}
+
+	err = service.PostDatabaseDropMessage(dbName)
+	if err != nil {
+		log.Error(err)
 	}
 
 	return mysql.NewResult(), nil
