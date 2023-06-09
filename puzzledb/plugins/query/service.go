@@ -21,19 +21,35 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// Service represents a query service.
-type Service interface {
-	plugins.Service
-	// SetCoordinator sets the coordinator.
-	SetCoordinator(coordinator coordinator.Coordinator)
-	// Observer is an interface to receive a message from the coordinator.
-	coordinator.Observer
-	// Coordinator returns the coordinator.
-	Coordinator() coordinator.Coordinator
+// StoreService represents a store interface for query service.
+type StoreService interface {
 	// SetStore sets the store.
 	SetStore(store store.Store)
 	// Store returns the store.
 	Store() store.Store
+}
+
+// CoordinatorService represents a coordinator interface for query service.
+type CoordinatorService interface {
+	// SetCoordinator sets the coordinator.
+	SetCoordinator(coordinator coordinator.Coordinator)
+	// Coordinator returns the coordinator.
+	Coordinator() coordinator.Coordinator
+	// Observer is an interface to receive a message from the coordinator.
+	coordinator.Observer
+	// PostDatabaseCreateMessage posts a create database message to the coordinator.
+	PostDatabaseCreateMessage(database string) error
+	// PostDatabaseDeleteMessage posts a update database message to the coordinator.
+	PostDatabaseUpdateMessage(database string) error
+	// PostDatabaseDropMessage posts a drop database message to the coordinator.
+	PostDatabaseDropMessage(database string) error
+}
+
+// Service represents a query service.
+type Service interface {
+	plugins.Service
+	CoordinatorService
+	StoreService
 	// SetTracer sets the tracing tracer.
 	SetTracer(t tracer.Tracer)
 	// SetPort sets the listen port.

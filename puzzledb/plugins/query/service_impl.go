@@ -54,8 +54,8 @@ func (service *BaseService) Coordinator() coordinator.Coordinator {
 	return service.coordinator
 }
 
-// PostDatabaseMessage posts a schema message to the coordinator.
-func (service *BaseService) PostDatabaseMessage(e coordinator.EventType, database string) error {
+// postDatabaseMessage posts a schema message to the coordinator.
+func (service *BaseService) postDatabaseMessage(e coordinator.EventType, database string) error {
 	obj := &DatabaseMessageObject{
 		Database: database,
 	}
@@ -68,6 +68,21 @@ func (service *BaseService) PostDatabaseMessage(e coordinator.EventType, databas
 		return err
 	}
 	return service.coordinator.PostMessage(msg)
+}
+
+// PostDatabaseCreateMessage posts a create database message to the coordinator.
+func (service *BaseService) PostDatabaseCreateMessage(database string) error {
+	return service.postDatabaseMessage(coordinator.UpdatedEvent, database)
+}
+
+// PostDatabaseDeleteMessage posts a update database message to the coordinator.
+func (service *BaseService) PostDatabaseUpdateMessage(database string) error {
+	return service.postDatabaseMessage(coordinator.UpdatedEvent, database)
+}
+
+// PostDatabaseDropMessage posts a drop database message to the coordinator.
+func (service *BaseService) PostDatabaseDropMessage(database string) error {
+	return service.postDatabaseMessage(coordinator.DeletedEvent, database)
 }
 
 // PostCollectionMessage posts a schema message to the coordinator.
