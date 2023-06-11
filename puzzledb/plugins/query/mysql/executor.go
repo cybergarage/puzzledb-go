@@ -47,6 +47,8 @@ func (service *Service) CreateDatabase(conn *mysql.Conn, stmt *query.Database) (
 		return nil, err
 	}
 
+	// Post a event message to the coordinator.
+
 	err = service.PostDatabaseCreateMessage(dbName)
 	if err != nil {
 		log.Error(err)
@@ -60,6 +62,8 @@ func (service *Service) AlterDatabase(conn *mysql.Conn, stmt *query.Database) (*
 	log.Debugf("%v", stmt)
 
 	dbName := stmt.Name()
+
+	// Post a event message to the coordinator.
 
 	err := service.PostDatabaseUpdateMessage(dbName)
 	if err != nil {
@@ -76,8 +80,10 @@ func (service *Service) DropDatabase(conn *mysql.Conn, stmt *query.Database) (*m
 	defer ctx.FinishSpan()
 
 	store := service.Store()
-
 	dbName := stmt.Name()
+
+	// Check if the database exists.
+
 	_, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		if stmt.IfExists() {
@@ -86,10 +92,14 @@ func (service *Service) DropDatabase(conn *mysql.Conn, stmt *query.Database) (*m
 		return nil, err
 	}
 
+	// Drop the specified database.
+
 	err = store.RemoveDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
+
+	// Post a event message to the coordinator.
 
 	err = service.PostDatabaseDropMessage(dbName)
 	if err != nil {
@@ -106,12 +116,16 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 	defer ctx.FinishSpan()
 
 	store := service.Store()
-
 	dbName := conn.Database()
+
+	// Check if the database exists.
+
 	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
+
+	// Create a new table.
 
 	txn, err := db.Transact(true)
 	if err != nil {
@@ -145,6 +159,8 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 		return nil, err
 	}
 
+	// Post a event message to the coordinator.
+
 	err = service.PostCollectionCreateMessage(dbName, tblName)
 	if err != nil {
 		log.Error(err)
@@ -155,12 +171,45 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 
 // AlterTable should handle a ALTER table statement.
 func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("AlterTable")
+	defer ctx.FinishSpan()
 
+	store := service.Store()
 	dbName := conn.Database()
 	tblName := stmt.TableName()
 
-	err := service.PostCollectionCreateMessage(dbName, tblName)
+	// Check if the database exists.
+
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if the collection exists.
+
+	txn, err := db.Transact(false)
+	if err != nil {
+		return nil, err
+	}
+
+	col, err := txn.GetCollection(ctx, stmt.TableName())
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	if col == nil {
+		return nil, newSchemaNotExistError(stmt.TableName())
+	}
+
+	// Post a event message to the coordinator.
+
+	err = service.PostCollectionCreateMessage(dbName, tblName)
 	if err != nil {
 		log.Error(err)
 	}
@@ -175,8 +224,10 @@ func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.
 	defer ctx.FinishSpan()
 
 	store := service.Store()
-
 	dbName := conn.Database()
+
+	// Check if the database exists.
+
 	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		if stmt.GetIfExists() {
@@ -184,6 +235,8 @@ func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.
 		}
 		return nil, err
 	}
+
+	// Drop the specified tables.
 
 	txn, err := db.Transact(true)
 	if err != nil {
@@ -210,6 +263,8 @@ func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.
 	if err != nil {
 		return nil, err
 	}
+
+	// Post a event message to the coordinator.
 
 	for _, table := range tables {
 		tblName := table.Name.String()
