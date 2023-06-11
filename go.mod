@@ -10,8 +10,9 @@ require (
 	github.com/cybergarage/go-mysql v1.0.3
 	github.com/cybergarage/go-pict v0.8.2
 	github.com/cybergarage/go-redis v1.3.6
-	github.com/cybergarage/go-sqltest v0.9.4
+	github.com/cybergarage/go-sqltest v0.9.5
 	github.com/cybergarage/go-tracing v1.1.2
+	github.com/dgraph-io/ristretto v0.1.1
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-memdb v1.3.2
 	github.com/prometheus/client_golang v1.15.1
@@ -29,7 +30,6 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/cybergarage/go-safecast v1.2.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
-	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
