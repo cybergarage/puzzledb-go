@@ -118,6 +118,13 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 	store := service.Store()
 	dbName := conn.Database()
 
+	// Get the collection definition from the schema.
+
+	col, err := NewCollectionWith(stmt)
+	if err != nil {
+		return nil, err
+	}
+
 	// Check if the database exists.
 
 	db, err := store.GetDatabase(ctx, dbName)
@@ -142,11 +149,6 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 			return mysql.NewResult(), nil
 		}
 		return mysql.NewResult(), newSchemaExistError(stmt.TableName())
-	}
-
-	col, err := NewCollectionWith(stmt)
-	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	err = txn.CreateCollection(ctx, col)
@@ -179,6 +181,13 @@ func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql
 	dbName := conn.Database()
 	tblName := stmt.TableName()
 
+	// Get the collection definition from the schema.
+
+	_, err := NewAlterCollectionWith(stmt)
+	if err != nil {
+		return nil, err
+	}
+
 	// Check if the database exists.
 
 	db, err := store.GetDatabase(ctx, dbName)
@@ -206,6 +215,8 @@ func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql
 	if col == nil {
 		return nil, newSchemaNotExistError(stmt.TableName())
 	}
+
+	//
 
 	// Post a event message to the coordinator.
 
