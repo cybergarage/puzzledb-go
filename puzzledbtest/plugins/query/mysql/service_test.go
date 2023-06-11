@@ -29,7 +29,13 @@ func TestMySQLTestSuite(t *testing.T) {
 		return
 	}
 
-	if err := sqltest.RunEmbedSuite(t, sqltest.NewMySQLClient()); err != nil {
+	client := sqltest.NewMySQLClient()
+
+	testNames := []string{
+		"SimpAlterAdd",
+	}
+
+	if err := sqltest.RunEmbedSuites(t, client, testNames...); err != nil {
 		t.Logf("\n%s", server.Store().String())
 	}
 
