@@ -19,7 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewCollectionWith creates a schema from the specified schema object.
+// NewCollectionWith creates a new schema from the specified schema object.
 func NewCollectionWith(schema *query.Schema) (document.Schema, error) {
 	s := document.NewSchema()
 	s.SetName(schema.TableName())
@@ -51,5 +51,11 @@ func NewCollectionWith(schema *query.Schema) (document.Schema, error) {
 	if _, err := s.PrimaryIndex(); err != nil {
 		return nil, err
 	}
+	return s, nil
+}
+
+// NewAlterCollectionWith creates an alter schema from the specified schema object.
+func NewAlterCollectionWith(schema *query.Schema) (document.Schema, error) {
+	s := document.NewSchema()
 	return s, nil
 }
