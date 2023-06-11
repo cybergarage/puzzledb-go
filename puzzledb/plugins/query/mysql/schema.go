@@ -20,11 +20,11 @@ import (
 )
 
 // NewCollectionWith creates a schema from the specified schema object.
-func NewCollectionWith(def *query.Schema) (document.Schema, error) {
+func NewCollectionWith(schema *query.Schema) (document.Schema, error) {
 	s := document.NewSchema()
-	s.SetName(def.TableName())
+	s.SetName(schema.TableName())
 	// Columns
-	for _, col := range def.GetTableSpec().Columns {
+	for _, col := range schema.GetTableSpec().Columns {
 		e, err := NewElementWith(col)
 		if err != nil {
 			return nil, err
@@ -40,7 +40,7 @@ func NewCollectionWith(def *query.Schema) (document.Schema, error) {
 		}
 	}
 	// Indexes
-	for _, idx := range def.GetTableSpec().Indexes {
+	for _, idx := range schema.GetTableSpec().Indexes {
 		i, err := NewIndexWith(s, idx)
 		if err != nil {
 			return nil, err
