@@ -17,11 +17,13 @@ SHELL := bash
 GOBIN := $(shell go env GOPATH)/bin
 PATH := $(GOBIN):$(PATH)
 
+GIT_ROOT=github.com/cybergarage
+PRODUCT_NAME=puzzledb-go
+MODULE_ROOT=${GIT_ROOT}/${PRODUCT_NAME}
+
 PKG_NAME=puzzledb
 PKG_VER=$(shell git describe --abbrev=0 --tags)
 PKG_COVER=${PKG_NAME}-cover
-
-MODULE_ROOT=github.com/cybergarage/puzzledb-go
 PKG_ROOT=${MODULE_ROOT}/${PKG_NAME}
 
 PKG_SRC_ROOT=${PKG_NAME}
