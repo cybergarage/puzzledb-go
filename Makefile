@@ -95,8 +95,11 @@ log:
 clean:
 	go clean -i ${PKG}
 
-watch:
+watchtest:
 	fswatch -o . -e ".*" -i "\\.go$$" | xargs -n1 -I{} make test
+
+watchlint:
+	fswatch -o . -e ".*" -i "\\.go$$" | xargs -n1 -I{} make lint
 #
 # Document
 #
