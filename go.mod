@@ -10,8 +10,10 @@ require (
 	github.com/cybergarage/go-mysql v1.0.3
 	github.com/cybergarage/go-pict v0.8.2
 	github.com/cybergarage/go-redis v1.3.6
-	github.com/cybergarage/go-sqltest v0.9.5
+	github.com/cybergarage/go-sqltest v0.9.6
 	github.com/cybergarage/go-tracing v1.1.2
+	github.com/cybergarage/go-postgresql v0.9.1
+	github.com/cybergarage/go-safecast v1.2.1
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-memdb v1.3.2
@@ -28,7 +30,6 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/cybergarage/go-safecast v1.2.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
@@ -79,11 +80,11 @@ require (
 	go.opentelemetry.io/otel/sdk v1.15.1 // indirect
 	go.opentelemetry.io/otel/trace v1.15.1 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
-	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
-	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.7.0 // indirect
-	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
 	gopkg.in/DataDog/dd-trace-go.v1 v1.17.0 // indirect
