@@ -59,6 +59,9 @@ plugins:
     mysql:
       enabled: true
       port: 3306
+    postgresql:
+      enabled: true
+      port: 5432
   tracer:
     default: opentelemetry
     opentelemetry:
