@@ -39,6 +39,7 @@ linters:
     - gci
     - forbidigo
     - containedctx
+    - depguard
 
 linters-settings:
   revive:
