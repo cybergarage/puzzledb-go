@@ -84,7 +84,7 @@ func NewConfigWithPaths(paths ...string) (*Config, error) {
 // NewConfigWithString returns a new configuration with the specified string.
 func NewConfigWithString(conString string) (*Config, error) {
 	conf := config.NewConfigWith(ProductName)
-	if err := viper.ReadConfig(bytes.NewBuffer([]byte(conString))); err != nil {
+	if err := viper.ReadConfig(bytes.NewBufferString(conString)); err != nil {
 		return nil, err
 	}
 	return NewConfigWith(conf), nil
