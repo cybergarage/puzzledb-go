@@ -21,7 +21,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestMySQLTestSuite(t *testing.T) {
+func TestPostgreSQLTestSuite(t *testing.T) {
 	server := puzzledbtest.NewServer()
 	err := server.Start()
 	if err != nil {
