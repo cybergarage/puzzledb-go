@@ -219,7 +219,55 @@ func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) 
 
 // Insert handles a INSERT query.
 func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("INSERT")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Insert")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+
+	dbName := conn.DatabaseName()
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	col, err := txn.GetCollection(ctx, stmt.TableName())
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	// Inserts the object using the primary key/
+
+	docKey, docObj, err := NewObjectFromInsert(dbName, col, stmt)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	err = txn.InsertDocument(ctx, docKey, docObj)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	// Inserts the secondary indexes.
+
+	/*
+		err = service.insertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
+		if err != nil {
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
+		}
+	*/
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return message.NewInsertCompleteResponsesWith(1)
 }
 
 // Select handles a SELECT query.
