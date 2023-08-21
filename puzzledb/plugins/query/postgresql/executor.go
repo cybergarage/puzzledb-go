@@ -21,46 +21,46 @@ import (
 )
 
 // CreateDatabase handles a CREATE DATABASE query.
-func (service *Service) CreateDatabase(*postgresql.Conn, *query.CreateDatabase) (message.Responses, error) {
+func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("CREATE DATABASE")
 }
 
 // CreateTable handles a CREATE TABLE query.
-func (service *Service) CreateTable(*postgresql.Conn, *query.CreateTable) (message.Responses, error) {
+func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTable) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("CREATE TABLE")
 }
 
 // CreateIndex handles a CREATE INDEX query.
-func (service *Service) CreateIndex(*postgresql.Conn, *query.CreateIndex) (message.Responses, error) {
+func (service *Service) CreateIndex(conn *postgresql.Conn, stmt *query.CreateIndex) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("CREATE INDEX")
 }
 
 // DropDatabase handles a DROP DATABASE query.
-func (service *Service) DropDatabase(*postgresql.Conn, *query.DropDatabase) (message.Responses, error) {
+func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropDatabase) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("DROP DATABASE")
 }
 
 // DropIndex handles a DROP INDEX query.
-func (service *Service) DropTable(*postgresql.Conn, *query.DropTable) (message.Responses, error) {
+func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("DROP TABLE")
 }
 
 // Insert handles a INSERT query.
-func (service *Service) Insert(*postgresql.Conn, *query.Insert) (message.Responses, error) {
+func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("INSERT")
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(*postgresql.Conn, *query.Select) (message.Responses, error) {
+func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("SELECT")
 }
 
 // Update handles a UPDATE query.
-func (service *Service) Update(*postgresql.Conn, *query.Update) (message.Responses, error) {
+func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("UPDATE")
 }
 
 // Delete handles a DELETE query.
-func (service *Service) Delete(*postgresql.Conn, *query.Delete) (message.Responses, error) {
+func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("DELETE")
 }
