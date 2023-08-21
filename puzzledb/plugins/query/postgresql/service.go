@@ -35,6 +35,8 @@ func NewService() query.Service {
 		Server:       postgresql.NewServer(),
 		BaseService:  query.NewBaseService(),
 	}
+	service.SetAuthenticator(service)
+	service.SetQueryExecutor(service)
 	return service
 }
 
