@@ -260,7 +260,7 @@ func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.
 		_, err = txn.GetCollection(ctx, tblName)
 		if err != nil {
 			if stmt.GetIfExists() {
-				return mysql.NewResult(), service.CancelTransactionWithError(ctx, txn, err)
+				continue
 			}
 			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
