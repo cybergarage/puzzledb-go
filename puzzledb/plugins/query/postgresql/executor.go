@@ -15,14 +15,43 @@
 package postgresql
 
 import (
+	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 )
 
 // CreateDatabase handles a CREATE DATABASE query.
 func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("CREATE DATABASE")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("CreateDatabase")
+	defer ctx.FinishSpan()
+
+	dbName := stmt.DatabaseName()
+
+	store := service.Store()
+	_, err := store.GetDatabase(ctx, dbName)
+	if err == nil {
+		if stmt.IfNotExists() {
+			return message.NewCommandCompleteResponsesWith(stmt.String())
+		}
+		return nil, postgresql.NewErrDatabaseExist(dbName)
+	}
+
+	err = store.CreateDatabase(ctx, dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	// Post a event message to the coordinator.
+
+	err = service.PostDatabaseCreateMessage(dbName)
+	if err != nil {
+		log.Error(err)
+	}
+
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // CreateTable handles a CREATE TABLE query.
