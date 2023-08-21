@@ -32,7 +32,8 @@ func TestMySQLTestSuite(t *testing.T) {
 	client := sqltest.NewMySQLClient()
 
 	testNames := []string{
-		"SimpAlterAdd",
+		"YCSBWorkload",
+		"SimpInsertSelect",
 	}
 
 	if err := sqltest.RunEmbedSuites(t, client, testNames...); err != nil {
