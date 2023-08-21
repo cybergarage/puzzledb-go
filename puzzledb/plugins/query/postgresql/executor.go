@@ -56,7 +56,64 @@ func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.Create
 
 // CreateTable handles a CREATE TABLE query.
 func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTable) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("CREATE TABLE")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("CreateTable")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+	dbName := conn.DatabaseName()
+
+	// Get the collection definition from the schema.
+
+	col, err := NewCollectionWith(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if the database exists.
+
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create a new table.
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	tblName := stmt.TableName()
+	_, err = txn.GetCollection(ctx, tblName)
+	if err == nil {
+		if err := txn.Cancel(ctx); err != nil {
+			return nil, err
+		}
+		if stmt.IfNotExists() {
+			return message.NewCommandCompleteResponsesWith(stmt.String())
+		}
+		return nil, newSchemaExistError(stmt.TableName())
+	}
+
+	err = txn.CreateCollection(ctx, col)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Post a event message to the coordinator.
+
+	err = service.PostCollectionCreateMessage(dbName, tblName)
+	if err != nil {
+		log.Error(err)
+	}
+
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // CreateIndex handles a CREATE INDEX query.
