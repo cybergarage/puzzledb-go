@@ -66,7 +66,38 @@ func (service *Service) CreateIndex(conn *postgresql.Conn, stmt *query.CreateInd
 
 // DropDatabase handles a DROP DATABASE query.
 func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropDatabase) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("DROP DATABASE")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("DropDatabase")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+	dbName := stmt.DatabaseName()
+
+	// Check if the database exists.
+
+	_, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		if stmt.IfExists() {
+			return message.NewCommandCompleteResponsesWith(stmt.String())
+		}
+		return nil, err
+	}
+
+	// Drop the specified database.
+
+	err = store.RemoveDatabase(ctx, dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	// Post a event message to the coordinator.
+
+	err = service.PostDatabaseDropMessage(dbName)
+	if err != nil {
+		log.Error(err)
+	}
+
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // DropIndex handles a DROP INDEX query.
