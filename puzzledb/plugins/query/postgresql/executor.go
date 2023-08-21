@@ -159,7 +159,62 @@ func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropData
 
 // DropIndex handles a DROP INDEX query.
 func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("DROP TABLE")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("DropTable")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+	dbName := conn.DatabaseName()
+
+	// Check if the database exists.
+
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		if stmt.IfExists() {
+			return message.NewCommandCompleteResponsesWith(stmt.String())
+		}
+		return nil, err
+	}
+
+	// Drop the specified tables.
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	tables := stmt.Tables()
+	for _, table := range tables {
+		tblName := table.TableName()
+		_, err = txn.GetCollection(ctx, tblName)
+		if err != nil {
+			if stmt.IfExists() {
+				continue
+			}
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
+		}
+		err = txn.RemoveCollection(ctx, tblName)
+		if err != nil {
+			return nil, service.CancelTransactionWithError(ctx, txn, err)
+		}
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Post a event message to the coordinator.
+
+	for _, table := range tables {
+		tblName := table.TableName()
+		err := service.PostCollectionDropMessage(dbName, tblName)
+		if err != nil {
+			log.Error(err)
+		}
+	}
+
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // Insert handles a INSERT query.
