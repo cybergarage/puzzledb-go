@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package query
+package postgresql
 
 import (
 	"errors"
@@ -99,4 +99,18 @@ func newObjectInvalidError(obj any) error {
 
 func newCoulumNotExistError(obj any) error {
 	return newNotExistError(fmt.Sprintf("coulum (%s)", obj))
+}
+
+// Not implemented error functions
+
+func newJoinQueryNotSupportedError(obj any) error {
+	return newNotSupportedError(fmt.Sprintf("JOIN query (%v)", obj))
+}
+
+func newQueryConditionNotSupportedError(obj any) error {
+	return newNotSupportedError(fmt.Sprintf("query condition (%v)", obj))
+}
+
+func newDataTypeNotEqualError(obj any, et document.ElementType) error {
+	return newNotEqualError(fmt.Sprintf("%v(%T)", obj, obj), et.String())
 }
