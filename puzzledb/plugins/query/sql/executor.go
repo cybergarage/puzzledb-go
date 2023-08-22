@@ -55,7 +55,7 @@ func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) er
 }
 
 // CreateTable handles a CREATE TABLE query.
-func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) (message.Responses, error) {
+func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CreateTable")
 	defer ctx.FinishSpan()
@@ -67,43 +67,43 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) (message
 
 	col, err := NewCollectionWith(stmt)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Check if the database exists.
 
 	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Create a new table.
 
 	txn, err := db.Transact(true)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	tblName := stmt.TableName()
 	_, err = txn.GetCollection(ctx, tblName)
 	if err == nil {
 		if err := txn.Cancel(ctx); err != nil {
-			return nil, err
+			return err
 		}
 		if stmt.IfNotExists() {
-			return message.NewCommandCompleteResponsesWith(stmt.String())
+			return nil
 		}
-		return nil, newSchemaExistError(stmt.TableName())
+		return newSchemaExistError(stmt.TableName())
 	}
 
 	err = txn.CreateCollection(ctx, col)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, txn, err)
 	}
 
 	err = txn.Commit(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Post a event message to the coordinator.
@@ -113,7 +113,7 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) (message
 		log.Error(err)
 	}
 
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return nil
 }
 
 // CreateIndex handles a CREATE INDEX query.
