@@ -23,35 +23,25 @@ import (
 func NewCollectionWith(stmt *query.CreateTable) (document.Schema, error) {
 	s := document.NewSchema()
 	s.SetName(stmt.TableName())
-	/*
-		// Columns
-		for _, col := range schema.GetTableSpec().Columns {
-			e, err := NewElementWith(col)
-			if err != nil {
-				return nil, err
-			}
-			s.AddElement(e)
-			// Primary Index
-			if col.Type.Options.KeyOpt == query.ColKeyPrimary {
-				i, err := NewPrimaryIndexWith(e)
-				if err != nil {
-					return nil, err
-				}
-				s.AddIndex(i)
-			}
-		}
-		// Indexes
-		for _, idx := range schema.GetTableSpec().Indexes {
-			i, err := NewIndexWith(s, idx)
-			if err != nil {
-				return nil, err
-			}
-			s.AddIndex(i)
-		}
-		// Primary index
-		if _, err := s.PrimaryIndex(); err != nil {
+	// Add elements
+	for _, col := range stmt.Schema().Columns() {
+		e, err := NewElementWith(col)
+		if err != nil {
 			return nil, err
 		}
-	*/
+		s.AddElement(e)
+	}
+	// Add indexes
+	for _, idx := range stmt.Schema().Indexes() {
+		i, err := NewIndexWith(s, idx)
+		if err != nil {
+			return nil, err
+		}
+		s.AddIndex(i)
+	}
+	// Check the primary index
+	if _, err := s.PrimaryIndex(); err != nil {
+		return nil, err
+	}
 	return s, nil
 }
