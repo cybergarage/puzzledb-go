@@ -38,12 +38,12 @@ func NewObjectWith(anyObj any) (Object, error) {
 			case []byte:
 				obj[string(k)] = val
 			default:
-				return nil, newObjectInvalidError(obj)
+				return nil, newErrObjectInvalid(obj)
 			}
 		}
 		return obj, nil
 	}
-	return nil, newObjectInvalidError(obj)
+	return nil, newErrObjectInvalid(obj)
 }
 
 // NewObjectFromInsert returns a new object from the specified schema and columns.
