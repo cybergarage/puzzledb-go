@@ -15,7 +15,6 @@
 package sql
 
 import (
-	"net"
 	"time"
 
 	"github.com/cybergarage/go-tracing/tracer"
@@ -23,8 +22,7 @@ import (
 
 // Conn represents a SQL connection.
 type Conn interface {
-	DatabaseName() string
-	Conn() net.Conn
+	Database() string
 	Timestamp() time.Time
 	SpanContext() tracer.Context
 }
