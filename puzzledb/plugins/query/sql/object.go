@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package postgresql
+package sql
 
 import (
-	"github.com/cybergarage/go-postgresql/postgresql/query"
+	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
@@ -48,30 +48,21 @@ func NewObjectWith(anyObj any) (Object, error) {
 
 // NewObjectFromInsert returns a new object from the specified schema and columns.
 func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, Object, error) {
-	/*
-		cols, err := stmt.Columns()
-		if err != nil {
-			return nil, nil, err
-		}
-	*/
 	obj := Object{}
-	/*
-		for _, col := range cols.Columns() {
-			colName := col.Name()
-			// TODO: Checks data types
-			_, err := schema.FindElement(colName)
-			if err != nil {
-				return nil, nil, err
-			}
-			obj[colName] = col.Value()
-		}
-
-		objKey, err := NewKeyFromObject(dbName, schema, obj)
+	for _, col := range stmt.Columns() {
+		colName := col.Name()
+		// TODO: Checks data types
+		_, err := schema.FindElement(colName)
 		if err != nil {
 			return nil, nil, err
 		}
+		obj[colName] = col.Value()
+	}
 
-		return objKey, obj, nil
-	*/
-	return nil, obj, nil
+	objKey, err := NewKeyFromObject(dbName, schema, obj)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return objKey, obj, nil
 }
