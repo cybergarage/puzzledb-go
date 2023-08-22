@@ -36,7 +36,6 @@ func NewIndexWith(s document.Schema, def *query.Index) (document.Index, error) {
 	switch def.Type() {
 	case query.PrimaryIndex:
 		idx.SetType(document.PrimaryIndex)
-
 	case query.SecondaryIndex:
 		idx.SetType(document.SecondaryIndex)
 	case query.UnknownIndex:
