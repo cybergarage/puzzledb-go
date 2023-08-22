@@ -93,7 +93,7 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 		if stmt.IfNotExists() {
 			return nil
 		}
-		return newSchemaExistError(stmt.TableName())
+		return newErrSchemaExist(stmt.TableName())
 	}
 
 	err = txn.CreateCollection(ctx, col)
