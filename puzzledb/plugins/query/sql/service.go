@@ -16,6 +16,7 @@ package sql
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -33,10 +34,33 @@ func NewService() *Service {
 	return service
 }
 
-// CancelTransactionWithError cancels the specified transaction with the specified error.
-func (service *Service) CancelTransactionWithError(ctx context.Context, txn store.Transaction, err error) error {
+// cancelTransactionWithError cancels the specified transaction with the specified error.
+func (service *Service) cancelTransactionWithError(ctx context.Context, txn store.Transaction, err error) error {
 	if txErr := txn.Cancel(ctx); txErr != nil {
 		return txErr
 	}
 	return err
+}
+
+func (service *Service) insertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, prKey document.Key) error {
+	idxes, err := schema.SecondaryIndexes()
+	if err != nil {
+		return err
+	}
+	for _, idx := range idxes {
+		err := service.insertSecondaryIndex(ctx, conn, txn, schema, obj, idx, prKey)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (service *Service) insertSecondaryIndex(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index, prKey document.Key) error {
+	dbName := conn.Database()
+	secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
+	if err != nil {
+		return err
+	}
+	return txn.InsertIndex(ctx, secKey, prKey)
 }
