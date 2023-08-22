@@ -36,7 +36,7 @@ func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) er
 		if stmt.IfNotExists() {
 			return nil
 		}
-		return NewErrDatabaseExist(dbName)
+		return newErrDatabaseExist(dbName)
 	}
 
 	err = store.CreateDatabase(ctx, dbName)
@@ -61,7 +61,7 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) (message
 	defer ctx.FinishSpan()
 
 	store := service.Store()
-	dbName := conn.DatabaseName()
+	dbName := conn.Database()
 
 	// Get the collection definition from the schema.
 
@@ -164,7 +164,7 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) (message.Res
 	defer ctx.FinishSpan()
 
 	store := service.Store()
-	dbName := conn.DatabaseName()
+	dbName := conn.Database()
 
 	// Check if the database exists.
 
@@ -225,7 +225,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) (message.Responses
 
 	store := service.Store()
 
-	dbName := conn.DatabaseName()
+	dbName := conn.Database()
 	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
