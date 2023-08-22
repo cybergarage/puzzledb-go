@@ -41,7 +41,11 @@ func (service *Service) CreateIndex(conn *postgresql.Conn, stmt *query.CreateInd
 
 // DropDatabase handles a DROP DATABASE query.
 func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropDatabase) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("DROP DATABASE")
+	err := service.Service.DropDatabase(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // DropIndex handles a DROP INDEX query.
