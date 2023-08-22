@@ -98,7 +98,7 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 
 	err = txn.CreateCollection(ctx, col)
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.cancelTransactionWithError(ctx, txn, err)
 	}
 
 	err = txn.Commit(ctx)
@@ -191,11 +191,11 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) (message.Res
 			if stmt.IfExists() {
 				continue
 			}
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
+			return nil, service.cancelTransactionWithError(ctx, txn, err)
 		}
 		err = txn.RemoveCollection(ctx, tblName)
 		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
+			return nil, service.cancelTransactionWithError(ctx, txn, err)
 		}
 	}
 
@@ -238,19 +238,19 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) (message.Responses
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.cancelTransactionWithError(ctx, txn, err)
 	}
 
 	// Inserts the object using the primary key/
 
 	docKey, docObj, err := NewObjectFromInsert(dbName, col, stmt)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.cancelTransactionWithError(ctx, txn, err)
 	}
 
 	err = txn.InsertDocument(ctx, docKey, docObj)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.cancelTransactionWithError(ctx, txn, err)
 	}
 
 	// Inserts the secondary indexes.
