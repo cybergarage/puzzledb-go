@@ -15,7 +15,7 @@
 package sql
 
 import (
-	"github.com/cybergarage/go-mysql/mysql/query"
+	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -34,25 +34,24 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 	if err != nil {
 		return nil, 0, err
 	}
-	switch v := cond.Expr.(type) {
-	case *query.ComparisonExpr:
-		col, ok := v.Left.(*query.ColName)
-		if !ok {
+
+	expr := cond.Expr()
+	switch expr := expr.(type) { //nolint: gocritic
+	case *query.CmpExpr:
+		colName := expr.Left().Name()
+		colValue := expr.Right().Value()
+		switch expr.Operator() { //nolint: exhaustive
+		case query.EQ:
+			prIdxType := document.SecondaryIndex
+			if colName == prIdx.Name() {
+				prIdxType = document.PrimaryIndex
+			}
+			return document.NewKeyWith(dbName, schema.Name(), colName, colValue), prIdxType, nil
+		default:
 			return nil, 0, newQueryConditionNotSupportedError(cond)
 		}
-		val, ok := v.Right.(*query.Literal)
-		if !ok {
-			return nil, 0, newQueryConditionNotSupportedError(cond)
-		}
-		colName := col.Name.String()
-		prIdxType := document.SecondaryIndex
-		if colName == prIdx.Name() {
-			prIdxType = document.PrimaryIndex
-		}
-		return document.NewKeyWith(dbName, schema.Name(), colName, val.Val), prIdxType, nil
-	case *query.RangeCond:
-		return nil, 0, newQueryConditionNotSupportedError(cond)
 	}
+
 	return nil, 0, newQueryConditionNotSupportedError(cond)
 }
 
