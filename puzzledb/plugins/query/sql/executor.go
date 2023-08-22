@@ -218,7 +218,7 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) (message.Res
 }
 
 // Insert handles a INSERT query.
-func (service *Service) Insert(conn Conn, stmt *query.Insert) (message.Responses, error) {
+func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
@@ -228,46 +228,44 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) (message.Responses
 	dbName := conn.Database()
 	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	txn, err := db.Transact(true)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
-		return nil, service.cancelTransactionWithError(ctx, txn, err)
+		return service.cancelTransactionWithError(ctx, txn, err)
 	}
 
-	// Inserts the object using the primary key/
+	// Inserts the object using the primary key
 
 	docKey, docObj, err := NewObjectFromInsert(dbName, col, stmt)
 	if err != nil {
-		return nil, service.cancelTransactionWithError(ctx, txn, err)
+		return service.cancelTransactionWithError(ctx, txn, err)
 	}
 
 	err = txn.InsertDocument(ctx, docKey, docObj)
 	if err != nil {
-		return nil, service.cancelTransactionWithError(ctx, txn, err)
+		return service.cancelTransactionWithError(ctx, txn, err)
 	}
 
 	// Inserts the secondary indexes.
 
-	/*
-		err = service.insertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
-		}
-	*/
+	err = service.insertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
+	if err != nil {
+		return service.cancelTransactionWithError(ctx, txn, err)
+	}
 
 	err = txn.Commit(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return message.NewInsertCompleteResponsesWith(1)
+	return nil
 }
 
 // Select handles a SELECT query.
