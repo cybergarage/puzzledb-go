@@ -23,7 +23,7 @@ import (
 )
 
 // CreateDatabase handles a CREATE DATABASE query.
-func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (message.Responses, error) {
+func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) (message.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CreateDatabase")
 	defer ctx.FinishSpan()
@@ -55,7 +55,7 @@ func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.Create
 }
 
 // CreateTable handles a CREATE TABLE query.
-func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTable) (message.Responses, error) {
+func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) (message.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CreateTable")
 	defer ctx.FinishSpan()
@@ -117,12 +117,12 @@ func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTab
 }
 
 // CreateIndex handles a CREATE INDEX query.
-func (service *Service) CreateIndex(conn *postgresql.Conn, stmt *query.CreateIndex) (message.Responses, error) {
+func (service *Service) CreateIndex(conn Conn, stmt *query.CreateIndex) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("CREATE INDEX")
 }
 
 // DropDatabase handles a DROP DATABASE query.
-func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropDatabase) (message.Responses, error) {
+func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) (message.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropDatabase")
 	defer ctx.FinishSpan()
@@ -158,7 +158,7 @@ func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropData
 }
 
 // DropIndex handles a DROP INDEX query.
-func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) (message.Responses, error) {
+func (service *Service) DropTable(conn Conn, stmt *query.DropTable) (message.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropTable")
 	defer ctx.FinishSpan()
@@ -218,7 +218,7 @@ func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) 
 }
 
 // Insert handles a INSERT query.
-func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (message.Responses, error) {
+func (service *Service) Insert(conn Conn, stmt *query.Insert) (message.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
@@ -271,16 +271,16 @@ func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (messa
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) {
+func (service *Service) Select(conn Conn, stmt *query.Select) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("SELECT")
 }
 
 // Update handles a UPDATE query.
-func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (message.Responses, error) {
+func (service *Service) Update(conn Conn, stmt *query.Update) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("UPDATE")
 }
 
 // Delete handles a DELETE query.
-func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (message.Responses, error) {
+func (service *Service) Delete(conn Conn, stmt *query.Delete) (message.Responses, error) {
 	return nil, postgresql.NewErrNotImplemented("DELETE")
 }
