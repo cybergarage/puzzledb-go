@@ -18,6 +18,7 @@ import (
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
@@ -25,7 +26,7 @@ import (
 type Service struct {
 	*mysql.BaseExecutor
 	*mysql.Server
-	*query.BaseService
+	*sql.Service
 }
 
 // NewService returns a new MySQL service.
@@ -33,7 +34,7 @@ func NewService() query.Service {
 	service := &Service{
 		BaseExecutor: mysql.NewBaseExecutor(),
 		Server:       mysql.NewServer(),
-		BaseService:  query.NewBaseService(),
+		Service:      sql.NewService(),
 	}
 	service.Server.SetQueryExecutor(service)
 	return service
