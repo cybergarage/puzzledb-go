@@ -15,7 +15,7 @@
 package sql
 
 import (
-	"github.com/cybergarage/go-postgresql/postgresql/query"
+	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
