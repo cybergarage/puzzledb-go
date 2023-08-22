@@ -22,7 +22,11 @@ import (
 
 // CreateDatabase handles a CREATE DATABASE query.
 func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("CREATE DATABASE")
+	err := service.Service.CreateDatabase(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // CreateTable handles a CREATE TABLE query.
