@@ -48,11 +48,11 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 			}
 			return document.NewKeyWith(dbName, schema.Name(), colName, colValue), prIdxType, nil
 		default:
-			return nil, 0, newQueryConditionNotSupportedError(cond)
+			return nil, 0, newErrQueryConditionNotSupported(cond)
 		}
 	}
 
-	return nil, 0, newQueryConditionNotSupportedError(cond)
+	return nil, 0, newErrQueryConditionNotSupported(cond)
 }
 
 // NewKeyFromIndex returns a key for the specified index.
@@ -65,7 +65,7 @@ func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, 
 		name := elem.Name()
 		v, ok := objMap[name]
 		if !ok {
-			return nil, newObjectInvalidError(objMap)
+			return nil, newErrObjectInvalid(objMap)
 		}
 		objKey = append(objKey, v)
 	}
