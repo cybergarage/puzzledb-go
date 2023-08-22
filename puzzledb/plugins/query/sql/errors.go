@@ -31,87 +31,86 @@ var (
 
 // Common error functions
 
-func newNotSupportedError(obj any) error {
+func newErrNotSupported(obj any) error {
 	return fmt.Errorf("%v is %w", obj, ErrNotSupported)
 }
 
-func newExistError(obj string) error {
+func newErrExist(obj string) error {
 	return fmt.Errorf("%v is %w", obj, ErrExist)
 }
 
-func newNotExistError(obj string) error {
+func newErrNotExist(obj string) error {
 	return fmt.Errorf("%v is %w", obj, ErrNotExist)
 }
 
-func newInvalidError(obj any) error {
+func newErrInvalid(obj any) error {
 	return fmt.Errorf("%v is %w", obj, ErrInvalid)
 }
 
-func newNotEqualError(obj1 any, obj2 any) error {
+func newErrNotEqual(obj1 any, obj2 any) error {
 	return fmt.Errorf("%v and %v are %w", obj1, obj2, ErrNotEqual)
 }
 
 // Detail error functions
 
-// NewErrDatabaseExist returns a new database exist error.
-func NewErrDatabaseExist(obj string) error {
-	return newExistError(fmt.Sprintf("database (%s)", obj))
+func newErrDatabaseExist(obj string) error {
+	return newErrExist(fmt.Sprintf("database (%s)", obj))
 }
 
 func newTableExistError(obj string) error {
-	return newExistError(fmt.Sprintf("table (%s)", obj))
+	return newErrExist(fmt.Sprintf("table (%s)", obj))
 }
 
 func newSchemaExistError(obj string) error {
-	return newExistError(fmt.Sprintf("schema (%s)", obj))
+	return newErrExist(fmt.Sprintf("schema (%s)", obj))
 }
 
 func newDatabaseNotExistError(obj string) error {
-	return newNotExistError(fmt.Sprintf("database (%s)", obj))
+	return newErrNotExist(fmt.Sprintf("database (%s)", obj))
 }
 
 func newTableNotExistError(obj string) error {
-	return newNotExistError(fmt.Sprintf("table (%s)", obj))
+	return newErrNotExist(fmt.Sprintf("table (%s)", obj))
 }
 
 func newSchemaNotExistError(obj string) error {
-	return newNotExistError(fmt.Sprintf("schema (%s)", obj))
+	return newErrNotExist(fmt.Sprintf("schema (%s)", obj))
 }
 
-func newIndexNotSupportedError(obj string) error {
-	return newNotSupportedError(fmt.Sprintf("index (%s)", obj))
+func newErrIndexNotSupported(obj string) error {
+	return newErrNotSupported(fmt.Sprintf("index (%s)", obj))
 }
 
 func newIndexTypeNotSupportedError(t document.IndexType) error {
-	return newNotSupportedError(fmt.Sprintf("index type (%02X)", t))
+	return newErrNotSupported(fmt.Sprintf("index type (%02X)", t))
 }
 
 func newQueryNotSupportedError(obj string) error {
-	return newNotSupportedError(fmt.Sprintf("query (%s)", obj))
+	return newErrNotSupported(fmt.Sprintf("query (%s)", obj))
 }
 
 func newPrimaryKeyDataNotExistError(keyName string, obj any) error {
-	return newNotExistError(fmt.Sprintf("primary key data (%s:%v)", keyName, obj))
+	return newErrNotExist(fmt.Sprintf("primary key data (%s:%v)", keyName, obj))
 }
 
 func newObjectInvalidError(obj any) error {
-	return newInvalidError(fmt.Sprintf("object (%s:%v)", obj, obj))
+	return newErrInvalid(fmt.Sprintf("object (%s:%v)", obj, obj))
 }
 
 func newCoulumNotExistError(obj any) error {
-	return newNotExistError(fmt.Sprintf("coulum (%s)", obj))
+	return newErrNotExist(fmt.Sprintf("coulum (%s)", obj))
 }
 
 // Not implemented error functions
 
 func newJoinQueryNotSupportedError(obj any) error {
-	return newNotSupportedError(fmt.Sprintf("JOIN query (%v)", obj))
+	return newErrNotSupported(fmt.Sprintf("JOIN query (%v)", obj))
 }
 
 func newQueryConditionNotSupportedError(obj any) error {
-	return newNotSupportedError(fmt.Sprintf("query condition (%v)", obj))
+	return newErrNotSupported(fmt.Sprintf("query condition (%v)", obj))
 }
 
 func newDataTypeNotEqualError(obj any, et document.ElementType) error {
-	return newNotEqualError(fmt.Sprintf("%v(%T)", obj, obj), et.String())
+	return newErrNotEqual(fmt.Sprintf("%v(%T)", obj, obj), et.String())
 }
