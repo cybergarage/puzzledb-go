@@ -18,7 +18,7 @@ import (
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
-	"github.com/cybergarage/go-postgresql/postgresql/query"
+	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 )
 
@@ -122,7 +122,7 @@ func (service *Service) CreateIndex(conn Conn, stmt *query.CreateIndex) (message
 }
 
 // DropDatabase handles a DROP DATABASE query.
-func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) (message.Responses, error) {
+func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropDatabase")
 	defer ctx.FinishSpan()
@@ -135,16 +135,16 @@ func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) (messa
 	_, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		if stmt.IfExists() {
-			return message.NewCommandCompleteResponsesWith(stmt.String())
+			return nil
 		}
-		return nil, err
+		return err
 	}
 
 	// Drop the specified database.
 
 	err = store.RemoveDatabase(ctx, dbName)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Post a event message to the coordinator.
@@ -154,7 +154,7 @@ func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) (messa
 		log.Error(err)
 	}
 
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return nil
 }
 
 // DropIndex handles a DROP INDEX query.
