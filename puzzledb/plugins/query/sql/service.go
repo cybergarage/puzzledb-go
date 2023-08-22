@@ -15,6 +15,8 @@
 package sql
 
 import (
+	"errors"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
@@ -63,4 +65,28 @@ func (service *Service) insertSecondaryIndex(ctx context.Context, conn Conn, txn
 		return err
 	}
 	return txn.InsertIndex(ctx, secKey, prKey)
+}
+
+func (service *Service) removeSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object) error {
+	idxes, err := schema.SecondaryIndexes()
+	if err != nil {
+		return err
+	}
+	var lastErr error
+	for _, idx := range idxes {
+		err := service.removeSecondaryIndex(ctx, conn, txn, schema, obj, idx)
+		if err != nil && !errors.Is(err, store.ErrNotExist) {
+			lastErr = err
+		}
+	}
+	return lastErr
+}
+
+func (service *Service) removeSecondaryIndex(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index) error {
+	dbName := conn.Database()
+	secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
+	if err != nil {
+		return err
+	}
+	return txn.RemoveIndex(ctx, secKey)
 }
