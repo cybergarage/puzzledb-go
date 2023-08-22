@@ -20,6 +20,7 @@ import (
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/go-mysql/mysql/query"
+	sql "github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -27,31 +28,14 @@ import (
 
 // CreateDatabase should handle a CREATE database statement.
 func (service *Service) CreateDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("CreateDatabase")
-	defer ctx.FinishSpan()
+	q := sql.NewCreateDatabaseWith(
+		stmt.Name(),
+		sql.NewIfNotExistsWith(stmt.IfNotExists()),
+	)
 
-	dbName := stmt.Name()
-
-	store := service.Store()
-	_, err := store.GetDatabase(ctx, dbName)
-	if err == nil {
-		if stmt.IfNotExists() {
-			return mysql.NewResult(), nil
-		}
-		return mysql.NewResult(), newDatabaseExistError(dbName)
-	}
-
-	err = store.CreateDatabase(ctx, dbName)
+	err := service.Service.CreateDatabase(conn, q)
 	if err != nil {
-		return nil, err
-	}
-
-	// Post a event message to the coordinator.
-
-	err = service.PostDatabaseCreateMessage(dbName)
-	if err != nil {
-		log.Error(err)
+		return mysql.NewResult(), err
 	}
 
 	return mysql.NewResult(), nil
