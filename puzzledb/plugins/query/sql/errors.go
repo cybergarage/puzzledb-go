@@ -57,23 +57,23 @@ func newErrDatabaseExist(obj string) error {
 	return newErrExist(fmt.Sprintf("database (%s)", obj))
 }
 
-func newTableExistError(obj string) error {
+func newErrTableExist(obj string) error {
 	return newErrExist(fmt.Sprintf("table (%s)", obj))
 }
 
-func newSchemaExistError(obj string) error {
+func newErrSchemaExist(obj string) error {
 	return newErrExist(fmt.Sprintf("schema (%s)", obj))
 }
 
-func newDatabaseNotExistError(obj string) error {
+func newErrDatabaseNotExist(obj string) error {
 	return newErrNotExist(fmt.Sprintf("database (%s)", obj))
 }
 
-func newTableNotExistError(obj string) error {
+func newErrTableNotExist(obj string) error {
 	return newErrNotExist(fmt.Sprintf("table (%s)", obj))
 }
 
-func newSchemaNotExistError(obj string) error {
+func newErrSchemaNotExist(obj string) error {
 	return newErrNotExist(fmt.Sprintf("schema (%s)", obj))
 }
 
@@ -81,36 +81,36 @@ func newErrIndexNotSupported(obj string) error {
 	return newErrNotSupported(fmt.Sprintf("index (%s)", obj))
 }
 
-func newIndexTypeNotSupportedError(t document.IndexType) error {
+func newErrIndexTypeNotSupported(t document.IndexType) error {
 	return newErrNotSupported(fmt.Sprintf("index type (%02X)", t))
 }
 
-func newQueryNotSupportedError(obj string) error {
+func newErrQueryNotSupported(obj string) error {
 	return newErrNotSupported(fmt.Sprintf("query (%s)", obj))
 }
 
-func newPrimaryKeyDataNotExistError(keyName string, obj any) error {
+func newErrPrimaryKeyDataNotExist(keyName string, obj any) error {
 	return newErrNotExist(fmt.Sprintf("primary key data (%s:%v)", keyName, obj))
 }
 
-func newObjectInvalidError(obj any) error {
+func newErrObjectInvalid(obj any) error {
 	return newErrInvalid(fmt.Sprintf("object (%s:%v)", obj, obj))
 }
 
-func newCoulumNotExistError(obj any) error {
+func newErrCoulumNotExist(obj any) error {
 	return newErrNotExist(fmt.Sprintf("coulum (%s)", obj))
 }
 
 // Not implemented error functions
 
-func newJoinQueryNotSupportedError(obj any) error {
+func newErrJoinQueryNotSupported(obj any) error {
 	return newErrNotSupported(fmt.Sprintf("JOIN query (%v)", obj))
 }
 
-func newQueryConditionNotSupportedError(obj any) error {
+func newErrQueryConditionNotSupported(obj any) error {
 	return newErrNotSupported(fmt.Sprintf("query condition (%v)", obj))
 }
 
-func newDataTypeNotEqualError(obj any, et document.ElementType) error {
+func newErrDataTypeNotEqual(obj any, et document.ElementType) error {
 	return newErrNotEqual(fmt.Sprintf("%v(%T)", obj, obj), et.String())
 }
