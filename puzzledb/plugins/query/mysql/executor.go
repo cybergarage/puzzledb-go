@@ -59,35 +59,14 @@ func (service *Service) AlterDatabase(conn *mysql.Conn, stmt *query.Database) (*
 
 // DropDatabase should handle a DROP database statement.
 func (service *Service) DropDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("DropDatabase")
-	defer ctx.FinishSpan()
+	q := sql.NewDropDatabaseWith(
+		stmt.Name(),
+		sql.NewIfExistsWith(stmt.IfExists()),
+	)
 
-	store := service.Store()
-	dbName := stmt.Name()
-
-	// Check if the database exists.
-
-	_, err := store.GetDatabase(ctx, dbName)
+	err := service.Service.DropDatabase(conn, q)
 	if err != nil {
-		if stmt.IfExists() {
-			return mysql.NewResult(), nil
-		}
-		return nil, err
-	}
-
-	// Drop the specified database.
-
-	err = store.RemoveDatabase(ctx, dbName)
-	if err != nil {
-		return nil, err
-	}
-
-	// Post a event message to the coordinator.
-
-	err = service.PostDatabaseDropMessage(dbName)
-	if err != nil {
-		log.Error(err)
+		return mysql.NewResult(), err
 	}
 
 	return mysql.NewResult(), nil
