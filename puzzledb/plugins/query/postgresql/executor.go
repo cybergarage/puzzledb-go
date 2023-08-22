@@ -15,105 +15,19 @@
 package postgresql
 
 import (
-	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
-	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 )
 
 // CreateDatabase handles a CREATE DATABASE query.
 func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (message.Responses, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("CreateDatabase")
-	defer ctx.FinishSpan()
-
-	dbName := stmt.DatabaseName()
-
-	store := service.Store()
-	_, err := store.GetDatabase(ctx, dbName)
-	if err == nil {
-		if stmt.IfNotExists() {
-			return message.NewCommandCompleteResponsesWith(stmt.String())
-		}
-		return nil, postgresql.NewErrDatabaseExist(dbName)
-	}
-
-	err = store.CreateDatabase(ctx, dbName)
-	if err != nil {
-		return nil, err
-	}
-
-	// Post a event message to the coordinator.
-
-	err = service.PostDatabaseCreateMessage(dbName)
-	if err != nil {
-		log.Error(err)
-	}
-
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return nil, postgresql.NewErrNotImplemented("CREATE DATABASE")
 }
 
 // CreateTable handles a CREATE TABLE query.
 func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTable) (message.Responses, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("CreateTable")
-	defer ctx.FinishSpan()
-
-	store := service.Store()
-	dbName := conn.DatabaseName()
-
-	// Get the collection definition from the schema.
-
-	col, err := NewCollectionWith(stmt)
-	if err != nil {
-		return nil, err
-	}
-
-	// Check if the database exists.
-
-	db, err := store.GetDatabase(ctx, dbName)
-	if err != nil {
-		return nil, err
-	}
-
-	// Create a new table.
-
-	txn, err := db.Transact(true)
-	if err != nil {
-		return nil, err
-	}
-
-	tblName := stmt.TableName()
-	_, err = txn.GetCollection(ctx, tblName)
-	if err == nil {
-		if err := txn.Cancel(ctx); err != nil {
-			return nil, err
-		}
-		if stmt.IfNotExists() {
-			return message.NewCommandCompleteResponsesWith(stmt.String())
-		}
-		return nil, newSchemaExistError(stmt.TableName())
-	}
-
-	err = txn.CreateCollection(ctx, col)
-	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	// Post a event message to the coordinator.
-
-	err = service.PostCollectionCreateMessage(dbName, tblName)
-	if err != nil {
-		log.Error(err)
-	}
-
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return nil, postgresql.NewErrNotImplemented("CREATE TABLE")
 }
 
 // CreateIndex handles a CREATE INDEX query.
@@ -123,151 +37,17 @@ func (service *Service) CreateIndex(conn *postgresql.Conn, stmt *query.CreateInd
 
 // DropDatabase handles a DROP DATABASE query.
 func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropDatabase) (message.Responses, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("DropDatabase")
-	defer ctx.FinishSpan()
-
-	store := service.Store()
-	dbName := stmt.DatabaseName()
-
-	// Check if the database exists.
-
-	_, err := store.GetDatabase(ctx, dbName)
-	if err != nil {
-		if stmt.IfExists() {
-			return message.NewCommandCompleteResponsesWith(stmt.String())
-		}
-		return nil, err
-	}
-
-	// Drop the specified database.
-
-	err = store.RemoveDatabase(ctx, dbName)
-	if err != nil {
-		return nil, err
-	}
-
-	// Post a event message to the coordinator.
-
-	err = service.PostDatabaseDropMessage(dbName)
-	if err != nil {
-		log.Error(err)
-	}
-
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return nil, postgresql.NewErrNotImplemented("DROP DATABASE")
 }
 
 // DropIndex handles a DROP INDEX query.
 func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) (message.Responses, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("DropTable")
-	defer ctx.FinishSpan()
-
-	store := service.Store()
-	dbName := conn.DatabaseName()
-
-	// Check if the database exists.
-
-	db, err := store.GetDatabase(ctx, dbName)
-	if err != nil {
-		if stmt.IfExists() {
-			return message.NewCommandCompleteResponsesWith(stmt.String())
-		}
-		return nil, err
-	}
-
-	// Drop the specified tables.
-
-	txn, err := db.Transact(true)
-	if err != nil {
-		return nil, err
-	}
-
-	tables := stmt.Tables()
-	for _, table := range tables {
-		tblName := table.TableName()
-		_, err = txn.GetCollection(ctx, tblName)
-		if err != nil {
-			if stmt.IfExists() {
-				continue
-			}
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
-		}
-		err = txn.RemoveCollection(ctx, tblName)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
-		}
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	// Post a event message to the coordinator.
-
-	for _, table := range tables {
-		tblName := table.TableName()
-		err := service.PostCollectionDropMessage(dbName, tblName)
-		if err != nil {
-			log.Error(err)
-		}
-	}
-
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return nil, postgresql.NewErrNotImplemented("DROP TABLE")
 }
 
 // Insert handles a INSERT query.
 func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (message.Responses, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Insert")
-	defer ctx.FinishSpan()
-
-	store := service.Store()
-
-	dbName := conn.DatabaseName()
-	db, err := store.GetDatabase(ctx, dbName)
-	if err != nil {
-		return nil, err
-	}
-
-	txn, err := db.Transact(true)
-	if err != nil {
-		return nil, err
-	}
-
-	col, err := txn.GetCollection(ctx, stmt.TableName())
-	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
-	}
-
-	// Inserts the object using the primary key/
-
-	docKey, docObj, err := NewObjectFromInsert(dbName, col, stmt)
-	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
-	}
-
-	err = txn.InsertDocument(ctx, docKey, docObj)
-	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
-	}
-
-	// Inserts the secondary indexes.
-
-	/*
-		err = service.insertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
-		}
-	*/
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return message.NewInsertCompleteResponsesWith(1)
+	return nil, postgresql.NewErrNotImplemented("INSERT")
 }
 
 // Select handles a SELECT query.
