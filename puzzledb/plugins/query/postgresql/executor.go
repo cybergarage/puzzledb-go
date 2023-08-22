@@ -59,7 +59,11 @@ func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) 
 
 // Insert handles a INSERT query.
 func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("INSERT")
+	err := service.Service.Insert(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // Select handles a SELECT query.
