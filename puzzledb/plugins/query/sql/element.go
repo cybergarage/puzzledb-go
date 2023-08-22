@@ -15,18 +15,18 @@
 package sql
 
 import (
-	"github.com/cybergarage/go-mysql/mysql/query"
+	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewIndexWith creates an index from the specified index object.
-func NewElementWith(col *query.ColumnDefinition) (document.Element, error) {
-	t, err := NewElementTypeFrom(col.Type.SQLType())
+// NewElementWith returns a new element with the specified column.
+func NewElementWith(col *query.Column) (document.Element, error) {
+	t, err := NewElementTypeFrom(col.DataType())
 	if err != nil {
 		return nil, err
 	}
 	e := document.NewElement()
-	e.SetName(col.Name.String())
+	e.SetName(col.Name())
 	e.SetType(t)
 	return e, nil
 }
