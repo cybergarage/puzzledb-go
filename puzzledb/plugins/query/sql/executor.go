@@ -23,7 +23,7 @@ import (
 )
 
 // CreateDatabase handles a CREATE DATABASE query.
-func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) (message.Responses, error) {
+func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CreateDatabase")
 	defer ctx.FinishSpan()
@@ -34,14 +34,14 @@ func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) (m
 	_, err := store.GetDatabase(ctx, dbName)
 	if err == nil {
 		if stmt.IfNotExists() {
-			return message.NewCommandCompleteResponsesWith(stmt.String())
+			return nil
 		}
-		return nil, postgresql.NewErrDatabaseExist(dbName)
+		return NewErrDatabaseExist(dbName)
 	}
 
 	err = store.CreateDatabase(ctx, dbName)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Post a event message to the coordinator.
@@ -51,7 +51,7 @@ func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) (m
 		log.Error(err)
 	}
 
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return nil
 }
 
 // CreateTable handles a CREATE TABLE query.
