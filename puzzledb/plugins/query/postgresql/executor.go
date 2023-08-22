@@ -31,7 +31,11 @@ func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.Create
 
 // CreateTable handles a CREATE TABLE query.
 func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTable) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("CREATE TABLE")
+	err := service.Service.CreateTable(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // CreateIndex handles a CREATE INDEX query.
