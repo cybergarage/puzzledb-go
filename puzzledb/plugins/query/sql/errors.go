@@ -53,7 +53,8 @@ func newNotEqualError(obj1 any, obj2 any) error {
 
 // Detail error functions
 
-func newDatabaseExistError(obj string) error {
+// NewErrDatabaseExist returns a new database exist error.
+func NewErrDatabaseExist(obj string) error {
 	return newExistError(fmt.Sprintf("database (%s)", obj))
 }
 
