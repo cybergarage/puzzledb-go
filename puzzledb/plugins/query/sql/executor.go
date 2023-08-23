@@ -272,6 +272,25 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 
 // Select handles a SELECT query.
 func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, store.Transaction, document.Collection, store.ResultSet, error) {
+	selectDocumentObjects := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, cond *query.Condition, orderby *query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
+		docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
+		if err != nil {
+			return nil, err
+		}
+
+		opts := []store.Option{}
+		opts = append(opts, NewLimitWith(limit)...)
+		opts = append(opts, NewOrderWith(orderby)...)
+
+		switch docKeyType {
+		case document.PrimaryIndex:
+			return txn.FindDocuments(ctx, docKey, opts...)
+		case document.SecondaryIndex:
+			return txn.FindDocumentsByIndex(ctx, docKey, opts...)
+		}
+		return nil, newErrIndexTypeNotSupported(docKeyType)
+	}
+
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Select")
 
@@ -301,7 +320,7 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 		return ctx, nil, nil, nil, service.cancelTransactionWithError(ctx, txn, err)
 	}
 
-	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where(), stmt.OrderBy(), stmt.Limit())
+	rs, err := selectDocumentObjects(ctx, conn, txn, col, stmt.Where(), stmt.OrderBy(), stmt.Limit())
 	if err != nil {
 		err = service.cancelTransactionWithError(ctx, txn, err)
 	}
