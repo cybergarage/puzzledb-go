@@ -68,7 +68,72 @@ func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (messa
 
 // Select handles a SELECT query.
 func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("SELECT")
+	ctx, txn, schema, rs, err := service.Service.Select(conn, stmt)
+	defer ctx.FinishSpan()
+	if err != nil {
+		return nil, err
+	}
+	// Row description response
+
+	var names []string
+	if stmt.Columns().IsSelectAll() {
+		names = schema.Elements().Names()
+	} else {
+		names = stmt.Columns().Names()
+	}
+
+	res := message.NewResponses()
+	rowDesc := message.NewRowDescription()
+	for n, name := range names {
+		elem, err := schema.FindElement(name)
+		if err != nil {
+			return nil, err
+		}
+		dt := int32(DataTypeFrom(elem.Type()))
+		fc := int32(FormatCodeFrom(elem.Type()))
+		field := message.NewRowFieldWith(name,
+			message.WithNumber(int16(n+1)),
+			message.WithDataTypeID(dt),
+			message.WithFormatCode(int16(fc)),
+		)
+		rowDesc.AppendField(field)
+	}
+	res = res.Append(rowDesc)
+
+	// Data row response
+
+	nRows := 0
+	for rs.Next() {
+		// obj := rs.Object()
+		dataRow := message.NewDataRow()
+		/*
+			for _, name := range names {
+				v, err := row.ValueByName(name)
+				if err != nil {
+					dataRow.AppendData(nil)
+					continue
+				}
+				dataRow.AppendData(v)
+			}
+		*/
+		res = res.Append(dataRow)
+		nRows++
+	}
+
+	cmpRes, err := message.NewSelectCompleteWith(nRows)
+	if err != nil {
+		return nil, err
+	}
+	res = res.Append(cmpRes)
+
+	// Commit the transaction
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 // Update handles a UPDATE query.
