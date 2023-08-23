@@ -16,3 +16,8 @@ package document
 
 // Indexes represents a list of Index.
 type Indexes []Index
+
+// Len returns the number of indexes.
+func (idxs Indexes) Len() int {
+	return len(idxs)
+}
