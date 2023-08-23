@@ -16,3 +16,8 @@ package document
 
 // Elements represents a list of Element.
 type Elements []Element
+
+// Len returns the number of elements.
+func (elems Elements) Len() int {
+	return len(elems)
+}
