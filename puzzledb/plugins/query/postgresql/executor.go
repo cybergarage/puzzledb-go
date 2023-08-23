@@ -63,7 +63,7 @@ func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (messa
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return message.NewInsertCompleteResponsesWith(1)
 }
 
 // Select handles a SELECT query.
