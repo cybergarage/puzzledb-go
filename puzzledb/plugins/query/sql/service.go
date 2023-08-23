@@ -68,25 +68,25 @@ func (service *Service) insertSecondaryIndexes(ctx context.Context, conn Conn, t
 }
 
 func (service *Service) removeSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object) error {
+	removeSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index) error {
+		dbName := conn.Database()
+		secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
+		if err != nil {
+			return err
+		}
+		return txn.RemoveIndex(ctx, secKey)
+	}
+
 	idxes, err := schema.SecondaryIndexes()
 	if err != nil {
 		return err
 	}
 	var lastErr error
 	for _, idx := range idxes {
-		err := service.removeSecondaryIndex(ctx, conn, txn, schema, obj, idx)
+		err := removeSecondaryIndex(ctx, conn, txn, schema, obj, idx)
 		if err != nil && !errors.Is(err, store.ErrNotExist) {
 			lastErr = err
 		}
 	}
 	return lastErr
-}
-
-func (service *Service) removeSecondaryIndex(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index) error {
-	dbName := conn.Database()
-	secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
-	if err != nil {
-		return err
-	}
-	return txn.RemoveIndex(ctx, secKey)
 }
