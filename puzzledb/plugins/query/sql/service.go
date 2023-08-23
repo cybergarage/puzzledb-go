@@ -17,7 +17,6 @@ package sql
 import (
 	"errors"
 
-	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
@@ -46,45 +45,26 @@ func (service *Service) cancelTransactionWithError(ctx context.Context, txn stor
 }
 
 func (service *Service) insertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, prKey document.Key) error {
+	insertSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index, prKey document.Key) error {
+		dbName := conn.Database()
+		secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
+		if err != nil {
+			return err
+		}
+		return txn.InsertIndex(ctx, secKey, prKey)
+	}
+
 	idxes, err := schema.SecondaryIndexes()
 	if err != nil {
 		return err
 	}
 	for _, idx := range idxes {
-		err := service.insertSecondaryIndex(ctx, conn, txn, schema, obj, idx, prKey)
+		err := insertSecondaryIndex(ctx, conn, txn, schema, obj, idx, prKey)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
-}
-
-func (service *Service) insertSecondaryIndex(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index, prKey document.Key) error {
-	dbName := conn.Database()
-	secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
-	if err != nil {
-		return err
-	}
-	return txn.InsertIndex(ctx, secKey, prKey)
-}
-
-func (service *Service) selectDocumentObjects(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, cond *query.Condition, orderby *query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
-	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
-	if err != nil {
-		return nil, err
-	}
-
-	opts := []store.Option{}
-	opts = append(opts, NewLimitWith(limit)...)
-	opts = append(opts, NewOrderWith(orderby)...)
-
-	switch docKeyType {
-	case document.PrimaryIndex:
-		return txn.FindDocuments(ctx, docKey, opts...)
-	case document.SecondaryIndex:
-		return txn.FindDocumentsByIndex(ctx, docKey, opts...)
-	}
-	return nil, newErrIndexTypeNotSupported(docKeyType)
 }
 
 func (service *Service) removeSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object) error {
