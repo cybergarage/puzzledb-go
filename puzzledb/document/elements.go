@@ -21,3 +21,12 @@ type Elements []Element
 func (elems Elements) Len() int {
 	return len(elems)
 }
+
+// Names returns the element names.
+func (elems Elements) Names() []string {
+	names := []string{}
+	for _, elem := range elems {
+		names = append(names, elem.Name())
+	}
+	return names
+}
