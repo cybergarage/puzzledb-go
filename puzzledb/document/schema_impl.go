@@ -172,7 +172,7 @@ func (s *schema) AddElement(elem Element) {
 }
 
 // Elements returns the schema elements.
-func (s *schema) Elements() []Element {
+func (s *schema) Elements() Elements {
 	return s.elements
 }
 
@@ -215,7 +215,7 @@ func (s *schema) AddIndex(idx Index) {
 }
 
 // Indexes returns the schema indexes.
-func (s *schema) Indexes() []Index {
+func (s *schema) Indexes() Indexes {
 	return s.indexes
 }
 
@@ -241,7 +241,7 @@ func (s *schema) PrimaryIndex() (Index, error) {
 }
 
 // SecondaryIndexes returns the schema secondary indexes.
-func (s *schema) SecondaryIndexes() ([]Index, error) {
+func (s *schema) SecondaryIndexes() (Indexes, error) {
 	secIdxes := []Index{}
 	for _, idx := range s.indexes {
 		if idx.Type() != SecondaryIndex {
