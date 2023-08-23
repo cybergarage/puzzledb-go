@@ -17,21 +17,22 @@ package sql
 import (
 	"errors"
 
+	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
+	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Service represents a new MySQL service instance.
 type Service struct {
-	*query.BaseService
+	*plugins.BaseService
 }
 
 // NewService returns a new MySQL service.
 func NewService() *Service {
 	service := &Service{
-		BaseService: query.NewBaseService(),
+		BaseService: plugins.NewBaseService(),
 	}
 	return service
 }
@@ -65,6 +66,25 @@ func (service *Service) insertSecondaryIndex(ctx context.Context, conn Conn, txn
 		return err
 	}
 	return txn.InsertIndex(ctx, secKey, prKey)
+}
+
+func (service *Service) selectDocumentObjects(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, cond *query.Condition, orderby *query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
+	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
+	if err != nil {
+		return nil, err
+	}
+
+	opts := []store.Option{}
+	opts = append(opts, NewLimitWith(limit)...)
+	opts = append(opts, NewOrderWith(orderby)...)
+
+	switch docKeyType {
+	case document.PrimaryIndex:
+		return txn.FindDocuments(ctx, docKey, opts...)
+	case document.SecondaryIndex:
+		return txn.FindDocumentsByIndex(ctx, docKey, opts...)
+	}
+	return nil, newErrIndexTypeNotSupported(docKeyType)
 }
 
 func (service *Service) removeSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object) error {
