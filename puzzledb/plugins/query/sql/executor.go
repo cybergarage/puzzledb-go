@@ -20,6 +20,7 @@ import (
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // CreateDatabase handles a CREATE DATABASE query.
@@ -269,8 +270,43 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn Conn, stmt *query.Select) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("SELECT")
+func (service *Service) Select(conn Conn, stmt *query.Select) (store.Transaction, store.ResultSet, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Select")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	txn, err := db.Transact(false)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: Support multiple tables
+	tables := stmt.From()
+	if len(tables) != 1 {
+		return nil, nil, service.cancelTransactionWithError(ctx, txn, newErrJoinQueryNotSupported(tables))
+	}
+
+	table := tables[0]
+	tableName := table.Name()
+	col, err := txn.GetCollection(ctx, tableName)
+	if err != nil {
+		return nil, nil, service.cancelTransactionWithError(ctx, txn, err)
+	}
+
+	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where(), stmt.OrderBy(), stmt.Limit())
+	if err != nil {
+		err = service.cancelTransactionWithError(ctx, txn, err)
+	}
+
+	return txn, rs, err
 }
 
 // Update handles a UPDATE query.
