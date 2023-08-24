@@ -56,7 +56,7 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 }
 
 // NewKeyFromIndex returns a key for the specified index.
-func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, objMap Object) (store.Key, error) {
+func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, objMap document.MapObject) (store.Key, error) {
 	objKey := document.NewKey()
 	objKey = append(objKey, dbName)
 	objKey = append(objKey, schema.Name())
@@ -73,7 +73,7 @@ func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, 
 }
 
 // NewKeyFromObject returns a key from the specified object.
-func NewKeyFromObject(dbName string, schema document.Schema, obj Object) (store.Key, error) {
+func NewKeyFromObject(dbName string, schema document.Schema, obj document.MapObject) (store.Key, error) {
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, err

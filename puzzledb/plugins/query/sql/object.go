@@ -19,36 +19,9 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// Object represents a database object.
-type Object map[string]any
-
-// NewObjectWith returns a new object from the specified object.
-func NewObjectWith(anyObj any) (Object, error) {
-	obj, ok := anyObj.(Object)
-	if ok {
-		return obj, nil
-	}
-	objMap, ok := anyObj.(map[any]any)
-	if ok {
-		obj := Object{}
-		for key, val := range objMap {
-			switch k := key.(type) {
-			case string:
-				obj[k] = val
-			case []byte:
-				obj[string(k)] = val
-			default:
-				return nil, newErrObjectInvalid(obj)
-			}
-		}
-		return obj, nil
-	}
-	return nil, newErrObjectInvalid(obj)
-}
-
 // NewObjectFromInsert returns a new object from the specified schema and columns.
-func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, Object, error) {
-	obj := Object{}
+func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, document.MapObject, error) {
+	obj := document.MapObject{}
 	for _, col := range stmt.Columns() {
 		colName := col.Name()
 		// TODO: Checks data types
