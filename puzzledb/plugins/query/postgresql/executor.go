@@ -148,5 +148,9 @@ func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (messa
 
 // Delete handles a DELETE query.
 func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("DELETE")
+	n, err := service.Service.Delete(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewDeleteCompleteResponsesWith(n)
 }
