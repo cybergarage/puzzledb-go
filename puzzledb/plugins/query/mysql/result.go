@@ -32,7 +32,7 @@ func NewResultFrom(dbName string, schema document.Schema, objs []document.Object
 
 	resRows := [][]mysql.Value{}
 	for _, obj := range objs {
-		objMap, err := NewObjectWith(obj)
+		objMap, err := document.NewMapObjectFrom(obj)
 		if err != nil {
 			return nil, err
 		}

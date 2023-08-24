@@ -44,8 +44,8 @@ func (service *Service) cancelTransactionWithError(ctx context.Context, txn stor
 	return err
 }
 
-func (service *Service) insertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, prKey document.Key) error {
-	insertSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index, prKey document.Key) error {
+func (service *Service) insertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, prKey document.Key) error {
+	insertSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index, prKey document.Key) error {
 		dbName := conn.Database()
 		secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
 		if err != nil {
@@ -67,8 +67,8 @@ func (service *Service) insertSecondaryIndexes(ctx context.Context, conn Conn, t
 	return nil
 }
 
-func (service *Service) removeSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object) error {
-	removeSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj Object, idx document.Index) error {
+func (service *Service) removeSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject) error {
+	removeSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index) error {
 		dbName := conn.Database()
 		secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
 		if err != nil {
