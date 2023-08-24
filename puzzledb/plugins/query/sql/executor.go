@@ -310,8 +310,52 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 }
 
 // Update handles a UPDATE query.
-func (service *Service) Update(conn Conn, stmt *query.Update) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("UPDATE")
+func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Update")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return 0, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return 0, err
+	}
+
+	tableName := stmt.TableName()
+	col, err := txn.GetCollection(ctx, tableName)
+	if err != nil {
+		return 0, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	updateCols := stmt.Columns()
+	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), nil, nil)
+	if err != nil {
+		return 0, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	nUpdated := 0
+	for rs.Next() {
+		docObj := rs.Object()
+		err := service.UpdateDocument(ctx, conn, txn, col, docObj, updateCols)
+		if err != nil {
+			return 0, service.CancelTransactionWithError(ctx, txn, err)
+		}
+		nUpdated++
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return 0, err
+	}
+
+	return nUpdated, nil
 }
 
 // Delete handles a DELETE query.
