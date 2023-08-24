@@ -24,7 +24,6 @@ import (
 
 // Service represents a new MySQL service instance.
 type Service struct {
-	*postgresql.BaseExecutor
 	*postgresql.Server
 	*sql.Service
 }
@@ -32,9 +31,8 @@ type Service struct {
 // NewService returns a new MySQL service.
 func NewService() query.Service {
 	service := &Service{
-		BaseExecutor: postgresql.NewBaseExecutor(),
-		Server:       postgresql.NewServer(),
-		Service:      sql.NewService(),
+		Server:  postgresql.NewServer(),
+		Service: sql.NewService(),
 	}
 	service.SetAuthenticator(service)
 	service.SetQueryExecutor(service)
