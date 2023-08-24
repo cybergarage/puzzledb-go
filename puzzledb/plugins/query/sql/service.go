@@ -53,8 +53,12 @@ func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, tx
 	}
 
 	opts := []store.Option{}
-	opts = append(opts, NewLimitWith(limit)...)
-	opts = append(opts, NewOrderWith(orderby)...)
+	if limit != nil {
+		opts = append(opts, NewLimitWith(limit)...)
+	}
+	if orderby != nil {
+		opts = append(opts, NewOrderWith(orderby)...)
+	}
 
 	switch docKeyType {
 	case document.PrimaryIndex:
