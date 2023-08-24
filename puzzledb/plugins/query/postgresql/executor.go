@@ -18,6 +18,7 @@ import (
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 // CreateDatabase handles a CREATE DATABASE query.
@@ -104,18 +105,22 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 
 	nRows := 0
 	for rs.Next() {
-		// obj := rs.Object()
+		obj := rs.Object()
+		objMap, err := document.NewMapObjectFrom(obj)
+		if err != nil {
+			return nil, err
+		}
 		dataRow := message.NewDataRow()
-		/*
-			for _, name := range names {
-				v, err := row.ValueByName(name)
-				if err != nil {
-					dataRow.AppendData(nil)
-					continue
-				}
-				dataRow.AppendData(v)
+		for _, name := range names {
+			v, ok := objMap[name]
+			if !ok {
+				v = nil
 			}
-		*/
+			err := dataRow.AppendData(v)
+			if err != nil {
+				return nil, err
+			}
+		}
 		res = res.Append(dataRow)
 		nRows++
 	}
