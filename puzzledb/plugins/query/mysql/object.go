@@ -17,6 +17,7 @@ package mysql
 import (
 	"github.com/cybergarage/go-mysql/mysql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
 // NewObjectFromInsert returns a new object from the specified schema and columns.
@@ -37,7 +38,7 @@ func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Inse
 		obj[colName] = col.Value()
 	}
 
-	objKey, err := NewKeyFromObject(dbName, schema, obj)
+	objKey, err := sql.NewKeyFromObject(dbName, schema, obj)
 	if err != nil {
 		return nil, nil, err
 	}
