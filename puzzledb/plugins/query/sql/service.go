@@ -17,18 +17,19 @@ package sql
 import (
 	"errors"
 
+	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	plugins "github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// Service represents a new MySQL service instance.
+// Service represents a new SQL service instance.
 type Service struct {
 	*plugins.BaseService
 }
 
-// NewService returns a new MySQL service.
+// NewService returns a new SQL service.
 func NewService() *Service {
 	service := &Service{
 		BaseService: plugins.NewBaseService(),
@@ -36,15 +37,36 @@ func NewService() *Service {
 	return service
 }
 
-// cancelTransactionWithError cancels the specified transaction with the specified error.
-func (service *Service) cancelTransactionWithError(ctx context.Context, txn store.Transaction, err error) error {
+// CancelTransactionWithError cancels the specified transaction with the specified error.
+func (service *Service) CancelTransactionWithError(ctx context.Context, txn store.Transaction, err error) error {
 	if txErr := txn.Cancel(ctx); txErr != nil {
 		return txErr
 	}
 	return err
 }
 
-func (service *Service) insertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, prKey document.Key) error {
+// SelectDatabaseObjects returns a result set of the specified database objects.
+func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, cond *query.Condition, orderby *query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
+	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
+	if err != nil {
+		return nil, err
+	}
+
+	opts := []store.Option{}
+	opts = append(opts, NewLimitWith(limit)...)
+	opts = append(opts, NewOrderWith(orderby)...)
+
+	switch docKeyType {
+	case document.PrimaryIndex:
+		return txn.FindDocuments(ctx, docKey, opts...)
+	case document.SecondaryIndex:
+		return txn.FindDocumentsByIndex(ctx, docKey, opts...)
+	}
+	return nil, newErrIndexTypeNotSupported(docKeyType)
+}
+
+// InsertSecondaryIndexes inserts secondary indexes for the specified object.
+func (service *Service) InsertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, prKey document.Key) error {
 	insertSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index, prKey document.Key) error {
 		dbName := conn.Database()
 		secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
@@ -67,7 +89,8 @@ func (service *Service) insertSecondaryIndexes(ctx context.Context, conn Conn, t
 	return nil
 }
 
-func (service *Service) removeSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject) error {
+// RemoveSecondaryIndexes removes secondary indexes for the specified object.
+func (service *Service) RemoveSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject) error {
 	removeSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index) error {
 		dbName := conn.Database()
 		secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
@@ -89,4 +112,78 @@ func (service *Service) removeSecondaryIndexes(ctx context.Context, conn Conn, t
 		}
 	}
 	return lastErr
+}
+
+// UpdateDocument updates the specified object.
+func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj any, updateCols query.ColumnList) error {
+	docObj, err := document.NewMapObjectFrom(obj)
+	if err != nil {
+		return err
+	}
+
+	// Removes current secondary indexes
+	err = service.RemoveSecondaryIndexes(ctx, conn, txn, schema, docObj)
+	if err != nil {
+		return err
+	}
+
+	// Updates object
+	dbName := conn.Database()
+	for _, updateCol := range updateCols.Columns() {
+		name := updateCol.Name()
+		// NOTE: Column existence has not been confirmed.
+		_, ok := docObj[name]
+		if !ok {
+			return newErrCoulumNotExist(name)
+		}
+		docObj[name] = updateCol.Value()
+	}
+	docKey, err := NewKeyFromObject(dbName, schema, docObj)
+	if err != nil {
+		return err
+	}
+
+	err = txn.UpdateDocument(ctx, docKey, docObj)
+	if err != nil {
+		return err
+	}
+
+	// Inserts new secondary indexes.
+	err = service.InsertSecondaryIndexes(ctx, conn, txn, schema, docObj, docKey)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteDocument deletes the specified object.
+func (service *Service) DeleteDocument(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, docKey document.Key) error {
+	err := txn.RemoveDocument(ctx, docKey)
+	if err != nil {
+		return err
+	}
+	// Removes secondary indexes
+	idxes, err := schema.SecondaryIndexes()
+	if err != nil {
+		return err
+	}
+	if len(idxes) == 0 {
+		return nil
+	}
+	rs, err := txn.FindDocuments(ctx, docKey)
+	if err != nil {
+		return err
+	}
+	for rs.Next() {
+		docObj := rs.Object()
+		obj, err := document.NewMapObjectFrom(docObj)
+		if err != nil {
+			return err
+		}
+		err = service.RemoveSecondaryIndexes(ctx, conn, txn, schema, obj)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

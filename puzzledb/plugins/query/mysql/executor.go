@@ -15,8 +15,6 @@
 package mysql
 
 import (
-	"errors"
-
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/go-mysql/mysql/query"
@@ -480,7 +478,7 @@ func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, tx
 	}
 
 	// Removes current secondary indexes
-	err = service.removeSecondaryIndexes(ctx, conn, txn, schema, docObj)
+	err = service.RemoveSecondaryIndexes(ctx, conn, txn, schema, docObj)
 	if err != nil {
 		return err
 	}
@@ -557,7 +555,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 
 	switch docKeyType {
 	case document.PrimaryIndex:
-		err = service.deleteDocument(ctx, conn, txn, col, docKey)
+		err = service.DeleteDocument(ctx, conn, txn, col, docKey)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, txn, err)
 		}
@@ -580,7 +578,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 			if err != nil {
 				return nil, service.CancelTransactionWithError(ctx, txn, err)
 			}
-			err = service.deleteDocument(ctx, conn, txn, col, objKey)
+			err = service.DeleteDocument(ctx, conn, txn, col, objKey)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(ctx, txn, err)
 			}
@@ -592,61 +590,6 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 		return nil, err
 	}
 	return mysql.NewResult(), nil
-}
-
-func (service *Service) deleteDocument(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, docKey document.Key) error {
-	err := txn.RemoveDocument(ctx, docKey)
-	if err != nil {
-		return err
-	}
-	// Removes secondary indexes
-	idxes, err := schema.SecondaryIndexes()
-	if err != nil {
-		return err
-	}
-	if len(idxes) == 0 {
-		return nil
-	}
-	rs, err := txn.FindDocuments(ctx, docKey)
-	if err != nil {
-		return err
-	}
-	for rs.Next() {
-		docObj := rs.Object()
-		obj, err := document.NewMapObjectFrom(docObj)
-		if err != nil {
-			return err
-		}
-		err = service.removeSecondaryIndexes(ctx, conn, txn, schema, obj)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (service *Service) removeSecondaryIndexes(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj document.MapObject) error {
-	idxes, err := schema.SecondaryIndexes()
-	if err != nil {
-		return err
-	}
-	var lastErr error
-	for _, idx := range idxes {
-		err := service.removeSecondaryIndex(ctx, conn, txn, schema, obj, idx)
-		if err != nil && !errors.Is(err, store.ErrNotExist) {
-			lastErr = err
-		}
-	}
-	return lastErr
-}
-
-func (service *Service) removeSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index) error {
-	dbName := conn.Database()
-	secKey, err := sqlc.NewKeyFromIndex(dbName, schema, idx, obj)
-	if err != nil {
-		return err
-	}
-	return txn.RemoveIndex(ctx, secKey)
 }
 
 // ShowDatabases should handle a SHOW DATABASES statement.
