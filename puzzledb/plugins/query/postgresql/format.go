@@ -22,7 +22,7 @@ import (
 // FormatCodeFrom returns a format code of PostgreSQL from the specified query data type.
 func FormatCodeFrom(t document.ElementType) query.FormatCode {
 	switch t { //nolint:gocritic,exhaustive
-	case document.String:
+	case document.StringType:
 		return query.TextFormat
 	}
 	return query.BinaryFormat

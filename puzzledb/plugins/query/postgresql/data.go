@@ -22,25 +22,25 @@ import (
 // DataTypeFrom returns a data type of PostgreSQL from the specified query data type.
 func DataTypeFrom(t document.ElementType) query.DataType {
 	switch t { //nolint:exhaustive
-	case document.Int8:
+	case document.Int8Type:
 		return query.ByteaType
-	case document.Int16:
+	case document.Int16Type:
 		return query.Int2Type
-	case document.Int32:
+	case document.Int32Type:
 		return query.Int4Type
-	case document.Int64:
+	case document.Int64Type:
 		return query.Int8Type
-	case document.Binary:
+	case document.BinaryType:
 		return query.ByteaType
-	case document.String:
+	case document.StringType:
 		return query.TextType
-	case document.Float64:
+	case document.Float64Type:
 		return query.Float8Type
-	case document.Float32:
+	case document.Float32Type:
 		return query.Float4Type
-	case document.DateTime:
+	case document.DateTimeType:
 		return query.TimestampType
-	case document.Bool:
+	case document.BoolType:
 		return query.BoolType
 	}
 	return 0

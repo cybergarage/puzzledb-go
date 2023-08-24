@@ -38,6 +38,10 @@ func newSchemaInvalidError(obj any) error {
 	return fmt.Errorf("schema (%T:%v) is %w", obj, obj, ErrInvalid)
 }
 
+func newObjectInvalidError(obj any) error {
+	return fmt.Errorf("object (%T:%v) is %w", obj, obj, ErrInvalid)
+}
+
 func newIndexInvalidError(obj any) error {
 	return fmt.Errorf("index (%T:%v) is %w", obj, obj, ErrInvalid)
 }
