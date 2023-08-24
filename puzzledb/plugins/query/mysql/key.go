@@ -20,11 +20,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// NewKeyWith returns a key from the specified parameters.
-func NewKeyWith(dbName string, tblName string, keyName string, val any) (store.Key, error) {
-	return document.NewKeyWith(dbName, tblName, keyName, val), nil
-}
-
 // NewKeyFromCond returns a key for the specified condition.
 func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition) (store.Key, document.IndexType, error) {
 	if cond == nil {
@@ -54,30 +49,4 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 		return nil, 0, newQueryConditionNotSupportedError(cond)
 	}
 	return nil, 0, newQueryConditionNotSupportedError(cond)
-}
-
-// NewKeyFromIndex returns a key for the specified index.
-func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, objMap document.MapObject) (store.Key, error) {
-	objKey := document.NewKey()
-	objKey = append(objKey, dbName)
-	objKey = append(objKey, schema.Name())
-	objKey = append(objKey, idx.Name())
-	for _, elem := range idx.Elements() {
-		name := elem.Name()
-		v, ok := objMap[name]
-		if !ok {
-			return nil, newObjectInvalidError(objMap)
-		}
-		objKey = append(objKey, v)
-	}
-	return objKey, nil
-}
-
-// NewKeyFromObject returns a key from the specified object.
-func NewKeyFromObject(dbName string, schema document.Schema, obj document.MapObject) (store.Key, error) {
-	prIdx, err := schema.PrimaryIndex()
-	if err != nil {
-		return nil, err
-	}
-	return NewKeyFromIndex(dbName, schema, prIdx, obj)
 }
