@@ -23,21 +23,21 @@ import (
 func elementTypeFromSQLType(sqlType query.ValType) (document.ElementType, error) {
 	switch sqlType {
 	case query.Int8:
-		return document.Int8, nil
+		return document.Int8Type, nil
 	case query.Int16:
-		return document.Int16, nil
+		return document.Int16Type, nil
 	case query.Int32:
-		return document.Int32, nil
+		return document.Int32Type, nil
 	case query.Int64:
-		return document.Int64, nil
+		return document.Int64Type, nil
 	case query.Float32:
-		return document.Float32, nil
+		return document.Float32Type, nil
 	case query.Float64:
-		return document.Float64, nil
+		return document.Float64Type, nil
 	case query.Text, query.VarChar:
-		return document.String, nil
+		return document.StringType, nil
 	case query.Blob:
-		return document.Binary, nil
+		return document.BinaryType, nil
 	default:
 		return 0, newNotSupportedError(sqlType.String())
 	}
@@ -45,23 +45,23 @@ func elementTypeFromSQLType(sqlType query.ValType) (document.ElementType, error)
 
 func sqlTypeFromElementType(elemType document.ElementType) (query.ValType, error) {
 	switch elemType {
-	case document.Int8:
+	case document.Int8Type:
 		return query.Int8, nil
-	case document.Int16:
+	case document.Int16Type:
 		return query.Int16, nil
-	case document.Int32:
+	case document.Int32Type:
 		return query.Int32, nil
-	case document.Int64:
+	case document.Int64Type:
 		return query.Int64, nil
-	case document.Float32:
+	case document.Float32Type:
 		return query.Float32, nil
-	case document.Float64:
+	case document.Float64Type:
 		return query.Float64, nil
-	case document.String:
+	case document.StringType:
 		return query.Text /* query.VarChar*/, nil
-	case document.Binary:
+	case document.BinaryType:
 		return query.Blob, nil
-	case document.Array, document.Map, document.DateTime, document.Bool:
+	case document.ArrayType, document.MapType, document.DateTimeType, document.BoolType:
 		return 0, newNotSupportedError(elemType)
 	default:
 		return 0, newNotSupportedError(elemType)

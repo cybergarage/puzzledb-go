@@ -25,19 +25,19 @@ func NewValueFrom(elem document.Element, val any) (mysql.Value, error) {
 	et := elem.Type()
 	var eb []byte
 	switch et {
-	case document.String:
+	case document.StringType:
 		v, ok := val.(string)
 		if !ok {
 			return mysql.NewNullValue(), newDataTypeNotEqualError(val, et)
 		}
 		eb = []byte(v)
-	case document.Binary:
+	case document.BinaryType:
 		v, ok := val.([]byte)
 		if !ok {
 			return mysql.NewNullValue(), newDataTypeNotEqualError(val, et)
 		}
 		eb = v
-	case document.Bool:
+	case document.BoolType:
 		v, ok := val.(bool)
 		if !ok {
 			return mysql.NewNullValue(), newDataTypeNotEqualError(val, et)
@@ -47,12 +47,12 @@ func NewValueFrom(elem document.Element, val any) (mysql.Value, error) {
 		} else {
 			eb = []byte("0")
 		}
-	case document.Int8, document.Int16, document.Int32, document.Int64, document.Float32, document.Float64:
+	case document.Int8Type, document.Int16Type, document.Int32Type, document.Int64Type, document.Float32Type, document.Float64Type:
 		eb = []byte(fmt.Sprintf("%v", val))
-	case document.DateTime:
+	case document.DateTimeType:
 		// TODO: Converts binary date format of MySQL protocol
 		eb = []byte(fmt.Sprintf("%v", val))
-	case document.Array, document.Map:
+	case document.ArrayType, document.MapType:
 		return mysql.NewNullValue(), newNotSupportedError(et)
 	default:
 		return mysql.NewNullValue(), newNotSupportedError(et)

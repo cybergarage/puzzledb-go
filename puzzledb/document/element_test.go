@@ -21,16 +21,16 @@ import (
 )
 
 var elementTypes = []ElementType{
-	Int8,
-	Int16,
-	Int32,
-	Int64,
-	String,
-	Binary,
-	Float32,
-	Float64,
-	DateTime,
-	Bool,
+	Int8Type,
+	Int16Type,
+	Int32Type,
+	Int64Type,
+	StringType,
+	BinaryType,
+	Float32Type,
+	Float64Type,
+	DateTimeType,
+	BoolType,
 }
 
 func TestElement(t *testing.T) {

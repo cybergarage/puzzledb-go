@@ -19,22 +19,22 @@ type ElementType int8
 const (
 	// 0x0x (Reserved).
 	// 0x1x (Reserved - Collection).
-	Array ElementType = 0x10
-	Map   ElementType = 0x11
+	ArrayType ElementType = 0x10
+	MapType   ElementType = 0x11
 	// 0x20 Integer.
-	Int8  ElementType = 0x20
-	Int16 ElementType = 0x21
-	Int32 ElementType = 0x22
-	Int64 ElementType = 0x23
-	// 0x30 String.
-	String ElementType = 0x30
-	Binary ElementType = 0x31
+	Int8Type  ElementType = 0x20
+	Int16Type ElementType = 0x21
+	Int32Type ElementType = 0x22
+	Int64Type ElementType = 0x23
+	// 0x30 StringType.
+	StringType ElementType = 0x30
+	BinaryType ElementType = 0x31
 	// 0x40 Floating-point.
-	Float32 ElementType = 0x40
-	Float64 ElementType = 0x41
+	Float32Type ElementType = 0x40
+	Float64Type ElementType = 0x41
 	// 0x70 Special.
-	DateTime ElementType = 0x70
-	Bool     ElementType = 0x71
+	DateTimeType ElementType = 0x70
+	BoolType     ElementType = 0x71
 )
 
 type Element interface {
@@ -66,29 +66,29 @@ func NewElementTypeWith(v any) (ElementType, error) {
 // String represents the string representation.
 func (et ElementType) String() string {
 	switch et {
-	case Array:
+	case ArrayType:
 		return "array"
-	case Map:
+	case MapType:
 		return "map"
-	case Int8:
+	case Int8Type:
 		return "int8"
-	case Int16:
+	case Int16Type:
 		return "int16"
-	case Int32:
+	case Int32Type:
 		return "int32"
-	case Int64:
+	case Int64Type:
 		return "int64"
-	case String:
+	case StringType:
 		return "string"
-	case Binary:
+	case BinaryType:
 		return "binary"
-	case Float32:
+	case Float32Type:
 		return "float32"
-	case Float64:
+	case Float64Type:
 		return "float64"
-	case DateTime:
+	case DateTimeType:
 		return "datetime"
-	case Bool:
+	case BoolType:
 		return "bool"
 	}
 	return ""
