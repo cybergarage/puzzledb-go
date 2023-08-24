@@ -143,7 +143,11 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 
 // Update handles a UPDATE query.
 func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("UPDATE")
+	n, err := service.Service.Update(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewUpdateCompleteResponsesWith(n)
 }
 
 // Delete handles a DELETE query.
