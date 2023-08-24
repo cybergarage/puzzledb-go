@@ -315,6 +315,71 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (message.Responses
 }
 
 // Delete handles a DELETE query.
-func (service *Service) Delete(conn Conn, stmt *query.Delete) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("DELETE")
+func (service *Service) Delete(conn Conn, stmt *query.Delete) error {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Delete")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return err
+	}
+
+	tableName := stmt.TableName()
+	col, err := txn.GetCollection(ctx, tableName)
+	if err != nil {
+		return service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	docKey, docKeyType, err := NewKeyFromCond(dbName, col, stmt.Where())
+	if err != nil {
+		return service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	switch docKeyType {
+	case document.PrimaryIndex:
+		err = service.DeleteDocument(ctx, conn, txn, col, docKey)
+		if err != nil {
+			return service.CancelTransactionWithError(ctx, txn, err)
+		}
+	case document.SecondaryIndex:
+		rs, err := txn.FindDocumentsByIndex(ctx, docKey)
+		if err != nil {
+			return service.CancelTransactionWithError(ctx, txn, err)
+		}
+		prIdx, err := col.PrimaryIndex()
+		if err != nil {
+			return service.CancelTransactionWithError(ctx, txn, err)
+		}
+		for rs.Next() {
+			docObj := rs.Object()
+			obj, err := document.NewMapObjectFrom(docObj)
+			if err != nil {
+				return err
+			}
+			objKey, err := NewKeyFromIndex(dbName, col, prIdx, obj)
+			if err != nil {
+				return service.CancelTransactionWithError(ctx, txn, err)
+			}
+			err = service.DeleteDocument(ctx, conn, txn, col, objKey)
+			if err != nil {
+				return service.CancelTransactionWithError(ctx, txn, err)
+			}
+		}
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
