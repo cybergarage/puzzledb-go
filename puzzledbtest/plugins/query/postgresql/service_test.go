@@ -29,7 +29,7 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 		return
 	}
 
-	client := sqltest.NewMySQLClient()
+	client := sqltest.NewPostgresClient()
 
 	testNames := []string{
 		"YCSBWorkload",
