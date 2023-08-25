@@ -67,6 +67,9 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
         mysql:
           enabled: true
           port: 3306
+        postgresql:
+          enabled: true
+          port: 5432
       tracer:
         default: opentelemetry
         opentelemetry:
