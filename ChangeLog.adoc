@@ -1,11 +1,9 @@
 # Changelog
 
-## v1.0.0 (2023-xx-xx)
-* Official release
+## v1.x.x (2023-xx-xx)
 * New features
 ** Distributed plug-ins
 *** Storage plug-ins
-**** Add FoundationDB plug-in
 **** Add cache store plug-in
 *** Coordinator plug-ins
 **** Added etcd plug-in
@@ -17,6 +15,36 @@
 **** Added support for new queries
 *** Redis plug-in
 **** Added support for new queries
+
+## v1.1.0 (2023-xx-xx)
+* New features
+** Distributed plug-ins
+*** Storage plug-ins
+**** Add cache store plug-in
+*** Coordinator plug-ins
+**** Added etcd plug-in
+* Improvements
+** Query plug-ins
+*** MySQL plug-in
+**** Added support for new queries
+*** PostgreSQL plug-in
+**** Added support for new queries
+*** MongoDB plug-in
+**** Added support for new queries
+*** Redis plug-in
+**** Added support for new queries
+
+## v1.0.0 (2023-08-xx)
+* Initial public release
+* New features
+** Distributed plug-ins
+*** Storage plug-ins
+**** Add FoundationDB plug-in
+*** Coordinator plug-ins
+**** Add FoundationDB plug-in
+**** go-memdb plug-in (standalone)
+** Query plug-ins
+*** Add PostgreSQL plug-in
 
 ## v0.9.0 (2023-05-07)
 * New features
