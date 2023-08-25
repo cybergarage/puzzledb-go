@@ -35,7 +35,7 @@
 **** Added support for new queries
 
 ## v1.0.0 (2023-08-xx)
-* Initial public release
+* Initial public technology preview release
 * New features
 ** Distributed plug-ins
 *** Storage plug-ins
@@ -73,7 +73,7 @@
 ***** Fix encoder not to panic on Ubuntu 20.04
 
 ## v0.8.0 (2023-04-10)
-* Initial public technology preview release
+* Initial release
 * New Features
 ** Coderr plug-ins
 *** Key coder plug-ins
