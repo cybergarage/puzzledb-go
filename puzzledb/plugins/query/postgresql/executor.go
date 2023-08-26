@@ -111,12 +111,13 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 			return nil, err
 		}
 		dataRow := message.NewDataRow()
-		for _, name := range names {
+		for n, name := range names {
 			v, ok := objMap[name]
 			if !ok {
 				v = nil
 			}
-			err := dataRow.AppendData(v)
+			field := rowDesc.Field(n)
+			err := dataRow.AppendData(field, v)
 			if err != nil {
 				return nil, err
 			}
