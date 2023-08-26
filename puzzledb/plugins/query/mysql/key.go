@@ -44,7 +44,7 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 		if colName == prIdx.Name() {
 			prIdxType = document.PrimaryIndex
 		}
-		return document.NewKeyWith(dbName, schema.Name(), colName, val.Val), prIdxType, nil
+		return document.NewKeyWith(dbName, schema.Name(), val.Val), prIdxType, nil
 	case *query.RangeCond:
 		return nil, 0, newQueryConditionNotSupportedError(cond)
 	}
