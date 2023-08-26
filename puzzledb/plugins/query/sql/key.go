@@ -71,7 +71,7 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 			if colName == prIdx.Name() {
 				prIdxType = document.PrimaryIndex
 			}
-			return document.NewKeyWith(dbName, schema.Name(), colName, colValue), prIdxType, nil
+			return document.NewKeyWith(dbName, schema.Name(), colValue), prIdxType, nil
 		default:
 			return nil, 0, newErrQueryConditionNotSupported(cond)
 		}
