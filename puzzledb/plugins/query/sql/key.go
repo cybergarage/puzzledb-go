@@ -30,7 +30,6 @@ func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, 
 	objKey := document.NewKey()
 	objKey = append(objKey, dbName)
 	objKey = append(objKey, schema.Name())
-	objKey = append(objKey, idx.Name())
 	for _, elem := range idx.Elements() {
 		name := elem.Name()
 		v, ok := objMap[name]
