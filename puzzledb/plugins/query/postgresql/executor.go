@@ -55,7 +55,11 @@ func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropData
 
 // DropIndex handles a DROP INDEX query.
 func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("DROP TABLE")
+	err := service.Service.DropTable(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // Insert handles a INSERT query.
