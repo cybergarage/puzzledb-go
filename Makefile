@@ -84,7 +84,7 @@ install:
 	go install -v -gcflags=${GCFLAGS} ${BINS}
 
 run: cmd
-	./${BIN_SERVER}
+	${GOBIN}/${BIN_SERVER}
 
 rund:
 	docker container run -it --rm -p 6379:6379 -p 27017:27017 -p 3306:3306 -p 50053:50053 -p 9181:9181 -p 5432:5432 ${BIN_SERVER_DOCKER_TAG_LATEST}
