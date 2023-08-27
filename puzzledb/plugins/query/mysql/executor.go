@@ -192,62 +192,20 @@ func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql
 
 // DropTable should handle a DROP table statement.
 func (service *Service) DropTable(conn *mysql.Conn, stmt *query.Schema) (*mysql.Result, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("DropTable")
-	defer ctx.FinishSpan()
-
-	store := service.Store()
-	dbName := conn.Database()
-
-	// Check if the database exists.
-
-	db, err := store.GetDatabase(ctx, dbName)
+	tables := []*sql.Table{}
+	for _, table := range stmt.GetFromTables() {
+		tables = append(tables, sql.NewTableWith(table.Name.String()))
+	}
+	q := sql.NewDropTableWith(
+		sql.NewTablesWith(tables...),
+		sql.NewIfExistsWith(stmt.GetIfExists()),
+	)
+	err := service.Service.DropTable(conn, q)
 	if err != nil {
-		if stmt.GetIfExists() {
-			return mysql.NewResult(), nil
-		}
-		return nil, err
+		return mysql.NewResult(), err
 	}
 
-	// Drop the specified tables.
-
-	txn, err := db.Transact(true)
-	if err != nil {
-		return nil, err
-	}
-
-	tables := stmt.GetFromTables()
-	for _, table := range tables {
-		tblName := table.Name.String()
-		_, err = txn.GetCollection(ctx, tblName)
-		if err != nil {
-			if stmt.GetIfExists() {
-				continue
-			}
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
-		}
-		err = txn.RemoveCollection(ctx, tblName)
-		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
-		}
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	// Post a event message to the coordinator.
-
-	for _, table := range tables {
-		tblName := table.Name.String()
-		err := service.PostCollectionDropMessage(dbName, tblName)
-		if err != nil {
-			log.Error(err)
-		}
-	}
-
-	return mysql.NewResultWithRowsAffected(1), nil
+	return mysql.NewResult(), nil
 }
 
 // RenameTable should handle a RENAME table statement.
