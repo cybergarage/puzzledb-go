@@ -160,7 +160,7 @@ func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) error 
 }
 
 // DropIndex handles a DROP INDEX query.
-func (service *Service) DropTable(conn Conn, stmt *query.DropTable) (message.Responses, error) {
+func (service *Service) DropTable(conn Conn, stmt *query.DropTable) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropTable")
 	defer ctx.FinishSpan()
@@ -173,16 +173,16 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) (message.Res
 	db, err := store.GetDatabase(ctx, dbName)
 	if err != nil {
 		if stmt.IfExists() {
-			return message.NewCommandCompleteResponsesWith(stmt.String())
+			return nil
 		}
-		return nil, err
+		return err
 	}
 
 	// Drop the specified tables.
 
 	txn, err := db.Transact(true)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	tables := stmt.Tables()
@@ -193,17 +193,17 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) (message.Res
 			if stmt.IfExists() {
 				continue
 			}
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
+			return service.CancelTransactionWithError(ctx, txn, err)
 		}
 		err = txn.RemoveCollection(ctx, tblName)
 		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
+			return service.CancelTransactionWithError(ctx, txn, err)
 		}
 	}
 
 	err = txn.Commit(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Post a event message to the coordinator.
@@ -216,7 +216,7 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) (message.Res
 		}
 	}
 
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return nil
 }
 
 // Insert handles a INSERT query.
