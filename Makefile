@@ -22,7 +22,7 @@ PRODUCT_NAME=puzzledb-go
 MODULE_ROOT=${GIT_ROOT}/${PRODUCT_NAME}
 
 PKG_NAME=puzzledb
-PKG_VER=$(shell git describe --abbrev=0 --tags)
+PKG_VER=$(shell git tag | tail -n 1)
 PKG_COVER=${PKG_NAME}-cover
 PKG_ROOT=${MODULE_ROOT}/${PKG_NAME}
 
