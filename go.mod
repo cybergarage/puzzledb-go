@@ -1,6 +1,8 @@
 module github.com/cybergarage/puzzledb-go
 
-go 1.20
+go 1.21
+
+toolchain go1.21.0
 
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20230317231317-e330030d07af
@@ -9,9 +11,9 @@ require (
 	github.com/cybergarage/go-mongo v1.0.2
 	github.com/cybergarage/go-mysql v1.0.3
 	github.com/cybergarage/go-pict v0.8.2
-	github.com/cybergarage/go-postgresql v0.9.1
+	github.com/cybergarage/go-postgresql v1.0.0
 	github.com/cybergarage/go-redis v1.3.6
-	github.com/cybergarage/go-safecast v1.2.1
+	github.com/cybergarage/go-sqlparser v1.0.0
 	github.com/cybergarage/go-sqltest v1.0.0
 	github.com/cybergarage/go-tracing v1.1.2
 	github.com/dgraph-io/ristretto v0.1.1
@@ -27,9 +29,11 @@ require (
 
 require (
 	github.com/AdaLogics/go-fuzz-headers v0.0.0-20211102141018-f7be0cbad29c // indirect
+	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
+	github.com/cybergarage/go-safecast v1.2.1 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
@@ -47,6 +51,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
+	github.com/lib/pq v1.10.9 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -81,6 +86,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.15.1 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
