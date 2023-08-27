@@ -9,8 +9,8 @@ RUN apt-get update && \
     apt-get install -y golang wget adduser && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.2.5/foundationdb-clients_7.2.5-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-clients_7.2.5-1_amd64.deb &&  \
+RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.15/foundationdb-clients_7.3.15-1_amd64.deb &&  \
+    apt install /tmp/foundationdb-clients_7.3.15-1_amd64.deb &&  \
     rm /tmp/*.deb
 
 RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
