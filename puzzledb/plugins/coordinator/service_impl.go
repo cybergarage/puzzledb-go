@@ -174,6 +174,10 @@ func (coord *serviceImpl) getLatestMessageClock(txn coordinator.Transaction) (cl
 		return 0, err
 	}
 
+	if rs == nil {
+		return 0, nil
+	}
+
 	if !rs.Next() {
 		return 0, nil
 	}
