@@ -64,7 +64,7 @@ This technology preview version partially supports major database models and pro
 
     -   [MySQL](doc/mysql.md)
 
-    -   PostgreSQL (Planning)
+    -   [PostgreSQL](doc/postgresql.md)
 
 # Roadmap
 

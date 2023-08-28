@@ -36,7 +36,7 @@ This technology preview version partially supports major database models and pro
 ** link:doc/redis.md[Redis]
 ** link:doc/mongodb.md[MongoDB]
 ** link:doc/mysql.md[MySQL]
-** PostgreSQL (Planning)
+** link:doc/postgresql.md[PostgreSQL]
 
 = Roadmap
 
