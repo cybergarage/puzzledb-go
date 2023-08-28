@@ -19,30 +19,22 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">MySQL</th>
+<th style="text-align: left;">PostgreSQL</th>
 <th style="text-align: left;">PuzzleDB</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><p>COMPLEX</p></td>
-<td style="text-align: left;"><p>map</p></td>
+<td style="text-align: left;"><p>TEXT</p></td>
+<td style="text-align: left;"><p>string</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>ARRAY</p></td>
-<td style="text-align: left;"><p>array</p></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><p>VARCHAR</p></td>
-<td style="text-align: left;"><p>string</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>CHAR</p></td>
-<td style="text-align: left;"><p>string</p></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>TINYINT</p></td>
-<td style="text-align: left;"><p>tiny</p></td>
+<td style="text-align: left;"><p>CHAR</p></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>SMALLINT</p></td>
@@ -57,7 +49,7 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 <td style="text-align: left;"><p>long</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>FLOAT</p></td>
+<td style="text-align: left;"><p>REAL</p></td>
 <td style="text-align: left;"><p>float32</p></td>
 </tr>
 <tr class="even">
@@ -65,23 +57,19 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 <td style="text-align: left;"><p>float64</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>DATE DATETIME</p></td>
-<td style="text-align: left;"><p>time.Time</p></td>
+<td style="text-align: left;"><p>TIMESTAMP</p></td>
+<td style="text-align: left;"><p>timestamp</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>TIME TIMESTAMP</p></td>
-<td style="text-align: left;"><p>time.Time</p></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><p>NULL</p></td>
 <td style="text-align: left;"><p>null</p></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><p>BOOLEAN (TINYINT(1))</p></td>
+<tr class="odd">
+<td style="text-align: left;"><p>BOOLEAN</p></td>
 <td style="text-align: left;"><p>bool</p></td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><p>BLOB (BYTEA)</p></td>
+<tr class="even">
+<td style="text-align: left;"><p>BINARY</p></td>
 <td style="text-align: left;"><p>[]byte</p></td>
 </tr>
 </tbody>
