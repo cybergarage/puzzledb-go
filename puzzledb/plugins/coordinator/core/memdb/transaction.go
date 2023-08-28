@@ -78,8 +78,6 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 
 // GetRange gets the result set for the specified key.
 func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
-	var err error
-
 	keyBytes, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return nil, err
