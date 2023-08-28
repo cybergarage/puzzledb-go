@@ -1,0 +1,34 @@
+= MySQL Compatibility
+
+PuzzleDB supports MySQL commands based on https://github.com/cybergarage/go-postgresql[go-postgresql], a database framework that makes it easy to implement MySQL compatible servers using Go.
+
+image::https://raw.githubusercontent.com/cybergarage/go-postgresql/master/doc/img/framework.png[]
+
+The https://github.com/cybergarage/go-postgresql[go-postgresql] framework automatically handles the MySQL protocol and system commands. Therefore, PuzzleDB achieves PostgreSQL compatibility by implementing only simply handling DDL (Data Definition Language) and DML (Data Manipulation Language) query commands.
+
+== Data Model
+
+PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts https://www.postgresql.org/docs/current/datatype.html[PostgreSQL: Data Types] into the PuzzleDB data model as follows:
+
+[format="csv", options="header, autowidth"]
+|====
+include::model/postgresql.csv[]
+|====
+
+== Supported commands
+
+PuzzleDB currently supports https://www.postgresql.org/docs/current/plpgsql-statements.html[PostgreSQL: Basic Statements] in stages. This section describes the status of Redis command support in PuzzleDB.
+
+===  Data Definition Statements
+
+[format="csv", options="header, autowidth"]
+|====
+include::postgresql/dds.csv[]
+|====
+
+=== Data Manipulation Statements
+
+[format="csv", options="header, autowidth"]
+|====
+include::postgresql/dms.csv[]
+|====
