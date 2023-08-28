@@ -59,7 +59,7 @@ PuzzleDB currently supports the MySQL commands in stages. See [MySQL](doc/mysql.
 To operate PuzzleDB with the MySQL protocol, use the standard PostgreSQL shell [psql](https://www.postgresql.org/docs/current/app-psql.html) as follows:
 
 ```
-% mysql -h 127.0.0.1
+% psql --host=localhost
 mysql> CREATE DATABASE test;
 mysql> USE test;
 mysql> CREATE TABLE test (k VARCHAR(255) PRIMARY KEY, v int);
