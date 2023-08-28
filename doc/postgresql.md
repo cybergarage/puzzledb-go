@@ -1,12 +1,12 @@
-# MySQL Compatibility
+# PostgreSQL Compatibility
 
-PuzzleDB supports MySQL commands based on [go-postgresql](https://github.com/cybergarage/go-postgresql), a database framework that makes it easy to implement MySQL compatible servers using Go.
+PuzzleDB supports PostgreSQL commands based on [go-postgresql](https://github.com/cybergarage/go-postgresql), a database framework that makes it easy to implement PostgreSQL compatible servers using Go.
 
 <figure>
 <img src="https://raw.githubusercontent.com/cybergarage/go-postgresql/master/doc/img/framework.png" alt="framework" />
 </figure>
 
-The [go-postgresql](https://github.com/cybergarage/go-postgresql) framework automatically handles the MySQL protocol and system commands. Therefore, PuzzleDB achieves PostgreSQL compatibility by implementing only simply handling DDL (Data Definition Language) and DML (Data Manipulation Language) query commands.
+The [go-postgresql](https://github.com/cybergarage/go-postgresql) framework automatically handles the PostgreSQL protocol and system commands. Therefore, PuzzleDB achieves PostgreSQL compatibility by implementing only simply handling DDL (Data Definition Language) and DML (Data Manipulation Language) query commands.
 
 ## Data Model
 
