@@ -1,16 +1,13 @@
-MySQL,PuzzleDB
-COMPLEX,map
-ARRAY,array
-VARCHAR,string
-CHAR,string
-TINYINT,tiny
+PostgreSQL,PuzzleDB
+TEXT,string
+VARCHAR,
+CHAR,
 SMALLINT,short
 INTEGER,int
 BIGINT,long
-FLOAT,float32
+REAL,float32
 DOUBLE (REAL),float64
-DATE DATETIME,time.Time
-TIME TIMESTAMP,time.Time
+TIMESTAMP,timestamp
 NULL,null
-BOOLEAN (TINYINT(1)),bool
-BLOB (BYTEA),[]byte
+BOOLEAN,bool
+BINARY,[]byte

@@ -1,18 +1,19 @@
-Type,PuzzleDB,Redis,MongoDB,SQL
-Collection,map,Hash,Object,COMPLEX
-,array,List,Array,ARRAY
-,,Sets,,
-,,Sorted Sets,,
-String,string,,String,VARCHAR
-,,,,CHAR
-Integer,tiny,,,TINYINT
-,short,,,SMALLINT
-,int,,32-bit integer,INTEGER
-,long,,64-bit integer,BIGINT
-Real,float32,,32-bit IEEE-754,FLOAT
-,float64,,64-bit IEEE-754,DOUBLE (REAL)
-Time,time.Time,,Date,DATE DATETIME
-,,,Timestamp,TIME TIMESTAMP
-Special,null,,Null,NULL
-,bool,,Boolean,BOOLEAN (TINYINT(1))
-,[]byte,String,Binary data,BLOB (BYTEA)
+Type,PuzzleDB,Redis,MongoDB,MySQL,PostgreSQL
+Collection,map,Hash,Object,COMPLEX,
+,array,List,Array,ARRAY,
+,,Sets,,,
+,,Sorted Sets,,,
+String,string,String,String,TEXT,TEXT
+,,,,VARCHAR,VARCHAR
+,,,,CHAR,CHAR
+Integer,tiny,,,TINYINT,
+,short,,,SMALLINT,SMALLINT
+,int,,32-bit integer,INTEGER,INTEGER
+,long,,64-bit integer,BIGINT,BIGINT
+Real,float32,,32-bit IEEE-754,FLOAT,REAL
+,float64,,64-bit IEEE-754,DOUBLE (REAL),DOUBLE (REAL)
+Time,time.Time,,Date,DATE DATETIME,
+,,,Timestamp,TIME TIMESTAMP,TIMESTAMP
+Special,null,,Null,NULL,NULL
+,bool,,Boolean,BOOLEAN (TINYINT(1)),BOOLEAN
+,[]byte,String,Binary data,BLOB (BYTEA),BINARY

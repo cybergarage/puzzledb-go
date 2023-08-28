@@ -46,13 +46,14 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 
 PuzzleDB is a multi-model database, which converts any data models such as relational and document database models into the PuzzleDB data model as follows:
 
-<table>
+<table style="width:100%;">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -60,7 +61,8 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 <th style="text-align: left;">PuzzleDB</th>
 <th style="text-align: left;">Redis</th>
 <th style="text-align: left;">MongoDB</th>
-<th style="text-align: left;">SQL</th>
+<th style="text-align: left;">MySQL</th>
+<th style="text-align: left;">PostgreSQL</th>
 </tr>
 </thead>
 <tbody>
@@ -70,6 +72,7 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 <td style="text-align: left;"><p>Hash</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 <td style="text-align: left;"><p>COMPLEX</p></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
@@ -77,11 +80,13 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 <td style="text-align: left;"><p>List</p></td>
 <td style="text-align: left;"><p>Array</p></td>
 <td style="text-align: left;"><p>ARRAY</p></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Sets</p></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
@@ -91,97 +96,119 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 <td style="text-align: left;"><p>Sorted Sets</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>String</p></td>
 <td style="text-align: left;"><p>string</p></td>
-<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>String</p></td>
-<td style="text-align: left;"><p>VARCHAR</p></td>
+<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"><p>TEXT</p></td>
+<td style="text-align: left;"><p>TEXT</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>VARCHAR</p></td>
+<td style="text-align: left;"><p>VARCHAR</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>CHAR</p></td>
+<td style="text-align: left;"><p>CHAR</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p>Integer</p></td>
 <td style="text-align: left;"><p>tiny</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>TINYINT</p></td>
+<td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>short</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>SMALLINT</p></td>
+<td style="text-align: left;"><p>SMALLINT</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>int</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>32-bit integer</p></td>
 <td style="text-align: left;"><p>INTEGER</p></td>
+<td style="text-align: left;"><p>INTEGER</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>long</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>64-bit integer</p></td>
 <td style="text-align: left;"><p>BIGINT</p></td>
+<td style="text-align: left;"><p>BIGINT</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p>Real</p></td>
 <td style="text-align: left;"><p>float32</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>32-bit IEEE-754</p></td>
 <td style="text-align: left;"><p>FLOAT</p></td>
+<td style="text-align: left;"><p>REAL</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>float64</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>64-bit IEEE-754</p></td>
 <td style="text-align: left;"><p>DOUBLE (REAL)</p></td>
+<td style="text-align: left;"><p>DOUBLE (REAL)</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p>Time</p></td>
 <td style="text-align: left;"><p>time.Time</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Date</p></td>
 <td style="text-align: left;"><p>DATE DATETIME</p></td>
+<td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Timestamp</p></td>
 <td style="text-align: left;"><p>TIME TIMESTAMP</p></td>
+<td style="text-align: left;"><p>TIMESTAMP</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p>Special</p></td>
 <td style="text-align: left;"><p>null</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Null</p></td>
 <td style="text-align: left;"><p>NULL</p></td>
+<td style="text-align: left;"><p>NULL</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>bool</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Boolean</p></td>
 <td style="text-align: left;"><p>BOOLEAN (TINYINT(1))</p></td>
+<td style="text-align: left;"><p>BOOLEAN</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>[]byte</p></td>
 <td style="text-align: left;"><p>String</p></td>
 <td style="text-align: left;"><p>Binary data</p></td>
 <td style="text-align: left;"><p>BLOB (BYTEA)</p></td>
+<td style="text-align: left;"><p>BINARY</p></td>
 </tr>
 </tbody>
 </table>
