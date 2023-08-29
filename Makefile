@@ -77,13 +77,13 @@ image:
 	docker push ${BIN_SERVER_DOCKER_TAG_PRE}
 	docker push ${BIN_SERVER_DOCKER_TAG_LATEST}
 
-cmd:
+build:
 	go build -v -gcflags=${GCFLAGS} ${BINS}
 
 install:
 	go install -v -gcflags=${GCFLAGS} ${BINS}
 
-run: cmd
+run: install
 	${GOBIN}/${BIN_SERVER}
 
 rund:
