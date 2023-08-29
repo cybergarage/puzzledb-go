@@ -20,35 +20,19 @@ image:img/roadmap.png[doc/img/roadmap]
 
 == v1.x.x
 * New plug-ins
-** Query plug-ins
-*** [ ] Added PostgreSQL plug-in
 ** Storage plug-ins
+*** [ ] Added JunoDB plug-in
 *** [ ] Added TiKV plug-in
+** Coordinator plug-ins
+*** [ ] Added etcd plug-in
 ** Metrics plug-ins
 *** [ ] Added Graphite plug-in
 ** Distributed Tracer plug-ins
 *** [ ] Added OpenTracing plug-in
 * Kubernetes features
 ** [ ] Operator
-
-== v1.0.0 (2023-06-xx)
-* New features
-* Addeed 
-* New plug-ins
-** Document store plug-in
-*** Key-Value Store plug-ins
-**** [ ] Key-Value cache plug-in
-** Coordinator plug-ins
-*** [ ] Added FoundationDB plug-in
-*** [ ] Added etcd plug-in
-** Storage plug-ins
-*** Key-Value Store plug-ins
-**** [*] Added FoundationDB plug-in
-**** [ ] Added cache store plug-in
 * Improvements
 * Plug-in improvements
-** CLI Utilities
-*** [*] Added status commands to link:cmd/cli/puzzledb-cli.md[puzzledb-cli]
 ** Query plug-ins
 *** MySQL plug-in
 **** Supported queries
@@ -63,6 +47,20 @@ image:img/roadmap.png[doc/img/roadmap]
 *** Redis plug-in
 **** Supported queries
 ***** [ ] HASH commands
+
+== v1.0.0 (2023-08-30)
+* New plug-ins
+** Query plug-ins
+*** [*] Added PostgreSQL plug-in
+** Coordinator plug-ins
+*** [*] Added FoundationDB plug-in
+** Storage plug-ins
+*** Key-Value Store plug-ins
+**** [*] Added FoundationDB plug-in
+**** [*] Added cache store plug-in
+* Improvements
+** CLI Utilities
+*** [*] Added status commands to link:cmd/cli/puzzledb-cli.md[puzzledb-cli]
 ** Storage plug-ins
 *** Key-Value Store plug-ins
 **** [*] Update store interface to Support limit and order options in Range queries

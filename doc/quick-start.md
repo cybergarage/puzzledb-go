@@ -54,6 +54,28 @@ mysql> SELECT * FROM test WHERE k = 'foo';
 
 PuzzleDB currently supports the MySQL commands in stages. See [MySQL](doc/mysql.md) for current support status.
 
+## PostgreSQL
+
+To operate PuzzleDB with the MySQL protocol, use the standard PostgreSQL shell [psql](https://www.postgresql.org/docs/current/app-psql.html) as follows:
+
+```
+% psql --host=localhost
+mysql> CREATE DATABASE test;
+mysql> USE test;
+mysql> CREATE TABLE test (k VARCHAR(255) PRIMARY KEY, v int);
+mysql> INSERT INTO test (k, v) VALUES ('foo', 0);
+mysql> SELECT * FROM test WHERE k = 'foo';
++------+------+
+| k  | v  |
++------+------+
+| foo |  0 |
++------+------+
+1 row in set (0.00 sec)
+```
+
+PuzzleDB currently supports the MySQL commands in stages. See [MySQPostgreSQLL](doc/mysql.md) for current support status.
+
+
 ## MongoDB
 
 To operate PuzzleDB with the MongoDB protocol, use the standard MongoDB shell [mongosh](https://www.mongodb.com/docs/mongodb-shell/#mongodb-binary-bin.mongosh) as follows:
