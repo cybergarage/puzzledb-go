@@ -30,13 +30,15 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 -   New plug-ins
 
-    -   Query plug-ins
-
-        -   ❏ Added PostgreSQL plug-in
-
     -   Storage plug-ins
 
+        -   ❏ Added JunoDB plug-in
+
         -   ❏ Added TiKV plug-in
+
+    -   Coordinator plug-ins
+
+        -   ❏ Added etcd plug-in
 
     -   Metrics plug-ins
 
@@ -50,41 +52,9 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   ❏ Operator
 
-## v1.0.0 (2023-06-xx)
-
--   New features
-
--   Addeed
-
--   New plug-ins
-
-    -   Document store plug-in
-
-        -   Key-Value Store plug-ins
-
-            -   ❏ Key-Value cache plug-in
-
-    -   Coordinator plug-ins
-
-        -   ❏ Added FoundationDB plug-in
-
-        -   ❏ Added etcd plug-in
-
-    -   Storage plug-ins
-
-        -   Key-Value Store plug-ins
-
-            -   ✓ Added FoundationDB plug-in
-
-            -   ❏ Added cache store plug-in
-
 -   Improvements
 
 -   Plug-in improvements
-
-    -   CLI Utilities
-
-        -   ✓ Added status commands to [puzzledb-cli](cmd/cli/puzzledb-cli.md)
 
     -   Query plug-ins
 
@@ -113,6 +83,32 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
             -   Supported queries
 
                 -   ❏ HASH commands
+
+## v1.0.0 (2023-08-30)
+
+-   New plug-ins
+
+    -   Query plug-ins
+
+        -   ✓ Added PostgreSQL plug-in
+
+    -   Coordinator plug-ins
+
+        -   ✓ Added FoundationDB plug-in
+
+    -   Storage plug-ins
+
+        -   Key-Value Store plug-ins
+
+            -   ✓ Added FoundationDB plug-in
+
+            -   ✓ Added cache store plug-in
+
+-   Improvements
+
+    -   CLI Utilities
+
+        -   ✓ Added status commands to [puzzledb-cli](cmd/cli/puzzledb-cli.md)
 
     -   Storage plug-ins
 
