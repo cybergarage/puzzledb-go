@@ -2,6 +2,9 @@ module github.com/cybergarage/puzzledb-go
 
 go 1.21
 
+retract v0.9.0
+retract v0.8.0
+
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20230317231317-e330030d07af
 	github.com/cybergarage/go-cbor v1.3.1
