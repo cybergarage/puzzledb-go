@@ -58,13 +58,13 @@ This technology preview version partially supports major database models and pro
 
 -   Compatibility
 
-    -   [Redis](doc/redis.md)
-
-    -   [MongoDB](doc/mongodb.md)
+    -   [PostgreSQL](doc/postgresql.md)
 
     -   [MySQL](doc/mysql.md)
 
-    -   [PostgreSQL](doc/postgresql.md)
+    -   [MongoDB](doc/mongodb.md)
+
+    -   [Redis](doc/redis.md)
 
 # Roadmap
 
