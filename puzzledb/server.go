@@ -25,7 +25,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
-	etcd_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/etcd"
 	fdb_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/fdb"
 	memdb_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/memdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/metrics/prometheus"
@@ -96,7 +95,7 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		fdb.NewStore(),
 		memdb.NewStore(),
 		// ristretto.NewStore(),
-		coordinator.NewServiceWith(etcd_coordinator.NewCoordinator()),
+		// coordinator.NewServiceWith(etcd_coordinator.NewCoordinator()),
 		coordinator.NewServiceWith(memdb_coordinator.NewCoordinator()),
 		coordinator.NewServiceWith(fdb_coordinator.NewCoordinator()),
 		mysql.NewService(),
