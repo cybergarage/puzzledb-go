@@ -22,7 +22,7 @@ plugins:
     memdb:
       enabled: true
     etcd:
-      enabled: true
+      enabled: false
       endpoints: null
     fdb:
       enabled: true
