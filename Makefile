@@ -73,8 +73,7 @@ test_only:
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
 image:
-	docker image build -t${BIN_SERVER_DOCKER_TAG} -t${BIN_SERVER_DOCKER_TAG_PRE} -t${BIN_SERVER_DOCKER_TAG_LATEST} .
-	docker push ${BIN_SERVER_DOCKER_TAG_PRE}
+	docker image build -t${BIN_SERVER_DOCKER_TAG} -t${BIN_SERVER_DOCKER_TAG_LATEST} .
 	docker push ${BIN_SERVER_DOCKER_TAG_LATEST}
 
 build:
