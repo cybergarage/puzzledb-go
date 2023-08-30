@@ -60,17 +60,17 @@ To operate PuzzleDB with the MySQL protocol, use the standard PostgreSQL shell [
 
 ```
 % psql --host=localhost
-mysql> CREATE DATABASE test;
-mysql> USE test;
-mysql> CREATE TABLE test (k VARCHAR(255) PRIMARY KEY, v int);
-mysql> INSERT INTO test (k, v) VALUES ('foo', 0);
-mysql> SELECT * FROM test WHERE k = 'foo';
-+------+------+
-| k  | v  |
-+------+------+
-| foo |  0 |
-+------+------+
-1 row in set (0.00 sec)
+> CREATE DATABASE test;
+> \q
+% psql --host=localhost test
+> CREATE TABLE test (k VARCHAR(255) PRIMARY KEY, v int);
+> INSERT INTO test (k, v) VALUES ('foo', 0);
+INSERT 0 1
+> SELECT * FROM test WHERE k = 'foo';
+  k  | v 
+-----+---
+ foo | 0
+(1 row)
 ```
 
 PuzzleDB currently supports the MySQL commands in stages. See [MySQPostgreSQLL](doc/mysql.md) for current support status.
