@@ -33,10 +33,10 @@ For architecture of PuzzleDB, see the following concept documents:
 This technology preview version partially supports major database models and protocols. Please refer to the following documents for details on support status and limitations.
 
 * Compatibility
-** link:doc/redis.md[Redis]
-** link:doc/mongodb.md[MongoDB]
-** link:doc/mysql.md[MySQL]
 ** link:doc/postgresql.md[PostgreSQL]
+** link:doc/mysql.md[MySQL]
+** link:doc/mongodb.md[MongoDB]
+** link:doc/redis.md[Redis]
 
 = Roadmap
 
