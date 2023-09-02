@@ -94,12 +94,15 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 		if err != nil {
 			return nil, err
 		}
-		dt := int32(DataTypeFrom(elem.Type()))
-		fc := int32(FormatCodeFrom(elem.Type()))
+		dt, err := NewDataTypeFrom(elem.Type())
+		if err != nil {
+			return nil, err
+		}
 		field := message.NewRowFieldWith(name,
 			message.WithNumber(int16(n+1)),
-			message.WithDataTypeID(dt),
-			message.WithFormatCode(int16(fc)),
+			message.WithDataTypeID(dt.OID()),
+			message.WithDataTypeSize(int16(dt.Size())),
+			message.WithFormatCode(dt.FormatCode()),
 		)
 		rowDesc.AppendField(field)
 	}
