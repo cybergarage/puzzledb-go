@@ -15,33 +15,37 @@
 package postgresql
 
 import (
-	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
+	"github.com/cybergarage/go-postgresql/postgresql/system"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// DataTypeFrom returns a data type of PostgreSQL from the specified query data type.
-func DataTypeFrom(t document.ElementType) message.DataType {
+// NewDataTypeFrom returns a data type from the specified query data type.
+func NewDataTypeFrom(t document.ElementType) (*system.DataType, error) {
+	return system.GetDataType(dataTypeOIDFrom(t))
+}
+
+func dataTypeOIDFrom(t document.ElementType) system.OID {
 	switch t { //nolint:exhaustive
 	case document.Int8Type:
-		return message.ByteaType
+		return system.Bytea
 	case document.Int16Type:
-		return message.Int2Type
+		return system.Int2
 	case document.Int32Type:
-		return message.Int4Type
+		return system.Int4
 	case document.Int64Type:
-		return message.Int8Type
+		return system.Int8
 	case document.BinaryType:
-		return message.ByteaType
+		return system.Bytea
 	case document.StringType:
-		return message.TextType
+		return system.Text
 	case document.Float64Type:
-		return message.Float8Type
+		return system.Float8
 	case document.Float32Type:
-		return message.Float4Type
+		return system.Float4
 	case document.DateTimeType:
-		return message.TimestampType
+		return system.Timestamp
 	case document.BoolType:
-		return message.BoolType
+		return system.Bool
 	}
 	return 0
 }
