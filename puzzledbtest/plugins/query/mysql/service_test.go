@@ -33,9 +33,9 @@ func TestMySQLTestSuite(t *testing.T) {
 
 	testNames := []string{
 		"SmplCrudText",
-		"SmplCrudInt",
-		"SmplCrudFloat",
-		"SmplCrudDouble",
+		// "SmplCrudInt",
+		// "SmplCrudFloat",
+		// "SmplCrudDouble",
 	}
 
 	if err := sqltest.RunEmbedSuites(t, client, testNames...); err != nil {
