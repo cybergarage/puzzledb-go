@@ -26,6 +26,7 @@ jobs:
 
     - name: Set up FoundationDB
       run: |
+         sudo apt install -y libc6-dev
          sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.2.9/foundationdb-clients_7.2.9-1_amd64.deb
          sudo apt install -y /tmp/foundationdb-clients_7.2.9-1_amd64.deb
          sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.2.9/foundationdb-server_7.2.9-1_amd64.deb
