@@ -6,15 +6,15 @@ COPY . /puzzledb
 WORKDIR /puzzledb
 
 RUN apt-get update && \
-    apt-get install -y golang wget adduser libc6 libc6-dev && \
+    apt-get install -y golang wget adduser && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.2.9/foundationdb-clients_7.2.9-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-clients_7.2.9-1_amd64.deb &&  \
+RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.17/foundationdb-clients_7.3.17-1_amd64.deb &&  \
+    apt install /tmp/foundationdb-clients_7.3.17-1_amd64.deb &&  \
     rm /tmp/*.deb
 
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.2.9/foundationdb-server_7.2.9-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-server_7.2.9-1_amd64.deb &&  \
+RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.17/foundationdb-server_7.3.17-1_amd64.deb &&  \
+    apt install /tmp/foundationdb-server_7.3.17-1_amd64.deb &&  \
     rm /tmp/*.deb
 
 RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
