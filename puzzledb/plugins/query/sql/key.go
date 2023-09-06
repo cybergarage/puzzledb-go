@@ -20,9 +20,13 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// NewKeyWith returns a key from the specified parameters.
-func NewKeyWith(dbName string, tblName string, keyName string, val any) (store.Key, error) {
-	return document.NewKeyWith(dbName, tblName, keyName, val), nil
+// NewKeyForSchema returns a key for the specified schema.
+func NewKeyForSchema(dbName string, schema document.Schema, colName string, colVal any) (store.Key, error) {
+	keyVal, err := document.NewValueForSchema(schema, colName, colVal)
+	if err != nil {
+		return nil, err
+	}
+	return document.NewKeyWith(dbName, schema.Name(), keyVal), nil
 }
 
 // NewKeyFromIndex returns a key for the specified index.
@@ -71,7 +75,11 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 			if colName == prIdx.Name() {
 				prIdxType = document.PrimaryIndex
 			}
-			return document.NewKeyWith(dbName, schema.Name(), colValue), prIdxType, nil
+			key, err := NewKeyForSchema(dbName, schema, colName, colValue)
+			if err != nil {
+				return nil, 0, err
+			}
+			return key, prIdxType, nil
 		default:
 			return nil, 0, newErrQueryConditionNotSupported(cond)
 		}
