@@ -30,12 +30,15 @@ func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Inse
 	obj := document.MapObject{}
 	for _, col := range cols.Columns() {
 		colName := col.Name()
-		// TODO: Checks data types
-		_, err := schema.FindElement(colName)
+		elem, err := schema.FindElement(colName)
 		if err != nil {
 			return nil, nil, err
 		}
-		obj[colName] = col.Value()
+		v, err := document.NewValueForType(elem.Type(), col.Value())
+		if err != nil {
+			return nil, nil, err
+		}
+		obj[colName] = v
 	}
 
 	objKey, err := sql.NewKeyFromObject(dbName, schema, obj)
