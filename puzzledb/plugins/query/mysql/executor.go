@@ -178,8 +178,6 @@ func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql
 		return nil, newSchemaNotExistError(stmt.TableName())
 	}
 
-	//
-
 	// Post a event message to the coordinator.
 
 	err = service.PostCollectionCreateMessage(dbName, tblName)
@@ -445,12 +443,11 @@ func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, tx
 	dbName := conn.Database()
 	for _, updateCol := range updateCols.Columns() {
 		name := updateCol.Name()
-		// NOTE: Column existence has not been confirmed.
-		_, ok := docObj[name]
-		if !ok {
-			return newCoulumNotExistError(name)
+		v, err := document.NewValueForSchema(schema, name, updateCol.Value())
+		if err != nil {
+			return err
 		}
-		docObj[name] = updateCol.Value()
+		docObj[name] = v
 	}
 	docKey, err := sqlc.NewKeyFromObject(dbName, schema, docObj)
 	if err != nil {
