@@ -36,6 +36,23 @@
 *** Storage plug-ins
 **** Update cache store plug-in
 
+## v1.0.2 (2023-xx-xx)
+* Improvement
+** PostgreSQL plug-in
+*** Support DATE and TIMESTAMP data types
+*** Support pgbench workload
+** MySQL plug-in
+*** Support DATE and TIMESTAMP data types
+
+## v1.0.1 (2023-09-06)
+* Improvement
+** PostgreSQL plug-in
+*** Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+*** Enabled PICT based scenario tests of go-sqltest 
+** MySQL plug-in
+*** Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+*** Enabled PICT based scenario tests of go-sqltest 
+
 ## v1.0.0 (2023-08-30)
 * Initial public technology preview release
 * New features
