@@ -25,6 +25,7 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 	if cond == nil {
 		return document.NewKeyWith(dbName, schema.Name()), document.PrimaryIndex, nil
 	}
+
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, 0, err
@@ -44,7 +45,11 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 		if colName == prIdx.Name() {
 			prIdxType = document.PrimaryIndex
 		}
-		return document.NewKeyWith(dbName, schema.Name(), val.Val), prIdxType, nil
+		valKey, err := document.NewValueForSchema(schema, colName, val.Val)
+		if err != nil {
+			return nil, 0, err
+		}
+		return document.NewKeyWith(dbName, schema.Name(), valKey), prIdxType, nil
 	case *query.RangeCond:
 		return nil, 0, newQueryConditionNotSupportedError(cond)
 	}
