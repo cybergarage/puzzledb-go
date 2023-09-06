@@ -135,12 +135,11 @@ func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store
 	dbName := conn.Database()
 	for _, updateCol := range updateCols.Columns() {
 		name := updateCol.Name()
-		// NOTE: Column existence has not been confirmed.
-		_, ok := docObj[name]
-		if !ok {
-			return newErrCoulumNotExist(name)
+		v, err := document.NewValueForSchema(schema, name, updateCol.Value())
+		if err != nil {
+			return err
 		}
-		docObj[name] = updateCol.Value()
+		docObj[name] = v
 	}
 	docKey, err := NewKeyFromObject(dbName, schema, docObj)
 	if err != nil {
