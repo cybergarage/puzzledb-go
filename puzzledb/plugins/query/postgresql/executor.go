@@ -19,6 +19,7 @@ import (
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
 // CreateDatabase handles a CREATE DATABASE query.
@@ -80,31 +81,34 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 	}
 	// Row description response
 
-	var names []string
-	if stmt.Columns().IsSelectAll() {
-		names = schema.Elements().Names()
-	} else {
-		names = stmt.Columns().Names()
+	selectors := stmt.Selectors()
+	if selectors.IsSelectAll() {
+		selectors = sql.NewSelectorsWithSchema(schema)
 	}
 
 	res := message.NewResponses()
 	rowDesc := message.NewRowDescription()
-	for n, name := range names {
-		elem, err := schema.FindElement(name)
-		if err != nil {
-			return nil, err
+
+	for n, selector := range selectors {
+		switch selector := selector.(type) { //nolint:gocritic
+		case *query.Column:
+			name := selector.Name()
+			elem, err := schema.FindElement(name)
+			if err != nil {
+				return nil, err
+			}
+			dt, err := NewDataTypeFrom(elem.Type())
+			if err != nil {
+				return nil, err
+			}
+			field := message.NewRowFieldWith(name,
+				message.WithNumber(int16(n+1)),
+				message.WithDataTypeID(dt.OID()),
+				message.WithDataTypeSize(int16(dt.Size())),
+				message.WithFormatCode(dt.FormatCode()),
+			)
+			rowDesc.AppendField(field)
 		}
-		dt, err := NewDataTypeFrom(elem.Type())
-		if err != nil {
-			return nil, err
-		}
-		field := message.NewRowFieldWith(name,
-			message.WithNumber(int16(n+1)),
-			message.WithDataTypeID(dt.OID()),
-			message.WithDataTypeSize(int16(dt.Size())),
-			message.WithFormatCode(dt.FormatCode()),
-		)
-		rowDesc.AppendField(field)
 	}
 	res = res.Append(rowDesc)
 
@@ -118,15 +122,19 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 			return nil, err
 		}
 		dataRow := message.NewDataRow()
-		for n, name := range names {
-			v, ok := objMap[name]
-			if !ok {
-				v = nil
-			}
-			field := rowDesc.Field(n)
-			err := dataRow.AppendData(field, v)
-			if err != nil {
-				return nil, err
+		for n, selector := range selectors {
+			switch selector := selector.(type) { //nolint:gocritic
+			case *query.Column:
+				name := selector.Name()
+				v, ok := objMap[name]
+				if !ok {
+					v = nil
+				}
+				field := rowDesc.Field(n)
+				err := dataRow.AppendData(field, v)
+				if err != nil {
+					return nil, err
+				}
 			}
 		}
 		res = res.Append(dataRow)
