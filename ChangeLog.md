@@ -39,6 +39,7 @@
 ## v1.0.2 (2023-xx-xx)
 - Improvement
   - PostgreSQL plug-in
+    - Support basic functions in SELECT query such as count, min and max
     - Support DATE and TIMESTAMP data types
     - Support pgbench workload
   - MySQL plug-in
