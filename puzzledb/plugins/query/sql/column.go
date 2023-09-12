@@ -30,3 +30,16 @@ func NewElementWith(col *query.Column) (document.Element, error) {
 	e.SetType(t)
 	return e, nil
 }
+
+// NewColumnWith returns a new column with the specified element.
+func NewColumnWith(elem document.Element) (*query.Column, error) {
+	dt, err := NewDataTypeFrom(elem.Type())
+	if err != nil {
+		return nil, err
+	}
+	def := query.NewDataWith(dt, 0)
+	return query.NewColumnWithOptions(
+		query.WithColumnName(elem.Name()),
+		query.WithColumnData(def),
+	), nil
+}
