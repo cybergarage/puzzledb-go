@@ -33,7 +33,7 @@ func NewDocumentSchemaFrom(stmt *query.CreateTable) (document.Schema, error) {
 	}
 	// Add indexes
 	for _, idx := range stmt.Schema().Indexes() {
-		i, err := NewDocumentIndexWith(s, idx)
+		i, err := NewDocumentIndexFrom(s, idx)
 		if err != nil {
 			return nil, err
 		}
