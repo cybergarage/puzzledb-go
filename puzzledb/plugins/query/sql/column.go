@@ -33,7 +33,7 @@ func NewDocumentElementFrom(col *query.Column) (document.Element, error) {
 
 // NewQueryColumnFrom returns a new column with the specified element.
 func NewQueryColumnFrom(elem document.Element) (*query.Column, error) {
-	dt, err := NewDataTypeFrom(elem.Type())
+	dt, err := NewQueryDataTypeFrom(elem.Type())
 	if err != nil {
 		return nil, err
 	}
