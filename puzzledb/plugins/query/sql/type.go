@@ -19,9 +19,9 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// nolint: exhaustive
-func NewElementTypeFrom(sqlType query.DataType) (document.ElementType, error) {
-	switch sqlType {
+// NewDocumentElementFrom returns a new element with the specified column.
+func NewDocumentElementTypeFrom(sqlType query.DataType) (document.ElementType, error) {
+	switch sqlType { // nolint: exhaustive
 	case query.TinyIntData:
 		return document.Int8Type, nil
 	case query.SmallIntData:
@@ -43,6 +43,7 @@ func NewElementTypeFrom(sqlType query.DataType) (document.ElementType, error) {
 	}
 }
 
+// NewQueryDataTypeFrom returns a new column with the specified element.
 func NewQueryDataTypeFrom(elemType document.ElementType) (query.DataType, error) {
 	switch elemType {
 	case document.Int8Type:
