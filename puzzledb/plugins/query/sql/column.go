@@ -31,8 +31,8 @@ func NewElementFromColumn(col *query.Column) (document.Element, error) {
 	return e, nil
 }
 
-// NewColumnWith returns a new column with the specified element.
-func NewColumnWith(elem document.Element) (*query.Column, error) {
+// NewColumnFromElement returns a new column with the specified element.
+func NewColumnFromElement(elem document.Element) (*query.Column, error) {
 	dt, err := NewDataTypeFrom(elem.Type())
 	if err != nil {
 		return nil, err
