@@ -45,3 +45,28 @@ func NewCollectionFrom(stmt *query.CreateTable) (document.Schema, error) {
 	}
 	return s, nil
 }
+
+// NewQuerySchemaFrom creates a new schema from the specified schema object.
+func NewQuerySchemaFrom(col document.Schema) (*query.Schema, error) {
+	columns := query.NewColumns()
+	for _, elem := range col.Elements() {
+		column, err := NewColumnFrom(elem)
+		if err != nil {
+			return nil, err
+		}
+		columns = append(columns, column)
+	}
+	// indexes := query.NewIndexes()
+	// for _, idx := range col.Indexes() {
+	// 	idx, err := NewIndexFrom(idx)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	s.AddIndex(idx)
+	// }
+	return query.NewSchemaWith(
+		col.Name(),
+		query.WithSchemaColumns(columns),
+		// query.WithSchemaIndexes(indexes),
+	), nil
+}
