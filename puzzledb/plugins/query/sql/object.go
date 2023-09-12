@@ -19,8 +19,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewObjectFromInsert returns a new object from the specified schema and columns.
-func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, document.MapObject, error) {
+// NewDocumentObjectFromInsert returns a new object from the specified schema and columns.
+func NewDocumentObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, document.MapObject, error) {
 	obj := document.MapObject{}
 	for _, col := range stmt.Columns() {
 		colName := col.Name()

@@ -238,7 +238,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 
 	// Inserts the object using the primary key
 
-	docKey, docObj, err := NewObjectFromInsert(dbName, col, stmt)
+	docKey, docObj, err := NewDocumentObjectFromInsert(dbName, col, stmt)
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, txn, err)
 	}
