@@ -376,7 +376,7 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 		return 0, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	docKey, docKeyType, err := NewKeyFromCond(dbName, col, stmt.Where())
+	docKey, docKeyType, err := NewDocumentKeyFromCond(dbName, col, stmt.Where())
 	if err != nil {
 		return 0, service.CancelTransactionWithError(ctx, txn, err)
 	}
@@ -405,7 +405,7 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 			if err != nil {
 				return 0, err
 			}
-			objKey, err := NewKeyFromIndex(dbName, col, prIdx, obj)
+			objKey, err := NewDocumentKeyFromIndex(dbName, col, prIdx, obj)
 			if err != nil {
 				return 0, service.CancelTransactionWithError(ctx, txn, err)
 			}

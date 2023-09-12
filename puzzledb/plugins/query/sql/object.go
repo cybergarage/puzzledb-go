@@ -35,7 +35,7 @@ func NewDocumentObjectFromInsert(dbName string, schema document.Schema, stmt *qu
 		obj[colName] = v
 	}
 
-	objKey, err := NewKeyFromObject(dbName, schema, obj)
+	objKey, err := NewDocumentKeyFromObject(dbName, schema, obj)
 	if err != nil {
 		return nil, nil, err
 	}

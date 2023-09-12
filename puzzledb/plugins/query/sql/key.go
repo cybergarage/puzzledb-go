@@ -17,11 +17,10 @@ package sql
 import (
 	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// NewKeyForSchema returns a key for the specified schema.
-func NewKeyForSchema(dbName string, schema document.Schema, colName string, colVal any) (store.Key, error) {
+// NewDocumentKeyForSchema returns a key for the specified schema.
+func NewDocumentKeyForSchema(dbName string, schema document.Schema, colName string, colVal any) (document.Key, error) {
 	keyVal, err := document.NewValueForSchema(schema, colName, colVal)
 	if err != nil {
 		return nil, err
@@ -29,8 +28,8 @@ func NewKeyForSchema(dbName string, schema document.Schema, colName string, colV
 	return document.NewKeyWith(dbName, schema.Name(), keyVal), nil
 }
 
-// NewKeyFromIndex returns a key for the specified index.
-func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, objMap document.MapObject) (store.Key, error) {
+// NewDocumentKeyFromIndex returns a key for the specified index.
+func NewDocumentKeyFromIndex(dbName string, schema document.Schema, idx document.Index, objMap document.MapObject) (document.Key, error) {
 	objKey := document.NewKey()
 	objKey = append(objKey, dbName)
 	objKey = append(objKey, schema.Name())
@@ -45,17 +44,17 @@ func NewKeyFromIndex(dbName string, schema document.Schema, idx document.Index, 
 	return objKey, nil
 }
 
-// NewKeyFromObject returns a key from the specified object.
-func NewKeyFromObject(dbName string, schema document.Schema, obj document.MapObject) (store.Key, error) {
+// NewDocumentKeyFromObject returns a key from the specified object.
+func NewDocumentKeyFromObject(dbName string, schema document.Schema, obj document.MapObject) (document.Key, error) {
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return nil, err
 	}
-	return NewKeyFromIndex(dbName, schema, prIdx, obj)
+	return NewDocumentKeyFromIndex(dbName, schema, prIdx, obj)
 }
 
-// NewKeyFromCond returns a key for the specified condition.
-func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition) (store.Key, document.IndexType, error) {
+// NewDocumentKeyFromCond returns a key for the specified condition.
+func NewDocumentKeyFromCond(dbName string, schema document.Schema, cond *query.Condition) (document.Key, document.IndexType, error) {
 	if cond == nil {
 		return document.NewKeyWith(dbName, schema.Name()), document.PrimaryIndex, nil
 	}
@@ -75,7 +74,7 @@ func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition
 			if colName == prIdx.Name() {
 				prIdxType = document.PrimaryIndex
 			}
-			key, err := NewKeyForSchema(dbName, schema, colName, colValue)
+			key, err := NewDocumentKeyForSchema(dbName, schema, colName, colValue)
 			if err != nil {
 				return nil, 0, err
 			}
