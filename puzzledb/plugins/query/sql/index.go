@@ -28,8 +28,8 @@ func NewDocumentPrimaryIndexWith(elem document.Element) (document.Index, error) 
 	return idx, nil
 }
 
-// NewIndexWith creates an index from the specified coulumn definition.
-func NewIndexWith(s document.Schema, def *query.Index) (document.Index, error) {
+// NewDocumentIndexWith creates an index from the specified coulumn definition.
+func NewDocumentIndexWith(s document.Schema, def *query.Index) (document.Index, error) {
 	idx := document.NewIndex()
 	idx.SetName(def.Name())
 
