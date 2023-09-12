@@ -16,8 +16,6 @@ package sql
 
 import (
 	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/go-postgresql/postgresql"
-	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
@@ -116,11 +114,6 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 	}
 
 	return nil
-}
-
-// CreateIndex handles a CREATE INDEX query.
-func (service *Service) CreateIndex(conn Conn, stmt *query.CreateIndex) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("CREATE INDEX")
 }
 
 // DropDatabase handles a DROP DATABASE query.
