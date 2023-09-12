@@ -285,7 +285,7 @@ func (service *Service) insertSecondaryIndexes(ctx context.Context, conn *mysql.
 
 func (service *Service) insertSecondaryIndex(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index, prKey document.Key) error {
 	dbName := conn.Database()
-	secKey, err := sqlc.NewKeyFromIndex(dbName, schema, idx, obj)
+	secKey, err := sqlc.NewDocumentKeyFromIndex(dbName, schema, idx, obj)
 	if err != nil {
 		return err
 	}
@@ -449,7 +449,7 @@ func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, tx
 		}
 		docObj[name] = v
 	}
-	docKey, err := sqlc.NewKeyFromObject(dbName, schema, docObj)
+	docKey, err := sqlc.NewDocumentKeyFromObject(dbName, schema, docObj)
 	if err != nil {
 		return err
 	}
@@ -529,7 +529,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 			if err != nil {
 				return nil, err
 			}
-			objKey, err := sqlc.NewKeyFromIndex(dbName, col, prIdx, obj)
+			objKey, err := sqlc.NewDocumentKeyFromIndex(dbName, col, prIdx, obj)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(ctx, txn, err)
 			}

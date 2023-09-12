@@ -41,7 +41,7 @@ func NewObjectFromInsert(dbName string, schema document.Schema, stmt *query.Inse
 		obj[colName] = v
 	}
 
-	objKey, err := sql.NewKeyFromObject(dbName, schema, obj)
+	objKey, err := sql.NewDocumentKeyFromObject(dbName, schema, obj)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -47,7 +47,7 @@ func (service *Service) CancelTransactionWithError(ctx context.Context, txn stor
 
 // SelectDatabaseObjects returns a result set of the specified database objects.
 func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, cond *query.Condition, orderby *query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
-	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
+	docKey, docKeyType, err := NewDocumentKeyFromCond(conn.Database(), schema, cond)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, tx
 func (service *Service) InsertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, prKey document.Key) error {
 	insertSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index, prKey document.Key) error {
 		dbName := conn.Database()
-		secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
+		secKey, err := NewDocumentKeyFromIndex(dbName, schema, idx, obj)
 		if err != nil {
 			return err
 		}
@@ -97,7 +97,7 @@ func (service *Service) InsertSecondaryIndexes(ctx context.Context, conn Conn, t
 func (service *Service) RemoveSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject) error {
 	removeSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index) error {
 		dbName := conn.Database()
-		secKey, err := NewKeyFromIndex(dbName, schema, idx, obj)
+		secKey, err := NewDocumentKeyFromIndex(dbName, schema, idx, obj)
 		if err != nil {
 			return err
 		}
@@ -141,7 +141,7 @@ func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store
 		}
 		docObj[name] = v
 	}
-	docKey, err := NewKeyFromObject(dbName, schema, docObj)
+	docKey, err := NewDocumentKeyFromObject(dbName, schema, docObj)
 	if err != nil {
 		return err
 	}
