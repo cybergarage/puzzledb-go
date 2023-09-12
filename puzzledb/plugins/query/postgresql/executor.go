@@ -42,7 +42,7 @@ func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTab
 
 // CreateIndex handles a CREATE INDEX query.
 func (service *Service) CreateIndex(conn *postgresql.Conn, stmt *query.CreateIndex) (message.Responses, error) {
-	return nil, postgresql.NewErrNotImplemented("CREATE INDEX")
+	return nil, query.NewErrNotImplemented("CREATE INDEX")
 }
 
 // DropDatabase handles a DROP DATABASE query.
@@ -87,8 +87,8 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 	}
 
 	res := message.NewResponses()
-	rowDesc := message.NewRowDescription()
 
+	rowDesc := message.NewRowDescription()
 	for n, selector := range selectors {
 		switch selector := selector.(type) { //nolint:gocritic
 		case *query.Column:
