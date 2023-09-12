@@ -43,7 +43,7 @@ func NewElementTypeFrom(sqlType query.DataType) (document.ElementType, error) {
 	}
 }
 
-func NewDataTypeFrom(elemType document.ElementType) (query.DataType, error) {
+func NewQueryDataTypeFrom(elemType document.ElementType) (query.DataType, error) {
 	switch elemType {
 	case document.Int8Type:
 		return query.TinyIntData, nil
