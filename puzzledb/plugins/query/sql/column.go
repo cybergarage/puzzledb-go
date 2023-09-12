@@ -21,7 +21,7 @@ import (
 
 // NewDocumentElementFrom returns a new element with the specified column.
 func NewDocumentElementFrom(col *query.Column) (document.Element, error) {
-	t, err := NewElementTypeFrom(col.DataType())
+	t, err := NewDocumentElementTypeFrom(col.DataType())
 	if err != nil {
 		return nil, err
 	}
