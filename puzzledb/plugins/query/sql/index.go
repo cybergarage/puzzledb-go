@@ -19,8 +19,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewDocumentPrimaryIndexWith creates an index from the specified element.
-func NewDocumentPrimaryIndexWith(elem document.Element) (document.Index, error) {
+// NewDocumentPrimaryIndexFrom creates an index from the specified element.
+func NewDocumentPrimaryIndexFrom(elem document.Element) (document.Index, error) {
 	idx := document.NewIndex()
 	idx.SetName(elem.Name())
 	idx.SetType(document.PrimaryIndex)
@@ -28,8 +28,8 @@ func NewDocumentPrimaryIndexWith(elem document.Element) (document.Index, error) 
 	return idx, nil
 }
 
-// NewDocumentIndexWith creates an index from the specified coulumn definition.
-func NewDocumentIndexWith(s document.Schema, def *query.Index) (document.Index, error) {
+// NewDocumentIndexFrom creates an index from the specified coulumn definition.
+func NewDocumentIndexFrom(s document.Schema, def *query.Index) (document.Index, error) {
 	idx := document.NewIndex()
 	idx.SetName(def.Name())
 
