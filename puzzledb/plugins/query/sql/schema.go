@@ -25,7 +25,7 @@ func NewCollectionWith(stmt *query.CreateTable) (document.Schema, error) {
 	s.SetName(stmt.TableName())
 	// Add elements
 	for _, col := range stmt.Schema().Columns() {
-		e, err := NewElementWith(col)
+		e, err := NewElementFromColumn(col)
 		if err != nil {
 			return nil, err
 		}

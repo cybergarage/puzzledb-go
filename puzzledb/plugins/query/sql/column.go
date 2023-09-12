@@ -19,8 +19,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewElementWith returns a new element with the specified column.
-func NewElementWith(col *query.Column) (document.Element, error) {
+// NewElementFromColumn returns a new element with the specified column.
+func NewElementFromColumn(col *query.Column) (document.Element, error) {
 	t, err := NewElementTypeFrom(col.DataType())
 	if err != nil {
 		return nil, err
