@@ -65,7 +65,7 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 
 	// Get the collection definition from the schema.
 
-	col, err := NewCollectionWith(stmt)
+	col, err := NewCollectionFrom(stmt)
 	if err != nil {
 		return err
 	}

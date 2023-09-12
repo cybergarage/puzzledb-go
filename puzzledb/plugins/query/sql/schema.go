@@ -19,8 +19,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewCollectionWith creates a new schema from the specified schema object.
-func NewCollectionWith(stmt *query.CreateTable) (document.Schema, error) {
+// NewCollectionFrom creates a new schema from the specified schema object.
+func NewCollectionFrom(stmt *query.CreateTable) (document.Schema, error) {
 	s := document.NewSchema()
 	s.SetName(stmt.TableName())
 	// Add elements
