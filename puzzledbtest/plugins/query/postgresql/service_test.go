@@ -36,6 +36,12 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 		"SmplCrudInt",
 		"SmplCrudFloat",
 		"SmplCrudDouble",
+		"FuncAggrInt",
+		// "FuncAggrFloat",
+		// "FuncAggrDouble",
+		"FuncMathInt",
+		"FuncMathFloat",
+		"FuncMathDouble",
 	}
 
 	if err := sqltest.RunEmbedSuites(t, client, testNames...); err != nil {
