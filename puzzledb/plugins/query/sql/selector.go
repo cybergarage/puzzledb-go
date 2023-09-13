@@ -19,8 +19,8 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewSelectorsWithSchema returns a new selector list with the specified schema.
-func NewSelectorsWithSchema(schema document.Schema) query.SelectorList {
+// NewQuerySelectorsWith returns a new selector list with the specified schema.
+func NewQuerySelectorsWith(schema document.Schema) query.SelectorList {
 	sels := query.NewSelectors()
 	for _, elem := range schema.Elements() {
 		sels = append(sels, query.NewColumnWithName(elem.Name()))
