@@ -47,26 +47,34 @@ func NewDocumentSchemaFrom(stmt *query.CreateTable) (document.Schema, error) {
 }
 
 // NewQuerySchemaFrom creates a new schema from the specified schema object.
-func NewQuerySchemaFrom(col document.Schema) (*query.Schema, error) {
+func NewQuerySchemaFrom(doc document.Schema) (*query.Schema, error) {
 	columns := query.NewColumns()
-	for _, elem := range col.Elements() {
+	for _, elem := range doc.Elements() {
 		column, err := NewQueryColumnFrom(elem)
 		if err != nil {
 			return nil, err
 		}
 		columns = append(columns, column)
 	}
-	// indexes := query.NewIndexes()
-	// for _, idx := range col.Indexes() {
-	// 	idx, err := NewIndexFrom(idx)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	s.AddIndex(idx)
-	// }
+	indexes := query.NewIndexes()
+	for _, docIdx := range doc.Indexes() {
+		idxType := query.SecondaryIndex
+		if docIdx.Type() == document.PrimaryIndex {
+			idxType = query.PrimaryIndex
+		}
+		idxColumns := query.NewColumns()
+		for _, elem := range docIdx.Elements() {
+			idxColumn, err := columns.ColumnByName(elem.Name())
+			if err != nil {
+				return nil, err
+			}
+			idxColumns = append(idxColumns, idxColumn)
+		}
+		indexes = append(indexes, query.NewIndexWith(docIdx.Name(), idxType, idxColumns))
+	}
 	return query.NewSchemaWith(
-		col.Name(),
+		doc.Name(),
 		query.WithSchemaColumns(columns),
-		// query.WithSchemaIndexes(indexes),
+		query.WithSchemaIndexes(indexes),
 	), nil
 }
