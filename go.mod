@@ -11,7 +11,8 @@ require (
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.1.1
 	github.com/cybergarage/go-redis v1.3.6
-	github.com/cybergarage/go-sqlparser v1.1.0
+	github.com/cybergarage/go-safecast v1.2.2
+	github.com/cybergarage/go-sqlparser v1.1.1
 	github.com/cybergarage/go-sqltest v1.1.1
 	github.com/cybergarage/go-tracing v1.1.2
 	github.com/dgraph-io/ristretto v0.1.1
@@ -31,7 +32,6 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/cybergarage/go-safecast v1.2.2 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
