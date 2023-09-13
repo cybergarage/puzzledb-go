@@ -74,41 +74,32 @@ func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (messa
 
 // Select handles a SELECT query.
 func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) {
-	ctx, txn, schema, rs, err := service.Service.Select(conn, stmt)
+	ctx, txn, col, rs, err := service.Service.Select(conn, stmt)
 	defer ctx.FinishSpan()
 	if err != nil {
 		return nil, err
 	}
 	// Row description response
 
+	schema, err := sql.NewQuerySchemaFrom(col)
+	if err != nil {
+		return nil, err
+	}
+
 	selectors := stmt.Selectors()
 	if selectors.IsSelectAll() {
-		selectors = sql.NewQuerySelectorsFrom(schema)
+		selectors = schema.Selectors()
 	}
 
 	res := message.NewResponses()
 
 	rowDesc := message.NewRowDescription()
 	for n, selector := range selectors {
-		switch selector := selector.(type) { //nolint:gocritic
-		case *query.Column:
-			name := selector.Name()
-			elem, err := schema.FindElement(name)
-			if err != nil {
-				return nil, err
-			}
-			dt, err := NewDataTypeFrom(elem.Type())
-			if err != nil {
-				return nil, err
-			}
-			field := message.NewRowFieldWith(name,
-				message.WithNumber(int16(n+1)),
-				message.WithDataTypeID(dt.OID()),
-				message.WithDataTypeSize(int16(dt.Size())),
-				message.WithFormatCode(dt.FormatCode()),
-			)
-			rowDesc.AppendField(field)
+		field, err := query.NewRowFieldFrom(schema, selector, n)
+		if err != nil {
+			return nil, err
 		}
+		rowDesc.AppendField(field)
 	}
 	res = res.Append(rowDesc)
 
