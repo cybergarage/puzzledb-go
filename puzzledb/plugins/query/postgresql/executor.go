@@ -83,7 +83,7 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 
 	selectors := stmt.Selectors()
 	if selectors.IsSelectAll() {
-		selectors = sql.NewQuerySelectorsWith(schema)
+		selectors = sql.NewQuerySelectorsFrom(schema)
 	}
 
 	res := message.NewResponses()
