@@ -36,14 +36,23 @@
     - Storage plug-ins
       - Update cache store plug-in
 
-## v1.0.2 (2023-xx-xx)
+## v1.0.3 (2023-xx-xx)
 - Improvement
   - PostgreSQL plug-in
-    - Support basic functions in SELECT query such as count, min and max
     - Support DATE and TIMESTAMP data types
     - Support pgbench workload
   - MySQL plug-in
     - Support DATE and TIMESTAMP data types
+
+
+## v1.0.2 (2023-09-12)
+- Improvement
+  - PostgreSQL plug-in
+    - SELECT
+      - Supported basic aggregate functions
+        - COUNT, SUM, AVG, MIN and MAX
+      - Supported basic math functions
+        - ABS, CEIL and FLOOR
 
 ## v1.0.1 (2023-09-06)
 - Improvement
