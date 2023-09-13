@@ -18,7 +18,6 @@ import (
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
-	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
@@ -79,19 +78,24 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 	if err != nil {
 		return nil, err
 	}
-	// Row description response
+
+	// Schema
 
 	schema, err := sql.NewQuerySchemaFrom(col)
 	if err != nil {
 		return nil, err
 	}
 
+	// Responses
+
+	res := message.NewResponses()
+
+	// Row description response
+
 	selectors := stmt.Selectors()
 	if selectors.IsSelectAll() {
 		selectors = schema.Selectors()
 	}
-
-	res := message.NewResponses()
 
 	rowDesc := message.NewRowDescription()
 	for n, selector := range selectors {
@@ -106,30 +110,39 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 	// Data row response
 
 	nRows := 0
-	for rs.Next() {
-		obj := rs.Object()
-		objMap, err := document.NewMapObjectFrom(obj)
+	if !selectors.HasAggregateFunction() {
+		for rs.Next() {
+			obj := rs.Object()
+			row, err := sql.NewRowFrom(obj)
+			if err != nil {
+				return nil, err
+			}
+			dataRow, err := query.NewDataRowForSelectors(schema, rowDesc, selectors, row)
+			if err != nil {
+				return nil, err
+			}
+			res = res.Append(dataRow)
+			nRows++
+		}
+	} else {
+		groupBy := stmt.GroupBy().Column()
+		queryRows := []query.Row{}
+		for rs.Next() {
+			obj := rs.Object()
+			row, err := sql.NewRowFrom(obj)
+			if err != nil {
+				return nil, err
+			}
+			queryRows = append(queryRows, row)
+		}
+		dataRows, err := query.NewDataRowsForAggregateFunction(schema, rowDesc, selectors, queryRows, groupBy)
 		if err != nil {
 			return nil, err
 		}
-		dataRow := message.NewDataRow()
-		for n, selector := range selectors {
-			switch selector := selector.(type) { //nolint:gocritic
-			case *query.Column:
-				name := selector.Name()
-				v, ok := objMap[name]
-				if !ok {
-					v = nil
-				}
-				field := rowDesc.Field(n)
-				err := dataRow.AppendData(field, v)
-				if err != nil {
-					return nil, err
-				}
-			}
+		for _, dataRow := range dataRows {
+			res = res.Append(dataRow)
+			nRows++
 		}
-		res = res.Append(dataRow)
-		nRows++
 	}
 
 	cmpRes, err := message.NewSelectCompleteWith(nRows)
