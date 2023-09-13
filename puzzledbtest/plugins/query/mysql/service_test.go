@@ -36,6 +36,7 @@ func TestMySQLTestSuite(t *testing.T) {
 		"SmplCrudInt",
 		"SmplCrudFloat",
 		"SmplCrudDouble",
+		"YcsbWorkload",
 	}
 
 	if err := sqltest.RunEmbedSuites(t, client, testNames...); err != nil {
