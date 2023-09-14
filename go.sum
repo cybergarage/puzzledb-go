@@ -81,6 +81,8 @@ github.com/cybergarage/go-redis v1.3.6 h1:BcMzeznUmCrnZZOkHfZXvR+0/fe61qNH33zAvj
 github.com/cybergarage/go-redis v1.3.6/go.mod h1:eZsZZxtYRJNSpIEozeod6TfXL6MKS8DLwxxRdt/GXy8=
 github.com/cybergarage/go-safecast v1.2.2 h1:aUHIRf7RSx8w0u/2VMXaZcroRhLFe3Jw0Bif96S6eD8=
 github.com/cybergarage/go-safecast v1.2.2/go.mod h1:bv+1ykIikB3xYPJFqu3ZsY3xfyEVQesq8+biHX3ZMWQ=
+github.com/cybergarage/go-safecast v1.2.3 h1:DlD/VxntuR+H6hy+TMprxkDIxbwd9pLn6CZ44FC5PlE=
+github.com/cybergarage/go-safecast v1.2.3/go.mod h1:bv+1ykIikB3xYPJFqu3ZsY3xfyEVQesq8+biHX3ZMWQ=
 github.com/cybergarage/go-sqlparser v1.1.1 h1:bk7xXiuCh8j28Ve2tJghHggIOC5ipmpkVJDg+3+okVc=
 github.com/cybergarage/go-sqlparser v1.1.1/go.mod h1:xYU0KBIZylMYV3WeO4kjesrFgjXix7EQxQqhXnH2ekI=
 github.com/cybergarage/go-sqltest v1.1.1 h1:AmcmIjxv8Vx1PGNxZ3WQw/gmpqespv/ZLIamcbU7ruQ=
