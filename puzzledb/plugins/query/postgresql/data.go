@@ -24,7 +24,7 @@ func NewDataTypeFrom(t document.ElementType) (*system.DataType, error) {
 	return system.GetDataType(dataTypeOIDFrom(t))
 }
 
-func dataTypeOIDFrom(t document.ElementType) system.OID {
+func dataTypeOIDFrom(t document.ElementType) system.ObjectID {
 	switch t { //nolint:exhaustive
 	case document.Int8Type:
 		return system.Bytea
