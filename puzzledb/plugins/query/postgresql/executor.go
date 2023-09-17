@@ -111,7 +111,14 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 
 	nRows := 0
 	if !selectors.HasAggregateFunction() {
+		offset := stmt.Limit().Offset()
+		limit := stmt.Limit().Limit()
+		rowNo := 0
 		for rs.Next() {
+			rowNo++
+			if 0 < offset && rowNo <= offset {
+				continue
+			}
 			obj := rs.Object()
 			row, err := sql.NewRowFrom(obj)
 			if err != nil {
@@ -123,6 +130,9 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 			}
 			res = res.Append(dataRow)
 			nRows++
+			if 0 < limit && limit <= nRows {
+				break
+			}
 		}
 	} else {
 		groupBy := stmt.GroupBy().Column()
