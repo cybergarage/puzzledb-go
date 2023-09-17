@@ -39,9 +39,14 @@ func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTab
 	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
-// CreateIndex handles a CREATE INDEX query.
-func (service *Service) CreateIndex(conn *postgresql.Conn, stmt *query.CreateIndex) (message.Responses, error) {
-	return nil, query.NewErrNotImplemented("CREATE INDEX")
+// AlterDatabase handles a ALTER DATABASE query.
+func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) (message.Responses, error) {
+	return nil, query.NewErrNotImplemented("ALTER TABLE")
+}
+
+// AlterTable handles a ALTER TABLE query.
+func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable) (message.Responses, error) {
+	return nil, query.NewErrNotImplemented("ALTER TABLE")
 }
 
 // DropDatabase handles a DROP DATABASE query.
@@ -72,7 +77,7 @@ func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (messa
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) {
+func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) { //nolint:gocognit
 	ctx, txn, col, rs, err := service.Service.Select(conn, stmt)
 	defer ctx.FinishSpan()
 	if err != nil {
