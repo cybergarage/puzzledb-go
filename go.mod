@@ -9,7 +9,7 @@ require (
 	github.com/cybergarage/go-mongo v1.0.2
 	github.com/cybergarage/go-mysql v1.0.3
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.2.0
+	github.com/cybergarage/go-postgresql v1.2.1
 	github.com/cybergarage/go-redis v1.3.6
 	github.com/cybergarage/go-safecast v1.2.3
 	github.com/cybergarage/go-sqlparser v1.2.3
