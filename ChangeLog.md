@@ -44,7 +44,6 @@
   - MySQL plug-in
     - Support DATE and TIMESTAMP data types
 
-
 ## v1.0.2 (2023-09-12)
 - Improvement
   - PostgreSQL plug-in
