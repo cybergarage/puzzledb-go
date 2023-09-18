@@ -18,7 +18,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cybergarage/go-postgresql/postgresql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
@@ -114,8 +113,4 @@ func newErrQueryConditionNotSupported(obj any) error {
 
 func newErrDataTypeNotEqual(obj any, et document.ElementType) error {
 	return newErrNotEqual(fmt.Sprintf("%v(%T)", obj, obj), et.String())
-}
-
-func newErrInvalidUpdateExecutor(col *query.Column) error {
-	return fmt.Errorf("%v is %w", col.UpdatorString(), ErrInvalid)
 }
