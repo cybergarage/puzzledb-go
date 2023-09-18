@@ -134,12 +134,40 @@ func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store
 	// Updates object
 	dbName := conn.Database()
 	for _, updateCol := range updateCols.Columns() {
-		name := updateCol.Name()
-		v, err := document.NewValueForSchema(schema, name, updateCol.Value())
+		updateColName := updateCol.Name()
+
+		var updateVal any
+		if exe := updateCol.Executor(); exe != nil {
+			args := updateCol.Arguments()
+			if len(args) < 2 {
+				return newErrInvalidUpdateExecutor(updateCol)
+			}
+			leftExprName, ok := args[0].(string)
+			if !ok {
+				return newErrInvalidUpdateExecutor(updateCol)
+			}
+			v, ok := docObj[leftExprName]
+			if !ok {
+				return newErrInvalidUpdateExecutor(updateCol)
+			}
+			args[0] = v
+			rv, err := exe.Execute(args...)
+			if err != nil {
+				return err
+			}
+			updateVal = rv
+		} else {
+			if !updateCol.HasLiteral() {
+				continue
+			}
+			updateVal = updateCol.Value()
+		}
+
+		v, err := document.NewValueForSchema(schema, updateColName, updateVal)
 		if err != nil {
 			return err
 		}
-		docObj[name] = v
+		docObj[updateColName] = v
 	}
 	docKey, err := NewDocumentKeyFromObject(dbName, schema, docObj)
 	if err != nil {
