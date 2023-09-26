@@ -18,6 +18,7 @@ import (
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
@@ -192,4 +193,79 @@ func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (messa
 		return nil, err
 	}
 	return message.NewDeleteCompleteResponsesWith(n)
+}
+
+// Copy handles a COPY query.
+func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (message.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Copy")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	col, err := txn.GetCollection(ctx, stmt.TableName())
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	schema, err := sql.NewQuerySchemaFrom(col)
+	if err != nil {
+		return nil, err
+	}
+
+	return postgresql.NewCopyInResponsesFrom(stmt, schema)
+}
+
+// Copy handles a COPY DATA message.
+func (service *Service) CopyData(conn *postgresql.Conn, stmt *query.Copy, stream *postgresql.CopyStream) (message.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("CopyData")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+
+	dbName := conn.Database()
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	col, err := txn.GetCollection(ctx, stmt.TableName())
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = sql.NewQuerySchemaFrom(col)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, err
+	// return postgresql.NewCopyCompleteResponsesFrom(q, stream, conn, tbl.Schema, store)
 }
