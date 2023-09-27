@@ -33,8 +33,8 @@ const (
 	Float32Type ElementType = 0x40
 	Float64Type ElementType = 0x41
 	// 0x70 Special.
-	DateTimeType ElementType = 0x70
-	BoolType     ElementType = 0x71
+	TimestampType ElementType = 0x70
+	BoolType      ElementType = 0x71
 )
 
 type Element interface {
@@ -86,7 +86,7 @@ func (et ElementType) String() string {
 		return "float32"
 	case Float64Type:
 		return "float64"
-	case DateTimeType:
+	case TimestampType:
 		return "datetime"
 	case BoolType:
 		return "bool"

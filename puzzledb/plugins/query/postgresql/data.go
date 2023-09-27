@@ -42,7 +42,7 @@ func dataTypeOIDFrom(t document.ElementType) system.ObjectID {
 		return system.Float8
 	case document.Float32Type:
 		return system.Float4
-	case document.DateTimeType:
+	case document.TimestampType:
 		return system.Timestamp
 	case document.BoolType:
 		return system.Bool
