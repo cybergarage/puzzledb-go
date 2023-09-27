@@ -261,11 +261,10 @@ func (service *Service) CopyData(conn *postgresql.Conn, stmt *query.Copy, stream
 		return nil, err
 	}
 
-	_, err = sql.NewQuerySchemaFrom(col)
+	schema, err := sql.NewQuerySchemaFrom(col)
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, err
-	// return postgresql.NewCopyCompleteResponsesFrom(q, stream, conn, tbl.Schema, store)
+	return postgresql.NewCopyCompleteResponsesFrom(stmt, stream, conn, schema, service.Executor)
 }
