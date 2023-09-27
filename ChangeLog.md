@@ -34,22 +34,19 @@
     - Redis plug-in
       - Added support for new queries
     - Storage plug-ins
-      - Update cache store plug-in
-
-## v1.0.4 (2023-xx-xx)
-- Improvement
-  - PostgreSQL plug-in
-    - Support DATE and TIMESTAMP data types
-    - Support pgbench workload
-  - MySQL plug-in
-    - Support DATE and TIMESTAMP data types
+      - Update cache store plug-in明日のために
 
 ## v1.0.3 (2023-09-28)
 - Improvement
   - PostgreSQL plug-in
+    - Supported new data types
+      - TIMESTAMP
     - Supported pgbench workload
-    - COPY
-      - Supported COPY FROM STDIN
+      - COPY
+        - Supported COPY FROM STDIN
+  - MySQL plug-in
+    - Supported new data types
+      - DATETIME and TIMESTAMP
 
 ## v1.0.2 (2023-09-12)
 - Improvement
