@@ -16,9 +16,15 @@ package mysql
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/cybergarage/go-mysql/mysql"
+	"github.com/cybergarage/go-safecast/safecast"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+)
+
+const (
+	timestampFormat = "2006-01-02 15:04:05.999999"
 )
 
 func NewValueFrom(elem document.Element, val any) (mysql.Value, error) {
@@ -50,8 +56,17 @@ func NewValueFrom(elem document.Element, val any) (mysql.Value, error) {
 	case document.Int8Type, document.Int16Type, document.Int32Type, document.Int64Type, document.Float32Type, document.Float64Type:
 		eb = []byte(fmt.Sprintf("%v", val))
 	case document.TimestampType:
-		// TODO: Converts binary date format of MySQL protocol
-		eb = []byte(fmt.Sprintf("%v", val))
+		switch v := val.(type) {
+		case time.Time:
+			eb = []byte(v.Format(timestampFormat))
+		default:
+			var tv time.Time
+			if err := safecast.ToTime(v, &tv); err == nil {
+				eb = []byte(tv.Format(timestampFormat))
+			} else {
+				eb = []byte(fmt.Sprintf("%v", val))
+			}
+		}
 	case document.ArrayType, document.MapType:
 		return mysql.NewNullValue(), newNotSupportedError(et)
 	default:
