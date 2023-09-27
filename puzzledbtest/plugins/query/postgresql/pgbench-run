@@ -1,0 +1,3 @@
+#!/bin/bash
+pgbench -i pgbench -h localhost
+pgbench -c 1 -t 100 pgbench -h localhost

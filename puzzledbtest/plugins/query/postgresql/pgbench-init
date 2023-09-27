@@ -1,0 +1,8 @@
+#!/bin/bash
+# Setting for Docker Desktop
+# postgres://postgres:postgrespw@localhost:32768
+set -e
+psql -v ON_ERROR_STOP=1 --host=localhost postgres <<-EOSQL
+DROP DATABASE IF EXISTS pgbench;
+CREATE DATABASE pgbench;
+EOSQL
