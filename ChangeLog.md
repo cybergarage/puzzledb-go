@@ -36,13 +36,20 @@
     - Storage plug-ins
       - Update cache store plug-in
 
-## v1.0.3 (2023-xx-xx)
+## v1.0.4 (2023-xx-xx)
 - Improvement
   - PostgreSQL plug-in
     - Support DATE and TIMESTAMP data types
     - Support pgbench workload
   - MySQL plug-in
     - Support DATE and TIMESTAMP data types
+
+## v1.0.3 (2023-09-28)
+- Improvement
+  - PostgreSQL plug-in
+    - Supported pgbench workload
+    - COPY
+      - Supported COPY FROM STDIN
 
 ## v1.0.2 (2023-09-12)
 - Improvement
