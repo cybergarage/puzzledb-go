@@ -35,6 +35,7 @@ func TestMySQLTestSuite(t *testing.T) {
 		"SmplCrudText",
 		"SmplCrudInt",
 		"SmplCrudFloat",
+		"SmplCrudTimestamp",
 		"SmplCrudDouble",
 		"YcsbWorkload",
 	}
