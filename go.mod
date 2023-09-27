@@ -9,11 +9,11 @@ require (
 	github.com/cybergarage/go-mongo v1.0.2
 	github.com/cybergarage/go-mysql v1.0.3
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.2.1
+	github.com/cybergarage/go-postgresql v1.3.0
 	github.com/cybergarage/go-redis v1.3.6
 	github.com/cybergarage/go-safecast v1.2.3
-	github.com/cybergarage/go-sqlparser v1.2.3
-	github.com/cybergarage/go-sqltest v1.2.2
+	github.com/cybergarage/go-sqlparser v1.2.4
+	github.com/cybergarage/go-sqltest v1.2.4
 	github.com/cybergarage/go-tracing v1.1.2
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/google/uuid v1.3.0
@@ -48,6 +48,9 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/jackc/pgpassfile v1.0.0 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
+	github.com/jackc/pgx/v5 v5.4.0 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
