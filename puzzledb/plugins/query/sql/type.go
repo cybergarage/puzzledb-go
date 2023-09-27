@@ -62,7 +62,7 @@ func NewQueryDataTypeFrom(elemType document.ElementType) (query.DataType, error)
 		return query.TextData, nil
 	case document.BinaryType:
 		return query.BlobData, nil
-	case document.ArrayType, document.MapType, document.DateTimeType, document.BoolType:
+	case document.ArrayType, document.MapType, document.TimestampType, document.BoolType:
 		return 0, newErrNotSupported(elemType)
 	default:
 		return 0, newErrNotSupported(elemType)

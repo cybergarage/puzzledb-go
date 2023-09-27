@@ -49,7 +49,7 @@ func NewValueFrom(elem document.Element, val any) (mysql.Value, error) {
 		}
 	case document.Int8Type, document.Int16Type, document.Int32Type, document.Int64Type, document.Float32Type, document.Float64Type:
 		eb = []byte(fmt.Sprintf("%v", val))
-	case document.DateTimeType:
+	case document.TimestampType:
 		// TODO: Converts binary date format of MySQL protocol
 		eb = []byte(fmt.Sprintf("%v", val))
 	case document.ArrayType, document.MapType:

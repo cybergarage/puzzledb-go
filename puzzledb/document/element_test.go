@@ -29,7 +29,7 @@ var elementTypes = []ElementType{
 	BinaryType,
 	Float32Type,
 	Float64Type,
-	DateTimeType,
+	TimestampType,
 	BoolType,
 }
 
