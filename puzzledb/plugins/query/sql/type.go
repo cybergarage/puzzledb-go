@@ -34,7 +34,7 @@ func NewDocumentElementTypeFrom(sqlType query.DataType) (document.ElementType, e
 		return document.Float32Type, nil
 	case query.DoubleData:
 		return document.Float64Type, nil
-	case query.TextData, query.VarCharData:
+	case query.TextData, query.VarCharData, query.CharData:
 		return document.StringType, nil
 	case query.BlobData, query.VarBinaryData:
 		return document.BinaryType, nil
