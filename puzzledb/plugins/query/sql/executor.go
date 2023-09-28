@@ -15,6 +15,8 @@
 package sql
 
 import (
+	"errors"
+
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-sqlparser/sql/query"
@@ -31,8 +33,7 @@ func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) er
 
 	dbName := stmt.DatabaseName()
 
-	store := service.Store()
-	_, err := store.GetDatabase(ctx, dbName)
+	_, err := service.Store().GetDatabase(ctx, dbName)
 	if err == nil {
 		if stmt.IfNotExists() {
 			return nil
@@ -40,7 +41,7 @@ func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) er
 		return newErrDatabaseExist(dbName)
 	}
 
-	err = store.CreateDatabase(ctx, dbName)
+	err = service.Store().CreateDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -61,7 +62,6 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 	ctx.StartSpan("CreateTable")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
 	dbName := conn.Database()
 
 	// Get the collection definition from the schema.
@@ -73,7 +73,7 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 
 	// Check if the database exists.
 
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -128,13 +128,12 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 	ctx.StartSpan("AlterTable")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
 	dbName := conn.Database()
 	tblName := stmt.TableName()
 
 	// Check if the database exists.
 
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -213,12 +212,11 @@ func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) error 
 	ctx.StartSpan("DropDatabase")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
 	dbName := stmt.DatabaseName()
 
 	// Check if the database exists.
 
-	_, err := store.GetDatabase(ctx, dbName)
+	_, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		if stmt.IfExists() {
 			return nil
@@ -228,7 +226,7 @@ func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) error 
 
 	// Drop the specified database.
 
-	err = store.RemoveDatabase(ctx, dbName)
+	err = service.Store().RemoveDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -249,12 +247,11 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) error {
 	ctx.StartSpan("DropTable")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
 	dbName := conn.Database()
 
 	// Check if the database exists.
 
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		if stmt.IfExists() {
 			return nil
@@ -309,10 +306,8 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
-
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -359,10 +354,8 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Select")
 
-	store := service.Store()
-
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return ctx, nil, nil, nil, err
 	}
@@ -399,10 +392,8 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
-
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return 0, err
 	}
@@ -448,10 +439,8 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
-
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return 0, err
 	}
@@ -478,7 +467,9 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 	case document.PrimaryIndex:
 		err = service.DeleteDocument(ctx, conn, txn, col, docKey)
 		if err != nil {
-			return 0, service.CancelTransactionWithError(ctx, txn, err)
+			if stmt.Where() != nil || !errors.Is(err, store.ErrNotExist) {
+				return 0, service.CancelTransactionWithError(ctx, txn, err)
+			}
 		}
 		nDeleted = 1
 	case document.SecondaryIndex:
