@@ -30,6 +30,14 @@ func newNotSupportedError(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotSupported)
 }
 
+func newElementMapNotExist() error {
+	return fmt.Errorf("element map is %w", ErrNotExist)
+}
+
+func newIndexMapNotExist() error {
+	return fmt.Errorf("index map is %w", ErrNotExist)
+}
+
 func newElementInvalidError(obj any) error {
 	return fmt.Errorf("element (%T:%v) is %w", obj, obj, ErrInvalid)
 }
