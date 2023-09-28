@@ -187,7 +187,8 @@ func (s *schema) DropElement(name string) error {
 		return newElementMapNotExist()
 	}
 	for i, em := range ems {
-		if strings.EqualFold(em[elementNameIdx].(string), name) {
+		emName, ok := em[elementNameIdx].(string)
+		if ok && strings.EqualFold(emName, name) {
 			s.data[schemaElementsIdx] = append(ems[:i], ems[i+1:]...)
 			return s.updateCashes()
 		}
@@ -246,7 +247,8 @@ func (s *schema) DropIndex(name string) error {
 		return newIndexMapNotExist()
 	}
 	for i, im := range ims {
-		if strings.EqualFold(im[indexNameIdx].(string), name) {
+		imName, ok := im[indexNameIdx].(string)
+		if ok && strings.EqualFold(imName, name) {
 			s.data[schemaIndexesIdx] = append(ims[:i], ims[i+1:]...)
 			return s.updateCashes()
 		}
