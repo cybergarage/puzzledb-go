@@ -467,11 +467,14 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 	case document.PrimaryIndex:
 		err = service.DeleteDocument(ctx, conn, txn, col, docKey)
 		if err != nil {
-			if stmt.Where() != nil || !errors.Is(err, store.ErrNotExist) {
+			if stmt.Where() == nil && errors.Is(err, store.ErrNotExist) {
+				nDeleted = 0
+			} else {
 				return 0, service.CancelTransactionWithError(ctx, txn, err)
 			}
+		} else {
+			nDeleted = 1
 		}
-		nDeleted = 1
 	case document.SecondaryIndex:
 		rs, err := txn.FindDocumentsByIndex(ctx, docKey)
 		if err != nil {
