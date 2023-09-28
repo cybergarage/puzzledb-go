@@ -32,6 +32,8 @@ type Schema interface {
 	FindElement(name string) (Element, error)
 	// AddIndex adds the specified index to the schema.
 	AddIndex(idx Index)
+	// DropIndex drops the specified index from the schema.
+	DropIndex(name string) error
 	// Indexes returns the schema indexes.
 	Indexes() Indexes
 	// FindIndex returns the schema index by the spacified name.

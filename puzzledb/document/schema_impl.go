@@ -237,6 +237,21 @@ func (s *schema) AddIndex(idx Index) {
 	s.indexes = append(s.indexes, idx)
 }
 
+// DropIndex drops the specified index from the schema.
+func (s *schema) DropIndex(name string) error {
+	ims, ok := s.indexMpas()
+	if !ok {
+		return newIndexMapNotExist()
+	}
+	for i, im := range ims {
+		if strings.EqualFold(im[indexNameIdx].(string), name) {
+			s.data[schemaIndexesIdx] = append(ims[:i], ims[i+1:]...)
+			return s.updateCashes()
+		}
+	}
+	return newIndexNotExistError(name)
+}
+
 // Indexes returns the schema indexes.
 func (s *schema) Indexes() Indexes {
 	return s.indexes
@@ -250,7 +265,7 @@ func (s *schema) FindIndex(name string) (Index, error) {
 			return idx, nil
 		}
 	}
-	return nil, newIndexNotExistErrorr(name)
+	return nil, newIndexNotExistError(name)
 }
 
 // PrimaryIndex returns the schema primary index.
