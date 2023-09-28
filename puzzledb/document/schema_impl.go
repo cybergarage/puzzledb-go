@@ -279,7 +279,7 @@ func (s *schema) PrimaryIndex() (Index, error) {
 			return idx, nil
 		}
 	}
-	return nil, newPrimaryIndexNotExistErrorr()
+	return nil, NewErrPrimaryIndexNotExist()
 }
 
 // SecondaryIndexes returns the schema secondary indexes.
