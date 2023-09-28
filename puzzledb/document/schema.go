@@ -23,7 +23,7 @@ type Schema interface {
 	// Name returns the schema name.
 	Name() string
 	// AddElement adds the specified element to the schema.
-	AddElement(elem Element)
+	AddElement(elem Element) error
 	// DropElement drops the specified element from the schema.
 	DropElement(name string) error
 	// Elements returns the schema elements.
@@ -31,7 +31,7 @@ type Schema interface {
 	// FindElement returns the schema elements by the specified name.
 	FindElement(name string) (Element, error)
 	// AddIndex adds the specified index to the schema.
-	AddIndex(idx Index)
+	AddIndex(idx Index) error
 	// DropIndex drops the specified index from the schema.
 	DropIndex(name string) error
 	// Indexes returns the schema indexes.
