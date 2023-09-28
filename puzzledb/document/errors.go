@@ -62,10 +62,6 @@ func newIndexInvalidError(obj any) error {
 	return fmt.Errorf("index (%T:%v) is %w", obj, obj, ErrInvalid)
 }
 
-func newIndexNotExistErrorr(obj any) error {
-	return fmt.Errorf("index (%v) is %w", obj, ErrNotExist)
-}
-
 func newPrimaryIndexNotExistErrorr() error {
 	return fmt.Errorf("primary index is %w", ErrNotExist)
 }
