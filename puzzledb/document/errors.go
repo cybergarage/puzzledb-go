@@ -34,6 +34,14 @@ func newElementMapNotExist() error {
 	return fmt.Errorf("element map is %w", ErrNotExist)
 }
 
+func newElementNotExistError(name string) error {
+	return fmt.Errorf("element (%s) is %w", name, ErrNotExist)
+}
+
+func newIndexNotExistError(name string) error {
+	return fmt.Errorf("index (%s) is %w", name, ErrNotExist)
+}
+
 func newIndexMapNotExist() error {
 	return fmt.Errorf("index map is %w", ErrNotExist)
 }
