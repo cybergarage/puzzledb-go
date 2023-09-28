@@ -42,12 +42,20 @@ func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTab
 
 // AlterDatabase handles a ALTER DATABASE query.
 func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) (message.Responses, error) {
-	return nil, query.NewErrNotImplemented("ALTER TABLE")
+	err := service.Service.AlterDatabase(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // AlterTable handles a ALTER TABLE query.
 func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable) (message.Responses, error) {
-	return nil, query.NewErrNotImplemented("ALTER TABLE")
+	err := service.Service.AlterTable(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // DropDatabase handles a DROP DATABASE query.
