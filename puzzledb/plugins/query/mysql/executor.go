@@ -15,6 +15,8 @@
 package mysql
 
 import (
+	"errors"
+
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
 	"github.com/cybergarage/go-mysql/mysql/query"
@@ -77,7 +79,6 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 	ctx.StartSpan("CreateTable")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
 	dbName := conn.Database()
 
 	// Get the collection definition from the schema.
@@ -89,7 +90,7 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 
 	// Check if the database exists.
 
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +140,6 @@ func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql
 	ctx.StartSpan("AlterTable")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
 	dbName := conn.Database()
 	tblName := stmt.TableName()
 
@@ -152,7 +152,7 @@ func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql
 
 	// Check if the database exists.
 
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -224,10 +224,8 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
-
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -298,10 +296,8 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 	ctx.StartSpan("Select")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
-
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -371,10 +367,8 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
-
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -473,10 +467,8 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
 
-	store := service.Store()
-
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -512,7 +504,9 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 	case document.PrimaryIndex:
 		err = service.DeleteDocument(ctx, conn, txn, col, docKey)
 		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
+			if stmt.Where != nil || !errors.Is(err, store.ErrNotExist) {
+				return nil, service.CancelTransactionWithError(ctx, txn, err)
+			}
 		}
 	case document.SecondaryIndex:
 		rs, err := txn.FindDocumentsByIndex(ctx, docKey)
