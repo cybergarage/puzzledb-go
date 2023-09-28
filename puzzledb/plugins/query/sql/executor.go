@@ -187,6 +187,11 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 
 	// Update schema
 
+	err = txn.UpdateCollection(ctx, schema)
+	if err != nil {
+		return service.CancelTransactionWithError(ctx, txn, err)
+	}
+
 	err = txn.Commit(ctx)
 	if err != nil {
 		return err
