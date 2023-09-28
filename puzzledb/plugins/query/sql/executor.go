@@ -16,6 +16,7 @@ package sql
 
 import (
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
@@ -111,6 +112,73 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 	err = service.PostCollectionCreateMessage(dbName, tblName)
 	if err != nil {
 		log.Error(err)
+	}
+
+	return nil
+}
+
+// AlterDatabase handles a ALTER DATABASE query.
+func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) error {
+	return newErrNotSupported(stmt.String())
+}
+
+// AlterTable handles a ALTER TABLE query.
+func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable) error {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("AlterTable")
+	defer ctx.FinishSpan()
+
+	store := service.Store()
+	dbName := conn.Database()
+
+	// Check if the database exists.
+
+	db, err := store.GetDatabase(ctx, dbName)
+	if err != nil {
+		return err
+	}
+
+	// Alter the specified tables.
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return err
+	}
+
+	schema, err := txn.GetCollection(ctx, stmt.TableName())
+	if err != nil {
+		return service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	if col, ok := stmt.AddColumn(); ok {
+		elem, err := NewDocumentElementFrom(col)
+		if err != nil {
+			return err
+		}
+		err = schema.AddElement(elem)
+		if err != nil {
+			return err
+		}
+	}
+
+	if col, ok := stmt.DropColumn(); ok {
+		err := schema.DropElement(col.Name())
+		if err != nil {
+			return err
+		}
+	}
+
+	if _, ok := stmt.RenameTable(); ok {
+		return newErrNotSupported(stmt.String())
+	}
+
+	if _, _, ok := stmt.RenameColumns(); ok {
+		return newErrNotSupported(stmt.String())
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return err
 	}
 
 	return nil
