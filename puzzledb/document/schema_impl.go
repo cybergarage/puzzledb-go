@@ -14,6 +14,8 @@
 
 package document
 
+import "strings"
+
 // Schema format (version 1)
 //
 // map[uint8]any
@@ -73,17 +75,22 @@ func NewSchemaWith(obj any) (Schema, error) {
 		indexes:  []Index{},
 	}
 
+	return s, s.updateCashes()
+}
+
+func (s *schema) updateCashes() error {
 	// Caches elements
 
 	ems, ok := s.elementMaps()
 	if !ok {
-		return nil, newSchemaInvalidError(obj)
+		return newElementMapNotExist()
 	}
 
+	s.elements = []Element{}
 	for _, em := range ems {
 		e, err := newElementWith(em)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		s.elements = append(s.elements, e)
 	}
@@ -92,18 +99,19 @@ func NewSchemaWith(obj any) (Schema, error) {
 
 	ims, ok := s.indexMpas()
 	if !ok {
-		return nil, newSchemaInvalidError(obj)
+		return newIndexMapNotExist()
 	}
 
+	s.indexes = []Index{}
 	for _, im := range ims {
 		i, err := newIndexWith(s, im)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		s.indexes = append(s.indexes, i)
 	}
 
-	return s, nil
+	return nil
 }
 
 // SetVersion sets the specified version to the schema.
@@ -171,6 +179,11 @@ func (s *schema) AddElement(elem Element) {
 	s.elements = append(s.elements, elem)
 }
 
+// DropElement drops the specified element from the schema.
+func (s *schema) DropElement(name string) error {
+	return nil
+}
+
 // Elements returns the schema elements.
 func (s *schema) Elements() Elements {
 	return s.elements
@@ -180,7 +193,7 @@ func (s *schema) Elements() Elements {
 func (s *schema) FindElement(name string) (Element, error) {
 	es := s.Elements()
 	for _, e := range es {
-		if e.Name() == name {
+		if strings.EqualFold(e.Name(), name) {
 			return e, nil
 		}
 	}
@@ -223,7 +236,7 @@ func (s *schema) Indexes() Indexes {
 func (s *schema) FindIndex(name string) (Index, error) {
 	idxes := s.indexes
 	for _, idx := range idxes {
-		if idx.Name() == name {
+		if strings.EqualFold(idx.Name(), name) {
 			return idx, nil
 		}
 	}
