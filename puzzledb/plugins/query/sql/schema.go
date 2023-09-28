@@ -29,7 +29,10 @@ func NewDocumentSchemaFrom(stmt *query.CreateTable) (document.Schema, error) {
 		if err != nil {
 			return nil, err
 		}
-		s.AddElement(e)
+		err = s.AddElement(e)
+		if err != nil {
+			return nil, err
+		}
 	}
 	// Add indexes
 	for _, idx := range stmt.Schema().Indexes() {
@@ -37,7 +40,10 @@ func NewDocumentSchemaFrom(stmt *query.CreateTable) (document.Schema, error) {
 		if err != nil {
 			return nil, err
 		}
-		s.AddIndex(i)
+		err = s.AddIndex(i)
+		if err != nil {
+			return nil, err
+		}
 	}
 	// NOTE: Disable this check because the primary index is not set when the schema is created.
 	// Check the primary index
