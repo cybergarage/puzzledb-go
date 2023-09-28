@@ -29,14 +29,20 @@ func NewCollectionWith(schema *query.Schema) (document.Schema, error) {
 		if err != nil {
 			return nil, err
 		}
-		s.AddElement(e)
+		err = s.AddElement(e)
+		if err != nil {
+			return nil, err
+		}
 		// Primary Index
 		if col.Type.Options.KeyOpt == query.ColKeyPrimary {
 			i, err := NewPrimaryIndexWith(e)
 			if err != nil {
 				return nil, err
 			}
-			s.AddIndex(i)
+			err = s.AddIndex(i)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 	// Indexes
@@ -45,7 +51,10 @@ func NewCollectionWith(schema *query.Schema) (document.Schema, error) {
 		if err != nil {
 			return nil, err
 		}
-		s.AddIndex(i)
+		err = s.AddIndex(i)
+		if err != nil {
+			return nil, err
+		}
 	}
 	// Primary index
 	if _, err := s.PrimaryIndex(); err != nil {
