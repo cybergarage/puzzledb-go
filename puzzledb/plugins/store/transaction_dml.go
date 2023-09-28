@@ -28,11 +28,7 @@ func (txn *transaction) createSchemaKey(schema string) store.Key {
 	return kv.NewKeyWith(kv.CollectionKeyHeader, colKey)
 }
 
-// CreateCollection creates a new schema.
-func (txn *transaction) CreateCollection(ctx context.Context, col store.Collection) error {
-	ctx.StartSpan("CreateCollection")
-	defer ctx.FinishSpan()
-
+func (txn *transaction) setCollection(ctx context.Context, col store.Collection) error {
 	kvSchemaKey := txn.createSchemaKey(col.Name())
 	var encSchema bytes.Buffer
 	err := txn.EncodeDocument(&encSchema, col.Data())
@@ -46,22 +42,20 @@ func (txn *transaction) CreateCollection(ctx context.Context, col store.Collecti
 	return txn.kv.Set(&kvObj)
 }
 
+// CreateCollection creates a new schema.
+func (txn *transaction) CreateCollection(ctx context.Context, col store.Collection) error {
+	ctx.StartSpan("CreateCollection")
+	defer ctx.FinishSpan()
+
+	return txn.setCollection(ctx, col)
+}
+
 // UpdateCollection updates the specified collection.
 func (txn *transaction) UpdateCollection(ctx context.Context, col store.Collection) error {
 	ctx.StartSpan("UpdateCollection")
 	defer ctx.FinishSpan()
 
-	kvSchemaKey := txn.createSchemaKey(col.Name())
-	var encSchema bytes.Buffer
-	err := txn.EncodeDocument(&encSchema, col.Data())
-	if err != nil {
-		return err
-	}
-	kvObj := kv.Object{
-		Key:   kvSchemaKey,
-		Value: encSchema.Bytes(),
-	}
-	return txn.kv.Set(&kvObj)
+	return txn.setCollection(ctx, col)
 }
 
 // GetCollection returns the specified schema.
