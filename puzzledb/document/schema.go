@@ -24,6 +24,8 @@ type Schema interface {
 	Name() string
 	// AddElement adds the specified element to the schema.
 	AddElement(elem Element)
+	// DropElement drops the specified element from the schema.
+	DropElement(name string) error
 	// Elements returns the schema elements.
 	Elements() Elements
 	// FindElement returns the schema elements by the specified name.
