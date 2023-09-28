@@ -26,6 +26,8 @@ type Schema = document.Schema
 type DatabaseOperation interface {
 	// CreateCollection creates a new collection.
 	CreateCollection(ctx context.Context, col Collection) error
+	// UpdateCollection updates the specified collection.
+	UpdateCollection(ctx context.Context, col Collection) error
 	// GetCollection returns the specified collection.
 	GetCollection(ctx context.Context, name string) (Collection, error)
 	// RemoveCollection removes the specified collection.

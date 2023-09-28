@@ -46,6 +46,24 @@ func (txn *transaction) CreateCollection(ctx context.Context, col store.Collecti
 	return txn.kv.Set(&kvObj)
 }
 
+// UpdateCollection updates the specified collection.
+func (txn *transaction) UpdateCollection(ctx context.Context, col store.Collection) error {
+	ctx.StartSpan("UpdateCollection")
+	defer ctx.FinishSpan()
+
+	kvSchemaKey := txn.createSchemaKey(col.Name())
+	var encSchema bytes.Buffer
+	err := txn.EncodeDocument(&encSchema, col.Data())
+	if err != nil {
+		return err
+	}
+	kvObj := kv.Object{
+		Key:   kvSchemaKey,
+		Value: encSchema.Bytes(),
+	}
+	return txn.kv.Set(&kvObj)
+}
+
 // GetCollection returns the specified schema.
 func (txn *transaction) GetCollection(ctx context.Context, name string) (store.Collection, error) {
 	ctx.StartSpan("GetCollection")
