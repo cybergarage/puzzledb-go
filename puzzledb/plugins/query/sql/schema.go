@@ -39,10 +39,11 @@ func NewDocumentSchemaFrom(stmt *query.CreateTable) (document.Schema, error) {
 		}
 		s.AddIndex(i)
 	}
+	// NOTE: Disable this check because the primary index is not set when the schema is created.
 	// Check the primary index
-	if _, err := s.PrimaryIndex(); err != nil {
-		return nil, err
-	}
+	// if _, err := s.PrimaryIndex(); err != nil {
+	// 	return nil, err
+	// }
 	return s, nil
 }
 
