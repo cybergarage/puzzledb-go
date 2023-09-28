@@ -22,6 +22,21 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
+// Begin handles a BEGIN query.
+func (service *Service) Begin(conn *postgresql.Conn, q *query.Begin) (message.Responses, error) {
+	return message.NewCommandCompleteResponsesWith(q.String())
+}
+
+// Commit handles a COMMIT query.
+func (service *Service) Commit(con *postgresql.Conn, q *query.Commit) (message.Responses, error) {
+	return message.NewCommandCompleteResponsesWith(q.String())
+}
+
+// Rollback handles a ROLLBACK query.
+func (service *Service) Rollback(*postgresql.Conn, *query.Rollback) (message.Responses, error) {
+	return nil, query.NewErrNotImplemented("ROLLBACK")
+}
+
 // CreateDatabase handles a CREATE DATABASE query.
 func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (message.Responses, error) {
 	err := service.Service.CreateDatabase(conn, stmt)
