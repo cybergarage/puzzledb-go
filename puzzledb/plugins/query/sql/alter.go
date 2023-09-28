@@ -16,25 +16,28 @@ package sql
 
 import (
 	"github.com/cybergarage/go-sqlparser/sql/query"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 // NewAlterAddColumnSchemaWith creates a new schema with the specified alter index.
-func NewAlterAddIndexSchemaWith(schema query.Schema, addIndex *query.Index) (query.Schema, error) {
-	newIndexColums := query.NewColumns()
+func NewAlterAddIndexSchemaWith(schema document.Schema, addIndex *query.Index) (document.Schema, error) {
+	newIndexType, err := NewDocumentIndexTypeFrom(addIndex.Type())
+	if err != nil {
+		return schema, err
+	}
+
+	newIndex := document.NewIndex()
+	newIndex.SetName(addIndex.Name())
+	newIndex.SetType(newIndexType)
 	for _, indexColumn := range addIndex.Columns() {
-		schemaColum, err := schema.ColumnByName(indexColumn.Name())
+		schemaElem, err := schema.FindElement(indexColumn.Name())
 		if err != nil {
 			return schema, err
 		}
-		newIndexColums = append(newIndexColums, schemaColum)
+		newIndex.AddElement(schemaElem)
 	}
 
-	newIndex := query.NewIndexWith(
-		addIndex.Name(),
-		addIndex.Type(),
-		newIndexColums)
-
-	err := schema.AddIndex(newIndex)
+	err = schema.AddIndex(newIndex)
 	if err != nil {
 		return schema, err
 	}

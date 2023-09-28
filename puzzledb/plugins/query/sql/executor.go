@@ -130,6 +130,7 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 
 	store := service.Store()
 	dbName := conn.Database()
+	tblName := stmt.TableName()
 
 	// Check if the database exists.
 
@@ -145,26 +146,34 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 		return err
 	}
 
-	schema, err := txn.GetCollection(ctx, stmt.TableName())
+	schema, err := txn.GetCollection(ctx, tblName)
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	if col, ok := stmt.AddColumn(); ok {
-		elem, err := NewDocumentElementFrom(col)
+	if column, ok := stmt.AddColumn(); ok {
+		elem, err := NewDocumentElementFrom(column)
 		if err != nil {
-			return err
+			return service.CancelTransactionWithError(ctx, txn, err)
 		}
 		err = schema.AddElement(elem)
 		if err != nil {
-			return err
+			return service.CancelTransactionWithError(ctx, txn, err)
+		}
+	}
+
+	if idx, ok := stmt.AddIndex(); ok {
+		var err error
+		schema, err = NewAlterAddIndexSchemaWith(schema, idx)
+		if err != nil {
+			return service.CancelTransactionWithError(ctx, txn, err)
 		}
 	}
 
 	if col, ok := stmt.DropColumn(); ok {
 		err := schema.DropElement(col.Name())
 		if err != nil {
-			return err
+			return service.CancelTransactionWithError(ctx, txn, err)
 		}
 	}
 
@@ -176,9 +185,18 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 		return newErrNotSupported(stmt.String())
 	}
 
+	// Update schema
+
 	err = txn.Commit(ctx)
 	if err != nil {
 		return err
+	}
+
+	// Post a event message to the coordinator.
+
+	err = service.PostCollectionUpdateMessage(dbName, tblName)
+	if err != nil {
+		log.Error(err)
 	}
 
 	return nil
