@@ -223,14 +223,14 @@ func (s *schema) indexMpas() ([]indexMap, bool) {
 }
 
 // AddIndex adds the specified index to the schema.
-func (s *schema) AddIndex(idx Index) {
+func (s *schema) AddIndex(idx Index) error {
 	ims, ok := s.indexMpas()
 	if !ok {
-		return
+		return newIndexMapNotExist()
 	}
 	im, ok := idx.Data().(indexMap)
 	if !ok {
-		return
+		return newIndexMapNotExist()
 	}
 	s.data[schemaIndexesIdx] = append(ims, im)
 	// Add index to cache
