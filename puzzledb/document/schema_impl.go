@@ -165,18 +165,19 @@ func (s *schema) elementMaps() ([]elementMap, bool) {
 }
 
 // AddElement adds the specified element to the schema.
-func (s *schema) AddElement(elem Element) {
+func (s *schema) AddElement(elem Element) error {
 	ems, ok := s.elementMaps()
 	if !ok {
-		return
+		return newElementMapNotExist()
 	}
 	em, ok := elem.Data().(elementMap)
 	if !ok {
-		return
+		return newElementMapNotExist()
 	}
 	s.data[schemaElementsIdx] = append(ems, em)
 	// Add element to cache
 	s.elements = append(s.elements, elem)
+	return nil
 }
 
 // DropElement drops the specified element from the schema.
@@ -235,6 +236,7 @@ func (s *schema) AddIndex(idx Index) error {
 	s.data[schemaIndexesIdx] = append(ims, im)
 	// Add index to cache
 	s.indexes = append(s.indexes, idx)
+	return nil
 }
 
 // DropIndex drops the specified index from the schema.
