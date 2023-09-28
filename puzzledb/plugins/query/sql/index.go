@@ -19,6 +19,19 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
+// NewDocumentIndexTypeFrom creates an index type from the specified element.
+func NewDocumentIndexTypeFrom(idxType query.IndexType) (document.IndexType, error) {
+	switch idxType {
+	case query.PrimaryIndex:
+		return document.PrimaryIndex, nil
+	case query.SecondaryIndex:
+		return document.SecondaryIndex, nil
+	case query.UnknownIndex:
+		return 0, newErrIndexNotSupported(idxType.String())
+	}
+	return 0, newErrIndexNotSupported(idxType.String())
+}
+
 // NewDocumentPrimaryIndexFrom creates an index from the specified element.
 func NewDocumentPrimaryIndexFrom(elem document.Element) (document.Index, error) {
 	idx := document.NewIndex()
@@ -30,17 +43,14 @@ func NewDocumentPrimaryIndexFrom(elem document.Element) (document.Index, error) 
 
 // NewDocumentIndexFrom creates an index from the specified coulumn definition.
 func NewDocumentIndexFrom(s document.Schema, def *query.Index) (document.Index, error) {
+	idxType, err := NewDocumentIndexTypeFrom(def.Type())
+	if err != nil {
+		return nil, err
+	}
+
 	idx := document.NewIndex()
 	idx.SetName(def.Name())
-
-	switch def.Type() {
-	case query.PrimaryIndex:
-		idx.SetType(document.PrimaryIndex)
-	case query.SecondaryIndex:
-		idx.SetType(document.SecondaryIndex)
-	case query.UnknownIndex:
-		return nil, newErrIndexNotSupported(def.Type().String())
-	}
+	idx.SetType(idxType)
 
 	for _, col := range def.Columns() {
 		elem, err := s.FindElement(col.Name())
