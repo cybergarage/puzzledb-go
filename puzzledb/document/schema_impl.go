@@ -181,7 +181,17 @@ func (s *schema) AddElement(elem Element) {
 
 // DropElement drops the specified element from the schema.
 func (s *schema) DropElement(name string) error {
-	return nil
+	ems, ok := s.elementMaps()
+	if !ok {
+		return newElementMapNotExist()
+	}
+	for i, em := range ems {
+		if strings.EqualFold(em[elementNameIdx].(string), name) {
+			s.data[schemaElementsIdx] = append(ems[:i], ems[i+1:]...)
+			return s.updateCashes()
+		}
+	}
+	return newElementNotExistError(name)
 }
 
 // Elements returns the schema elements.
@@ -197,7 +207,7 @@ func (s *schema) FindElement(name string) (Element, error) {
 			return e, nil
 		}
 	}
-	return nil, newNotSupportedError(name)
+	return nil, newElementNotExistError(name)
 }
 
 func (s *schema) indexMpas() ([]indexMap, bool) {
