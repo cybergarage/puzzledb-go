@@ -15,6 +15,8 @@
 package puzzledb
 
 const (
+	// PackageName is the package name.
+	PackageName = "github.com/cybergarage/puzzledb-go"
 	// ProductName is the product name.
 	ProductName = "puzzledb"
 )
