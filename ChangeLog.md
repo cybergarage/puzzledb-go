@@ -36,7 +36,7 @@
     - Storage plug-ins
       - Update cache store plug-in明日のために
 
-## v1.0.3 (2023-09-28)
+## v1.0.3 (2023-09-30)
 - Improvement
   - PostgreSQL plug-in
     - Supported new data types
