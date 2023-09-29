@@ -150,6 +150,7 @@ func (server *Server) setupPlugins() error {
 	if err != nil {
 		return err
 	}
+	defaultTracer.SetPackageName(PackageName)
 	defaultTracer.SetServiceName(ProductName)
 
 	// Coordinator services
