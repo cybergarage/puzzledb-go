@@ -32,6 +32,8 @@
       - Support transaction statements
 
 ## v1.0.3 (2023-09-30)
+- New features
+  - Enable pprof
 - Improvement
   - PostgreSQL plug-in
     - Supported new data types
