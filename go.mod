@@ -9,12 +9,12 @@ require (
 	github.com/cybergarage/go-mongo v1.0.2
 	github.com/cybergarage/go-mysql v1.0.3
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.3.1
+	github.com/cybergarage/go-postgresql v1.3.2
 	github.com/cybergarage/go-redis v1.3.6
 	github.com/cybergarage/go-safecast v1.2.3
 	github.com/cybergarage/go-sqlparser v1.2.6
 	github.com/cybergarage/go-sqltest v1.2.4
-	github.com/cybergarage/go-tracing v1.1.2
+	github.com/cybergarage/go-tracing v1.1.3
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-memdb v1.3.2
@@ -81,10 +81,10 @@ require (
 	github.com/xdg-go/scram v1.1.1 // indirect
 	github.com/xdg-go/stringprep v1.0.3 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
-	go.opentelemetry.io/otel v1.15.1 // indirect
+	go.opentelemetry.io/otel v1.19.0 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.15.1 // indirect
 	go.opentelemetry.io/otel/sdk v1.15.1 // indirect
-	go.opentelemetry.io/otel/trace v1.15.1 // indirect
+	go.opentelemetry.io/otel/trace v1.19.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc // indirect
