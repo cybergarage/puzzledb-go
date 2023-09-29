@@ -16,6 +16,9 @@ package puzzledb
 
 import (
 	"errors"
+	std_log "log"
+	"net/http"
+	_ "net/http/pprof" //nolint:gosec
 	"os"
 
 	"github.com/cybergarage/go-logger/log"
@@ -46,6 +49,7 @@ type Server struct {
 	*Config
 	*PluginManager
 	cluster.Node
+	pprofStarted bool
 }
 
 // NewServer returns a new server instance.
@@ -55,6 +59,7 @@ func NewServer() *Server {
 		Config:        nil,
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 		Node:          cluster.NewNode(),
+		pprofStarted:  false,
 	}
 	conf, err := NewDefaultConfig()
 	if err != nil {
@@ -257,6 +262,15 @@ func (server *Server) Start() error { //nolint:gocognit
 	// Output logger settings
 
 	log.Infof("logger (%s) started", log.GetLevelString(log.GetSharedLogger().Level()))
+
+	// Setup pprof
+
+	ok, _ = server.Config.GetConfigBool(ConfigPprof, ConfigEnabled)
+	if ok && !server.pprofStarted {
+		go func() {
+			std_log.Println(http.ListenAndServe("localhost:6060", nil)) //nolint:gosec
+		}()
+	}
 
 	// Setup configuration
 
