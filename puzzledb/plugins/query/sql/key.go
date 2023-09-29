@@ -15,6 +15,8 @@
 package sql
 
 import (
+	"errors"
+
 	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
@@ -59,6 +61,10 @@ func NewDocumentKeyFromObject(dbName string, schema document.Schema, obj documen
 
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
+		if !errors.Is(err, document.ErrNotExist) {
+			return nil, err
+		}
+		// Use the first element as the primary index
 		firstElemIdx, err := firstElementAsIndex(schema)
 		if err != nil {
 			return nil, err

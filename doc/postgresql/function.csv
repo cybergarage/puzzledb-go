@@ -1,0 +1,13 @@
+Support,Type,Function,Note
+O,Aggregation,COUNT,
+O,,MIN,
+O,,MAX,
+O,,AVG,
+O,Mathematic,ABS,
+O,,FLOOR,
+O,,CEIL,
+O,Arithmetic,+,
+O,,-,
+O,,*,
+O,,/,
+O,,%,
