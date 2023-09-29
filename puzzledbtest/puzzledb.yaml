@@ -1,6 +1,8 @@
 logger:
   enabled: true
   level: debug
+pprof:
+  enabled: true
 plugins:
   system:
     grpc:
