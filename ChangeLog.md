@@ -15,6 +15,8 @@
       - Added support for new queries
     - Redis plug-in
       - Added support for new queries
+    - PostgreSQL plug-in
+      - Added support for new queries
 
 ## v1.1.0 (2023-xx-xx)
 - New features
@@ -23,27 +25,20 @@
       - Add cache store plug-in
     - Coordinator plug-ins
       - Added etcd plug-in
-- Improvements
   - Query plug-ins
     - MySQL plug-in
-      - Added support for new queries
+      - Support transaction statements
     - PostgreSQL plug-in
-      - Added support for new queries
-    - MongoDB plug-in
-      - Added support for new queries
-    - Redis plug-in
-      - Added support for new queries
-    - Storage plug-ins
-      - Update cache store plug-in明日のために
+      - Support transaction statements
 
 ## v1.0.3 (2023-09-30)
 - Improvement
   - PostgreSQL plug-in
     - Supported new data types
       - TIMESTAMP
+    - Supported new statements
+      - TRUNCATE, VACCUM and COPY
     - Supported pgbench workload
-      - COPY
-        - Supported COPY FROM STDIN
   - MySQL plug-in
     - Supported new data types
       - DATETIME and TIMESTAMP
