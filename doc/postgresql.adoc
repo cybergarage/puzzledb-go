@@ -26,9 +26,23 @@ PuzzleDB currently supports https://www.postgresql.org/docs/current/plpgsql-stat
 include::postgresql/dds.csv[]
 |====
 
+=== Transaction Statements
+
+[format="csv", options="header, autowidth"]
+|====
+include::postgresql/transaction.csv[]
+|====
+
 === Data Manipulation Statements
 
 [format="csv", options="header, autowidth"]
 |====
 include::postgresql/dms.csv[]
+|====
+
+=== Functions
+
+[format="csv", options="header, autowidth"]
+|====
+include::postgresql/function.csv[]
 |====

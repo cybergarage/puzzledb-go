@@ -1,13 +1,15 @@
 PostgreSQL,PuzzleDB
 TEXT,string
-VARCHAR,
-CHAR,
-SMALLINT,short
-INTEGER,int
-BIGINT,long
+VARCHAR,string
+CHAR,string
+SMALLINT,int16
+INTEGER,int32
+BIGINT,int64
+DECIMAL,-
+NUMERIC,-
 REAL,float32
-DOUBLE (REAL),float64
+DOUBLE PRECISION,float64
 TIMESTAMP,timestamp
 NULL,null
-BOOLEAN,bool
-BINARY,[]byte
+BOOLEAN,-
+Bytea,[]byte

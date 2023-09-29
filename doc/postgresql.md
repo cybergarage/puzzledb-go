@@ -30,30 +30,38 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>VARCHAR</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>string</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>CHAR</p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>string</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>SMALLINT</p></td>
-<td style="text-align: left;"><p>short</p></td>
+<td style="text-align: left;"><p>int16</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>INTEGER</p></td>
-<td style="text-align: left;"><p>int</p></td>
+<td style="text-align: left;"><p>int32</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>BIGINT</p></td>
-<td style="text-align: left;"><p>long</p></td>
+<td style="text-align: left;"><p>int64</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>DECIMAL</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>NUMERIC</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>REAL</p></td>
 <td style="text-align: left;"><p>float32</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>DOUBLE (REAL)</p></td>
+<td style="text-align: left;"><p>DOUBLE PRECISION</p></td>
 <td style="text-align: left;"><p>float64</p></td>
 </tr>
 <tr class="odd">
@@ -66,10 +74,10 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>BOOLEAN</p></td>
-<td style="text-align: left;"><p>bool</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>BINARY</p></td>
+<td style="text-align: left;"><p>Bytea</p></td>
 <td style="text-align: left;"><p>[]byte</p></td>
 </tr>
 </tbody>
@@ -106,6 +114,16 @@ PuzzleDB currently supports [PostgreSQL: Basic Statements](https://www.postgresq
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>ALTER DATABSE</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>ALTER TABLE</p></td>
+<td style="text-align: left;"><p>ADD CLUMN, ADD INDEX, DROP COLUMN</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>DROP DATABASE</p></td>
 <td style="text-align: left;"></td>
@@ -113,6 +131,40 @@ PuzzleDB currently supports [PostgreSQL: Basic Statements](https://www.postgresq
 <tr class="even">
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>DROP TABLE</p></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+
+### Transaction Statements
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Support</th>
+<th style="text-align: left;">Statement</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>BEGIN</p></td>
+<td style="text-align: left;"><p>Immediate Support (No Current Action)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>COMMIT</p></td>
+<td style="text-align: left;"><p>Immediate Support (No Current Action)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>ROLLBACK</p></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
@@ -152,6 +204,114 @@ PuzzleDB currently supports [PostgreSQL: Basic Statements](https://www.postgresq
 <tr class="even">
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>UPDATE</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>TRUNCATE</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>VACCUM</p></td>
+<td style="text-align: left;"><p>(No Current Action)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>COPY</p></td>
+<td style="text-align: left;"><p>Support only text format</p></td>
+</tr>
+</tbody>
+</table>
+
+### Functions
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Support</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Aggregation</p></td>
+<td style="text-align: left;"><p>COUNT</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>MIN</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>MAX</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>AVG</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Mathematic</p></td>
+<td style="text-align: left;"><p>ABS</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FLOOR</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>CEIL</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Arithmetic</p></td>
+<td style="text-align: left;"><p>+</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>*</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>/</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>%</p></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
