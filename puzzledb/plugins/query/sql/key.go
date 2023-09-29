@@ -46,9 +46,24 @@ func NewDocumentKeyFromIndex(dbName string, schema document.Schema, idx document
 
 // NewDocumentKeyFromObject returns a key from the specified object.
 func NewDocumentKeyFromObject(dbName string, schema document.Schema, obj document.MapObject) (document.Key, error) {
+	firstElementAsIndex := func(schema document.Schema) (document.Index, error) {
+		elems := schema.Elements()
+		if len(elems) < 1 {
+			return nil, document.NewErrPrimaryIndexNotExist()
+		}
+		idx := document.NewIndex()
+		idx.SetType(document.PrimaryIndex)
+		idx.AddElement(elems[0])
+		return idx, nil
+	}
+
 	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
-		return nil, err
+		firstElemIdx, err := firstElementAsIndex(schema)
+		if err != nil {
+			return nil, err
+		}
+		prIdx = firstElemIdx
 	}
 	return NewDocumentKeyFromIndex(dbName, schema, prIdx, obj)
 }
