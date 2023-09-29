@@ -32,6 +32,7 @@ const (
 	ConfigPort    = "port"
 	ConfigEnabled = "enabled"
 	ConfigTracer  = "tracer"
+	ConfigPprof   = "pprof"
 	ConfigLogger  = "logger"
 	ConfigDefault = "default"
 	ConfigLevel   = "level"
