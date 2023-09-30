@@ -40,21 +40,19 @@ See the following guide to learn about how to get started.
 
 The name PuzzleDB is derived from the ability to combine multiple modules such as coordinators, storages, and existing database protocol handlers to form a database. For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
 
--   [Plug-In Concept](doc/plugin-concept.md)
-
 -   [Design Concepts](doc/concept.md)
+
+    -   [Plug-In Concept](doc/plugin-concept.md)
 
     -   [Layer Concept](doc/layer-concept.md)
 
-        -   [Plug-In Concept](doc/plugin-concept.md)
-
-    -   [Coordinator Concept](doc/coordinator-concept.md)
+    -   [Data Model](doc/data-model.md)
 
     -   [Storage Concept](doc/storage-concept.md)
 
-    -   [Data Model](doc/data-model.md)
-
     -   [Consistency Model](doc/consistency-model.md)
+
+    -   [Coordinator Concept](doc/coordinator-concept.md)
 
 # Supported Protocols
 
