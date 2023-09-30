@@ -6,7 +6,7 @@ PuzzleDB aims to be a high-performance, distributed, cloud-native, multi-API, mu
 
 # What is PuzzleDB
 
-PuzzleDB is a multi-data model database that handles key-value model, relational model, and document model. In addition, PuzzleDB is a multi-API database and is compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
+PuzzleDB is a multi-data model database that handles key-value model, relational model, and document model. In addition, PuzzleDB is a multi-interface database and is compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
 
 ![concept](doc/img/concept.png)
 
