@@ -4,16 +4,6 @@ This chapter shows you how to get started with PuzzleDB quickly: you can start a
 
 ## Starting PuzzleDB Server
 
-### Building from Source
-
-To start the latest PuzzleDB, refer to [Go Stared](https://go.dev/learn/) to set up your Go development environment and run the following command:
-
-```
-git clone https://github.com/cybergarage/puzzledb-go.git
-cd puzzledb
-make run
-```
-
 ### Using Docker image
 
 PuzzleDB Docker image is the easiest way; if you do not have Docker installed, go there and install it first. To start the standalone server, run the following command:
@@ -26,7 +16,16 @@ docker run -it --rm \
  -p 5432:5432 \
  -p 50053:50053 \
  -p 9181:9181 \
- cybergarage/puzzledb
+ cybergarage/puzzledb:latest
+```
+### Building from Source
+
+To start the latest PuzzleDB, refer to [Go Stared](https://go.dev/learn/) to set up your Go development environment and run the following command:
+
+```
+git clone https://github.com/cybergarage/puzzledb-go.git
+cd puzzledb
+make run
 ```
 
 ## Using database clients
@@ -52,11 +51,11 @@ mysql> SELECT * FROM test WHERE k = 'foo';
 1 row in set (0.00 sec)
 ```
 
-PuzzleDB currently supports the MySQL commands in stages. See [MySQL](doc/mysql.md) for current support status.
+PuzzleDB currently supports the MySQL queries in stages. See [MySQL](doc/mysql.md) for current support status.
 
 ## PostgreSQL
 
-To operate PuzzleDB with the MySQL protocol, use the standard PostgreSQL shell [psql](https://www.postgresql.org/docs/current/app-psql.html) as follows:
+To operate PuzzleDB with the PostgreSQL protocol, use the standard PostgreSQL shell [psql](https://www.postgresql.org/docs/current/app-psql.html) as follows:
 
 ```
 % psql --host=localhost
@@ -72,7 +71,7 @@ To operate PuzzleDB with the MySQL protocol, use the standard PostgreSQL shell [
 (1 row)
 ```
 
-PuzzleDB currently supports the MySQL commands in stages. See [MySQPostgreSQLL](doc/mysql.md) for current support status.
+PuzzleDB currently supports the PostgreSQL queries in stages. See [PostgreSQL](doc/postgresql.md) for current support status.
 
 
 ## MongoDB
