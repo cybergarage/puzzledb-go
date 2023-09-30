@@ -68,7 +68,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"><p>PostgreSQL (Planning)</p></td>
+<td style="text-align: left;"><p>PostgreSQL</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>Store (Document)</p></td>
 </tr>
@@ -154,13 +154,21 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>JunoDB (Planning)</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Key-Value Cache</p></td>
 <td style="text-align: left;"><p>Key-value cache store services</p></td>
 <td style="text-align: left;"><p>Ristretto</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>Store (Key-value)</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Tracer</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>Distributed tracing services</p></td>
@@ -168,7 +176,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -176,7 +184,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Metric</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>Metrics services</p></td>
@@ -184,7 +192,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -192,7 +200,7 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p>Extend</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>User-defined services</p></td>
