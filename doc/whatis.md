@@ -1,14 +1,14 @@
 # What is PuzzleDB
 
-PuzzleDB is a multi-data model database that handles key-value model, relational model, and document model. In addition, PuzzleDB is a multi-interface database and is compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
+PuzzleDB is a multi-data model database capable of handling key-value, relational, and document models. Additionally, PuzzleDB is a multi-interface database, compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
 
 ![concept](img/concept.png)
 
-PuzzleDB supports existing query protocols such as PostgreSQL, MySQL, MongoDB and Redis in a distributed pluggable database framewrok. Thus, developers can start using PuzzleDB as a scalable, high-performance distributed database with existing database client drivers without any learning curve.
+PuzzleDB is a distributed database framework supporting various data models and protocols. It is designed as a flexible, scalable, and efficient database framework suitable for various environments.
 
 ![system](img/system.png)
 
-The name PuzzleDB comes from the ability to combine multiple modules such as coordinators, storages, and existing database protocol handlers to form a database.
+PuzzleDB accommodates existing query protocols such as PostgreSQL, MySQL, MongoDB, and Redis within a distributed, pluggable database framework. Consequently, developers can seamlessly start using PuzzleDB as a scalable, high-performance distributed database with existing database client drivers, eliminating any learning curve.
 
 ## Features
 

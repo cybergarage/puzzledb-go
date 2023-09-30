@@ -18,8 +18,9 @@ See the following guide to learn about how to get started.
 
 = How does PuzzleDB work?
 
-For architecture of PuzzleDB, see the following concept documents:
+The name PuzzleDB is derived from the ability to combine multiple modules such as coordinators, storages, and existing database protocol handlers to form a database. For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
 
+* link:doc/plugin-concept.md[Plug-In Concept]
 * link:doc/concept.md[Design Concepts]
 ** link:doc/layer-concept.md[Layer Concept]
 *** link:doc/plugin-concept.md[Plug-In Concept]
@@ -30,7 +31,7 @@ For architecture of PuzzleDB, see the following concept documents:
 
 = Supported Protocols
 
-This technology preview version partially supports major database models and protocols. Please refer to the following documents for details on support status and limitations.
+PuzzleDB aspires to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version has been developed using the Go language.
 
 * Compatibility
 ** link:doc/postgresql.md[PostgreSQL]
@@ -40,13 +41,9 @@ This technology preview version partially supports major database models and pro
 
 = Roadmap
 
-PuzzleDB is currently in a technical preview release. Currently,
-PuzzleDB is in the process of developing and testing a distributed
-plugin for the next release. The development roadmap for PuzzleDB is shown below.
+PuzzleDB is currently in a technical preview release stage. At present, it is in the process of developing and testing a distributed plugin for the upcoming release. The development roadmap for PuzzleDB is outlined below.
 
 image:doc/img/roadmap.png[doc/img/roadmap]
-
-For more information about the roadmap, please refer to link:doc/roadmap.adoc[Roadmap].
 
 = User Guides
 
