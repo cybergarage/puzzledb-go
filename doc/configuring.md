@@ -9,6 +9,8 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
     logger:
       enabled: true
       level: info
+    pprof:
+      enabled: true
     plugins:
       system:
         grpc:
