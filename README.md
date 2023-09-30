@@ -6,15 +6,15 @@ PuzzleDB aims to be a high-performance, distributed, cloud-native, multi-API, mu
 
 # What is PuzzleDB
 
-PuzzleDB is a multi-data model database that handles key-value model, relational model, and document model. In addition, PuzzleDB is a multi-interface database and is compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
+PuzzleDB is a multi-data model database capable of handling key-value, relational, and document models. Additionally, PuzzleDB is a multi-interface database, compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
 
 ![concept](doc/img/concept.png)
 
-PuzzleDB supports existing query protocols such as PostgreSQL, MySQL, MongoDB and Redis in a distributed pluggable database framewrok. Thus, developers can start using PuzzleDB as a scalable, high-performance distributed database with existing database client drivers without any learning curve.
+PuzzleDB is a distributed database framework supporting various data models and protocols. It is designed as a flexible, scalable, and efficient database framework suitable for various environments.
 
 ![system](doc/img/system.png)
 
-The name PuzzleDB comes from the ability to combine multiple modules such as coordinators, storages, and existing database protocol handlers to form a database.
+PuzzleDB accommodates existing query protocols such as PostgreSQL, MySQL, MongoDB, and Redis within a distributed, pluggable database framework. Consequently, developers can seamlessly start using PuzzleDB as a scalable, high-performance distributed database with existing database client drivers, eliminating any learning curve.
 
 ## Features
 
@@ -38,7 +38,9 @@ See the following guide to learn about how to get started.
 
 # How does PuzzleDB work?
 
-For architecture of PuzzleDB, see the following concept documents:
+The name PuzzleDB is derived from the ability to combine multiple modules such as coordinators, storages, and existing database protocol handlers to form a database. For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
+
+-   [Plug-In Concept](doc/plugin-concept.md)
 
 -   [Design Concepts](doc/concept.md)
 
@@ -56,7 +58,7 @@ For architecture of PuzzleDB, see the following concept documents:
 
 # Supported Protocols
 
-This technology preview version partially supports major database models and protocols. Please refer to the following documents for details on support status and limitations.
+PuzzleDB aspires to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version has been developed using the Go language.
 
 -   Compatibility
 
@@ -70,11 +72,9 @@ This technology preview version partially supports major database models and pro
 
 # Roadmap
 
-PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
+PuzzleDB is currently in a technical preview release stage. At present, it is in the process of developing and testing a distributed plugin for the upcoming release. The development roadmap for PuzzleDB is outlined below.
 
 ![doc/img/roadmap](doc/img/roadmap.png)
-
-For more information about the roadmap, please refer to [Roadmap](doc/roadmap.adoc).
 
 # User Guides
 

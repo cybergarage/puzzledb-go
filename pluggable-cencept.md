@@ -1,0 +1,7 @@
+# Pluggable Concept
+
+PuzzleDB is a pluggable distributed database framework that enables users to build their own database with a suitable combination of query API, data model, and storage engine for their specific use cases and workloads.
+
+![system](img/system.png)
+
+The name PuzzleDB comes from the ability to combine multiple modules such as coordinators, storages, and existing database protocol handlers to form a database. PuzzleDB supports existing query protocols such as PostgreSQL, MySQL, MongoDB and Redis in a distributed pluggable database framewrok.
