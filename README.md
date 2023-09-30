@@ -38,7 +38,7 @@ See the following guide to learn about how to get started.
 
 # How does PuzzleDB work?
 
-The name PuzzleDB is derived from the ability to combine multiple modules such as coordinators, storages, and existing database protocol handlers to form a database. For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
+For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
 
 -   [Design Concepts](doc/concept.md)
 
@@ -56,7 +56,7 @@ The name PuzzleDB is derived from the ability to combine multiple modules such a
 
 # Supported Protocols
 
-PuzzleDB aspires to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version has been developed using the Go language.
+PuzzleDB supports the following protocols:
 
 -   Compatibility
 
