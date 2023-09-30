@@ -10,6 +10,3 @@ In contrast, PuzzleDB has loosely coupled the query API, data model, and storage
 
 include::fdb/references.adoc[leveloffset=+1]
 include::spanner/references.adoc[leveloffset=+1]
-
-include::data-model.adoc[leveloffset=+1]
-
