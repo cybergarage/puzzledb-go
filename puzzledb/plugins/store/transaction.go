@@ -27,21 +27,33 @@ type transaction struct {
 	kv kv.Transaction
 	document.Coder
 	document.KeyCoder
-	db *database
+	db         *database
+	autoCommit bool
 }
 
 func newTransaction(db *database, kvTx kv.Transaction, docCoder document.Coder, keyCoder document.KeyCoder) (store.Transaction, error) {
 	return &transaction{
-		db:       db,
-		kv:       kvTx,
-		Coder:    docCoder,
-		KeyCoder: keyCoder,
+		db:         db,
+		kv:         kvTx,
+		Coder:      docCoder,
+		KeyCoder:   keyCoder,
+		autoCommit: true,
 	}, nil
 }
 
 // Database returns the transaction database.
 func (txn *transaction) Database() store.Database {
 	return txn.db
+}
+
+// SetAutoCommit sets the auto commit flag.
+func (txn *transaction) SetAutoCommit(v bool) {
+	txn.autoCommit = v
+}
+
+// IsAutoCommit returns true whether the auto commit flag is set.
+func (txn *transaction) IsAutoCommit() bool {
+	return txn.autoCommit
 }
 
 // Commit commits this transaction.
