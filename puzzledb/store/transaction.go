@@ -64,8 +64,8 @@ type IndexOperation interface {
 	TruncateIndexes(ctx context.Context) error
 }
 
-// TransactionOperation represents a transaction operation.
-type TransactionOperation interface {
+// StoreOperation represents a transaction operation.
+type StoreOperation interface {
 	DatabaseOperation
 	DocumentOperation
 	IndexOperation
@@ -79,13 +79,19 @@ type TransactionOption interface {
 	IsAutoCommit() bool
 }
 
-// Transaction represents a transaction interface.
-type Transaction interface {
-	TransactionOperation
-	// Database returns the transaction database.
-	Database() Database
+// TransactionOperation represents a transaction operation.
+type TransactionOperation interface {
+	TransactionOption
 	// Commit commits this transaction.
 	Commit(ctx context.Context) error
 	// Cancel cancels this transaction.
 	Cancel(ctx context.Context) error
+}
+
+// Transaction represents a transaction interface.
+type Transaction interface {
+	TransactionOperation
+	StoreOperation
+	// Database returns the transaction database.
+	Database() Database
 }
