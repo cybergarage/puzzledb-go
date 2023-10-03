@@ -23,18 +23,30 @@ import (
 )
 
 // Begin handles a BEGIN query.
-func (service *Service) Begin(conn *postgresql.Conn, q *query.Begin) (message.Responses, error) {
-	return message.NewCommandCompleteResponsesWith(q.String())
+func (service *Service) Begin(conn *postgresql.Conn, stmt *query.Begin) (message.Responses, error) {
+	err := service.Service.Begin(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // Commit handles a COMMIT query.
-func (service *Service) Commit(con *postgresql.Conn, q *query.Commit) (message.Responses, error) {
-	return message.NewCommandCompleteResponsesWith(q.String())
+func (service *Service) Commit(conn *postgresql.Conn, stmt *query.Commit) (message.Responses, error) {
+	err := service.Service.Commit(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // Rollback handles a ROLLBACK query.
-func (service *Service) Rollback(*postgresql.Conn, *query.Rollback) (message.Responses, error) {
-	return nil, query.NewErrNotImplemented("ROLLBACK")
+func (service *Service) Rollback(conn *postgresql.Conn, stmt *query.Rollback) (message.Responses, error) {
+	err := service.Service.Rollback(conn, stmt)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // CreateDatabase handles a CREATE DATABASE query.
