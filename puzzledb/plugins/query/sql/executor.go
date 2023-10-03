@@ -34,6 +34,54 @@ func (service *Service) Transact(conn Conn, db store.Database) (store.Transactio
 	return txn, nil
 }
 
+// Begin handles a BEGIN query.
+func (service *Service) Begin(conn Conn, stmt *query.Begin) error {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Begin")
+	defer ctx.FinishSpan()
+
+	dbName := conn.Database()
+	db, err := service.Store().GetDatabase(ctx, dbName)
+	if err != nil {
+		return err
+	}
+
+	// Check if the transaction is already started.
+
+	txn, ok := service.GetTransaction(conn, db)
+	if ok {
+		err := service.CancelTransactionWithError(ctx, txn, err)
+		if err != nil {
+			return err
+		}
+		err = service.RemoveTransaction(conn, db)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Start a new transaction.
+
+	txn, err = db.Transact(true)
+	if err != nil {
+		return err
+	}
+
+	service.SetTransaction(conn, db, txn)
+
+	return nil
+}
+
+// Commit handles a COMMIT query.
+func (service *Service) Commit(conn Conn, stmt *query.Commit) error {
+	return nil
+}
+
+// Rollback handles a ROLLBACK query.
+func (service *Service) Rollback(conn Conn, stmt *query.Rollback) error {
+	return nil
+}
+
 // CreateDatabase handles a CREATE DATABASE query.
 func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) error {
 	ctx := context.NewContextWith(conn.SpanContext())
