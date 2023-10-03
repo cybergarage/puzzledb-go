@@ -101,6 +101,10 @@ func newErrCoulumNotExist(obj any) error {
 	return newErrNotExist(fmt.Sprintf("coulum (%s)", obj))
 }
 
+func newErrConnectionExist(obj string) error {
+	return newErrExist(fmt.Sprintf("connection (%s)", obj))
+}
+
 // Not implemented error functions
 
 func newErrJoinQueryNotSupported(obj any) error {
