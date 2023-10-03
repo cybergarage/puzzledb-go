@@ -54,3 +54,28 @@ type ConnectionMap map[string]DatabaseMap
 func NewConnectionMap() ConnectionMap {
 	return make(ConnectionMap)
 }
+
+// SetTransaction sets the transaction.
+func (connMap ConnectionMap) SetTransaction(conn Conn, db store.Database, txn store.Transaction) {
+	dbName := db.Name()
+	if _, hasDb := connMap[dbName]; !hasDb {
+		connMap[dbName] = NewDatabaseMap()
+	}
+	connMap[dbName][conn.UUID().String()] = &Database{
+		Transaction: txn,
+	}
+}
+
+// GetTransaction returns the transaction.
+func (connMap ConnectionMap) GetTransaction(conn Conn, db store.Database) (store.Transaction, bool) {
+	dbName := db.Name()
+	dbMap, hasTxn := connMap[dbName]
+	if !hasTxn {
+		return nil, false
+	}
+	dbTxn, hasTxn := dbMap[conn.UUID().String()]
+	if !hasTxn {
+		return nil, false
+	}
+	return dbTxn.Transaction, true
+}
