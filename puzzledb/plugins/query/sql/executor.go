@@ -77,6 +77,37 @@ func (service *Service) Begin(conn Conn, stmt *query.Begin) error {
 
 // Commit handles a COMMIT query.
 func (service *Service) Commit(conn Conn, stmt *query.Commit) error {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Commit")
+	defer ctx.FinishSpan()
+
+	dbName := conn.Database()
+	db, err := service.Store().GetDatabase(ctx, dbName)
+	if err != nil {
+		return err
+	}
+
+	// Check if the transaction is already started.
+
+	txn, err := service.GetTransaction(conn, db)
+	if err != nil {
+		return err
+	}
+
+	// Remove the transaction.
+
+	err = service.RemoveTransaction(conn, db)
+	if err != nil {
+		return err
+	}
+
+	// Commit the transaction.
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
