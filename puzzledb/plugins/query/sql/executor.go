@@ -25,6 +25,15 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// Transact returns a transaction object.
+func (service *Service) Transact(conn Conn, db store.Database) (store.Transaction, error) {
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+	return txn, nil
+}
+
 // CreateDatabase handles a CREATE DATABASE query.
 func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) error {
 	ctx := context.NewContextWith(conn.SpanContext())
