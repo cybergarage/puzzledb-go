@@ -27,12 +27,14 @@ import (
 // Service represents a new SQL service instance.
 type Service struct {
 	*plugins.BaseService
+	ConnectionMap
 }
 
 // NewService returns a new SQL service.
 func NewService() *Service {
 	service := &Service{
-		BaseService: plugins.NewBaseService(),
+		BaseService:   plugins.NewBaseService(),
+		ConnectionMap: NewConnectionMap(),
 	}
 	return service
 }
