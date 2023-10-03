@@ -81,14 +81,15 @@ func (connMap ConnectionMap) GetTransaction(conn Conn, db store.Database) (store
 }
 
 // RemoveTransaction removes the transaction.
-func (connMap ConnectionMap) RemoveTransaction(conn Conn, db store.Database) {
+func (connMap ConnectionMap) RemoveTransaction(conn Conn, db store.Database) error {
 	dbName := db.Name()
 	dbMap, hasTxn := connMap[dbName]
 	if !hasTxn {
-		return
+		return nil
 	}
 	delete(dbMap, conn.UUID().String())
 	if len(dbMap) == 0 {
 		delete(connMap, dbName)
 	}
+	return nil
 }
