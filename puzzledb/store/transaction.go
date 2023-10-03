@@ -71,6 +71,14 @@ type TransactionOperation interface {
 	IndexOperation
 }
 
+// TransactionOption represents a transaction option.
+type TransactionOption interface {
+	// SetAutoCommit sets the auto commit flag.
+	SetAutoCommit(bool)
+	// IsAutoCommit returns true whether the auto commit flag is set.
+	IsAutoCommit() bool
+}
+
 // Transaction represents a transaction interface.
 type Transaction interface {
 	TransactionOperation
