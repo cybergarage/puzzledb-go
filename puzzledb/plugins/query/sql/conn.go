@@ -68,17 +68,17 @@ func (connMap ConnectionMap) SetTransaction(conn Conn, db store.Database, txn st
 }
 
 // GetTransaction returns the transaction.
-func (connMap ConnectionMap) GetTransaction(conn Conn, db store.Database) (store.Transaction, bool) {
+func (connMap ConnectionMap) GetTransaction(conn Conn, db store.Database) (store.Transaction, error) {
 	dbName := db.Name()
 	dbMap, hasTxn := connMap[dbName]
 	if !hasTxn {
-		return nil, false
+		return nil, newErrDatabaseNotExist(dbName)
 	}
 	dbTxn, hasTxn := dbMap[conn.UUID().String()]
 	if !hasTxn {
-		return nil, false
+		return nil, newErrConnectionExist(conn.UUID().String())
 	}
-	return dbTxn.Transaction, true
+	return dbTxn.Transaction, nil
 }
 
 // RemoveTransaction removes the transaction.

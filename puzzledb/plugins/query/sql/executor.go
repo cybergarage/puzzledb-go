@@ -48,8 +48,8 @@ func (service *Service) Begin(conn Conn, stmt *query.Begin) error {
 
 	// Check if the transaction is already started.
 
-	txn, ok := service.GetTransaction(conn, db)
-	if ok {
+	txn, err := service.GetTransaction(conn, db)
+	if err == nil {
 		err := service.CancelTransactionWithError(ctx, txn, err)
 		if err != nil {
 			return err
