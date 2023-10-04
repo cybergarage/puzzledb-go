@@ -113,6 +113,37 @@ func (service *Service) Commit(conn Conn, stmt *query.Commit) error {
 
 // Rollback handles a ROLLBACK query.
 func (service *Service) Rollback(conn Conn, stmt *query.Rollback) error {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Commit")
+	defer ctx.FinishSpan()
+
+	dbName := conn.Database()
+	db, err := service.Store().GetDatabase(ctx, dbName)
+	if err != nil {
+		return err
+	}
+
+	// Check if the transaction is already started.
+
+	txn, err := service.GetTransaction(conn, db)
+	if err != nil {
+		return err
+	}
+
+	// Remove the transaction.
+
+	err = service.RemoveTransaction(conn, db)
+	if err != nil {
+		return err
+	}
+
+	// Cancel the transaction.
+
+	err = txn.Cancel(ctx)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
