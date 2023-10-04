@@ -27,6 +27,24 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// Begin should handle a BEGIN statement.
+func (service *Service) Begin(conn *mysql.Conn, stmt *query.Begin) (*mysql.Result, error) {
+	log.Debugf("%v", stmt)
+	return mysql.NewResult(), nil
+}
+
+// Commit should handle a COMMIT statement.
+func (service *Service) Commit(conn *mysql.Conn, stmt *query.Commit) (*mysql.Result, error) {
+	log.Debugf("%v", stmt)
+	return mysql.NewResult(), nil
+}
+
+// Rollback should handle a ROLLBACK statement.
+func (service *Service) Rollback(conn *mysql.Conn, stmt *query.Rollback) (*mysql.Result, error) {
+	log.Debugf("%v", stmt)
+	return mysql.NewResult(), nil
+}
+
 // CreateDatabase should handle a CREATE database statement.
 func (service *Service) CreateDatabase(conn *mysql.Conn, stmt *query.Database) (*mysql.Result, error) {
 	q := sql.NewCreateDatabaseWith(
