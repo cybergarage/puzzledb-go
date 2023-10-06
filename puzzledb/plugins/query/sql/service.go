@@ -39,6 +39,40 @@ func NewService() *Service {
 	return service
 }
 
+// Transact returns a transaction object.
+func (service *Service) Transact(conn Conn, db store.Database) (store.Transaction, error) {
+	// Checks the transaction is already started.
+	txn, err := service.GetTransaction(conn, db)
+	if err == nil {
+		return txn, nil
+	}
+	if !errors.Is(err, ErrNotExist) {
+		return nil, err
+	}
+	// Starts a new transaction.
+	txn, err = db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+	return txn, nil
+}
+
+// CommitTransaction commits the specified transaction.
+func (service *Service) CommitTransaction(ctx context.Context, txn store.Transaction) error {
+	if txErr := txn.Commit(ctx); txErr != nil {
+		return txErr
+	}
+	return nil
+}
+
+// CancelTransaction cancels the specified transaction.
+func (service *Service) CancelTransaction(ctx context.Context, txn store.Transaction) error {
+	if txErr := txn.Cancel(ctx); txErr != nil {
+		return txErr
+	}
+	return nil
+}
+
 // CancelTransactionWithError cancels the specified transaction with the specified error.
 func (service *Service) CancelTransactionWithError(ctx context.Context, txn store.Transaction, err error) error {
 	if txErr := txn.Cancel(ctx); txErr != nil {
