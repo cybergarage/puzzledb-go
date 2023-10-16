@@ -69,8 +69,8 @@ func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTab
 
 // AlterDatabase handles a ALTER DATABASE query.
 func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) (message.Responses, error) {
-	err := service.Service.AlterDatabase(conn, stmt)
-	if err != nil {
+	err := service.Service.AlterDatabase(conn, stmt) //nolint:staticcheck
+	if err != nil {                                  //nolint:staticcheck
 		return nil, err
 	}
 	return message.NewCommandCompleteResponsesWith(stmt.String())
