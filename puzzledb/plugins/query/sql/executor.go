@@ -231,7 +231,7 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 }
 
 // AlterDatabase handles a ALTER DATABASE query.
-func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) error {
+func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) error { //nolint:staticcheck
 	return newErrNotSupported(stmt.String())
 }
 
