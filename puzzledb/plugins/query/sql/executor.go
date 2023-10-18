@@ -425,7 +425,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 		return err
 	}
 
-	txn, err := db.Transact(true)
+	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return err
 	}
@@ -452,6 +452,12 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 	err = service.InsertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, txn, err)
+	}
+
+	// Commits the transaction.
+
+	if !txn.IsAutoCommit() {
+		return nil
 	}
 
 	err = txn.Commit(ctx)
