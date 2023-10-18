@@ -202,7 +202,11 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 	}
 	res = res.Append(cmpRes)
 
-	// Commit the transaction
+	// Commits the transaction if the transaction is auto commit.
+
+	if !txn.IsAutoCommit() {
+		return res, nil
+	}
 
 	err = txn.Commit(ctx)
 	if err != nil {

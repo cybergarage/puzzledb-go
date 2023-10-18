@@ -419,7 +419,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
 
-	// Checks the transaction is already started.
+	// Gets the specified database.
 
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
@@ -434,7 +434,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 		return err
 	}
 
-	// Gets the collection.
+	// Gets the specified collection.
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
@@ -479,22 +479,29 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Select")
 
+	// Checks the table if the statement has only one table.
+
+	tables := stmt.From()
+	if len(tables) != 1 {
+		return ctx, nil, nil, nil, newErrJoinQueryNotSupported(tables)
+	}
+
+	// Gets the specified database.
+
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return ctx, nil, nil, nil, err
 	}
 
-	// TODO: Support multiple tables
-	tables := stmt.From()
-	if len(tables) != 1 {
-		return ctx, nil, nil, nil, newErrJoinQueryNotSupported(tables)
-	}
+	// Starts a new transaction.
 
-	txn, err := db.Transact(false)
+	txn, err := service.Transact(conn, db, false)
 	if err != nil {
 		return ctx, nil, nil, nil, err
 	}
+
+	// Gets the specified collection.
 
 	table := tables[0]
 	tableName := table.Name()
@@ -502,6 +509,8 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 	if err != nil {
 		return ctx, nil, nil, nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
+
+	// Selects the objects.
 
 	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), stmt.OrderBy(), stmt.Limit())
 	if err != nil {
@@ -517,22 +526,30 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
 
+	// Gets the specified database.
+
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return 0, err
 	}
 
+	// Starts a new transaction.
+
 	txn, err := db.Transact(true)
 	if err != nil {
 		return 0, err
 	}
+
+	// Gets the specified collection.
 
 	tableName := stmt.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return 0, service.CancelTransactionWithError(ctx, txn, err)
 	}
+
+	// Updates the objects.
 
 	updateCols := stmt.Columns()
 	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), nil, nil)
@@ -548,6 +565,12 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 			return 0, service.CancelTransactionWithError(ctx, txn, err)
 		}
 		nUpdated++
+	}
+
+	// Commits the transaction if the transaction is auto commit.
+
+	if !txn.IsAutoCommit() {
+		return nUpdated, nil
 	}
 
 	err = txn.Commit(ctx)
