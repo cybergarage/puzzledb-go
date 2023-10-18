@@ -536,7 +536,7 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 
 	// Starts a new transaction.
 
-	txn, err := db.Transact(true)
+	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return 0, err
 	}
