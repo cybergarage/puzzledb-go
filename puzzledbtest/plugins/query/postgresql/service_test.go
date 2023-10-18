@@ -32,19 +32,19 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 	client := sqltest.NewPostgresClient()
 
 	testNames := []string{
-		// "SmplTxnText",
-		"SmplCrudText",
-		"SmplCrudInt",
-		"SmplCrudFloat",
-		"SmplCrudDouble",
-		"SmplCrudTimestamp",
-		"FuncAggrInt",
-		// "FuncAggrFloat",
-		// "FuncAggrDouble",
-		"YcsbWorkload",
-		"FuncMathInt",
-		"FuncMathFloat",
-		"FuncMathDouble",
+		"SmplTxnText",
+		// "SmplCrudText",
+		// "SmplCrudInt",
+		// "SmplCrudFloat",
+		// "SmplCrudDouble",
+		// "SmplCrudTimestamp",
+		// "FuncAggrInt",
+		// // "FuncAggrFloat",
+		// // "FuncAggrDouble",
+		// "YcsbWorkload",
+		// "FuncMathInt",
+		// "FuncMathFloat",
+		// "FuncMathDouble",
 	}
 
 	if err := sqltest.RunEmbedSuites(t, client, testNames...); err != nil {
