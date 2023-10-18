@@ -32,6 +32,7 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 	client := sqltest.NewPostgresClient()
 
 	testNames := []string{
+		"SmplTxnText",
 		"SmplCrudText",
 		"SmplCrudInt",
 		"SmplCrudFloat",
