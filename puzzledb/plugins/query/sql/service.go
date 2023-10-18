@@ -54,6 +54,7 @@ func (service *Service) Transact(conn Conn, db store.Database, write bool) (stor
 	if err != nil {
 		return nil, err
 	}
+	txn.SetAutoCommit(true)
 	return txn, nil
 }
 
