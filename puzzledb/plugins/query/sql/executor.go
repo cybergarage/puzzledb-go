@@ -419,16 +419,22 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
 
+	// Checks the transaction is already started.
+
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
 
+	// Starts a new transaction.
+
 	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return err
 	}
+
+	// Gets the collection.
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
@@ -454,7 +460,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 		return service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	// Commits the transaction.
+	// Commits the transaction if the transaction is auto commit.
 
 	if !txn.IsAutoCommit() {
 		return nil
