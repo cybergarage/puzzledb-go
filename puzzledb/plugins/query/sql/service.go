@@ -40,7 +40,7 @@ func NewService() *Service {
 }
 
 // Transact returns a transaction object.
-func (service *Service) Transact(conn Conn, db store.Database) (store.Transaction, error) {
+func (service *Service) Transact(conn Conn, db store.Database, write bool) (store.Transaction, error) {
 	// Checks the transaction is already started.
 	txn, err := service.GetTransaction(conn, db)
 	if err == nil {
@@ -50,7 +50,7 @@ func (service *Service) Transact(conn Conn, db store.Database) (store.Transactio
 		return nil, err
 	}
 	// Starts a new transaction.
-	txn, err = db.Transact(true)
+	txn, err = db.Transact(write)
 	if err != nil {
 		return nil, err
 	}
