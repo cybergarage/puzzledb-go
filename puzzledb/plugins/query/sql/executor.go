@@ -58,6 +58,7 @@ func (service *Service) Begin(conn Conn, stmt *query.Begin) error {
 		return err
 	}
 
+	txn.SetAutoCommit(false)
 	err = service.SetTransaction(conn, db, txn)
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, txn, err)
