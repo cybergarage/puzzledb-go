@@ -587,22 +587,30 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
 
+	// Gets the specified database.
+
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return 0, err
 	}
 
-	txn, err := db.Transact(true)
+	// Starts a new transaction.
+
+	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return 0, err
 	}
+
+	// Gets the specified collection.
 
 	tableName := stmt.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return 0, service.CancelTransactionWithError(ctx, txn, err)
 	}
+
+	// Deletes the objects.
 
 	docKey, docKeyType, err := NewDocumentKeyFromCond(dbName, col, stmt.Where())
 	if err != nil {
@@ -648,6 +656,12 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 			}
 			nDeleted++
 		}
+	}
+
+	// Commits the transaction if the transaction is auto commit.
+
+	if !txn.IsAutoCommit() {
+		return nDeleted, nil
 	}
 
 	err = txn.Commit(ctx)
