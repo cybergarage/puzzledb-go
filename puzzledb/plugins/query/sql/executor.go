@@ -68,7 +68,7 @@ func (service *Service) Begin(conn Conn) error {
 }
 
 // Commit handles a COMMIT query.
-func (service *Service) Commit(conn Conn, stmt *query.Commit) error {
+func (service *Service) Commit(conn Conn) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Commit")
 	defer ctx.FinishSpan()

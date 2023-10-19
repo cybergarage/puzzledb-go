@@ -33,7 +33,7 @@ func (service *Service) Begin(conn *postgresql.Conn, stmt *query.Begin) (message
 
 // Commit handles a COMMIT query.
 func (service *Service) Commit(conn *postgresql.Conn, stmt *query.Commit) (message.Responses, error) {
-	err := service.Service.Commit(conn, stmt)
+	err := service.Service.Commit(conn)
 	if err != nil {
 		return nil, err
 	}
