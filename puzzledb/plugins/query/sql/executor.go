@@ -104,7 +104,7 @@ func (service *Service) Commit(conn Conn) error {
 }
 
 // Rollback handles a ROLLBACK query.
-func (service *Service) Rollback(conn Conn, stmt *query.Rollback) error {
+func (service *Service) Rollback(conn Conn) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Commit")
 	defer ctx.FinishSpan()

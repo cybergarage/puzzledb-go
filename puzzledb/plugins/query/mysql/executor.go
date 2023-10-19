@@ -47,7 +47,10 @@ func (service *Service) Commit(conn *mysql.Conn, stmt *query.Commit) (*mysql.Res
 
 // Rollback should handle a ROLLBACK statement.
 func (service *Service) Rollback(conn *mysql.Conn, stmt *query.Rollback) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
+	err := service.Service.Rollback(conn)
+	if err != nil {
+		return nil, err
+	}
 	return mysql.NewResult(), nil
 }
 

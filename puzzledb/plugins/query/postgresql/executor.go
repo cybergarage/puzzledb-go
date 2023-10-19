@@ -42,7 +42,7 @@ func (service *Service) Commit(conn *postgresql.Conn, stmt *query.Commit) (messa
 
 // Rollback handles a ROLLBACK query.
 func (service *Service) Rollback(conn *postgresql.Conn, stmt *query.Rollback) (message.Responses, error) {
-	err := service.Service.Rollback(conn, stmt)
+	err := service.Service.Rollback(conn)
 	if err != nil {
 		return nil, err
 	}
