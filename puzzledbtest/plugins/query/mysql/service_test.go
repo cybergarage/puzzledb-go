@@ -32,11 +32,8 @@ func TestMySQLTestSuite(t *testing.T) {
 	client := sqltest.NewMySQLClient()
 
 	testNames := []string{
-		"SmplCrudText",
-		"SmplCrudInt",
-		"SmplCrudFloat",
-		"SmplCrudTimestamp",
-		"SmplCrudDouble",
+		"SmplTxn.*",
+		"SmplCrud.*",
 		"YcsbWorkload",
 	}
 
