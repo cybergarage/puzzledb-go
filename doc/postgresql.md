@@ -153,18 +153,33 @@ PuzzleDB currently supports [PostgreSQL: Basic Statements](https://www.postgresq
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>BEGIN</p></td>
-<td style="text-align: left;"><p>Immediate Support (No Current Action)</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>COMMIT</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>ROLLBACK</p></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>-</p></td>
-<td style="text-align: left;"><p>COMMIT</p></td>
-<td style="text-align: left;"><p>Immediate Support (No Current Action)</p></td>
+<td style="text-align: left;"><p>SAVEPOINT</p></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>-</p></td>
-<td style="text-align: left;"><p>ROLLBACK</p></td>
+<td style="text-align: left;"><p>RELEASE SAVEPOINT</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>ROLLBACK TO SAVEPOINT</p></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
