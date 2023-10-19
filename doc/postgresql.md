@@ -136,7 +136,7 @@ PuzzleDB currently supports [PostgreSQL: Basic Statements](https://www.postgresq
 </tbody>
 </table>
 
-### Transaction Statements
+### Transaction Control Statements
 
 <table>
 <colgroup>

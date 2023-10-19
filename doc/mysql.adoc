@@ -26,6 +26,13 @@ PuzzleDB currently supports https://dev.mysql.com/doc/refman/8.0/en/sql-statemen
 include::mysql/dds.csv[]
 |====
 
+=== Transaction Control Statements
+
+[format="csv", options="header, autowidth"]
+|====
+include::mysql/tcs.csv[]
+|====
+
 === Data Manipulation Statements
 
 [format="csv", options="header, autowidth"]
