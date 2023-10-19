@@ -18,18 +18,23 @@
     - PostgreSQL plug-in
       - Added support for new queries
 
-## v1.1.0 (2023-xx-xx)
+## v1.2.0 (2023-xx-xx)
 - New features
   - Distributed plug-ins
     - Storage plug-ins
       - Add cache store plug-in
     - Coordinator plug-ins
       - Added etcd plug-in
+
+## v1.1.0 (2023-10-20)
+- New features
   - Query plug-ins
     - MySQL plug-in
-      - Support transaction statements
+      - Support transaction control statements
+        - BEGIN, COMMIT and ROLLBACK
     - PostgreSQL plug-in
-      - Support transaction statements
+      - Support transaction control statements
+        - BEGIN, COMMIT and ROLLBACK
 
 ## v1.0.3 (2023-09-30)
 - New features
