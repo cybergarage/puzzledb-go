@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// nolint:gocognit
 package sql
 
 import (
@@ -463,13 +464,11 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 
 	// Commits the transaction if the transaction is auto commit.
 
-	if !txn.IsAutoCommit() {
-		return nil
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return err
+	if txn.IsAutoCommit() {
+		err := txn.Commit(ctx)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -511,7 +510,7 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 		return ctx, nil, nil, nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	// Selects the objects.
+	// Selects the specified objects.
 
 	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), stmt.OrderBy(), stmt.Limit())
 	if err != nil {
@@ -550,7 +549,7 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 		return 0, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	// Updates the objects.
+	// Updates the specified objects.
 
 	updateCols := stmt.Columns()
 	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), nil, nil)
@@ -570,13 +569,11 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 
 	// Commits the transaction if the transaction is auto commit.
 
-	if !txn.IsAutoCommit() {
-		return nUpdated, nil
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return 0, err
+	if txn.IsAutoCommit() {
+		err := txn.Commit(ctx)
+		if err != nil {
+			return 0, err
+		}
 	}
 
 	return nUpdated, nil
@@ -611,7 +608,7 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 		return 0, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	// Deletes the objects.
+	// Deletes the specified objects.
 
 	docKey, docKeyType, err := NewDocumentKeyFromCond(dbName, col, stmt.Where())
 	if err != nil {
@@ -661,13 +658,11 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 
 	// Commits the transaction if the transaction is auto commit.
 
-	if !txn.IsAutoCommit() {
-		return nDeleted, nil
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return 0, err
+	if txn.IsAutoCommit() {
+		err := txn.Commit(ctx)
+		if err != nil {
+			return 0, err
+		}
 	}
 
 	return nDeleted, nil
