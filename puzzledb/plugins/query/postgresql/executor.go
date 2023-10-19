@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//nolint:staticcheck
 package postgresql
 
 import (
@@ -69,8 +70,8 @@ func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTab
 
 // AlterDatabase handles a ALTER DATABASE query.
 func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) (message.Responses, error) {
-	err := service.Service.AlterDatabase(conn, stmt) //nolint:staticcheck
-	if err != nil {                                  //nolint:staticcheck
+	err := service.Service.AlterDatabase(conn, stmt)
+	if err != nil {
 		return nil, err
 	}
 	return message.NewCommandCompleteResponsesWith(stmt.String())
@@ -204,13 +205,11 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 
 	// Commits the transaction if the transaction is auto commit.
 
-	if !txn.IsAutoCommit() {
-		return res, nil
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
+	if txn.IsAutoCommit() {
+		err = txn.Commit(ctx)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return res, nil
