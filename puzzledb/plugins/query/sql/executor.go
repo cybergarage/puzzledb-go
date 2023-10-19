@@ -26,7 +26,7 @@ import (
 )
 
 // Begin handles a BEGIN query.
-func (service *Service) Begin(conn Conn, stmt *query.Begin) error {
+func (service *Service) Begin(conn Conn) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Begin")
 	defer ctx.FinishSpan()

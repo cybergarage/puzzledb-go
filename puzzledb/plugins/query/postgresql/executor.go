@@ -24,7 +24,7 @@ import (
 
 // Begin handles a BEGIN query.
 func (service *Service) Begin(conn *postgresql.Conn, stmt *query.Begin) (message.Responses, error) {
-	err := service.Service.Begin(conn, stmt)
+	err := service.Service.Begin(conn)
 	if err != nil {
 		return nil, err
 	}

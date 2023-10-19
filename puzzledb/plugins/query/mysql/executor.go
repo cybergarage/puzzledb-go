@@ -29,7 +29,10 @@ import (
 
 // Begin should handle a BEGIN statement.
 func (service *Service) Begin(conn *mysql.Conn, stmt *query.Begin) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
+	err := service.Service.Begin(conn)
+	if err != nil {
+		return nil, err
+	}
 	return mysql.NewResult(), nil
 }
 
