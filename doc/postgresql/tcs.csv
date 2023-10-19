@@ -1,4 +1,7 @@
 Support,Statement,Note
--,BEGIN,Immediate Support (No Current Action)
--,COMMIT,Immediate Support (No Current Action)
--,ROLLBACK,
+O,BEGIN,
+O,COMMIT,
+O,ROLLBACK,
+-,SAVEPOINT,
+-,RELEASE SAVEPOINT,
+-,ROLLBACK TO SAVEPOINT,
