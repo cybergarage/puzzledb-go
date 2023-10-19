@@ -38,7 +38,10 @@ func (service *Service) Begin(conn *mysql.Conn, stmt *query.Begin) (*mysql.Resul
 
 // Commit should handle a COMMIT statement.
 func (service *Service) Commit(conn *mysql.Conn, stmt *query.Commit) (*mysql.Result, error) {
-	log.Debugf("%v", stmt)
+	err := service.Service.Commit(conn)
+	if err != nil {
+		return nil, err
+	}
 	return mysql.NewResult(), nil
 }
 
