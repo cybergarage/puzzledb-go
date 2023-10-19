@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// nolint:gocognit
 package mysql
 
 import (
@@ -251,23 +252,29 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
 
+	// Gets the specified database.
+
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
 
-	txn, err := db.Transact(true)
+	// Starts a new transaction.
+
+	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return nil, err
 	}
+
+	// Gets the specified collection.
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	// Inserts the object using the primary key/
+	// Inserts the object using the primary key.
 
 	docKey, docObj, err := NewObjectFromInsert(dbName, col, stmt)
 	if err != nil {
@@ -286,9 +293,13 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
+	// Commits the transaction if the transaction is auto commit.
+
+	if txn.IsAutoCommit() {
+		err := txn.Commit(ctx)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return mysql.NewResultWithRowsAffected(1), nil
@@ -323,22 +334,29 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 	ctx.StartSpan("Select")
 	defer ctx.FinishSpan()
 
+	// Checks the table if the statement has only one table.
+
+	tables := stmt.From()
+	if len(tables) != 1 {
+		return nil, newJoinQueryNotSupportedError(tables)
+	}
+
+	// Gets the specified database.
+
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
 
-	txn, err := db.Transact(false)
+	// Starts a new transaction.
+
+	txn, err := service.Transact(conn, db, false)
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: Support multiple tables
-	tables := stmt.From()
-	if len(tables) != 1 {
-		return nil, service.CancelTransactionWithError(ctx, txn, newJoinQueryNotSupportedError(tables))
-	}
+	// Gets the specified collection.
 
 	table := tables[0]
 	tableName, err := table.Name()
@@ -351,6 +369,8 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
+	// Selects the specified objects.
+
 	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where, stmt.OrderBy, stmt.Limit)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
@@ -361,9 +381,13 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
+	// Commits the transaction if the transaction is auto commit.
+
+	if txn.IsAutoCommit() {
+		err = txn.Commit(ctx)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return res, nil
@@ -394,22 +418,28 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
 
+	// Checks the table if the statement has only one table.
+
+	tables := stmt.Tables()
+	if len(tables) != 1 {
+		return nil, newJoinQueryNotSupportedError(tables)
+	}
+
+	// Gets the specified database.
+
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
+	// Starts a new transaction.
 
-	txn, err := db.Transact(true)
+	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return nil, err
 	}
 
 	// TODO: Support multiple tables
-	tables := stmt.Tables()
-	if len(tables) != 1 {
-		return nil, service.CancelTransactionWithError(ctx, txn, newJoinQueryNotSupportedError(tables))
-	}
 
 	table := tables[0]
 	tableName, err := table.Name()
@@ -417,10 +447,14 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
 
+	// Gets the specified collection.
+
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
+
+	// Updates the specified objects.
 
 	updateCols, err := stmt.Columns()
 	if err != nil {
@@ -440,9 +474,13 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 		}
 	}
 
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
+	// Commits the transaction if the transaction is auto commit.
+
+	if txn.IsAutoCommit() {
+		err := txn.Commit(ctx)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return mysql.NewResult(), nil
@@ -494,22 +532,29 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
 
+	// Checks the table if the statement has only one table.
+
+	tables := stmt.Tables()
+	if len(tables) != 1 {
+		return nil, newJoinQueryNotSupportedError(tables)
+	}
+
+	// Gets the specified database.
+
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
 
-	txn, err := db.Transact(true)
+	// Starts a new transaction.
+
+	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: Support multiple tables
-	tables := stmt.Tables()
-	if len(tables) != 1 {
-		return nil, service.CancelTransactionWithError(ctx, txn, newJoinQueryNotSupportedError(tables))
-	}
+	// Gets the specified collection.
 
 	table := tables[0]
 	tableName, err := table.Name()
@@ -521,6 +566,8 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, txn, err)
 	}
+
+	// Deletes the specified objects.
 
 	docKey, docKeyType, err := NewKeyFromCond(dbName, col, stmt.Where)
 	if err != nil {
@@ -561,10 +608,15 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 		}
 	}
 
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
+	// Commits the transaction if the transaction is auto commit.
+
+	if txn.IsAutoCommit() {
+		err := txn.Commit(ctx)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	return mysql.NewResult(), nil
 }
 
