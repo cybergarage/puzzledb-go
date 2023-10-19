@@ -130,6 +130,40 @@ PuzzleDB currently supports [MySQL statements](https://dev.mysql.com/doc/refman/
 </tbody>
 </table>
 
+### Transaction Control Statements
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Support</th>
+<th style="text-align: left;">Statement</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>BEGIN</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>COMMIT</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>ROLLBACK</p></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+
 ### Data Manipulation Statements
 
 <table>
