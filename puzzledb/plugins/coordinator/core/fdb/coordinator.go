@@ -22,7 +22,10 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core"
 )
 
-const RequiredAPIVersion int = 630
+const (
+	RequiredAPIVersion int = 710
+	ClusterFile            = "cluster_file"
+)
 
 type Coordinator struct {
 	*core.BaseCoordinator
@@ -54,13 +57,31 @@ func (coord *Coordinator) Transact() (coordinator.Transaction, error) {
 	return newTransaction(coord.KeyCoder, txn), nil
 }
 
+// GetClusterFile returns the cluster file configuration.
+func (coord *Coordinator) GetClusterFile() (string, error) {
+	e, err := coord.GetServiceConfigString(coord, ClusterFile)
+	if err != nil {
+		return "", err
+	}
+	return e, nil
+}
+
 // Start starts this etcd coordinator.
 func (coord *Coordinator) Start() error {
 	err := fdb.APIVersion(RequiredAPIVersion)
 	if err != nil {
 		return errors.Join(err, coord.Stop())
 	}
-	db, err := fdb.OpenDefault()
+
+	clusterFile, err := coord.GetClusterFile()
+
+	var db fdb.Database
+	if err == nil || 0 < len(clusterFile) {
+		db, err = fdb.OpenDatabase(clusterFile)
+	} else {
+		db, err = fdb.OpenDefault()
+	}
+
 	if err != nil {
 		return errors.Join(err, coord.Stop())
 	}
