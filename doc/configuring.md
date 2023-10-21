@@ -47,7 +47,6 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
           default: memdb
           memdb:
             enabled: true
-            endpoints: null
           fdb:
             enabled: true
             cluster_file: null
