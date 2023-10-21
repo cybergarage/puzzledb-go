@@ -22,7 +22,10 @@ import (
 	kvStore "github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-const RequiredAPIVersion int = 630
+const (
+	RequiredAPIVersion int = 710
+	ClusterFile            = "cluster_file"
+)
 
 // Store represents a FoundationDB store service instance.
 type Store struct {
@@ -65,13 +68,31 @@ func (store *Store) Transact(write bool) (kvStore.Transaction, error) {
 	return newTransaction(txn, store.KeyCoder), nil
 }
 
+// GetClusterFile returns the cluster file configuration.
+func (store *Store) GetClusterFile() (string, error) {
+	e, err := store.GetServiceConfigString(store, ClusterFile)
+	if err != nil {
+		return "", err
+	}
+	return e, nil
+}
+
 // Start starts this memdb.
 func (store *Store) Start() error {
 	err := fdb.APIVersion(RequiredAPIVersion)
 	if err != nil {
 		return err
 	}
-	db, err := fdb.OpenDefault()
+
+	clusterFile, err := store.GetClusterFile()
+
+	var db fdb.Database
+	if err == nil || 0 < len(clusterFile) {
+		db, err = fdb.OpenDatabase(clusterFile)
+	} else {
+		db, err = fdb.OpenDefault()
+	}
+
 	if err != nil {
 		return err
 	}
