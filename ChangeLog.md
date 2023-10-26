@@ -26,6 +26,10 @@
     - Coordinator plug-ins
       - Added etcd plug-in
 
+## v1.1.1 (2023-10-xx)
+- Fix
+  - Redis plug-in
+
 ## v1.1.0 (2023-10-20)
 - New features
   - Query plug-ins
