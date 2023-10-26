@@ -2,7 +2,7 @@ logger:
   enabled: true
   level: info
 pprof:
-  enabled: true
+  enabled: false
 plugins:
   system:
     grpc:
