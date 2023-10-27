@@ -48,7 +48,7 @@ BINS=\
         ${BIN_SERVER_ID} \
         ${BIN_CLI_ID}
 
-.PHONY: test format vet lint clean docker cmd
+.PHONY: test unittest format vet lint clean docker cmd
 
 all: test
 
@@ -64,16 +64,19 @@ vet: format
 lint: format
 	golangci-lint run ${PKG_SRC_ROOT}/... ${TEST_SRC_ROOT}/... ${BIN_SRC_ROOT}/...
 
+test: lint unittest
+
 fulltest: lint
-	go test -v -p 1 -timeout 60m -cover -coverpkg=${PKG} -coverprofile=${PKG_COVER}.out ${PKG}/... ${TEST_PKG}/...
+	go test -v -p 1 -timeout 60m -\
+	cover -coverpkg=${PKG} -coverprofile=${PKG_COVER}.out \
+	${PKG}/... ${TEST_PKG}/...
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
-test: lint
-	go test -v -p 1 -timeout 60m -run ^TestPgBench$ -cover -coverpkg=${PKG} -coverprofile=${PKG_COVER}.out ${PKG}/... ${TEST_PKG}/...
-	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
-
-test_only:
-	go test -v -p 1 -timeout 60m -run ^TestPgBench$ -cover -coverpkg=${PKG} -coverprofile=${PKG_COVER}.out ${PKG}/... ${TEST_PKG}/...
+unittest:
+	go test -v -p 1 -timeout 60m \
+	-run ^TestPgBench$ \
+	-cover -coverpkg=${PKG} -coverprofile=${PKG_COVER}.out \
+	${PKG}/... ${TEST_PKG}/...
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
 image:
