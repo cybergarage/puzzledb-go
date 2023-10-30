@@ -167,9 +167,9 @@ func (service *gRPCService) ListConfig(context.Context, *pb.ListConfigRequest) (
 }
 
 func (service *gRPCService) GetConfig(ctx context.Context, req *pb.GetConfigRequest) (*pb.GetConfigResponse, error) {
-	v, err := service.Config.GetConfig(req.Name)
+	v, err := service.Config.GetConfig(req.GetName())
 	if err != nil {
-		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.Name))
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.GetName()))
 	}
 	res := pb.GetConfigResponse{} //nolint:exhaustruct
 	res.Value = fmt.Sprintf("%v", v)
@@ -178,7 +178,7 @@ func (service *gRPCService) GetConfig(ctx context.Context, req *pb.GetConfigRequ
 
 func (service *gRPCService) GetVersion(context.Context, *pb.GetVersionRequest) (*pb.GetVersionResponse, error) {
 	res := pb.GetVersionResponse{} //nolint:exhaustruct
-	res.Value = fmt.Sprintf("%v", Version)
+	res.Value = Version
 	return &res, nil
 }
 
@@ -189,7 +189,7 @@ func (service *gRPCService) ListMetric(context.Context, *pb.ListMetricRequest) (
 		return &res, err
 	}
 	for _, metric := range metrics {
-		res.Values = append(res.Values, metric.GetName())
+		res.Values = append(res.GetValues(), metric.GetName())
 	}
 	return &res, nil
 }
@@ -201,12 +201,12 @@ func (service *gRPCService) GetMetric(ctx context.Context, req *pb.GetMetricRequ
 		return &res, err
 	}
 	for _, metric := range metrics {
-		if metric.GetName() != req.Name {
+		if metric.GetName() != req.GetName() {
 			res.Value = metric.String()
 			return &res, nil
 		}
 	}
-	return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.Name))
+	return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.GetName()))
 }
 
 func (service *gRPCService) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*pb.StatusResponse, error) {
@@ -215,7 +215,7 @@ func (service *gRPCService) CreateDatabase(ctx context.Context, req *pb.CreateDa
 	if err != nil {
 		return &res, err
 	}
-	err = defaultStore.CreateDatabase(pc.NewContext(), req.DatabaseName)
+	err = defaultStore.CreateDatabase(pc.NewContext(), req.GetDatabaseName())
 	if err != nil {
 		return &res, err
 	}
@@ -228,7 +228,7 @@ func (service *gRPCService) RemoveDatabase(ctx context.Context, req *pb.RemoveDa
 	if err != nil {
 		return &res, err
 	}
-	err = defaultStore.RemoveDatabase(pc.NewContext(), req.DatabaseName)
+	err = defaultStore.RemoveDatabase(pc.NewContext(), req.GetDatabaseName())
 	if err != nil {
 		return &res, err
 	}
@@ -247,7 +247,7 @@ func (service *gRPCService) ListDatabases(context.Context, *pb.ListDatabasesRequ
 	}
 	res.Databases = []string{}
 	for _, db := range dbs {
-		res.Databases = append(res.Databases, db.Name())
+		res.Databases = append(res.GetDatabases(), db.Name())
 	}
 	return &res, nil
 }
