@@ -3,6 +3,7 @@ logger:
   level: info
 pprof:
   enabled: false
+  port: 6060
 plugins:
   system:
     grpc:
