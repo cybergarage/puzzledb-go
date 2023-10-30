@@ -68,14 +68,14 @@ test: lint unittest
 
 fulltest: lint
 	go test -v -p 1 -timeout 60m -\
-	cover -coverpkg=${PKG} -coverprofile=${PKG_COVER}.out \
+	cover -coverpkg=${PKG}/... -coverprofile=${PKG_COVER}.out \
 	${PKG}/... ${TEST_PKG}/...
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
 unittest:
 	go test -v -p 1 -timeout 60m \
 	-run ^TestPgBench$ \
-	-cover -coverpkg=${PKG} -coverprofile=${PKG_COVER}.out \
+	-cover -coverpkg=${PKG}/... -coverprofile=${PKG_COVER}.out \
 	${PKG}/... ${TEST_PKG}/...
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
