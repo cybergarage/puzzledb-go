@@ -17,9 +17,11 @@ package puzzledb
 import (
 	"errors"
 	std_log "log"
+	"net"
 	"net/http"
 	_ "net/http/pprof" //nolint:gosec
 	"os"
+	"strconv"
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
@@ -267,8 +269,13 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	ok, _ = server.Config.GetConfigBool(ConfigPprof, ConfigEnabled)
 	if ok && !server.pprofStarted {
+		port, err := server.Config.GetConfigInt(ConfigPprof, ConfigPort)
+		if err != nil {
+			return err
+		}
 		go func() {
-			std_log.Println(http.ListenAndServe("localhost:6060", nil)) //nolint:gosec
+			addr := net.JoinHostPort("localhost", strconv.Itoa(port))
+			std_log.Println(http.ListenAndServe(addr, nil)) //nolint:errcheck,gosec
 		}()
 	}
 
