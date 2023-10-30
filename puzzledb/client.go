@@ -81,7 +81,7 @@ func (client *Client) Check() (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if res.Status != pb.HealthCheckResponse_SERVING {
+	if res.GetStatus() != pb.HealthCheckResponse_SERVING {
 		return false, nil
 	}
 	return true, nil
@@ -94,7 +94,7 @@ func (client *Client) GetVersion() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return res.Value, nil
+	return res.GetValue(), nil
 }
 
 func (client *Client) GetConfig(name string) (string, error) {
@@ -106,7 +106,7 @@ func (client *Client) GetConfig(name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return res.Value, nil
+	return res.GetValue(), nil
 }
 
 func (client *Client) ListConfig() ([]string, error) {
@@ -115,7 +115,7 @@ func (client *Client) ListConfig() ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	return res.Values, nil
+	return res.GetValues(), nil
 }
 
 func (client *Client) GetMetric(name string) (string, error) {
@@ -127,7 +127,7 @@ func (client *Client) GetMetric(name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return res.Value, nil
+	return res.GetValue(), nil
 }
 
 func (client *Client) ListMetric() ([]string, error) {
@@ -136,7 +136,7 @@ func (client *Client) ListMetric() ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	return res.Values, nil
+	return res.GetValues(), nil
 }
 
 // CreateDatabase creates a specified database.
@@ -172,5 +172,5 @@ func (client *Client) ListDatabases() ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	return res.Databases, nil
+	return res.GetDatabases(), nil
 }
