@@ -115,7 +115,7 @@ func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (messa
 
 // Select handles a SELECT query.
 func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) { //nolint:gocognit
-	ctx, txn, col, rs, err := service.Service.Select(conn, stmt)
+	ctx, db, txn, col, rs, err := service.Service.Select(conn, stmt)
 	defer ctx.FinishSpan()
 	if err != nil {
 		return nil, err
@@ -206,7 +206,7 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err = txn.Commit(ctx)
+		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
 			return nil, err
 		}

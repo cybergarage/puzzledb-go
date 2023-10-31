@@ -451,7 +451,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err := txn.Commit(ctx)
+		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
 			return err
 		}
@@ -461,7 +461,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, store.Transaction, document.Collection, store.ResultSet, error) {
+func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, store.Database, store.Transaction, document.Collection, store.ResultSet, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Select")
 
@@ -469,7 +469,7 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 
 	tables := stmt.From()
 	if len(tables) != 1 {
-		return ctx, nil, nil, nil, newErrJoinQueryNotSupported(tables)
+		return ctx, nil, nil, nil, nil, newErrJoinQueryNotSupported(tables)
 	}
 
 	// Gets the specified database.
@@ -477,14 +477,14 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
-		return ctx, nil, nil, nil, err
+		return ctx, nil, nil, nil, nil, err
 	}
 
 	// Starts a new transaction.
 
 	txn, err := service.Transact(conn, db, false)
 	if err != nil {
-		return ctx, nil, nil, nil, err
+		return ctx, nil, nil, nil, nil, err
 	}
 
 	// Gets the specified collection.
@@ -493,7 +493,7 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 	tableName := table.Name()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return ctx, nil, nil, nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		return ctx, nil, nil, nil, nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Selects the specified objects.
@@ -503,7 +503,7 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 		err = service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
-	return ctx, txn, col, rs, err
+	return ctx, db, txn, col, rs, err
 }
 
 // Update handles a UPDATE query.
