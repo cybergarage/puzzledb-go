@@ -556,7 +556,7 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err := txn.Commit(ctx)
+		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
 			return 0, err
 		}
@@ -645,7 +645,7 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err := txn.Commit(ctx)
+		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
 			return 0, err
 		}
