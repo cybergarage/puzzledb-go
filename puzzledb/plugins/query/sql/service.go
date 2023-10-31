@@ -59,26 +59,44 @@ func (service *Service) Transact(conn Conn, db store.Database, write bool) (stor
 }
 
 // CommitTransaction commits the specified transaction.
-func (service *Service) CommitTransaction(ctx context.Context, db store.Database, txn store.Transaction) error {
+func (service *Service) CommitTransaction(ctx context.Context, conn Conn, db store.Database, txn store.Transaction) error {
 	if txErr := txn.Commit(ctx); txErr != nil {
 		return txErr
 	}
+
+	err := service.RemoveTransaction(conn, db)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 // CancelTransaction cancels the specified transaction.
-func (service *Service) CancelTransaction(ctx context.Context, db store.Database, txn store.Transaction) error {
+func (service *Service) CancelTransaction(ctx context.Context, conn Conn, db store.Database, txn store.Transaction) error {
 	if txErr := txn.Cancel(ctx); txErr != nil {
 		return txErr
 	}
+
+	err := service.RemoveTransaction(conn, db)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 // CancelTransactionWithError cancels the specified transaction with the specified error.
-func (service *Service) CancelTransactionWithError(ctx context.Context, txn store.Transaction, err error) error {
+func (service *Service) CancelTransactionWithError(ctx context.Context, conn Conn, db store.Database, txn store.Transaction, err error) error {
 	if txErr := txn.Cancel(ctx); txErr != nil {
-		return txErr
+		return errors.Join(err, txErr)
 	}
+
+	rmErr := service.RemoveTransaction(conn, db)
+	if rmErr != nil {
+		return errors.Join(err, rmErr)
+	}
+
 	return err
 }
 

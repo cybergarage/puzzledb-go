@@ -40,29 +40,29 @@ func (service *Service) Begin(conn Conn) error {
 
 	// Check if the transaction is already started.
 
-	txn, err := service.GetTransaction(conn, db)
-	if err == nil {
-		err := service.CancelTransactionWithError(ctx, txn, err)
-		if err != nil {
-			return err
-		}
-		err = service.RemoveTransaction(conn, db)
-		if err != nil {
-			return err
-		}
-	}
+	// txn, err := service.GetTransaction(conn, db)
+	// if err == nil {
+	// 	err := service.CancelTransactionWithError(ctx, conn, db, txn, err)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	err = service.RemoveTransaction(conn, db)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
 
 	// Start a new transaction.
 
-	txn, err = db.Transact(true)
+	txn, err := db.Transact(true)
 	if err != nil {
 		return err
 	}
 
-	txn.SetAutoCommit(false)
+	txn.SetAutoCommit(true)
 	err = service.SetTransaction(conn, db, txn)
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	return nil
@@ -214,7 +214,7 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 
 	err = txn.CreateCollection(ctx, col)
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	err = txn.Commit(ctx)
@@ -262,17 +262,17 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 
 	schema, err := txn.GetCollection(ctx, tblName)
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	if column, ok := stmt.AddColumn(); ok {
 		elem, err := NewDocumentElementFrom(column)
 		if err != nil {
-			return service.CancelTransactionWithError(ctx, txn, err)
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		err = schema.AddElement(elem)
 		if err != nil {
-			return service.CancelTransactionWithError(ctx, txn, err)
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 	}
 
@@ -280,14 +280,14 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 		var err error
 		schema, err = NewAlterAddIndexSchemaWith(schema, idx)
 		if err != nil {
-			return service.CancelTransactionWithError(ctx, txn, err)
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 	}
 
 	if col, ok := stmt.DropColumn(); ok {
 		err := schema.DropElement(col.Name())
 		if err != nil {
-			return service.CancelTransactionWithError(ctx, txn, err)
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 	}
 
@@ -303,7 +303,7 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 
 	err = txn.UpdateCollection(ctx, schema)
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	err = txn.Commit(ctx)
@@ -389,11 +389,11 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) error {
 			if stmt.IfExists() {
 				continue
 			}
-			return service.CancelTransactionWithError(ctx, txn, err)
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		err = txn.RemoveCollection(ctx, tblName)
 		if err != nil {
-			return service.CancelTransactionWithError(ctx, txn, err)
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 	}
 
@@ -440,26 +440,26 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Inserts the object using the primary key
 
 	docKey, docObj, err := NewDocumentObjectFromInsert(dbName, col, stmt)
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	err = txn.InsertDocument(ctx, docKey, docObj)
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Inserts the secondary indexes.
 
 	err = service.InsertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
 	if err != nil {
-		return service.CancelTransactionWithError(ctx, txn, err)
+		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Commits the transaction if the transaction is auto commit.
@@ -507,14 +507,14 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 	tableName := table.Name()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return ctx, nil, nil, nil, service.CancelTransactionWithError(ctx, txn, err)
+		return ctx, nil, nil, nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Selects the specified objects.
 
 	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), stmt.OrderBy(), stmt.Limit())
 	if err != nil {
-		err = service.CancelTransactionWithError(ctx, txn, err)
+		err = service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	return ctx, txn, col, rs, err
@@ -546,7 +546,7 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 	tableName := stmt.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return 0, service.CancelTransactionWithError(ctx, txn, err)
+		return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Updates the specified objects.
@@ -554,7 +554,7 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 	updateCols := stmt.Columns()
 	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), nil, nil)
 	if err != nil {
-		return 0, service.CancelTransactionWithError(ctx, txn, err)
+		return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	nUpdated := 0
@@ -562,7 +562,7 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 		docObj := rs.Object()
 		err := service.UpdateDocument(ctx, conn, txn, col, docObj, updateCols)
 		if err != nil {
-			return 0, service.CancelTransactionWithError(ctx, txn, err)
+			return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		nUpdated++
 	}
@@ -605,14 +605,14 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 	tableName := stmt.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return 0, service.CancelTransactionWithError(ctx, txn, err)
+		return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Deletes the specified objects.
 
 	docKey, docKeyType, err := NewDocumentKeyFromCond(dbName, col, stmt.Where())
 	if err != nil {
-		return 0, service.CancelTransactionWithError(ctx, txn, err)
+		return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	nDeleted := 0
@@ -624,7 +624,7 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 			if stmt.Where() == nil && errors.Is(err, store.ErrNotExist) {
 				nDeleted = 0
 			} else {
-				return 0, service.CancelTransactionWithError(ctx, txn, err)
+				return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 		} else {
 			nDeleted = 1
@@ -632,11 +632,11 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 	case document.SecondaryIndex:
 		rs, err := txn.FindDocumentsByIndex(ctx, docKey)
 		if err != nil {
-			return 0, service.CancelTransactionWithError(ctx, txn, err)
+			return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		prIdx, err := col.PrimaryIndex()
 		if err != nil {
-			return 0, service.CancelTransactionWithError(ctx, txn, err)
+			return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		for rs.Next() {
 			docObj := rs.Object()
@@ -646,11 +646,11 @@ func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
 			}
 			objKey, err := NewDocumentKeyFromIndex(dbName, col, prIdx, obj)
 			if err != nil {
-				return 0, service.CancelTransactionWithError(ctx, txn, err)
+				return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 			err = service.DeleteDocument(ctx, conn, txn, col, objKey)
 			if err != nil {
-				return 0, service.CancelTransactionWithError(ctx, txn, err)
+				return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 			nDeleted++
 		}
