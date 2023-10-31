@@ -247,7 +247,7 @@ func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (message.R
 		return nil, err
 	}
 
-	txn, err := db.Transact(true)
+	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return nil, err
 	}
@@ -257,9 +257,11 @@ func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (message.R
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
+	if txn.IsAutoCommit() {
+		err := service.CommitTransaction(ctx, conn, db, txn)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	schema, err := sql.NewQuerySchemaFrom(col)
@@ -284,7 +286,7 @@ func (service *Service) CopyData(conn *postgresql.Conn, stmt *query.Copy, stream
 		return nil, err
 	}
 
-	txn, err := db.Transact(true)
+	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return nil, err
 	}
@@ -294,9 +296,11 @@ func (service *Service) CopyData(conn *postgresql.Conn, stmt *query.Copy, stream
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
+	if txn.IsAutoCommit() {
+		err := service.CommitTransaction(ctx, conn, db, txn)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	schema, err := sql.NewQuerySchemaFrom(col)
