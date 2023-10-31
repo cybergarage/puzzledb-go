@@ -122,6 +122,17 @@ redisbench:
 redisbenchv:
 	go tool pprof -http localhost:6060 redis-benchmark-${DATE}-${HOSTNAME}-cpu.prof
 
+pgbench:
+	go test -v -p 1 -timeout 60m \
+	-bench BenchmarkPgBench \
+	-cpuprofile pgbench-${DATE}-${HOSTNAME}-cpu.prof \
+	-memprofile pgbench-${DATE}-${HOSTNAME}-mem.prof \
+	${TEST_PKG}/plugins/query/postgresql
+
+pgbenchv:
+	go tool pprof -http localhost:6060 pgbench-${DATE}-${HOSTNAME}-cpu.prof
+
+
 log:
 	git log ${PKG_VER}..HEAD --date=short --no-merges --pretty=format:"%s"
 
