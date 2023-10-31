@@ -59,7 +59,7 @@ func (service *Service) Transact(conn Conn, db store.Database, write bool) (stor
 }
 
 // CommitTransaction commits the specified transaction.
-func (service *Service) CommitTransaction(ctx context.Context, txn store.Transaction) error {
+func (service *Service) CommitTransaction(ctx context.Context, db store.Database, txn store.Transaction) error {
 	if txErr := txn.Commit(ctx); txErr != nil {
 		return txErr
 	}
