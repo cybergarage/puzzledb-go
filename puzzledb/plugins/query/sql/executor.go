@@ -89,14 +89,7 @@ func (service *Service) Commit(conn Conn) error {
 
 	// Commit the transaction.
 
-	err = txn.Commit(ctx)
-	if err != nil {
-		return err
-	}
-
-	// Remove the transaction.
-
-	err = service.RemoveTransaction(conn, db)
+	err = service.CommitTransaction(ctx, conn, db, txn)
 	if err != nil {
 		return err
 	}
@@ -125,14 +118,7 @@ func (service *Service) Rollback(conn Conn) error {
 
 	// Cancel the transaction.
 
-	err = txn.Cancel(ctx)
-	if err != nil {
-		return err
-	}
-
-	// Remove the transaction.
-
-	err = service.RemoveTransaction(conn, db)
+	err = service.CancelTransaction(ctx, conn, db, txn)
 	if err != nil {
 		return err
 	}
