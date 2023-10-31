@@ -16,6 +16,6 @@
 DATE=$(date '+%Y-%m-%d')
 HOSTNAME=$(hostname)
 
-LOG_FILE_NAME="../../../pgbench-${DATE}-${HOSTNAME}.log"
+LOG_FILE_NAME="../../../../pgbench-${DATE}-${HOSTNAME}.log"
 pgbench -i --init-steps=dtpg -h localhost pgbench
 pgbench -c 1 -t 100 -h localhost pgbench > ${LOG_FILE_NAME}
