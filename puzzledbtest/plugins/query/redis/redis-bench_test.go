@@ -23,20 +23,20 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestRedisBench(t *testing.T) {
+func BenchmarkRedisBench(b *testing.B) {
 	log.SetStdoutDebugEnbled(true)
 
 	server := puzzledbtest.NewServer()
 	err := server.Start()
 	if err != nil {
-		t.Error(err)
+		b.Error(err)
 		return
 	}
 
 	defer func() {
 		err := server.Stop()
 		if err != nil {
-			t.Error(err)
+			b.Error(err)
 			return
 		}
 	}()
@@ -49,10 +49,10 @@ func TestRedisBench(t *testing.T) {
 		cmd := exec.Command(script)
 		output, err := cmd.CombinedOutput()
 		if err != nil {
-			t.Skip(err)
-			t.Skipf(string(output))
+			b.Skip(err)
+			b.Skipf(string(output))
 			return
 		}
-		t.Log(string(output))
+		b.Log(string(output))
 	}
 }
