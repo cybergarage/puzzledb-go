@@ -115,10 +115,9 @@ rundp:
 
 redisbench:
 	go test -v -p 1 -timeout 60m \
-	-run TestRedisBench \
+	-bench BenchmarkRedisBench \
 	-cpuprofile redis-benchmark-${DATE}-${HOSTNAME}-cpu.prof \
 	-memprofile redis-benchmark-${DATE}-${HOSTNAME}-mem.prof \
-	-bench TestRedisBench \
 	${TEST_PKG}/plugins/query/redis
 
 redisbenchv:
