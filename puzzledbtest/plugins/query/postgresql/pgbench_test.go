@@ -33,6 +33,14 @@ func TestPgBench(t *testing.T) {
 		return
 	}
 
+	defer func() {
+		err := server.Stop()
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}()
+
 	scripts := []string{
 		"./pgbench-init",
 		"./pgbench-run",
@@ -43,14 +51,9 @@ func TestPgBench(t *testing.T) {
 		output, err := cmd.CombinedOutput()
 		if err != nil {
 			t.Skip(err)
+			t.Skipf(string(output))
 			return
 		}
 		t.Log(string(output))
-	}
-
-	err = server.Stop()
-	if err != nil {
-		t.Error(err)
-		return
 	}
 }
