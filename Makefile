@@ -128,7 +128,7 @@ pgbench:
 	-bench BenchmarkPgBench \
 	-cpuprofile pgbench-${DATE}-${HOSTNAME}-cpu.prof \
 	-memprofile pgbench-${DATE}-${HOSTNAME}-mem.prof \
-	${TEST_SRC_ROOT}/plugins/query/postgresql
+	${TEST_PKG}/plugins/query/postgresql
 
 pgbenchv:
 	go tool pprof -http localhost:6060 \
