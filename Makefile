@@ -129,6 +129,7 @@ log:
 
 clean:
 	go clean -i ${PKG}
+	find . -name "*.log" -or -name "*.prof" | xargs -I{} rm -f {}
 
 watchtest:
 	fswatch -o . -e ".*" -i "\\.go$$" | xargs -n1 -I{} make test
