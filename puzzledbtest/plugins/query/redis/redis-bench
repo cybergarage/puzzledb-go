@@ -16,5 +16,5 @@
 DATE=$(date '+%Y-%m-%d')
 HOSTNAME=$(hostname)
 
-LOG_FILE_NAME="redis-benchmark-${DATE}-${HOSTNAME}.log"
+LOG_FILE_NAME="../../../redis-benchmark-${DATE}-${HOSTNAME}.log"
 redis-benchmark -t get,set -n 10000 > ${LOG_FILE_NAME}
