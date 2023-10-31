@@ -17,6 +17,9 @@ SHELL := bash
 GOBIN := $(shell go env GOPATH)/bin
 PATH := $(GOBIN):$(PATH)
 
+DATE=$(shell date '+%Y-%m-%d')
+HOSTNAME=$(shell hostname)
+
 GIT_ROOT=github.com/cybergarage
 PRODUCT_NAME=puzzledb-go
 MODULE_ROOT=${GIT_ROOT}/${PRODUCT_NAME}
@@ -109,6 +112,17 @@ rundp:
 	-p 6379:6379 -p 27017:27017 -p 3306:3306 -p 50053:50053 -p 9181:9181 -p 5432:5432 -p 8443:8443 -p 6060:6060 \
 	--env PUZZLEDB_PPROF_ENABLED=true \
 	${BIN_SERVER_DOCKER_TAG_LATEST}
+
+redisbench:
+	go test -v -p 1 -timeout 60m \
+	-run TestRedisBench \
+	-cpuprofile redis-benchmark-${DATE}-${HOSTNAME}-cpu.prof \
+	-memprofile redis-benchmark-${DATE}-${HOSTNAME}-mem.prof \
+	-bench TestRedisBench \
+	${TEST_PKG}/plugins/query/redis
+
+redisbenchv:
+	go tool pprof -http localhost:6060 redis-benchmark-${DATE}-${HOSTNAME}-cpu.prof
 
 log:
 	git log ${PKG_VER}..HEAD --date=short --no-merges --pretty=format:"%s"
