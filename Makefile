@@ -77,7 +77,6 @@ fulltest: lint
 
 unittest:
 	go test -v -p 1 -timeout 60m \
-	-run ^TestPgBench$ \
 	-cover -coverpkg=${PKG}/... -coverprofile=${PKG_COVER}.out \
 	${PKG}/... ${TEST_PKG}/...
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
