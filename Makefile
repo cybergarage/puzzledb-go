@@ -113,6 +113,7 @@ rundp:
 redisbench:
 	go test -v -p 1 -timeout 60m \
 	-bench BenchmarkRedisBench \
+	-run BenchmarkRedisBench \
 	-cpuprofile redis-benchmark-${DATE}-${HOSTNAME}-cpu.prof \
 	-memprofile redis-benchmark-${DATE}-${HOSTNAME}-mem.prof \
 	${TEST_PKG}/plugins/query/redis
@@ -124,6 +125,7 @@ redisbenchv:
 pgbench:
 	go test -v -p 1 -timeout 60m \
 	-bench BenchmarkPgBench \
+	-run BenchmarkPgBench \
 	-cpuprofile pgbench-${DATE}-${HOSTNAME}-cpu.prof \
 	-memprofile pgbench-${DATE}-${HOSTNAME}-mem.prof \
 	${TEST_PKG}/plugins/query/postgresql
