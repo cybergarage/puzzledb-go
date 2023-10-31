@@ -67,7 +67,7 @@ func (service *Service) CommitTransaction(ctx context.Context, db store.Database
 }
 
 // CancelTransaction cancels the specified transaction.
-func (service *Service) CancelTransaction(ctx context.Context, txn store.Transaction) error {
+func (service *Service) CancelTransaction(ctx context.Context, db store.Database, txn store.Transaction) error {
 	if txErr := txn.Cancel(ctx); txErr != nil {
 		return txErr
 	}
