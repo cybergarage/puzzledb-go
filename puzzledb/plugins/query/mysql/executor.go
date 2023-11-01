@@ -144,7 +144,7 @@ func (service *Service) CreateTable(conn *mysql.Conn, stmt *query.Schema) (*mysq
 
 	err = txn.CreateCollection(ctx, col)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	err = txn.Commit(ctx)
@@ -194,7 +194,7 @@ func (service *Service) AlterTable(conn *mysql.Conn, stmt *query.Schema) (*mysql
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	err = txn.Commit(ctx)
@@ -271,32 +271,32 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Inserts the object using the primary key.
 
 	docKey, docObj, err := NewObjectFromInsert(dbName, col, stmt)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	err = txn.InsertDocument(ctx, docKey, docObj)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Inserts the secondary indexes.
 
 	err = service.insertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err := txn.Commit(ctx)
+		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
 			return nil, err
 		}
@@ -361,30 +361,30 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 	table := tables[0]
 	tableName, err := table.Name()
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Selects the specified objects.
 
 	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where, stmt.OrderBy, stmt.Limit)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	res, err := NewResultFrom(dbName, col, rs.Objects())
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err = txn.Commit(ctx)
+		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
 			return nil, err
 		}
@@ -444,40 +444,40 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 	table := tables[0]
 	tableName, err := table.Name()
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Gets the specified collection.
 
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Updates the specified objects.
 
 	updateCols, err := stmt.Columns()
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	rs, err := service.selectDocumentObjects(ctx, conn, txn, col, stmt.Where, stmt.OrderBy, stmt.Limit)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	for rs.Next() {
 		docObj := rs.Object()
 		err := service.updateDocument(ctx, conn, txn, col, docObj, updateCols)
 		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
+			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 	}
 
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err := txn.Commit(ctx)
+		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
 			return nil, err
 		}
@@ -559,19 +559,19 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 	table := tables[0]
 	tableName, err := table.Name()
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Deletes the specified objects.
 
 	docKey, docKeyType, err := NewKeyFromCond(dbName, col, stmt.Where)
 	if err != nil {
-		return nil, service.CancelTransactionWithError(ctx, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	switch docKeyType {
@@ -579,17 +579,17 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 		err = service.DeleteDocument(ctx, conn, txn, col, docKey)
 		if err != nil {
 			if stmt.Where != nil || !errors.Is(err, store.ErrNotExist) {
-				return nil, service.CancelTransactionWithError(ctx, txn, err)
+				return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 		}
 	case document.SecondaryIndex:
 		rs, err := txn.FindDocumentsByIndex(ctx, docKey)
 		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
+			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		prIdx, err := col.PrimaryIndex()
 		if err != nil {
-			return nil, service.CancelTransactionWithError(ctx, txn, err)
+			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		for rs.Next() {
 			docObj := rs.Object()
@@ -599,11 +599,11 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 			}
 			objKey, err := sqlc.NewDocumentKeyFromIndex(dbName, col, prIdx, obj)
 			if err != nil {
-				return nil, service.CancelTransactionWithError(ctx, txn, err)
+				return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 			err = service.DeleteDocument(ctx, conn, txn, col, objKey)
 			if err != nil {
-				return nil, service.CancelTransactionWithError(ctx, txn, err)
+				return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 		}
 	}
@@ -611,7 +611,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err := txn.Commit(ctx)
+		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
 			return nil, err
 		}
