@@ -40,26 +40,26 @@ func (service *Service) Begin(conn Conn) error {
 
 	// Check if the transaction is already started.
 
-	// txn, err := service.GetTransaction(conn, db)
-	// if err == nil {
-	// 	err := service.CancelTransactionWithError(ctx, conn, db, txn, err)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	err = service.RemoveTransaction(conn, db)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// }
+	txn, err := service.GetTransaction(conn, db)
+	if err == nil {
+		err := service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		if err != nil {
+			return err
+		}
+		err = service.RemoveTransaction(conn, db)
+		if err != nil {
+			return err
+		}
+	}
 
 	// Start a new transaction.
 
-	txn, err := db.Transact(true)
+	txn, err = db.Transact(true)
 	if err != nil {
 		return err
 	}
 
-	txn.SetAutoCommit(true)
+	txn.SetAutoCommit(false)
 	err = service.SetTransaction(conn, db, txn)
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
