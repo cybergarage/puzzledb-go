@@ -162,3 +162,8 @@ func (txn *transaction) Cancel() error {
 	txn.Txn.Abort()
 	return nil
 }
+
+// SetTimeout sets the timeout of this transaction.
+func (txn *transaction) SetTimeout(t time.Duration) error {
+	return nil
+}
