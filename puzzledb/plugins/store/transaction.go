@@ -16,6 +16,7 @@ package store
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
@@ -77,4 +78,9 @@ func (txn *transaction) CancelWithError(err error) error {
 		return err
 	}
 	return fmt.Errorf("%w: %w", err, txnErr)
+}
+
+// SetTimeout sets the timeout of this transaction.
+func (txn *transaction) SetTimeout(t time.Duration) error {
+	return txn.kv.SetTimeout(t)
 }

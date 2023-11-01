@@ -14,6 +14,8 @@
 
 package kv
 
+import "time"
+
 // Transaction represents a transaction interface.
 type Transaction interface {
 	// Set stores a key-value object. If the key already holds some value, it is overwritten.
@@ -30,4 +32,6 @@ type Transaction interface {
 	Commit() error
 	// Cancel cancels this transaction.
 	Cancel() error
+	// SetTimeout sets the timeout of this transaction.
+	SetTimeout(t time.Duration) error
 }
