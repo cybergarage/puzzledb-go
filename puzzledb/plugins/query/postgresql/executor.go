@@ -252,6 +252,11 @@ func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (message.R
 		return nil, err
 	}
 
+	err = txn.SetTimeout(0)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+	}
+
 	col, err := txn.GetCollection(ctx, stmt.TableName())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
@@ -289,6 +294,11 @@ func (service *Service) CopyData(conn *postgresql.Conn, stmt *query.Copy, stream
 	txn, err := service.Transact(conn, db, true)
 	if err != nil {
 		return nil, err
+	}
+
+	err = txn.SetTimeout(0)
+	if err != nil {
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	col, err := txn.GetCollection(ctx, stmt.TableName())
