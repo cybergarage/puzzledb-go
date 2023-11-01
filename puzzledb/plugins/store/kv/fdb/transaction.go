@@ -108,3 +108,8 @@ func (txn *transaction) Cancel() error {
 	txn.Transaction.Cancel()
 	return nil
 }
+
+// SetTimeout sets the timeout of this transaction.
+func (txn *transaction) SetTimeout(t time.Duration) error {
+	return txn.Options().SetTimeout(int64(t / time.Millisecond))
+}
