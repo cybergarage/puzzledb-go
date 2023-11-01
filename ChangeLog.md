@@ -26,9 +26,13 @@
     - Coordinator plug-ins
       - Added etcd plug-in
 
-## v1.1.1 (2023-10-xx)
+## v1.1.1 (2023-11-xx)
 - Fix
-  - Redis plug-in
+  - PostgreSQL plug-in
+    - Fix transaction hangup using copy commands
+- Changed
+  - Docker image
+    - Change to FoundationDB plug-in as default store.
 
 ## v1.1.0 (2023-10-20)
 - New features
