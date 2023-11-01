@@ -67,9 +67,7 @@ vet: format
 lint: format
 	golangci-lint run ${PKG_SRC_ROOT}/... ${TEST_SRC_ROOT}/... ${BIN_SRC_ROOT}/...
 
-test: lint unittest
-
-fulltest: lint
+test: lint
 	go test -v -p 1 -timeout 60m -\
 	cover -coverpkg=${PKG}/... -coverprofile=${PKG_COVER}.out \
 	${PKG}/... ${TEST_PKG}/...
@@ -142,10 +140,10 @@ clean:
 	find . -name "*.log" -or -name "*.prof" | xargs -I{} rm -f {}
 
 watchtest:
-	fswatch -o . -e ".*" -i "\\.go$$" | xargs -n1 -I{} make test
+	fswatch -o . -e ".*" -i "\\.go$$" | xargs -I{} make unittest
 
 watchlint:
-	fswatch -o . -e ".*" -i "\\.go$$" | xargs -n1 -I{} make lint
+	fswatch -o . -e ".*" -i "\\.go$$" | xargs -I{} make lint
 
 #
 # Document
