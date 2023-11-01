@@ -15,6 +15,8 @@
 package store
 
 import (
+	"time"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
@@ -77,6 +79,8 @@ type TransactionOption interface {
 	SetAutoCommit(bool)
 	// IsAutoCommit returns true whether the auto commit flag is set.
 	IsAutoCommit() bool
+	// SetTimeout sets the timeout of this transaction.
+	SetTimeout(t time.Duration) error
 }
 
 // TransactionOperation represents a transaction operation.
