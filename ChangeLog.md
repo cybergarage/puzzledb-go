@@ -26,10 +26,12 @@
     - Coordinator plug-ins
       - Added etcd plug-in
 
-## v1.1.1 (2023-11-xx)
+## v1.1.1 (2023-11-02)
 - Fix
   - PostgreSQL plug-in
-    - Fix transaction hangup using copy commands
+    - Fixed transaction hangup using copy commands
+    - Fixed to run pgbench on Ubuntu platforms
+      - Upgraded go-postgresql to update the protocol message reader
 - Changed
   - Docker image
     - Change to FoundationDB plug-in as default store.
