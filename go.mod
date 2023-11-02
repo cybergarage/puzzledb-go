@@ -9,14 +9,14 @@ require (
 	github.com/cybergarage/go-mongo v1.0.2
 	github.com/cybergarage/go-mysql v1.0.5
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.3.4
+	github.com/cybergarage/go-postgresql v1.3.5
 	github.com/cybergarage/go-redis v1.3.6
 	github.com/cybergarage/go-safecast v1.2.3
 	github.com/cybergarage/go-sqlparser v1.2.6
 	github.com/cybergarage/go-sqltest v1.3.0
 	github.com/cybergarage/go-tracing v1.1.3
 	github.com/dgraph-io/ristretto v0.1.1
-	github.com/google/uuid v1.3.0
+	github.com/google/uuid v1.4.0
 	github.com/hashicorp/go-memdb v1.3.2
 	github.com/prometheus/client_golang v1.15.1
 	github.com/spf13/cobra v1.7.0

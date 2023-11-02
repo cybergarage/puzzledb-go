@@ -75,8 +75,8 @@ github.com/cybergarage/go-mysql v1.0.5 h1:SFwbTb4L05pfm2gBHJpBv2RISFCgcv9os2t0wZ
 github.com/cybergarage/go-mysql v1.0.5/go.mod h1:i8Apxv6X1oE0iFtgH7Hl09dABrAxk7N2ptX5XmuekjQ=
 github.com/cybergarage/go-pict v1.0.0 h1:ruJAusVb7J0Hm+G8xiBJZanzROX2wBcNtExzv4ECLWk=
 github.com/cybergarage/go-pict v1.0.0/go.mod h1:rdjVxfqG/Jl6ehdt+brSOvGbiRKgU+Ihvr7p9O/gde0=
-github.com/cybergarage/go-postgresql v1.3.4 h1:PUOGnbU8bZgJlLtiBjjcYZQXjRQTnJto+2BrWoY8HR8=
-github.com/cybergarage/go-postgresql v1.3.4/go.mod h1:KnV02DNMmW27LagkpfZlPwHHa2g2OooYc1LZ6m+6hXk=
+github.com/cybergarage/go-postgresql v1.3.5 h1:tuWC/6fLytMaq4FVnc3TiS8axXKdZA/+NxEYAxy4crY=
+github.com/cybergarage/go-postgresql v1.3.5/go.mod h1:c/1QH2p4iaTNShA6OOVaFlBHkEHXZDBw8fnZOrYQyCo=
 github.com/cybergarage/go-redis v1.3.6 h1:BcMzeznUmCrnZZOkHfZXvR+0/fe61qNH33zAvjuiiqs=
 github.com/cybergarage/go-redis v1.3.6/go.mod h1:eZsZZxtYRJNSpIEozeod6TfXL6MKS8DLwxxRdt/GXy8=
 github.com/cybergarage/go-safecast v1.2.3 h1:DlD/VxntuR+H6hy+TMprxkDIxbwd9pLn6CZ44FC5PlE=
@@ -203,8 +203,8 @@ github.com/google/pprof v0.0.0-20201218002935-b9804c9f04c2/go.mod h1:kpwsk12EmLe
 github.com/google/renameio v0.1.0/go.mod h1:KWCgfxg9yswjAJkECMjeO8J8rahYeXnNhOm40UhjYkI=
 github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/google/uuid v1.1.2/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
-github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/google/uuid v1.4.0 h1:MtMxsa51/r9yyhkyLsVeVt0B+BGQZzpQiTQ4eHZ8bc4=
+github.com/google/uuid v1.4.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/googleapis/gax-go/v2 v2.0.4/go.mod h1:0Wqv26UfaUD9n4G6kQubkQ+KchISgw+vpHVxEJEs9eg=
 github.com/googleapis/gax-go/v2 v2.0.5/go.mod h1:DWXyrwAJ9X0FpwwEdw+IPEYBICEFu5mhpdKc/us6bOk=
 github.com/googleapis/gnostic v0.4.1/go.mod h1:LRhVm6pbyptWbWbuZ38d1eyptfvIytN3ir6b65WBswg=
