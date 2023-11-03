@@ -16,17 +16,17 @@ package cli
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb"
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
 var gRPCHost string
 var gRPCPort int
 
 var rootCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:               "puzzledb-cli",
+	Use:               strings.ToLower(puzzledb.PackageName) + "-cli",
 	Version:           puzzledb.Version,
 	Short:             "",
 	Long:              "",
