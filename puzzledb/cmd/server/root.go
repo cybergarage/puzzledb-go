@@ -15,8 +15,10 @@
 package server
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/cybergarage/go-logger/log"
@@ -28,11 +30,21 @@ import (
 var cfgFile string
 
 var rootCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:               "puzzledb-server",
+	Use:               strings.ToLower(puzzledb.PackageName) + "-server",
 	Version:           puzzledb.Version,
 	Short:             "",
 	Long:              "",
 	DisableAutoGenTag: true,
+}
+
+var versionCmd = &cobra.Command{
+	Use:               "version",
+	Short:             "Print " + strings.ToLower(puzzledb.PackageName) + " version",
+	DisableAutoGenTag: true,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(puzzledb.Version)
+		os.Exit(0)
+	},
 }
 
 func GetRootCommand() *cobra.Command {
@@ -40,6 +52,8 @@ func GetRootCommand() *cobra.Command {
 }
 
 func Execute() {
+	rootCmd.Execute()
+
 	var conf config.Config
 	if cfgFile != "" {
 		fileConf, err := puzzledb.NewConfigWithFile(cfgFile)
@@ -104,5 +118,6 @@ func Execute() {
 }
 
 func init() { // nolint:gochecknoinits
+	rootCmd.AddCommand(versionCmd)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is .puzzledb.yaml)")
 }
