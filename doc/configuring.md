@@ -10,7 +10,8 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
       enabled: true
       level: info
     pprof:
-      enabled: true
+      enabled: false
+      port: 6060
     plugins:
       system:
         grpc:
