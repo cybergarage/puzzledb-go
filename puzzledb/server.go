@@ -289,7 +289,8 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	// Setup configuration
 
-	log.Infof("configuration loaded")
+	log.Infof("configuration loading...")
+	log.Infof(server.Config.UsedConfigFile())
 	log.Infof(server.Config.String())
 
 	// Setup plugins
