@@ -114,25 +114,25 @@ redisbench:
 	go test -v -p 1 -timeout 60m \
 	-bench BenchmarkRedisBench \
 	-run BenchmarkRedisBench \
-	-cpuprofile redis-benchmark-${DATE}-${HOSTNAME}-cpu.prof \
-	-memprofile redis-benchmark-${DATE}-${HOSTNAME}-mem.prof \
+	-cpuprofile redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof \
+	-memprofile redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-mem.prof \
 	${TEST_PKG}/plugins/query/redis
 
 redisbenchv:
 	go tool pprof -http localhost:6060 \
-	redis-benchmark-${DATE}-${HOSTNAME}-cpu.prof
+	redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof
 
 pgbench:
 	go test -v -p 1 -timeout 60m \
 	-bench BenchmarkPgBench \
 	-run BenchmarkPgBench \
-	-cpuprofile pgbench-${DATE}-${HOSTNAME}-cpu.prof \
-	-memprofile pgbench-${DATE}-${HOSTNAME}-mem.prof \
+	-cpuprofile pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof \
+	-memprofile pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-mem.prof \
 	${TEST_PKG}/plugins/query/postgresql
 
 pgbenchv:
 	go tool pprof -http localhost:6060 \
-	pgbench-${DATE}-${HOSTNAME}-cpu.prof
+	pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof
 
 log:
 	git log ${PKG_VER}..HEAD --date=short --no-merges --pretty=format:"%s"
