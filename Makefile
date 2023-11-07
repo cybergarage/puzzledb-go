@@ -19,6 +19,7 @@ PATH := $(GOBIN):$(PATH)
 
 DATE=$(shell date '+%Y-%m-%d')
 HOSTNAME=$(shell hostname)
+LOG_DIR=log
 
 GIT_ROOT=github.com/cybergarage
 PRODUCT_NAME=puzzledb-go
@@ -114,25 +115,25 @@ redisbench:
 	go test -v -p 1 -timeout 60m \
 	-bench BenchmarkRedisBench \
 	-run BenchmarkRedisBench \
-	-cpuprofile redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof \
-	-memprofile redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-mem.prof \
+	-cpuprofile ${LOG_DIR}/redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof \
+	-memprofile ${LOG_DIR}/redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-mem.prof \
 	${TEST_PKG}/plugins/query/redis
 
 redisbenchv:
 	go tool pprof -http localhost:6060 \
-	redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof
+	${LOG_DIR}/redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof
 
 pgbench:
 	go test -v -p 1 -timeout 60m \
 	-bench BenchmarkPgBench \
 	-run BenchmarkPgBench \
-	-cpuprofile pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof \
-	-memprofile pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-mem.prof \
+	-cpuprofile ${LOG_DIR}/pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof \
+	-memprofile ${LOG_DIR}/pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-mem.prof \
 	${TEST_PKG}/plugins/query/postgresql
 
 pgbenchv:
 	go tool pprof -http localhost:6060 \
-	pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof
+	${LOG_DIR}/pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof
 
 log:
 	git log ${PKG_VER}..HEAD --date=short --no-merges --pretty=format:"%s"
