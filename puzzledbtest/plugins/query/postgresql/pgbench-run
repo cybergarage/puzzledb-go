@@ -16,7 +16,8 @@
 DATE=$(date '+%Y-%m-%d')
 HOSTNAME=$(hostname)
 VER=$(shell git tag | tail -n 1)
+LOG_DIR="../../../../log"
+LOG_FILE_NAME="${LOG_DIR}/pgbench-${VER}-${DATE}-${HOSTNAME}.log"
 
-LOG_FILE_NAME="../../../../pgbench-${VER}-${DATE}-${HOSTNAME}.log"
 pgbench -i --init-steps=dtpg -h localhost pgbench
 pgbench -c 1 -t 100 -h localhost pgbench > ${LOG_FILE_NAME}
