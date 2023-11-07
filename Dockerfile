@@ -23,6 +23,7 @@ RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cl
 COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
 
+ENV PUZZLEDB_LOGGER_LEVEL info
 ENV PUZZLEDB_PLUGINS_STORE_KV_DEFAULT fdb
 ENV PUZZLEDB_PLUGINS_STORE_KV_MEMDB_ENABLED false
 ENV PUZZLEDB_PLUGINS_STORE_KV_FDB_ENABLED true
