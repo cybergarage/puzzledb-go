@@ -4,6 +4,8 @@ logger:
 pprof:
   enabled: false
   port: 6060
+tracer:
+  enabled: false
 plugins:
   system:
     grpc:
