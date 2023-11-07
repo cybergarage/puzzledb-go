@@ -52,6 +52,8 @@ BINS=\
         ${BIN_SERVER_ID} \
         ${BIN_CLI_ID}
 
+BENCHMARK_ENVS=$(shell echo "PUZZLEDB_LOGGER_LEVEL=info PUZZLEDB_PLUGINS_TRACER_OPENTELEMETRY_ENABLED=false")
+
 .PHONY: test unittest format vet lint clean docker cmd
 
 all: test
@@ -112,7 +114,7 @@ rundp:
 	${BIN_SERVER_DOCKER_TAG_LATEST}
 
 redisbench:
-	go test -v -p 1 -timeout 60m \
+	${BENCHMARK_ENVS} go test -v -p 1 -timeout 60m \
 	-bench BenchmarkRedisBench \
 	-run BenchmarkRedisBench \
 	-cpuprofile ${LOG_DIR}/redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof \
@@ -124,7 +126,7 @@ redisbenchv:
 	${LOG_DIR}/redis-benchmark-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof
 
 pgbench:
-	go test -v -p 1 -timeout 60m \
+	${BENCHMARK_ENVS} go test -v -p 1 -timeout 60m \
 	-bench BenchmarkPgBench \
 	-run BenchmarkPgBench \
 	-cpuprofile ${LOG_DIR}/pgbench-${PKG_VER}-${DATE}-${HOSTNAME}-cpu.prof \
