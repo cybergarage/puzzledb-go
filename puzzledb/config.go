@@ -34,6 +34,7 @@ const (
 	ConfigTracer  = "tracer"
 	ConfigPprof   = "pprof"
 	ConfigLogger  = "logger"
+	ConfigTracer  = "tracer"
 	ConfigDefault = "default"
 	ConfigLevel   = "level"
 )
