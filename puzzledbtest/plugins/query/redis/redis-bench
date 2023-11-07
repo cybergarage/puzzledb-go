@@ -16,6 +16,7 @@
 DATE=$(date '+%Y-%m-%d')
 HOSTNAME=$(hostname)
 VER=$(shell git tag | tail -n 1)
+LOG_DIR="../../../../log"
+LOG_FILE_NAME="${LOG_DIR}/redis-benchmark-${VER}-${DATE}-${HOSTNAME}.log"
 
-LOG_FILE_NAME="../../../../redis-benchmark-${VER}-${DATE}-${HOSTNAME}.log"
 redis-benchmark -t get,set -n 10000 > ${LOG_FILE_NAME}
