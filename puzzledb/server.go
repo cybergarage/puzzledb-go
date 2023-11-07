@@ -24,6 +24,7 @@ import (
 	"strconv"
 
 	"github.com/cybergarage/go-logger/log"
+	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -153,13 +154,6 @@ func (server *Server) setupPlugins() error {
 		return err
 	}
 
-	defaultTracer, err := server.DefaultTracingService()
-	if err != nil {
-		return err
-	}
-	defaultTracer.SetPackageName(PackageName)
-	defaultTracer.SetServiceName(ProductName)
-
 	// Coordinator services
 
 	if services, err := server.CoordinatorServices(); err != nil {
@@ -221,6 +215,18 @@ func (server *Server) setupPlugins() error {
 			store.SetKvStore(defaultKvStore)
 		}
 	}
+	// Setup tracer
+
+	defaultTracer := tracer.NewNullTracer()
+	ok, _ := server.Config.GetConfigBool(ConfigTracer, ConfigEnabled)
+	if ok {
+		defaultTracer, err = server.DefaultTracingService()
+		if err != nil {
+			return err
+		}
+	}
+	defaultTracer.SetPackageName(PackageName)
+	defaultTracer.SetServiceName(ProductName)
 
 	// Query services
 
