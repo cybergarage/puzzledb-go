@@ -15,7 +15,7 @@
 
 DATE=$(date '+%Y-%m-%d')
 HOSTNAME=$(hostname)
-VER=$(shell git tag | tail -n 1)
+VER=$(git tag | tail -n 1)
 LOG_DIR="../../../../log"
 LOG_FILE_NAME="${LOG_DIR}/pgbench-${VER}-${DATE}-${HOSTNAME}.log"
 
