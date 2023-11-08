@@ -21,6 +21,6 @@ import (
 //go:embed conf/puzzledb.yaml
 var defaultConfigString string
 
-func NewDefaultConfig() (*Config, error) {
+func NewDefaultConfig() (Config, error) {
 	return NewConfigWithString(defaultConfigString)
 }

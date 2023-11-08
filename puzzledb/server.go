@@ -49,7 +49,7 @@ import (
 // Server represents a server instance.
 type Server struct {
 	actor *actor.Service
-	*Config
+	Config
 	*PluginManager
 	cluster.Node
 	pprofStarted bool
@@ -81,7 +81,7 @@ func NewServerWithConfig(conf config.Config) *Server {
 }
 
 // SetConfig sets a server configuration.
-func (server *Server) SetConfig(conf *Config) {
+func (server *Server) SetConfig(conf Config) {
 	server.Config = conf
 	server.Manager.SetConfig(conf)
 }
