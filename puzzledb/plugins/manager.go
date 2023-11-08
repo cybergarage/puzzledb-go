@@ -65,7 +65,7 @@ func (mgr *Manager) ServicesByType(t ServiceType) []Service {
 func (mgr *Manager) EnabledServicesByType(t ServiceType) []Service {
 	services := []Service{}
 	for _, service := range mgr.ServicesByType(t) {
-		if !mgr.IsServiceEnabled(service) {
+		if !mgr.IsServiceConfigEnabled(service) {
 			continue
 		}
 		services = append(services, service)
@@ -94,7 +94,7 @@ func (mgr *Manager) DefaultService(t ServiceType) (Service, error) {
 		if service.ServiceName() != configName {
 			continue
 		}
-		if !mgr.IsServiceEnabled(service) {
+		if !mgr.IsServiceConfigEnabled(service) {
 			return nil, NewErrDisabledService(service)
 		}
 		return service, nil
@@ -108,7 +108,7 @@ func (mgr *Manager) Start() error {
 
 	for _, service := range mgr.services {
 		service.SetConfig(mgr.Config.Object())
-		if !mgr.IsServiceEnabled(service) {
+		if !mgr.IsServiceConfigEnabled(service) {
 			log.Infof("%s (%s) skipped", service.ServiceName(), service.ServiceType().String())
 			continue
 		}
@@ -131,7 +131,7 @@ func (mgr Manager) Stop() error {
 	log.Infof("plug-ins terminating...")
 	var lastErr error
 	for _, service := range mgr.services {
-		if !mgr.IsServiceEnabled(service) {
+		if !mgr.IsServiceConfigEnabled(service) {
 			log.Infof("%s (%s) skipped", service.ServiceName(), service.ServiceType().String())
 			continue
 		}
@@ -156,7 +156,7 @@ func (mgr *Manager) String() string {
 			}
 			name := service.ServiceName()
 			serviceStatus := "-"
-			if mgr.IsServiceEnabled(service) {
+			if mgr.IsServiceConfigEnabled(service) {
 				serviceStatus = "+"
 				if defaultService != nil {
 					if name == defaultService.ServiceName() {
