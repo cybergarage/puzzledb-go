@@ -36,4 +36,8 @@ const (
 
 type Config interface {
 	config.Config
+	// SetConfig sets a manager configuration.
+	SetConfig(c config.Config)
+	// Object returns a raw configuration object.
+	Object() config.Config
 }
