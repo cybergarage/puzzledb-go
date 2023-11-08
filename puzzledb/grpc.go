@@ -86,16 +86,6 @@ func (service *gRPCService) SetPort(port int) {
 	service.Port = port
 }
 
-// EnabledConfig returns a port number for the specified query service name.
-func (service *gRPCService) EnabledConfig() (bool, error) {
-	return service.Config.GetConfigBool(ConfigAPI, ConfigGrpc, ConfigEnabled)
-}
-
-// PortConfig returns a port number for the specified query service name.
-func (service *gRPCService) PortConfig() (int, error) {
-	return service.Config.GetConfigInt(ConfigAPI, ConfigGrpc, ConfigPort)
-}
-
 // Start starts the service.
 func (service *gRPCService) Start() error {
 	var err error
