@@ -20,14 +20,7 @@ import (
 
 // ConfigBase represents a basic configuration interface.
 type ConfigBase interface {
-	// GetConfig returns a value for the specified name.
-	GetConfig(paths ...string) (any, error)
-	// GetConfigString returns a string value for the specified name.
-	GetConfigString(paths ...string) (string, error)
-	// GetConfigInt returns an integer value for the specified name.
-	GetConfigInt(paths ...string) (int, error)
-	// GetConfigBool returns a boolean value for the specified name.
-	GetConfigBool(paths ...string) (bool, error)
+	config.Config
 	// String returns a string representation of the configuration.
 	SetConfig(c config.Config)
 	// Object returns a raw configuration object.

@@ -33,7 +33,7 @@ func NewServer() *Server {
 		Host:   LocalHost,
 	}
 
-	conf, err := puzzledb.NewConfigWithString(testConfigString)
+	conf, err := NewConfigWithString(testConfigString)
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +45,7 @@ func NewServer() *Server {
 // NewServerWithConfig returns a new test server instance with the specified configuration.
 func NewServerWithConfig(config config.Config) *Server {
 	server := &Server{
-		Server: puzzledb.NewServerWithConfig(config),
+		Server: puzzledb.NewServerWithConfig(NewConfigWith(config)),
 		Host:   LocalHost,
 	}
 	return server

@@ -43,3 +43,8 @@ func NewConfigWithString(conString string) (*Config, error) {
 	}
 	return NewConfigWith(conf), nil
 }
+
+// GetConfigInt returns an integer value for the specified name.
+func (conf *Config) GetConfigInt(paths ...string) (int, error) {
+	return conf.Config.GetConfigInt(paths...)
+}
