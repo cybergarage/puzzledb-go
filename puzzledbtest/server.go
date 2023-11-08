@@ -22,30 +22,32 @@ import (
 
 // Server represents an example server.
 type Server struct {
+	*Config
 	*puzzledb.Server
 	Host string
 }
 
 // NewServer returns a new testserver instance.
 func NewServer() *Server {
-	server := &Server{
-		Server: puzzledb.NewServer(),
-		Host:   LocalHost,
-	}
-
-	conf, err := NewConfigWithString(testConfigString)
+	testConfig, err := NewConfigWithString(testConfigString)
 	if err != nil {
 		panic(err)
 	}
-	server.SetConfig(conf)
-
+	server := &Server{
+		Config: testConfig,
+		Server: puzzledb.NewServer(),
+		Host:   LocalHost,
+	}
+	server.SetConfig(testConfig)
 	return server
 }
 
 // NewServerWithConfig returns a new test server instance with the specified configuration.
 func NewServerWithConfig(config config.Config) *Server {
+	testConfig := NewConfigWith(config)
 	server := &Server{
-		Server: puzzledb.NewServerWithConfig(NewConfigWith(config)),
+		Config: testConfig,
+		Server: puzzledb.NewServerWithConfig(testConfig),
 		Host:   LocalHost,
 	}
 	return server
