@@ -16,6 +16,8 @@ package config
 
 // Config represents a configuration interface.
 type Config interface {
+	// UseConfigFile uses the specified file as the configuration.
+	UsedConfigFile() string
 	// GetConfig returns a value for the specified name.
 	GetConfig(paths ...string) (any, error)
 	// GetConfigString returns a string value for the specified name.

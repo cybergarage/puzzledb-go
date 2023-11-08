@@ -76,6 +76,11 @@ func (conf *viperConfig) GetConfigBool(paths ...string) (bool, error) {
 	return strconv.ParseBool(v)
 }
 
+// UseConfigFile uses the specified file as the configuration.
+func (conf *viperConfig) UsedConfigFile() string {
+	return viper.ConfigFileUsed()
+}
+
 // String returns a string representation of the configuration.
 func (conf *viperConfig) String() string {
 	var s string
