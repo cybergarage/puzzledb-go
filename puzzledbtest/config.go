@@ -44,7 +44,22 @@ func NewConfigWithString(conString string) (*Config, error) {
 	return NewConfigWith(conf), nil
 }
 
-// GetConfigInt returns an integer value for the specified name.
+// GetConfig overrides the GetConfig method of the Config interface for testing.
+func (conf *Config) GetConfig(paths ...string) (any, error) {
+	return conf.Config.GetConfig(paths...)
+}
+
+// GetConfigString overrides the GetConfigString method of the Config interface for testing.
+func (conf *Config) GetConfigString(paths ...string) (string, error) {
+	return conf.Config.GetConfigString(paths...)
+}
+
+// GetConfigInt overrides the GetConfigInt method of the Config interface for testing.
 func (conf *Config) GetConfigInt(paths ...string) (int, error) {
 	return conf.Config.GetConfigInt(paths...)
+}
+
+// GetConfigBool overrides the GetConfigBool method of the Config interface for testing.
+func (conf *Config) GetConfigBool(paths ...string) (bool, error) {
+	return conf.Config.GetConfigBool(paths...)
 }
