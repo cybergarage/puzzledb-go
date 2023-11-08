@@ -16,7 +16,30 @@ package puzzledbtest
 
 import (
 	_ "embed"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
 //go:embed puzzledb.yaml
 var testConfigString string
+
+type Config struct {
+	puzzledb.Config
+}
+
+// NewConfigWith returns a new configuration with the specified configuration.
+func NewConfigWith(conf config.Config) *Config {
+	return &Config{
+		Config: puzzledb.NewConfigWith(conf),
+	}
+}
+
+// NewConfigWithString returns a new configuration with the specified string.
+func NewConfigWithString(conString string) (*Config, error) {
+	conf, err := puzzledb.NewConfigWithString(conString)
+	if err != nil {
+		return nil, err
+	}
+	return NewConfigWith(conf), nil
+}
