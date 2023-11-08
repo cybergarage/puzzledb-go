@@ -91,14 +91,6 @@ func NewConfigWithFile(confFile string) (Config, error) {
 	return NewConfigWith(conf), nil
 }
 
-// String returns a string representation of the configuration.
-func (conf *configImpl) String() string {
-	if conf.Config == nil {
-		return ""
-	}
-	return conf.Config.String()
-}
-
 // SetConfig sets a manager configuration.
 func (conf *configImpl) SetConfig(c config.Config) {
 	conf.Config = c
@@ -107,4 +99,17 @@ func (conf *configImpl) SetConfig(c config.Config) {
 // Object returns a raw configuration object.
 func (conf *configImpl) Object() config.Config {
 	return conf.Config
+}
+
+// UseConfigFile uses the specified file as the configuration.
+func (conf *configImpl) UsedConfigFile() string {
+	return viper.ConfigFileUsed()
+}
+
+// String returns a string representation of the configuration.
+func (conf *configImpl) String() string {
+	if conf.Config == nil {
+		return ""
+	}
+	return conf.Config.String()
 }
