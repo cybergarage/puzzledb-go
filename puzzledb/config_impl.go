@@ -24,7 +24,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-type comfigImpl struct {
+type configImpl struct {
 	config.Config
 }
 
@@ -40,7 +40,7 @@ func NewConfig() (Config, error) {
 
 // NewConfigWith returns a new configuration with the specified configuration.
 func NewConfigWith(conf config.Config) Config {
-	return &comfigImpl{
+	return &configImpl{
 		Config: conf,
 	}
 }
@@ -92,9 +92,19 @@ func NewConfigWithFile(confFile string) (Config, error) {
 }
 
 // String returns a string representation of the configuration.
-func (conf *comfigImpl) String() string {
+func (conf *configImpl) String() string {
 	if conf.Config == nil {
 		return ""
 	}
 	return conf.Config.String()
+}
+
+// SetConfig sets a manager configuration.
+func (conf *configImpl) SetConfig(c config.Config) {
+	conf.Config = c
+}
+
+// Object returns a raw configuration object.
+func (conf *configImpl) Object() config.Config {
+	return conf.Config
 }
