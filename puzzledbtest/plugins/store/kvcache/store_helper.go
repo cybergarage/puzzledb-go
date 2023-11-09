@@ -17,25 +17,23 @@ package kvcache
 import (
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
-	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
+	kvtest "github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
 )
 
-//nolint:gosec,cyclop,gocognit,gocyclo,maintidx
-func CacheStoreTest(t *testing.T, kvCacheStore plugin.Service) {
+func CacheStoreTest(t *testing.T, kvCacheStore plugin.Service, kvStore kv.Service, keyCoder document.KeyCoder) {
 	t.Helper()
 
-	kvStore := memdb.NewStore()
-	kvStore.SetKeyCoder(tuple.NewCoder())
+	kvStore.SetKeyCoder(keyCoder)
 	if err := kvStore.Start(); err != nil {
 		t.Error(err)
 		return
 	}
 
 	kvCacheStore.SetStore(kvStore)
-	kv.StoreTest(t, kvCacheStore)
+	kvtest.StoreTest(t, kvCacheStore)
 
 	if err := kvStore.Stop(); err != nil {
 		t.Error(err)
