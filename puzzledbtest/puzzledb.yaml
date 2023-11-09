@@ -4,8 +4,6 @@ logger:
 pprof:
   enabled: true
   port: 6060
-tracer:
-  enabled: false
 plugins:
   system:
     grpc:
@@ -46,6 +44,7 @@ plugins:
         enabled: true
         cluster_file: null
     kvcache:
+      enabled: true
       default: ristretto
       ristretto:
         enabled: true
@@ -67,6 +66,7 @@ plugins:
       enabled: true
       port: 5432
   tracer:
+    enabled: false
     default: opentelemetry
     opentelemetry:
       enabled: true
