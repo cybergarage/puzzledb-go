@@ -218,7 +218,7 @@ func (server *Server) setupPlugins() error {
 	// Setup tracer
 
 	defaultTracer := tracer.NewNullTracer()
-	ok, _ := server.Config.GetConfigBool(ConfigTracer, ConfigEnabled)
+	ok := server.Manager.IsServiceTypeConfigEnabled(plugins.TracingService)
 	if ok {
 		defaultTracer, err = server.DefaultTracingService()
 		if err != nil {
