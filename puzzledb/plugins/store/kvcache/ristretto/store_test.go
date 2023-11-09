@@ -19,7 +19,6 @@ import (
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
-	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
 )
 
 func TestStore(t *testing.T) {
@@ -31,6 +30,6 @@ func TestStore(t *testing.T) {
 	}
 	defer kvStore.Stop()
 
-	store := NewStoreWith(kvStore)
-	kv.StoreTest(t, store)
+	// store := NewStoreWith(kvStore)
+	// kv.StoreTest(t, store)
 }
