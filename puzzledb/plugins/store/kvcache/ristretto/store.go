@@ -82,7 +82,8 @@ func (store *Store) GeMetrics() (bool, error) {
 
 // Transact begin a new transaction.
 func (store *Store) Transact(write bool) (kv.Transaction, error) {
-	txn, err := store.Store.Transact(write)
+	kvStore := store.Store()
+	txn, err := kvStore.Transact(write)
 	if err != nil {
 		return nil, err
 	}
