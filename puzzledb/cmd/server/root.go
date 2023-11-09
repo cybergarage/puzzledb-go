@@ -37,7 +37,7 @@ var rootCmd = &cobra.Command{ // nolint:exhaustruct
 	DisableAutoGenTag: true,
 }
 
-var versionCmd = &cobra.Command{
+var versionCmd = &cobra.Command{ // nolint:exhaustruct
 	Use:               "version",
 	Short:             "Print " + strings.ToLower(puzzledb.PackageName) + " version",
 	DisableAutoGenTag: true,
@@ -52,7 +52,11 @@ func GetRootCommand() *cobra.Command {
 }
 
 func Execute() {
-	rootCmd.Execute()
+	err := rootCmd.Execute()
+	if err != nil {
+		log.Errorf("%s couldn't be executed (%s)", puzzledb.ProductName, err.Error())
+		os.Exit(1)
+	}
 
 	var conf config.Config
 	if cfgFile != "" {
