@@ -17,20 +17,9 @@ package ristretto
 import (
 	"testing"
 
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
-	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledbtest/plugins/store/kvcache"
 )
 
 func TestStore(t *testing.T) {
-	kvStore := memdb.NewStore()
-	kvStore.SetKeyCoder(tuple.NewCoder())
-	if err := kvStore.Start(); err != nil {
-		t.Error(err)
-		return
-	}
-	defer kvStore.Stop()
-
-	store := NewStoreWith(kvStore)
-	kv.StoreTest(t, store)
+	kvcache.CacheStoreTest(t, NewStore())
 }
