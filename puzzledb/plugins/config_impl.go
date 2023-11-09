@@ -49,6 +49,64 @@ func (conf *configImpl) Object() config.Config {
 	return conf.Config
 }
 
+func newServiceTypeConfigPath(serviceType ServiceType, item string) []string {
+	return []string{ConfigPlugins, serviceType.String(), item}
+}
+
+// GetServiceTypeConfig returns a value for the specified name in the service type.
+func (conf *configImpl) GetServiceTypeConfig(serviceType ServiceType, item string) (any, error) {
+	path := newServiceTypeConfigPath(serviceType, item)
+	if conf.Config == nil {
+		return nil, NewErrCounfigNotFound(path)
+	}
+	return conf.GetConfig(path...)
+}
+
+// GetServiceTypeConfigString returns a string value for the specified name in the service type.
+func (conf *configImpl) GetServiceTypeConfigString(serviceType ServiceType, item string) (string, error) {
+	path := newServiceTypeConfigPath(serviceType, item)
+	if conf.Config == nil {
+		return "", NewErrCounfigNotFound(path)
+	}
+	return conf.GetConfigString(path...)
+}
+
+// GetServiceTypeConfigInt returns an integer value for the specified name in the service type.
+func (conf *configImpl) GetServiceTypeConfigInt(serviceType ServiceType, item string) (int, error) {
+	path := newServiceTypeConfigPath(serviceType, item)
+	if conf.Config == nil {
+		return 0, NewErrCounfigNotFound(path)
+	}
+	return conf.GetConfigInt(path...)
+}
+
+// GetServiceTypeConfigBool returns a boolean value for the specified name in the service type.
+func (conf *configImpl) GetServiceTypeConfigBool(serviceType ServiceType, item string) (bool, error) {
+	path := newServiceTypeConfigPath(serviceType, item)
+	if conf.Config == nil {
+		return false, NewErrCounfigNotFound(path)
+	}
+	return conf.GetConfigBool(path...)
+}
+
+// IsServiceTypeConfigEnabled returns true if the service type is enabled.
+func (conf *configImpl) IsServiceTypeConfigEnabled(serviceType ServiceType) bool {
+	enabled, err := conf.GetServiceTypeConfigBool(serviceType, ConfigEnabled)
+	if err != nil {
+		return true
+	}
+	return enabled
+}
+
+// GetServiceTypeConfigPort returns a port number for the service type.
+func (conf *configImpl) GetServiceTypeDefault(serviceType ServiceType) (string, error) {
+	def, err := conf.GetServiceTypeConfigString(serviceType, ConfigDefault)
+	if err != nil {
+		return "", err
+	}
+	return def, nil
+}
+
 func newServiceConfigPath(service Service, paths ...string) []string {
 	servicePaths := []string{ConfigPlugins, service.ServiceType().String(), service.ServiceName()}
 	servicePaths = append(servicePaths, paths...)
