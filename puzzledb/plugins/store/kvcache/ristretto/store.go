@@ -16,7 +16,6 @@ package ristretto
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	pluginkv "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -26,7 +25,6 @@ import (
 // Store represents a cache store service instance.
 type Store struct {
 	*kvcache.BaseStore
-	pluginkv.Service
 	Cache *ristretto.Cache
 }
 
@@ -36,19 +34,13 @@ func NewStore() pluginkv.Service {
 }
 
 // NewStoreWith returns a new FoundationDB store instance with the specified key coder.
-func NewStoreWith(service pluginkv.Service) pluginkv.Service {
+func NewStoreWith(kvStore kv.Store) pluginkv.Service {
 	store := &Store{
 		BaseStore: kvcache.NewBaseStore(),
-		Service:   service,
 		Cache:     nil,
 	}
 	store.BaseStore.SetStore(store)
 	return store
-}
-
-// ServiceType returns the plug-in service type.
-func (store *Store) ServiceType() plugins.ServiceType {
-	return plugins.StoreKvCacheService
 }
 
 // ServiceName returns the plug-in service name.
@@ -90,7 +82,7 @@ func (store *Store) GeMetrics() (bool, error) {
 
 // Transact begin a new transaction.
 func (store *Store) Transact(write bool) (kv.Transaction, error) {
-	txn, err := store.Service.Transact(write)
+	txn, err := store.Store.Transact(write)
 	if err != nil {
 		return nil, err
 	}
