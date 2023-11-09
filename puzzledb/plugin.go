@@ -28,16 +28,19 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer"
 )
 
+// PluginManager is a manager for plugins.
 type PluginManager struct {
 	*plugins.Manager
 }
 
+// NewPluginManager returns a new PluginManager.
 func NewPluginManagerWith(mgr *plugins.Manager) *PluginManager {
 	return &PluginManager{
 		Manager: mgr,
 	}
 }
 
+// RemoveDisabledServices removes disabled services.
 func (mgr *PluginManager) RemoveDisabledServices(services []plugins.Service) []plugins.Service {
 	enabledServices := []plugins.Service{}
 	for _, service := range services {
@@ -48,6 +51,7 @@ func (mgr *PluginManager) RemoveDisabledServices(services []plugins.Service) []p
 	return enabledServices
 }
 
+// KeyCoderServices returns key coder services.
 func (mgr *PluginManager) KeyCoderServices() ([]key.Service, error) {
 	services := []key.Service{}
 	for _, service := range mgr.ServicesByType(plugins.CoderKeyService) {
@@ -60,6 +64,7 @@ func (mgr *PluginManager) KeyCoderServices() ([]key.Service, error) {
 	return services, nil
 }
 
+// DocumentCoderServices returns document coder services.
 func (mgr *PluginManager) DocumentCoderServices() ([]document.Service, error) {
 	services := []document.Service{}
 	for _, service := range mgr.ServicesByType(plugins.CoderDocumentService) {
@@ -72,6 +77,7 @@ func (mgr *PluginManager) DocumentCoderServices() ([]document.Service, error) {
 	return services, nil
 }
 
+// CoordinatorServices returns coordinator services.
 func (mgr *PluginManager) CoordinatorServices() ([]coordinator.Service, error) {
 	services := []coordinator.Service{}
 	for _, service := range mgr.ServicesByType(plugins.CoordinatorService) {
@@ -84,6 +90,7 @@ func (mgr *PluginManager) CoordinatorServices() ([]coordinator.Service, error) {
 	return services, nil
 }
 
+// DocumentStoreServices returns document store services.
 func (mgr *PluginManager) DocumentStoreServices() ([]store.Service, error) {
 	services := []store.Service{}
 	for _, service := range mgr.ServicesByType(plugins.StoreDocumentService) {
@@ -96,6 +103,7 @@ func (mgr *PluginManager) DocumentStoreServices() ([]store.Service, error) {
 	return services, nil
 }
 
+// KvStoreServices returns KV store services.
 func (mgr *PluginManager) KvStoreServices() ([]kv.Service, error) {
 	services := []kv.Service{}
 	for _, service := range mgr.ServicesByType(plugins.StoreKvService) {
@@ -108,6 +116,7 @@ func (mgr *PluginManager) KvStoreServices() ([]kv.Service, error) {
 	return services, nil
 }
 
+// KvCacheStoreServices returns KV cache store services.
 func (mgr *PluginManager) KvCacheStoreServices() ([]kvcache.Service, error) {
 	services := []kvcache.Service{}
 	for _, service := range mgr.ServicesByType(plugins.StoreKvCacheService) {
@@ -120,6 +129,7 @@ func (mgr *PluginManager) KvCacheStoreServices() ([]kvcache.Service, error) {
 	return services, nil
 }
 
+// QueryServices returns query services.
 func (mgr *PluginManager) QueryServices() ([]query.Service, error) {
 	services := []query.Service{}
 	for _, service := range mgr.ServicesByType(plugins.QueryService) {
@@ -132,6 +142,7 @@ func (mgr *PluginManager) QueryServices() ([]query.Service, error) {
 	return services, nil
 }
 
+// TracingServices returns tracing services.
 func (mgr *PluginManager) TracingServices() ([]tracer.Service, error) {
 	services := []tracer.Service{}
 	for _, service := range mgr.ServicesByType(plugins.TracingService) {
@@ -144,6 +155,7 @@ func (mgr *PluginManager) TracingServices() ([]tracer.Service, error) {
 	return services, nil
 }
 
+// MetricsServices returns metrics services.
 func (mgr *PluginManager) MetricsServices() ([]metrics.Service, error) {
 	services := []metrics.Service{}
 	for _, service := range mgr.ServicesByType(plugins.MetricsService) {
@@ -156,6 +168,7 @@ func (mgr *PluginManager) MetricsServices() ([]metrics.Service, error) {
 	return services, nil
 }
 
+// DefaultCoordinatorService returns the default coordinator service.
 func (mgr *PluginManager) DefaultCoordinatorService() (coordinator.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.CoordinatorService)
 	if err != nil {
@@ -168,6 +181,7 @@ func (mgr *PluginManager) DefaultCoordinatorService() (coordinator.Service, erro
 	return service, nil
 }
 
+// DefaultKeyCoderService returns the default key coder service.
 func (mgr *PluginManager) DefaultKeyCoderService() (key.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.CoderKeyService)
 	if err != nil {
@@ -180,6 +194,7 @@ func (mgr *PluginManager) DefaultKeyCoderService() (key.Service, error) {
 	return service, nil
 }
 
+// DefaultDocumentCoderService returns the default document coder service.
 func (mgr *PluginManager) DefaultDocumentCoderService() (document.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.CoderDocumentService)
 	if err != nil {
@@ -192,6 +207,7 @@ func (mgr *PluginManager) DefaultDocumentCoderService() (document.Service, error
 	return service, nil
 }
 
+// DefaultKvStoreService returns the default KV store service.
 func (mgr *PluginManager) DefaultKvStoreService() (kv.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.StoreKvService)
 	if err != nil {
@@ -204,6 +220,7 @@ func (mgr *PluginManager) DefaultKvStoreService() (kv.Service, error) {
 	return service, nil
 }
 
+// DefaultKvCacheStoreService returns the default KV cache store service.
 func (mgr *PluginManager) DefaultKvCacheStoreService() (kvcache.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.StoreKvCacheService)
 	if err != nil {
@@ -216,6 +233,7 @@ func (mgr *PluginManager) DefaultKvCacheStoreService() (kvcache.Service, error) 
 	return service, nil
 }
 
+// DefaultStoreService returns the default store service.
 func (mgr *PluginManager) DefaultStoreService() (store.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.StoreDocumentService)
 	if err != nil {
@@ -228,6 +246,7 @@ func (mgr *PluginManager) DefaultStoreService() (store.Service, error) {
 	return service, nil
 }
 
+// DefaultTracingService returns the default tracing service.
 func (mgr *PluginManager) DefaultTracingService() (tracer.Service, error) {
 	defaultService, err := mgr.DefaultService(plugins.TracingService)
 	if err != nil {
@@ -240,6 +259,7 @@ func (mgr *PluginManager) DefaultTracingService() (tracer.Service, error) {
 	return service, nil
 }
 
+// EnabledKeyCoderServices returns enabled key coder services.
 func (mgr *PluginManager) EnabledKeyCoderServices() []key.Service {
 	services := []key.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.CoderKeyService) {
@@ -250,6 +270,7 @@ func (mgr *PluginManager) EnabledKeyCoderServices() []key.Service {
 	return services
 }
 
+// EnabledDocumentCoderServices returns enabled document coder services.
 func (mgr *PluginManager) EnabledDocumentCoderServices() []document.Service {
 	services := []document.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.CoderDocumentService) {
@@ -260,6 +281,7 @@ func (mgr *PluginManager) EnabledDocumentCoderServices() []document.Service {
 	return services
 }
 
+// EnabledCoordinatorServices returns enabled coordinator services.
 func (mgr *PluginManager) EnabledCoordinatorServices() []coordinator.Service {
 	services := []coordinator.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.CoordinatorService) {
@@ -270,6 +292,7 @@ func (mgr *PluginManager) EnabledCoordinatorServices() []coordinator.Service {
 	return services
 }
 
+// EnabledDocumentStoreServices returns enabled document store services.
 func (mgr *PluginManager) EnabledDocumentStoreServices() []store.Service {
 	services := []store.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.StoreDocumentService) {
@@ -280,6 +303,7 @@ func (mgr *PluginManager) EnabledDocumentStoreServices() []store.Service {
 	return services
 }
 
+// EnabledKvStoreServices returns enabled KV store services.
 func (mgr *PluginManager) EnabledKvStoreServices() []kv.Service {
 	services := []kv.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvService) {
@@ -290,6 +314,18 @@ func (mgr *PluginManager) EnabledKvStoreServices() []kv.Service {
 	return services
 }
 
+// EnabledKvCacheStoreServices returns enabled KV cache store services.
+func (mgr *PluginManager) EnabledKvCacheStoreServices() []kvcache.Service {
+	services := []kvcache.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.StoreKvCacheService) {
+		if s, ok := service.(kvcache.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+// EnabledTracingServices returns enabled tracing services.
 func (mgr *PluginManager) EnabledTracingServices() []tracer.Service {
 	services := []tracer.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.TracingService) {
