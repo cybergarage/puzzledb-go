@@ -27,6 +27,26 @@ type ConfigBase interface {
 	Object() config.Config
 }
 
+// ServiceTypeConfig represents a configuration interface for service type.
+type ServiceTypeConfig interface {
+	// GetServiceTypeConfig returns a value for the specified name in the service type.
+	GetServiceTypeConfig(serviceType ServiceType, item string) (any, error)
+	// GetServiceTypeConfigString returns a string value for the specified name in the service type.
+	GetServiceTypeConfigString(serviceType ServiceType, item string) (string, error)
+	// GetServiceTypeConfigInt returns an integer value for the specified name in the service type.
+	GetServiceTypeConfigInt(serviceType ServiceType, item string) (int, error)
+	// GetServiceTypeConfigBool returns a boolean value for the specified name in the service type.
+	GetServiceTypeConfigBool(serviceType ServiceType, item string) (bool, error)
+}
+
+// ServiceTypeExtConfig represents an extension configuration interface for service type.
+type ServiceTypeExtConfig interface {
+	// IsServiceTypeConfigEnabled returns true if the service type is enabled.
+	IsServiceTypeConfigEnabled(serviceType ServiceType) bool
+	// GetServiceTypeConfigPort returns a port number for the service type.
+	GetServiceTypeDefault(serviceType ServiceType) (string, error)
+}
+
 // ServiceConfig represents a configuration interface for service.
 type ServiceConfig interface {
 	// GetServiceConfig returns a value for the specified name in the service.
@@ -50,6 +70,8 @@ type ServiceExtConfig interface {
 // Config represents a plug-in configuration interface.
 type Config interface {
 	ConfigBase
+	ServiceTypeConfig
+	ServiceTypeExtConfig
 	ServiceConfig
 	ServiceExtConfig
 }
