@@ -32,10 +32,5 @@ func TestStore(t *testing.T) {
 	defer kvStore.Stop()
 
 	store := NewStoreWith(kvStore)
-	if err := store.Start(); err != nil {
-		t.Error(err)
-		return
-	}
-	defer store.Stop()
 	kv.StoreTest(t, store)
 }
