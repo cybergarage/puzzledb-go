@@ -20,20 +20,14 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-//nolint:gosec,cyclop,gocognit,gocyclo,maintidx
 func TestCacheStores(t *testing.T) {
 	t.Helper()
 
 	mgr := puzzledbtest.NewPluginManager()
 	for _, kvStore := range mgr.EnabledKvStoreServices() {
 		for _, keyCoder := range mgr.EnabledKeyCoderServices() {
-			kvStore.SetKeyCoder(keyCoder)
-			if err := kvStore.Start(); err != nil {
-				t.Error(err)
-				return
-			}
-			if err := kvStore.Stop(); err != nil {
-				t.Error(err)
+			for _, kvCacheStore := range mgr.EnabledKvCacheStoreServices() {
+				CacheStoreTest(t, kvCacheStore, kvStore, keyCoder)
 			}
 		}
 	}
