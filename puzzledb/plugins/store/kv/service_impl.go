@@ -50,10 +50,10 @@ func (store *BaseStore) SetKeyCoder(coder document.KeyCoder) {
 
 // DecodeKey returns the decoded key from the specified bytes if available, otherwise returns an error.
 func (store *BaseStore) DecodeKey(b []byte) (document.Key, error) {
-	return store.DecodeKey(b) //nolint:staticcheck
+	return store.KeyCoder.DecodeKey(b)
 }
 
 // EncodeKey returns the encoded bytes from the specified key if available, otherwise returns an error.
 func (store *BaseStore) EncodeKey(key document.Key) ([]byte, error) {
-	return store.EncodeKey(key) //nolint:staticcheck
+	return store.KeyCoder.EncodeKey(key)
 }
