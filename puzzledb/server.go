@@ -195,9 +195,11 @@ func (server *Server) setupPlugins() error {
 		}
 	}
 
-	defaultKvCacheStore, err := server.DefaultKvCacheStoreService()
-	if err == nil {
-		defaultKvStore = defaultKvCacheStore
+	if server.Manager.IsServiceTypeConfigEnabled(plugins.StoreKvCacheService) {
+		defaultKvCacheStore, err := server.DefaultKvCacheStoreService()
+		if err == nil {
+			defaultKvStore = defaultKvCacheStore
+		}
 	}
 
 	// Document store services
