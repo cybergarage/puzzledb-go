@@ -39,7 +39,7 @@ func NewStoreWith(kvStore kv.Store) pluginkv.Service {
 		BaseStore: kvcache.NewBaseStore(),
 		Cache:     nil,
 	}
-	store.BaseStore.SetStore(store)
+	store.BaseStore.SetStore(kvStore)
 	return store
 }
 
@@ -82,7 +82,7 @@ func (store *Store) GeMetrics() (bool, error) {
 
 // Transact begin a new transaction.
 func (store *Store) Transact(write bool) (kv.Transaction, error) {
-	kvStore := store.Store()
+	kvStore := store.BaseStore.Store
 	txn, err := kvStore.Transact(write)
 	if err != nil {
 		return nil, err
