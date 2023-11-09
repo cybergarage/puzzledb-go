@@ -15,6 +15,7 @@
 package kvcache
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -22,7 +23,7 @@ import (
 // BaseStore represents a cache store service instance.
 type BaseStore struct {
 	plugins.Config
-	kv.Store
+	store kv.Store
 	*CacheConfig
 }
 
@@ -30,17 +31,37 @@ type BaseStore struct {
 func NewBaseStore() *BaseStore {
 	return &BaseStore{
 		Config:      plugins.NewConfig(),
-		Store:       nil,
+		store:       nil,
 		CacheConfig: NewCacheConfig(),
 	}
 }
 
 // SetStore sets the key-value store service.
 func (store *BaseStore) SetStore(s kv.Store) {
-	store.Store = s
+	store.store = s
+}
+
+// Store returns the key-value store service.
+func (store *BaseStore) Store() kv.Store {
+	return store.store
 }
 
 // ServiceType returns the plug-in service type.
 func (store *BaseStore) ServiceType() plugins.ServiceType {
 	return plugins.StoreKvCacheService
+}
+
+// SetKeyCoder sets the key coder.
+func (store *BaseStore) SetKeyCoder(coder document.KeyCoder) {
+	store.store.SetKeyCoder(coder)
+}
+
+// DecodeKey returns the decoded key from the specified bytes if available, otherwise returns an error.
+func (store *BaseStore) DecodeKey(b []byte) (document.Key, error) {
+	return store.store.DecodeKey(b)
+}
+
+// EncodeKey returns the encoded bytes from the specified key if available, otherwise returns an error.
+func (store *BaseStore) EncodeKey(key document.Key) ([]byte, error) {
+	return store.store.EncodeKey(key)
 }
