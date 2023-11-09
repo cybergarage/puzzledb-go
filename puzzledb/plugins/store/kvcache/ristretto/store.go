@@ -16,7 +16,6 @@ package ristretto
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-	pluginkv "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 	"github.com/dgraph-io/ristretto"
@@ -29,12 +28,12 @@ type Store struct {
 }
 
 // NewStore returns a new FoundationDB store instance.
-func NewStore() pluginkv.Service {
+func NewStore() kvcache.Service {
 	return NewStoreWith(nil)
 }
 
 // NewStoreWith returns a new FoundationDB store instance with the specified key coder.
-func NewStoreWith(kvStore kv.Store) pluginkv.Service {
+func NewStoreWith(kvStore kv.Store) kvcache.Service {
 	store := &Store{
 		BaseStore: kvcache.NewBaseStore(),
 		Cache:     nil,
