@@ -15,5 +15,5 @@
 package puzzledb
 
 const (
-	Version = "v1.1.1"
+	Version = "v1.2.0"
 )
