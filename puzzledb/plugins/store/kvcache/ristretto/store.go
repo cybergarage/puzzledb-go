@@ -37,10 +37,8 @@ func NewStore() kvcache.Service {
 // NewStoreWith returns a new FoundationDB store instance with the specified key coder.
 func NewStoreWith(kvStore kv.Store) kvcache.Service {
 	store := &Store{
-		BaseStore:    kvcache.NewBaseStore(),
-		Cache:        nil,
-		RequestCount: 0,
-		HitCount:     0,
+		BaseStore: kvcache.NewBaseStore(),
+		Cache:     nil,
 	}
 	store.BaseStore.SetStore(kvStore)
 	return store

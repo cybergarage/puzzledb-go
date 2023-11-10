@@ -45,12 +45,14 @@ func (txn *Transaction) Set(obj *kv.Object) error {
 // Get returns a key-value object of the specified key.
 func (txn *Transaction) Get(key kv.Key) (*kv.Object, error) {
 	if txn.IsRegisteredCacheKey(key) {
+		txn.Store.IncrementRequestCount()
 		kb, err := txn.EncodeKey(key)
 		if err != nil {
 			return nil, err
 		}
 		v, ok := txn.Cache.Get(kb)
 		if ok {
+			txn.Store.IncrementHitCount()
 			vb, ok := v.([]byte)
 			if !ok {
 				return kv.NewObject(key, vb), nil
