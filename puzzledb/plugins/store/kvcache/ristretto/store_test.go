@@ -23,7 +23,5 @@ import (
 )
 
 func TestStore(t *testing.T) {
-	kvStore := memdb.NewStore()
-	keyCoder := tuple.NewCoder()
-	kvcache.CacheStoreTest(t, NewStore(), kvStore, keyCoder)
+	kvcache.CacheStoreTest(t, NewStore(), memdb.NewStore(), tuple.NewCoder())
 }
