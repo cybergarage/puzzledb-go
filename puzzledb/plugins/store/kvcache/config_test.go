@@ -19,8 +19,6 @@ import (
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
-
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
 )
 
 func TestConfig(t *testing.T) {
@@ -29,7 +27,7 @@ func TestConfig(t *testing.T) {
 		kv.CollectionKeyHeader,
 	}
 
-	conf := kvcache.NewCacheConfig()
+	conf := NewCacheConfig()
 
 	for _, prefix := range prefixes {
 		conf.RegisterCacheKeyHeader(prefix)
