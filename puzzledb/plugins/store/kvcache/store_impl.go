@@ -15,7 +15,7 @@
 package kvcache
 
 import (
-	"sync"
+	"sync/atomic"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -26,10 +26,8 @@ type BaseStore struct {
 	plugins.Config
 	kv.Store
 	*CacheConfig
-	reqCnt      int64
-	hitCnt      int64
-	reqCntMutex sync.RWMutex
-	hitCntMutex sync.RWMutex
+	reqCnt int64
+	hitCnt int64
 }
 
 // NewStore returns a new FoundationDB store instance.
@@ -40,8 +38,6 @@ func NewBaseStore() *BaseStore {
 		CacheConfig: NewCacheConfig(),
 		reqCnt:      0,
 		hitCnt:      0,
-		reqCntMutex: sync.RWMutex{},
-		hitCntMutex: sync.RWMutex{},
 	}
 }
 
@@ -57,16 +53,12 @@ func (store *BaseStore) ServiceType() plugins.ServiceType {
 
 // IncrementRequestCount increments the number of cache requests.
 func (store *BaseStore) IncrementRequestCount() {
-	store.reqCntMutex.Lock()
-	defer store.reqCntMutex.Unlock()
-	store.reqCnt++
+	atomic.AddInt64(&store.reqCnt, 1)
 }
 
 // IncrementHitCount increments the number of cache hits.
 func (store *BaseStore) IncrementHitCount() {
-	store.hitCntMutex.Lock()
-	defer store.hitCntMutex.Unlock()
-	store.hitCnt++
+	atomic.AddInt64(&store.hitCnt, 1)
 }
 
 // CacheRequestCount returns the number of cache requests.
