@@ -95,6 +95,9 @@ install:
 run: install
 	${GOBIN}/${BIN_SERVER}
 
+runt: install
+	PUZZLEDB_PLUGINS_TRACER_ENABLED=true ${GOBIN}/${BIN_SERVER}
+
 rund:
 	docker container run -it --rm \
 	-p 6379:6379 -p 27017:27017 -p 3306:3306 -p 50053:50053 -p 9181:9181 -p 5432:5432 -p 8443:8443 -p 6060:6060 \
@@ -111,6 +114,12 @@ rundp:
 	docker container run -it --rm \
 	-p 6379:6379 -p 27017:27017 -p 3306:3306 -p 50053:50053 -p 9181:9181 -p 5432:5432 -p 8443:8443 -p 6060:6060 \
 	--env PUZZLEDB_PPROF_ENABLED=true \
+	${BIN_SERVER_DOCKER_TAG_LATEST}
+
+rundt:
+	docker container run -it --rm \
+	-p 6379:6379 -p 27017:27017 -p 3306:3306 -p 50053:50053 -p 9181:9181 -p 5432:5432 -p 8443:8443 -p 6060:6060 \
+	--env PUZZLEDB_PLUGINS_TRACER_ENABLED=true \
 	${BIN_SERVER_DOCKER_TAG_LATEST}
 
 redisbench:
