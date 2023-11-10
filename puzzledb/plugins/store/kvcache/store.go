@@ -45,7 +45,7 @@ type CacheStore interface {
 	EraseCollectionCache(database string, collection string) error
 }
 
-// CacheStoreStatus represents a key-value cache store status interface.
+// CacheStatus represents a key-value cache store status interface.
 type CacheStatus interface {
 	// CacheRequestCount returns the number of cache requests.
 	CacheRequestCount() int64
@@ -53,9 +53,20 @@ type CacheStatus interface {
 	CacheHitCount() int64
 }
 
+// CacheStatusExt represents a key-value cache store status interface.
+type CacheStatusExt interface {
+	// CacheMissCount returns the number of cache misses.
+	CacheHitRate() float64
+	// CacheMissCount returns the number of cache misses.
+	CacheMissCount() int64
+	// CacheMissRate returns the cache miss rate.
+	CacheMissRate() float64
+}
+
 // Service represents a key-value cache store service interface.
 type Service interface {
 	CacheStore
 	CacheStatus
+	CacheStatusExt
 	plugins.Service
 }
