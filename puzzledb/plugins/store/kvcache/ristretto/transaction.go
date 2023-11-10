@@ -54,7 +54,7 @@ func (txn *Transaction) Get(key kv.Key) (*kv.Object, error) {
 		if ok {
 			txn.Store.IncrementHitCount()
 			vb, ok := v.([]byte)
-			if !ok {
+			if ok {
 				return kv.NewObject(key, vb), nil
 			}
 		}
