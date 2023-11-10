@@ -15,6 +15,8 @@
 package kvcache
 
 import (
+	"sync"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
@@ -24,18 +26,22 @@ type BaseStore struct {
 	plugins.Config
 	kv.Store
 	*CacheConfig
-	RequestCount int64
-	HitCount     int64
+	reqCnt      int64
+	hitCnt      int64
+	reqCntMutex sync.RWMutex
+	hitCntMutex sync.RWMutex
 }
 
 // NewStore returns a new FoundationDB store instance.
 func NewBaseStore() *BaseStore {
 	return &BaseStore{
-		Config:       plugins.NewConfig(),
-		Store:        nil,
-		CacheConfig:  NewCacheConfig(),
-		RequestCount: 0,
-		HitCount:     0,
+		Config:      plugins.NewConfig(),
+		Store:       nil,
+		CacheConfig: NewCacheConfig(),
+		reqCnt:      0,
+		hitCnt:      0,
+		reqCntMutex: sync.RWMutex{},
+		hitCntMutex: sync.RWMutex{},
 	}
 }
 
@@ -49,12 +55,41 @@ func (store *BaseStore) ServiceType() plugins.ServiceType {
 	return plugins.StoreKvCacheService
 }
 
+// IncrementRequestCount increments the number of cache requests.
+func (store *BaseStore) IncrementRequestCount() {
+	store.reqCntMutex.Lock()
+	defer store.reqCntMutex.Unlock()
+	store.reqCnt++
+}
+
+// IncrementHitCount increments the number of cache hits.
+func (store *BaseStore) IncrementHitCount() {
+	store.hitCntMutex.Lock()
+	defer store.hitCntMutex.Unlock()
+	store.hitCnt++
+}
+
 // CacheRequestCount returns the number of cache requests.
 func (store *BaseStore) CacheRequestCount() int64 {
-	return store.RequestCount
+	return store.reqCnt
 }
 
 // CacheMissCount returns the number of cache misses.
 func (store *BaseStore) CacheHitCount() int64 {
-	return store.HitCount
+	return store.hitCnt
+}
+
+// CacheMissCount returns the number of cache misses.
+func (store *BaseStore) CacheHitRate() float64 {
+	return float64(store.hitCnt) / float64(store.reqCnt)
+}
+
+// CacheMissCount returns the number of cache misses.
+func (store *BaseStore) CacheMissCount() int64 {
+	return store.reqCnt - store.hitCnt
+}
+
+// CacheMissRate returns the cache miss rate.
+func (store *BaseStore) CacheMissRate() float64 {
+	return 1.0 - store.CacheHitRate()
 }
