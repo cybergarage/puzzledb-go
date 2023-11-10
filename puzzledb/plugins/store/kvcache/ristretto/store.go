@@ -24,9 +24,7 @@ import (
 // Store represents a cache store service instance.
 type Store struct {
 	*kvcache.BaseStore
-	Cache        *ristretto.Cache
-	RequestCount int64
-	HitCount     int64
+	Cache *ristretto.Cache
 }
 
 // NewStore returns a new FoundationDB store instance.
