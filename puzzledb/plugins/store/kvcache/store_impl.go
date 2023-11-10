@@ -24,14 +24,18 @@ type BaseStore struct {
 	plugins.Config
 	kv.Store
 	*CacheConfig
+	RequestCount int64
+	HitCount     int64
 }
 
 // NewStore returns a new FoundationDB store instance.
 func NewBaseStore() *BaseStore {
 	return &BaseStore{
-		Config:      plugins.NewConfig(),
-		Store:       nil,
-		CacheConfig: NewCacheConfig(),
+		Config:       plugins.NewConfig(),
+		Store:        nil,
+		CacheConfig:  NewCacheConfig(),
+		RequestCount: 0,
+		HitCount:     0,
 	}
 }
 
@@ -43,4 +47,14 @@ func (store *BaseStore) SetStore(s kv.Store) {
 // ServiceType returns the plug-in service type.
 func (store *BaseStore) ServiceType() plugins.ServiceType {
 	return plugins.StoreKvCacheService
+}
+
+// CacheRequestCount returns the number of cache requests.
+func (store *BaseStore) CacheRequestCount() int64 {
+	return store.RequestCount
+}
+
+// CacheMissCount returns the number of cache misses.
+func (store *BaseStore) CacheHitCount() int64 {
+	return store.HitCount
 }
