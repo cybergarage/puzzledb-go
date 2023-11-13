@@ -192,8 +192,15 @@ func (service *gRPCService) GetMetric(ctx context.Context, req *pb.GetMetricRequ
 	}
 	for _, metric := range metrics {
 		if metric.GetName() != req.GetName() {
-			res.Value = metric.String()
-			return &res, nil
+			continue
+		}
+		metricName := metric.GetName()
+		for _, metric := range metric.GetMetric() {
+			for _, label := range metric.GetLabel() {
+				lableName := fmt.Sprintf("%s.%s", metricName, label.GetName())
+				res.Names = append(res.GetNames(), lableName)
+				res.Values = append(res.GetValues(), label.GetValue())
+			}
 		}
 	}
 	return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.GetName()))
