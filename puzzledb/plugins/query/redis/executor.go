@@ -16,6 +16,7 @@ package redis
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/cybergarage/go-redis/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
@@ -25,6 +26,8 @@ type Conn = redis.Conn
 type Message = redis.Message
 
 func (service *Service) Del(conn *Conn, keys []string) (*Message, error) {
+	now := time.Now()
+	mDelLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return nil, newErrNotSupported("Del")
 }
 
@@ -56,6 +59,7 @@ func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOpt
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Set")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	db, err := service.GetDatabase(ctx, conn.Database())
 	if err != nil {
@@ -80,6 +84,8 @@ func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOpt
 		return nil, err
 	}
 
+	mSetLatency.Observe(float64(time.Since(now).Milliseconds()))
+
 	return redis.NewOKMessage(), nil
 }
 
@@ -87,6 +93,7 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Get")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	db, err := service.GetDatabase(ctx, conn.Database())
 	if err != nil {
@@ -119,6 +126,8 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	mGetLatency.Observe(float64(time.Since(now).Milliseconds()))
 
 	obj := objs[0]
 	switch v := obj.(type) {
