@@ -18,16 +18,20 @@
     - PostgreSQL plug-in
       - Added support for new queries
 
-## v1.2.0 (2023-xx-xx)
+## v1.3.x (2023-xx-xx)
 - New features
   - Distributed plug-ins
-    - Storage plug-ins
-      - Add cache store plug-in
     - Coordinator plug-ins
       - Added etcd plug-in
 
+## v1.2.0 (2023-11-xx)
+- New features
+  - Distributed plug-ins
+    - Storage plug-ins
+      - Enabled cache store plug-in as default
+
 ## v1.1.1 (2023-11-02)
-- Fix
+- Fixed
   - PostgreSQL plug-in
     - Fixed transaction hangup using copy commands
     - Fixed to run pgbench on Ubuntu platforms
