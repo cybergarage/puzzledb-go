@@ -28,7 +28,13 @@
 - New features
   - Distributed plug-ins
     - Storage plug-ins
-      - Enabled cache store plug-in as default
+      - Enabled cache store plug-in (ristretto) as default
+- Improvements
+  - Update to set prometheus metrics
+    - Query plug-ins
+      - PostgreSQL, MySQL, Redis and Mongo
+    - Storage plug-ins
+      - Cache store (ristretto) 
 
 ## v1.1.1 (2023-11-02)
 - Fixed
@@ -53,7 +59,7 @@
 ## v1.0.3 (2023-09-30)
 - New features
   - Enable pprof
-- Improvement
+- Improvements
   - PostgreSQL plug-in
     - Supported new data types
       - TIMESTAMP
@@ -65,7 +71,7 @@
       - DATETIME and TIMESTAMP
 
 ## v1.0.2 (2023-09-12)
-- Improvement
+- Improvements
   - PostgreSQL plug-in
     - SELECT
       - Supported basic aggregate functions
@@ -74,7 +80,7 @@
         - ABS, CEIL and FLOOR
 
 ## v1.0.1 (2023-09-06)
-- Improvement
+- Improvements
   - PostgreSQL plug-in
     - Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
     - Enabled PICT based scenario tests of go-sqltest
