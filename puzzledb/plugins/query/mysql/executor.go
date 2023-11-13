@@ -17,6 +17,7 @@ package mysql
 
 import (
 	"errors"
+	"time"
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-mysql/mysql"
@@ -251,6 +252,7 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	// Gets the specified database.
 
@@ -302,6 +304,8 @@ func (service *Service) Insert(conn *mysql.Conn, stmt *query.Insert) (*mysql.Res
 		}
 	}
 
+	mInsertLatency.Observe(float64(time.Since(now).Milliseconds()))
+
 	return mysql.NewResultWithRowsAffected(1), nil
 }
 
@@ -333,6 +337,7 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Select")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	// Checks the table if the statement has only one table.
 
@@ -390,6 +395,8 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 		}
 	}
 
+	mSelectLatency.Observe(float64(time.Since(now).Milliseconds()))
+
 	return res, nil
 }
 
@@ -417,6 +424,7 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	// Checks the table if the statement has only one table.
 
@@ -483,6 +491,8 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 		}
 	}
 
+	mUpdateLatency.Observe(float64(time.Since(now).Milliseconds()))
+
 	return mysql.NewResult(), nil
 }
 
@@ -531,6 +541,7 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	// Checks the table if the statement has only one table.
 
@@ -616,6 +627,8 @@ func (service *Service) Delete(conn *mysql.Conn, stmt *query.Delete) (*mysql.Res
 			return nil, err
 		}
 	}
+
+	mDeleteLatency.Observe(float64(time.Since(now).Milliseconds()))
 
 	return mysql.NewResult(), nil
 }
