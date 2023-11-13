@@ -16,6 +16,8 @@
 package postgresql
 
 import (
+	"time"
+
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
@@ -106,15 +108,19 @@ func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) 
 
 // Insert handles a INSERT query.
 func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (message.Responses, error) {
+	now := time.Now()
 	err := service.Service.Insert(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
+	mInsertLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return message.NewInsertCompleteResponsesWith(1)
 }
 
 // Select handles a SELECT query.
 func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) { //nolint:gocognit
+	now := time.Now()
+
 	ctx, db, txn, col, rs, err := service.Service.Select(conn, stmt)
 	defer ctx.FinishSpan()
 	if err != nil {
@@ -212,24 +218,30 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 		}
 	}
 
+	mSelectLatency.Observe(float64(time.Since(now).Milliseconds()))
+
 	return res, nil
 }
 
 // Update handles a UPDATE query.
 func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (message.Responses, error) {
+	now := time.Now()
 	n, err := service.Service.Update(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
+	mUpdateLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return message.NewUpdateCompleteResponsesWith(n)
 }
 
 // Delete handles a DELETE query.
 func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (message.Responses, error) {
+	now := time.Now()
 	n, err := service.Service.Delete(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
+	mDeleteLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return message.NewDeleteCompleteResponsesWith(n)
 }
 
