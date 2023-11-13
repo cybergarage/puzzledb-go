@@ -16,6 +16,7 @@ package mongo
 
 import (
 	"errors"
+	"time"
 
 	"github.com/cybergarage/go-mongo/mongo"
 	"github.com/cybergarage/go-mongo/mongo/bson"
@@ -46,6 +47,7 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	db, err := service.GetDatabase(ctx, q.Database)
 	if err != nil {
@@ -75,6 +77,8 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
+
+	mInsertLatency.Observe(float64(time.Since(now).Milliseconds()))
 
 	return nInserted, nil
 }
@@ -135,6 +139,7 @@ func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document,
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Find")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	db, err := service.GetDatabase(ctx, q.Database)
 	if err != nil {
@@ -158,6 +163,8 @@ func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document,
 	if err != nil {
 		return nil, mongo.NewQueryError(q)
 	}
+
+	mFindLatency.Observe(float64(time.Since(now).Milliseconds()))
 
 	return foundDoc, nil
 }
@@ -231,6 +238,7 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	db, err := service.GetDatabase(ctx, q.Database)
 	if err != nil {
@@ -262,6 +270,8 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
+
+	mUpdateLatency.Observe(float64(time.Since(now).Milliseconds()))
 
 	return int32(nUpdated), nil
 }
@@ -331,6 +341,7 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
+	now := time.Now()
 
 	db, err := service.GetDatabase(ctx, q.Database)
 	if err != nil {
@@ -362,6 +373,8 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
+
+	mDeleteLatency.Observe(float64(time.Since(now).Milliseconds()))
 
 	return int32(nDeleted), nil
 }
