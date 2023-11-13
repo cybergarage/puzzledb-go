@@ -21,5 +21,6 @@ message GetMetricRequest {
 }
 
 message GetMetricResponse {
-  string value = 1;
+  repeated string names = 1;
+  repeated string values = 2;
 }
