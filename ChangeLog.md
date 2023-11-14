@@ -31,7 +31,8 @@
       - Enabled cache store plug-in (ristretto) as default
 - Updates
   - Redis plug-in
-    - Support DEL commands
+    - Support new commands
+      - DEL, GETSET and EXISTS
 - Improvements
   - Updated to set service metrics to prometheus
     - Query plug-ins
