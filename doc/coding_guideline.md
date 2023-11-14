@@ -1,8 +1,6 @@
-Coding Guidelines
-=================
+# Coding Guidelines
 
-Style Guidelines
-----------------
+## Style Guidelines
 
 ### Linting Compliance
 
@@ -16,8 +14,7 @@ For detailed linting rules regarding [GolangCI-Lint](https://github.com/golangci
 
     .golangci.yml
 
-References
-----------
+## References
 
 -   [Effective Go](https://golang.org/doc/effective_go.html#interface-names)
 
