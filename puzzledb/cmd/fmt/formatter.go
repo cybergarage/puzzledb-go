@@ -15,10 +15,24 @@
 package fmt
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
+func exportMap(v map[string]string) {
+	b, err := json.MarshalIndent(v, "", "  ")
+	if err != nil {
+		return
+	}
+	fmt.Println(string(b))
+}
+
 // Export exports the specified value.
 func Export(v any) {
-	fmt.Println(v)
+	switch v := v.(type) {
+	case map[string]string:
+		exportMap(v)
+	default:
+		fmt.Println(v)
+	}
 }
