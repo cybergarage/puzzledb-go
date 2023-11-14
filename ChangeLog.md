@@ -29,8 +29,11 @@
   - Distributed plug-ins
     - Storage plug-ins
       - Enabled cache store plug-in (ristretto) as default
+- Updates
+  - Redis plug-in
+    - Support DEL commands
 - Improvements
-  - Update to set prometheus metrics
+  - Updated to set service metrics to prometheus
     - Query plug-ins
       - PostgreSQL, MySQL, Redis and Mongo
     - Storage plug-ins
