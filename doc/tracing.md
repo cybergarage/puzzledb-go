@@ -1,8 +1,10 @@
-# Distributed Tracing
+Distributed Tracing
+===================
 
 Distributed tracing is a monitoring technique for analyzing and troubleshooting distributed systems like microservices and cloud-based applications. It tracks requests as they flow through various services, identifying bottlenecks and performance issues. Unique trace IDs tag requests, and spans represent each step in the request lifecycle. Visualization tools display interactions between components, aiding in issue detection and system optimization. Distributed tracing is essential for modern software systems, helping improve performance and reliability.
 
-## OpenTelemetry Integration
+OpenTelemetry Integration
+-------------------------
 
 OpenTelemetry is an open-source project that provides a standardized framework for collecting, processing, and exporting telemetry data, including traces, metrics, and logs. It offers developers a unified API to instrument their applications and send the data to different backends like Jaeger, Prometheus, or Elasticsearch for analysis and visualization purposes.
 
@@ -10,7 +12,8 @@ PuzzleDB supports OpenTelemetry integration. This means that developers can util
 
 -   [Configuring PullzeDB](configuring.md)
 
-## References
+References
+----------
 
 -   [OpenTelemetry](https://opentelemetry.io)
 
