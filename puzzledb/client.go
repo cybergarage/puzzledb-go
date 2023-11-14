@@ -118,16 +118,25 @@ func (client *Client) ListConfig() ([]string, error) {
 	return res.GetValues(), nil
 }
 
-func (client *Client) GetMetric(name string) (string, error) {
+func (client *Client) GetMetric(name string) (map[string]string, error) {
 	c := pb.NewMetricClient(client.Conn)
 	req := &pb.GetMetricRequest{
 		Name: name,
 	}
 	res, err := c.GetMetric(context.Background(), req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return res.GetValue(), nil
+	metricsMap := make(map[string]string)
+	values := res.GetValues()
+	for n, name := range res.GetNames() {
+		if len(values) <= n {
+			metricsMap[name] = ""
+			continue
+		}
+		metricsMap[name] = values[n]
+	}
+	return metricsMap, nil
 }
 
 func (client *Client) ListMetric() ([]string, error) {
