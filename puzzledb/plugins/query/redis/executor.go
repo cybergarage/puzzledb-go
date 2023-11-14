@@ -76,8 +76,11 @@ func (service *Service) Exists(conn *Conn, keys []string) (*Message, error) {
 
 	existCount := 0
 	for _, key := range keys {
-		_, err := txn.FindDocuments(ctx, []any{key})
-		if err == nil {
+		rs, err := txn.FindDocuments(ctx, []any{key})
+		if err != nil {
+			return nil, err
+		}
+		if rs.Next() {
 			existCount++
 		}
 	}
