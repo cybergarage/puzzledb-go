@@ -15,7 +15,7 @@
 package cli
 
 import (
-	"fmt"
+	"github.com/cybergarage/puzzledb-go/puzzledb/cmd/fmt"
 
 	"github.com/spf13/cobra"
 )
@@ -32,11 +32,11 @@ var listMetricCmd = &cobra.Command{ // nolint:exhaustruct
 	Run: func(cmd *cobra.Command, args []string) {
 		dbs, err := GetClient().ListMetric()
 		if err != nil {
-			fmt.Println(err.Error())
+			fmt.Export(err.Error())
 			return
 		}
 		for _, db := range dbs {
-			fmt.Println(db)
+			fmt.Export(db)
 		}
 	},
 }
@@ -49,15 +49,15 @@ var getMetricCmd = &cobra.Command{ // nolint:exhaustruct
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
-			fmt.Println("No name specified")
+			fmt.Export("No name specified")
 			return
 		}
 		name := args[0]
 		v, err := GetClient().GetMetric(name)
 		if err != nil {
-			fmt.Println(err.Error())
+			fmt.Export(err.Error())
 			return
 		}
-		fmt.Println(v)
+		fmt.Export(v)
 	},
 }
