@@ -15,6 +15,7 @@
 package redis
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/cybergarage/go-redis/redistest"
@@ -66,6 +67,74 @@ func TestRedisService(t *testing.T) {
 				}
 				if res != r.expected {
 					t.Errorf("%s != %s", res, r.expected)
+					return
+				}
+			})
+		}
+	})
+
+	t.Run("DEL", func(t *testing.T) {
+		records := []struct {
+			keys     []string
+			expected int64
+		}{
+			{[]string{"key1_del", "key2_del"}, 2},
+			{[]string{"key1_del"}, 0},
+			{[]string{"key1_del", "key2_del", "key3_del"}, 1},
+			{[]string{"key2_del"}, 0},
+		}
+		for _, r := range records {
+			for _, key := range r.keys {
+				err = client.Set(key, key, 0).Err()
+				if err != nil {
+					t.Error(err)
+					return
+				}
+			}
+		}
+		for _, r := range records {
+			t.Run(strings.Join(r.keys, ","), func(t *testing.T) {
+				res, err := client.Del(r.keys...).Result()
+				if err != nil {
+					t.Error(err)
+					return
+				}
+				if res != r.expected {
+					t.Errorf("%d != %d", res, r.expected)
+					return
+				}
+			})
+		}
+	})
+
+	t.Run("EXISTS", func(t *testing.T) {
+		if err := client.Set("key1_exists", "val", 0).Err(); err != nil {
+			t.Error(err)
+			return
+		}
+		if err := client.Set("key2_exists", "val", 0).Err(); err != nil {
+			t.Error(err)
+			return
+		}
+		records := []struct {
+			keys     []string
+			expected int64
+		}{
+			{[]string{"nosuchkey"}, 0},
+			{[]string{"key1_exists"}, 1},
+			{[]string{"key2_exists"}, 1},
+			{[]string{"key1_exists", "key2_exists"}, 2},
+			{[]string{"key1_exists", "key2_exists", "nosuchkey"}, 2},
+		}
+		for _, r := range records {
+			t.Run(strings.Join(r.keys, ","), func(t *testing.T) {
+				res, err := client.Exists(r.keys...).Result()
+				if err != nil {
+					t.Error(err)
+					return
+				}
+				if res != r.expected {
+					t.Errorf("%v : %d != %d", r.keys, res, r.expected)
 					return
 				}
 			})
