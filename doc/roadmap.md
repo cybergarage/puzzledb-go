@@ -1,12 +1,10 @@
-Roadmap
-=======
+# Roadmap
 
 PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
 
 ![doc/img/roadmap](img/roadmap.png)
 
-v2.0.0
-------
+## v2.0.0
 
 -   New features
 
@@ -28,8 +26,7 @@ v2.0.0
 
         -   ❏ Added Encrypt plug-ins
 
-v1.x.x
-------
+## v1.x.x
 
 -   New plug-ins
 
@@ -87,8 +84,7 @@ v1.x.x
 
                 -   ❏ HASH commands
 
-v1.0.0 (2023-08-30)
--------------------
+## v1.0.0 (2023-08-30)
 
 -   New plug-ins
 
@@ -132,8 +128,7 @@ v1.0.0 (2023-08-30)
 
             -   ✓ Support limit and order options in Range queries based on key-value Store plug-ins
 
-v0.9.0 (2023-05-07)
--------------------
+## v0.9.0 (2023-05-07)
 
 -   New features
 
@@ -183,8 +178,7 @@ v0.9.0 (2023-05-07)
 
                 -   ✓ DROP TABLE
 
-v0.8.0 (2023-04-10)
--------------------
+## v0.8.0 (2023-04-10)
 
 -   Initial public release
 

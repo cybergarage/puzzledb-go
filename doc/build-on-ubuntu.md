@@ -1,8 +1,6 @@
-Build on Ubuntu
-===============
+# Build on Ubuntu
 
-Build PuzzleDB
---------------
+## Build PuzzleDB
 
 Go to the directory where you want to download the Vitess source code and clone the Vitess GitHub repo:
 
@@ -13,8 +11,7 @@ To build PuzzleDB, run the following command:
 
     make build
 
-Testing PuzzleDB
-----------------
+## Testing PuzzleDB
 
 PuzzleDB uses the Go testing framework. To run all tests, run the following command:
 

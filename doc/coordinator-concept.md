@@ -1,5 +1,4 @@
-Coordinator Concept
-===================
+# Coordinator Concept
 
 Coordinator services, such as Zookeeper and etcd, are distributed systems that play a crucial role in managing configuration data, synchronization, and coordination of distributed applications. They are designed to address the challenges of maintaining consistency and ensuring high availability in distributed environments.
 
@@ -9,8 +8,7 @@ In distributed mode, PuzzleDB operates under the assumption that it will be laun
 
 The coordinator service provides distributed synchronization and coordination for PuzzleDB nodes. It is used to manage the distributed PuzzleDB nodes and synchronize the states of the nodes. The coordinator service plug-in is used to manage and synchronize the distributed PuzzleDB nodes.
 
-References
-----------
+## References
 
 -   Coordinator Services
 
