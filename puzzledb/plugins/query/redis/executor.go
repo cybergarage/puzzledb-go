@@ -60,7 +60,34 @@ func (service *Service) Del(conn *Conn, keys []string) (*Message, error) {
 }
 
 func (service *Service) Exists(conn *Conn, keys []string) (*Message, error) {
-	return nil, newErrNotSupported("Exists")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Exists")
+	defer ctx.FinishSpan()
+
+	db, err := service.GetDatabase(ctx, conn.Database())
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(false)
+	if err != nil {
+		return nil, err
+	}
+
+	existCount := 0
+	for _, key := range keys {
+		_, err := txn.FindDocuments(ctx, []any{key})
+		if err == nil {
+			existCount++
+		}
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return redis.NewIntegerMessage(existCount), nil
 }
 
 func (service *Service) Expire(conn *Conn, key string, opt redis.ExpireOption) (*Message, error) {
