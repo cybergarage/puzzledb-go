@@ -26,9 +26,37 @@ type Conn = redis.Conn
 type Message = redis.Message
 
 func (service *Service) Del(conn *Conn, keys []string) (*Message, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Del")
+	defer ctx.FinishSpan()
 	now := time.Now()
+
+	db, err := service.GetDatabase(ctx, conn.Database())
+	if err != nil {
+		return nil, err
+	}
+
+	txn, err := db.Transact(true)
+	if err != nil {
+		return nil, err
+	}
+
+	removedCount := 0
+	for _, key := range keys {
+		err := txn.RemoveDocument(ctx, []any{key})
+		if err == nil {
+			removedCount++
+		}
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	mDelLatency.Observe(float64(time.Since(now).Milliseconds()))
-	return nil, newErrNotSupported("Del")
+
+	return redis.NewIntegerMessage(removedCount), nil
 }
 
 func (service *Service) Exists(conn *Conn, keys []string) (*Message, error) {
@@ -70,6 +98,7 @@ func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOpt
 	if err != nil {
 		return nil, err
 	}
+
 	err = txn.InsertDocument(ctx, []any{key}, val)
 	if err != nil {
 		err = txn.Cancel(ctx)
