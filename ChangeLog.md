@@ -24,7 +24,7 @@
     - Coordinator plug-ins
       - Added etcd plug-in
 
-## v1.2.0 (2023-11-xx)
+## v1.2.0 (2023-11-15)
 - New features
   - Distributed plug-ins
     - Storage plug-ins
@@ -32,7 +32,7 @@
 - Updates
   - Redis plug-in
     - Support new commands
-      - DEL, GETSET and EXISTS
+      - DEL and EXISTS
 - Improvements
   - Updated to set service metrics to prometheus
     - Query plug-ins
