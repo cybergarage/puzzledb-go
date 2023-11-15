@@ -51,6 +51,7 @@ import (
 type Server struct {
 	actor *actor.Service
 	Config
+	*Authenticator
 	*PluginManager
 	cluster.Node
 	pprofStarted bool
@@ -61,6 +62,7 @@ func NewServer() *Server {
 	server := &Server{
 		actor:         nil,
 		Config:        nil,
+		Authenticator: NewAuthenticator(),
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 		Node:          cluster.NewNode(),
 		pprofStarted:  false,
