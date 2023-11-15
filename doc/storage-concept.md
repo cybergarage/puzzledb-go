@@ -1,5 +1,4 @@
-Storage Concepts
-================
+# Storage Concepts
 
 In PuzzleDB, the storage plugins are expected to be implemented as transaction-enabled, ordered sharding NoSQL storage systems, similar to Google Spanner or FoundationDB.
 
@@ -9,8 +8,7 @@ FoundationDB and early Google Spanner utilize ordered key-value stores to suppor
 
 Ordered key-value stores are a fundamental component of the storage layers in distributed databases like FoundationDB and Google Spanner. By maintaining keys in a sorted order, these systems can efficiently handle range queries and optimize various operations in large-scale distributed environments.
 
-References
-----------
+## References
 
 -   [FoundationDB](https://www.foundationdb.org/)
 
