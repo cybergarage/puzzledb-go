@@ -1,0 +1,7 @@
+= Authentication Methods
+
+
+== References
+
+- https://www.postgresql.org/docs/current/auth-methods.html[PostgreSQL: Documentation: Authentication Methods]
+- https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html[MySQL: Authentication Methods]
