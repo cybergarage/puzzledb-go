@@ -18,7 +18,7 @@ package auth
 type AuthHandler interface {
 }
 
-// PasswordAuthHandler is an interface for authenticating users with a username
+// PasswordAuthHandler is an interface for authenticating users with a username.
 type PasswordAuthHandler interface {
 	// Authenticate authenticates the user with the given credentials.
 	Authenticate(conn Conn, username string, password string) (bool, error)
