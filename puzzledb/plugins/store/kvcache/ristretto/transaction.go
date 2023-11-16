@@ -46,7 +46,7 @@ func (txn *Transaction) Set(obj *kv.Object) error {
 func (txn *Transaction) Get(key kv.Key) (*kv.Object, error) {
 	if txn.IsRegisteredCacheKey(key) {
 		txn.Store.IncrementRequestCount()
-		mRequestCount.Inc()
+		mRequestTotal.Inc()
 		kb, err := txn.EncodeKey(key)
 		if err != nil {
 			return nil, err
@@ -58,7 +58,7 @@ func (txn *Transaction) Get(key kv.Key) (*kv.Object, error) {
 				return kv.NewObject(key, vb), nil
 			}
 			txn.Store.IncrementHitCount()
-			mHitCount.Inc()
+			mHitTotal.Inc()
 			mHitRate.Set(txn.Store.CacheHitRate())
 		}
 		mHitRate.Set(txn.Store.CacheHitRate())

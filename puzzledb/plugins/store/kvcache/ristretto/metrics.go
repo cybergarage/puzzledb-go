@@ -19,14 +19,17 @@ import (
 )
 
 var (
-	mRequestCount = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "ristretto_request_count",
-		Help: "Ristretto request count",
+	//nolint:exhaustruct
+	mRequestTotal = prometheus.NewCounter(prometheus.CounterOpts{
+		Name: "ristretto_request_total",
+		Help: "Ristretto request total",
 	})
-	mHitCount = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "ristretto_hit_count",
-		Help: "Ristretto hit count",
+	//nolint:exhaustruct
+	mHitTotal = prometheus.NewCounter(prometheus.CounterOpts{
+		Name: "ristretto_hit_total",
+		Help: "Ristretto hit total",
 	})
+	//nolint:exhaustruct
 	mHitRate = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: "ristretto_hit_rate",
 		Help: "Ristretto hit rate",
@@ -34,7 +37,7 @@ var (
 )
 
 func init() { //nolint:gochecknoinits
-	prometheus.MustRegister(mRequestCount)
-	prometheus.MustRegister(mHitCount)
+	prometheus.MustRegister(mRequestTotal)
+	prometheus.MustRegister(mHitTotal)
 	prometheus.MustRegister(mHitRate)
 }
