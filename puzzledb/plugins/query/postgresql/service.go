@@ -33,7 +33,6 @@ func NewService() query.Service {
 		Service: sql.NewService(),
 	}
 	service.SetTransactionExecutor(service)
-	service.SetAuthenticator(service)
 	service.SetQueryExecutor(service)
 	service.SetBulkExecutor(service)
 	service.SetErrorHandler(service)
