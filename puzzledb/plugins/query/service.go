@@ -16,6 +16,7 @@ package query
 
 import (
 	"github.com/cybergarage/go-tracing/tracer"
+	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -51,11 +52,20 @@ type CoordinatorService interface {
 	PostCollectionDropMessage(database string, collection string) error
 }
 
+// AuthenticatorService represents an authenticator interface for query service.
+type AuthenticatorService interface {
+	// SetAuthenticator sets the authenticator.
+	SetAuthenticator(authenticator auth.Authenticator)
+	// Authenticator returns the authenticator.
+	Authenticator() auth.Authenticator
+}
+
 // Service represents a query service.
 type Service interface {
 	plugins.Service
 	CoordinatorService
 	StoreService
+	AuthenticatorService
 	// SetTracer sets the tracing tracer.
 	SetTracer(t tracer.Tracer)
 	// SetPort sets the listen port.
