@@ -18,11 +18,12 @@
     - PostgreSQL plug-in
       - Added support for new queries
 
-## v1.3.x (2023-xx-xx)
+## v1.3.0 (2023-xx-xx)
 - New features
-  - Distributed plug-ins
-    - Coordinator plug-ins
-      - Added etcd plug-in
+  - Authenticator plug-ins
+    - Added password authenticator interface
+  - Improvements
+    - Update storage implemetations to support option parameters
 
 ## v1.2.0 (2023-11-15)
 - New features
