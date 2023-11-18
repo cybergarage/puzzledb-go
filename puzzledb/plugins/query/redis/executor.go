@@ -199,14 +199,6 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 	}
 }
 
-func (service *Service) MSet(conn *Conn, dict map[string]string, opt redis.MSetOption) (*Message, error) {
-	return nil, newErrNotSupported("MSet")
-}
-
-func (service *Service) MGet(conn *Conn, keys []string) (*Message, error) {
-	return nil, newErrNotSupported("MGet")
-}
-
 func (service *Service) HDel(conn *Conn, key string, fields []string) (*Message, error) {
 	return nil, newErrNotSupported("HDel")
 }
@@ -221,14 +213,6 @@ func (service *Service) HGet(conn *Conn, key string, field string) (*Message, er
 
 func (service *Service) HGetAll(conn *Conn, key string) (*Message, error) {
 	return nil, newErrNotSupported("HGetAll")
-}
-
-func (service *Service) HMSet(conn *Conn, key string, dict map[string]string) (*Message, error) {
-	return nil, newErrNotSupported("HMSet")
-}
-
-func (service *Service) HMGet(conn *Conn, key string, fields []string) (*Message, error) {
-	return nil, newErrNotSupported("HMGet")
 }
 
 func (service *Service) LPush(conn *Conn, key string, elements []string, opt redis.PushOption) (*Message, error) {
