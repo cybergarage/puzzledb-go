@@ -334,13 +334,13 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>DECR</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>DECRBY</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
@@ -364,7 +364,7 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>GETRANGE</p></td>
 <td style="text-align: left;"><p>2.4.0</p></td>
 <td style="text-align: left;"></td>
@@ -376,13 +376,13 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>INCR</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>INCRBY</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
@@ -400,26 +400,26 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>MGET</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>MSET</p></td>
 <td style="text-align: left;"><p>1.0.1</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>MSETNX</p></td>
 <td style="text-align: left;"><p>1.0.1</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>-</p></td>
-<td style="text-align: left;"><p>PSETNX</p></td>
+<td style="text-align: left;"><p>PSETEX</p></td>
 <td style="text-align: left;"><p>2.6.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
@@ -436,25 +436,25 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>SETNX</p></td>
 <td style="text-align: left;"><p>2.0.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>-</p></td>
-<td style="text-align: left;"><p>SERANGE</p></td>
+<td style="text-align: left;"><p>SETRANGE</p></td>
 <td style="text-align: left;"><p>2.2.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>STRLEN</p></td>
 <td style="text-align: left;"><p>2.2.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>SUBSTR</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
