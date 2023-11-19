@@ -71,23 +71,29 @@ PuzzleDB currently supports [Redis commands](https://redis.io/commands/) in stag
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>ECHO</p></td>
+<td style="text-align: left;"><p>AUTH</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>PING</p></td>
+<td style="text-align: left;"><p>ECHO</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>QUIT</p></td>
+<td style="text-align: left;"><p>PING</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>QUIT</p></td>
+<td style="text-align: left;"><p>1.0.0</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>SELECT</p></td>
 <td style="text-align: left;"><p>1.0.0</p></td>
