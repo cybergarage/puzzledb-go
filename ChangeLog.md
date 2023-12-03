@@ -18,7 +18,7 @@
     - PostgreSQL plug-in
       - Added support for new queries
 
-## v1.3.0 (2023-xx-xx)
+## v1.3.0 (2023-12-xx)
 - New features
   - Authenticator plug-ins
     - Added password authenticator interface
