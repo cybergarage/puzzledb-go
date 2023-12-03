@@ -9,3 +9,7 @@
   -h, --help            help for puzzledb-server
 ```
 
+### SEE ALSO
+
+* [puzzledb-server version](puzzledb-server_version.md)	 - Print puzzledb version
+
