@@ -26,7 +26,7 @@ var gRPCHost string
 var gRPCPort int
 
 var rootCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:               strings.ToLower(puzzledb.PackageName) + "-cli",
+	Use:               strings.ToLower(puzzledb.ProductName) + "-cli",
 	Version:           puzzledb.Version,
 	Short:             "",
 	Long:              "",

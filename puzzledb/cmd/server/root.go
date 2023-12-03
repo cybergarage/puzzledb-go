@@ -30,7 +30,7 @@ import (
 var cfgFile string
 
 var rootCmd = &cobra.Command{ // nolint:exhaustruct
-	Use:               strings.ToLower(puzzledb.PackageName) + "-server",
+	Use:               strings.ToLower(puzzledb.ProductName) + "-server",
 	Version:           puzzledb.Version,
 	Short:             "",
 	Long:              "",
@@ -39,7 +39,7 @@ var rootCmd = &cobra.Command{ // nolint:exhaustruct
 
 var versionCmd = &cobra.Command{ // nolint:exhaustruct
 	Use:               "version",
-	Short:             "Print " + strings.ToLower(puzzledb.PackageName) + " version",
+	Short:             "Print " + strings.ToLower(puzzledb.ProductName) + " version",
 	DisableAutoGenTag: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(puzzledb.Version)
