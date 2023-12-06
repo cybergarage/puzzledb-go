@@ -1,5 +1,30 @@
 = Authentication Methods
 
+== Supported Authentication Methods
+
+PuzzleDB supports the following authentication methods.
+
+[format="csv", options="header, autowidth"]
+|====
+include::auth/methods.csv[]
+|====
+
+O:Supported, X:Unsupported, -:Not yes supported
+
+== Authentication Plugins
+
+PuzzleDB offers the following common authentication plugins for query plugins as default.
+
+- Password
+- MD5 (Not yes supported)
+- Crypt (Not yes supported)
+- SHA256 (Not yes supported)
+- SHA512 (Not yes supported)
+- GSSAPI (Not yes supported)
+- SSPI (Not yes supported)
+- LDAP (Not yes supported)
+- PAM (Not yes supported)
+- Kerberos (Not yes supported)
 
 == References
 
