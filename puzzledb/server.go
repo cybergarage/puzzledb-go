@@ -25,6 +25,7 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-tracing/tracer"
+	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -51,7 +52,7 @@ import (
 type Server struct {
 	actor *actor.Service
 	Config
-	*Authenticator
+	*auth.AuthManager
 	*PluginManager
 	cluster.Node
 	pprofStarted bool
@@ -62,7 +63,7 @@ func NewServer() *Server {
 	server := &Server{
 		actor:         nil,
 		Config:        nil,
-		Authenticator: NewAuthenticator(),
+		AuthManager:   auth.NewAuthManager(),
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 		Node:          cluster.NewNode(),
 		pprofStarted:  false,
