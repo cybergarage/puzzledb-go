@@ -1,0 +1,13 @@
+Method,Parameter,PostgreSQL,MySQL,MongoDB,Redis
+password,user,O,-,-,X
+,password,O,-,-,O
+,database,O,-,-,X
+,address,O,-,-,X
+md5,user,-,-,-,-
+,password,-,-,-,-
+,database,-,-,-,-
+,address,-,-,-,-
+crypt,user,-,-,-,-
+,password,-,-,-,-
+,database,-,-,-,-
+,address,-,-,-,-
