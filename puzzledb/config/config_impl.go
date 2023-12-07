@@ -36,8 +36,8 @@ func NewConfigWith(productName string) Config {
 	return &viperConfig{}
 }
 
-// GetConfig returns a value for the specified path.
-func (conf *viperConfig) GetConfig(paths ...string) (any, error) {
+// GetConfigObject returns a object value for the specified path.
+func (conf *viperConfig) GetConfigObject(paths ...string) (any, error) {
 	path := NewPathWith(paths...)
 	v := viper.Get(path)
 	if v == nil {

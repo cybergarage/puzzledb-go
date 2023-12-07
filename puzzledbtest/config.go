@@ -44,9 +44,9 @@ func NewConfigWithString(conString string) (*Config, error) {
 	return NewConfigWith(conf), nil
 }
 
-// GetConfig overrides the GetConfig method of the Config interface for testing.
-func (conf *Config) GetConfig(paths ...string) (any, error) {
-	return conf.Config.GetConfig(paths...)
+// GetConfigObject overrides the GetConfigObject method of the Config interface for testing.
+func (conf *Config) GetConfigObject(paths ...string) (any, error) {
+	return conf.Config.GetConfigObject(paths...)
 }
 
 // GetConfigString overrides the GetConfigString method of the Config interface for testing.
