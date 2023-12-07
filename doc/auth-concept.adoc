@@ -1,15 +1,10 @@
 = Authentication Methods
 
-== Supported Authentication Methods
+PuzzleDB adds authenticators to the auth manager based on the auth configuration with auth plugins. The query plugins can query the authentication from the auth manager.
 
-PuzzleDB supports the following authentication methods.
+image::img/authenticator.png[]
 
-[format="csv", options="header, autowidth"]
-|====
-include::auth/methods.csv[]
-|====
-
-O:Supported, X:Unsupported, -:Not yes supported
+An authenticator is generated from one auth plugin and a configuration. Multiple authenticators are generated and added to the auth manager when PuzzleDB starts.
 
 == Authentication Plugins
 
@@ -25,6 +20,18 @@ PuzzleDB offers the following common authentication plugins for query plugins as
 - LDAP (Not yes supported)
 - PAM (Not yes supported)
 - Kerberos (Not yes supported)
+
+== Supported Authentication Methods
+
+PuzzleDB supports the following authentication methods for the query plugins.
+
+[format="csv", options="header, autowidth"]
+|====
+include::auth/methods.csv[]
+|====
+
+O:Supported, X:Unsupported, -:Not yes supported
+
 
 == References
 
