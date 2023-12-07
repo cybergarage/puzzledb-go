@@ -27,6 +27,7 @@ For information on the concept and architecture of PuzzleDB, refer to the follow
 ** link:doc/storage-concept.md[Storage Concept]
 ** link:doc/consistency-model.md[Consistency Model]
 ** link:doc/coordinator-concept.md[Coordinator Concept]
+** link:doc/auth-concept.md[Authentication Concept]
 
 = Supported Protocols
 
