@@ -36,5 +36,4 @@ const (
 
 type Config interface {
 	config.Config
-	UsedConfigFile() string
 }
