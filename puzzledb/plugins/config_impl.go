@@ -59,7 +59,7 @@ func (conf *configImpl) GetServiceTypeConfig(serviceType ServiceType, item strin
 	if conf.Config == nil {
 		return nil, NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfig(path...)
+	return conf.GetConfigObject(path...)
 }
 
 // GetServiceTypeConfigString returns a string value for the specified name in the service type.
@@ -119,7 +119,7 @@ func (conf *configImpl) GetServiceConfig(service Service, paths ...string) (any,
 	if conf.Config == nil {
 		return nil, NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfig(path...)
+	return conf.GetConfigObject(path...)
 }
 
 // GetServiceConfigString returns a string value for the specified name in the service.
