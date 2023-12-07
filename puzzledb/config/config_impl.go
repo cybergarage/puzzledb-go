@@ -36,7 +36,7 @@ func NewConfigWith(productName string) Config {
 	return &viperConfig{}
 }
 
-// GetConfig returns a value for the specified name.
+// GetConfig returns a value for the specified path.
 func (conf *viperConfig) GetConfig(paths ...string) (any, error) {
 	path := NewPathWith(paths...)
 	v := viper.Get(path)
@@ -46,7 +46,7 @@ func (conf *viperConfig) GetConfig(paths ...string) (any, error) {
 	return v, nil
 }
 
-// GetConfigString returns a string value for the specified name.
+// GetConfigString returns a string value for the specified path.
 func (conf *viperConfig) GetConfigString(paths ...string) (string, error) {
 	path := NewPathWith(paths...)
 	v := viper.GetString(path)
@@ -56,7 +56,7 @@ func (conf *viperConfig) GetConfigString(paths ...string) (string, error) {
 	return v, nil
 }
 
-// GetConfigInt returns an integer value for the specified name.
+// GetConfigInt returns an integer value for the specified path.
 func (conf *viperConfig) GetConfigInt(paths ...string) (int, error) {
 	path := NewPathWith(paths...)
 	v := viper.GetInt(path)
@@ -66,7 +66,7 @@ func (conf *viperConfig) GetConfigInt(paths ...string) (int, error) {
 	return v, nil
 }
 
-// GetConfigBool returns a boolean value for the specified name.
+// GetConfigBool returns a boolean value for the specified path.
 func (conf *viperConfig) GetConfigBool(paths ...string) (bool, error) {
 	path := NewPathWith(paths...)
 	v := viper.GetString(path)
@@ -79,6 +79,27 @@ func (conf *viperConfig) GetConfigBool(paths ...string) (bool, error) {
 // UseConfigFile uses the specified file as the configuration.
 func (conf *viperConfig) UsedConfigFile() string {
 	return viper.ConfigFileUsed()
+}
+
+// SetConfigObject sets a object value for the specified path.
+func (conf *viperConfig) SetConfigObject(paths []string, v any) error {
+	path := NewPathWith(paths...)
+	viper.Set(path, v)
+	return nil
+}
+
+// SetConfigString sets a string value for the specified path.
+func (conf *viperConfig) SetConfigString(paths []string, v string) error {
+	path := NewPathWith(paths...)
+	viper.Set(path, v)
+	return nil
+}
+
+// SetConfigInt sets an integer value for the specified path.
+func (conf *viperConfig) SetConfigInt(paths []string, v int) error {
+	path := NewPathWith(paths...)
+	viper.Set(path, v)
+	return nil
 }
 
 // String returns a string representation of the configuration.
