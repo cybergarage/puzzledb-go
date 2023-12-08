@@ -241,6 +241,7 @@ func (server *Server) setupPlugins() error {
 		for _, service := range services {
 			service.SetCoordinator(defaultCoodinator)
 			service.SetStore(defaultStore)
+			service.SetAuthManager(server.AuthManager)
 			service.SetTracer(defaultTracer)
 			err := defaultCoodinator.AddObserver(service)
 			if err != nil {
