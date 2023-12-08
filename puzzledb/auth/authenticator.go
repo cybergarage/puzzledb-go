@@ -14,8 +14,16 @@
 
 package auth
 
+// AuthenticatorType is an enum for authenticator type.
+type AuthenticatorType int
+
+const (
+	// PasswordAuthenticator is an authenticator for authenticating users with a username.
+	PasswordAuthenticator AuthenticatorType = iota
+)
+
 // Authenticator is an interface for authenticator.
 type Authenticator interface {
-	// AuthenticatePassword authenticates the user with the given credentials.
-	AuthenticatePassword(conn Conn, username string, password string) (bool, error)
+	// Type returns the authenticator type.
+	Type() AuthenticatorType
 }
