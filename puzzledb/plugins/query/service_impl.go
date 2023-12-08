@@ -26,18 +26,18 @@ import (
 
 type BaseService struct {
 	plugins.Config
-	coordinator   coordinator.Coordinator
-	store         store.Store
-	authenticator auth.Authenticator
+	coordinator coordinator.Coordinator
+	store       store.Store
+	*auth.AuthManager
 }
 
 // NewBaseService returns a new query base service.
 func NewBaseService() *BaseService {
 	server := &BaseService{
-		Config:        plugins.NewConfig(),
-		store:         nil,
-		coordinator:   nil,
-		authenticator: nil,
+		Config:      plugins.NewConfig(),
+		store:       nil,
+		coordinator: nil,
+		AuthManager: nil,
 	}
 	return server
 }
@@ -175,12 +175,7 @@ func (service *BaseService) Store() store.Store {
 	return service.store
 }
 
-// SetAuthenticator sets the authenticator.
-func (service *BaseService) SetAuthenticator(authenticator auth.Authenticator) {
-	service.authenticator = authenticator
-}
-
-// Authenticator returns the authenticator.
-func (service *BaseService) Authenticator() auth.Authenticator {
-	return service.authenticator
+// SetAuthManager sets the auth manager.
+func (service *BaseService) SetAuthManager(mgr *auth.AuthManager) {
+	service.AuthManager = mgr
 }
