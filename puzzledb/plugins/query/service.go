@@ -54,10 +54,8 @@ type CoordinatorService interface {
 
 // AuthenticatorService represents an authenticator interface for query service.
 type AuthenticatorService interface {
-	// SetAuthenticator sets the authenticator.
-	SetAuthenticator(authenticator auth.Authenticator)
-	// Authenticator returns the authenticator.
-	Authenticator() auth.Authenticator
+	// SetAuthManager sets the auth manager.
+	SetAuthManager(mgr *auth.AuthManager)
 }
 
 // Service represents a query service.
