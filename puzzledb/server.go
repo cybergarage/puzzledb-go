@@ -253,6 +253,19 @@ func (server *Server) setupPlugins() error {
 	return nil
 }
 
+func (server *Server) setupAuthenticators() error {
+	// Setup authenticators
+
+	for _, service := range server.EnabledAuthenticatorServices() {
+		_, ok := service.(auth.Authenticator)
+		if !ok {
+			return plugins.NewErrInvalidService(service)
+		}
+	}
+
+	return nil
+}
+
 // Start starts the server.
 func (server *Server) Start() error { //nolint:gocognit
 	// Setup logger
@@ -304,6 +317,10 @@ func (server *Server) Start() error { //nolint:gocognit
 	}
 
 	if err := server.setupPlugins(); err != nil {
+		return err
+	}
+
+	if err := server.setupAuthenticators(); err != nil {
 		return err
 	}
 
