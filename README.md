@@ -4,8 +4,7 @@
 
 PuzzleDB aspires to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version has been developed in the Go language.
 
-What is PuzzleDB
-================
+# What is PuzzleDB
 
 PuzzleDB is a multi-data model database capable of handling key-value, relational, and document models. Additionally, PuzzleDB is a multi-interface database, compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
 
@@ -17,8 +16,7 @@ PuzzleDB is a distributed database framework supporting various data models and 
 
 PuzzleDB accommodates existing query protocols such as PostgreSQL, MySQL, MongoDB, and Redis within a distributed, pluggable database framework. Consequently, developers can seamlessly start using PuzzleDB as a scalable, high-performance distributed database with existing database client drivers, eliminating any learning curve.
 
-Key Features
-------------
+## Key Features
 
 PuzzleDB has the following features:
 
@@ -32,15 +30,13 @@ PuzzleDB has the following features:
 
 -   Efficiency: PuzzleDB manages various database data models, including key-value, document, and relational, by consolidating them into a single core model.
 
-Get Started
-===========
+# Get Started
 
 See the following guide to learn about how to get started.
 
 -   [Quick Start](doc/quick-start.md)
 
-How does PuzzleDB work?
-=======================
+# How does PuzzleDB work?
 
 For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
 
@@ -60,8 +56,7 @@ For information on the concept and architecture of PuzzleDB, refer to the follow
 
     -   [Authentication Concept](doc/auth-concept.md)
 
-Supported Protocols
-===================
+# Supported Protocols
 
 PuzzleDB supports the following protocols:
 
@@ -75,15 +70,13 @@ PuzzleDB supports the following protocols:
 
     -   [Redis](doc/redis.md)
 
-Roadmap
-=======
+# Roadmap
 
 PuzzleDB is currently in a technical preview release stage. At present, it is in the process of developing and testing a distributed plugin for the upcoming release. The development roadmap for PuzzleDB is outlined below.
 
 ![doc/img/roadmap](doc/img/roadmap.png)
 
-User Guides
-===========
+# User Guides
 
 -   Get Started
 
@@ -107,8 +100,7 @@ User Guides
 
     -   [Docker Hub (cybergarage/puzzledb)](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
 
-Developer Guides
-================
+# Developer Guides
 
 -   References
 
