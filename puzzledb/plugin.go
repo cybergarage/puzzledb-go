@@ -156,6 +156,19 @@ func (mgr *PluginManager) TracingServices() ([]tracer.Service, error) {
 	return services, nil
 }
 
+// AuthenticatorServices returns authenticator services.
+func (mgr *PluginManager) AuthenticatorServices() ([]auth.Service, error) {
+	services := []auth.Service{}
+	for _, service := range mgr.ServicesByType(plugins.AuthenticatorService) {
+		if s, ok := service.(auth.Service); ok {
+			services = append(services, s)
+		} else {
+			return nil, newErrInvalidService(service, plugins.AuthenticatorService)
+		}
+	}
+	return services, nil
+}
+
 // MetricsServices returns metrics services.
 func (mgr *PluginManager) MetricsServices() ([]metrics.Service, error) {
 	services := []metrics.Service{}
