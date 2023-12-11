@@ -10,16 +10,16 @@ An authenticator is generated from one auth plugin and a configuration. Multiple
 
 PuzzleDB offers the following common authentication plugins for query plugins as default.
 
-- Password
-- MD5 (Not yes supported)
-- Crypt (Not yes supported)
-- SHA256 (Not yes supported)
-- SHA512 (Not yes supported)
-- GSSAPI (Not yes supported)
-- SSPI (Not yes supported)
-- LDAP (Not yes supported)
-- PAM (Not yes supported)
-- Kerberos (Not yes supported)
+* Password
+* MD5 (Not yes supported)
+* Crypt (Not yes supported)
+* SHA256 (Not yes supported)
+* SHA512 (Not yes supported)
+* GSSAPI (Not yes supported)
+* SSPI (Not yes supported)
+* LDAP (Not yes supported)
+* PAM (Not yes supported)
+* Kerberos (Not yes supported)
 
 == Supported Authentication Methods
 
@@ -35,5 +35,13 @@ O:Supported, X:Unsupported, -:Not yes supported
 
 == References
 
-- https://www.postgresql.org/docs/current/auth-methods.html[PostgreSQL: Documentation: Authentication Methods]
-- https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html[MySQL: Authentication Methods]
+=== PostgreSQL
+
+* https://www.postgresql.org/docs/current/auth-methods.html[PostgreSQL: Documentation: Authentication Methods]
+** https://www.postgresql.org/docs/current/auth-pg-hba-conf.html[PostgreSQL: Documentation: The pg_hba.conf File]
+
+== MySQL
+* https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html[MySQL: Connection Phase]
+* https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html[MySQL: Authentication Methods]
+** https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html#page_protocol_connection_phase_authentication_methods_old_password_authentication[MySQL: Old Password Authentication]
+** https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods_native_password_authentication.html[MySQL: Native Password Authentication]
