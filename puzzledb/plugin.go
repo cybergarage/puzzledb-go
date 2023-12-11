@@ -17,6 +17,7 @@ package puzzledb
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/errors"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
@@ -330,6 +331,17 @@ func (mgr *PluginManager) EnabledTracingServices() []tracer.Service {
 	services := []tracer.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.TracingService) {
 		if s, ok := service.(tracer.Service); ok {
+			services = append(services, s)
+		}
+	}
+	return services
+}
+
+// EnabledMetricsServices returns enabled metrics services.
+func (mgr *PluginManager) EnabledAuthenticatorServices() []auth.Service {
+	services := []auth.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.AuthenticatorService) {
+		if s, ok := service.(auth.Service); ok {
 			services = append(services, s)
 		}
 	}
