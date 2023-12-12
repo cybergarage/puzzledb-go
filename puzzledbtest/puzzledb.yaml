@@ -4,6 +4,10 @@ logger:
 pprof:
   enabled: true
   port: 6060
+auth:
+  passwd:
+    user: admin
+    password: password
 plugins:
   system:
     grpc:
