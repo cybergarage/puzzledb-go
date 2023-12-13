@@ -36,6 +36,11 @@ func NewConfigWith(productName string) Config {
 	return &viperConfig{}
 }
 
+// UseConfigFile uses the specified file as the configuration.
+func (conf *viperConfig) UsedConfigFile() string {
+	return viper.ConfigFileUsed()
+}
+
 // GetConfigObject returns a object value for the specified path.
 func (conf *viperConfig) GetConfigObject(paths ...string) (any, error) {
 	path := NewPathWith(paths...)
@@ -76,9 +81,10 @@ func (conf *viperConfig) GetConfigBool(paths ...string) (bool, error) {
 	return strconv.ParseBool(v)
 }
 
-// UseConfigFile uses the specified file as the configuration.
-func (conf *viperConfig) UsedConfigFile() string {
-	return viper.ConfigFileUsed()
+// UnmarshallConfig unmarshalls the specified path object to the specified object.
+func (conf *viperConfig) UnmarshallConfig(paths []string, v any) error {
+	path := NewPathWith(paths...)
+	return viper.UnmarshalKey(path, v)
 }
 
 // SetConfigObject sets a object value for the specified path.

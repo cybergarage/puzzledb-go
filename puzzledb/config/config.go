@@ -26,11 +26,13 @@ type Config interface {
 	GetConfigInt(paths ...string) (int, error)
 	// GetConfigBool returns a boolean value for the specified path.
 	GetConfigBool(paths ...string) (bool, error)
-	// SetConfigObject sets a object value for the specified path.
+	// UnmarshallConfig unmarshalls the specified path object to the specified object.
+	UnmarshallConfig(paths []string, v any) error
+	// SetConfigObject sets a object value to the specified path.
 	SetConfigObject(paths []string, v any) error
-	// SetConfigString sets a string value for the specified path.
+	// SetConfigString sets a string value to the specified path.
 	SetConfigString(paths []string, v string) error
-	// SetConfigInt sets an integer value for the specified path.
+	// SetConfigInt sets an integer value to the specified path.
 	SetConfigInt(paths []string, v int) error
 	// String returns a string representation of the configuration.
 	String() string
