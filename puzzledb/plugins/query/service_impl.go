@@ -28,7 +28,7 @@ type BaseService struct {
 	plugins.Config
 	coordinator coordinator.Coordinator
 	store       store.Store
-	*auth.AuthManager
+	auth.AuthManager
 }
 
 // NewBaseService returns a new query base service.
@@ -176,6 +176,6 @@ func (service *BaseService) Store() store.Store {
 }
 
 // SetAuthManager sets the auth manager.
-func (service *BaseService) SetAuthManager(mgr *auth.AuthManager) {
+func (service *BaseService) SetAuthManager(mgr auth.AuthManager) {
 	service.AuthManager = mgr
 }

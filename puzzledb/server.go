@@ -53,7 +53,7 @@ import (
 type Server struct {
 	actor *actor.Service
 	Config
-	*auth.AuthManager
+	auth.AuthManager
 	*PluginManager
 	cluster.Node
 	pprofStarted bool
