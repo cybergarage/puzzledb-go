@@ -29,6 +29,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	auth_service "github.com/cybergarage/puzzledb-go/puzzledb/plugins/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
@@ -253,13 +254,34 @@ func (server *Server) setupPlugins() error {
 	return nil
 }
 
-func (server *Server) setupAuthenticators() error {
+func (server *Server) setupAuthenticators(config Config) error {
 	// Setup authenticators
+	acConfigs, err := auth.NewConfigWith(config, ConfigAuth)
+	if err != nil {
+		return err
+	}
 
-	for _, service := range server.EnabledAuthenticatorServices() {
-		_, ok := service.(auth.Authenticator)
-		if !ok {
-			return plugins.NewErrInvalidService(service)
+	for _, acConfig := range acConfigs {
+		if !acConfig.Enabled {
+			continue
+		}
+		acType, err := auth.AuthenticatorTypeFromString(acConfig.Type)
+		if err != nil {
+			return err
+		}
+		for _, service := range server.EnabledAuthenticatorServices() {
+			switch acType {
+			case auth.AuthenticatorTypePassword:
+				service, ok := service.(auth_service.PasswordAuthenticatorService)
+				if !ok {
+					continue
+				}
+				ac, err := service.NewPasswordAuthenticatorWithConfig(acConfig)
+				if err != nil {
+					return err
+				}
+				server.AddAuthenticator(ac)
+			}
 		}
 	}
 
@@ -320,7 +342,7 @@ func (server *Server) Start() error { //nolint:gocognit
 		return err
 	}
 
-	if err := server.setupAuthenticators(); err != nil {
+	if err := server.setupAuthenticators(server.Config); err != nil {
 		return err
 	}
 
