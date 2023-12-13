@@ -14,25 +14,10 @@
 
 package auth
 
-// AuthManager represent an authenticator manager.
-type AuthManager struct {
-	authenticators []Authenticator
-}
-
-// NewAuthManager returns a new authenticator manager.
-func NewAuthManager() *AuthManager {
-	manager := &AuthManager{
-		authenticators: make([]Authenticator, 0),
-	}
-	return manager
-}
-
-// AddAuthenticator adds a new authenticator.
-func (mgr *AuthManager) AddAuthenticator(authenticator Authenticator) {
-	mgr.authenticators = append(mgr.authenticators, authenticator)
-}
-
-// ClearAuthenticators clears all authenticators.
-func (mgr *AuthManager) ClearAuthenticators() {
-	mgr.authenticators = make([]Authenticator, 0)
+// AuthManager represent an authenticator manager interface.
+type AuthManager interface {
+	// AddAuthenticator adds a new authenticator.
+	AddAuthenticator(authenticator Authenticator)
+	// ClearAuthenticators clears all authenticators.
+	ClearAuthenticators()
 }
