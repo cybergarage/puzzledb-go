@@ -20,6 +20,6 @@ type Authenticator interface {
 
 // PasswordAuthenticator is an interface for password authenticator.
 type PasswordAuthenticator interface {
-	// Authenticate authenticates the user with the given credentials.
-	Authenticate(conn Conn, username string, password string) (bool, error)
+	// AuthenticatePassword authenticates a user with a password.
+	AuthenticatePassword(conn Conn, username string, password string) (bool, error)
 }

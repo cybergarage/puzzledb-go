@@ -36,3 +36,19 @@ func (mgr *authManagerImpl) AddAuthenticator(authenticator Authenticator) {
 func (mgr *authManagerImpl) ClearAuthenticators() {
 	mgr.authenticators = make([]Authenticator, 0)
 }
+
+// AuthenticatePassword authenticates a user with a password.
+func (mgr *authManagerImpl) AuthenticatePassword(conn Conn, username string, password string) (bool, error) {
+	for _, authenticator := range mgr.authenticators {
+		if passwordAuthenticator, ok := authenticator.(PasswordAuthenticator); ok {
+			ok, err := passwordAuthenticator.AuthenticatePassword(conn, username, password)
+			if err != nil {
+				return false, err
+			}
+			if ok {
+				return true, nil
+			}
+		}
+	}
+	return false, nil
+}
