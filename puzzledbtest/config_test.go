@@ -18,6 +18,7 @@ import (
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb"
+	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 )
 
 func TestConfig(t *testing.T) {
@@ -50,6 +51,37 @@ func TestConfig(t *testing.T) {
 				if portNum != port.expected {
 					t.Errorf("expected port number is %d but got %d", port.expected, portNum)
 					return
+				}
+			}
+		})
+	}
+}
+
+func TestAuthConfig(t *testing.T) {
+	paths := []string{"."}
+	for _, path := range paths {
+		t.Run(path, func(t *testing.T) {
+			conf, err := puzzledb.NewConfigWithPath(path)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			aconfs, err := auth.NewConfigWith(conf, puzzledb.ConfigAuth)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			if len(aconfs) < 1 {
+				t.Errorf("no auth config (%s)", path)
+				return
+			}
+
+			for _, aconf := range aconfs {
+				_, err := auth.AuthenticatorTypeFromString(aconf.Type)
+				if err != nil {
+					t.Error(err)
 				}
 			}
 		})
