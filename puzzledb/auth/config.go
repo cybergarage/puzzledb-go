@@ -15,8 +15,25 @@
 package auth
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
+	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
 // Config represents a configuration for authenticator.
-type Config = auth.Config
+type Config struct {
+	Type     string `mapstructure:"type"`
+	Enabled  bool   `mapstructure:"enabled"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
+}
+
+// NewConfig returns a new configuration for authenticator.
+func NewConfig() *Config {
+	return &Config{}
+}
+
+// NewConfigWith returns a new configuration for authenticator with the specified configuration.
+func NewConfigWith(config config.Config, path ...string) ([]Config, error) {
+	var configs []Config
+	err := config.UnmarshallConfig(path, &configs)
+	return configs, err
+}
