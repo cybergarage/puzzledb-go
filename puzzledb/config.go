@@ -32,8 +32,10 @@ const (
 	ConfigLogger  = "logger"
 	ConfigDefault = "default"
 	ConfigLevel   = "level"
+	ConfigAuth    = "auth"
 )
 
+// Config represents a configuration interface for PuzzleDB.
 type Config interface {
 	config.Config
 }
