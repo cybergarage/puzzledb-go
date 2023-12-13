@@ -5,8 +5,8 @@ pprof:
   enabled: true
   port: 6060
 auth:
-  - type: passwd
-    enabled: true
+  - type: password
+    enabled: false
     user: admin
     password: password
 plugins:
