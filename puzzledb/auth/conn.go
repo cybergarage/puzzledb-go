@@ -14,6 +14,12 @@
 
 package auth
 
+import (
+	"net"
+)
+
 // Conn is an interface for	connections.
 type Conn interface {
+	// RemoteAddr returns the remote network address, if known.
+	RemoteAddr() net.Addr
 }
