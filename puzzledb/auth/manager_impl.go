@@ -27,6 +27,11 @@ func NewAuthManager() AuthManager {
 	return manager
 }
 
+// Authenticators returns all authenticators.
+func (mgr *authManagerImpl) Authenticators() []Authenticator {
+	return mgr.authenticators
+}
+
 // AddAuthenticator adds a new authenticator.
 func (mgr *authManagerImpl) AddAuthenticator(authenticator Authenticator) {
 	mgr.authenticators = append(mgr.authenticators, authenticator)
