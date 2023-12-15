@@ -21,5 +21,9 @@ import (
 
 // Authenticate authenticates the connection with the startup message.
 func (service *Service) Authenticate(*postgresql.Conn, *message.Startup) (message.Response, error) {
+	// auths := service.Authenticators()
+	// if len(auths) == 0 {
+	// 	return message.NewAuthenticationOk()
+	// }
 	return message.NewAuthenticationOk()
 }
