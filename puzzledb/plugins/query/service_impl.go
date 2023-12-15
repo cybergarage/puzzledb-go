@@ -179,3 +179,8 @@ func (service *BaseService) Store() store.Store {
 func (service *BaseService) SetAuthManager(mgr auth.AuthManager) {
 	service.AuthManager = mgr
 }
+
+// Authenticators returns all authenticators.
+func (service *BaseService) Authenticators() []auth.Authenticator {
+	return []auth.Authenticator{}
+}
