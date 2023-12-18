@@ -24,6 +24,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// BaseService represent a query base service.
 type BaseService struct {
 	plugins.Config
 	coordinator coordinator.Coordinator
