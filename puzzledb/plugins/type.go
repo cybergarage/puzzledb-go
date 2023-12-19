@@ -60,9 +60,9 @@ func ServiceTypes() []ServiceType {
 		StoreKvService,
 		StoreKvCacheService,
 		CoordinatorService,
+		AuthenticatorService,
 		TracingService,
 		MetricsService,
-		AuthenticatorService,
 		ExtendService,
 	}
 }
