@@ -20,12 +20,6 @@ type AuthManager interface {
 	AddAuthenticator(authenticator Authenticator)
 	// ClearAuthenticators clears all authenticators.
 	ClearAuthenticators()
-	// AuthManagerAuthenticator is an interface for authenticator.
-	AuthManagerAuthenticator
-}
-
-// AuthManagerAuthenticator is an interface for authenticator.
-type AuthManagerAuthenticator interface {
-	// PasswordAuthenticator is an interface for password authenticator.
-	PasswordAuthenticator
+	// AuthenticatePassword authenticates a user with a password.
+	AuthenticatePassword(conn Conn, username string, password string) (bool, error)
 }
