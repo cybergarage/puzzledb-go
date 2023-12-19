@@ -19,14 +19,7 @@ import (
 )
 
 // Service is a password authentication service.
-type Service struct {
-	*auth.BaseService
-}
-
-// NewService returns a new password authentication service.
-func NewService() *Service {
-	server := &Service{
-		BaseService: auth.NewBaseService(),
-	}
-	return server
+type Service interface {
+	auth.Service
+	auth.PasswordAuthenticatorService
 }
