@@ -15,26 +15,17 @@
 package auth
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
-	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 type BaseService struct {
 	plugins.Config
-	coordinator   coordinator.Coordinator
-	store         store.Store
-	authenticator auth.Authenticator
 }
 
 // NewBaseService returns a new query base service.
 func NewBaseService() *BaseService {
 	server := &BaseService{
-		Config:        plugins.NewConfig(),
-		store:         nil,
-		coordinator:   nil,
-		authenticator: nil,
+		Config: plugins.NewConfig(),
 	}
 	return server
 }
