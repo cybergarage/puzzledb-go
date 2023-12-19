@@ -30,6 +30,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	auth_service "github.com/cybergarage/puzzledb-go/puzzledb/plugins/auth"
+	auth_password "github.com/cybergarage/puzzledb-go/puzzledb/plugins/auth/password"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
@@ -115,6 +116,7 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		mysql.NewService(),
 		redis.NewService(),
 		mongo.NewService(),
+		auth_password.NewService(),
 		opentelemetry.NewService(),
 		opentracing.NewService(),
 		prometheus.NewService(),
@@ -255,12 +257,13 @@ func (server *Server) setupPlugins() error {
 }
 
 func (server *Server) setupAuthenticators(config Config) error {
-	// Setup authenticators
+	// Setup authenticator configuration
 	acConfigs, err := auth.NewConfigWith(config, ConfigAuth)
 	if err != nil {
 		return err
 	}
 
+	// Generate authenticators each the configuration
 	for _, acConfig := range acConfigs {
 		if !acConfig.Enabled {
 			continue
@@ -276,7 +279,7 @@ func (server *Server) setupAuthenticators(config Config) error {
 				if !ok {
 					continue
 				}
-				ac, err := service.NewPasswordAuthenticatorWithConfig(acConfig)
+				ac, err := service.CreatePasswordAuthenticatorWithConfig(acConfig)
 				if err != nil {
 					return err
 				}
