@@ -21,11 +21,10 @@ import (
 
 // Service represents a document store service interface.
 type Service interface {
-	auth.Authenticator
 	plugins.Service
 }
 
 // PasswordAuthenticator is an interface for password authenticator.
 type PasswordAuthenticatorService interface {
-	NewPasswordAuthenticatorWithConfig(config Config) (auth.PasswordAuthenticator, error)
+	CreatePasswordAuthenticatorWithConfig(config Config) (auth.PasswordAuthenticator, error)
 }
