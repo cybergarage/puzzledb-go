@@ -20,10 +20,43 @@ import (
 )
 
 // Authenticate authenticates the connection with the startup message.
-func (service *Service) Authenticate(*postgresql.Conn, *message.Startup) (message.Response, error) {
+func (service *Service) Authenticate(conn *postgresql.Conn, startupMessage *message.Startup) (message.Response, error) {
 	auths := service.Authenticators()
 	if len(auths) == 0 {
 		return message.NewAuthenticationOk()
 	}
+	for _, auth := range auths {
+		if passwordAuth, ok := auth.(postgresql.PasswordAuthenticator); ok {
+			return passwordAuth.Authenticate()
+		}
+	}
 	return message.NewAuthenticationOk()
+}
+
+func (service *Service) authenticateCleartextPassword(conn *postgresql.Conn, startupMessage *message.Startup) (bool, error) {
+	/*clientUsername*/ _, ok := startupMessage.User()
+	if !ok {
+		return false, nil
+	}
+	/*
+		if clientUsername != authenticator.username {
+			return false, nil
+		}
+		authMsg, err := message.NewAuthenticationCleartextPassword()
+		if err != nil {
+			return false, err
+		}
+		err = conn.ResponseMessage(authMsg)
+		if err != nil {
+			return false, err
+		}
+		msg, err := message.NewPasswordWithReader(conn.MessageReader())
+		if err != nil {
+			return false, err
+		}
+		if msg.Password != authenticator.password {
+			return false, nil
+		}
+	*/
+	return true, nil
 }
