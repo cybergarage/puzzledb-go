@@ -16,47 +16,40 @@ package postgresql
 
 import (
 	"github.com/cybergarage/go-postgresql/postgresql"
+	pgauth "github.com/cybergarage/go-postgresql/postgresql/auth"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
+	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 )
 
 // Authenticate authenticates the connection with the startup message.
 func (service *Service) Authenticate(conn *postgresql.Conn, startupMessage *message.Startup) (message.Response, error) {
-	auths := service.Authenticators()
-	if len(auths) == 0 {
+	authcators := service.Authenticators()
+	if len(authcators) == 0 {
 		return message.NewAuthenticationOk()
 	}
-	for _, auth := range auths {
-		if passwordAuth, ok := auth.(postgresql.PasswordAuthenticator); ok {
-			return passwordAuth.Authenticate()
+	var lastErr error
+	for _, authcator := range authcators {
+		if authcator, ok := authcator.(auth.PasswordAuthenticator); ok {
+			ok, err := service.authenticateCleartextPassword(conn, startupMessage, authcator)
+			if err != nil {
+				lastErr = err
+				continue
+			}
+			if ok {
+				return message.NewAuthenticationOk()
+			}
 		}
 	}
-	return message.NewAuthenticationOk()
+	return nil, lastErr
 }
 
-func (service *Service) authenticateCleartextPassword(conn *postgresql.Conn, startupMessage *message.Startup) (bool, error) {
-	/*clientUsername*/ _, ok := startupMessage.User()
-	if !ok {
-		return false, nil
+func (service *Service) authenticateCleartextPassword(conn *postgresql.Conn, startupMessage *message.Startup, authcator auth.PasswordAuthenticator) (bool, error) {
+	pgAuthenticator := pgauth.NewCleartextPasswordAuthenticatorWith(
+		authcator.User(),
+		authcator.Password())
+	ok, err := pgAuthenticator.Authenticate(conn, startupMessage)
+	if err != nil {
+		return false, err
 	}
-	/*
-		if clientUsername != authenticator.username {
-			return false, nil
-		}
-		authMsg, err := message.NewAuthenticationCleartextPassword()
-		if err != nil {
-			return false, err
-		}
-		err = conn.ResponseMessage(authMsg)
-		if err != nil {
-			return false, err
-		}
-		msg, err := message.NewPasswordWithReader(conn.MessageReader())
-		if err != nil {
-			return false, err
-		}
-		if msg.Password != authenticator.password {
-			return false, nil
-		}
-	*/
-	return true, nil
+	return ok, nil
 }
