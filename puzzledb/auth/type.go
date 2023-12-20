@@ -14,10 +14,12 @@
 
 package auth
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // AuthenticatorType represents an authenticator type.
-type AuthenticatorType = int
+type AuthenticatorType int
 
 const (
 	// AuthenticatorTypeNone represents an authenticator type of none.
@@ -38,4 +40,13 @@ func AuthenticatorTypeFromString(str string) (AuthenticatorType, error) {
 		return AuthenticatorTypePassword, nil
 	}
 	return AuthenticatorTypeNone, fmt.Errorf("unknown authenticator type: %s", str)
+}
+
+// String returns a string representation of the authenticator type.
+func (t AuthenticatorType) String() string {
+	switch t {
+	case AuthenticatorTypePassword:
+		return AuthenticatorTypePasswordString
+	}
+	return ""
 }
