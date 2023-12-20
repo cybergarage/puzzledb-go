@@ -79,7 +79,7 @@ func TestAuthConfig(t *testing.T) {
 			}
 
 			for _, aconf := range aconfs {
-				_, err := auth.AuthenticatorTypeFromString(aconf.Type)
+				_, err := auth.NewAuthenticatorTypeFrom(aconf.Type)
 				if err != nil {
 					t.Error(err)
 				}

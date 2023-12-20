@@ -268,7 +268,7 @@ func (server *Server) setupAuthenticators(config Config) error {
 		if !acConfig.Enabled {
 			continue
 		}
-		acType, err := auth.AuthenticatorTypeFromString(acConfig.Type)
+		acType, err := auth.NewAuthenticatorTypeFrom(acConfig.Type)
 		if err != nil {
 			return err
 		}

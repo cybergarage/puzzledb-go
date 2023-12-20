@@ -33,8 +33,8 @@ const (
 	AuthenticatorTypePasswordString = "password"
 )
 
-// AuthenticatorTypeFromString returns an authenticator type from the specified string.
-func AuthenticatorTypeFromString(str string) (AuthenticatorType, error) {
+// NewAuthenticatorTypeFrom returns an authenticator type from the specified string.
+func NewAuthenticatorTypeFrom(str string) (AuthenticatorType, error) {
 	switch str {
 	case AuthenticatorTypePasswordString:
 		return AuthenticatorTypePassword, nil
