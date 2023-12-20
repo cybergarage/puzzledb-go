@@ -273,7 +273,7 @@ func (server *Server) setupAuthenticators(config Config) error {
 			return err
 		}
 		for _, service := range server.EnabledAuthenticatorServices() {
-			switch acType {
+			switch acType { // nolint:exhaustive,gocritic
 			case auth.AuthenticatorTypePassword:
 				service, ok := service.(auth_service.PasswordAuthenticatorService)
 				if !ok {
