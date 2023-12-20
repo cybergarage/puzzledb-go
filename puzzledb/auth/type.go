@@ -35,11 +35,11 @@ const (
 
 // NewAuthenticatorTypeFrom returns an authenticator type from the specified string.
 func NewAuthenticatorTypeFrom(str string) (AuthenticatorType, error) {
-	switch str {
+	switch str { // nolint:gocritic
 	case AuthenticatorTypePasswordString:
 		return AuthenticatorTypePassword, nil
 	}
-	return AuthenticatorTypeNone, fmt.Errorf("unknown authenticator type: %s", str)
+	return AuthenticatorTypeNone, fmt.Errorf("%w authenticator type: %s", ErrInvalid, str)
 }
 
 // String returns a string representation of the authenticator type.
@@ -47,6 +47,8 @@ func (t AuthenticatorType) String() string {
 	switch t {
 	case AuthenticatorTypePassword:
 		return AuthenticatorTypePasswordString
+	case AuthenticatorTypeNone:
+		return ""
 	}
 	return ""
 }
