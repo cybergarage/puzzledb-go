@@ -52,5 +52,4 @@ func (authenticator *PasswordAuthenticator) AuthenticatePassword(conn auth.Conn,
 		return false, nil
 	}
 	return true, nil
-
 }
