@@ -12,21 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package redis
+package auth
 
 import (
-	"github.com/cybergarage/go-redis/redis"
-	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
+	"errors"
+	"fmt"
 )
 
-// Auth authenticates a client.
-func (service *Service) Auth(conn *Conn, username string, password string) (*Message, error) {
-	ok, err := service.AuthenticatePassword(conn, username, password)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, auth.NewErrInvalidUserPassword()
-	}
-	return redis.NewOKMessage(), nil
+var (
+	ErrInvalid        = errors.New("invalid")
+	ErrAuthentication = errors.New("authentication failed")
+)
+
+// NewErrInvalidUserPassword returns an error for invalid username or password.
+func NewErrInvalidUserPassword() error {
+	return fmt.Errorf("%w: invalid username or password", ErrAuthentication)
 }
