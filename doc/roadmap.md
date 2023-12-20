@@ -1,10 +1,12 @@
-# Roadmap
+Roadmap
+=======
 
 PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
 
 ![doc/img/roadmap](img/roadmap.png)
 
-## v2.0.0
+v2.0.0
+------
 
 -   New features
 
@@ -20,79 +22,92 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Security plug-ins
 
-        -   ❏ Added Authenticator plug-ins
-
         -   ❏ Added Audit plug-ins
 
         -   ❏ Added Encrypt plug-ins
 
-## v1.4.x
+v1.4.x
+------
 
--   New plug-ins
+-   New features
 
-    -   Storage plug-ins
+    -   New plug-ins
 
-        -   ❏ Added JunoDB plug-in
+        -   Storage plug-ins
 
-        -   ❏ Added TiKV plug-in
+            -   ❏ Added JunoDB plug-in
 
-    -   Coordinator plug-ins
+            -   ❏ Added TiKV plug-in
 
-        -   ❏ Added etcd plug-in
+        -   Coordinator plug-ins
 
-    -   Metrics plug-ins
+            -   ❏ Added etcd plug-in
 
-        -   ❏ Added Graphite plug-in
+        -   Metrics plug-ins
 
-    -   Distributed Tracer plug-ins
+            -   ❏ Added Graphite plug-in
 
-        -   ❏ Added OpenTracing plug-in
+    -   Kubernetes features
 
--   Kubernetes features
-
-    -   ❏ Operator
+        -   ❏ Operator
 
 -   Improvements
 
--   Plug-in improvements
+    -   Plug-in improvements
 
-    -   Query plug-ins
+        -   Query plug-ins
 
-        -   MySQL plug-in
+            -   MySQL plug-in
 
-            -   Supported queries
+                -   Supported queries
 
-                -   ❏ ALTER TABLE
+                    -   ❏ ALTER TABLE
 
-                -   ❏ CREATE INDEX
+                    -   ❏ CREATE INDEX
 
-                -   ❏ LIMIT and ORDER BY in SELECT queries
+                    -   ❏ LIMIT and ORDER BY in SELECT queries
 
-        -   MongoDB plug-in
+            -   MongoDB plug-in
 
-            -   Supported queries
+                -   Supported queries
 
-                -   ❏ createIndex (Only single field and Comound indexes)
+                    -   ❏ createIndex (Only single field and Comound indexes)
 
-            -   Disabled features
+                -   Disabled features
 
-                -   ❏ Auto Indexing
+                    -   ❏ Auto Indexing
 
-        -   Redis plug-in
+            -   Redis plug-in
 
-            -   Supported queries
+                -   Supported queries
 
-                -   ❏ HASH commands
+                    -   ❏ HASH commands
 
-## v1.3.0
+v1.3.0 (2023-12-XX)
+-------------------
 
 -   New features
 
     -   Security plug-ins
 
-        -   ❏ Added Authenticator plug-ins
+        -   ✓ Added authenticator plug-ins
 
-## v1.2.0 (2023-11-15)
+            -   ✓ Added clear text password plug-ins
+
+                -   ✓ Supported PostgreSQL plug-in
+
+                -   ❏ Supported MySQL plug-in
+
+                -   ✓ Supported Redis plug-in
+
+                -   ❏ Supported MongoDB plug-in
+
+-   Improvements
+
+    -   Updated storage format
+
+v1.2.0 (2023-11-15)
+-------------------
 
 -   New features
 
@@ -106,13 +121,13 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Redis plug-in
 
-        -   ✓ Support new commands
+        -   Support new commands
 
-            -   DEL and EXISTS
+            -   ✓ DEL and EXISTS
 
 -   Improvements
 
-    -   ✓ Updated to set service metrics to prometheus
+    -   Updated to set service metrics to prometheus
 
         -   Query plug-ins
 
@@ -130,59 +145,65 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ✓ Fixed to run pgbench on Ubuntu platforms
 
-## v1.1.0 (2023-10-20)
+v1.1.0 (2023-10-20)
+-------------------
 
--   New features \*\*Query plug-ins
+-   New features
 
-    -   MySQL plug-in
+    -   Query plug-ins
 
-    -   ✓ Support transaction control statements
+        -   MySQL plug-in
 
-        -   BEGIN, COMMIT and ROLLBACK
+            -   Support transaction control statements
 
-    -   PostgreSQL plug-in
+                -   ✓ BEGIN, COMMIT and ROLLBACK
 
-    -   ✓ Support transaction control statements
+        -   PostgreSQL plug-in
 
-        -   BEGIN, COMMIT and ROLLBACK **\*\[**\] Enable pprof
+            -   Support transaction control statements
+
+                -   ✓ BEGIN, COMMIT and ROLLBACK
+
+    -   ✓ Enable pprof
 
 -   Improvements
 
     -   PostgreSQL plug-in
 
-        -   ✓ Supported basic aggregate functions
+        -   Supported basic aggregate functions
 
-            -   COUNT, SUM, AVG, MIN and MAX
+            -   ✓ COUNT, SUM, AVG, MIN and MAX
 
-        -   ✓ Supported basic math functions
+        -   Supported basic math functions
 
-            -   ABS, CEIL and FLOOR
+            -   ✓ ABS, CEIL and FLOOR
 
-        -   ✓ Supported new data types
+        -   Supported new data types
 
-            -   TIMESTAMP
+            -   ✓ TIMESTAMP
 
-        -   ✓ Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+        -   Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
 
         -   ✓ Enabled PICT based scenario tests of go-sqltest
 
-        -   ✓ Supported new statements
+        -   Supported new statements
 
-            -   TRUNCATE, VACCUM and COPY
+            -   ✓ TRUNCATE, VACCUM and COPY
 
-        -   ✓ Supported pgbench workload
+        -   Supported pgbench workload
 
     -   MySQL plug-in
 
-        -   ✓ Supported new data types
+        -   Supported new data types
 
-            -   DATETIME and TIMESTAMP
+            -   ✓ DATETIME and TIMESTAMP
 
-        -   ✓ Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+        -   Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
 
-        -   ✓ Enabled PICT based scenario tests of go-sqltest
+        -   Enabled PICT based scenario tests of go-sqltest
 
-## v1.0.0 (2023-08-30)
+v1.0.0 (2023-08-30)
+-------------------
 
 -   New plug-ins
 
@@ -226,7 +247,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
             -   ✓ Support limit and order options in Range queries based on key-value Store plug-ins
 
-## v0.9.0 (2023-05-07)
+v0.9.0 (2023-05-07)
+-------------------
 
 -   New features
 
@@ -256,6 +278,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ✓ Added OpenTelemetry plug-in
 
+        -   ✓ Added OpenTracing plug-in
+
 -   Plug-in improvements
 
     -   Coder plug-ins
@@ -276,7 +300,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
                 -   ✓ DROP TABLE
 
-## v0.8.0 (2023-04-10)
+v0.8.0 (2023-04-10)
+-------------------
 
 -   Initial public release
 
