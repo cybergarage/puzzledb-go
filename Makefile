@@ -187,8 +187,7 @@ doc_touch: $(csvs)
 	touch doc/*.adoc doc/*/*.adoc
 
 doc: doc_touch $(docs) cmd_docs
-	@mv README_.md README.md
-	@sed -i '' -e "s/(img\//(doc\/img\//g" README.md
+	@sed -e "s/(img\//(doc\/img\//g" README_.md > README.md && rm README_.md
 
 #
 # Protos
