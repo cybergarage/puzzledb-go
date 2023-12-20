@@ -45,3 +45,14 @@ O:Supported, X:Unsupported, -:Not yes supported
 * https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html[MySQL: Authentication Methods]
 ** https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html#page_protocol_connection_phase_authentication_methods_old_password_authentication[MySQL: Old Password Authentication]
 ** https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods_native_password_authentication.html[MySQL: Native Password Authentication]
+
+== MongoDB
+
+* https://www.mongodb.com/docs/manual/security/[Security — MongoDB Manual]
+** https://www.mongodb.com/docs/manual/core/authentication/[Authentication — MongoDB Manual]
+** https://www.mongodb.com/docs/atlas/security/config-db-auth/[Configure Database User Authentication — MongoDB Atlas]
+
+== Redis
+
+* https://redis.io/docs/management/security/[Security – Redis]
+** https://redis.io/commands/auth/[AUTH | Redis]

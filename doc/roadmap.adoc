@@ -14,44 +14,49 @@ image:img/roadmap.png[doc/img/roadmap]
 ** Enterprise plug-ins
 *** [ ] Added QoS plug-ins
 ** Security plug-ins
-*** [ ] Added Authenticator plug-ins
 *** [ ] Added Audit plug-ins
 *** [ ] Added Encrypt plug-ins
 
 == v1.4.x
-* New plug-ins
-** Storage plug-ins
-*** [ ] Added JunoDB plug-in
-*** [ ] Added TiKV plug-in
-** Coordinator plug-ins
-*** [ ] Added etcd plug-in
-** Metrics plug-ins
-*** [ ] Added Graphite plug-in
-** Distributed Tracer plug-ins
-*** [ ] Added OpenTracing plug-in
-* Kubernetes features
-** [ ] Operator
+* New features
+** New plug-ins
+*** Storage plug-ins
+**** [ ] Added JunoDB plug-in
+**** [ ] Added TiKV plug-in
+*** Coordinator plug-ins
+**** [ ] Added etcd plug-in
+*** Metrics plug-ins
+**** [ ] Added Graphite plug-in
+** Kubernetes features
+*** [ ] Operator
 * Improvements
-* Plug-in improvements
-** Query plug-ins
-*** MySQL plug-in
-**** Supported queries
-***** [ ] ALTER TABLE
-***** [ ] CREATE INDEX
-***** [ ] LIMIT and ORDER BY in SELECT queries
-*** MongoDB plug-in
-**** Supported queries
-***** [ ] createIndex (Only single field and Comound indexes)
-**** Disabled features
-***** [ ] Auto Indexing
-*** Redis plug-in
-**** Supported queries
-***** [ ] HASH commands
+** Plug-in improvements
+*** Query plug-ins
+**** MySQL plug-in
+***** Supported queries
+****** [ ] ALTER TABLE
+****** [ ] CREATE INDEX
+****** [ ] LIMIT and ORDER BY in SELECT queries
+**** MongoDB plug-in
+***** Supported queries
+****** [ ] createIndex (Only single field and Comound indexes)
+***** Disabled features
+****** [ ] Auto Indexing
+**** Redis plug-in
+***** Supported queries
+****** [ ] HASH commands
 
-== v1.3.0
+== v1.3.0 (2023-12-XX)
 * New features
 ** Security plug-ins
-*** [ ] Added Authenticator plug-ins
+*** [*] Added authenticator plug-ins
+**** [*] Added clear text password plug-ins
+***** [*] Supported PostgreSQL plug-in
+***** [ ] Supported MySQL plug-in
+***** [*] Supported Redis plug-in
+***** [ ] Supported MongoDB plug-in
+* Improvements
+** Updated storage format
 
 == v1.2.0 (2023-11-15)
 * New features
@@ -60,10 +65,10 @@ image:img/roadmap.png[doc/img/roadmap]
 **** Enabled cache store plug-in (ristretto) as default
 * Updates
 ** Redis plug-in
-*** [*] Support new commands
-**** DEL and EXISTS
+*** Support new commands
+**** [*] DEL and EXISTS
 * Improvements
-** [*] Updated to set service metrics to prometheus
+** Updated to set service metrics to prometheus
 *** Query plug-ins
 **** PostgreSQL, MySQL, Redis and Mongo
 *** Storage plug-ins
@@ -75,32 +80,32 @@ image:img/roadmap.png[doc/img/roadmap]
 
 == v1.1.0 (2023-10-20)
 * New features
-**Query plug-ins
+** Query plug-ins
 *** MySQL plug-in
-*** [*] Support transaction control statements
-**** BEGIN, COMMIT and ROLLBACK
+**** Support transaction control statements
+***** [*] BEGIN, COMMIT and ROLLBACK
 *** PostgreSQL plug-in
-*** [*] Support transaction control statements
-**** BEGIN, COMMIT and ROLLBACK
-**[*] Enable pprof
+**** Support transaction control statements
+***** [*] BEGIN, COMMIT and ROLLBACK
+** [*] Enable pprof
 * Improvements
 ** PostgreSQL plug-in
-*** [*] Supported basic aggregate functions
-**** COUNT, SUM, AVG, MIN and MAX
-*** [*] Supported basic math functions
-**** ABS, CEIL and FLOOR
-*** [*] Supported new data types
-**** TIMESTAMP
-*** [*] Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+*** Supported basic aggregate functions
+**** [*] COUNT, SUM, AVG, MIN and MAX
+*** Supported basic math functions
+**** [*] ABS, CEIL and FLOOR
+*** Supported new data types
+**** [*] TIMESTAMP
+*** Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
 *** [*] Enabled PICT based scenario tests of go-sqltest
-*** [*] Supported new statements
-**** TRUNCATE, VACCUM and COPY
-*** [*] Supported pgbench workload
+*** Supported new statements
+**** [*] TRUNCATE, VACCUM and COPY
+*** Supported pgbench workload
 ** MySQL plug-in
-*** [*] Supported new data types
-**** DATETIME and TIMESTAMP
-*** [*] Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
-*** [*] Enabled PICT based scenario tests of go-sqltest
+*** Supported new data types
+**** [*] DATETIME and TIMESTAMP
+*** Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+*** Enabled PICT based scenario tests of go-sqltest
 
 == v1.0.0 (2023-08-30)
 * New plug-ins
@@ -140,6 +145,7 @@ image:img/roadmap.png[doc/img/roadmap]
 *** [*] Added memdb plug-in
 ** Distributed tracer plug-ins
 *** [*] Added OpenTelemetry plug-in
+*** [*] Added OpenTracing plug-in
 * Plug-in improvements
 ** Coder plug-ins
 *** Key coder plug-ins
