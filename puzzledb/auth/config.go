@@ -26,11 +26,6 @@ type Config struct {
 	Password string `mapstructure:"password"`
 }
 
-// NewConfig returns a new configuration for authenticator.
-func NewConfig() *Config {
-	return &Config{}
-}
-
 // NewConfigWith returns a new configuration for authenticator with the specified configuration.
 func NewConfigWith(config config.Config, path ...string) ([]Config, error) {
 	var configs []Config
