@@ -42,6 +42,10 @@ func TestRedisService(t *testing.T) {
 		redistest.ConnectionCommandTest(t, client)
 	})
 
+	t.Run("Hash", func(t *testing.T) {
+		redistest.HashCommandTest(t, client)
+	})
+
 	t.Run("SET", func(t *testing.T) {
 		records := []struct {
 			key      string
