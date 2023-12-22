@@ -15,7 +15,6 @@
 package redis
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/cybergarage/go-redis/redis"
@@ -111,92 +110,6 @@ func (service *Service) Type(conn *Conn, key string) (*Message, error) {
 
 func (service *Service) TTL(conn *Conn, key string) (*Message, error) {
 	return nil, newErrNotSupported("TTL")
-}
-
-func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOption) (*Message, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Set")
-	defer ctx.FinishSpan()
-	now := time.Now()
-
-	db, err := service.GetDatabase(ctx, conn.Database())
-	if err != nil {
-		return nil, err
-	}
-
-	txn, err := db.Transact(true)
-	if err != nil {
-		return nil, err
-	}
-
-	err = txn.InsertDocument(ctx, []any{key}, val)
-	if err != nil {
-		err = txn.Cancel(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	mSetLatency.Observe(float64(time.Since(now).Milliseconds()))
-
-	return redis.NewOKMessage(), nil
-}
-
-func (service *Service) Get(conn *Conn, key string) (*Message, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Get")
-	defer ctx.FinishSpan()
-	now := time.Now()
-
-	db, err := service.GetDatabase(ctx, conn.Database())
-	if err != nil {
-		return nil, err
-	}
-
-	txn, err := db.Transact(false)
-	if err != nil {
-		return nil, err
-	}
-	rs, err := txn.FindDocuments(ctx, []any{key})
-	if err != nil {
-		err = txn.Cancel(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	objs := rs.Objects()
-	if err != nil || len(objs) != 1 {
-		err = txn.Cancel(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	err = txn.Commit(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	mGetLatency.Observe(float64(time.Since(now).Milliseconds()))
-
-	obj := objs[0]
-	switch v := obj.(type) {
-	case string:
-		return redis.NewBulkMessage(v), nil
-	case []byte:
-		return redis.NewBulkMessage(string(v)), nil
-	default:
-		return redis.NewBulkMessage(fmt.Sprintf("%v", v)), nil
-	}
 }
 
 func (service *Service) HDel(conn *Conn, key string, fields []string) (*Message, error) {
