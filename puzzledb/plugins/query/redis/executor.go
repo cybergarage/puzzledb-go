@@ -112,22 +112,6 @@ func (service *Service) TTL(conn *Conn, key string) (*Message, error) {
 	return nil, newErrNotSupported("TTL")
 }
 
-func (service *Service) HDel(conn *Conn, key string, fields []string) (*Message, error) {
-	return nil, newErrNotSupported("HDel")
-}
-
-func (service *Service) HSet(conn *Conn, key string, field string, val string, opt redis.HSetOption) (*Message, error) {
-	return nil, newErrNotSupported("HSet")
-}
-
-func (service *Service) HGet(conn *Conn, key string, field string) (*Message, error) {
-	return nil, newErrNotSupported("HGet")
-}
-
-func (service *Service) HGetAll(conn *Conn, key string) (*Message, error) {
-	return nil, newErrNotSupported("HGetAll")
-}
-
 func (service *Service) LPush(conn *Conn, key string, elements []string, opt redis.PushOption) (*Message, error) {
 	return nil, newErrNotSupported("LPush")
 }
