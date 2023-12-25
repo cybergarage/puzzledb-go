@@ -15,13 +15,9 @@
 package redis
 
 import (
-	"strconv"
-
 	"github.com/cybergarage/go-redis/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
-	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Service represents a new Redis service instance.
@@ -49,21 +45,6 @@ func (service *Service) SetConfig(conf config.Config) {
 // ServiceName returns the plug-in service name.
 func (service *Service) ServiceName() string {
 	return "redis"
-}
-
-// GetDatabase returns the database with the specified ID.
-func (service *Service) GetDatabase(ctx context.Context, id int) (store.Database, error) {
-	store := service.Store()
-	name := strconv.Itoa(id)
-	db, err := store.GetDatabase(ctx, name)
-	if err == nil {
-		return db, nil
-	}
-	err = store.CreateDatabase(ctx, name)
-	if err != nil {
-		return nil, err
-	}
-	return store.GetDatabase(ctx, name)
 }
 
 // Start starts the service.

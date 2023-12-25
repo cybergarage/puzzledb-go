@@ -30,19 +30,15 @@ func (service *Service) Del(conn *Conn, keys []string) (*Message, error) {
 	defer ctx.FinishSpan()
 	now := time.Now()
 
-	db, err := service.GetDatabase(ctx, conn.Database())
-	if err != nil {
-		return nil, err
-	}
-
-	txn, err := db.Transact(true)
+	txn, err := service.TransactDatabase(ctx, conn, true)
 	if err != nil {
 		return nil, err
 	}
 
 	removedCount := 0
 	for _, key := range keys {
-		err := txn.RemoveDocument(ctx, []any{key})
+		docKey := NewDocumentKeyWith(txn.DatabaseID, key)
+		err := txn.RemoveDocument(ctx, docKey)
 		if err == nil {
 			removedCount++
 		}
@@ -63,19 +59,15 @@ func (service *Service) Exists(conn *Conn, keys []string) (*Message, error) {
 	ctx.StartSpan("Exists")
 	defer ctx.FinishSpan()
 
-	db, err := service.GetDatabase(ctx, conn.Database())
-	if err != nil {
-		return nil, err
-	}
-
-	txn, err := db.Transact(false)
+	txn, err := service.TransactDatabase(ctx, conn, false)
 	if err != nil {
 		return nil, err
 	}
 
 	existCount := 0
 	for _, key := range keys {
-		rs, err := txn.FindDocuments(ctx, []any{key})
+		docKey := NewDocumentKeyWith(txn.DatabaseID, key)
+		rs, err := txn.FindDocuments(ctx, docKey)
 		if err != nil {
 			return nil, err
 		}

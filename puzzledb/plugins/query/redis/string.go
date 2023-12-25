@@ -28,23 +28,14 @@ func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOpt
 	defer ctx.FinishSpan()
 	now := time.Now()
 
-	db, err := service.GetDatabase(ctx, conn.Database())
+	txn, err := service.TransactDatabase(ctx, conn, true)
 	if err != nil {
 		return nil, err
 	}
 
-	txn, err := db.Transact(true)
+	err = txn.SetObject(ctx, key, val)
 	if err != nil {
-		return nil, err
-	}
-
-	err = txn.InsertDocument(ctx, []any{key}, val)
-	if err != nil {
-		err = txn.Cancel(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
+		return nil, txn.CancelWithError(ctx, err)
 	}
 
 	err = txn.Commit(ctx)
@@ -63,31 +54,14 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 	defer ctx.FinishSpan()
 	now := time.Now()
 
-	db, err := service.GetDatabase(ctx, conn.Database())
+	txn, err := service.TransactDatabase(ctx, conn, false)
 	if err != nil {
 		return nil, err
 	}
 
-	txn, err := db.Transact(false)
+	obj, err := txn.GetObject(ctx, key)
 	if err != nil {
-		return nil, err
-	}
-	rs, err := txn.FindDocuments(ctx, []any{key})
-	if err != nil {
-		err = txn.Cancel(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	objs := rs.Objects()
-	if err != nil || len(objs) != 1 {
-		err = txn.Cancel(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
+		return nil, txn.CancelWithError(ctx, err)
 	}
 
 	err = txn.Commit(ctx)
@@ -97,7 +71,6 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 
 	mGetLatency.Observe(float64(time.Since(now).Milliseconds()))
 
-	obj := objs[0]
 	switch v := obj.(type) {
 	case string:
 		return redis.NewBulkMessage(v), nil
