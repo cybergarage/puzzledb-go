@@ -19,6 +19,7 @@ import (
 	"fmt"
 )
 
+var ErrInvalid = errors.New("invalid")
 var ErrNotSupported = errors.New("not supported")
 
 func newErrNotSupported(target string) error {
