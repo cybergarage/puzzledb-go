@@ -77,12 +77,6 @@ v1.4.x
 
                     -   ❏ Auto Indexing
 
-            -   Redis plug-in
-
-                -   Supported queries
-
-                    -   ❏ HASH commands
-
 v1.3.0 (2023-12-XX)
 -------------------
 
@@ -103,6 +97,14 @@ v1.3.0 (2023-12-XX)
                 -   ❏ Supported MongoDB plug-in
 
 -   Improvements
+
+    -   Query plug-ins
+
+        -   Redis plug-in
+
+            -   Supported queries
+
+                -   ❏ HASH commands
 
     -   Updated storage format
 

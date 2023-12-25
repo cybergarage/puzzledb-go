@@ -42,9 +42,6 @@ image:img/roadmap.png[doc/img/roadmap]
 ****** [ ] createIndex (Only single field and Comound indexes)
 ***** Disabled features
 ****** [ ] Auto Indexing
-**** Redis plug-in
-***** Supported queries
-****** [ ] HASH commands
 
 == v1.3.0 (2023-12-XX)
 * New features
@@ -56,6 +53,10 @@ image:img/roadmap.png[doc/img/roadmap]
 ***** [*] Supported Redis plug-in
 ***** [ ] Supported MongoDB plug-in
 * Improvements
+** Query plug-ins
+*** Redis plug-in
+**** Supported queries
+***** [ ] HASH commands
 ** Updated storage format
 
 == v1.2.0 (2023-11-15)
