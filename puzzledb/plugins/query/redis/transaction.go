@@ -28,8 +28,8 @@ type Transaction struct {
 	redis.DatabaseID
 }
 
-// SetKeyObjects sets the objects with the specified key.
-func (txn *Transaction) SetObject(ctx context.Context, key string, val any) error {
+// SetKeyObject sets the objects with the specified key.
+func (txn *Transaction) SetKeyObject(ctx context.Context, key string, val any) error {
 	docKey := NewDocumentKeyWith(txn.DatabaseID, key)
 	return txn.InsertDocument(ctx, docKey, val)
 }
@@ -44,8 +44,8 @@ func (txn *Transaction) GetKeyObjects(ctx context.Context, key string) ([]any, e
 	return rs.Objects(), nil
 }
 
-// GetObject returns the object with the specified key.
-func (txn *Transaction) GetObject(ctx context.Context, key string) (any, error) {
+// GetKeyObject returns the object with the specified key.
+func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, error) {
 	docKey := NewDocumentKeyWith(txn.DatabaseID, key)
 	rs, err := txn.FindDocuments(ctx, docKey)
 	if err != nil {
@@ -58,6 +58,19 @@ func (txn *Transaction) GetObject(ctx context.Context, key string) (any, error) 
 	}
 
 	return objs[0], nil
+}
+
+// GetKeyHashObject returns the hash objects with the specified key.
+func (txn *Transaction) GetKeyHashObject(ctx context.Context, key string) (HashObject, error) {
+	obj, err := txn.GetKeyObject(ctx, key)
+	if err != nil {
+		return nil, err
+	}
+	hobj, ok := obj.(HashObject)
+	if !ok {
+		return nil, fmt.Errorf("%w object type (%T)", ErrInvalid, obj)
+	}
+	return hobj, nil
 }
 
 // CancelWithError cancels the transaction with an error.
