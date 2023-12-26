@@ -14,9 +14,5 @@
 
 package redis
 
-import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/document"
-)
-
 // HashObject represents a hash object.
-type HashObject = document.MapObject
+type HashObject map[string]string
