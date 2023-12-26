@@ -22,10 +22,71 @@ import (
 )
 
 func (service *Service) HDel(conn *Conn, key string, fields []string) (*Message, error) {
-	return nil, newErrNotSupported("HDel")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("HDel")
+	defer ctx.FinishSpan()
+	now := time.Now()
+
+	txn, err := service.TransactDatabase(ctx, conn, true)
+	if err != nil {
+		return nil, err
+	}
+
+	obj, err := txn.GetKeyHashObject(ctx, key)
+	if err != nil {
+		return nil, txn.CancelWithError(ctx, err)
+	}
+
+	removedCount := obj.Del(fields)
+
+	err = txn.SetKeyHashObject(ctx, key, obj)
+	if err != nil {
+		return nil, txn.CancelWithError(ctx, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	mHDelLatency.Observe(float64(time.Since(now).Milliseconds()))
+
+	return redis.NewIntegerMessage(removedCount), nil
 }
 
 func (service *Service) HSet(conn *Conn, key string, field string, val string, opt redis.HSetOption) (*Message, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("HSet")
+	defer ctx.FinishSpan()
+	now := time.Now()
+
+	txn, err := service.TransactDatabase(ctx, conn, true)
+	if err != nil {
+		return nil, err
+	}
+
+	obj, err := txn.GetKeyHashObject(ctx, key)
+	if err != nil {
+		return nil, txn.CancelWithError(ctx, err)
+	}
+
+	if obj == nil {
+		obj = HashObject{}
+	}
+	obj[field] = val
+
+	err = txn.SetKeyHashObject(ctx, key, obj)
+	if err != nil {
+		return nil, txn.CancelWithError(ctx, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	mHSetLatency.Observe(float64(time.Since(now).Milliseconds()))
+
 	return nil, newErrNotSupported("HSet")
 }
 
