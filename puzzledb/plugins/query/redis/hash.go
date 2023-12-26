@@ -15,7 +15,10 @@
 package redis
 
 import (
+	"time"
+
 	"github.com/cybergarage/go-redis/redis"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 )
 
 func (service *Service) HDel(conn *Conn, key string, fields []string) (*Message, error) {
@@ -31,5 +34,34 @@ func (service *Service) HGet(conn *Conn, key string, field string) (*Message, er
 }
 
 func (service *Service) HGetAll(conn *Conn, key string) (*Message, error) {
-	return nil, newErrNotSupported("HGetAll")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Get")
+	defer ctx.FinishSpan()
+	now := time.Now()
+
+	txn, err := service.TransactDatabase(ctx, conn, false)
+	if err != nil {
+		return nil, err
+	}
+
+	obj, err := txn.GetKeyHashObject(ctx, key)
+	if err != nil {
+		return nil, txn.CancelWithError(ctx, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	arrayMsg := redis.NewArrayMessage()
+	array, _ := arrayMsg.Array()
+	for key, val := range obj {
+		array.Append(redis.NewBulkMessage(key))
+		array.Append(redis.NewBulkMessage(val))
+	}
+
+	mHGetAllLatency.Observe(float64(time.Since(now).Milliseconds()))
+
+	return arrayMsg, nil
 }
