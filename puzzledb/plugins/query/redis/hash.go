@@ -30,12 +30,43 @@ func (service *Service) HSet(conn *Conn, key string, field string, val string, o
 }
 
 func (service *Service) HGet(conn *Conn, key string, field string) (*Message, error) {
-	return nil, newErrNotSupported("HGet")
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("HGet")
+	defer ctx.FinishSpan()
+	now := time.Now()
+
+	txn, err := service.TransactDatabase(ctx, conn, false)
+	if err != nil {
+		return nil, err
+	}
+
+	obj, err := txn.GetKeyHashObject(ctx, key)
+	if err != nil {
+		return nil, txn.CancelWithError(ctx, err)
+	}
+
+	err = txn.Commit(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	if obj == nil {
+		return redis.NewNilMessage(), nil
+	}
+
+	val, ok := obj[field]
+	if !ok {
+		return redis.NewNilMessage(), nil
+	}
+
+	mHGetLatency.Observe(float64(time.Since(now).Milliseconds()))
+
+	return redis.NewStringMessage(val), nil
 }
 
 func (service *Service) HGetAll(conn *Conn, key string) (*Message, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Get")
+	ctx.StartSpan("HGetAll")
 	defer ctx.FinishSpan()
 	now := time.Now()
 
