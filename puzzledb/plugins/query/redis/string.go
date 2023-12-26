@@ -33,7 +33,7 @@ func (service *Service) Set(conn *Conn, key string, val string, opt redis.SetOpt
 		return nil, err
 	}
 
-	err = txn.SetObject(ctx, key, val)
+	err = txn.SetKeyObject(ctx, key, val)
 	if err != nil {
 		return nil, txn.CancelWithError(ctx, err)
 	}
@@ -59,7 +59,7 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 		return nil, err
 	}
 
-	obj, err := txn.GetObject(ctx, key)
+	obj, err := txn.GetKeyObject(ctx, key)
 	if err != nil {
 		return nil, txn.CancelWithError(ctx, err)
 	}
