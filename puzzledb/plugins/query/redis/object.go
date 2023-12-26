@@ -14,5 +14,33 @@
 
 package redis
 
+import "github.com/cybergarage/go-redis/redis"
+
 // HashObject represents a hash object.
 type HashObject map[string]string
+
+// nolint: ifshort
+func (obj HashObject) Set(field string, val string, opt redis.HSetOption) int {
+	_, hasKey := obj[field]
+	if opt.NX && hasKey {
+		return 0
+	}
+	obj[field] = val
+	if hasKey {
+		return 0
+	}
+	return 1
+}
+
+func (obj HashObject) Del(fields []string) int {
+	removedFields := 0
+	for _, field := range fields {
+		_, ok := obj[field]
+		if !ok {
+			continue
+		}
+		delete(obj, field)
+		removedFields++
+	}
+	return removedFields
+}
