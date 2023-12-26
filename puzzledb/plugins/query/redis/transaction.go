@@ -60,6 +60,12 @@ func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, erro
 	return objs[0], nil
 }
 
+// SetKeyHashObject sets the objects with the specified key.
+func (txn *Transaction) SetKeyHashObject(ctx context.Context, key string, val HashObject) error {
+	docKey := NewDocumentKeyWith(txn.DatabaseID, key)
+	return txn.InsertDocument(ctx, docKey, val)
+}
+
 // GetKeyHashObject returns the hash objects with the specified key.
 func (txn *Transaction) GetKeyHashObject(ctx context.Context, key string) (HashObject, error) {
 	obj, err := txn.GetKeyObject(ctx, key)
