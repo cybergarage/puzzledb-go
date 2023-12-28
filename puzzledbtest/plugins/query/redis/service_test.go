@@ -43,7 +43,7 @@ func TestRedisService(t *testing.T) {
 	})
 
 	t.Run("Hash", func(t *testing.T) {
-		// redistest.HashCommandTest(t, client)
+		redistest.HashCommandTest(t, client)
 	})
 
 	t.Run("SET", func(t *testing.T) {
