@@ -73,7 +73,7 @@ func NewDatabaseWith(coder document.KeyCoder) (*Database, error) {
 // Transact begin a new transaction.
 func (db *Database) Transact(write bool) (kv.Transaction, error) {
 	if db.MemDB == nil {
-		return nil, store.NewDatabaseNotExistError("memdb")
+		return nil, store.NewErrDatabaseNotExist("memdb")
 	}
 	return newTransaction(db.MemDB.Txn(write), db.KeyCoder), nil
 }
