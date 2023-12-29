@@ -26,7 +26,7 @@ func wrapKeyNotExistError(key store.Key, err error) error {
 		return nil
 	}
 	if errors.Is(err, kv.ErrNotExist) {
-		return store.NewObjectNotExistError(key)
+		return store.NewErrObjectNotFound(key)
 	}
 	return err
 }
