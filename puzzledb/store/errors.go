@@ -36,7 +36,7 @@ func NewDatabaseExistError(name string) error {
 	return fmt.Errorf("database (%s) is %w", name, ErrExist)
 }
 
-func NewSchemaNotExistError(name string) error {
+func NewErrSchemaNotExist(name string) error {
 	return fmt.Errorf("schema (%s) is %w ", name, ErrNotExist)
 }
 
