@@ -33,10 +33,10 @@ func NewMapObjectFrom(anyObj any) (MapObject, error) {
 			case []byte:
 				obj[string(k)] = val
 			default:
-				return nil, newObjectInvalidError(obj)
+				return nil, newErrObjectInvalid(obj)
 			}
 		}
 		return obj, nil
 	}
-	return nil, newObjectInvalidError(obj)
+	return nil, newErrObjectInvalid(obj)
 }

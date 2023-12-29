@@ -66,7 +66,7 @@ func NewSchema() Schema {
 func NewSchemaWith(obj any) (Schema, error) {
 	smap, ok := schemaMapFrom(obj)
 	if !ok {
-		return nil, newSchemaInvalidError(obj)
+		return nil, newErrSchemaInvalid(obj)
 	}
 
 	s := &schema{
@@ -83,7 +83,7 @@ func (s *schema) updateCashes() error {
 
 	ems, ok := s.elementMaps()
 	if !ok {
-		return newElementMapNotExist()
+		return newErrElementMapNotExist()
 	}
 
 	s.elements = []Element{}
@@ -99,7 +99,7 @@ func (s *schema) updateCashes() error {
 
 	ims, ok := s.indexMpas()
 	if !ok {
-		return newIndexMapNotExist()
+		return newErrIndexMapNotExist()
 	}
 
 	s.indexes = []Index{}
@@ -168,11 +168,11 @@ func (s *schema) elementMaps() ([]elementMap, bool) {
 func (s *schema) AddElement(elem Element) error {
 	ems, ok := s.elementMaps()
 	if !ok {
-		return newElementMapNotExist()
+		return newErrElementMapNotExist()
 	}
 	em, ok := elem.Data().(elementMap)
 	if !ok {
-		return newElementMapNotExist()
+		return newErrElementMapNotExist()
 	}
 	s.data[schemaElementsIdx] = append(ems, em)
 	// Add element to cache
@@ -184,7 +184,7 @@ func (s *schema) AddElement(elem Element) error {
 func (s *schema) DropElement(name string) error {
 	ems, ok := s.elementMaps()
 	if !ok {
-		return newElementMapNotExist()
+		return newErrElementMapNotExist()
 	}
 	for i, em := range ems {
 		emName, ok := em[elementNameIdx].(string)
@@ -193,7 +193,7 @@ func (s *schema) DropElement(name string) error {
 			return s.updateCashes()
 		}
 	}
-	return newElementNotExistError(name)
+	return newErrElementNotExistError(name)
 }
 
 // Elements returns the schema elements.
@@ -209,7 +209,7 @@ func (s *schema) FindElement(name string) (Element, error) {
 			return e, nil
 		}
 	}
-	return nil, newElementNotExistError(name)
+	return nil, newErrElementNotExistError(name)
 }
 
 func (s *schema) indexMpas() ([]indexMap, bool) {
@@ -228,11 +228,11 @@ func (s *schema) indexMpas() ([]indexMap, bool) {
 func (s *schema) AddIndex(idx Index) error {
 	ims, ok := s.indexMpas()
 	if !ok {
-		return newIndexMapNotExist()
+		return newErrIndexMapNotExist()
 	}
 	im, ok := idx.Data().(indexMap)
 	if !ok {
-		return newIndexMapNotExist()
+		return newErrIndexMapNotExist()
 	}
 	s.data[schemaIndexesIdx] = append(ims, im)
 	// Add index to cache
@@ -244,7 +244,7 @@ func (s *schema) AddIndex(idx Index) error {
 func (s *schema) DropIndex(name string) error {
 	ims, ok := s.indexMpas()
 	if !ok {
-		return newIndexMapNotExist()
+		return newErrIndexMapNotExist()
 	}
 	for i, im := range ims {
 		imName, ok := im[indexNameIdx].(string)
@@ -253,7 +253,7 @@ func (s *schema) DropIndex(name string) error {
 			return s.updateCashes()
 		}
 	}
-	return newIndexNotExistError(name)
+	return newErrIndexNotExist(name)
 }
 
 // Indexes returns the schema indexes.
@@ -269,7 +269,7 @@ func (s *schema) FindIndex(name string) (Index, error) {
 			return idx, nil
 		}
 	}
-	return nil, newIndexNotExistError(name)
+	return nil, newErrIndexNotExist(name)
 }
 
 // PrimaryIndex returns the schema primary index.

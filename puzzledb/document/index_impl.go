@@ -48,7 +48,7 @@ func NewIndex() Index {
 func newIndexWith(s *schema, obj any) (Index, error) {
 	im, ok := obj.(indexMap)
 	if !ok {
-		return nil, newIndexInvalidError(obj)
+		return nil, newErrIndexInvalid(obj)
 	}
 	i := &index{
 		data:     im,
@@ -59,13 +59,13 @@ func newIndexWith(s *schema, obj any) (Index, error) {
 
 	ies, ok := i.indexElements()
 	if !ok {
-		return nil, newSchemaInvalidError(s)
+		return nil, newErrSchemaInvalid(s)
 	}
 	i.elements = []Element{}
 	for _, ie := range ies {
 		em, err := s.FindElement(ie)
 		if err != nil {
-			return nil, newSchemaInvalidError(s)
+			return nil, newErrSchemaInvalid(s)
 		}
 		i.elements = append(i.elements, em)
 	}
