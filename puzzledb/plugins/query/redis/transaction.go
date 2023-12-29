@@ -53,6 +53,10 @@ func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, erro
 	}
 
 	objs := rs.Objects()
+	if len(objs) == 0 {
+		return nil, nil
+	}
+
 	if len(objs) != 1 {
 		return nil, fmt.Errorf("%w: multiple objects are found (%d)", ErrInvalid, len(objs))
 	}
