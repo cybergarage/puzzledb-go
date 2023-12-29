@@ -20,6 +20,7 @@ import (
 
 	"github.com/cybergarage/go-redis/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
@@ -54,7 +55,7 @@ func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, erro
 
 	objs := rs.Objects()
 	if len(objs) == 0 {
-		return nil, nil
+		return nil, document.NewErrObjectNotFound(docKey)
 	}
 
 	if len(objs) != 1 {
