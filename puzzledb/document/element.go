@@ -60,7 +60,7 @@ func NewElementTypeWith(v any) (ElementType, error) {
 	case uint8:
 		return ElementType(et), nil
 	}
-	return 0, newElementTypeInvalidError(v)
+	return 0, newErrElementTypeInvalid(v)
 }
 
 // String represents the string representation.

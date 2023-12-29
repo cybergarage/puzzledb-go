@@ -26,47 +26,47 @@ var (
 	ErrNotFound     = errors.New("not found")
 )
 
-func newElementMapNotExist() error {
+func newErrElementMapNotExist() error {
 	return fmt.Errorf("element map is %w", ErrNotExist)
 }
 
-func newElementNotExistError(name string) error {
+func newErrElementNotExistError(name string) error {
 	return fmt.Errorf("element (%s) is %w", name, ErrNotExist)
 }
 
-func newIndexNotExistError(name string) error {
+func newErrIndexNotExist(name string) error {
 	return fmt.Errorf("index (%s) is %w", name, ErrNotExist)
 }
 
-func newIndexMapNotExist() error {
+func newErrIndexMapNotExist() error {
 	return fmt.Errorf("index map is %w", ErrNotExist)
 }
 
-func newElementInvalidError(obj any) error {
+func newErrElementInvalid(obj any) error {
 	return fmt.Errorf("element (%T:%v) is %w", obj, obj, ErrInvalid)
 }
 
-func newSchemaInvalidError(obj any) error {
+func newErrSchemaInvalid(obj any) error {
 	return fmt.Errorf("schema (%T:%v) is %w", obj, obj, ErrInvalid)
 }
 
-func newObjectInvalidError(obj any) error {
+func newErrObjectInvalid(obj any) error {
 	return fmt.Errorf("object (%T:%v) is %w", obj, obj, ErrInvalid)
 }
 
-func newIndexInvalidError(obj any) error {
+func newErrIndexInvalid(obj any) error {
 	return fmt.Errorf("index (%T:%v) is %w", obj, obj, ErrInvalid)
 }
 
-func newElementTypeInvalidError(v any) error {
+func newErrElementTypeInvalid(v any) error {
 	return fmt.Errorf("element type (%s:%v) is %w", v, v, ErrInvalid)
 }
 
-func newDatabaseKeyNotFoundError(key Key) error {
+func newErrDatabaseKeyNotFound(key Key) error {
 	return fmt.Errorf("database ken (%s) is %w", key.String(), ErrNotFound)
 }
 
-func newCollectionKeyNotFoundError(key Key) error {
+func newErrCollectionKeyNotFound(key Key) error {
 	return fmt.Errorf("collection ken (%s) is %w", key.String(), ErrNotFound)
 }
 
