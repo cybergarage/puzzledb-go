@@ -35,5 +35,5 @@ func newDatabaeOptionsFrom(obj any) (store.DatabaseOptions, error) {
 		return opts, nil
 	}
 
-	return nil, store.NewDatabaseOptionsInvalidError(obj)
+	return nil, store.NewErrDatabaseOptionsInvalid(obj)
 }
