@@ -32,7 +32,7 @@ func NewDatabaseNotExistError(name string) error {
 	return fmt.Errorf("database (%s) is %w", name, ErrNotExist)
 }
 
-func NewDatabaseExistError(name string) error {
+func NewErrDatabaseExist(name string) error {
 	return fmt.Errorf("database (%s) is %w", name, ErrExist)
 }
 
