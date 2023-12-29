@@ -74,3 +74,8 @@ func newCollectionKeyNotFoundError(key Key) error {
 func NewErrPrimaryIndexNotExist() error {
 	return fmt.Errorf("primary index is %w", ErrNotExist)
 }
+
+// NewErrObjectNotFound returns a new error that the object is not exist.
+func NewErrObjectNotFound(key Key) error {
+	return fmt.Errorf("object (%s) is %w ", key, ErrNotFound)
+}

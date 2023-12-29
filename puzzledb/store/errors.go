@@ -17,9 +17,12 @@ package store
 import (
 	"errors"
 	"fmt"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 var (
+	ErrNotFound = document.ErrNotFound
 	ErrNotExist = errors.New("not exist")
 	ErrExist    = errors.New("exist")
 	ErrInvalid  = errors.New("invalid")
@@ -37,8 +40,8 @@ func NewSchemaNotExistError(name string) error {
 	return fmt.Errorf("schema (%s) is %w ", name, ErrNotExist)
 }
 
-func NewObjectNotExistError(key Key) error {
-	return fmt.Errorf("object (%s) is %w ", key, ErrNotExist)
+func NewErrObjectNotFound(key Key) error {
+	return document.NewErrObjectNotFound(key)
 }
 
 func NewDatabaseOptionsInvalidError(opts any) error {

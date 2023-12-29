@@ -61,7 +61,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 	}
 	// NOTE: FutureByteSlice::Get() doesn't return nil if the key doesn't exist.
 	if len(val) == 0 {
-		return nil, kv.NewObjectNotExistError(key)
+		return nil, kv.NewErrObjectNotFound(key)
 	}
 	mReadLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return &kv.Object{

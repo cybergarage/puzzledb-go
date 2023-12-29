@@ -15,14 +15,12 @@
 package kv
 
 import (
-	"errors"
-	"fmt"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
 )
 
-var (
-	ErrNotExist = errors.New("not exist")
-)
+var ErrNotExist = document.ErrNotExist
 
-func NewObjectNotExistError(v any) error {
-	return fmt.Errorf("object (%s) is %w", v, ErrNotExist)
+func NewErrObjectNotFound(key kv.Key) error {
+	return document.NewErrObjectNotFound(key)
 }
