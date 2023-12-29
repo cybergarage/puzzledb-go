@@ -105,7 +105,7 @@ func (s *Store) CreateDatabase(ctx context.Context, name string) error {
 		if err := txn.Cancel(); err != nil {
 			return err
 		}
-		return store.NewDatabaseExistError(name)
+		return store.NewErrDatabaseExist(name)
 	}
 
 	var opts store.DatabaseOptions
