@@ -44,6 +44,6 @@ func NewErrObjectNotFound(key Key) error {
 	return document.NewErrObjectNotFound(key)
 }
 
-func NewDatabaseOptionsInvalidError(opts any) error {
+func NewErrDatabaseOptionsInvalid(opts any) error {
 	return fmt.Errorf("database options (%v) is %w", opts, ErrInvalid)
 }
