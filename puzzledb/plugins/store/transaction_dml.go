@@ -69,7 +69,7 @@ func (txn *transaction) GetCollection(ctx context.Context, name string) (store.C
 		return nil, err
 	}
 	if !kvRs.Next() {
-		return nil, store.NewSchemaNotExistError(name)
+		return nil, store.NewErrSchemaNotExist(name)
 	}
 	kvObj := kvRs.Object()
 	obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value))
