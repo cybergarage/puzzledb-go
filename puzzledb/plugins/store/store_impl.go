@@ -156,7 +156,7 @@ func (s *Store) GetDatabase(ctx context.Context, name string) (store.Database, e
 		if err := txn.Cancel(); err != nil {
 			return nil, err
 		}
-		return nil, store.NewDatabaseNotExistError(name)
+		return nil, store.NewErrDatabaseNotExist(name)
 	}
 	err = txn.Commit()
 	if err != nil {

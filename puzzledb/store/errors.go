@@ -28,7 +28,7 @@ var (
 	ErrInvalid  = errors.New("invalid")
 )
 
-func NewDatabaseNotExistError(name string) error {
+func NewErrDatabaseNotExist(name string) error {
 	return fmt.Errorf("database (%s) is %w", name, ErrNotExist)
 }
 
