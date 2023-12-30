@@ -20,7 +20,6 @@ import (
 )
 
 var ErrNotExist = document.ErrNotExist
-var ErrNotFound = document.ErrNotFound
 
 func NewErrObjectNotExist(key kv.Key) error {
 	return document.NewErrObjectNotExist(key)
