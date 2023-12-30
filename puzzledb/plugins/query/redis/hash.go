@@ -141,7 +141,9 @@ func (service *Service) HGetAll(conn *Conn, key string) (*Message, error) {
 
 	obj, err := txn.GetKeyHashObject(ctx, key)
 	if err != nil {
-		return nil, txn.CancelWithError(ctx, err)
+		if !errors.Is(err, ErrNotFound) {
+			return nil, txn.CancelWithError(ctx, err)
+		}
 	}
 
 	err = txn.Commit(ctx)
