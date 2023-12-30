@@ -15,7 +15,6 @@
 package redis
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/cybergarage/go-redis/redis"
@@ -59,7 +58,7 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 		return nil, err
 	}
 
-	obj, err := txn.GetKeyObject(ctx, key)
+	obj, err := txn.GetKeyString(ctx, key)
 	if err != nil {
 		return nil, txn.CancelWithError(ctx, err)
 	}
@@ -71,12 +70,5 @@ func (service *Service) Get(conn *Conn, key string) (*Message, error) {
 
 	mGetLatency.Observe(float64(time.Since(now).Milliseconds()))
 
-	switch v := obj.(type) {
-	case string:
-		return redis.NewBulkMessage(v), nil
-	case []byte:
-		return redis.NewBulkMessage(string(v)), nil
-	default:
-		return redis.NewBulkMessage(fmt.Sprintf("%v", v)), nil
-	}
+	return redis.NewBulkMessage(obj), nil
 }
