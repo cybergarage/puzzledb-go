@@ -43,7 +43,7 @@ image:img/roadmap.png[doc/img/roadmap]
 ***** Disabled features
 ****** [ ] Auto Indexing
 
-== v1.3.0 (2023-12-XX)
+== v1.3.0 (2023-12-30)
 * New features
 ** Security plug-ins
 *** [*] Added authenticator plug-ins
@@ -56,7 +56,7 @@ image:img/roadmap.png[doc/img/roadmap]
 ** Query plug-ins
 *** Redis plug-in
 **** Supported queries
-***** [ ] HASH commands
+***** [*] HASH commands
 ** Updated storage format
 
 == v1.2.0 (2023-11-15)
