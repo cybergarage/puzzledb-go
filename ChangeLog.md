@@ -19,6 +19,13 @@
       - Added support for new queries
 - Update storage implemetations to support option parameters
 
+## v1.3.1 (2024-01-xx)
+- New features
+  - Authenticator plug-ins
+    - Added password authenticator interface
+      - Supported MySQL plug-in
+      - Supported MongoDB plug-in
+
 ## v1.3.0 (2023-12-30)
 - New features
   - Authenticator plug-ins
