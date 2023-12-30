@@ -15,6 +15,7 @@
 package redis
 
 import (
+	"errors"
 	"time"
 
 	"github.com/cybergarage/go-redis/redis"
@@ -67,7 +68,9 @@ func (service *Service) HSet(conn *Conn, key string, field string, val string, o
 
 	obj, err := txn.GetKeyHashObject(ctx, key)
 	if err != nil {
-		return nil, txn.CancelWithError(ctx, err)
+		if !errors.Is(err, ErrNotFound) {
+			return nil, txn.CancelWithError(ctx, err)
+		}
 	}
 
 	if obj == nil {
@@ -87,7 +90,7 @@ func (service *Service) HSet(conn *Conn, key string, field string, val string, o
 
 	mHSetLatency.Observe(float64(time.Since(now).Milliseconds()))
 
-	return nil, newErrNotSupported("HSet")
+	return redis.NewIntegerMessage(1), nil
 }
 
 func (service *Service) HGet(conn *Conn, key string, field string) (*Message, error) {
