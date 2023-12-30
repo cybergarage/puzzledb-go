@@ -17,13 +17,19 @@
       - Added support for new queries
     - PostgreSQL plug-in
       - Added support for new queries
+- Update storage implemetations to support option parameters
 
-## v1.3.0 (2023-12-xx)
+## v1.3.0 (2023-12-30)
 - New features
   - Authenticator plug-ins
     - Added password authenticator interface
-  - Improvements
-    - Update storage implemetations to support option parameters
+      - Supported PostgreSQL plug-in
+      - Supported Redis plug-in
+- Improvements
+  - Query plug-ins
+    - Redis plug-in
+      - Supported queries
+        - HASH commands
 
 ## v1.2.0 (2023-11-15)
 - New features
