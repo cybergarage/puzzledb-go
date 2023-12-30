@@ -17,8 +17,11 @@ package redis
 import (
 	"errors"
 	"fmt"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
+var ErrNotFound = document.ErrNotFound
 var ErrInvalid = errors.New("invalid")
 var ErrNotSupported = errors.New("not supported")
 
