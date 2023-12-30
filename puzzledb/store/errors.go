@@ -40,8 +40,8 @@ func NewErrSchemaNotExist(name string) error {
 	return fmt.Errorf("schema (%s) is %w ", name, ErrNotExist)
 }
 
-func NewErrObjectNotFound(key Key) error {
-	return document.NewErrObjectNotFound(key)
+func NewErrObjectNotExist(key Key) error {
+	return document.NewErrObjectNotExist(key)
 }
 
 func NewErrDatabaseOptionsInvalid(opts any) error {

@@ -66,7 +66,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 	}
 	rs := newResultSetWith(txn.KeyCoder, it, 0, kv.NoLimit)
 	if !rs.Next() {
-		return nil, kv.NewErrObjectNotFound(key)
+		return nil, kv.NewErrObjectNotExist(key)
 	}
 	mReadLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return rs.Object(), nil
@@ -128,7 +128,7 @@ func (txn *transaction) Remove(key kv.Key) error {
 	err = txn.Txn.Delete(tableName, doc)
 	if err != nil {
 		if errors.Is(err, memdb.ErrNotFound) {
-			return kv.NewErrObjectNotFound(key)
+			return kv.NewErrObjectNotExist(key)
 		}
 		return err
 	}
@@ -144,7 +144,7 @@ func (txn *transaction) RemoveRange(key kv.Key) error {
 	_, err = txn.Txn.DeleteAll(tableName, idName+prefix, string(keyBytes))
 	if err != nil {
 		if errors.Is(err, memdb.ErrNotFound) {
-			return kv.NewErrObjectNotFound(key)
+			return kv.NewErrObjectNotExist(key)
 		}
 		return err
 	}

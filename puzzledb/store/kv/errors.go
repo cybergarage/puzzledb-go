@@ -22,6 +22,6 @@ import (
 var ErrNotExist = document.ErrNotExist
 var ErrNotFound = document.ErrNotFound
 
-func NewErrObjectNotFound(key kv.Key) error {
-	return document.NewErrObjectNotFound(key)
+func NewErrObjectNotExist(key kv.Key) error {
+	return document.NewErrObjectNotExist(key)
 }

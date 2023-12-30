@@ -55,7 +55,7 @@ func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, erro
 
 	objs := rs.Objects()
 	if len(objs) == 0 {
-		return nil, document.NewErrObjectNotFound(docKey)
+		return nil, document.NewErrObjectNotExist(docKey)
 	}
 
 	if len(objs) != 1 {
