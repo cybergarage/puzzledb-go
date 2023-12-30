@@ -76,8 +76,19 @@ func (service *Service) HSet(conn *Conn, key string, field string, val string, o
 	if obj == nil {
 		obj = HashObject{}
 	}
-	obj[field] = val
 
+	if opt.NX {
+		_, hasKey := obj[field]
+		if hasKey {
+			err = txn.Commit(ctx)
+			if err != nil {
+				return nil, err
+			}
+			return redis.NewIntegerMessage(0), nil
+		}
+	}
+
+	obj[field] = val
 	err = txn.SetKeyHashObject(ctx, key, obj)
 	if err != nil {
 		return nil, txn.CancelWithError(ctx, err)
