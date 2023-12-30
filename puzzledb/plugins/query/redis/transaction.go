@@ -65,6 +65,24 @@ func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, erro
 	return objs[0], nil
 }
 
+// GetKeyString returns the string with the specified key.
+func (txn *Transaction) GetKeyString(ctx context.Context, key string) (string, error) {
+	obj, err := txn.GetKeyObject(ctx, key)
+	if err != nil {
+		return "", err
+	}
+
+	switch v := obj.(type) {
+	case string:
+		return v, nil
+	case []byte:
+		return string(v), nil
+	default:
+	}
+
+	return fmt.Sprintf("%v", obj), nil
+}
+
 // SetKeyHashObject sets the objects with the specified key.
 func (txn *Transaction) SetKeyHashObject(ctx context.Context, key string, val HashObject) error {
 	docKey := NewDocumentKeyWith(txn.DatabaseID, key)
