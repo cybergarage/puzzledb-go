@@ -77,7 +77,6 @@ func (txn *Transaction) GetKeyString(ctx context.Context, key string) (string, e
 		return v, nil
 	case []byte:
 		return string(v), nil
-	default:
 	}
 
 	return fmt.Sprintf("%v", obj), nil
@@ -91,15 +90,23 @@ func (txn *Transaction) SetKeyHashObject(ctx context.Context, key string, val Ha
 
 // GetKeyHashObject returns the hash objects with the specified key.
 func (txn *Transaction) GetKeyHashObject(ctx context.Context, key string) (HashObject, error) {
-	obj, err := txn.GetKeyObject(ctx, key)
+	keyObj, err := txn.GetKeyObject(ctx, key)
 	if err != nil {
 		return nil, err
 	}
-	hobj, ok := obj.(HashObject)
-	if !ok {
-		return nil, fmt.Errorf("%w object type (%T)", ErrInvalid, obj)
+
+	switch obj := keyObj.(type) {
+	case map[string]string:
+		return make(HashObject), nil
+	case map[any]any:
+		hashObj := make(HashObject)
+		for k, v := range obj {
+			hashObj[fmt.Sprintf("%v", k)] = fmt.Sprintf("%v", v)
+		}
+		return hashObj, nil
 	}
-	return hobj, nil
+
+	return nil, fmt.Errorf("%w object type (%T)", ErrInvalid, keyObj)
 }
 
 // CancelWithError cancels the transaction with an error.
