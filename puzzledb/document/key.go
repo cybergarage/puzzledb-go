@@ -46,11 +46,11 @@ func (key Key) Len() int {
 // Database returns the database name of the key.
 func (key Key) Database() (string, error) {
 	if key.Len() < 1 {
-		return "", newErrDatabaseKeyNotFound(key)
+		return "", newErrDatabaseKeyNotExist(key)
 	}
 	v, ok := key[0].(string)
 	if !ok {
-		return "", newErrDatabaseKeyNotFound(key)
+		return "", newErrDatabaseKeyNotExist(key)
 	}
 	return v, nil
 }
@@ -58,11 +58,11 @@ func (key Key) Database() (string, error) {
 // Collection returns the collection name of the key.
 func (key Key) Collection() (string, error) {
 	if key.Len() < 2 {
-		return "", newErrCollectionKeyNotFound(key)
+		return "", newErrCollectionKeyNotExist(key)
 	}
 	v, ok := key[1].(string)
 	if !ok {
-		return "", newErrCollectionKeyNotFound(key)
+		return "", newErrCollectionKeyNotExist(key)
 	}
 	return v, nil
 }

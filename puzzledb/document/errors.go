@@ -23,7 +23,6 @@ var (
 	ErrNotSupported = errors.New("not supported")
 	ErrInvalid      = errors.New("invalid")
 	ErrNotExist     = errors.New("not exist")
-	ErrNotFound     = errors.New("not found")
 )
 
 func newErrElementMapNotExist() error {
@@ -62,12 +61,12 @@ func newErrElementTypeInvalid(v any) error {
 	return fmt.Errorf("element type (%s:%v) is %w", v, v, ErrInvalid)
 }
 
-func newErrDatabaseKeyNotFound(key Key) error {
-	return fmt.Errorf("database ken (%s) is %w", key.String(), ErrNotFound)
+func newErrDatabaseKeyNotExist(key Key) error {
+	return fmt.Errorf("database ken (%s) is %w", key.String(), ErrNotExist)
 }
 
-func newErrCollectionKeyNotFound(key Key) error {
-	return fmt.Errorf("collection ken (%s) is %w", key.String(), ErrNotFound)
+func newErrCollectionKeyNotExist(key Key) error {
+	return fmt.Errorf("collection ken (%s) is %w", key.String(), ErrNotExist)
 }
 
 // NewErrPrimaryIndexNotExist returns a new error that the primary index is not exist.
@@ -77,5 +76,5 @@ func NewErrPrimaryIndexNotExist() error {
 
 // NewErrObjectNotExist returns a new error that the object is not exist.
 func NewErrObjectNotExist(key Key) error {
-	return fmt.Errorf("object (%s) is %w ", key, ErrNotFound)
+	return fmt.Errorf("object (%s) is %w ", key, ErrNotExist)
 }
