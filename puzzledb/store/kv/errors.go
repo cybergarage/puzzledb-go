@@ -19,6 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
 )
 
+var ErrNotExist = document.ErrNotExist
 var ErrNotFound = document.ErrNotFound
 
 func NewErrObjectNotFound(key kv.Key) error {
