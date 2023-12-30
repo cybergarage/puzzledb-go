@@ -68,7 +68,7 @@ func (service *Service) HSet(conn *Conn, key string, field string, val string, o
 
 	obj, err := txn.GetKeyHashObject(ctx, key)
 	if err != nil {
-		if !errors.Is(err, ErrNotFound) {
+		if !errors.Is(err, ErrNotExist) {
 			return nil, txn.CancelWithError(ctx, err)
 		}
 	}
@@ -152,7 +152,7 @@ func (service *Service) HGetAll(conn *Conn, key string) (*Message, error) {
 
 	obj, err := txn.GetKeyHashObject(ctx, key)
 	if err != nil {
-		if !errors.Is(err, ErrNotFound) {
+		if !errors.Is(err, ErrNotExist) {
 			return nil, txn.CancelWithError(ctx, err)
 		}
 	}

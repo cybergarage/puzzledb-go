@@ -15,15 +15,14 @@
 package redis
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-var ErrNotFound = document.ErrNotFound
-var ErrInvalid = errors.New("invalid")
-var ErrNotSupported = errors.New("not supported")
+var ErrNotExist = document.ErrNotExist
+var ErrInvalid = document.ErrInvalid
+var ErrNotSupported = document.ErrNotSupported
 
 func newErrNotSupported(target string) error {
 	return fmt.Errorf("%v is %w", target, ErrNotSupported)

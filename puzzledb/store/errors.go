@@ -22,7 +22,6 @@ import (
 )
 
 var (
-	ErrNotFound = document.ErrNotFound
 	ErrNotExist = errors.New("not exist")
 	ErrExist    = errors.New("exist")
 	ErrInvalid  = errors.New("invalid")
