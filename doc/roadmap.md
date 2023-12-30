@@ -77,7 +77,7 @@ v1.4.x
 
                     -   ❏ Auto Indexing
 
-v1.3.0 (2023-12-XX)
+v1.3.0 (2023-12-30)
 -------------------
 
 -   New features
@@ -104,7 +104,7 @@ v1.3.0 (2023-12-XX)
 
             -   Supported queries
 
-                -   ❏ HASH commands
+                -   ✓ HASH commands
 
     -   Updated storage format
 
