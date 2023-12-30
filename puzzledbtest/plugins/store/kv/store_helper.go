@@ -441,7 +441,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Error(err)
 			return
 		}
-		if !errors.Is(err, kv.ErrNotExist) {
+		if !errors.Is(err, kv.ErrNotFound) {
 			t.Errorf("key (%v): %s", key, err.Error())
 			cancel(t, txn)
 			t.Error(err)
