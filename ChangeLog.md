@@ -22,7 +22,7 @@
 ## v1.3.1 (2024-01-xx)
 - New features
   - Authenticator plug-ins
-    - Added password authenticator interface
+    - Added password authenticator implementations
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
