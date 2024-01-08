@@ -35,6 +35,7 @@ func NewService() query.Service {
 		Service:      sql.NewService(),
 	}
 	service.Server.SetQueryExecutor(service)
+	service.Server.SetAuthHandler(NewAuthHandler())
 	return service
 }
 
