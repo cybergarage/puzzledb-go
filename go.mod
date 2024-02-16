@@ -10,7 +10,7 @@ require (
 	github.com/cybergarage/go-mysql v1.0.5
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.4.0
-	github.com/cybergarage/go-redis v1.4.2
+	github.com/cybergarage/go-redis v1.4.3
 	github.com/cybergarage/go-safecast v1.2.3
 	github.com/cybergarage/go-sqlparser v1.2.7
 	github.com/cybergarage/go-sqltest v1.3.2
@@ -24,6 +24,7 @@ require (
 	go.mongodb.org/mongo-driver v1.11.2
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
+	vitess.io/vitess v0.12.6
 )
 
 require (
@@ -102,5 +103,4 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/apimachinery v0.20.6 // indirect
-	vitess.io/vitess v0.12.6 // indirect
 )
