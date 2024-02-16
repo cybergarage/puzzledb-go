@@ -92,6 +92,10 @@ func (service *Service) Keys(conn *Conn, pattern string) (*Message, error) {
 	return nil, newErrNotSupported("Keys")
 }
 
+func (service *Service) Scan(conn *redis.Conn, cursor int, opt redis.ScanOption) (*redis.Message, error) {
+	return nil, newErrNotSupported("Scan")
+}
+
 func (service *Service) Rename(conn *Conn, key string, newkey string, opt redis.RenameOption) (*Message, error) {
 	return nil, newErrNotSupported("Rename")
 }
