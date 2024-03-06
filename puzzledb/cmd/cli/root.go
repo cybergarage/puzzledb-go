@@ -58,7 +58,7 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-func init() { // nolint:gochecknoinits
+func init() {
 	rootCmd.PersistentFlags().StringVar(&gRPCHost, "host", "localhost", fmt.Sprintf("gRPC host or address for a %v instance", puzzledb.ProductName))
 	rootCmd.PersistentFlags().IntVar(&gRPCPort, "port", puzzledb.DefaultGrpcPort, fmt.Sprintf("gRPC port number for a %v instance", puzzledb.ProductName))
 }

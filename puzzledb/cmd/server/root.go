@@ -121,7 +121,7 @@ func Execute() {
 	os.Exit(code)
 }
 
-func init() { // nolint:gochecknoinits
+func init() {
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is .puzzledb.yaml)")
 }
