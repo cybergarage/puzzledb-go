@@ -16,7 +16,6 @@ package mysql
 
 import (
 	"github.com/cybergarage/go-mysql/mysql"
-
 	vitessmy "vitess.io/vitess/go/mysql"
 )
 

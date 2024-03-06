@@ -56,5 +56,4 @@ func TestClockCompare(t *testing.T) {
 			t.Errorf("%v != %v", CompareClocks(test.c1, test.c2), test.expected)
 		}
 	}
-
 }
