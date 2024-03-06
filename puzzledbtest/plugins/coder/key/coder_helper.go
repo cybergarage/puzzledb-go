@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"math/rand"
 	"reflect"
-
 	"testing"
 
 	"github.com/cybergarage/go-pict/pict"
