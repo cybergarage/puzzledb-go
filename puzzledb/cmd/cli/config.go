@@ -20,7 +20,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() { // nolint:gochecknoinits
+func init() {
 	listCmd.AddCommand(listConfigCmd)
 	getCmd.AddCommand(getConfigCmd)
 }
