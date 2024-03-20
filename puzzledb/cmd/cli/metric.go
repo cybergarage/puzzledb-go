@@ -16,7 +16,6 @@ package cli
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/cmd/fmt"
-
 	"github.com/spf13/cobra"
 )
 

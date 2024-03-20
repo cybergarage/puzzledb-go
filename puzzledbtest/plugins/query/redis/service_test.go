@@ -23,7 +23,6 @@ import (
 )
 
 func TestRedisService(t *testing.T) {
-
 	server := puzzledbtest.NewServer()
 	err := server.Start()
 	if err != nil {
