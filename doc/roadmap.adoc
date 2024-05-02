@@ -19,6 +19,8 @@ image:img/roadmap.png[doc/img/roadmap]
 
 == v1.4.x
 * New features
+** Kubernetes features
+*** [ ] Operator
 ** New plug-ins
 *** Storage plug-ins
 **** [ ] Added JunoDB plug-in
@@ -27,8 +29,6 @@ image:img/roadmap.png[doc/img/roadmap]
 **** [ ] Added etcd plug-in
 *** Metrics plug-ins
 **** [ ] Added Graphite plug-in
-** Kubernetes features
-*** [ ] Operator
 * Improvements
 ** Plug-in improvements
 *** Query plug-ins

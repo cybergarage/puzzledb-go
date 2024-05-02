@@ -1,10 +1,8 @@
-Design Concepts
-===============
+# Design Concepts
 
 PuzzleDB has a unique approach in the NewSQL field by using a simple key-value foundation for data model, indexes, and queries, enabling high scalability and ACID transactions.This section describes the architecture and design concepts of PuzzleDB.
 
-Plug-In Concepts
-================
+# Plug-In Concepts
 
 PuzzleDB is a pluggable database that amalgamates various components. It defines a pluggable component interface following a layering concept similar to FoundationDB. PuzzleDB separates the query layer and data model from the storage layer. The most basic storage layer is defined as a simple key-value store, much like FoundationDB and early Google Spanner.
 
@@ -12,21 +10,224 @@ PuzzleDB is a pluggable database that amalgamates various components. It defines
 
 PuzzleDB defines the coordinator and storage function interfaces to operate as standalone and distributed databases. Running with distributed coordinator and storage plug-ins, PuzzleDB functions as a distributed multi-API and multi-model database.
 
-Plug-In Service Types
-=====================
+# Plug-In Service Types
 
 PuzzleDB offers various types of plug-ins, including query, storage, and coordinator. These are categorized based on their support for distributed operations and their dependencies on other plug-ins. System plug-ins, responsible for managing configuration data and coordinating distributed nodes, are always activated by default. The database optimizes storage, retrieval, and update operations through a query interface that supports any database protocol, and a storage interface that employs an ordered key-value store, thereby maintaining consistency in distributed environments.
 
 PuzzleDB provides default plug-in services that include query, storage, and coordinator plug-ins and defines the default plug-in types as follows:
 
-<table style="width:100%;"><colgroup><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /></colgroup><thead><tr class="header"><th>Major Type</th><th>Sub Type</th><th>Description</th><th>Plug-ins</th><th>Distributed</th><th>Dependency</th></tr></thead><tbody><tr class="odd"><td><p>System</p></td><td><p>-</p></td><td><p>System services</p></td><td><p>gRPC</p></td><td><p>O</p></td><td></td></tr><tr class="even"><td></td><td></td><td></td><td><p>Actor</p></td><td><p>O</p></td><td><p>Coordinator</p></td></tr><tr class="odd"><td><p>Query</p></td><td><p>-</p></td><td><p>Query handler services</p></td><td><p>Redis</p></td><td><p>O</p></td><td><p>Store (Document)</p></td></tr><tr class="even"><td></td><td></td><td></td><td><p>MongoDB</p></td><td><p>O</p></td><td><p>Store (Document)</p></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>MySQL</p></td><td><p>O</p></td><td><p>Store (Document)</p></td></tr><tr class="even"><td></td><td></td><td></td><td><p>PostgreSQL</p></td><td><p>O</p></td><td><p>Store (Document)</p></td></tr><tr class="odd"><td><p>Coordinator</p></td><td><p>-</p></td><td><p>Coordination services</p></td><td><p>memdb</p></td><td><p>X</p></td><td><p>-</p></td></tr><tr class="even"><td></td><td></td><td></td><td><p>etcd (Planning)</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>ZooKeeper (Planning)</p></td><td></td><td></td></tr><tr class="even"><td></td><td></td><td></td><td><p>FoundationDB (Planning)</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="odd"><td><p>Coder</p></td><td><p>Document</p></td><td><p>Document coder services</p></td><td><p>CBOR</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="even"><td></td><td><p>Key</p></td><td><p>Key coder services</p></td><td><p>Tuple</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="odd"><td><p>Store</p></td><td><p>Document</p></td><td><p>Doument store services</p></td><td><p>Key-value based store</p></td><td><p>O</p></td><td><p>Store (Key-value), Coder (Document), Coder (Key)</p></td></tr><tr class="even"><td></td><td><p>Key-value</p></td><td><p>Key-value store services</p></td><td><p>memdb</p></td><td><p>X</p></td><td><p>Coder (Document), Coder (Key)</p></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>FoundationDB</p></td><td><p>O</p></td><td><p>Coder (Document), Coder (Key)</p></td></tr><tr class="even"><td></td><td></td><td></td><td><p>TiKV (Planning)</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>JunoDB (Planning)</p></td><td></td><td></td></tr><tr class="even"><td></td><td><p>Key-Value Cache</p></td><td><p>Key-value cache store services</p></td><td><p>Ristretto</p></td><td><p>O</p></td><td><p>Store (Key-value)</p></td></tr><tr class="odd"><td><p>Tracer</p></td><td><p>-</p></td><td><p>Distributed tracing services</p></td><td><p>OpenTelemetry</p></td><td><p>O</p></td><td></td></tr><tr class="even"><td></td><td></td><td></td><td><p>OpenTracing</p></td><td><p>O</p></td><td></td></tr><tr class="odd"><td><p>Metric</p></td><td><p>-</p></td><td><p>Metrics services</p></td><td><p>Prometheus</p></td><td><p>O</p></td><td></td></tr><tr class="even"><td></td><td></td><td></td><td><p>Graphite (Planning)</p></td><td><p>O</p></td><td></td></tr><tr class="odd"><td><p>Extend</p></td><td><p>-</p></td><td><p>User-defined services</p></td><td><p>-</p></td><td><p>-</p></td><td><p>-</p></td></tr></tbody></table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Major Type</th>
+<th style="text-align: left;">Sub Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Plug-ins</th>
+<th style="text-align: left;">Distributed</th>
+<th style="text-align: left;">Dependency</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>System</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>System services</p></td>
+<td style="text-align: left;"><p>gRPC</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Actor</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Coordinator</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Query</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Query handler services</p></td>
+<td style="text-align: left;"><p>Redis</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>MongoDB</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>MySQL</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>PostgreSQL</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Coordinator</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Coordination services</p></td>
+<td style="text-align: left;"><p>memdb</p></td>
+<td style="text-align: left;"><p>X</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>etcd (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>ZooKeeper (Planning)</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Coder</p></td>
+<td style="text-align: left;"><p>Document</p></td>
+<td style="text-align: left;"><p>Document coder services</p></td>
+<td style="text-align: left;"><p>CBOR</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Key</p></td>
+<td style="text-align: left;"><p>Key coder services</p></td>
+<td style="text-align: left;"><p>Tuple</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Store</p></td>
+<td style="text-align: left;"><p>Document</p></td>
+<td style="text-align: left;"><p>Doument store services</p></td>
+<td style="text-align: left;"><p>Key-value based store</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Key-value), Coder (Document), Coder (Key)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Key-value</p></td>
+<td style="text-align: left;"><p>Key-value store services</p></td>
+<td style="text-align: left;"><p>memdb</p></td>
+<td style="text-align: left;"><p>X</p></td>
+<td style="text-align: left;"><p>Coder (Document), Coder (Key)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Coder (Document), Coder (Key)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>TiKV (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>JunoDB (Planning)</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Key-Value Cache</p></td>
+<td style="text-align: left;"><p>Key-value cache store services</p></td>
+<td style="text-align: left;"><p>Ristretto</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Key-value)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Tracer</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Distributed tracing services</p></td>
+<td style="text-align: left;"><p>OpenTelemetry</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>OpenTracing</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Metric</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Metrics services</p></td>
+<td style="text-align: left;"><p>Prometheus</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Graphite (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Extend</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>User-defined services</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+</tbody>
+</table>
 
 -   Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
 
 -   Dependency: Indicates other plug-in service types required to run the plug-in service.
 
-Plug-In Interfaces
-------------------
+## Plug-In Interfaces
 
 PuzzleDB defines the plug-in categories and interfaces based on the following concepts.
 
@@ -68,8 +269,7 @@ Metric service is a tool or platform used for collecting, storing, and analyzing
 
 PuzzleDB defines the metrics service interface to support any metrics servicel such as Prometheus and Graphite. The metrics interface is kept to a minimal specification to support a wide variety of metrics services.
 
-References
-----------
+## References
 
 -   [FoundationDB](https://www.foundationdb.org/)
 
@@ -91,8 +291,7 @@ References
 
     -   [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)
 
-Layer Concept
-=============
+# Layer Concept
 
 PuzzleDB adopts a unique approach similar to FoundationDB and early Google Spanner. It offers high scalability and ACID transactions while constructing its data model, indexes, and query processing on a foundation of simple key-value storage without any query functionality.
 
@@ -100,8 +299,7 @@ PuzzleDB adopts a unique approach similar to FoundationDB and early Google Spann
 
 In contrast, PuzzleDB has loosely coupled the query API, data model, and storage engine, enabling users to build their database with a suitable combination for their specific use cases and workloads. In PuzzleDB, not only are records represented as key-value pairs, but schemas and indices are also represented as key-value data.
 
-References
-----------
+## References
 
 -   [FoundationDB](https://www.foundationdb.org/)
 
@@ -123,26 +321,190 @@ References
 
     -   [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)
 
-Data Model
-==========
+# Data Model
 
 PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently. PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
 
-![storage](img/storage.png)
+<figure>
+<img src="img/storage.png" alt="storage" />
+</figure>
 
 PuzzleDB defines a plug-in interface to the Key-Value store, which allows importing small local in-memory databases like memdb or large distributed databases like FoundationDB or TiKV.
 
-Document Model
---------------
+## Document Model
 
 PuzzleDB is a multi-data model database and the core data model is a document model like CosmosDB. PuzzleDB is a pluggable database that combines modules, and the storage layer modules must be as expressive as JSON or BSON like ARS (Atom-Record-Sequence) of CosmosDB.
 
 PuzzleDB is a multi-model database, which converts any data models such as relational and document database models into the PuzzleDB data model as follows:
 
-<table style="width:100%;"><colgroup><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /></colgroup><thead><tr class="header"><th>Type</th><th>PuzzleDB</th><th>Redis</th><th>MongoDB</th><th>MySQL</th><th>PostgreSQL</th></tr></thead><tbody><tr class="odd"><td><p>Collection</p></td><td><p>map</p></td><td><p>Hash</p></td><td><p>Object</p></td><td><p>COMPLEX</p></td><td></td></tr><tr class="even"><td></td><td><p>array</p></td><td><p>List</p></td><td><p>Array</p></td><td><p>ARRAY</p></td><td></td></tr><tr class="odd"><td></td><td></td><td><p>Sets</p></td><td></td><td></td><td></td></tr><tr class="even"><td></td><td></td><td><p>Sorted Sets</p></td><td></td><td></td><td></td></tr><tr class="odd"><td><p>String</p></td><td><p>string</p></td><td><p>String</p></td><td><p>String</p></td><td><p>TEXT</p></td><td><p>TEXT</p></td></tr><tr class="even"><td></td><td></td><td></td><td></td><td><p>VARCHAR</p></td><td><p>VARCHAR</p></td></tr><tr class="odd"><td></td><td></td><td></td><td></td><td><p>CHAR</p></td><td><p>CHAR</p></td></tr><tr class="even"><td><p>Integer</p></td><td><p>tiny</p></td><td></td><td></td><td><p>TINYINT</p></td><td></td></tr><tr class="odd"><td></td><td><p>short</p></td><td></td><td></td><td><p>SMALLINT</p></td><td><p>SMALLINT</p></td></tr><tr class="even"><td></td><td><p>int</p></td><td></td><td><p>32-bit integer</p></td><td><p>INTEGER</p></td><td><p>INTEGER</p></td></tr><tr class="odd"><td></td><td><p>long</p></td><td></td><td><p>64-bit integer</p></td><td><p>BIGINT</p></td><td><p>BIGINT</p></td></tr><tr class="even"><td><p>Real</p></td><td><p>float32</p></td><td></td><td><p>32-bit IEEE-754</p></td><td><p>FLOAT</p></td><td><p>REAL</p></td></tr><tr class="odd"><td></td><td><p>float64</p></td><td></td><td><p>64-bit IEEE-754</p></td><td><p>DOUBLE (REAL)</p></td><td><p>DOUBLE (REAL)</p></td></tr><tr class="even"><td><p>Time</p></td><td><p>time.Time</p></td><td></td><td><p>Date</p></td><td><p>DATE DATETIME</p></td><td></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>Timestamp</p></td><td><p>TIME TIMESTAMP</p></td><td><p>TIMESTAMP</p></td></tr><tr class="even"><td><p>Special</p></td><td><p>null</p></td><td></td><td><p>Null</p></td><td><p>NULL</p></td><td><p>NULL</p></td></tr><tr class="odd"><td></td><td><p>bool</p></td><td></td><td><p>Boolean</p></td><td><p>BOOLEAN (TINYINT(1))</p></td><td><p>BOOLEAN</p></td></tr><tr class="even"><td></td><td><p>[]byte</p></td><td><p>String</p></td><td><p>Binary data</p></td><td><p>BLOB (BYTEA)</p></td><td><p>BINARY</p></td></tr></tbody></table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">PuzzleDB</th>
+<th style="text-align: left;">Redis</th>
+<th style="text-align: left;">MongoDB</th>
+<th style="text-align: left;">MySQL</th>
+<th style="text-align: left;">PostgreSQL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>Collection</p></td>
+<td style="text-align: left;"><p>map</p></td>
+<td style="text-align: left;"><p>Hash</p></td>
+<td style="text-align: left;"><p>Object</p></td>
+<td style="text-align: left;"><p>COMPLEX</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>array</p></td>
+<td style="text-align: left;"><p>List</p></td>
+<td style="text-align: left;"><p>Array</p></td>
+<td style="text-align: left;"><p>ARRAY</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Sets</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Sorted Sets</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"><p>string</p></td>
+<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"><p>TEXT</p></td>
+<td style="text-align: left;"><p>TEXT</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>VARCHAR</p></td>
+<td style="text-align: left;"><p>VARCHAR</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>CHAR</p></td>
+<td style="text-align: left;"><p>CHAR</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Integer</p></td>
+<td style="text-align: left;"><p>tiny</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>TINYINT</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>short</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>SMALLINT</p></td>
+<td style="text-align: left;"><p>SMALLINT</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>int</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>32-bit integer</p></td>
+<td style="text-align: left;"><p>INTEGER</p></td>
+<td style="text-align: left;"><p>INTEGER</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>long</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>64-bit integer</p></td>
+<td style="text-align: left;"><p>BIGINT</p></td>
+<td style="text-align: left;"><p>BIGINT</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Real</p></td>
+<td style="text-align: left;"><p>float32</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>32-bit IEEE-754</p></td>
+<td style="text-align: left;"><p>FLOAT</p></td>
+<td style="text-align: left;"><p>REAL</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>float64</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>64-bit IEEE-754</p></td>
+<td style="text-align: left;"><p>DOUBLE (REAL)</p></td>
+<td style="text-align: left;"><p>DOUBLE (REAL)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Time</p></td>
+<td style="text-align: left;"><p>time.Time</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Date</p></td>
+<td style="text-align: left;"><p>DATE DATETIME</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Timestamp</p></td>
+<td style="text-align: left;"><p>TIME TIMESTAMP</p></td>
+<td style="text-align: left;"><p>TIMESTAMP</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Special</p></td>
+<td style="text-align: left;"><p>null</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Null</p></td>
+<td style="text-align: left;"><p>NULL</p></td>
+<td style="text-align: left;"><p>NULL</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>bool</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Boolean</p></td>
+<td style="text-align: left;"><p>BOOLEAN (TINYINT(1))</p></td>
+<td style="text-align: left;"><p>BOOLEAN</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>[]byte</p></td>
+<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"><p>Binary data</p></td>
+<td style="text-align: left;"><p>BLOB (BYTEA)</p></td>
+<td style="text-align: left;"><p>BINARY</p></td>
+</tr>
+</tbody>
+</table>
 
-Key-Value Model
----------------
+## Key-Value Model
 
 PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
 
@@ -150,10 +512,89 @@ The document model is not natively implemented and is currently built on a key-v
 
 PuzzleDB encodes a document data with a coder and stores it as a key-value data. The relationship between the default coder, CBOR data model, and the document data model is shown below.
 
-<table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Type</th><th>PuzzleDB</th><th>CBOR</th></tr></thead><tbody><tr class="odd"><td><p>Collection</p></td><td><p>map</p></td><td><p>5 (map)</p></td></tr><tr class="even"><td></td><td><p>array</p></td><td><p>4 (array)</p></td></tr><tr class="odd"><td><p>String</p></td><td><p>string</p></td><td><p>3 (text string)</p></td></tr><tr class="even"><td><p>Integer</p></td><td><p>tiny</p></td><td><p>tiny</p></td></tr><tr class="odd"><td></td><td><p>short</p></td><td><p>short</p></td></tr><tr class="even"><td></td><td><p>int</p></td><td><p>int</p></td></tr><tr class="odd"><td></td><td><p>long</p></td><td><p>long</p></td></tr><tr class="even"><td><p>Real</p></td><td><p>float32</p></td><td><p>7 (floating-point) 26</p></td></tr><tr class="odd"><td></td><td><p>float64</p></td><td><p>7 (floating-point) 27</p></td></tr><tr class="even"><td><p>Time</p></td><td><p>time.Time</p></td><td><p>6 (tag) 0</p></td></tr><tr class="odd"><td><p>Special</p></td><td><p>null</p></td><td><p>null</p></td></tr><tr class="even"><td></td><td><p>bool</p></td><td><p>bool</p></td></tr><tr class="odd"><td></td><td><p>[]byte</p></td><td><p>binary</p></td></tr></tbody></table>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">PuzzleDB</th>
+<th style="text-align: left;">CBOR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>Collection</p></td>
+<td style="text-align: left;"><p>map</p></td>
+<td style="text-align: left;"><p>5 (map)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>array</p></td>
+<td style="text-align: left;"><p>4 (array)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>String</p></td>
+<td style="text-align: left;"><p>string</p></td>
+<td style="text-align: left;"><p>3 (text string)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Integer</p></td>
+<td style="text-align: left;"><p>tiny</p></td>
+<td style="text-align: left;"><p>tiny</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>short</p></td>
+<td style="text-align: left;"><p>short</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>int</p></td>
+<td style="text-align: left;"><p>int</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>long</p></td>
+<td style="text-align: left;"><p>long</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Real</p></td>
+<td style="text-align: left;"><p>float32</p></td>
+<td style="text-align: left;"><p>7 (floating-point) 26</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>float64</p></td>
+<td style="text-align: left;"><p>7 (floating-point) 27</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Time</p></td>
+<td style="text-align: left;"><p>time.Time</p></td>
+<td style="text-align: left;"><p>6 (tag) 0</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Special</p></td>
+<td style="text-align: left;"><p>null</p></td>
+<td style="text-align: left;"><p>null</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>bool</p></td>
+<td style="text-align: left;"><p>bool</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>[]byte</p></td>
+<td style="text-align: left;"><p>binary</p></td>
+</tr>
+</tbody>
+</table>
 
-References
-----------
+## References
 
 -   [A technical overview of Azure Cosmos DB | Azure Blog and Updates | Microsoft Azure](https://azure.microsoft.com/en-gb/blog/a-technical-overview-of-azure-cosmos-db/)
 
@@ -167,14 +608,15 @@ References
 
 Unresolved directive in concept.adoc - include::storage-model.adoc\[leveloffset=+1\] :leveloffset: +1
 
-Consistency Model
-=================
+# Consistency Model
 
 PuzzleDB is a multi-data model database; PuzzleDB is a pluggable database that combines modules, and the storage layer modules are expected to satisfy ACID-like interfaces.
 
 PuzzleDB defines the top-level storage plug-in as a document model interface, and the storage interface consists of transaction and document interfaces.
 
-![consistency model](img/consistency_model.png)
+<figure>
+<img src="img/consistency_model.png" alt="consistency model" />
+</figure>
 
 While developers can omit the interface and implement the storage plug-ins based on non-ACID storage, such as contingent consistency model storage, PuzzleDB expects that storage modules are implemented based on ACID storages.
 

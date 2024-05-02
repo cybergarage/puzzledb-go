@@ -1,10 +1,8 @@
-Storage Concepts
-================
+# Storage Concepts
 
 In PuzzleDB, the storage plugins are expected to be implemented as transaction-enabled, ordered sharding NoSQL storage systems, similar to Google Spanner or FoundationDB.
 
-Ordered Key-Value Store
------------------------
+## Ordered Key-Value Store
 
 PuzzleDB defines its storage interface as an ordered key-value store, akin to early Google Spanner and FoundationDB. PuzzleDB expects its storage plugin components to be implemented based on an ordered key-value store, in contrast to unordered hash-like key-value stores found in MongoDB and Cassandra. The implementation should be based on ACID-compliant ordered key-value stores.
 
@@ -12,15 +10,13 @@ FoundationDB and early Google Spanner utilize ordered key-value stores to suppor
 
 Ordered key-value stores are a fundamental component of the storage layers in distributed databases like FoundationDB and Google Spanner. By maintaining keys in a sorted order, these systems can efficiently handle range queries and optimize various operations in large-scale distributed environments.
 
-Data Model
-----------
+## Data Model
 
 PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently. PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
 
 PuzzleDB is a multi-data model database and the core data model is a document model like CosmosDB. PuzzleDB is a pluggable database that combines modules, and the storage layer modules must be as expressive as JSON or BSON like ARS (Atom-Record-Sequence) of CosmosDB. For more detailed information about PuzzleDB’s data model, it is recommended to refer to the [Data Model](data-model.md) documents.
 
-References
-----------
+## References
 
 -   [FoundationDB](https://www.foundationdb.org/)
 
