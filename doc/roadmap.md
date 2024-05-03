@@ -28,6 +28,18 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 -   New features
 
+    -   SSL Support
+
+        -   ❏ Operator
+
+            -   ❏ Supported PostgreSQL plug-in
+
+            -   ❏ Supported MySQL plug-in
+
+            -   ❏ Supported Redis plug-in
+
+            -   ❏ Supported MongoDB plug-in
+
     -   Kubernetes features
 
         -   ❏ Operator
