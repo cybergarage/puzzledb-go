@@ -12,6 +12,16 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
     pprof:
       enabled: false
       port: 6060
+    auth:
+      enabled: false
+      type: password
+      user: admin
+      password: password
+    tls:
+      enabled: false
+      key_file: key.pem
+      cert_file: cert.pem
+      ca_file: ca.pem
     plugins:
       system:
         grpc:
