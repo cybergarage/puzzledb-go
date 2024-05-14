@@ -11,9 +11,9 @@ auth:
   password: password
 tls:
   enabled: false
-  key_file: key.pem
-  cert_file: cert.pem
-  ca_files: [ca.pem]
+  key_file: "certs/key.pem"
+  cert_file: "certs/cert.pem"
+  ca_files: ["certs/root_cert.pem"]
 plugins:
   system:
     grpc:
