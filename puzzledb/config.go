@@ -33,6 +33,7 @@ const (
 	ConfigDefault = "default"
 	ConfigLevel   = "level"
 	ConfigAuth    = "auth"
+	ConfigTLS     = "tls"
 )
 
 // Config represents a configuration interface for PuzzleDB.
