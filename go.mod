@@ -7,7 +7,7 @@ require (
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.4
 	github.com/cybergarage/go-mongo v1.0.2
-	github.com/cybergarage/go-mysql v1.0.5
+	github.com/cybergarage/go-mysql v1.0.6
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.5.0
 	github.com/cybergarage/go-redis v1.4.3
@@ -23,7 +23,7 @@ require (
 	github.com/spf13/viper v1.17.0
 	go.mongodb.org/mongo-driver v1.11.2
 	google.golang.org/grpc v1.59.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 	vitess.io/vitess v0.12.6
 )
 
@@ -93,7 +93,7 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
-	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
