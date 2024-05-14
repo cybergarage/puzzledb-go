@@ -19,6 +19,7 @@ import (
 
 	"github.com/cybergarage/puzzledb-go/puzzledb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
+	"github.com/cybergarage/puzzledb-go/puzzledb/tls"
 )
 
 func TestConfig(t *testing.T) {
@@ -83,6 +84,25 @@ func TestAuthConfig(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
+			}
+		})
+	}
+}
+
+func TestTLSConfig(t *testing.T) {
+	paths := []string{"."}
+	for _, path := range paths {
+		t.Run(path, func(t *testing.T) {
+			conf, err := puzzledb.NewConfigWithPath(path)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			_, err = tls.NewConfigWith(conf, puzzledb.ConfigTLS)
+			if err != nil {
+				t.Error(err)
+				return
 			}
 		})
 	}
