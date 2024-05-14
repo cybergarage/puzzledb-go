@@ -20,6 +20,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/tls"
 )
 
 // StoreService represents a store interface for query service.
@@ -70,4 +71,6 @@ type Service interface {
 	SetTracer(t tracer.Tracer)
 	// SetPort sets the listen port.
 	SetPort(port int)
+	// TLSConfig returns the TLS configuration.
+	TLSConfig() (tls.Config, error)
 }
