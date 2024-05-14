@@ -28,7 +28,7 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 -   New features
 
-    -   SSL Support
+    -   TLS Support
 
         -   ❏ Operator
 
