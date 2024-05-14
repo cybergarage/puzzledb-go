@@ -13,7 +13,7 @@ tls:
   enabled: false
   key_file: key.pem
   cert_file: cert.pem
-  ca_file: ca.pem
+  ca_files: [ca.pem]
 plugins:
   system:
     grpc:
