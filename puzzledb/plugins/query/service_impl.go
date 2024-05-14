@@ -45,7 +45,7 @@ func NewBaseService() *BaseService {
 		store:       nil,
 		coordinator: nil,
 		AuthManager: nil,
-		tlsConfig:   tls.NewTLSConfig(),
+		tlsConfig:   tls.NewConfig(),
 	}
 	return server
 }

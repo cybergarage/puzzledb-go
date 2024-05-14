@@ -24,21 +24,21 @@ import (
 // tlsConfig represents a TLS configuration.
 type tlsConfig struct {
 	clientAuthType tls.ClientAuthType
-	enabled        bool     `mapstructure:"enabled"`
-	certFile       string   `mapstructure:"cert_file"`
-	keyFile        string   `mapstructure:"key_file"`
-	caFile         []string `mapstructure:"ca_files"`
+	Enabled        bool     `mapstructure:"enabled"`
+	CertFile       string   `mapstructure:"cert_file"`
+	KeyFile        string   `mapstructure:"key_file"`
+	CAFiles        []string `mapstructure:"ca_files"`
 	tlsConfig      *tls.Config
 }
 
-// NewTLSConfig returns a new TLS configuration.
-func NewTLSConfig() Config {
+// NewConfig returns a new TLS configuration.
+func NewConfig() Config {
 	return &tlsConfig{
-		enabled:        false,
+		Enabled:        false,
 		clientAuthType: tls.RequireAndVerifyClientCert,
-		certFile:       "",
-		keyFile:        "",
-		caFile:         []string{},
+		CertFile:       "",
+		KeyFile:        "",
+		CAFiles:        []string{},
 		tlsConfig:      nil,
 	}
 }
@@ -46,13 +46,15 @@ func NewTLSConfig() Config {
 // NewConfigWith returns a new configuration for authenticator with the specified configuration.
 func NewConfigWith(config config.Config, path ...string) (Config, error) {
 	var tlsConfig tlsConfig
+	tlsConfig.clientAuthType = tls.RequireAndVerifyClientCert
 	err := config.UnmarshallConfig(path, &tlsConfig)
 	return &tlsConfig, err
+
 }
 
 // SetTLSEnabled sets a TLS enabled flag.
 func (config *tlsConfig) SetTLSEnabled(enabled bool) {
-	config.enabled = enabled
+	config.Enabled = enabled
 	config.tlsConfig = nil
 }
 
@@ -63,25 +65,25 @@ func (config *tlsConfig) SetClientAuthType(authType tls.ClientAuthType) {
 
 // SetTLSKeyFile sets a TLS key file.
 func (config *tlsConfig) SetTLSKeyFile(file string) {
-	config.keyFile = file
+	config.KeyFile = file
 	config.tlsConfig = nil
 }
 
 // SetTLSCertFile sets a TLS certificate file.
 func (config *tlsConfig) SetTLSCertFile(file string) {
-	config.certFile = file
+	config.CertFile = file
 	config.tlsConfig = nil
 }
 
 // SetRootCertFile sets a TLS root certificates.
 func (config *tlsConfig) SetTLSCAFiles(files ...string) {
-	config.caFile = files
+	config.CAFiles = files
 	config.tlsConfig = nil
 }
 
 // TLSEnabled returns a TLS enabled flag.
 func (config *tlsConfig) TLSEnabled() bool {
-	return config.enabled
+	return config.Enabled
 }
 
 // ClientAuthType returns a client authentication type.
@@ -91,17 +93,17 @@ func (config *tlsConfig) ClientAuthType() tls.ClientAuthType {
 
 // TLSKeyFile returns a TLS key file.
 func (config *tlsConfig) TLSKeyFile() string {
-	return config.keyFile
+	return config.KeyFile
 }
 
 // TLSCertFile returns a TLS certificate file.
 func (config *tlsConfig) TLSCertFile() string {
-	return config.certFile
+	return config.CertFile
 }
 
 // TLSCAFiles returns a TLS root certificates.
 func (config *tlsConfig) TLSCAFiles() []string {
-	return config.caFile
+	return config.CAFiles
 }
 
 // TLSConfig returns a TLS configuration from the configuration.
@@ -109,15 +111,15 @@ func (config *tlsConfig) TLSConfig() (*tls.Config, error) {
 	if config.tlsConfig != nil {
 		return config.tlsConfig, nil
 	}
-	if len(config.certFile) == 0 || len(config.keyFile) == 0 {
+	if len(config.CertFile) == 0 || len(config.KeyFile) == 0 {
 		return nil, nil
 	}
-	serverCert, err := tls.LoadX509KeyPair(config.certFile, config.keyFile)
+	serverCert, err := tls.LoadX509KeyPair(config.CertFile, config.KeyFile)
 	if err != nil {
 		return nil, err
 	}
 	certPool := x509.NewCertPool()
-	for _, rootCertFile := range config.caFile {
+	for _, rootCertFile := range config.CAFiles {
 		rootCert, err := os.ReadFile(rootCertFile)
 		if err != nil {
 			return nil, err
