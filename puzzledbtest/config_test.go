@@ -99,7 +99,13 @@ func TestTLSConfig(t *testing.T) {
 				return
 			}
 
-			_, err = tls.NewConfigWith(conf, puzzledb.ConfigTLS)
+			tlsConf, err := tls.NewConfigWith(conf, puzzledb.ConfigTLS)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			_, err = tlsConf.TLSConfig()
 			if err != nil {
 				t.Error(err)
 				return
