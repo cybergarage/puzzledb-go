@@ -19,7 +19,7 @@ image:img/roadmap.png[doc/img/roadmap]
 
 == v1.4.x
 * New features
-** SSL Support
+** TLS Support
 *** [ ] Operator
 ***** [ ] Supported PostgreSQL plug-in
 ***** [ ] Supported MySQL plug-in
