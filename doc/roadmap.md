@@ -90,20 +90,20 @@ v1.3.1 (2024-xx-xx)
 
         -   ❏ Supported MongoDB plug-in
 
+    -   Security plug-ins
+
+        -   ✓ Added authenticator plug-ins
+
+            -   ✓ Added clear text password plug-ins
+
+                -   ❏ Supported MySQL plug-in
+
+                -   ❏ Supported MongoDB plug-in
+
 v1.3.0 (2023-12-30)
 -------------------
 
 -   New features
-
-    -   ✓ TLS Support
-
-        -   ✓ Supported PostgreSQL plug-in
-
-        -   ❏ Supported MySQL plug-in
-
-        -   ❏ Supported Redis plug-in
-
-        -   ❏ Supported MongoDB plug-in
 
     -   Security plug-ins
 
@@ -113,11 +113,7 @@ v1.3.0 (2023-12-30)
 
                 -   ✓ Supported PostgreSQL plug-in
 
-                -   ❏ Supported MySQL plug-in
-
                 -   ✓ Supported Redis plug-in
-
-                -   ❏ Supported MongoDB plug-in
 
 -   Improvements
 
