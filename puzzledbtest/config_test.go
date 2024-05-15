@@ -22,7 +22,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/tls"
 )
 
-func TestConfig(t *testing.T) {
+func TestConfigs(t *testing.T) {
 	paths := []string{".", "../puzzledb/conf"}
 	for _, path := range paths {
 		t.Run(path, func(t *testing.T) {
@@ -58,58 +58,61 @@ func TestConfig(t *testing.T) {
 	}
 }
 
-func TestAuthConfig(t *testing.T) {
+func TestDefaultTestConfig(t *testing.T) {
+	configs := []Config{
+		NewConfig(),
+	}
 	paths := []string{"."}
 	for _, path := range paths {
-		t.Run(path, func(t *testing.T) {
-			conf, err := puzzledb.NewConfigWithPath(path)
-			if err != nil {
-				t.Error(err)
-				return
-			}
+		config, err := puzzledb.NewConfigWithPath(path)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		configs = append(configs, config)
+	}
 
-			aconfs, err := auth.NewConfigWith(conf, puzzledb.ConfigAuth)
-			if err != nil {
-				t.Error(err)
-				return
-			}
-
-			if len(aconfs) < 1 {
-				t.Errorf("no auth config (%s)", path)
-				return
-			}
-
-			for _, aconf := range aconfs {
-				_, err := auth.NewAuthenticatorTypeFrom(aconf.Type)
-				if err != nil {
-					t.Error(err)
-				}
-			}
+	for _, config := range configs {
+		t.Run(config.UsedConfigFile(), func(t *testing.T) {
+			DefaultTestConfigTest(t, config)
 		})
 	}
 }
 
-func TestTLSConfig(t *testing.T) {
-	paths := []string{"."}
-	for _, path := range paths {
-		t.Run(path, func(t *testing.T) {
-			conf, err := puzzledb.NewConfigWithPath(path)
-			if err != nil {
-				t.Error(err)
-				return
-			}
+func DefaultTestConfigTest(t *testing.T, config Config) {
+	t.Helper()
 
-			tlsConf, err := tls.NewConfigWith(conf, puzzledb.ConfigTLS)
-			if err != nil {
-				t.Error(err)
-				return
-			}
+	// Check auth config
 
-			_, err = tlsConf.TLSConfig()
-			if err != nil {
-				t.Error(err)
-				return
-			}
-		})
+	aconfs, err := auth.NewConfigWith(config, puzzledb.ConfigAuth)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	if len(aconfs) < 1 {
+		t.Errorf("no auth config (%s)", config.UsedConfigFile())
+		return
+	}
+
+	for _, aconf := range aconfs {
+		_, err := auth.NewAuthenticatorTypeFrom(aconf.Type)
+		if err != nil {
+			t.Error(err)
+		}
+	}
+
+	// Check tls config
+
+	tlsConf, err := tls.NewConfigWith(config, puzzledb.ConfigTLS)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	_, err = tlsConf.TLSConfig()
+	if err != nil {
+		t.Error(err)
+		return
 	}
 }
