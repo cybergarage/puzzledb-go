@@ -36,7 +36,6 @@ func TestPostgreSQLServer(t *testing.T) {
 	}{
 		{"authenticator", RunAuthenticatorTest},
 		{"tls", RunTLSSessionTest},
-		// {"copy", TestServerCopy},
 	}
 
 	server := puzzledbtest.NewServer()
