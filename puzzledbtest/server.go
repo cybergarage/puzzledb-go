@@ -22,7 +22,6 @@ import (
 
 // Server represents an example server.
 type Server struct {
-	*Config
 	*puzzledb.Server
 	Host string
 }
@@ -34,8 +33,7 @@ func NewServer() *Server {
 		panic(err)
 	}
 	server := &Server{
-		Config: testConfig,
-		Server: puzzledb.NewServer(),
+		Server: puzzledb.NewServerWithConfig(testConfig),
 		Host:   LocalHost,
 	}
 	server.SetConfig(testConfig)
@@ -46,7 +44,6 @@ func NewServer() *Server {
 func NewServerWithConfig(config config.Config) *Server {
 	testConfig := NewConfigWith(config)
 	server := &Server{
-		Config: testConfig,
 		Server: puzzledb.NewServerWithConfig(testConfig),
 		Host:   LocalHost,
 	}
