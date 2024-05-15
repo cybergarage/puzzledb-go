@@ -19,12 +19,11 @@ image:img/roadmap.png[doc/img/roadmap]
 
 == v1.4.x
 * New features
-** TLS Support
-*** [ ] Operator
-***** [ ] Supported PostgreSQL plug-in
-***** [ ] Supported MySQL plug-in
-***** [ ] Supported Redis plug-in
-***** [ ] Supported MongoDB plug-in
+** [X] TLS Support
+*** [X] Supported PostgreSQL plug-in
+*** [ ] Supported MySQL plug-in
+*** [ ] Supported Redis plug-in
+*** [ ] Supported MongoDB plug-in
 ** Kubernetes features
 *** [ ] Operator
 ** New plug-ins
