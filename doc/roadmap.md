@@ -1,10 +1,12 @@
-# Roadmap
+Roadmap
+=======
 
 PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
 
 ![doc/img/roadmap](img/roadmap.png)
 
-## v2.0.0
+v2.0.0
+------
 
 -   New features
 
@@ -24,21 +26,20 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ❏ Added Encrypt plug-ins
 
-## v1.4.x
+v1.4.x
+------
 
 -   New features
 
-    -   TLS Support
+    -   \[X\] TLS Support
 
-        -   ❏ Operator
+        -   \[X\] Supported PostgreSQL plug-in
 
-            -   ❏ Supported PostgreSQL plug-in
+        -   ❏ Supported MySQL plug-in
 
-            -   ❏ Supported MySQL plug-in
+        -   ❏ Supported Redis plug-in
 
-            -   ❏ Supported Redis plug-in
-
-            -   ❏ Supported MongoDB plug-in
+        -   ❏ Supported MongoDB plug-in
 
     -   Kubernetes features
 
@@ -86,7 +87,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
                     -   ❏ Auto Indexing
 
-## v1.3.0 (2023-12-30)
+v1.3.0 (2023-12-30)
+-------------------
 
 -   New features
 
@@ -116,7 +118,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
     -   Updated storage format
 
-## v1.2.0 (2023-11-15)
+v1.2.0 (2023-11-15)
+-------------------
 
 -   New features
 
@@ -154,7 +157,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   ✓ Fixed to run pgbench on Ubuntu platforms
 
-## v1.1.0 (2023-10-20)
+v1.1.0 (2023-10-20)
+-------------------
 
 -   New features
 
@@ -210,7 +214,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         -   Enabled PICT based scenario tests of go-sqltest
 
-## v1.0.0 (2023-08-30)
+v1.0.0 (2023-08-30)
+-------------------
 
 -   New plug-ins
 
@@ -254,7 +259,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
             -   ✓ Support limit and order options in Range queries based on key-value Store plug-ins
 
-## v0.9.0 (2023-05-07)
+v0.9.0 (2023-05-07)
+-------------------
 
 -   New features
 
@@ -306,7 +312,8 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
                 -   ✓ DROP TABLE
 
-## v0.8.0 (2023-04-10)
+v0.8.0 (2023-04-10)
+-------------------
 
 -   Initial public release
 

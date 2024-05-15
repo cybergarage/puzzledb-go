@@ -1,8 +1,10 @@
-# Configuring PuzzleDB
+Configuring PuzzleDB
+====================
 
 PuzzleDB is configured using a configuration file. The configuration file is a YAML file, and you can override the configuration by setting environment variables.
 
-## Configuration File (puzzledb.yaml)
+Configuration File (puzzledb.yaml)
+----------------------------------
 
 The configuration file is divided into sections. Each section is a YAML map. PuzzleDB will activate a default configuration if a configuration file is not specified or if there is no puzzledb.yaml in the local directory. The following is the default configuration file:
 
@@ -21,7 +23,7 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
       enabled: false
       key_file: key.pem
       cert_file: cert.pem
-      ca_file: ca.pem
+      ca_files: [ca.pem]
     plugins:
       system:
         grpc:
@@ -97,7 +99,8 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
           enabled: true
           port: 9181
 
-## Environment Variables
+Environment Variables
+---------------------
 
 You can override the configuration file location by setting the PUZZLEDB environment variable. PuzzleDB assumes that the environment variable matches the following format: PUZZLEDB + "\_" + the key name in ALL CAPS.
 
