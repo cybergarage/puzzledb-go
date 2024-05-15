@@ -29,11 +29,60 @@ v2.0.0
 v1.4.x
 ------
 
+-   Kubernetes features
+
+    -   ❏ Operator
+
+-   New plug-ins
+
+    -   Storage plug-ins
+
+        -   ❏ Added JunoDB plug-in
+
+        -   ❏ Added TiKV plug-in
+
+    -   Coordinator plug-ins
+
+        -   ❏ Added etcd plug-in
+
+    -   Metrics plug-ins
+
+        -   ❏ Added Graphite plug-in
+
+            -   Improvements
+
+-   Plug-in improvements
+
+    -   Query plug-ins
+
+        -   MySQL plug-in
+
+            -   Supported queries
+
+                -   ❏ ALTER TABLE
+
+                -   ❏ CREATE INDEX
+
+                -   ❏ LIMIT and ORDER BY in SELECT queries
+
+        -   MongoDB plug-in
+
+            -   Supported queries
+
+                -   ❏ createIndex (Only single field and Comound indexes)
+
+            -   Disabled features
+
+                -   ❏ Auto Indexing
+
+v1.3.1 (2024-xx-xx)
+-------------------
+
 -   New features
 
-    -   \[X\] TLS Support
+    -   ✓ TLS Support
 
-        -   \[X\] Supported PostgreSQL plug-in
+        -   ✓ Supported PostgreSQL plug-in
 
         -   ❏ Supported MySQL plug-in
 
@@ -41,56 +90,20 @@ v1.4.x
 
         -   ❏ Supported MongoDB plug-in
 
-    -   Kubernetes features
-
-        -   ❏ Operator
-
-    -   New plug-ins
-
-        -   Storage plug-ins
-
-            -   ❏ Added JunoDB plug-in
-
-            -   ❏ Added TiKV plug-in
-
-        -   Coordinator plug-ins
-
-            -   ❏ Added etcd plug-in
-
-        -   Metrics plug-ins
-
-            -   ❏ Added Graphite plug-in
-
--   Improvements
-
-    -   Plug-in improvements
-
-        -   Query plug-ins
-
-            -   MySQL plug-in
-
-                -   Supported queries
-
-                    -   ❏ ALTER TABLE
-
-                    -   ❏ CREATE INDEX
-
-                    -   ❏ LIMIT and ORDER BY in SELECT queries
-
-            -   MongoDB plug-in
-
-                -   Supported queries
-
-                    -   ❏ createIndex (Only single field and Comound indexes)
-
-                -   Disabled features
-
-                    -   ❏ Auto Indexing
-
 v1.3.0 (2023-12-30)
 -------------------
 
 -   New features
+
+    -   ✓ TLS Support
+
+        -   ✓ Supported PostgreSQL plug-in
+
+        -   ❏ Supported MySQL plug-in
+
+        -   ❏ Supported Redis plug-in
+
+        -   ❏ Supported MongoDB plug-in
 
     -   Security plug-ins
 
