@@ -49,7 +49,6 @@ func NewConfigWith(config config.Config, path ...string) (Config, error) {
 	tlsConfig.clientAuthType = tls.RequireAndVerifyClientCert
 	err := config.UnmarshallConfig(path, &tlsConfig)
 	return &tlsConfig, err
-
 }
 
 // SetTLSEnabled sets a TLS enabled flag.
