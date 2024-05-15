@@ -137,8 +137,6 @@ func (server *Server) LoadPlugins() error {
 }
 
 func (server *Server) setupPlugins() error {
-	server.PluginManager.SetConfig(server.Config)
-
 	// Default services
 
 	defaultKeyCoder, err := server.DefaultKeyCoderService()

@@ -36,7 +36,6 @@ func NewServer() *Server {
 		Server: puzzledb.NewServerWithConfig(testConfig),
 		Host:   LocalHost,
 	}
-	server.SetConfig(testConfig)
 	return server
 }
 
