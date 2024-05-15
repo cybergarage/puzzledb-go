@@ -24,42 +24,23 @@ import (
 //go:embed puzzledb.yaml
 var testConfigString string
 
-type Config struct {
-	puzzledb.Config
+type Config = puzzledb.Config
+
+// NewConfig returns a new configuration.
+func NewConfig() Config {
+	conf, err := puzzledb.NewConfigWithString(testConfigString)
+	if err != nil {
+		panic(err)
+	}
+	return NewConfigWith(conf)
 }
 
 // NewConfigWith returns a new configuration with the specified configuration.
-func NewConfigWith(conf config.Config) *Config {
-	return &Config{
-		Config: puzzledb.NewConfigWith(conf),
-	}
+func NewConfigWith(conf config.Config) Config {
+	return puzzledb.NewConfigWith(conf)
 }
 
 // NewConfigWithString returns a new configuration with the specified string.
-func NewConfigWithString(conString string) (*Config, error) {
-	conf, err := puzzledb.NewConfigWithString(conString)
-	if err != nil {
-		return nil, err
-	}
-	return NewConfigWith(conf), nil
-}
-
-// GetConfigObject overrides the GetConfigObject method of the Config interface for testing.
-func (conf *Config) GetConfigObject(paths ...string) (any, error) {
-	return conf.Config.GetConfigObject(paths...)
-}
-
-// GetConfigString overrides the GetConfigString method of the Config interface for testing.
-func (conf *Config) GetConfigString(paths ...string) (string, error) {
-	return conf.Config.GetConfigString(paths...)
-}
-
-// GetConfigInt overrides the GetConfigInt method of the Config interface for testing.
-func (conf *Config) GetConfigInt(paths ...string) (int, error) {
-	return conf.Config.GetConfigInt(paths...)
-}
-
-// GetConfigBool overrides the GetConfigBool method of the Config interface for testing.
-func (conf *Config) GetConfigBool(paths ...string) (bool, error) {
-	return conf.Config.GetConfigBool(paths...)
+func NewConfigWithString(conString string) (Config, error) {
+	return puzzledb.NewConfigWithString(conString)
 }
