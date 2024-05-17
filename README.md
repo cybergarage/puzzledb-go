@@ -42,8 +42,6 @@ For information on the concept and architecture of PuzzleDB, refer to the follow
 
 -   [Design Concepts](doc/concept.md)
 
-    -   [Plug-In Concept](doc/plugin-concept.md)
-
     -   [Layer Concept](doc/layer-concept.md)
 
     -   [Data Model](doc/data-model.md)
@@ -55,6 +53,8 @@ For information on the concept and architecture of PuzzleDB, refer to the follow
     -   [Coordinator Concept](doc/coordinator-concept.md)
 
     -   [Authentication Concept](doc/auth-concept.md)
+
+    -   [Plug-In Concept](doc/plugin-concept.md)
 
 # Supported Protocols
 

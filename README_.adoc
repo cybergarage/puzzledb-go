@@ -21,13 +21,13 @@ See the following guide to learn about how to get started.
 For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
 
 * link:doc/concept.md[Design Concepts]
-** link:doc/plugin-concept.md[Plug-In Concept]
 ** link:doc/layer-concept.md[Layer Concept]
 ** link:doc/data-model.md[Data Model]
 ** link:doc/storage-concept.md[Storage Concept]
 ** link:doc/consistency-model.md[Consistency Model]
 ** link:doc/coordinator-concept.md[Coordinator Concept]
 ** link:doc/auth-concept.md[Authentication Concept]
+** link:doc/plugin-concept.md[Plug-In Concept]
 
 = Supported Protocols
 
