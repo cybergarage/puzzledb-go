@@ -77,8 +77,8 @@ github.com/cybergarage/go-pict v1.0.0 h1:ruJAusVb7J0Hm+G8xiBJZanzROX2wBcNtExzv4E
 github.com/cybergarage/go-pict v1.0.0/go.mod h1:rdjVxfqG/Jl6ehdt+brSOvGbiRKgU+Ihvr7p9O/gde0=
 github.com/cybergarage/go-postgresql v1.5.1 h1:/KA2HNQpg+UXgKRZE2qjXWQbXQmtDLRLBR0X7p3BCzI=
 github.com/cybergarage/go-postgresql v1.5.1/go.mod h1:/9RBamAAq1+KanJnp9V2PGt2Z8/ik6X9zeQkqdug+jE=
-github.com/cybergarage/go-redis v1.4.3 h1:2jriMm7ZpdCzeIeoEjMR6/1ERx7jy11426rl6Q6uMts=
-github.com/cybergarage/go-redis v1.4.3/go.mod h1:5WEH2ZbprN9+nSVGiWz7g/0UV+YbegzGV5Q2CLZjyhI=
+github.com/cybergarage/go-redis v1.5.0 h1:aqBVA8EInA1ftnXBqvA/xNpLHos0zffQyYZZIRy5mSI=
+github.com/cybergarage/go-redis v1.5.0/go.mod h1:Luk/YYIKrmQFtqqe3q6dpxAV08yU4+kv4GstrA/2hA0=
 github.com/cybergarage/go-safecast v1.2.3 h1:DlD/VxntuR+H6hy+TMprxkDIxbwd9pLn6CZ44FC5PlE=
 github.com/cybergarage/go-safecast v1.2.3/go.mod h1:bv+1ykIikB3xYPJFqu3ZsY3xfyEVQesq8+biHX3ZMWQ=
 github.com/cybergarage/go-sqlparser v1.2.7 h1:Pe6TUmMUJEQDz04Y9Yy8Q/KcwyIgFJIeXjo1PO5HmB0=
