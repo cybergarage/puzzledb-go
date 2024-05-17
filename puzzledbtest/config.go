@@ -18,7 +18,6 @@ import (
 	_ "embed"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb"
-	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
 //go:embed puzzledb.yaml
@@ -32,12 +31,7 @@ func NewConfig() Config {
 	if err != nil {
 		panic(err)
 	}
-	return NewConfigWith(conf)
-}
-
-// NewConfigWith returns a new configuration with the specified configuration.
-func NewConfigWith(conf config.Config) Config {
-	return puzzledb.NewConfigWith(conf)
+	return conf
 }
 
 // NewConfigWithString returns a new configuration with the specified string.
