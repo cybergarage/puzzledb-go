@@ -24,10 +24,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-type configImpl struct {
-	config.Config
-}
-
 // NewConfig returns a new configuration.
 func NewConfig() (Config, error) {
 	conf := config.NewConfigWith(ProductName)
@@ -35,14 +31,7 @@ func NewConfig() (Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewConfigWith(conf), nil
-}
-
-// NewConfigWith returns a new configuration with the specified configuration.
-func NewConfigWith(conf config.Config) Config {
-	return &configImpl{
-		Config: conf,
-	}
+	return conf, nil
 }
 
 // NewConfigWithPath returns a new configuration with the specified path.
@@ -53,7 +42,7 @@ func NewConfigWithPath(path string) (Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewConfigWith(conf), nil
+	return conf, nil
 }
 
 func NewConfigWithPaths(paths ...string) (Config, error) {
@@ -65,7 +54,7 @@ func NewConfigWithPaths(paths ...string) (Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewConfigWith(conf), nil
+	return conf, nil
 }
 
 // NewConfigWithString returns a new configuration with the specified string.
@@ -74,7 +63,7 @@ func NewConfigWithString(conString string) (Config, error) {
 	if err := viper.ReadConfig(bytes.NewBufferString(conString)); err != nil {
 		return nil, err
 	}
-	return NewConfigWith(conf), nil
+	return conf, nil
 }
 
 // NewConfigWithFile returns a new configuration with the specified file.
@@ -88,23 +77,5 @@ func NewConfigWithFile(confFile string) (Config, error) {
 	if err := viper.ReadConfig(bufio.NewReader(f)); err != nil {
 		return nil, err
 	}
-	return NewConfigWith(conf), nil
-}
-
-// SetConfig sets a manager configuration.
-func (conf *configImpl) SetConfig(c config.Config) {
-	conf.Config = c
-}
-
-// Object returns a raw configuration object.
-func (conf *configImpl) Object() config.Config {
-	return conf.Config
-}
-
-// String returns a string representation of the configuration.
-func (conf *configImpl) String() string {
-	if conf.Config == nil {
-		return ""
-	}
-	return conf.Config.String()
+	return conf, nil
 }

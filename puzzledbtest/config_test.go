@@ -26,13 +26,12 @@ func TestConfigs(t *testing.T) {
 	paths := []string{".", "../puzzledb/conf"}
 	for _, path := range paths {
 		t.Run(path, func(t *testing.T) {
-			c, err := puzzledb.NewConfigWithPath(path)
+			conf, err := puzzledb.NewConfigWithPath(path)
 			if err != nil {
 				t.Error(err)
 				return
 			}
 
-			conf := puzzledb.NewConfigWith(c)
 			ports := []struct {
 				name     string
 				expected int
