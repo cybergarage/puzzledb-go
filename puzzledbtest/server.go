@@ -28,18 +28,13 @@ type Server struct {
 
 // NewServer returns a new testserver instance.
 func NewServer() *Server {
-	server := &Server{
-		Server: puzzledb.NewServerWithConfig(NewConfig()),
-		Host:   LocalHost,
-	}
-	return server
+	return NewServerWithConfig(NewConfig())
 }
 
 // NewServerWithConfig returns a new test server instance with the specified configuration.
 func NewServerWithConfig(config config.Config) *Server {
-	testConfig := NewConfigWith(config)
 	server := &Server{
-		Server: puzzledb.NewServerWithConfig(testConfig),
+		Server: puzzledb.NewServerWithConfig(config),
 		Host:   LocalHost,
 	}
 	return server
