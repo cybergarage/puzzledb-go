@@ -62,6 +62,15 @@ type Server struct {
 
 // NewServer returns a new server instance.
 func NewServer() *Server {
+	conf, err := NewDefaultConfig()
+	if err != nil {
+		panic(err)
+	}
+	return NewServerWithConfig(conf)
+}
+
+// NewServerWithConfig returns a new server instance with the specified configuradtion.
+func NewServerWithConfig(conf config.Config) *Server {
 	server := &Server{
 		actor:         nil,
 		Config:        nil,
@@ -70,19 +79,7 @@ func NewServer() *Server {
 		Node:          cluster.NewNode(),
 		pprofStarted:  false,
 	}
-	conf, err := NewDefaultConfig()
-	if err != nil {
-		panic(err)
-	}
 	server.SetConfig(conf)
-
-	return server
-}
-
-// NewServerWithConfig returns a new server instance with the specified configuradtion.
-func NewServerWithConfig(conf config.Config) *Server {
-	server := NewServer()
-	server.SetConfig(NewConfigWith(conf))
 	return server
 }
 
