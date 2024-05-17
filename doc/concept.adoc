@@ -5,8 +5,8 @@ PuzzleDB has a unique approach in the NewSQL field by using a simple key-value f
 :toc:
 
 include::layer-concept.adoc[leveloffset=+1]
-include::plugin-concept.adoc[leveloffset=+1]
 include::data-model.adoc[leveloffset=+1]
 include::storage-concept.adoc[leveloffset=+1]
 include::consistency-model.adoc[leveloffset=+1]
 include::coordinator-concept.adoc[leveloffset=+1]
+include::plugin-concept.adoc[leveloffset=+1]
