@@ -25,21 +25,27 @@ type Config interface {
 	// SetClientAuthType sets a client authentication type.
 	SetClientAuthType(authType tls.ClientAuthType)
 	// SetTLSKeyFile sets a TLS key file.
-	SetTLSKeyFile(file string)
+	SetTLSKeyFile(file string) error
 	// SetTLSCertFile sets a TLS certificate file.
-	SetTLSCertFile(file string)
-	// SetRootCertFile sets a TLS root certificates.
-	SetTLSCAFiles(files ...string)
+	SetTLSCertFile(file string) error
+	// SetTLSCACertFiles sets a TLS root certificate files.
+	SetTLSCACertFiles(files ...string) error
+	// SetTLSKey sets a TLS key file.
+	SetTLSKey(key []byte)
+	// SetTLSCert sets a TLS certificate binaries.
+	SetTLSCert(cert []byte)
+	// SetTLSCACerts sets a TLS root certificate binaries.
+	SetTLSCACerts(certs ...[]byte)
 	// TLSEnabled returns a TLS enabled flag.
 	TLSEnabled() bool
 	// ClientAuthType returns a client authentication type.
 	ClientAuthType() tls.ClientAuthType
-	// TLSKeyFile returns a TLS key file.
-	TLSKeyFile() string
-	// TLSCertFile returns a TLS certificate file.
-	TLSCertFile() string
-	// TLSCAFiles returns a TLS root certificates.
-	TLSCAFiles() []string
+	// TLSKey returns a TLS key bytes.
+	TLSKey() []byte
+	// TLSCert returns a TLS certificate bytes.
+	TLSCert() []byte
+	// TLSCACerts returns a TLS root certificate bytes.
+	TLSCACerts() [][]byte
 	// TLSConfig returns a TLS configuration from the configuration.
 	TLSConfig() (*tls.Config, error)
 }

@@ -52,10 +52,10 @@ func (service *Service) Start() error {
 	}
 	tlsConfig, err := service.TLSConfig()
 	if err == nil && tlsConfig != nil {
-		service.Server.SetServerKeyFile(tlsConfig.TLSKeyFile())
-		service.Server.SetServerCertFile(tlsConfig.TLSCertFile())
-		service.Server.SetRootCertFiles(tlsConfig.TLSCAFiles()...)
 		service.Server.SetTLSEnabled(true)
+		service.Server.SetServerKey(tlsConfig.TLSKey())
+		service.Server.SetServerCert(tlsConfig.TLSCert())
+		service.Server.SetRootCerts(tlsConfig.TLSCACerts()...)
 		_, err := tlsConfig.TLSConfig()
 		if err != nil {
 			return err

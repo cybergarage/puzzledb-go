@@ -28,6 +28,9 @@ type tlsConfig struct {
 	CertFile       string   `mapstructure:"cert_file"`
 	KeyFile        string   `mapstructure:"key_file"`
 	CAFiles        []string `mapstructure:"ca_files"`
+	Key            []byte
+	Cert           []byte
+	CASCerts       [][]byte
 	tlsConfig      *tls.Config
 }
 
@@ -39,6 +42,9 @@ func NewConfig() Config {
 		CertFile:       "",
 		KeyFile:        "",
 		CAFiles:        []string{},
+		Key:            []byte{},
+		Cert:           []byte{},
+		CASCerts:       [][]byte{},
 		tlsConfig:      nil,
 	}
 }
@@ -46,9 +52,30 @@ func NewConfig() Config {
 // NewConfigWith returns a new configuration for authenticator with the specified configuration.
 func NewConfigWith(config config.Config, path ...string) (Config, error) {
 	var tlsConfig tlsConfig
-	tlsConfig.clientAuthType = tls.RequireAndVerifyClientCert
 	err := config.UnmarshallConfig(path, &tlsConfig)
-	return &tlsConfig, err
+	if err != nil {
+		return nil, err
+	}
+	tlsConfig.clientAuthType = tls.RequireAndVerifyClientCert
+	if !tlsConfig.Enabled {
+		return &tlsConfig, nil
+	}
+	if 0 < len(tlsConfig.CertFile) {
+		if err := tlsConfig.SetTLSCertFile(tlsConfig.CertFile); err != nil {
+			return nil, err
+		}
+	}
+	if 0 < len(tlsConfig.KeyFile) {
+		if err := tlsConfig.SetTLSKeyFile(tlsConfig.KeyFile); err != nil {
+			return nil, err
+		}
+	}
+	if 0 < len(tlsConfig.CAFiles) {
+		if err := tlsConfig.SetTLSCACertFiles(tlsConfig.CAFiles...); err != nil {
+			return nil, err
+		}
+	}
+	return &tlsConfig, nil
 }
 
 // SetTLSEnabled sets a TLS enabled flag.
@@ -63,26 +90,78 @@ func (config *tlsConfig) SetClientAuthType(authType tls.ClientAuthType) {
 }
 
 // SetTLSKeyFile sets a TLS key file.
-func (config *tlsConfig) SetTLSKeyFile(file string) {
+func (config *tlsConfig) SetTLSKeyFile(file string) error {
+	key, err := os.ReadFile(file)
+	if err != nil {
+		return err
+	}
 	config.KeyFile = file
-	config.tlsConfig = nil
+	config.SetTLSKey(key)
+	return nil
 }
 
 // SetTLSCertFile sets a TLS certificate file.
-func (config *tlsConfig) SetTLSCertFile(file string) {
+func (config *tlsConfig) SetTLSCertFile(file string) error {
+	cert, err := os.ReadFile(file)
+	if err != nil {
+		return err
+	}
 	config.CertFile = file
-	config.tlsConfig = nil
+	config.SetTLSCert(cert)
+	return nil
 }
 
 // SetRootCertFile sets a TLS root certificates.
-func (config *tlsConfig) SetTLSCAFiles(files ...string) {
+func (config *tlsConfig) SetTLSCACertFiles(files ...string) error {
+	certs := make([][]byte, len(files))
+	for n, file := range files {
+		cert, err := os.ReadFile(file)
+		if err != nil {
+			return err
+		}
+		certs[n] = cert
+	}
 	config.CAFiles = files
+	config.SetTLSCACerts(certs...)
+	return nil
+}
+
+// SetTLSKey sets a TLS key file.
+func (config *tlsConfig) SetTLSKey(b []byte) {
+	config.Key = b
+	config.tlsConfig = nil
+}
+
+// SetTLSCert sets a TLS certificate binaries.
+func (config *tlsConfig) SetTLSCert(b []byte) {
+	config.Cert = b
+	config.tlsConfig = nil
+}
+
+// SetTLSCACerts sets a TLS root certificate binaries.
+func (config *tlsConfig) SetTLSCACerts(b ...[]byte) {
+	config.CASCerts = b
 	config.tlsConfig = nil
 }
 
 // TLSEnabled returns a TLS enabled flag.
 func (config *tlsConfig) TLSEnabled() bool {
 	return config.Enabled
+}
+
+// TLSKey returns a TLS key file.
+func (config *tlsConfig) TLSKey() []byte {
+	return config.Key
+}
+
+// TLSCert returns a TLS certificate file.
+func (config *tlsConfig) TLSCert() []byte {
+	return config.Cert
+}
+
+// TLSCACerts returns a TLS root certificate bytes.
+func (config *tlsConfig) TLSCACerts() [][]byte {
+	return config.CASCerts
 }
 
 // ClientAuthType returns a client authentication type.
@@ -110,20 +189,16 @@ func (config *tlsConfig) TLSConfig() (*tls.Config, error) {
 	if config.tlsConfig != nil {
 		return config.tlsConfig, nil
 	}
-	if len(config.CertFile) == 0 || len(config.KeyFile) == 0 {
+	if len(config.Cert) == 0 || len(config.Key) == 0 {
 		return nil, nil
 	}
-	serverCert, err := tls.LoadX509KeyPair(config.CertFile, config.KeyFile)
+	serverCert, err := tls.X509KeyPair(config.Cert, config.Key)
 	if err != nil {
 		return nil, err
 	}
 	certPool := x509.NewCertPool()
-	for _, rootCertFile := range config.CAFiles {
-		rootCert, err := os.ReadFile(rootCertFile)
-		if err != nil {
-			return nil, err
-		}
-		certPool.AppendCertsFromPEM(rootCert)
+	for _, caCert := range config.CASCerts {
+		certPool.AppendCertsFromPEM(caCert)
 	}
 	config.tlsConfig = &tls.Config{ // nolint: exhaustruct
 		MinVersion:   tls.VersionTLS12,
