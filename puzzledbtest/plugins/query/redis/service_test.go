@@ -22,28 +22,10 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
-func TestRedisService(t *testing.T) {
-	server := puzzledbtest.NewServer()
-	err := server.Start()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+func GenericCommandTest(t *testing.T, client *redistest.Client) {
+	t.Helper()
 
-	client := redistest.NewClient()
-	err = client.Open(server.Host)
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	t.Run("Connection", func(t *testing.T) {
-		redistest.ConnectionCommandTest(t, client)
-	})
-
-	t.Run("Hash", func(t *testing.T) {
-		redistest.HashCommandTest(t, client)
-	})
+	var err error
 
 	t.Run("SET", func(t *testing.T) {
 		records := []struct {
@@ -142,6 +124,34 @@ func TestRedisService(t *testing.T) {
 				}
 			})
 		}
+	})
+}
+
+func TestRedisService(t *testing.T) {
+	server := puzzledbtest.NewServer()
+	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	client := redistest.NewClient()
+	err = client.Open(server.Host)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	t.Run("Connection", func(t *testing.T) {
+		redistest.ConnectionCommandTest(t, client)
+	})
+
+	t.Run("Hash", func(t *testing.T) {
+		GenericCommandTest(t, client)
+	})
+
+	t.Run("Hash", func(t *testing.T) {
+		redistest.HashCommandTest(t, client)
 	})
 
 	err = client.Close()
