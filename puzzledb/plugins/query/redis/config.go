@@ -15,6 +15,7 @@
 package redis
 
 const (
+	tlsPort     = "tls_port"
 	requirepass = "requirepass"
 )
 
@@ -25,4 +26,13 @@ func (service *Service) GetServiceConfigRequirepass() (string, error) {
 		return "", err
 	}
 	return passwd, nil
+}
+
+// GetServiceConfigTLSPort returns the TLS port value of the service.
+func (service *Service) GetServiceConfigTLSPort() (int, error) {
+	port, err := service.GetServiceConfigInt(service, tlsPort)
+	if err != nil {
+		return 0, err
+	}
+	return port, nil
 }
