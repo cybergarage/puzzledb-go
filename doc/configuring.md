@@ -74,6 +74,7 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
         redis:
           enabled: true
           port: 6379
+          tls_port: 0
         mongo:
           enabled: true
           port: 27017
