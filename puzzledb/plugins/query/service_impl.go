@@ -15,6 +15,8 @@
 package query
 
 import (
+	"crypto/tls"
+
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
@@ -22,7 +24,6 @@ import (
 	docStore "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
-	"github.com/cybergarage/puzzledb-go/puzzledb/tls"
 )
 
 const (
@@ -35,7 +36,7 @@ type BaseService struct {
 	coordinator coordinator.Coordinator
 	store       store.Store
 	auth.AuthManager
-	tlsConfig tls.Config
+	tlsConfig *tls.Config
 }
 
 // NewBaseService returns a new query base service.
@@ -45,7 +46,7 @@ func NewBaseService() *BaseService {
 		store:       nil,
 		coordinator: nil,
 		AuthManager: nil,
-		tlsConfig:   tls.NewConfig(),
+		tlsConfig:   nil,
 	}
 	return server
 }
@@ -195,10 +196,13 @@ func (service *BaseService) Authenticators() []auth.Authenticator {
 
 // SetTLSConfig sets the TLS configuration.
 func (service *BaseService) SetTLSConfig(tlsConfig *tls.Config) {
-	service.tlsConfig = *tlsConfig
+	service.tlsConfig = tlsConfig
 }
 
 // TLSConfig returns the TLS configuration.
-func (service *BaseService) TLSConfig() (tls.Config, error) {
-	return tls.NewConfigWith(service.Config, ConfigTLS)
+func (service *BaseService) TLSConfig() (*tls.Config, bool) {
+	if service.tlsConfig == nil {
+		return nil, false
+	}
+	return service.tlsConfig, true
 }
