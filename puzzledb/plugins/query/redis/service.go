@@ -50,10 +50,21 @@ func (service *Service) ServiceName() string {
 // Start starts the service.
 func (service *Service) Start() error {
 	// Set configurations
+
 	port, err := service.GetServiceConfigPort(service)
 	if err == nil {
 		service.SetPort(port)
 	}
+
+	tlsPort, err := service.GetServiceConfigTLSPort()
+	if err == nil && (0 < tlsPort) {
+		service.SetTLSPort(tlsPort)
+		tlsConfig, ok := service.TLSConfig()
+		if ok {
+			service.Server.SetTLSConfig(tlsConfig)
+		}
+	}
+
 	passwd, err := service.GetServiceConfigRequirepass()
 	if err == nil {
 		service.SetRequirePass(passwd)
@@ -62,6 +73,7 @@ func (service *Service) Start() error {
 	if err := service.Server.Start(); err != nil {
 		return err
 	}
+
 	return nil
 }
 
