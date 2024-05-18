@@ -15,6 +15,7 @@
 package puzzledb
 
 import (
+	std_tls "crypto/tls"
 	"errors"
 	std_log "log"
 	"net"
@@ -48,12 +49,14 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/system/actor"
 	opentracing "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer/ot"
 	opentelemetry "github.com/cybergarage/puzzledb-go/puzzledb/plugins/tracer/otel"
+	"github.com/cybergarage/puzzledb-go/puzzledb/tls"
 )
 
 // Server represents a server instance.
 type Server struct {
 	actor *actor.Service
 	Config
+	tlsConfig *std_tls.Config
 	auth.AuthManager
 	*PluginManager
 	cluster.Node
@@ -74,6 +77,7 @@ func NewServerWithConfig(conf config.Config) *Server {
 	server := &Server{
 		actor:         nil,
 		Config:        nil,
+		tlsConfig:     nil,
 		AuthManager:   auth.NewAuthManager(),
 		PluginManager: NewPluginManagerWith(plugins.NewManager()),
 		Node:          cluster.NewNode(),
@@ -87,6 +91,11 @@ func NewServerWithConfig(conf config.Config) *Server {
 func (server *Server) SetConfig(conf Config) {
 	server.Config = conf
 	server.Manager.SetConfig(conf)
+}
+
+// SetTLSConfig sets a TLS configuration.
+func (server *Server) SetTLSConfig(tlsConfig *std_tls.Config) {
+	server.tlsConfig = tlsConfig
 }
 
 // Restart restarts the server.
@@ -231,6 +240,13 @@ func (server *Server) setupPlugins() error {
 	defaultTracer.SetPackageName(PackageName)
 	defaultTracer.SetServiceName(ProductName)
 
+	// TLS configuration
+
+	tlsConfig, err := tls.NewConfigWith(server.Config, ConfigTLS)
+	if err != nil {
+		return err
+	}
+
 	// Query services
 
 	if services, err := server.QueryServices(); err != nil {
@@ -244,6 +260,15 @@ func (server *Server) setupPlugins() error {
 			err := defaultCoodinator.AddObserver(service)
 			if err != nil {
 				return err
+			}
+			if tlsConfig.TLSEnabled() {
+				tlsConfigObj, err := tlsConfig.TLSConfig()
+				if err != nil {
+					return err
+				}
+				service.SetTLSConfig(tlsConfigObj)
+			} else {
+				service.SetTLSConfig(nil)
 			}
 		}
 	}
