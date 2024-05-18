@@ -26,6 +26,12 @@
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
+## v1.3.1 (2023-05-18)
+* New features
+** TLS Support
+*** Supported PostgreSQL plug-in
+*** Supported Redis plug-in
+
 ## v1.3.0 (2023-12-30)
 - New features
   - Authenticator plug-ins
