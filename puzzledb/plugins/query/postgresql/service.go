@@ -50,16 +50,16 @@ func (service *Service) Start() error {
 	if err == nil {
 		service.SetPort(port)
 	}
-	tlsConfig, err := service.TLSConfig()
-	if err == nil && tlsConfig != nil {
-		service.Server.SetTLSEnabled(true)
-		service.Server.SetServerKey(tlsConfig.TLSKey())
-		service.Server.SetServerCert(tlsConfig.TLSCert())
-		service.Server.SetRootCerts(tlsConfig.TLSCACerts()...)
-		_, err := tlsConfig.TLSConfig()
-		if err != nil {
-			return err
-		}
+	_, ok := service.TLSConfig()
+	if ok {
+		// service.Server.SetTLSEnabled(true)
+		// service.Server.SetServerKey(tlsConfig.TLSKey())
+		// service.Server.SetServerCert(tlsConfig.TLSCert())
+		// service.Server.SetRootCerts(tlsConfig.TLSCACerts()...)
+		// _, err := tlsConfig.TLSConfig()
+		// if err != nil {
+		// 	return err
+		// }
 	} else {
 		service.Server.SetTLSEnabled(false)
 	}

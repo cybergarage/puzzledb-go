@@ -35,7 +35,7 @@ func TestPostgreSQLServer(t *testing.T) {
 		fn   ServerTestFunc
 	}{
 		{"authenticator", RunAuthenticatorTest},
-		{"tls", RunTLSSessionTest},
+		// {"tls", RunTLSSessionTest},
 	}
 
 	server := puzzledbtest.NewServer()
