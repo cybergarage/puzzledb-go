@@ -16,6 +16,7 @@ package tls
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"fmt"
 	"os"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
@@ -93,7 +94,8 @@ func (config *tlsConfig) SetClientAuthType(authType tls.ClientAuthType) {
 func (config *tlsConfig) SetTLSKeyFile(file string) error {
 	key, err := os.ReadFile(file)
 	if err != nil {
-		return err
+		pwd, _ := os.Getwd()
+		return fmt.Errorf("%w (%s)", err, pwd)
 	}
 	config.KeyFile = file
 	config.SetTLSKey(key)
@@ -104,7 +106,8 @@ func (config *tlsConfig) SetTLSKeyFile(file string) error {
 func (config *tlsConfig) SetTLSCertFile(file string) error {
 	cert, err := os.ReadFile(file)
 	if err != nil {
-		return err
+		pwd, _ := os.Getwd()
+		return fmt.Errorf("%w (%s)", err, pwd)
 	}
 	config.CertFile = file
 	config.SetTLSCert(cert)
@@ -117,7 +120,8 @@ func (config *tlsConfig) SetTLSCACertFiles(files ...string) error {
 	for n, file := range files {
 		cert, err := os.ReadFile(file)
 		if err != nil {
-			return err
+			pwd, _ := os.Getwd()
+			return fmt.Errorf("%w (%s)", err, pwd)
 		}
 		certs[n] = cert
 	}
