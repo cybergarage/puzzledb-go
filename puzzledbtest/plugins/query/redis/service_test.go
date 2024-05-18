@@ -164,3 +164,51 @@ func TestRedisService(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestTLSServer(t *testing.T) {
+	server := puzzledbtest.NewServer()
+	err := server.Start()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	// CommandTest
+
+	client := redistest.NewClient()
+	clientOpts := redistest.NewClientOptions()
+	if tlsConfig, ok := server.TLSConfig(); ok {
+		clientOpts.TLSConfig = tlsConfig
+	}
+	tlsPort, err := server.GetConfigInt("plugins", "query", "redis", "tls_port")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	err = client.OpenWith(server.Host, tlsPort, &clientOpts)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	t.Run("Command", func(t *testing.T) {
+		GenericCommandTest(t, client)
+	})
+
+	// // panic: not implemented
+	// err = client.Quit().Err()
+	// if err != nil {
+	// 	t.Error(err)
+	// }
+
+	err = client.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = server.Stop()
+	if err != nil {
+		t.Error(err)
+	}
+}
