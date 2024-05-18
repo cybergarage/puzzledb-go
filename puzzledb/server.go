@@ -143,6 +143,8 @@ func (server *Server) LoadPlugins() error {
 }
 
 func (server *Server) setupPlugins() error {
+	var err error
+
 	// Default services
 
 	defaultKeyCoder, err := server.DefaultKeyCoderService()
@@ -242,9 +244,21 @@ func (server *Server) setupPlugins() error {
 
 	// TLS configuration
 
-	tlsConfig, err := tls.NewConfigWith(server.Config, ConfigTLS)
+	tlsConf, err := tls.NewConfigWith(server.Config, ConfigTLS)
 	if err != nil {
 		return err
+	}
+
+	tlsConfig := server.tlsConfig
+	if tlsConf.TLSEnabled() {
+		if tlsConfig == nil {
+			tlsConfig, err = tlsConf.TLSConfig()
+			if err != nil {
+				return err
+			}
+		}
+	} else {
+		tlsConfig = nil
 	}
 
 	// Query services
@@ -257,18 +271,11 @@ func (server *Server) setupPlugins() error {
 			service.SetStore(defaultStore)
 			service.SetAuthManager(server.AuthManager)
 			service.SetTracer(defaultTracer)
+			service.SetTLSConfig(tlsConfig)
+
 			err := defaultCoodinator.AddObserver(service)
 			if err != nil {
 				return err
-			}
-			if tlsConfig.TLSEnabled() {
-				tlsConfigObj, err := tlsConfig.TLSConfig()
-				if err != nil {
-					return err
-				}
-				service.SetTLSConfig(tlsConfigObj)
-			} else {
-				service.SetTLSConfig(nil)
 			}
 		}
 	}
