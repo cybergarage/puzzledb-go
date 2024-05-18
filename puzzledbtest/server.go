@@ -37,6 +37,10 @@ func NewServerWithConfig(config config.Config) *Server {
 		Server: puzzledb.NewServerWithConfig(config),
 		Host:   LocalHost,
 	}
+
+	tlsConfig, _ := NewTLSConfig()
+	server.Server.SetTLSConfig(tlsConfig)
+
 	return server
 }
 
