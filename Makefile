@@ -54,7 +54,7 @@ BINS=\
 
 BENCHMARK_ENVS=$(shell echo "PUZZLEDB_LOGGER_ENABLED=true PUZZLEDB_LOGGER_LEVEL=info PUZZLEDB_PPROF_ENABLED=false PUZZLEDB_TRACER_ENABLED=false")
 
-.PHONY: test unittest format vet lint clean docker cmd
+.PHONY: test unittest format vet lint clean docker cmd certs
 
 all: test
 
@@ -69,6 +69,9 @@ vet: format
 
 lint: format
 	golangci-lint run ${PKG_SRC_ROOT}/... ${TEST_SRC_ROOT}/... ${BIN_SRC_ROOT}/...
+
+certs:
+	@pushd ${TEST_SRC_ROOT}/certs && make && popd
 
 test: lint
 	go test -v -p 1 -timeout 60m -\
