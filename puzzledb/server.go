@@ -98,6 +98,22 @@ func (server *Server) SetTLSConfig(tlsConfig *std_tls.Config) {
 	server.tlsConfig = tlsConfig
 }
 
+// TLSConfig returns a TLS configuration.
+func (server *Server) TLSConfig() (*std_tls.Config, bool) {
+	if server.tlsConfig != nil {
+		return server.tlsConfig, true
+	}
+	tlsConf, err := tls.NewConfigWith(server.Config, ConfigTLS)
+	if err != nil {
+		return nil, false
+	}
+	tlsConfig, err := tlsConf.TLSConfig()
+	if err != nil {
+		return nil, false
+	}
+	return tlsConfig, true
+}
+
 // Restart restarts the server.
 func (server *Server) Restart() error {
 	if err := server.Stop(); err != nil {
