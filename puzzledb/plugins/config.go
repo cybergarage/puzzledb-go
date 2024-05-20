@@ -16,9 +16,11 @@ package plugins
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
+	"github.com/cybergarage/puzzledb-go/puzzledb/tls"
 )
 
 const (
+	ConfigTLS     = "tls"
 	ConfigPlugins = "plugins"
 	ConfigDefault = "default"
 	ConfigEnabled = "enabled"
@@ -32,6 +34,12 @@ type ConfigBase interface {
 	SetConfig(c config.Config)
 	// Object returns a raw configuration object.
 	Object() config.Config
+}
+
+// RootConfig represents a root configuration interface.
+type RootConfig interface {
+	// GetTLSConfig returns a TLS configuration.
+	GetTLSConfig() (tls.Config, error)
 }
 
 // ServiceTypeConfig represents a configuration interface for service type.
@@ -77,6 +85,7 @@ type ServiceExtConfig interface {
 // Config represents a plug-in configuration interface.
 type Config interface {
 	ConfigBase
+	RootConfig
 	ServiceTypeConfig
 	ServiceTypeExtConfig
 	ServiceConfig
