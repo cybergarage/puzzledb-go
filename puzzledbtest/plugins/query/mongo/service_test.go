@@ -15,23 +15,46 @@
 package mongo
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cybergarage/go-mongo/mongotest"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func TestMongoEmbedSuite(t *testing.T) {
+func TestMongoService(t *testing.T) {
 	server := puzzledbtest.NewServer()
+
 	err := server.Start()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	if err := mongotest.RunEmbedSuite(t); err != nil {
-		t.Logf("\n%s", server.Store().String())
+	var testDBURL = "mongodb://localhost:27017/"
+
+	clientOptions := options.Client().ApplyURI(testDBURL)
+	if server.IsTLSEnabled() {
+		tlsConfig, ok := server.TLSConfig()
+		if !ok {
+			t.Error("TLS config is not available")
+			return
+		}
+		testTLSDBURL := testDBURL + "?ssl=true"
+		clientOptions = options.Client().ApplyURI(testTLSDBURL).SetTLSConfig(tlsConfig)
 	}
+
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	t.Run("Tutorial", func(t *testing.T) {
+		mongotest.RunClientTest(t, client)
+	})
 
 	err = server.Stop()
 	if err != nil {
