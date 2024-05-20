@@ -18,6 +18,13 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
+const (
+	ConfigPlugins = "plugins"
+	ConfigDefault = "default"
+	ConfigEnabled = "enabled"
+	ConfigPort    = "port"
+)
+
 // ConfigBase represents a basic configuration interface.
 type ConfigBase interface {
 	config.Config
