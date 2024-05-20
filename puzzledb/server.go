@@ -98,6 +98,15 @@ func (server *Server) SetTLSConfig(tlsConfig *std_tls.Config) {
 	server.tlsConfig = tlsConfig
 }
 
+// IsTLSEnabled returns true if TLS is enabled.
+func (server *Server) IsTLSEnabled() bool {
+	tlsConf, err := tls.NewConfigWith(server.Config, ConfigTLS)
+	if err != nil {
+		return false
+	}
+	return tlsConf.TLSEnabled()
+}
+
 // TLSConfig returns a TLS configuration.
 func (server *Server) TLSConfig() (*std_tls.Config, bool) {
 	if server.tlsConfig != nil {
