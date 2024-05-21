@@ -19,18 +19,25 @@
       - Added support for new queries
 - Update storage implemetations to support option parameters
 
-## v1.3.1 (2024-01-xx)
+## v1.3.3 (2024-01-xx)
 - New features
+  - TLS Support
+    - Supported MySQL plug-in
   - Authenticator plug-ins
     - Added password authenticator implementations
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
+## v1.3.2 (2024-05-22)
+- New features
+  - TLS Support
+    - Supported MySQL plug-in
+
 ## v1.3.1 (2023-05-18)
-* New features
-** TLS Support
-*** Supported PostgreSQL plug-in
-*** Supported Redis plug-in
+- New features
+  - TLS Support
+    - Supported PostgreSQL plug-in
+    - Supported Redis plug-in
 
 ## v1.3.0 (2023-12-30)
 - New features
