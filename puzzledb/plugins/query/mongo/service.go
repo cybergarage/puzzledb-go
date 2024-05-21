@@ -78,12 +78,12 @@ func (service *Service) Start() error {
 	if err == nil {
 		service.SetPort(port)
 	}
-	if service.IsTLSEnabled() {
-		tlsConfig, ok := service.TLSConfig()
-		if ok {
-			service.Server.SetTLSConfig(tlsConfig)
-		}
+
+	tlsConfig, ok := service.TLSConfig()
+	if ok {
+		service.Server.SetTLSConfig(tlsConfig)
 	}
+
 	if err := service.Server.Start(); err != nil {
 		return err
 	}
