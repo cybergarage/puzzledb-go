@@ -27,7 +27,7 @@ var severKey []byte
 //go:embed certs/cert.pem
 var serverCert []byte
 
-//go:embed certs/root_cert.pem
+//go:embed certs/ca.pem
 var caCert []byte
 
 func NewTLSConfig() (*tls.Config, error) {
