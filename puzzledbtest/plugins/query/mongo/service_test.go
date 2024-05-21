@@ -53,37 +53,4 @@ func TestMongoService(t *testing.T) {
 	}()
 
 	mongotest.RunEmbedSuite(t, client)
-	/*
-	   var testDBURL = "mongodb://localhost:27017/"
-
-	   clientOptions := options.Client().ApplyURI(testDBURL)
-
-	   	if server.IsTLSEnabled() {
-	   		tlsConfig, ok := server.TLSConfig()
-	   		if !ok {
-	   			t.Error("TLS config is not available")
-	   			return
-	   		}
-	   		testTLSDBURL := testDBURL + "?ssl=true"
-	   		clientOptions = options.Client().ApplyURI(testTLSDBURL).SetTLSConfig(tlsConfig)
-	   	}
-
-	   client, err := mongo.Connect(context.TODO(), clientOptions)
-
-	   	if err != nil {
-	   		t.Error(err)
-	   		return
-	   	}
-
-	   	t.Run("Tutorial", func(t *testing.T) {
-	   		mongotest.RunClientTest(t, client)
-	   	})
-
-	   err = server.Stop()
-
-	   	if err != nil {
-	   		t.Error(err)
-	   		return
-	   	}
-	*/
 }
