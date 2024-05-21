@@ -22,6 +22,8 @@ all: certgen
 certgen: clean
 	openssl req -new -x509 -days 36500 -nodes -text -out cert.pem -keyout key.pem -extensions san -config san.cfg -subj "/CN=localhost"
 	chmod og-rwx key.pem
+	cat key.pem cert.pem > server.pem
+	cat key.pem cert.pem > client.pem
 	cp cert.pem root_cert.pem
 
 clean:
