@@ -24,7 +24,7 @@ certgen: clean
 	chmod og-rwx key.pem
 	cat key.pem cert.pem > server.pem
 	cat key.pem cert.pem > client.pem
-	cp cert.pem root_cert.pem
+	cp cert.pem ca.pem
 
 clean:
-	rm -f cert.pem key.pem root_cert.pem
+	rm -f cert.pem key.pem ca.pem
