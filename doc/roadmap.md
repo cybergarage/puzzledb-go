@@ -72,15 +72,13 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
                 -   ❏ Auto Indexing
 
-## v1.3.2 (2024-xx-xx)
+## v1.3.3 (2024-05-20)
 
 -   New features
 
     -   ✓ TLS Support
 
         -   ❏ Supported MySQL plug-in
-
-        -   ❏ Supported MongoDB plug-in
 
     -   Security plug-ins
 
@@ -91,6 +89,14 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
                 -   ❏ Supported MySQL plug-in
 
                 -   ❏ Supported MongoDB plug-in
+
+## v1.3.2 (2024-05-20)
+
+-   New features
+
+    -   ✓ TLS Support
+
+        -   ✓ Supported MongoDB plug-in
 
 ## v1.3.1 (2024-05-19)
 
