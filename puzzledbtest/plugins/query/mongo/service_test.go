@@ -22,6 +22,11 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
 
+const (
+	TestClientCertFile = "../../../certs/client.pem"
+	TestClientCAFile   = "../../../certs/ca.pem"
+)
+
 func TestMongoService(t *testing.T) {
 	server := puzzledbtest.NewServer()
 	err := server.Start()
@@ -39,6 +44,13 @@ func TestMongoService(t *testing.T) {
 	}()
 
 	client := shell.NewClient()
+
+	if server.IsTLSEnabled() {
+		client.SetTLSEnabled(true)
+		client.SetTLSCertificateKeyFile(TestClientCertFile)
+		client.SetTLSCAFile(TestClientCAFile)
+	}
+
 	err = client.Open()
 	if err != nil {
 		t.Skipf(err.Error())
