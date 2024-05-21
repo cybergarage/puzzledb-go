@@ -144,7 +144,7 @@ func RunTLSSessionTest(t *testing.T, server *puzzledbtest.Server, testDBName str
 	const (
 		clientKey  = "../../../certs/key.pem"
 		clientCert = "../../../certs/cert.pem"
-		rootCert   = "../../../certs/root_cert.pem"
+		rootCert   = "../../../certs/ca.pem"
 	)
 
 	client := client.NewDefaultClient()

@@ -23,7 +23,7 @@ import (
 const (
 	certFile   = "./cert.pem"
 	keyFile    = "./key.pem"
-	caCertFile = "./root_cert.pem"
+	caCertFile = "./ca.pem"
 )
 
 func TestCerts(t *testing.T) {
