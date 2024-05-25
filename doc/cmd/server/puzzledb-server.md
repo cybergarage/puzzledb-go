@@ -5,7 +5,7 @@
 ### Options
 
 ```
-      --config string   config file (default is .puzzledb.yaml)
+      --config string   config file (default is ./puzzledb.yaml)
   -h, --help            help for puzzledb-server
 ```
 
