@@ -103,7 +103,7 @@ func RunAuthenticatorTest(t *testing.T, server *puzzledbtest.Server, testDBName 
 	)
 
 	authenticators := []auth.Authenticator{
-		auth.NewCleartextPasswordAuthenticatorWith(username, password),
+		auth.NewClearTextPasswordAuthenticatorWith(username, password),
 	}
 
 	for _, authenticator := range authenticators {
