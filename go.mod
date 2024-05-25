@@ -6,11 +6,11 @@ require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20230317231317-e330030d07af
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.5
-	github.com/cybergarage/go-mongo v1.1.2
+	github.com/cybergarage/go-mongo v1.1.3
 	github.com/cybergarage/go-mysql v1.0.6
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.5.2
-	github.com/cybergarage/go-redis v1.5.1
+	github.com/cybergarage/go-postgresql v1.5.3
+	github.com/cybergarage/go-redis v1.5.2
 	github.com/cybergarage/go-safecast v1.2.3
 	github.com/cybergarage/go-sqlparser v1.2.7
 	github.com/cybergarage/go-sqltest v1.4.1
