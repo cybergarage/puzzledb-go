@@ -31,7 +31,7 @@
 ## v1.3.2 (2024-05-22)
 - New features
   - TLS Support
-    - Supported MySQL plug-in
+    - Supported MongoDB plug-in
 
 ## v1.3.1 (2023-05-18)
 - New features
