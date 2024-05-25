@@ -123,5 +123,5 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(versionCmd)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is .puzzledb.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./puzzledb.yaml)")
 }
