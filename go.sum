@@ -83,6 +83,8 @@ github.com/cybergarage/go-postgresql v1.5.4 h1:6Sibav9YQUZIq4Zr1RTx2YqD92gEuAQEQ
 github.com/cybergarage/go-postgresql v1.5.4/go.mod h1:TnG6tSa7/brUVh2N94Ur7iWhRQH9um2clALUSwoJISs=
 github.com/cybergarage/go-redis v1.5.2 h1:p5Msec6Py9Nbf+v/7RwkrrtgHeGHl5oyG4zgd+V4oRA=
 github.com/cybergarage/go-redis v1.5.2/go.mod h1:Luk/YYIKrmQFtqqe3q6dpxAV08yU4+kv4GstrA/2hA0=
+github.com/cybergarage/go-redis v1.5.3 h1:14QAw/FcE9f9sR7BFVVWhOlc7lUQAZd2Rz5BCPBdTnI=
+github.com/cybergarage/go-redis v1.5.3/go.mod h1:m0WXTEjvNL6uTN9PgIr9ENytpXKSeVnDekTjzWfyfEU=
 github.com/cybergarage/go-safecast v1.2.3 h1:DlD/VxntuR+H6hy+TMprxkDIxbwd9pLn6CZ44FC5PlE=
 github.com/cybergarage/go-safecast v1.2.3/go.mod h1:bv+1ykIikB3xYPJFqu3ZsY3xfyEVQesq8+biHX3ZMWQ=
 github.com/cybergarage/go-sqlparser v1.2.7 h1:Pe6TUmMUJEQDz04Y9Yy8Q/KcwyIgFJIeXjo1PO5HmB0=
