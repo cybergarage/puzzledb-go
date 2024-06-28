@@ -74,6 +74,7 @@ certs:
 	@pushd ${TEST_SRC_ROOT}/certs && make && popd
 
 test: lint
+	chmod og-rwx  ${TEST_SRC_ROOT}/certs/key.pem
 	go test -v -p 1 -timeout 60m -\
 	cover -coverpkg=${PKG}/... -coverprofile=${PKG_COVER}.out \
 	${PKG}/... ${TEST_PKG}/...
