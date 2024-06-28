@@ -2,8 +2,8 @@ image:doc/img/logo.png[doc/img/logo]
 
 image:https://img.shields.io/github/v/tag/cybergarage/puzzledb-go[GitHub tag (latest SemVer)]
 https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml[image:https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg[Go]]
-https://pkg.go.dev/github.com/cybergarage/puzzledb-go[image:https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg[Go Reference]]
-https://goreportcard.com/report/github.com/cybergarage/puzzledb-go[image:https://img.shields.io/badge/go%20report-A%2B-brightgreen[Go Report Card]]
+https://pkg.go.dev/github.com/cybergarage/puzzledb-go[image:https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg[go-Reference]]
+https://goreportcard.com/report/github.com/cybergarage/puzzledb-go[image:https://img.shields.io/badge/go%20report-A%2B-brightgreen[go-Report Card]]
 https://codecov.io/gh/cybergarage/puzzledb-go[image:https://codecov.io/gh/cybergarage/puzzledb-go/branch/main/graph/badge.svg?token=C3Q82XPE44[codecov]]
 
 PuzzleDB aspires to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version has been developed in the Go language.
@@ -62,7 +62,7 @@ image:doc/img/roadmap.png[doc/img/roadmap]
 = Developer Guides
 
 * References
-** link:https://pkg.go.dev/github.com/cybergarage/puzzledb-go[Go Reference]
+** link:https://pkg.go.dev/github.com/cybergarage/puzzledb-go[go-Reference]
 * Contributing (Planning)
 ** link:doc/coding_guideline.md[Coding Guidelines]
 * Building and Testing
@@ -80,3 +80,19 @@ image:doc/img/roadmap.png[doc/img/roadmap]
 *** link:doc/spec/store-kv-spec.md[Store Key-Value Specification]
 ** Transversed Specifications
 *** link:doc/spec/kv-store-spec.md[Key-Value Store Specification]
+
+= Related Projects
+
+PuzzleDB is being developed in collaboration with the following Cybergarage projects:
+
+* link:https://github.com/cybergarage/go-cbor[go-cbor]
+* link:https://github.com/cybergarage/go-logger[go-logger]
+* link:https://github.com/cybergarage/go-mongo[go-mongo]
+* link:https://github.com/cybergarage/go-mysql[go-mysql]
+* link:https://github.com/cybergarage/go-pict[go-pict]
+* link:https://github.com/cybergarage/go-postgresql[go-postgresql]
+* link:https://github.com/cybergarage/go-redis[go-redis]
+* link:https://github.com/cybergarage/go-safecast[go-safecast]
+* link:https://github.com/cybergarage/go-sqlparser[go-sqlparser]
+* link:https://github.com/cybergarage/go-sqltest[go-sqltest]
+* link:https://github.com/cybergarage/go-tracing[go-tracing]
