@@ -77,6 +77,8 @@ github.com/cybergarage/go-pict v1.0.0 h1:ruJAusVb7J0Hm+G8xiBJZanzROX2wBcNtExzv4E
 github.com/cybergarage/go-pict v1.0.0/go.mod h1:rdjVxfqG/Jl6ehdt+brSOvGbiRKgU+Ihvr7p9O/gde0=
 github.com/cybergarage/go-postgresql v1.5.3 h1:S+1oOUvVH8i29yBB1zuyPzLDy0iRsxDzPiq3qyAy0oc=
 github.com/cybergarage/go-postgresql v1.5.3/go.mod h1:/9RBamAAq1+KanJnp9V2PGt2Z8/ik6X9zeQkqdug+jE=
+github.com/cybergarage/go-postgresql v1.5.4 h1:6Sibav9YQUZIq4Zr1RTx2YqD92gEuAQEQyccedhizIM=
+github.com/cybergarage/go-postgresql v1.5.4/go.mod h1:TnG6tSa7/brUVh2N94Ur7iWhRQH9um2clALUSwoJISs=
 github.com/cybergarage/go-redis v1.5.2 h1:p5Msec6Py9Nbf+v/7RwkrrtgHeGHl5oyG4zgd+V4oRA=
 github.com/cybergarage/go-redis v1.5.2/go.mod h1:Luk/YYIKrmQFtqqe3q6dpxAV08yU4+kv4GstrA/2hA0=
 github.com/cybergarage/go-safecast v1.2.3 h1:DlD/VxntuR+H6hy+TMprxkDIxbwd9pLn6CZ44FC5PlE=
@@ -208,6 +210,7 @@ github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+
 github.com/google/uuid v1.1.2/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/google/uuid v1.4.0 h1:MtMxsa51/r9yyhkyLsVeVt0B+BGQZzpQiTQ4eHZ8bc4=
 github.com/google/uuid v1.4.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/googleapis/gax-go/v2 v2.0.4/go.mod h1:0Wqv26UfaUD9n4G6kQubkQ+KchISgw+vpHVxEJEs9eg=
 github.com/googleapis/gax-go/v2 v2.0.5/go.mod h1:DWXyrwAJ9X0FpwwEdw+IPEYBICEFu5mhpdKc/us6bOk=
 github.com/googleapis/gnostic v0.4.1/go.mod h1:LRhVm6pbyptWbWbuZ38d1eyptfvIytN3ir6b65WBswg=
