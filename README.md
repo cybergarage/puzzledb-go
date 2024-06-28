@@ -1,10 +1,11 @@
 ![doc/img/logo](doc/img/logo.png)
 
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/cybergarage/puzzledb-go) [![Go](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg)](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml) [![Go Reference](https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg)](https://pkg.go.dev/github.com/cybergarage/puzzledb-go) [![Go Report Card](https://img.shields.io/badge/go%20report-A%2B-brightgreen)](https://goreportcard.com/report/github.com/cybergarage/puzzledb-go) [![codecov](https://codecov.io/gh/cybergarage/puzzledb-go/branch/main/graph/badge.svg?token=C3Q82XPE44)](https://codecov.io/gh/cybergarage/puzzledb-go)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/cybergarage/puzzledb-go) [![Go](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg)](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml) [![go-Reference](https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg)](https://pkg.go.dev/github.com/cybergarage/puzzledb-go) [![go-Report Card](https://img.shields.io/badge/go%20report-A%2B-brightgreen)](https://goreportcard.com/report/github.com/cybergarage/puzzledb-go) [![codecov](https://codecov.io/gh/cybergarage/puzzledb-go/branch/main/graph/badge.svg?token=C3Q82XPE44)](https://codecov.io/gh/cybergarage/puzzledb-go)
 
 PuzzleDB aspires to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version has been developed in the Go language.
 
-# What is PuzzleDB
+What is PuzzleDB
+================
 
 PuzzleDB is a multi-data model database capable of handling key-value, relational, and document models. Additionally, PuzzleDB is a multi-interface database, compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
 
@@ -16,7 +17,8 @@ PuzzleDB is a distributed database framework supporting various data models and 
 
 PuzzleDB accommodates existing query protocols such as PostgreSQL, MySQL, MongoDB, and Redis within a distributed, pluggable database framework. Consequently, developers can seamlessly start using PuzzleDB as a scalable, high-performance distributed database with existing database client drivers, eliminating any learning curve.
 
-## Key Features
+Key Features
+------------
 
 PuzzleDB has the following features:
 
@@ -30,13 +32,15 @@ PuzzleDB has the following features:
 
 -   Efficiency: PuzzleDB manages various database data models, including key-value, document, and relational, by consolidating them into a single core model.
 
-# Get Started
+Get Started
+===========
 
 See the following guide to learn about how to get started.
 
 -   [Quick Start](doc/quick-start.md)
 
-# How does PuzzleDB work?
+How does PuzzleDB work?
+=======================
 
 For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
 
@@ -56,7 +60,8 @@ For information on the concept and architecture of PuzzleDB, refer to the follow
 
     -   [Plug-In Concept](doc/plugin-concept.md)
 
-# Supported Protocols
+Supported Protocols
+===================
 
 PuzzleDB supports the following protocols:
 
@@ -70,13 +75,15 @@ PuzzleDB supports the following protocols:
 
     -   [Redis](doc/redis.md)
 
-# Roadmap
+Roadmap
+=======
 
 PuzzleDB is currently in a technical preview release stage. At present, it is in the process of developing and testing a distributed plugin for the upcoming release. The development roadmap for PuzzleDB is outlined below.
 
 ![doc/img/roadmap](doc/img/roadmap.png)
 
-# User Guides
+User Guides
+===========
 
 -   Get Started
 
@@ -100,11 +107,12 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
     -   [Docker Hub (cybergarage/puzzledb)](https://hub.docker.com/repository/docker/cybergarage/puzzledb/general)
 
-# Developer Guides
+Developer Guides
+================
 
 -   References
 
-    -   [Go Reference](https://pkg.go.dev/github.com/cybergarage/puzzledb-go)
+    -   [go-Reference](https://pkg.go.dev/github.com/cybergarage/puzzledb-go)
 
 -   Contributing (Planning)
 
@@ -139,3 +147,30 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
     -   Transversed Specifications
 
         -   [Key-Value Store Specification](doc/spec/kv-store-spec.md)
+
+Related Projects
+================
+
+PuzzleDB is being developed in collaboration with the following Cybergarage projects:
+
+-   [go-cbor](https://github.com/cybergarage/go-cbor)
+
+-   [go-logger](https://github.com/cybergarage/go-logger)
+
+-   [go-mongo](https://github.com/cybergarage/go-mongo)
+
+-   [go-mysql](https://github.com/cybergarage/go-mysql)
+
+-   [go-pict](https://github.com/cybergarage/go-pict)
+
+-   [go-postgresql](https://github.com/cybergarage/go-postgresql)
+
+-   [go-redis](https://github.com/cybergarage/go-redis)
+
+-   [go-safecast](https://github.com/cybergarage/go-safecast)
+
+-   [go-sqlparser](https://github.com/cybergarage/go-sqlparser)
+
+-   [go-sqltest](https://github.com/cybergarage/go-sqltest)
+
+-   [go-tracing](https://github.com/cybergarage/go-tracing)
