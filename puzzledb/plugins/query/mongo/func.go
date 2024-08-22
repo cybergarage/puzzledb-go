@@ -24,7 +24,7 @@ func UpdateBSONDocument(doc bson.Document, updateDocs []bson.Document) (bson.Doc
 		return nil, err
 	}
 
-	updatedDoc := bson.StartDocument()
+	updatedDoc := bson.DocumentStart()
 	for _, docElem := range docElems {
 		elemKey := docElem.Key()
 		elemVal := docElem.Value()
@@ -41,7 +41,7 @@ func UpdateBSONDocument(doc bson.Document, updateDocs []bson.Document) (bson.Doc
 		}
 	}
 
-	updatedDoc, err = bson.EndDocument(updatedDoc)
+	updatedDoc, err = bson.DocumentEnd(updatedDoc)
 	if err != nil {
 		return nil, err
 	}
