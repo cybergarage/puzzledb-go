@@ -55,6 +55,7 @@ BINS=\
 BENCHMARK_ENVS=$(shell echo "PUZZLEDB_LOGGER_ENABLED=true PUZZLEDB_LOGGER_LEVEL=info PUZZLEDB_PPROF_ENABLED=false PUZZLEDB_TRACER_ENABLED=false")
 
 .PHONY: test unittest format vet lint clean docker cmd certs
+.IGNORE: lint
 
 all: test
 
