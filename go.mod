@@ -6,12 +6,12 @@ require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20230317231317-e330030d07af
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.5
-	github.com/cybergarage/go-mongo v1.2.0
+	github.com/cybergarage/go-mongo v1.2.1
 	github.com/cybergarage/go-mysql v1.0.6
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.5.4
 	github.com/cybergarage/go-redis v1.5.3
-	github.com/cybergarage/go-safecast v1.2.3
+	github.com/cybergarage/go-safecast v1.2.5
 	github.com/cybergarage/go-sqlparser v1.2.7
 	github.com/cybergarage/go-sqltest v1.4.1
 	github.com/cybergarage/go-tracing v1.1.3
@@ -33,7 +33,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
-	github.com/cybergarage/go-sasl v1.1.1 // indirect
+	github.com/cybergarage/go-sasl v1.2.1 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
@@ -82,8 +82,8 @@ require (
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
-	github.com/xdg-go/scram v1.1.1 // indirect
-	github.com/xdg-go/stringprep v1.0.3 // indirect
+	github.com/xdg-go/scram v1.1.2 // indirect
+	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	go.opentelemetry.io/otel v1.19.0 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.15.1 // indirect
