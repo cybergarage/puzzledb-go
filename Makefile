@@ -14,8 +14,9 @@
 
 SHELL := bash
 
-GOBIN := $(shell go env GOPATH)/bin
 PATH := $(GOBIN):$(PATH)
+GOBIN := $(shell go env GOPATH)/bin
+LDFLAGS=-checklinkname=0
 
 DATE=$(shell date '+%Y-%m-%d')
 HOSTNAME=$(shell hostname)
@@ -76,13 +77,15 @@ certs:
 
 test: lint
 	chmod og-rwx  ${TEST_SRC_ROOT}/certs/key.pem
-	go test -v -p 1 -timeout 60m -\
-	cover -coverpkg=${PKG}/... -coverprofile=${PKG_COVER}.out \
+	go test -v -p 1 -timeout 60m \
+	-gcflags=${GCFLAGS} -ldflags=${LDFLAGS} \
+	-cover -coverpkg=${PKG}/... -coverprofile=${PKG_COVER}.out \
 	${PKG}/... ${TEST_PKG}/...
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
 unittest:
 	go test -v -p 1 -timeout 60m \
+	-gcflags=${GCFLAGS} -ldflags=${LDFLAGS} \
 	-cover -coverpkg=${PKG}/... -coverprofile=${PKG_COVER}.out \
 	${PKG}/... ${TEST_PKG}/...
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
@@ -92,10 +95,10 @@ image:
 	docker push ${BIN_SERVER_DOCKER_TAG_LATEST}
 
 build:
-	go build -v -gcflags=${GCFLAGS} ${BINS}
+	go build -v -gcflags=${GCFLAGS} -ldflags=${LDFLAGS} ${BINS}
 
 install:
-	go install -v -gcflags=${GCFLAGS} ${BINS}
+	go install -v -gcflags=${GCFLAGS} -ldflags=${LDFLAGS} ${BINS}
 
 run: install
 	${GOBIN}/${BIN_SERVER}
