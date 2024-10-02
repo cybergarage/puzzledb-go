@@ -1,0 +1,6 @@
+{
+  "settings" : "https://github.com/golang/vscode-go/blob/master/docs/settings.md",
+  "go.buildFlags":[
+     "-ldflags=-checklinkname=0"
+  ]
+}
