@@ -19,11 +19,11 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-postgresql/postgresql"
-	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
+	"github.com/cybergarage/go-postgresql/postgresql/protocol"
 )
 
 // ParserError handles a parser error.
-func (service *Service) ParserError(conn *postgresql.Conn, q string, err error) (message.Responses, error) {
+func (service *Service) ParserError(conn *postgresql.Conn, q string, err error) (protocol.Responses, error) {
 	switch { //nolint:gocritic
 	case postgresql.IsPgbenchGetPartitionQuery(q):
 		return postgresql.NewGetPartitionResponseForPgbench()
@@ -31,9 +31,9 @@ func (service *Service) ParserError(conn *postgresql.Conn, q string, err error) 
 
 	resErr := fmt.Errorf("parser error : %w", err)
 	log.Warnf(err.Error())
-	res, err := message.NewErrorResponseWith(resErr)
+	res, err := protocol.NewErrorResponseWith(resErr)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewResponsesWith(res), nil
+	return protocol.NewResponsesWith(res), nil
 }
