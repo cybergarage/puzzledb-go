@@ -19,106 +19,106 @@ import (
 	"time"
 
 	"github.com/cybergarage/go-postgresql/postgresql"
-	"github.com/cybergarage/go-postgresql/postgresql/protocol/message"
+	"github.com/cybergarage/go-postgresql/postgresql/protocol"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
 // Begin handles a BEGIN query.
-func (service *Service) Begin(conn *postgresql.Conn, stmt *query.Begin) (message.Responses, error) {
+func (service *Service) Begin(conn *postgresql.Conn, stmt *query.Begin) (protocol.Responses, error) {
 	err := service.Service.Begin(conn)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // Commit handles a COMMIT query.
-func (service *Service) Commit(conn *postgresql.Conn, stmt *query.Commit) (message.Responses, error) {
+func (service *Service) Commit(conn *postgresql.Conn, stmt *query.Commit) (protocol.Responses, error) {
 	err := service.Service.Commit(conn)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // Rollback handles a ROLLBACK query.
-func (service *Service) Rollback(conn *postgresql.Conn, stmt *query.Rollback) (message.Responses, error) {
+func (service *Service) Rollback(conn *postgresql.Conn, stmt *query.Rollback) (protocol.Responses, error) {
 	err := service.Service.Rollback(conn)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // CreateDatabase handles a CREATE DATABASE query.
-func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (message.Responses, error) {
+func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (protocol.Responses, error) {
 	err := service.Service.CreateDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // CreateTable handles a CREATE TABLE query.
-func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTable) (message.Responses, error) {
+func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTable) (protocol.Responses, error) {
 	err := service.Service.CreateTable(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // AlterDatabase handles a ALTER DATABASE query.
-func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) (message.Responses, error) {
+func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) (protocol.Responses, error) {
 	err := service.Service.AlterDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // AlterTable handles a ALTER TABLE query.
-func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable) (message.Responses, error) {
+func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable) (protocol.Responses, error) {
 	err := service.Service.AlterTable(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // DropDatabase handles a DROP DATABASE query.
-func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropDatabase) (message.Responses, error) {
+func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropDatabase) (protocol.Responses, error) {
 	err := service.Service.DropDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // DropIndex handles a DROP INDEX query.
-func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) (message.Responses, error) {
+func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) (protocol.Responses, error) {
 	err := service.Service.DropTable(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
-	return message.NewCommandCompleteResponsesWith(stmt.String())
+	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
 // Insert handles a INSERT query.
-func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (message.Responses, error) {
+func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (protocol.Responses, error) {
 	now := time.Now()
 	err := service.Service.Insert(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
 	mInsertLatency.Observe(float64(time.Since(now).Milliseconds()))
-	return message.NewInsertCompleteResponsesWith(1)
+	return protocol.NewInsertCompleteResponsesWith(1)
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (message.Responses, error) { //nolint:gocognit
+func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (protocol.Responses, error) { //nolint:gocognit
 	now := time.Now()
 
 	ctx, db, txn, col, rs, err := service.Service.Select(conn, stmt)
@@ -136,7 +136,7 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 
 	// Responses
 
-	res := message.NewResponses()
+	res := protocol.NewResponses()
 
 	// Row description response
 
@@ -145,7 +145,7 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 		selectors = schema.Selectors()
 	}
 
-	rowDesc := message.NewRowDescription()
+	rowDesc := protocol.NewRowDescription()
 	for n, selector := range selectors {
 		field, err := query.NewRowFieldFrom(schema, selector, n)
 		if err != nil {
@@ -203,7 +203,7 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 		}
 	}
 
-	cmpRes, err := message.NewSelectCompleteWith(nRows)
+	cmpRes, err := protocol.NewSelectCompleteWith(nRows)
 	if err != nil {
 		return nil, err
 	}
@@ -224,29 +224,29 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (messa
 }
 
 // Update handles a UPDATE query.
-func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (message.Responses, error) {
+func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (protocol.Responses, error) {
 	now := time.Now()
 	n, err := service.Service.Update(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
 	mUpdateLatency.Observe(float64(time.Since(now).Milliseconds()))
-	return message.NewUpdateCompleteResponsesWith(n)
+	return protocol.NewUpdateCompleteResponsesWith(n)
 }
 
 // Delete handles a DELETE query.
-func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (message.Responses, error) {
+func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (protocol.Responses, error) {
 	now := time.Now()
 	n, err := service.Service.Delete(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
 	mDeleteLatency.Observe(float64(time.Since(now).Milliseconds()))
-	return message.NewDeleteCompleteResponsesWith(n)
+	return protocol.NewDeleteCompleteResponsesWith(n)
 }
 
 // Copy handles a COPY query.
-func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (message.Responses, error) {
+func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (protocol.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Copy")
 	defer ctx.FinishSpan()
@@ -289,8 +289,8 @@ func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (message.R
 	return postgresql.NewCopyInResponsesFrom(stmt, schema)
 }
 
-// Copy handles a COPY DATA message.
-func (service *Service) CopyData(conn *postgresql.Conn, stmt *query.Copy, stream *postgresql.CopyStream) (message.Responses, error) {
+// Copy handles a COPY DATA protocol.
+func (service *Service) CopyData(conn *postgresql.Conn, stmt *query.Copy, stream *postgresql.CopyStream) (protocol.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CopyData")
 	defer ctx.FinishSpan()
