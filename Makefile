@@ -16,7 +16,7 @@ SHELL := bash
 
 PATH := $(GOBIN):$(PATH)
 GOBIN := $(shell go env GOPATH)/bin
-LDFLAGS=-checklinkname=0
+# LDFLAGS=-checklinkname=0
 
 DATE=$(shell date '+%Y-%m-%d')
 HOSTNAME=$(shell hostname)
