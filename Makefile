@@ -62,6 +62,7 @@ all: test
 
 version:
 	@pushd ${PKG_SRC_ROOT} && ./version.gen > version.go && popd
+	-git commit ${PKG_SRC_ROOT}/version.go -m "Update version"
 
 format:
 	gofmt -s -w ${PKG_SRC_ROOT} ${TEST_SRC_ROOT} ${BIN_SRC_ROOT}
