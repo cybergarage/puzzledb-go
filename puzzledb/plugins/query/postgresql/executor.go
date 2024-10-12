@@ -21,12 +21,13 @@ import (
 	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/protocol"
 	"github.com/cybergarage/go-postgresql/postgresql/query"
+	stmt "github.com/cybergarage/go-sqlparser/sql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
+	sql "github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
 // Begin handles a BEGIN query.
-func (service *Service) Begin(conn *postgresql.Conn, stmt *query.Begin) (protocol.Responses, error) {
+func (service *Service) Begin(conn postgresql.Conn, stmt stmt.Begin) (protocol.Responses, error) {
 	err := service.Service.Begin(conn)
 	if err != nil {
 		return nil, err
@@ -35,7 +36,7 @@ func (service *Service) Begin(conn *postgresql.Conn, stmt *query.Begin) (protoco
 }
 
 // Commit handles a COMMIT query.
-func (service *Service) Commit(conn *postgresql.Conn, stmt *query.Commit) (protocol.Responses, error) {
+func (service *Service) Commit(conn postgresql.Conn, stmt stmt.Commit) (protocol.Responses, error) {
 	err := service.Service.Commit(conn)
 	if err != nil {
 		return nil, err
@@ -44,7 +45,7 @@ func (service *Service) Commit(conn *postgresql.Conn, stmt *query.Commit) (proto
 }
 
 // Rollback handles a ROLLBACK query.
-func (service *Service) Rollback(conn *postgresql.Conn, stmt *query.Rollback) (protocol.Responses, error) {
+func (service *Service) Rollback(conn postgresql.Conn, stmt stmt.Rollback) (protocol.Responses, error) {
 	err := service.Service.Rollback(conn)
 	if err != nil {
 		return nil, err
@@ -53,7 +54,7 @@ func (service *Service) Rollback(conn *postgresql.Conn, stmt *query.Rollback) (p
 }
 
 // CreateDatabase handles a CREATE DATABASE query.
-func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.CreateDatabase) (protocol.Responses, error) {
+func (service *Service) CreateDatabase(conn postgresql.Conn, stmt stmt.CreateDatabase) (protocol.Responses, error) {
 	err := service.Service.CreateDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -62,7 +63,7 @@ func (service *Service) CreateDatabase(conn *postgresql.Conn, stmt *query.Create
 }
 
 // CreateTable handles a CREATE TABLE query.
-func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTable) (protocol.Responses, error) {
+func (service *Service) CreateTable(conn postgresql.Conn, stmt stmt.CreateTable) (protocol.Responses, error) {
 	err := service.Service.CreateTable(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -71,7 +72,7 @@ func (service *Service) CreateTable(conn *postgresql.Conn, stmt *query.CreateTab
 }
 
 // AlterDatabase handles a ALTER DATABASE query.
-func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) (protocol.Responses, error) {
+func (service *Service) AlterDatabase(conn postgresql.Conn, stmt stmt.AlterDatabase) (protocol.Responses, error) {
 	err := service.Service.AlterDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -80,7 +81,7 @@ func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDa
 }
 
 // AlterTable handles a ALTER TABLE query.
-func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable) (protocol.Responses, error) {
+func (service *Service) AlterTable(conn postgresql.Conn, stmt stmt.AlterTable) (protocol.Responses, error) {
 	err := service.Service.AlterTable(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -89,7 +90,7 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 }
 
 // DropDatabase handles a DROP DATABASE query.
-func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropDatabase) (protocol.Responses, error) {
+func (service *Service) DropDatabase(conn postgresql.Conn, stmt stmt.DropDatabase) (protocol.Responses, error) {
 	err := service.Service.DropDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -98,7 +99,7 @@ func (service *Service) DropDatabase(conn *postgresql.Conn, stmt *query.DropData
 }
 
 // DropIndex handles a DROP INDEX query.
-func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) (protocol.Responses, error) {
+func (service *Service) DropTable(conn postgresql.Conn, stmt stmt.DropTable) (protocol.Responses, error) {
 	err := service.Service.DropTable(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -107,7 +108,7 @@ func (service *Service) DropTable(conn *postgresql.Conn, stmt *query.DropTable) 
 }
 
 // Insert handles a INSERT query.
-func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (protocol.Responses, error) {
+func (service *Service) Insert(conn postgresql.Conn, stmt stmt.Insert) (protocol.Responses, error) {
 	now := time.Now()
 	err := service.Service.Insert(conn, stmt)
 	if err != nil {
@@ -118,7 +119,7 @@ func (service *Service) Insert(conn *postgresql.Conn, stmt *query.Insert) (proto
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (protocol.Responses, error) { //nolint:gocognit
+func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol.Responses, error) { //nolint:gocognit
 	now := time.Now()
 
 	ctx, db, txn, col, rs, err := service.Service.Select(conn, stmt)
@@ -224,7 +225,7 @@ func (service *Service) Select(conn *postgresql.Conn, stmt *query.Select) (proto
 }
 
 // Update handles a UPDATE query.
-func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (protocol.Responses, error) {
+func (service *Service) Update(conn postgresql.Conn, stmt stmt.Update) (protocol.Responses, error) {
 	now := time.Now()
 	n, err := service.Service.Update(conn, stmt)
 	if err != nil {
@@ -235,7 +236,7 @@ func (service *Service) Update(conn *postgresql.Conn, stmt *query.Update) (proto
 }
 
 // Delete handles a DELETE query.
-func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (protocol.Responses, error) {
+func (service *Service) Delete(conn postgresql.Conn, stmt stmt.Delete) (protocol.Responses, error) {
 	now := time.Now()
 	n, err := service.Service.Delete(conn, stmt)
 	if err != nil {
@@ -246,7 +247,7 @@ func (service *Service) Delete(conn *postgresql.Conn, stmt *query.Delete) (proto
 }
 
 // Copy handles a COPY query.
-func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (protocol.Responses, error) {
+func (service *Service) Copy(conn postgresql.Conn, stmt stmt.Copy) (protocol.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Copy")
 	defer ctx.FinishSpan()
@@ -290,7 +291,7 @@ func (service *Service) Copy(conn *postgresql.Conn, stmt *query.Copy) (protocol.
 }
 
 // Copy handles a COPY DATA protocol.
-func (service *Service) CopyData(conn *postgresql.Conn, stmt *query.Copy, stream *postgresql.CopyStream) (protocol.Responses, error) {
+func (service *Service) CopyData(conn postgresql.Conn, stmt stmt.Copy, stream *postgresql.CopyStream) (protocol.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CopyData")
 	defer ctx.FinishSpan()

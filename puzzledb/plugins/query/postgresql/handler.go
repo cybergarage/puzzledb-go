@@ -23,7 +23,7 @@ import (
 )
 
 // ParserError handles a parser error.
-func (service *Service) ParserError(conn *postgresql.Conn, q string, err error) (protocol.Responses, error) {
+func (service *Service) ParserError(conn postgresql.Conn, q string, err error) (protocol.Responses, error) {
 	switch { //nolint:gocritic
 	case postgresql.IsPgbenchGetPartitionQuery(q):
 		return postgresql.NewGetPartitionResponseForPgbench()
