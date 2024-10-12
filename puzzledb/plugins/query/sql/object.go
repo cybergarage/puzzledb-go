@@ -15,12 +15,12 @@
 package sql
 
 import (
-	"github.com/cybergarage/go-sqlparser/sql/query"
+	"github.com/cybergarage/go-sqlparser/sql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 // NewDocumentObjectFromInsert returns a new object from the specified schema and columns.
-func NewDocumentObjectFromInsert(dbName string, schema document.Schema, stmt *query.Insert) (document.Key, document.MapObject, error) {
+func NewDocumentObjectFromInsert(dbName string, schema document.Schema, stmt sql.Insert) (document.Key, document.MapObject, error) {
 	obj := document.MapObject{}
 	for _, col := range stmt.Columns() {
 		colName := col.Name()

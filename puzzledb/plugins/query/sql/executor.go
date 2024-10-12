@@ -20,7 +20,7 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-postgresql/postgresql"
-	"github.com/cybergarage/go-sqlparser/sql/query"
+	"github.com/cybergarage/go-sqlparser/sql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -127,7 +127,7 @@ func (service *Service) Rollback(conn Conn) error {
 }
 
 // CreateDatabase handles a CREATE DATABASE query.
-func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) error {
+func (service *Service) CreateDatabase(conn Conn, stmt sql.CreateDatabase) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CreateDatabase")
 	defer ctx.FinishSpan()
@@ -158,7 +158,7 @@ func (service *Service) CreateDatabase(conn Conn, stmt *query.CreateDatabase) er
 }
 
 // CreateTable handles a CREATE TABLE query.
-func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
+func (service *Service) CreateTable(conn Conn, stmt sql.CreateTable) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CreateTable")
 	defer ctx.FinishSpan()
@@ -219,12 +219,12 @@ func (service *Service) CreateTable(conn Conn, stmt *query.CreateTable) error {
 }
 
 // AlterDatabase handles a ALTER DATABASE query.
-func (service *Service) AlterDatabase(conn *postgresql.Conn, stmt *query.AlterDatabase) error { //nolint:staticcheck
+func (service *Service) AlterDatabase(conn postgresql.Conn, stmt sql.AlterDatabase) error { //nolint:staticcheck
 	return newErrNotSupported(stmt.String())
 }
 
 // AlterTable handles a ALTER TABLE query.
-func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable) error {
+func (service *Service) AlterTable(conn postgresql.Conn, stmt sql.AlterTable) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("AlterTable")
 	defer ctx.FinishSpan()
@@ -277,7 +277,7 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 		}
 	}
 
-	if _, ok := stmt.RenameTable(); ok {
+	if _, ok := stmt.RenameTo(); ok {
 		return newErrNotSupported(stmt.String())
 	}
 
@@ -308,7 +308,7 @@ func (service *Service) AlterTable(conn *postgresql.Conn, stmt *query.AlterTable
 }
 
 // DropDatabase handles a DROP DATABASE query.
-func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) error {
+func (service *Service) DropDatabase(conn Conn, stmt sql.DropDatabase) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropDatabase")
 	defer ctx.FinishSpan()
@@ -343,7 +343,7 @@ func (service *Service) DropDatabase(conn Conn, stmt *query.DropDatabase) error 
 }
 
 // DropIndex handles a DROP INDEX query.
-func (service *Service) DropTable(conn Conn, stmt *query.DropTable) error {
+func (service *Service) DropTable(conn Conn, stmt sql.DropTable) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropTable")
 	defer ctx.FinishSpan()
@@ -402,7 +402,7 @@ func (service *Service) DropTable(conn Conn, stmt *query.DropTable) error {
 }
 
 // Insert handles a INSERT query.
-func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
+func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Insert")
 	defer ctx.FinishSpan()
@@ -461,7 +461,7 @@ func (service *Service) Insert(conn Conn, stmt *query.Insert) error {
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, store.Database, store.Transaction, document.Collection, store.ResultSet, error) {
+func (service *Service) Select(conn Conn, stmt sql.Select) (context.Context, store.Database, store.Transaction, document.Collection, store.ResultSet, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Select")
 
@@ -507,7 +507,7 @@ func (service *Service) Select(conn Conn, stmt *query.Select) (context.Context, 
 }
 
 // Update handles a UPDATE query.
-func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
+func (service *Service) Update(conn Conn, stmt sql.Update) (int, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
@@ -566,7 +566,7 @@ func (service *Service) Update(conn Conn, stmt *query.Update) (int, error) {
 }
 
 // Delete handles a DELETE query.
-func (service *Service) Delete(conn Conn, stmt *query.Delete) (int, error) {
+func (service *Service) Delete(conn Conn, stmt sql.Delete) (int, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()

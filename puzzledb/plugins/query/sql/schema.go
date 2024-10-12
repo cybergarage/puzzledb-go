@@ -15,12 +15,13 @@
 package sql
 
 import (
+	"github.com/cybergarage/go-sqlparser/sql"
 	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
 // NewDocumentSchemaFrom creates a new schema from the specified schema object.
-func NewDocumentSchemaFrom(stmt *query.CreateTable) (document.Schema, error) {
+func NewDocumentSchemaFrom(stmt sql.CreateTable) (document.Schema, error) {
 	s := document.NewSchema()
 	s.SetName(stmt.TableName())
 	// Add elements
