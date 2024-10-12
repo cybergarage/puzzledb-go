@@ -75,8 +75,6 @@ github.com/cybergarage/go-mysql v1.0.6 h1:fSwNjVPKSh3nWV4UBH/FCt1Fc1+jIFTPUhtROA
 github.com/cybergarage/go-mysql v1.0.6/go.mod h1:OPjrrGimcXXCc+rUQF0ASZ1umY93cjhhx+521SSOMQQ=
 github.com/cybergarage/go-pict v1.0.0 h1:ruJAusVb7J0Hm+G8xiBJZanzROX2wBcNtExzv4ECLWk=
 github.com/cybergarage/go-pict v1.0.0/go.mod h1:rdjVxfqG/Jl6ehdt+brSOvGbiRKgU+Ihvr7p9O/gde0=
-github.com/cybergarage/go-postgresql v1.5.5 h1:MEMsDzzz6LeNvVnIhFT72S9mnxWrR4lg7UQJEL1brR8=
-github.com/cybergarage/go-postgresql v1.5.5/go.mod h1:TnG6tSa7/brUVh2N94Ur7iWhRQH9um2clALUSwoJISs=
 github.com/cybergarage/go-postgresql v1.5.6 h1:mxlav0XaoARGF0KuYGBv1S3bwxSBztLuZQPbuamtlO0=
 github.com/cybergarage/go-postgresql v1.5.6/go.mod h1:QXdBRUhA/IG23Mef6l49baXXyNkPeF37CEWmRtWHxtE=
 github.com/cybergarage/go-redis v1.5.3 h1:14QAw/FcE9f9sR7BFVVWhOlc7lUQAZd2Rz5BCPBdTnI=
@@ -85,8 +83,7 @@ github.com/cybergarage/go-safecast v1.2.5 h1:ZDiKmdsE15RTKETRXKAKbYTDIhAzNONwJEf
 github.com/cybergarage/go-safecast v1.2.5/go.mod h1:fw2lE/5DIOjmyPj5kx0aYZSAL2bSFoh/Zith5TWVTz8=
 github.com/cybergarage/go-sasl v1.2.1 h1:m+WtlO9B0LjQ82On35mmQTcyKotHizzT+26cRdHRkrM=
 github.com/cybergarage/go-sasl v1.2.1/go.mod h1:IrVfwO6JkYw/bpOJV6HIc5nBe+DReYOOFw5uFCO7GnU=
-github.com/cybergarage/go-sqlparser v1.2.7 h1:Pe6TUmMUJEQDz04Y9Yy8Q/KcwyIgFJIeXjo1PO5HmB0=
-github.com/cybergarage/go-sqlparser v1.2.7/go.mod h1:xYU0KBIZylMYV3WeO4kjesrFgjXix7EQxQqhXnH2ekI=
+github.com/cybergarage/go-sqlparser v1.3.3 h1:LTqf0g0Dzztdk2ssEMSr/FZSYgkrUCQaNttevQil1Hw=
 github.com/cybergarage/go-sqlparser v1.3.3/go.mod h1:twIJQxMhw3LEQed6f1e5xhCu4miJcUgDqTSYvXAY9lo=
 github.com/cybergarage/go-sqltest v1.4.1 h1:1NX5oKBMAMM2K5PP/jtFcBQqV/qPM74sx8GtDu/Ux44=
 github.com/cybergarage/go-sqltest v1.4.1/go.mod h1:SRIIHpeCehkJHqcxr9+0jnw6unM2N0wEEE+x/SdE87o=
