@@ -72,7 +72,7 @@ func NewQuerySchemaFrom(doc document.Schema) (*query.Schema, error) {
 		}
 		idxColumns := query.NewColumns()
 		for _, elem := range docIdx.Elements() {
-			idxColumn, err := columns.ColumnByName(elem.Name())
+			idxColumn, err := columns.LookupColumn(elem.Name())
 			if err != nil {
 				return nil, err
 			}
