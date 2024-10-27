@@ -9,10 +9,10 @@ require (
 	github.com/cybergarage/go-mongo v1.2.1
 	github.com/cybergarage/go-mysql v1.0.6
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.5.6
+	github.com/cybergarage/go-postgresql v1.5.7
 	github.com/cybergarage/go-redis v1.5.3
 	github.com/cybergarage/go-safecast v1.2.5
-	github.com/cybergarage/go-sqlparser v1.3.3
+	github.com/cybergarage/go-sqlparser v1.3.4
 	github.com/cybergarage/go-sqltest v1.4.1
 	github.com/cybergarage/go-tracing v1.1.3
 	github.com/dgraph-io/ristretto v0.1.1
