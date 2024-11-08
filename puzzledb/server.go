@@ -35,7 +35,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
-	fdb_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/fdb"
 	memdb_coordinator "github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator/core/memdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/metrics/prometheus"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/mongo"
@@ -43,7 +42,6 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/postgresql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/redis"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/fdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kv/memdb"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store/kvcache/ristretto"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/system/actor"
@@ -136,11 +134,9 @@ func (server *Server) reloadEmbeddedPlugins() error {
 	services := []plugins.Service{
 		cbor.NewCoder(),
 		tuple.NewCoder(),
-		coordinator.NewServiceWith(fdb_coordinator.NewCoordinator()),
 		coordinator.NewServiceWith(memdb_coordinator.NewCoordinator()),
 		// coordinator.NewServiceWith(etcd_coordinator.NewCoordinator()),
 		store.NewStore(),
-		fdb.NewStore(),
 		memdb.NewStore(),
 		ristretto.NewStore(),
 		postgresql.NewService(),
