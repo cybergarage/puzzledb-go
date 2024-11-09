@@ -192,8 +192,8 @@ func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store
 		updateColName := updateCol.Name()
 
 		var updateVal any
-		if exe := updateCol.Executor(); exe != nil {
-			v, err := updateCol.ExecuteUpdator(docObj)
+		if fn, ok := updateCol.IsFunction(); ok {
+			v, err := fn.Execute(updateCol, docObj)
 			if err != nil {
 				return err
 			}
