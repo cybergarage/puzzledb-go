@@ -29,7 +29,7 @@ func NewPrimaryIndexWith(elem document.Element) (document.Index, error) {
 }
 
 // NewIndexWith creates an index from the specified coulumn definition.
-func NewIndexWith(s document.Schema, def *query.IndexDefinition) (document.Index, error) {
+func NewIndexWith(s document.Schema, def query.IndexDefinition) (document.Index, error) {
 	if def.Info.Spatial || def.Info.Fulltext {
 		return nil, newIndexNotSupportedError(def.Info.Type)
 	}

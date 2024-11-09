@@ -42,7 +42,7 @@ func NewDocumentPrimaryIndexFrom(elem document.Element) (document.Index, error) 
 }
 
 // NewDocumentIndexFrom creates an index from the specified coulumn definition.
-func NewDocumentIndexFrom(s document.Schema, def *query.Index) (document.Index, error) {
+func NewDocumentIndexFrom(s document.Schema, def query.Index) (document.Index, error) {
 	idxType, err := NewDocumentIndexTypeFrom(def.Type())
 	if err != nil {
 		return nil, err

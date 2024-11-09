@@ -20,7 +20,7 @@ import (
 )
 
 // NewAlterAddColumnSchemaWith creates a new schema with the specified alter index.
-func NewAlterAddIndexSchemaWith(schema document.Schema, addIndex *query.Index) (document.Schema, error) {
+func NewAlterAddIndexSchemaWith(schema document.Schema, addIndex query.Index) (document.Schema, error) {
 	newIndexType, err := NewDocumentIndexTypeFrom(addIndex.Type())
 	if err != nil {
 		return schema, err
