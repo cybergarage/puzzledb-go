@@ -55,7 +55,7 @@ func NewDocumentSchemaFrom(stmt sql.CreateTable) (document.Schema, error) {
 }
 
 // NewQuerySchemaFrom creates a new schema from the specified schema object.
-func NewQuerySchemaFrom(doc document.Schema) (*query.Schema, error) {
+func NewQuerySchemaFrom(doc document.Schema) (query.Schema, error) {
 	columns := query.NewColumns()
 	for _, elem := range doc.Elements() {
 		column, err := NewQueryColumnFrom(elem)

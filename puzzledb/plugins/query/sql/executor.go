@@ -490,7 +490,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (context.Context, sto
 	// Gets the specified collection.
 
 	table := tables[0]
-	tableName := table.Name()
+	tableName := table.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
 		return ctx, nil, nil, nil, nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
