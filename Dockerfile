@@ -1,21 +1,9 @@
-FROM ubuntu:23.04
+FROM golang:alpine3.20
 
 USER root
 
 COPY . /puzzledb
 WORKDIR /puzzledb
-
-RUN apt-get update && \
-    apt-get install -y golang wget adduser && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.25/foundationdb-clients_7.3.25-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-clients_7.3.25-1_amd64.deb &&  \
-    rm /tmp/*.deb
-
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.25/foundationdb-server_7.3.25-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-server_7.3.25-1_amd64.deb &&  \
-    rm /tmp/*.deb
 
 RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
 RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
