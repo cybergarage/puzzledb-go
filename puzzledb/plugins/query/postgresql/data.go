@@ -21,7 +21,7 @@ import (
 
 // NewDataTypeFrom returns a data type from the specified query data type.
 func NewDataTypeFrom(t document.ElementType) (*system.DataType, error) {
-	return system.GetDataType(dataTypeOIDFrom(t))
+	return system.NewDataTypeFrom(dataTypeOIDFrom(t))
 }
 
 func dataTypeOIDFrom(t document.ElementType) system.ObjectID {
