@@ -496,7 +496,7 @@ func (service *Service) Update(conn *mysql.Conn, stmt *query.Update) (*mysql.Res
 	return mysql.NewResult(), nil
 }
 
-func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj any, updateCols *query.Columns) error {
+func (service *Service) updateDocument(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, obj any, updateCols query.Columns) error {
 	docObj, err := document.NewMapObjectFrom(obj)
 	if err != nil {
 		return err

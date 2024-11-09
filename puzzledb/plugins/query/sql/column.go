@@ -20,7 +20,7 @@ import (
 )
 
 // NewDocumentElementFrom returns a new element with the specified column.
-func NewDocumentElementFrom(col *query.Column) (document.Element, error) {
+func NewDocumentElementFrom(col query.Column) (document.Element, error) {
 	t, err := NewDocumentElementTypeFrom(col.DataType())
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func NewDocumentElementFrom(col *query.Column) (document.Element, error) {
 }
 
 // NewQueryColumnFrom returns a new column with the specified element.
-func NewQueryColumnFrom(elem document.Element) (*query.Column, error) {
+func NewQueryColumnFrom(elem document.Element) (query.Column, error) {
 	dt, err := NewQueryDataTypeFrom(elem.Type())
 	if err != nil {
 		return nil, err

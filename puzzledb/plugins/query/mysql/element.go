@@ -20,7 +20,7 @@ import (
 )
 
 // NewIndexWith creates an index from the specified index object.
-func NewElementWith(col *query.ColumnDefinition) (document.Element, error) {
+func NewElementWith(col query.ColumnDefinition) (document.Element, error) {
 	t, err := elementTypeFromSQLType(col.Type.SQLType())
 	if err != nil {
 		return nil, err
