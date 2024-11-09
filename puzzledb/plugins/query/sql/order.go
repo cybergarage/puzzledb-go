@@ -20,7 +20,7 @@ import (
 )
 
 // NewOrderWith returns a new store option with the specified orderby option.
-func NewOrderWith(orderBy *query.OrderBy) []store.Option {
+func NewOrderWith(orderBy query.OrderBy) []store.Option {
 	// TODO: Convert query.OrderBy to store.Option
 	// https://github.com/vitessio/vitess/blob/v0.12.6/go/vt/sqlparser/ast.go
 	// // Order represents an ordering expression.
