@@ -101,7 +101,7 @@ func (service *Service) CancelTransactionWithError(ctx context.Context, conn Con
 }
 
 // SelectDatabaseObjects returns a result set of the specified database objects.
-func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, cond query.Condition, orderby query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
+func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, cond query.Condition, orderby query.OrderBy, limit query.Limit) (store.ResultSet, error) {
 	docKey, docKeyType, err := NewDocumentKeyFromCond(conn.Database(), schema, cond)
 	if err != nil {
 		return nil, err

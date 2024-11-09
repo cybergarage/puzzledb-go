@@ -20,7 +20,7 @@ import (
 )
 
 // NewLimitWith returns a new store option with the specified limit option.
-func NewLimitWith(limit *query.Limit) []store.Option {
+func NewLimitWith(limit query.Limit) []store.Option {
 	// TODO: Convert query.Limit to store.Option
 	// https://github.com/vitessio/vitess/blob/v0.12.6/go/vt/sqlparser/ast.go
 	// // Limit represents a LIMIT clause.
