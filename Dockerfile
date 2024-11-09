@@ -1,12 +1,11 @@
 FROM golang:alpine3.20
 
-USER root
-
 COPY . /puzzledb
+
 WORKDIR /puzzledb
 
-RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
-RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
+RUN go build -o /puzzledb-server doc/cmd/server/main.go
+RUN go build -o /puzzledb-cli doc/cmd/clie/main.go
 
 COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
