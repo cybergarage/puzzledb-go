@@ -37,7 +37,7 @@ func NewQueryColumnFrom(elem document.Element) (query.Column, error) {
 	if err != nil {
 		return nil, err
 	}
-	def := query.NewDataWith(dt, 0)
+	def := query.NewDataDef(dt, 0)
 	return query.NewColumnWithOptions(
 		query.WithColumnName(elem.Name()),
 		query.WithColumnData(def),
