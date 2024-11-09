@@ -199,7 +199,7 @@ func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store
 			}
 			updateVal = v
 		} else {
-			if !updateCol.HasLiteral() {
+			if !updateCol.HasValue() {
 				continue
 			}
 			updateVal = updateCol.Value()
