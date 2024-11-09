@@ -400,7 +400,7 @@ func (service *Service) Select(conn *mysql.Conn, stmt *query.Select) (*mysql.Res
 	return res, nil
 }
 
-func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, cond *query.Condition, orderby query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
+func (service *Service) selectDocumentObjects(ctx context.Context, conn *mysql.Conn, txn store.Transaction, schema document.Schema, cond query.Condition, orderby query.OrderBy, limit *query.Limit) (store.ResultSet, error) {
 	docKey, docKeyType, err := NewKeyFromCond(conn.Database(), schema, cond)
 	if err != nil {
 		return nil, err

@@ -21,7 +21,7 @@ import (
 )
 
 // NewKeyFromCond returns a key for the specified condition.
-func NewKeyFromCond(dbName string, schema document.Schema, cond *query.Condition) (store.Key, document.IndexType, error) {
+func NewKeyFromCond(dbName string, schema document.Schema, cond query.Condition) (store.Key, document.IndexType, error) {
 	if cond == nil {
 		return document.NewKeyWith(dbName, schema.Name()), document.PrimaryIndex, nil
 	}

@@ -75,7 +75,7 @@ func NewDocumentKeyFromObject(dbName string, schema document.Schema, obj documen
 }
 
 // NewDocumentKeyFromCond returns a key for the specified condition.
-func NewDocumentKeyFromCond(dbName string, schema document.Schema, cond *query.Condition) (document.Key, document.IndexType, error) {
+func NewDocumentKeyFromCond(dbName string, schema document.Schema, cond query.Condition) (document.Key, document.IndexType, error) {
 	if cond == nil {
 		return document.NewKeyWith(dbName, schema.Name()), document.PrimaryIndex, nil
 	}
