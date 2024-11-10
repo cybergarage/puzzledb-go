@@ -565,7 +565,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (int, error) {
 }
 
 // Delete handles a DELETE query.
-func (service *Service) Delete(conn Conn, stmt sql.Delete) (int, error) {
+func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Delete")
 	defer ctx.FinishSpan()
@@ -575,14 +575,14 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (int, error) {
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	// Starts a new transaction.
 
 	txn, err := service.Transact(conn, db, true)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	// Gets the specified collection.
@@ -590,14 +590,14 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (int, error) {
 	tableName := stmt.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Deletes the specified objects.
 
 	docKey, docKeyType, err := NewDocumentKeyFromCond(dbName, col, stmt.Where())
 	if err != nil {
-		return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	nDeleted := 0
@@ -609,7 +609,7 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (int, error) {
 			if stmt.Where() == nil && errors.Is(err, store.ErrNotExist) {
 				nDeleted = 0
 			} else {
-				return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+				return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 		} else {
 			nDeleted = 1
@@ -617,25 +617,25 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (int, error) {
 	case document.SecondaryIndex:
 		rs, err := txn.FindDocumentsByIndex(ctx, docKey)
 		if err != nil {
-			return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		prIdx, err := col.PrimaryIndex()
 		if err != nil {
-			return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		for rs.Next() {
 			docObj := rs.Object()
 			obj, err := document.NewMapObjectFrom(docObj)
 			if err != nil {
-				return 0, err
+				return nil, err
 			}
 			objKey, err := NewDocumentKeyFromIndex(dbName, col, prIdx, obj)
 			if err != nil {
-				return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+				return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 			err = service.DeleteDocument(ctx, conn, txn, col, objKey)
 			if err != nil {
-				return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+				return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 			nDeleted++
 		}
@@ -646,9 +646,11 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (int, error) {
 	if txn.IsAutoCommit() {
 		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
-			return 0, err
+			return nil, err
 		}
 	}
 
-	return nDeleted, nil
+	return sql.NewResultSet(
+		sql.WithResultSetRowsAffected(uint64(nDeleted)),
+	), nil
 }
