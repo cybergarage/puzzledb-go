@@ -28,7 +28,7 @@ import (
 
 // Begin handles a BEGIN query.
 func (service *Service) Begin(conn postgresql.Conn, stmt stmt.Begin) (protocol.Responses, error) {
-	err := service.Service.Begin(conn)
+	err := service.Service.Begin(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (service *Service) Begin(conn postgresql.Conn, stmt stmt.Begin) (protocol.R
 
 // Commit handles a COMMIT query.
 func (service *Service) Commit(conn postgresql.Conn, stmt stmt.Commit) (protocol.Responses, error) {
-	err := service.Service.Commit(conn)
+	err := service.Service.Commit(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (service *Service) Commit(conn postgresql.Conn, stmt stmt.Commit) (protocol
 
 // Rollback handles a ROLLBACK query.
 func (service *Service) Rollback(conn postgresql.Conn, stmt stmt.Rollback) (protocol.Responses, error) {
-	err := service.Service.Rollback(conn)
+	err := service.Service.Rollback(conn, stmt)
 	if err != nil {
 		return nil, err
 	}

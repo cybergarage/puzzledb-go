@@ -26,7 +26,7 @@ import (
 )
 
 // Begin handles a BEGIN query.
-func (service *Service) Begin(conn Conn) error {
+func (service *Service) Begin(conn Conn, stmt sql.Begin) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Begin")
 	defer ctx.FinishSpan()
@@ -68,7 +68,7 @@ func (service *Service) Begin(conn Conn) error {
 }
 
 // Commit handles a COMMIT query.
-func (service *Service) Commit(conn Conn) error {
+func (service *Service) Commit(conn Conn, stmt sql.Commit) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Commit")
 	defer ctx.FinishSpan()
@@ -97,7 +97,7 @@ func (service *Service) Commit(conn Conn) error {
 }
 
 // Rollback handles a ROLLBACK query.
-func (service *Service) Rollback(conn Conn) error {
+func (service *Service) Rollback(conn Conn, stmt sql.Rollback) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Commit")
 	defer ctx.FinishSpan()
