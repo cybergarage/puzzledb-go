@@ -20,16 +20,13 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-sqlparser/sql"
-	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Begin handles a BEGIN query.
 func (service *Service) Begin(conn Conn, stmt sql.Begin) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Begin")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
@@ -69,9 +66,7 @@ func (service *Service) Begin(conn Conn, stmt sql.Begin) error {
 
 // Commit handles a COMMIT query.
 func (service *Service) Commit(conn Conn, stmt sql.Commit) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Commit")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
@@ -98,9 +93,7 @@ func (service *Service) Commit(conn Conn, stmt sql.Commit) error {
 
 // Rollback handles a ROLLBACK query.
 func (service *Service) Rollback(conn Conn, stmt sql.Rollback) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Commit")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
@@ -127,9 +120,7 @@ func (service *Service) Rollback(conn Conn, stmt sql.Rollback) error {
 
 // CreateDatabase handles a CREATE DATABASE query.
 func (service *Service) CreateDatabase(conn Conn, stmt sql.CreateDatabase) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("CreateDatabase")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	dbName := stmt.DatabaseName()
 
@@ -158,9 +149,7 @@ func (service *Service) CreateDatabase(conn Conn, stmt sql.CreateDatabase) error
 
 // CreateTable handles a CREATE TABLE query.
 func (service *Service) CreateTable(conn Conn, stmt sql.CreateTable) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("CreateTable")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
 
@@ -224,9 +213,7 @@ func (service *Service) AlterDatabase(conn Conn, stmt sql.AlterDatabase) error {
 
 // AlterTable handles a ALTER TABLE query.
 func (service *Service) AlterTable(conn Conn, stmt sql.AlterTable) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("AlterTable")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
 	tblName := stmt.TableName()
@@ -308,9 +295,7 @@ func (service *Service) AlterTable(conn Conn, stmt sql.AlterTable) error {
 
 // DropDatabase handles a DROP DATABASE query.
 func (service *Service) DropDatabase(conn Conn, stmt sql.DropDatabase) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("DropDatabase")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	dbName := stmt.DatabaseName()
 
@@ -343,9 +328,7 @@ func (service *Service) DropDatabase(conn Conn, stmt sql.DropDatabase) error {
 
 // DropIndex handles a DROP INDEX query.
 func (service *Service) DropTable(conn Conn, stmt sql.DropTable) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("DropTable")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
 
@@ -402,9 +385,7 @@ func (service *Service) DropTable(conn Conn, stmt sql.DropTable) error {
 
 // Insert handles a INSERT query.
 func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Insert")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	// Gets the specified database.
 
@@ -460,15 +441,14 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn Conn, stmt sql.Select) (context.Context, store.Database, store.Transaction, document.Collection, store.ResultSet, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Select")
+func (service *Service) Select(conn Conn, stmt sql.Select) (store.Database, store.Transaction, document.Collection, store.ResultSet, error) {
+	ctx := conn.SpanContext()
 
 	// Checks the table if the statement has only one table.
 
 	tables := stmt.From()
 	if len(tables) != 1 {
-		return ctx, nil, nil, nil, nil, newErrJoinQueryNotSupported(tables)
+		return nil, nil, nil, nil, newErrJoinQueryNotSupported(tables)
 	}
 
 	// Gets the specified database.
@@ -476,14 +456,14 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (context.Context, sto
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
-		return ctx, nil, nil, nil, nil, err
+		return nil, nil, nil, nil, err
 	}
 
 	// Starts a new transaction.
 
 	txn, err := service.Transact(conn, db, false)
 	if err != nil {
-		return ctx, nil, nil, nil, nil, err
+		return nil, nil, nil, nil, err
 	}
 
 	// Gets the specified collection.
@@ -492,7 +472,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (context.Context, sto
 	tableName := table.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return ctx, nil, nil, nil, nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		return nil, nil, nil, nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Selects the specified objects.
@@ -502,14 +482,12 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (context.Context, sto
 		err = service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
-	return ctx, db, txn, col, rs, err
+	return db, txn, col, rs, err
 }
 
 // Update handles a UPDATE query.
 func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Update")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	// Gets the specified database.
 
@@ -568,9 +546,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 
 // Delete handles a DELETE query.
 func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error) {
-	ctx := context.NewContextWith(conn.SpanContext())
-	ctx.StartSpan("Delete")
-	defer ctx.FinishSpan()
+	ctx := conn.SpanContext()
 
 	// Gets the specified database.
 

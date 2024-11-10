@@ -28,6 +28,10 @@ import (
 
 // Begin handles a BEGIN query.
 func (service *Service) Begin(conn postgresql.Conn, stmt stmt.Begin) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Begin")
+	defer ctx.FinishSpan()
+
 	err := service.Service.Begin(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -37,6 +41,10 @@ func (service *Service) Begin(conn postgresql.Conn, stmt stmt.Begin) (protocol.R
 
 // Commit handles a COMMIT query.
 func (service *Service) Commit(conn postgresql.Conn, stmt stmt.Commit) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Commit")
+	defer ctx.FinishSpan()
+
 	err := service.Service.Commit(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -46,6 +54,10 @@ func (service *Service) Commit(conn postgresql.Conn, stmt stmt.Commit) (protocol
 
 // Rollback handles a ROLLBACK query.
 func (service *Service) Rollback(conn postgresql.Conn, stmt stmt.Rollback) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Rollback")
+	defer ctx.FinishSpan()
+
 	err := service.Service.Rollback(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -55,6 +67,10 @@ func (service *Service) Rollback(conn postgresql.Conn, stmt stmt.Rollback) (prot
 
 // CreateDatabase handles a CREATE DATABASE query.
 func (service *Service) CreateDatabase(conn postgresql.Conn, stmt stmt.CreateDatabase) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("CreateDatabase")
+	defer ctx.FinishSpan()
+
 	err := service.Service.CreateDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -64,6 +80,10 @@ func (service *Service) CreateDatabase(conn postgresql.Conn, stmt stmt.CreateDat
 
 // CreateTable handles a CREATE TABLE query.
 func (service *Service) CreateTable(conn postgresql.Conn, stmt stmt.CreateTable) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("CreateTable")
+	defer ctx.FinishSpan()
+
 	err := service.Service.CreateTable(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -73,6 +93,10 @@ func (service *Service) CreateTable(conn postgresql.Conn, stmt stmt.CreateTable)
 
 // AlterDatabase handles a ALTER DATABASE query.
 func (service *Service) AlterDatabase(conn postgresql.Conn, stmt stmt.AlterDatabase) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("AlterTable")
+	defer ctx.FinishSpan()
+
 	err := service.Service.AlterDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -91,6 +115,10 @@ func (service *Service) AlterTable(conn postgresql.Conn, stmt stmt.AlterTable) (
 
 // DropDatabase handles a DROP DATABASE query.
 func (service *Service) DropDatabase(conn postgresql.Conn, stmt stmt.DropDatabase) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("DropDatabase")
+	defer ctx.FinishSpan()
+
 	err := service.Service.DropDatabase(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -100,6 +128,10 @@ func (service *Service) DropDatabase(conn postgresql.Conn, stmt stmt.DropDatabas
 
 // DropIndex handles a DROP INDEX query.
 func (service *Service) DropTable(conn postgresql.Conn, stmt stmt.DropTable) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("DropTable")
+	defer ctx.FinishSpan()
+
 	err := service.Service.DropTable(conn, stmt)
 	if err != nil {
 		return nil, err
@@ -109,6 +141,10 @@ func (service *Service) DropTable(conn postgresql.Conn, stmt stmt.DropTable) (pr
 
 // Insert handles a INSERT query.
 func (service *Service) Insert(conn postgresql.Conn, stmt stmt.Insert) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Insert")
+	defer ctx.FinishSpan()
+
 	now := time.Now()
 	err := service.Service.Insert(conn, stmt)
 	if err != nil {
@@ -120,10 +156,13 @@ func (service *Service) Insert(conn postgresql.Conn, stmt stmt.Insert) (protocol
 
 // Select handles a SELECT query.
 func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol.Responses, error) { //nolint:gocognit
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Select")
+	defer ctx.FinishSpan()
+
 	now := time.Now()
 
-	ctx, db, txn, col, rs, err := service.Service.Select(conn, stmt)
-	defer ctx.FinishSpan()
+	db, txn, col, rs, err := service.Service.Select(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
@@ -226,6 +265,10 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 
 // Update handles a UPDATE query.
 func (service *Service) Update(conn postgresql.Conn, stmt stmt.Update) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Update")
+	defer ctx.FinishSpan()
+
 	now := time.Now()
 	rs, err := service.Service.Update(conn, stmt)
 	if err != nil {
@@ -238,6 +281,10 @@ func (service *Service) Update(conn postgresql.Conn, stmt stmt.Update) (protocol
 
 // Delete handles a DELETE query.
 func (service *Service) Delete(conn postgresql.Conn, stmt stmt.Delete) (protocol.Responses, error) {
+	ctx := context.NewContextWith(conn.SpanContext())
+	ctx.StartSpan("Delete")
+	defer ctx.FinishSpan()
+
 	now := time.Now()
 	rs, err := service.Service.Delete(conn, stmt)
 	if err != nil {
