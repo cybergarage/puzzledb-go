@@ -15,24 +15,13 @@
 package sql
 
 import (
-	"time"
+	"github.com/cybergarage/go-sqlparser/sql/net"
 
-	"github.com/cybergarage/go-tracing/tracer"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
-	"github.com/google/uuid"
 )
 
 // Conn represents a SQL connection.
-type Conn interface {
-	// Database returns the database.
-	Database() string
-	// Timestamp returns the timestamp.
-	Timestamp() time.Time
-	// UUID returns the UUID.
-	UUID() uuid.UUID
-	// SpanContext returns the span context.
-	SpanContext() tracer.Context
-}
+type Conn = net.Conn
 
 // Database represents a database.
 type Database struct {

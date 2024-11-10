@@ -19,7 +19,6 @@ import (
 	"errors"
 
 	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-sqlparser/sql"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
@@ -219,12 +218,12 @@ func (service *Service) CreateTable(conn Conn, stmt sql.CreateTable) error {
 }
 
 // AlterDatabase handles a ALTER DATABASE query.
-func (service *Service) AlterDatabase(conn postgresql.Conn, stmt sql.AlterDatabase) error { //nolint:staticcheck
+func (service *Service) AlterDatabase(conn Conn, stmt sql.AlterDatabase) error { //nolint:staticcheck
 	return newErrNotSupported(stmt.String())
 }
 
 // AlterTable handles a ALTER TABLE query.
-func (service *Service) AlterTable(conn postgresql.Conn, stmt sql.AlterTable) error {
+func (service *Service) AlterTable(conn Conn, stmt sql.AlterTable) error {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("AlterTable")
 	defer ctx.FinishSpan()
