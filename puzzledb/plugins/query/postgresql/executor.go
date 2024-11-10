@@ -162,17 +162,14 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 
 	now := time.Now()
 
-	db, txn, col, rs, err := service.Service.Select(conn, stmt)
+	rs, err := service.Service.Select(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
 
 	// Schema
 
-	schema, err := sql.NewQuerySchemaFrom(col)
-	if err != nil {
-		return nil, err
-	}
+	schema := rs.Schema()
 
 	// Responses
 
@@ -248,15 +245,6 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 		return nil, err
 	}
 	res = res.Append(cmpRes)
-
-	// Commits the transaction if the transaction is auto commit.
-
-	if txn.IsAutoCommit() {
-		err := service.CommitTransaction(ctx, conn, db, txn)
-		if err != nil {
-			return nil, err
-		}
-	}
 
 	mSelectLatency.Observe(float64(time.Since(now).Milliseconds()))
 

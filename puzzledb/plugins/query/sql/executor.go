@@ -441,14 +441,14 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn Conn, stmt sql.Select) (store.Database, store.Transaction, document.Collection, store.ResultSet, error) {
+func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error) {
 	ctx := conn.SpanContext()
 
 	// Checks the table if the statement has only one table.
 
 	tables := stmt.From()
 	if len(tables) != 1 {
-		return nil, nil, nil, nil, newErrJoinQueryNotSupported(tables)
+		return nil, newErrJoinQueryNotSupported(tables)
 	}
 
 	// Gets the specified database.
@@ -456,14 +456,14 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (store.Database, stor
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
-		return nil, nil, nil, nil, err
+		return nil, err
 	}
 
 	// Starts a new transaction.
 
 	txn, err := service.Transact(conn, db, false)
 	if err != nil {
-		return nil, nil, nil, nil, err
+		return nil, err
 	}
 
 	// Gets the specified collection.
@@ -472,7 +472,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (store.Database, stor
 	tableName := table.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return nil, nil, nil, nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Selects the specified objects.
@@ -481,8 +481,16 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (store.Database, stor
 	if err != nil {
 		err = service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
+	// Commits the transaction if the transaction is auto commit.
 
-	return db, txn, col, rs, err
+	if txn.IsAutoCommit() {
+		err := service.CommitTransaction(ctx, conn, db, txn)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return rs, err
 }
 
 // Update handles a UPDATE query.
