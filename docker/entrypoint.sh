@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-service foundationdb start
+#service foundationdb start
 exec /puzzledb-server
