@@ -71,8 +71,8 @@ github.com/cybergarage/go-logger v1.3.5 h1:6ckpsB4qyCt/BQLCTV+1YvbAuitz2cl6zzp2g
 github.com/cybergarage/go-logger v1.3.5/go.mod h1:hnlIC+K0YIkInMQkY6J5uWKSuiT3vLaYtuelBmCVJ2k=
 github.com/cybergarage/go-mongo v1.2.1 h1:BNNFKzbUzu50IV6SO8FXIi9KKGY42fOTeMo2taGc6rk=
 github.com/cybergarage/go-mongo v1.2.1/go.mod h1:tcFeS7oh/o5da/C4AdyRVEiNivh+F046SArt7MV0THs=
-github.com/cybergarage/go-mysql v1.0.6 h1:fSwNjVPKSh3nWV4UBH/FCt1Fc1+jIFTPUhtROA3MwVE=
-github.com/cybergarage/go-mysql v1.0.6/go.mod h1:OPjrrGimcXXCc+rUQF0ASZ1umY93cjhhx+521SSOMQQ=
+github.com/cybergarage/go-mysql v1.0.7 h1:yMkXDDGYr1hrKsoxb8oZowkcAuq0hCDBFZMnlauKaXw=
+github.com/cybergarage/go-mysql v1.0.7/go.mod h1:OoLMaPlzZEzLca0PSA8U7DDgAubbsgQS0Fx9C+KlU4w=
 github.com/cybergarage/go-pict v1.0.0 h1:ruJAusVb7J0Hm+G8xiBJZanzROX2wBcNtExzv4ECLWk=
 github.com/cybergarage/go-pict v1.0.0/go.mod h1:rdjVxfqG/Jl6ehdt+brSOvGbiRKgU+Ihvr7p9O/gde0=
 github.com/cybergarage/go-postgresql v1.5.8-0.20241109175611-ad6434adceaa h1:1E4MhGXjPXWKHJaFaWzNT5t72D+qzzQYAsG0X0k8Q20=
