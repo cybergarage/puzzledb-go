@@ -506,7 +506,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (context.Context, sto
 }
 
 // Update handles a UPDATE query.
-func (service *Service) Update(conn Conn, stmt sql.Update) (int, error) {
+func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Update")
 	defer ctx.FinishSpan()
@@ -516,14 +516,14 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (int, error) {
 	dbName := conn.Database()
 	db, err := service.Store().GetDatabase(ctx, dbName)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	// Starts a new transaction.
 
 	txn, err := service.Transact(conn, db, true)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	// Gets the specified collection.
@@ -531,7 +531,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (int, error) {
 	tableName := stmt.TableName()
 	col, err := txn.GetCollection(ctx, tableName)
 	if err != nil {
-		return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Updates the specified objects.
@@ -539,7 +539,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (int, error) {
 	updateCols := stmt.Columns()
 	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), nil, nil)
 	if err != nil {
-		return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	nUpdated := 0
@@ -547,7 +547,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (int, error) {
 		docObj := rs.Object()
 		err := service.UpdateDocument(ctx, conn, txn, col, docObj, updateCols)
 		if err != nil {
-			return 0, service.CancelTransactionWithError(ctx, conn, db, txn, err)
+			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		nUpdated++
 	}
@@ -557,11 +557,13 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (int, error) {
 	if txn.IsAutoCommit() {
 		err := service.CommitTransaction(ctx, conn, db, txn)
 		if err != nil {
-			return 0, err
+			return nil, err
 		}
 	}
 
-	return nUpdated, nil
+	return sql.NewResultSet(
+		sql.WithResultSetRowsAffected(uint64(nUpdated)),
+	), nil
 }
 
 // Delete handles a DELETE query.
@@ -653,4 +655,9 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 	return sql.NewResultSet(
 		sql.WithResultSetRowsAffected(uint64(nDeleted)),
 	), nil
+}
+
+// ParserError handles a parser error.
+func (service *Service) ParserError(conn Conn, query string, err error) error {
+	return err
 }

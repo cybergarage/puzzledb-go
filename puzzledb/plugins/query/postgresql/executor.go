@@ -227,12 +227,13 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 // Update handles a UPDATE query.
 func (service *Service) Update(conn postgresql.Conn, stmt stmt.Update) (protocol.Responses, error) {
 	now := time.Now()
-	n, err := service.Service.Update(conn, stmt)
+	rs, err := service.Service.Update(conn, stmt)
 	if err != nil {
 		return nil, err
 	}
 	mUpdateLatency.Observe(float64(time.Since(now).Milliseconds()))
-	return protocol.NewUpdateCompleteResponsesWith(n)
+
+	return protocol.NewUpdateCompleteResponsesWith(int(rs.RowsAffected()))
 }
 
 // Delete handles a DELETE query.
