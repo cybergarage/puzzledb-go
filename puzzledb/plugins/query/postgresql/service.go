@@ -22,7 +22,7 @@ import (
 
 // Service represents a new MySQL service instance.
 type Service struct {
-	*postgresql.Server
+	postgresql.Server
 	*sql.Service
 }
 
@@ -50,8 +50,8 @@ func (service *Service) Start() error {
 	if err == nil {
 		service.SetPort(port)
 	}
-	tlsConfig, ok := service.TLSConfig()
-	if ok {
+	tlsConfig, err := service.TLSConfig()
+	if err != nil {
 		service.Server.SetTLSEnabled(true)
 		service.Server.SetTLSConfig(tlsConfig)
 	} else {

@@ -142,7 +142,7 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 	// Row description response
 
 	selectors := stmt.Selectors()
-	if selectors.IsSelectAll() {
+	if selectors.IsAsterisk() {
 		selectors = schema.Selectors()
 	}
 
@@ -184,7 +184,7 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 			}
 		}
 	} else {
-		groupBy := stmt.GroupBy().Column()
+		groupBy := stmt.GroupBy().ColumnName()
 		queryRows := []query.Row{}
 		for rs.Next() {
 			obj := rs.Object()
@@ -331,5 +331,5 @@ func (service *Service) CopyData(conn postgresql.Conn, stmt stmt.Copy, stream *p
 		return nil, err
 	}
 
-	return postgresql.NewCopyCompleteResponsesFrom(stmt, stream, conn, schema, service.Executor)
+	return postgresql.NewCopyCompleteResponsesFrom(stmt, stream, conn, schema, service)
 }
