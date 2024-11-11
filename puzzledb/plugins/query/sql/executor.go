@@ -479,18 +479,22 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 
 	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), stmt.OrderBy(), stmt.Limit())
 	if err != nil {
-		err = service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		err = errors.Join(err, service.CancelTransactionWithError(ctx, conn, db, txn, err))
 	}
+
 	// Commits the transaction if the transaction is auto commit.
 
 	if txn.IsAutoCommit() {
-		err := service.CommitTransaction(ctx, conn, db, txn)
-		if err != nil {
-			return nil, err
-		}
+		err = errors.Join(err, service.CommitTransaction(ctx, conn, db, txn))
 	}
 
-	return rs, err
+	// Returs result set.
+
+	if err != nil {
+		return nil, err
+	}
+
+	return NewResultSetFrom(db, col, rs)
 }
 
 // Update handles a UPDATE query.
