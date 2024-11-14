@@ -174,7 +174,7 @@ func (service *Service) RemoveSecondaryIndexes(ctx context.Context, conn Conn, t
 }
 
 // UpdateDocument updates the specified object.
-func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj any, updateCols query.ColumnList) error {
+func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj any, updateCols query.Columns) error {
 	docObj, err := document.NewMapObjectFrom(obj)
 	if err != nil {
 		return err

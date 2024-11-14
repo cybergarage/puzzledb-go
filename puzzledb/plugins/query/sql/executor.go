@@ -20,6 +20,7 @@ import (
 
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/go-sqlparser/sql"
+	"github.com/cybergarage/go-sqlparser/sql/query/response/resultset"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -558,8 +559,8 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 		}
 	}
 
-	return sql.NewResultSet(
-		sql.WithResultSetRowsAffected(uint64(nUpdated)),
+	return resultset.NewResultSet(
+		resultset.WithRowsAffected(uint64(nUpdated)),
 	), nil
 }
 
@@ -647,8 +648,8 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 		}
 	}
 
-	return sql.NewResultSet(
-		sql.WithResultSetRowsAffected(uint64(nDeleted)),
+	return resultset.NewResultSet(
+		resultset.WithRowsAffected(uint64(nDeleted)),
 	), nil
 }
 
