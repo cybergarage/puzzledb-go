@@ -14,7 +14,7 @@ require (
 	github.com/cybergarage/go-postgresql v1.5.8-0.20241109175611-ad6434adceaa
 	github.com/cybergarage/go-redis v1.5.3
 	github.com/cybergarage/go-safecast v1.2.5
-	github.com/cybergarage/go-sqlparser v1.3.7-0.20241109175136-ad4cc056c6d4
+	github.com/cybergarage/go-sqlparser v1.3.7-0.20241114105805-2fc370f97b7c
 	github.com/cybergarage/go-sqltest v1.4.2
 	github.com/cybergarage/go-tracing v1.1.3
 	github.com/dgraph-io/ristretto v0.1.1
@@ -26,7 +26,6 @@ require (
 	go.mongodb.org/mongo-driver v1.11.2
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.33.0
-	vitess.io/vitess v0.12.6
 )
 
 require (
@@ -106,4 +105,5 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/apimachinery v0.20.6 // indirect
+	vitess.io/vitess v0.12.6 // indirect
 )
