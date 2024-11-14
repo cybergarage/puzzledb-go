@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package sql
+package postgresql
 
 import (
 	"github.com/cybergarage/go-postgresql/postgresql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewRowFrom creates a new row from the specified object.
-func NewRowFrom(obj document.Object) (query.Row, error) {
+// NewRowFromObject creates a new row from the specified object.
+func NewRowFromObject(obj document.Object) (query.Row, error) {
 	objMap, err := document.NewMapObjectFrom(obj)
 	if err != nil {
 		return nil, err

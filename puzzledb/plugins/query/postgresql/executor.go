@@ -205,7 +205,7 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 				continue
 			}
 			obj := rs.Object()
-			row, err := sql.NewRowFrom(obj)
+			row, err := NewRowFromObject(obj)
 			if err != nil {
 				return nil, err
 			}
@@ -224,7 +224,7 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 		queryRows := []query.Row{}
 		for rs.Next() {
 			obj := rs.Object()
-			row, err := sql.NewRowFrom(obj)
+			row, err := sql.NewRowFromObject(obj)
 			if err != nil {
 				return nil, err
 			}
