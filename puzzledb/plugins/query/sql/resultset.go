@@ -23,7 +23,7 @@ import (
 
 type resultSet struct {
 	storeDB store.Database
-	schema  sql.Schema
+	schema  resultset.Schema
 	storeRs store.ResultSet
 }
 
@@ -38,21 +38,25 @@ func NewResultSetFrom(storeDB store.Database, storeCol store.Collection, storeRs
 	if err != nil {
 		return nil, err
 	}
-	rs.schema = schema
+	rs.schema = resultset.NewSchemaFrom(
+		query.NewDatabaseWith(rs.storeDB.Name()),
+		schema,
+	)
 	return rs, nil
 }
 
 // Row returns the current row.
-func (rs *resultSet) Row() sql.ResultSetRow {
-	return nil
+func (rs *resultSet) Row() resultset.Row {
+	row, err := NewRowFromObject(rs.schema, rs.storeRs.Object())
+	if err != nil {
+		return nil
+	}
+	return row
 }
 
 // Schema returns the schema.
-func (rs *resultSet) Schema() sql.ResultSetSchema {
-	return resultset.NewSchemaFrom(
-		query.NewDatabaseWith(rs.storeDB.Name()),
-		rs.schema,
-	)
+func (rs *resultSet) Schema() resultset.Schema {
+	return rs.schema
 }
 
 // RowsAffected returns the number of rows affected.
