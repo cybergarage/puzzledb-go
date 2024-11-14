@@ -24,6 +24,13 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// Use handles a USE query.
+func (service *Service) Use(conn Conn, stmt sql.Use) error {
+	stmt.DatabaseName()
+	conn.SetDatabase(stmt.DatabaseName())
+	return nil
+}
+
 // Begin handles a BEGIN query.
 func (service *Service) Begin(conn Conn, stmt sql.Begin) error {
 	ctx := conn.SpanContext()
@@ -643,6 +650,11 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 	return sql.NewResultSet(
 		sql.WithResultSetRowsAffected(uint64(nDeleted)),
 	), nil
+}
+
+// SystemSelect handles a system SELECT query.
+func (service *Service) SystemSelect(conn Conn, stmt sql.Select) (sql.ResultSet, error) {
+	return nil, newErrNotSupported(stmt.String())
 }
 
 // ParserError handles a parser error.
