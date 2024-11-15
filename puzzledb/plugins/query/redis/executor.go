@@ -156,7 +156,7 @@ func (service *Service) ZRange(conn *Conn, key string, start int, stop int, opt 
 	return nil, newErrNotSupported("ZRange")
 }
 
-func (service *Service) ZRangeByScore(conn *Conn, key string, min float64, max float64, opt redis.ZRangeOption) (*Message, error) {
+func (service *Service) ZRangeByScore(conn *Conn, key string, zmin float64, zmax float64, opt redis.ZRangeOption) (*Message, error) {
 	return nil, newErrNotSupported("ZRangeByScore")
 }
 
