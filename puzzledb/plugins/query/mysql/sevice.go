@@ -16,6 +16,7 @@ package mysql
 
 import (
 	"github.com/cybergarage/go-mysql/mysql"
+	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
@@ -27,7 +28,7 @@ type Service struct {
 }
 
 // NewService returns a test server instance.
-func NewService() *Service {
+func NewService() query.Service {
 	service := &Service{
 		Server:  mysql.NewServer(),
 		Service: sql.NewService(),
