@@ -20,13 +20,13 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/query/sql"
 )
 
-// Service represents a new MySQL service instance.
+// Service represents a new PostgreSQL service instance.
 type Service struct {
 	postgresql.Server
 	*sql.Service
 }
 
-// NewService returns a new MySQL service.
+// NewService returns a new PostgreSQL service.
 func NewService() query.Service {
 	service := &Service{
 		Server:  postgresql.NewServer(),
