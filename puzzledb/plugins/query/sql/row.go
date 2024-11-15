@@ -26,15 +26,15 @@ func NewRowFromObject(schema resultset.Schema, obj document.Object) (resultset.R
 		return nil, err
 	}
 	selectors := schema.Selectors()
-	rowObjets := make([]any, 0)
+	rowObj := make(map[string]any, 0)
 	for _, selector := range selectors {
 		name := selector.Name()
 		value, ok := objMap[name]
 		if ok {
-			rowObjets = append(rowObjets, value)
+			rowObj[name] = value
 		} else {
-			rowObjets = append(rowObjets, nil)
+			rowObj[name] = nil
 		}
 	}
-	return resultset.NewRow(resultset.WithRowValues(rowObjets)), nil
+	return resultset.NewRow(resultset.WithRowObject(objMap)), nil
 }
