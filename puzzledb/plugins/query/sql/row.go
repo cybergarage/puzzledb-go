@@ -36,5 +36,5 @@ func NewRowFromObject(schema resultset.Schema, obj document.Object) (resultset.R
 			rowObjets = append(rowObjets, nil)
 		}
 	}
-	return resultset.NewRow(resultset.WithRowObjects(rowObjets)), nil
+	return resultset.NewRow(resultset.WithRowValues(rowObjets)), nil
 }
