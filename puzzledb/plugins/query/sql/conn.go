@@ -16,7 +16,6 @@ package sql
 
 import (
 	"github.com/cybergarage/go-sqlparser/sql/net"
-
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
