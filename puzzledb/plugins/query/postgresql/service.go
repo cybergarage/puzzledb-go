@@ -32,9 +32,8 @@ func NewService() query.Service {
 		Server:  postgresql.NewServer(),
 		Service: sql.NewService(),
 	}
-	service.SetTransactionExecutor(service)
 	service.SetQueryExecutor(service)
-	service.SetBulkExecutor(service)
+	service.SetBulkQueryExecutor(service)
 	service.SetErrorHandler(service)
 	return service
 }

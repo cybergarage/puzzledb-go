@@ -204,12 +204,8 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 			if 0 < offset && rowNo <= offset {
 				continue
 			}
-			obj := rs.Object()
-			row, err := NewRowFromObject(obj)
-			if err != nil {
-				return nil, err
-			}
-			dataRow, err := query.NewDataRowForSelectors(schema, rowDesc, selectors, row)
+			rowObj := rs.Row().Object()
+			dataRow, err := query.NewDataRowForSelectors(schema, rowDesc, selectors, rowObj)
 			if err != nil {
 				return nil, err
 			}
@@ -223,12 +219,8 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 		groupBy := stmt.GroupBy().ColumnName()
 		queryRows := []query.Row{}
 		for rs.Next() {
-			obj := rs.Object()
-			row, err := sql.NewRowFromObject(obj)
-			if err != nil {
-				return nil, err
-			}
-			queryRows = append(queryRows, row)
+			rowObj := rs.Row().Object()
+			queryRows = append(queryRows, rowObj)
 		}
 		dataRows, err := query.NewDataRowsForAggregateFunction(schema, rowDesc, selectors, queryRows, groupBy)
 		if err != nil {
