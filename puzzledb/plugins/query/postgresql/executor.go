@@ -155,7 +155,7 @@ func (service *Service) Insert(conn postgresql.Conn, stmt stmt.Insert) (protocol
 }
 
 // Select handles a SELECT query.
-func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol.Responses, error) { //nolint:gocognit
+func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("Select")
 	defer ctx.FinishSpan()
@@ -167,80 +167,9 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 		return nil, err
 	}
 
-	// Schema
-
-	schema := rs.Schema()
-
-	// Responses
-
-	res := protocol.NewResponses()
-
-	// Row description response
-
-	selectors := stmt.Selectors()
-	if selectors.IsAsterisk() {
-		selectors = schema.Selectors()
-	}
-
-	rowDesc := protocol.NewRowDescription()
-	for n, selector := range selectors {
-		field, err := query.NewRowFieldFrom(schema, selector, n)
-		if err != nil {
-			return nil, err
-		}
-		rowDesc.AppendField(field)
-	}
-	res = res.Append(rowDesc)
-
-	// Data row response
-
-	nRows := 0
-	if !selectors.HasAggregateFunction() {
-		offset := stmt.Limit().Offset()
-		limit := stmt.Limit().Limit()
-		rowNo := 0
-		for rs.Next() {
-			rowNo++
-			if 0 < offset && rowNo <= offset {
-				continue
-			}
-			rowObj := rs.Row().Object()
-			dataRow, err := query.NewDataRowForSelectors(schema, rowDesc, selectors, rowObj)
-			if err != nil {
-				return nil, err
-			}
-			res = res.Append(dataRow)
-			nRows++
-			if 0 < limit && limit <= nRows {
-				break
-			}
-		}
-	} else {
-		groupBy := stmt.GroupBy().ColumnName()
-		queryRows := []query.Row{}
-		for rs.Next() {
-			rowObj := rs.Row().Object()
-			queryRows = append(queryRows, rowObj)
-		}
-		dataRows, err := query.NewDataRowsForAggregateFunction(schema, rowDesc, selectors, queryRows, groupBy)
-		if err != nil {
-			return nil, err
-		}
-		for _, dataRow := range dataRows {
-			res = res.Append(dataRow)
-			nRows++
-		}
-	}
-
-	cmpRes, err := protocol.NewSelectCompleteWith(nRows)
-	if err != nil {
-		return nil, err
-	}
-	res = res.Append(cmpRes)
-
 	mSelectLatency.Observe(float64(time.Since(now).Milliseconds()))
 
-	return res, nil
+	return query.NewResponseFromResultSet(stmt, rs)
 }
 
 // Update handles a UPDATE query.
