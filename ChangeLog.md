@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.x.x (2023-xx-xx)
+## v2.x.x (2024-xx-xx)
 - New features
   - Distributed plug-ins
     - Storage plug-ins
@@ -23,16 +23,21 @@
 - New features
   - TLS Support
     - Supported MySQL plug-in
+    - Supported PostgreSQL plug-in
   - Authenticator plug-ins
     - Added password authenticator implementations
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
-
-## v1.3.3 (2024-08-xx)
-- New features
-  - Authenticator plug-ins
-    - Added password authenticator implementations
-      - Supported MongoDB plug-in
+- Updatede
+  - Query plug-ins
+    - MySQL plug-in
+      - Added support for new queries
+    - MongoDB plug-in
+      - Added support for new queries
+    - Redis plug-in
+      - Added support for new queries
+    - PostgreSQL plug-in
+      - Added support for new queries
 
 ## v1.3.2 (2024-05-22)
 - New features
