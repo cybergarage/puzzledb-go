@@ -19,8 +19,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cybergarage/go-postgresql/postgresql"
 	"github.com/cybergarage/go-postgresql/postgresql/auth"
-	"github.com/cybergarage/go-postgresql/postgresqltest/client"
 	"github.com/cybergarage/go-sqltest/sqltest"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
@@ -36,7 +36,7 @@ func TestPostgreSQLServer(t *testing.T) {
 	}{
 		{"authenticator", RunAuthenticatorTest},
 		// TODO: Uncomment this test after implementing the TLS session test.
-		// {"tls", RunTLSSessionTest},
+		{"tls", RunTLSSessionTest},
 	}
 
 	server := puzzledbtest.NewServer()
@@ -110,7 +110,7 @@ func RunAuthenticatorTest(t *testing.T, server *puzzledbtest.Server, testDBName 
 	for _, authenticator := range authenticators {
 		server.AddAuthenticator(authenticator)
 
-		client := client.NewDefaultClient()
+		client := postgresql.NewDefaultClient()
 		client.SetUser(username)
 		client.SetPassword(password)
 		client.SetDatabase(testDBName)
@@ -148,7 +148,7 @@ func RunTLSSessionTest(t *testing.T, server *puzzledbtest.Server, testDBName str
 		rootCert   = "../../../certs/ca.pem"
 	)
 
-	client := client.NewDefaultClient()
+	client := postgresql.NewDefaultClient()
 	client.SetClientKeyFile(clientKey)
 	client.SetClientCertFile(clientCert)
 	client.SetRootCertFile(rootCert)
