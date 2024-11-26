@@ -46,12 +46,12 @@ func NewResultSetFrom(storeDB store.Database, storeCol store.Collection, storeRs
 }
 
 // Row returns the current row.
-func (rs *resultSet) Row() resultset.Row {
+func (rs *resultSet) Row() (resultset.Row, error) {
 	row, err := NewRowFromObject(rs.schema, rs.storeRs.Object())
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return row
+	return row, nil
 }
 
 // Schema returns the schema.
