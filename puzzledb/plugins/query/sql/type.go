@@ -38,8 +38,8 @@ func NewDocumentElementTypeFrom(sqlType query.DataType) (document.ElementType, e
 		return document.StringType, nil
 	case query.BlobData, query.VarBinaryData:
 		return document.BinaryType, nil
-	case query.TimeStampData:
-		return document.TimestampType, nil
+	case query.DateTimeData, query.TimeStampData:
+		return document.DatetimeType, nil
 	default:
 		return 0, newErrNotSupported(sqlType.String())
 	}
@@ -64,7 +64,7 @@ func NewQueryDataTypeFrom(elemType document.ElementType) (query.DataType, error)
 		return query.TextData, nil
 	case document.BinaryType:
 		return query.BlobData, nil
-	case document.TimestampType:
+	case document.DatetimeType:
 		return query.TimeStampData, nil
 	case document.ArrayType, document.MapType, document.BoolType:
 		return 0, newErrNotSupported(elemType)
