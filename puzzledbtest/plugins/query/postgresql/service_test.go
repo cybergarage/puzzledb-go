@@ -36,7 +36,7 @@ func TestPostgreSQLServer(t *testing.T) {
 	}{
 		{"authenticator", RunAuthenticatorTest},
 		// TODO: Uncomment this test after implementing the TLS session test.
-		{"tls", RunTLSSessionTest},
+		// {"tls", RunTLSSessionTest},
 	}
 
 	server := puzzledbtest.NewServer()
