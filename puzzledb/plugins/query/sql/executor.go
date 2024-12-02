@@ -271,6 +271,13 @@ func (service *Service) AlterTable(conn Conn, stmt sql.AlterTable) error {
 		}
 	}
 
+	if col, ok := stmt.DropIndex(); ok {
+		err := schema.DropIndex(col.Name())
+		if err != nil {
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		}
+	}
+
 	if _, ok := stmt.RenameTo(); ok {
 		return newErrNotSupported(stmt.String())
 	}
