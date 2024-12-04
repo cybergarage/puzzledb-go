@@ -33,7 +33,6 @@ func NewService() query.Service {
 		Server:  mysql.NewServer(),
 		Service: sql.NewService(),
 	}
-	service.SetQueryExecutor(service)
 	service.SetSQLExecutor(service.Service)
 	return service
 }
