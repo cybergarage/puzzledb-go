@@ -5,17 +5,17 @@ go 1.22.0
 toolchain go1.23.0
 
 require (
-	github.com/apple/foundationdb/bindings/go v0.0.0-20230317231317-e330030d07af
+	github.com/apple/foundationdb/bindings/go v0.0.0-20240515141712-4645713e4138
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.8
 	github.com/cybergarage/go-mongo v1.2.1
-	github.com/cybergarage/go-mysql v1.1.2-0.20241126095211-ba3b2f3edae9
+	github.com/cybergarage/go-mysql v1.1.2-0.20241204112046-96e74ec1229b
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.6.1-0.20241126095233-1e10e658aa34
+	github.com/cybergarage/go-postgresql v1.6.1-0.20241204112233-e878f831e563
 	github.com/cybergarage/go-redis v1.5.3
 	github.com/cybergarage/go-safecast v1.2.5
-	github.com/cybergarage/go-sqlparser v1.4.2-0.20241126094937-6e47342ed70b
-	github.com/cybergarage/go-sqltest v1.4.2
+	github.com/cybergarage/go-sqlparser v1.4.2-0.20241203032155-ff2cc1b5ac93
+	github.com/cybergarage/go-sqltest v1.4.3-0.20241204110841-6ac8f544b7d6
 	github.com/cybergarage/go-tracing v1.1.3
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/google/uuid v1.6.0
@@ -93,7 +93,6 @@ require (
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
-	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231127180814-3a041ad873d4 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
