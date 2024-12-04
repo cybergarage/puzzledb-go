@@ -35,6 +35,7 @@ func NewService() query.Service {
 	service.SetQueryExecutor(service)
 	service.SetBulkQueryExecutor(service)
 	service.SetErrorHandler(service)
+	service.SetSQLExecutor(service.Service)
 	return service
 }
 
