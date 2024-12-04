@@ -26,14 +26,17 @@ jobs:
 
     - name: Set up FoundationDB
       run: |
-         sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.17/foundationdb-clients_7.3.17-1_amd64.deb
-         sudo apt install -y /tmp/foundationdb-clients_7.3.17-1_amd64.deb
-         sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.17/foundationdb-server_7.3.17-1_amd64.deb
-         sudo apt install -y /tmp/foundationdb-server_7.3.17-1_amd64.deb
+         sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.57/foundationdb-clients_7.3.57-1_amd64.deb
+         sudo apt install -y /tmp/foundationdb-clients_7.3.57-1_amd64.deb
+         sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.57/foundationdb-server_7.3.57-1_amd64.deb
+         sudo apt install -y /tmp/foundationdb-server_7.3.57-1_amd64.deb
          sudo service foundationdb start
 
     - name: Test
-      run: CGO_ENABLED=1 make certs && make unittest
+      run: |
+          go get github.com/apple/foundationdb/bindings/go@63035b5c3ecb65a615126cf3d62e36df58a9c994
+          go mod tidy
+          CGO_ENABLED=1 make certs && make unittest
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4
