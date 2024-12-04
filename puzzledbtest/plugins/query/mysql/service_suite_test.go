@@ -33,6 +33,7 @@ func TestMySQLTestSuite(t *testing.T) {
 
 	testNames := []string{
 		"SmplTxn.*",
+		"SmplIndex*",
 		"SmplCrud.*",
 		"YcsbWorkload",
 	}
