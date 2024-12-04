@@ -9,14 +9,16 @@ RUN apt-get update && \
     apt-get install -y golang wget adduser && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.25/foundationdb-clients_7.3.25-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-clients_7.3.25-1_amd64.deb &&  \
+RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.57/foundationdb-clients_7.3.57-1_amd64.deb &&  \
+    apt install /tmp/foundationdb-clients_7.3.57-1_amd64.deb &&  \
     rm /tmp/*.deb
 
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.25/foundationdb-server_7.3.25-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-server_7.3.25-1_amd64.deb &&  \
+RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.57/foundationdb-server_7.3.57-1_amd64.deb &&  \
+    apt install /tmp/foundationdb-server_7.3.57-1_amd64.deb &&  \
     rm /tmp/*.deb
 
+RUN go get github.com/apple/foundationdb/bindings/go@63035b5c3ecb65a615126cf3d62e36df58a9c994
+RUN go mod tidy
 RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
 RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
 
