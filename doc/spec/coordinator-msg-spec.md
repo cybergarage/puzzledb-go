@@ -126,7 +126,7 @@ The message types and the event types are reserved as follows:
 <tbody>
 <tr>
 <td style="text-align: left;"><p>Object (O)</p></td>
-<td style="text-align: left;"><p>Created ©</p></td>
+<td style="text-align: left;"><p>Created (C)</p></td>
 <td style="text-align: left;"><p>Object created</p></td>
 <td style="text-align: left;"></td>
 </tr>
@@ -144,7 +144,7 @@ The message types and the event types are reserved as follows:
 </tr>
 <tr>
 <td style="text-align: left;"><p>Database (D)</p></td>
-<td style="text-align: left;"><p>Created ©</p></td>
+<td style="text-align: left;"><p>Created (C)</p></td>
 <td style="text-align: left;"><p>Database created</p></td>
 <td style="text-align: left;"></td>
 </tr>
@@ -161,8 +161,8 @@ The message types and the event types are reserved as follows:
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;"><p>Collection ©</p></td>
-<td style="text-align: left;"><p>Created ©</p></td>
+<td style="text-align: left;"><p>Collection (C)</p></td>
+<td style="text-align: left;"><p>Created (C)</p></td>
 <td style="text-align: left;"><p>Schema created</p></td>
 <td style="text-align: left;"></td>
 </tr>
