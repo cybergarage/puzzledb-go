@@ -95,7 +95,7 @@ Since both services may use the same key-value store implementation, the key-val
 </tr>
 <tr>
 <td style="text-align: left;"><p>Collection</p></td>
-<td style="text-align: left;"><p>Header ©</p></td>
+<td style="text-align: left;"><p>Header (C)</p></td>
 <td style="text-align: left;"><p>Database</p></td>
 <td style="text-align: left;"><p>Collection</p></td>
 <td style="text-align: left;"><p>-</p></td>
