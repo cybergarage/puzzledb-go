@@ -15,12 +15,14 @@
 package document
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
+	plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // Store represents a new document store utility instance.
 type Store struct {
-	store.DocumentStore
+	store plugin.DocumentStore
 }
 
 type DumpOptions struct {
@@ -29,14 +31,40 @@ type DumpOptions struct {
 }
 
 // NewStoreWith returns a new document store utility instance with the specified store.
-func NewStoreWith(store store.DocumentKvStore) *Store {
+func NewStoreWith(store plugin.DocumentStore) *Store {
 	return &Store{
-		DocumentStore: store,
+		store: store,
 	}
 }
 
 // Dump returns a string array representation of the document store.
-func (store *Store) Dump(opts DumpOptions) []string {
-	line := []string{}
-	return line
+func (doc *Store) Dump(opts DumpOptions) ([]string, error) {
+	allLines := []string{}
+	dbs, err := doc.store.ListDatabases(nil)
+	if err != nil {
+		return allLines, err
+	}
+	ctx := context.NewContext()
+	for _, db := range dbs {
+		lines, err := doc.dumpDatabase(ctx, db)
+		if err != nil {
+			return allLines, err
+		}
+		allLines = append(allLines, lines...)
+	}
+	return allLines, nil
+}
+
+// dumpDatabase returns a string array representation of the specified database.
+func (doc *Store) dumpDatabase(ctx context.Context, db store.Database) ([]string, error) {
+	allLines := []string{}
+	txn, err := db.Transact(false)
+	if err != nil {
+		return allLines, err
+	}
+	_, err = txn.ListCollections(ctx)
+	if err != nil {
+		return allLines, err
+	}
+	return allLines, nil
 }
