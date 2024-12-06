@@ -26,15 +26,17 @@ type Schema = document.Schema
 
 // DatabaseOperation represents a database operation.
 type DatabaseOperation interface {
-	// CreateCollection creates a new collection.
+	// ListCollections returns the all collection in the database.
+	ListCollections(ctx context.Context) ([]Collection, error)
+	// CreateCollection creates a new collection into the database.
 	CreateCollection(ctx context.Context, col Collection) error
-	// UpdateCollection updates the specified collection.
+	// UpdateCollection updates the specified collection in the database.
 	UpdateCollection(ctx context.Context, col Collection) error
-	// GetCollection returns the specified collection.
+	// GetCollection returns the specified collection in the database.
 	GetCollection(ctx context.Context, name string) (Collection, error)
-	// RemoveCollection removes the specified collection.
+	// RemoveCollection removes the specified collection in the database.
 	RemoveCollection(ctx context.Context, name string) error
-	// TruncateCollections removes all collections.
+	// TruncateCollections removes all collections in the database.
 	TruncateCollections(ctx context.Context) error
 }
 
