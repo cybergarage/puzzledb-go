@@ -47,14 +47,14 @@ func (txn *transaction) ListCollections(ctx context.Context) ([]store.Collection
 	ctx.StartSpan("ListCollections")
 	defer ctx.FinishSpan()
 
-	kvSchemaKey := kv.NewKeyWith(kv.CollectionKeyHeader, document.NewKeyWith(txn.Database().Name()))
-	kvRs, err := txn.kv.GetRange(kvSchemaKey)
+	colSearchKey := kv.NewKeyWith(kv.CollectionKeyHeader, document.NewKeyWith(txn.Database().Name()))
+	rs, err := txn.kv.GetRange(colSearchKey)
 	if err != nil {
 		return nil, err
 	}
 	cols := make([]store.Collection, 0)
-	for kvRs.Next() {
-		kvObj := kvRs.Object()
+	for rs.Next() {
+		kvObj := rs.Object()
 		obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value))
 		if err != nil {
 			return nil, err
