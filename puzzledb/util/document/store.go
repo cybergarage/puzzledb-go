@@ -12,20 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package util
+package document
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 )
 
-// DocumentStore represents a new document store utility instance.
-type DocumentStore struct {
+// Store represents a new document store utility instance.
+type Store struct {
 	store.DocumentStore
 }
 
-// NewDocumentStoreWith returns a new document store utility instance with the specified store.
-func NewDocumentStoreWith(store store.DocumentKvStore) *DocumentStore {
-	return &DocumentStore{
+type DumpOptions struct {
+	// DumpAll specifies whether to dump all the documents.
+	DumpAll bool
+}
+
+// NewStoreWith returns a new document store utility instance with the specified store.
+func NewStoreWith(store store.DocumentKvStore) *Store {
+	return &Store{
 		DocumentStore: store,
 	}
+}
+
+// Dump returns a string array representation of the document store.
+func (store *Store) Dump(opts DumpOptions) []string {
+	line := []string{}
+	return line
 }
