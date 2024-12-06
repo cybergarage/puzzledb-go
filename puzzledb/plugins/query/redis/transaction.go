@@ -32,13 +32,13 @@ type Transaction struct {
 // SetKeyObject sets the objects with the specified key.
 func (txn *Transaction) SetKeyObject(ctx context.Context, key string, val any) error {
 	docKey := NewDocumentKeyWith(txn.DatabaseID, key)
-	return txn.InsertDocument(ctx, docKey, val)
+	return txn.InsertObject(ctx, docKey, val)
 }
 
 // GetKeyObjects returns the objects with the specified key.
 func (txn *Transaction) GetKeyObjects(ctx context.Context, key string) ([]any, error) {
 	docKey := NewDocumentKeyWith(txn.DatabaseID, key)
-	rs, err := txn.FindDocuments(ctx, docKey)
+	rs, err := txn.FindObjects(ctx, docKey)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (txn *Transaction) GetKeyObjects(ctx context.Context, key string) ([]any, e
 // GetKeyObject returns the object with the specified key.
 func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, error) {
 	docKey := NewDocumentKeyWith(txn.DatabaseID, key)
-	rs, err := txn.FindDocuments(ctx, docKey)
+	rs, err := txn.FindObjects(ctx, docKey)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (txn *Transaction) GetKeyString(ctx context.Context, key string) (string, e
 // SetKeyHashObject sets the objects with the specified key.
 func (txn *Transaction) SetKeyHashObject(ctx context.Context, key string, val HashObject) error {
 	docKey := NewDocumentKeyWith(txn.DatabaseID, key)
-	return txn.InsertDocument(ctx, docKey, val)
+	return txn.InsertObject(ctx, docKey, val)
 }
 
 // GetKeyHashObject returns the hash objects with the specified key.

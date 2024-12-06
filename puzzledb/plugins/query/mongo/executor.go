@@ -97,7 +97,7 @@ func (service *Service) insertDocument(ctx context.Context, txn store.Transactio
 	}
 
 	docKey := service.createObjectKey(txn, q.Database(), q.Collection(), objID)
-	err = txn.InsertDocument(ctx, docKey, doc)
+	err = txn.InsertObject(ctx, docKey, doc)
 	if err != nil {
 		return err
 	}
@@ -188,13 +188,13 @@ func (service *Service) findDocumentObjects(ctx context.Context, txn store.Trans
 				idxKey := service.createDocumentKey(txn, q.Database(), q.Collection(), key, val)
 				var objs []document.Object
 				if isPrimaryKey(key) {
-					rs, err := txn.FindDocuments(ctx, idxKey)
+					rs, err := txn.FindObjects(ctx, idxKey)
 					if err != nil {
 						return nil, err
 					}
 					objs = rs.Objects()
 				} else {
-					rs, err := txn.FindDocumentsByIndex(ctx, idxKey)
+					rs, err := txn.FindObjectsByIndex(ctx, idxKey)
 					if err != nil {
 						return nil, err
 					}
@@ -207,7 +207,7 @@ func (service *Service) findDocumentObjects(ctx context.Context, txn store.Trans
 		// Finds all documents
 		idxKey := service.createDocumentAllKey(txn, q.Database(), q.Collection())
 		var objs []document.Object
-		rs, err := txn.FindDocuments(ctx, idxKey)
+		rs, err := txn.FindObjects(ctx, idxKey)
 		if err != nil {
 			return nil, err
 		}
@@ -315,7 +315,7 @@ func (service *Service) updateDocumentByQuery(ctx context.Context, txn store.Tra
 		return err
 	}
 	docKey := service.createObjectKey(txn, q.Database(), q.Collection(), objID)
-	err = txn.UpdateDocument(ctx, docKey, updatedDoc)
+	err = txn.UpdateObject(ctx, docKey, updatedDoc)
 	if err != nil {
 		return err
 	}
@@ -397,7 +397,7 @@ func (service *Service) deleteDocument(ctx context.Context, txn store.Transactio
 		return err
 	}
 	docKey := service.createObjectKey(txn, db, col, objID)
-	err = txn.RemoveDocument(ctx, docKey)
+	err = txn.RemoveObject(ctx, docKey)
 	if err != nil {
 		return err
 	}

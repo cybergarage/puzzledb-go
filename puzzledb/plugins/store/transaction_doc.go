@@ -24,7 +24,7 @@ import (
 )
 
 // InsertDocument puts a document object with the primary key.
-func (txn *transaction) InsertDocument(ctx context.Context, docKey store.Key, obj store.Object) error {
+func (txn *transaction) InsertObject(ctx context.Context, docKey store.Key, obj store.Object) error {
 	ctx.StartSpan("InsertDocument")
 	defer ctx.FinishSpan()
 
@@ -42,7 +42,7 @@ func (txn *transaction) InsertDocument(ctx context.Context, docKey store.Key, ob
 }
 
 // FindDocuments returns a result set matching the specified key.
-func (txn *transaction) FindDocuments(ctx context.Context, docKey store.Key, opts ...store.Option) (store.ResultSet, error) {
+func (txn *transaction) FindObjects(ctx context.Context, docKey store.Key, opts ...store.Option) (store.ResultSet, error) {
 	ctx.StartSpan("FindDocuments")
 	defer ctx.FinishSpan()
 
@@ -56,7 +56,7 @@ func (txn *transaction) FindDocuments(ctx context.Context, docKey store.Key, opt
 }
 
 // UpdateDocument updates a document object with the specified primary key.
-func (txn *transaction) UpdateDocument(ctx context.Context, docKey store.Key, obj store.Object) error {
+func (txn *transaction) UpdateObject(ctx context.Context, docKey store.Key, obj store.Object) error {
 	ctx.StartSpan("UpdateDocument")
 	defer ctx.FinishSpan()
 
@@ -74,7 +74,7 @@ func (txn *transaction) UpdateDocument(ctx context.Context, docKey store.Key, ob
 }
 
 // RemoveDocument removes a document object with the specified primary key.
-func (txn *transaction) RemoveDocument(ctx context.Context, docKey store.Key) error {
+func (txn *transaction) RemoveObject(ctx context.Context, docKey store.Key) error {
 	ctx.StartSpan("RemoveDocument")
 	defer ctx.FinishSpan()
 
@@ -83,7 +83,7 @@ func (txn *transaction) RemoveDocument(ctx context.Context, docKey store.Key) er
 }
 
 // RemoveDocument removes document objects with the specified primary key.
-func (txn *transaction) RemoveDocuments(ctx context.Context, docKey store.Key) error {
+func (txn *transaction) RemoveObjects(ctx context.Context, docKey store.Key) error {
 	ctx.StartSpan("RemoveDocuments")
 	defer ctx.FinishSpan()
 
@@ -92,9 +92,9 @@ func (txn *transaction) RemoveDocuments(ctx context.Context, docKey store.Key) e
 }
 
 // TruncateDocuments removes all document objects.
-func (txn *transaction) TruncateDocuments(ctx context.Context) error {
+func (txn *transaction) TruncateObjects(ctx context.Context) error {
 	ctx.StartSpan("TruncateDocuments")
 	defer ctx.FinishSpan()
 
-	return txn.RemoveDocuments(ctx, document.NewKeyWith(txn.Database().Name()))
+	return txn.RemoveObjects(ctx, document.NewKeyWith(txn.Database().Name()))
 }
