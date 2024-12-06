@@ -1,10 +1,8 @@
-Builing New Plug-ins
-====================
+# Builing New Plug-ins
 
 This section describes the plug-in interface for adding your own plug-in services and registering them into PuzzleDB.
 
-Plug-in interface
------------------
+## Plug-in interface
 
 Each plug-in service should implement the following `Service` interface, which is located in the `puzzledb/plugins` directory.
 
@@ -19,17 +17,220 @@ Each plug-in service should implement the following `Service` interface, which i
         Stop() error
     }
 
-Standard Plug-in interfaces
----------------------------
+## Standard Plug-in interfaces
 
 For the plugin services specified in the standards listed in the following table, refer to each plugin interface that is reserved in the `plugins` directory.
 
-<table style="width:100%;"><colgroup><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /><col style="width: 16%" /></colgroup><thead><tr class="header"><th>Major Type</th><th>Sub Type</th><th>Description</th><th>Plug-ins</th><th>Distributed</th><th>Dependency</th></tr></thead><tbody><tr class="odd"><td><p>System</p></td><td><p>-</p></td><td><p>System services</p></td><td><p>gRPC</p></td><td><p>O</p></td><td></td></tr><tr class="even"><td></td><td></td><td></td><td><p>Actor</p></td><td><p>O</p></td><td><p>Coordinator</p></td></tr><tr class="odd"><td><p>Query</p></td><td><p>-</p></td><td><p>Query handler services</p></td><td><p>Redis</p></td><td><p>O</p></td><td><p>Store (Document)</p></td></tr><tr class="even"><td></td><td></td><td></td><td><p>MongoDB</p></td><td><p>O</p></td><td><p>Store (Document)</p></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>MySQL</p></td><td><p>O</p></td><td><p>Store (Document)</p></td></tr><tr class="even"><td></td><td></td><td></td><td><p>PostgreSQL</p></td><td><p>O</p></td><td><p>Store (Document)</p></td></tr><tr class="odd"><td><p>Coordinator</p></td><td><p>-</p></td><td><p>Coordination services</p></td><td><p>memdb</p></td><td><p>X</p></td><td><p>-</p></td></tr><tr class="even"><td></td><td></td><td></td><td><p>etcd (Planning)</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>ZooKeeper (Planning)</p></td><td></td><td></td></tr><tr class="even"><td></td><td></td><td></td><td><p>FoundationDB (Planning)</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="odd"><td><p>Coder</p></td><td><p>Document</p></td><td><p>Document coder services</p></td><td><p>CBOR</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="even"><td></td><td><p>Key</p></td><td><p>Key coder services</p></td><td><p>Tuple</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="odd"><td><p>Store</p></td><td><p>Document</p></td><td><p>Doument store services</p></td><td><p>Key-value based store</p></td><td><p>O</p></td><td><p>Store (Key-value), Coder (Document), Coder (Key)</p></td></tr><tr class="even"><td></td><td><p>Key-value</p></td><td><p>Key-value store services</p></td><td><p>memdb</p></td><td><p>X</p></td><td><p>Coder (Document), Coder (Key)</p></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>FoundationDB</p></td><td><p>O</p></td><td><p>Coder (Document), Coder (Key)</p></td></tr><tr class="even"><td></td><td></td><td></td><td><p>TiKV (Planning)</p></td><td><p>O</p></td><td><p>-</p></td></tr><tr class="odd"><td></td><td></td><td></td><td><p>JunoDB (Planning)</p></td><td></td><td></td></tr><tr class="even"><td></td><td><p>Key-Value Cache</p></td><td><p>Key-value cache store services</p></td><td><p>Ristretto</p></td><td><p>O</p></td><td><p>Store (Key-value)</p></td></tr><tr class="odd"><td><p>Tracer</p></td><td><p>-</p></td><td><p>Distributed tracing services</p></td><td><p>OpenTelemetry</p></td><td><p>O</p></td><td></td></tr><tr class="even"><td></td><td></td><td></td><td><p>OpenTracing</p></td><td><p>O</p></td><td></td></tr><tr class="odd"><td><p>Metric</p></td><td><p>-</p></td><td><p>Metrics services</p></td><td><p>Prometheus</p></td><td><p>O</p></td><td></td></tr><tr class="even"><td></td><td></td><td></td><td><p>Graphite (Planning)</p></td><td><p>O</p></td><td></td></tr><tr class="odd"><td><p>Extend</p></td><td><p>-</p></td><td><p>User-defined services</p></td><td><p>-</p></td><td><p>-</p></td><td><p>-</p></td></tr></tbody></table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Major Type</th>
+<th style="text-align: left;">Sub Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Plug-ins</th>
+<th style="text-align: left;">Distributed</th>
+<th style="text-align: left;">Dependency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><p>System</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>System services</p></td>
+<td style="text-align: left;"><p>gRPC</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Actor</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Coordinator</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>Query</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Query handler services</p></td>
+<td style="text-align: left;"><p>Redis</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>MongoDB</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>MySQL</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>PostgreSQL</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Document)</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>Coordinator</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Coordination services</p></td>
+<td style="text-align: left;"><p>memdb</p></td>
+<td style="text-align: left;"><p>X</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>etcd (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>ZooKeeper (Planning)</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>Coder</p></td>
+<td style="text-align: left;"><p>Document</p></td>
+<td style="text-align: left;"><p>Document coder services</p></td>
+<td style="text-align: left;"><p>CBOR</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Key</p></td>
+<td style="text-align: left;"><p>Key coder services</p></td>
+<td style="text-align: left;"><p>Tuple</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>Store</p></td>
+<td style="text-align: left;"><p>Document</p></td>
+<td style="text-align: left;"><p>Doument store services</p></td>
+<td style="text-align: left;"><p>Key-value based store</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Key-value), Coder (Document), Coder (Key)</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Key-value</p></td>
+<td style="text-align: left;"><p>Key-value store services</p></td>
+<td style="text-align: left;"><p>memdb</p></td>
+<td style="text-align: left;"><p>X</p></td>
+<td style="text-align: left;"><p>Coder (Document), Coder (Key)</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Coder (Document), Coder (Key)</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>TiKV (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>JunoDB (Planning)</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Key-Value Cache</p></td>
+<td style="text-align: left;"><p>Key-value cache store services</p></td>
+<td style="text-align: left;"><p>Ristretto</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>Store (Key-value)</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>Tracer</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Distributed tracing services</p></td>
+<td style="text-align: left;"><p>OpenTelemetry</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>OpenTracing</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>Metric</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Metrics services</p></td>
+<td style="text-align: left;"><p>Prometheus</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Graphite (Planning)</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>Extend</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>User-defined services</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+</tbody>
+</table>
 
 For more information on plug-in implementation, please refer to the standard plug-ins located in the `plugins` directory.
 
-Registering Plug-in
--------------------
+## Registering Plug-in
 
 To register your plug-in service, you should override `` Server::LoadPlugins()` `` as follows:
 
