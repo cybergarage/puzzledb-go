@@ -117,9 +117,9 @@ func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, tx
 
 	switch docKeyType {
 	case document.PrimaryIndex:
-		return txn.FindDocuments(ctx, docKey, opts...)
+		return txn.FindObjects(ctx, docKey, opts...)
 	case document.SecondaryIndex:
-		return txn.FindDocumentsByIndex(ctx, docKey, opts...)
+		return txn.FindObjectsByIndex(ctx, docKey, opts...)
 	}
 	return nil, newErrIndexTypeNotSupported(docKeyType)
 }
@@ -174,7 +174,7 @@ func (service *Service) RemoveSecondaryIndexes(ctx context.Context, conn Conn, t
 }
 
 // UpdateDocument updates the specified object.
-func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj any, updateCols query.Columns) error {
+func (service *Service) UpdateObject(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj any, updateCols query.Columns) error {
 	docObj, err := document.NewMapObjectFrom(obj)
 	if err != nil {
 		return err
@@ -216,7 +216,7 @@ func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store
 		return err
 	}
 
-	err = txn.UpdateDocument(ctx, docKey, docObj)
+	err = txn.UpdateObject(ctx, docKey, docObj)
 	if err != nil {
 		return err
 	}
@@ -231,7 +231,7 @@ func (service *Service) UpdateDocument(ctx context.Context, conn Conn, txn store
 
 // DeleteDocument deletes the specified object.
 func (service *Service) DeleteDocument(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, docKey document.Key) error {
-	err := txn.RemoveDocument(ctx, docKey)
+	err := txn.RemoveObject(ctx, docKey)
 	if err != nil {
 		return err
 	}
@@ -243,7 +243,7 @@ func (service *Service) DeleteDocument(ctx context.Context, conn Conn, txn store
 	if len(idxes) == 0 {
 		return nil
 	}
-	rs, err := txn.FindDocuments(ctx, docKey)
+	rs, err := txn.FindObjects(ctx, docKey)
 	if err != nil {
 		return err
 	}

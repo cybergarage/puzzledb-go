@@ -49,7 +49,7 @@ func (txn *transaction) RemoveIndex(ctx context.Context, idxKey store.Key) error
 }
 
 // FindDocumentsByIndex gets document objects matching the specified index key.
-func (txn *transaction) FindDocumentsByIndex(ctx context.Context, idxKey store.Key, opts ...store.Option) (store.ResultSet, error) {
+func (txn *transaction) FindObjectsByIndex(ctx context.Context, idxKey store.Key, opts ...store.Option) (store.ResultSet, error) {
 	ctx.StartSpan("FindDocumentsByIndex")
 	defer ctx.FinishSpan()
 

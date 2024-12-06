@@ -431,7 +431,7 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
-	err = txn.InsertDocument(ctx, docKey, docObj)
+	err = txn.InsertObject(ctx, docKey, docObj)
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
@@ -550,7 +550,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 	nUpdated := 0
 	for rs.Next() {
 		docObj := rs.Object()
-		err := service.UpdateDocument(ctx, conn, txn, col, docObj, updateCols)
+		err := service.UpdateObject(ctx, conn, txn, col, docObj, updateCols)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
@@ -620,7 +620,7 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 			nDeleted = 1
 		}
 	case document.SecondaryIndex:
-		rs, err := txn.FindDocumentsByIndex(ctx, docKey)
+		rs, err := txn.FindObjectsByIndex(ctx, docKey)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}

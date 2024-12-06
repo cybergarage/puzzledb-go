@@ -38,7 +38,7 @@ func (service *Service) Del(conn *Conn, keys []string) (*Message, error) {
 	removedCount := 0
 	for _, key := range keys {
 		docKey := NewDocumentKeyWith(txn.DatabaseID, key)
-		err := txn.RemoveDocument(ctx, docKey)
+		err := txn.RemoveObject(ctx, docKey)
 		if err == nil {
 			removedCount++
 		}
@@ -67,7 +67,7 @@ func (service *Service) Exists(conn *Conn, keys []string) (*Message, error) {
 	existCount := 0
 	for _, key := range keys {
 		docKey := NewDocumentKeyWith(txn.DatabaseID, key)
-		rs, err := txn.FindDocuments(ctx, docKey)
+		rs, err := txn.FindObjects(ctx, docKey)
 		if err != nil {
 			return nil, err
 		}

@@ -24,7 +24,7 @@ import (
 type Collection = document.Collection
 type Schema = document.Schema
 
-// DatabaseOperation represents a database operation.
+// DatabaseOperation represents database operations.
 type DatabaseOperation interface {
 	// ListCollections returns the all collection in the database.
 	ListCollections(ctx context.Context) ([]Collection, error)
@@ -40,20 +40,20 @@ type DatabaseOperation interface {
 	TruncateCollections(ctx context.Context) error
 }
 
-// DocumentOperation represents a document operation.
-type DocumentOperation interface {
-	// InsertDocument puts a document object with the specified primary key.
-	InsertDocument(ctx context.Context, docKey Key, obj Object) error
-	// FindDocuments returns a result set matching the specified key.
-	FindDocuments(ctx context.Context, docKey Key, opts ...Option) (ResultSet, error)
-	// UpdateDocument updates a document object with the specified primary key.
-	UpdateDocument(ctx context.Context, docKey Key, obj Object) error
-	// RemoveDocument removes a document object with the specified primary key.
-	RemoveDocument(ctx context.Context, docKey Key) error
-	// RemoveDocuments removes document objects with the specified primary key.
-	RemoveDocuments(ctx context.Context, docKey Key) error
-	// TruncateDocuments removes all document objects.
-	TruncateDocuments(ctx context.Context) error
+// CollectionOperation represents collection operations.
+type CollectionOperation interface {
+	// InsertObject puts a document object with the specified primary key.
+	InsertObject(ctx context.Context, docKey Key, obj Object) error
+	// FindObjects returns a result set matching the specified key.
+	FindObjects(ctx context.Context, docKey Key, opts ...Option) (ResultSet, error)
+	// UpdateObject updates a document object with the specified primary key.
+	UpdateObject(ctx context.Context, docKey Key, obj Object) error
+	// RemoveObject removes a document object with the specified primary key.
+	RemoveObject(ctx context.Context, docKey Key) error
+	// RemoveObjects removes document objects with the specified primary key.
+	RemoveObjects(ctx context.Context, docKey Key) error
+	// TruncateObjects removes all document objects.
+	TruncateObjects(ctx context.Context) error
 }
 
 // IndexOperation represents a secondary index operation.
@@ -62,8 +62,8 @@ type IndexOperation interface {
 	InsertIndex(ctx context.Context, idxKey Key, key Key) error
 	// RemoveIndex removes the specified secondary index.
 	RemoveIndex(ctx context.Context, idxKey Key) error
-	// FindDocumentsByIndex returns a result set matching the specified index key.
-	FindDocumentsByIndex(ctx context.Context, indexKey Key, opts ...Option) (ResultSet, error)
+	// FindObjectsByIndex returns a result set matching the specified index key.
+	FindObjectsByIndex(ctx context.Context, indexKey Key, opts ...Option) (ResultSet, error)
 	// TruncateIndexes removes all secondary indexes.
 	TruncateIndexes(ctx context.Context) error
 }
@@ -71,7 +71,7 @@ type IndexOperation interface {
 // StoreOperation represents a transaction operation.
 type StoreOperation interface {
 	DatabaseOperation
-	DocumentOperation
+	CollectionOperation
 	IndexOperation
 }
 
