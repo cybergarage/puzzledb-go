@@ -118,3 +118,5 @@ The key-value store is a collection of key-value records, where each record is a
 </tr>
 </tbody>
 </table>
+
+The combination of object and index element name and value is repeated by the index format.
