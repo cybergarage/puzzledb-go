@@ -94,12 +94,3 @@ func (rs *indexResultSet) nextIndex() bool {
 func (rs *indexResultSet) Object() store.Object {
 	return rs.obj
 }
-
-// Objects returns all objects in the resultset.
-func (rs *indexResultSet) Objects() []store.Object {
-	objs := []store.Object{}
-	for rs.Next() {
-		objs = append(objs, rs.Object())
-	}
-	return objs
-}
