@@ -69,7 +69,7 @@ func (txn *transaction) Get(key kv.Key) (kv.Object, error) {
 		return nil, kv.NewErrObjectNotExist(key)
 	}
 	mReadLatency.Observe(float64(time.Since(now).Milliseconds()))
-	return rs.Object(), nil
+	return rs.Object()
 }
 
 // GetRange returns a result set of the specified key.

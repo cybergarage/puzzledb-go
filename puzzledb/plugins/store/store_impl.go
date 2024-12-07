@@ -16,6 +16,7 @@ package store
 
 import (
 	"bytes"
+	"errors"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
@@ -273,15 +274,15 @@ func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{})
 	kvRs, err := txn.GetRange(kvDBKey)
 	if err != nil {
-		if err := txn.Cancel(); err != nil {
-			return nil, err
-		}
-		return nil, err
+		return nil, errors.Join(err, txn.Cancel())
 	}
 
 	dbs := make([]store.Database, 0)
 	for kvRs.Next() {
-		kvObj := kvRs.Object()
+		kvObj, err := kvRs.Object()
+		if err != nil {
+			return nil, errors.Join(err, txn.Cancel())
+		}
 		kvKeys := kvObj.Key().Elements()
 		kvKeyLen := len(kvKeys)
 		if kvKeyLen == 0 {
@@ -295,12 +296,12 @@ func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 
 		dbOptsObj, err := s.DecodeDocument(bytes.NewReader(kvObj.Value()))
 		if err != nil {
-			return nil, err
+			return nil, errors.Join(err, txn.Cancel())
 		}
 
 		dbOpts, err := newDatabaeOptionsFrom(dbOptsObj)
 		if err != nil {
-			return nil, err
+			return nil, errors.Join(err, txn.Cancel())
 		}
 
 		db := &database{
@@ -315,10 +316,7 @@ func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 
 	err = txn.Commit()
 	if err != nil {
-		if err := txn.Cancel(); err != nil {
-			return nil, err
-		}
-		return nil, err
+		return nil, errors.Join(err, txn.Cancel())
 	}
 
 	return dbs, nil
