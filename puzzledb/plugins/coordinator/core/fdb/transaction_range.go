@@ -71,15 +71,6 @@ func (rs *rangeResultSet) Object() coordinator.Object {
 	return rs.obj
 }
 
-// Objects returns all objects in the resultset.
-func (rs *rangeResultSet) Objects() []coordinator.Object {
-	objs := []coordinator.Object{}
-	for rs.Next() {
-		objs = append(objs, rs.Object())
-	}
-	return objs
-}
-
 // GetRange gets the result set for the specified key.
 func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
 	keyBytes, err := txn.KeyCoder.EncodeKey(key)

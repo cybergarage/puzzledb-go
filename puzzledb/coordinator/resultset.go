@@ -20,6 +20,4 @@ type ResultSet interface {
 	Next() bool
 	// Object returns an object in the current position.
 	Object() Object
-	// Object returns all objects in the result set.
-	Objects() []Object
 }
