@@ -16,6 +16,7 @@ package document
 
 import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
+	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -62,9 +63,38 @@ func (doc *Store) dumpDatabase(ctx context.Context, db store.Database) ([]string
 	if err != nil {
 		return allLines, err
 	}
-	_, err = txn.ListCollections(ctx)
+
+	defer func() {
+		txn.Commit(ctx)
+	}()
+
+	cols, err := txn.ListCollections(ctx)
 	if err != nil {
 		return allLines, err
+	}
+	for _, col := range cols {
+		lines, err := doc.dumpCollection(ctx, db, col, txn)
+		if err != nil {
+			return allLines, err
+		}
+		allLines = append(allLines, lines...)
+	}
+	return allLines, nil
+}
+
+func (doc *Store) dumpCollection(ctx context.Context, db store.Database, col store.Collection, txn store.Transaction) ([]string, error) {
+	allLines := []string{}
+	key := document.NewKeyWith(db.Name(), col.Name())
+	rs, err := txn.FindObjects(ctx, key)
+	if err != nil {
+		return allLines, err
+	}
+	for rs.Next() {
+		// rs.Object()
+		// key := rs.Key()
+		// obj := rs.Object()
+		// line := fmt.Sprintf("[%s]: %s", key, obj)
+		// allLines = append(allLines, line)
 	}
 	return allLines, nil
 }
