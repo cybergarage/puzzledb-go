@@ -47,7 +47,11 @@ func NewResultSetFrom(storeDB store.Database, storeCol store.Collection, storeRs
 
 // Row returns the current row.
 func (rs *resultSet) Row() (resultset.Row, error) {
-	row, err := NewRowFromObject(rs.schema, rs.storeRs.Object())
+	rsDoc, err := rs.storeRs.Document()
+	if err != nil {
+		return nil, err
+	}
+	row, err := NewRowFromObject(rs.schema, rsDoc.Object())
 	if err != nil {
 		return nil, err
 	}
