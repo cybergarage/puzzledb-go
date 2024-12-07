@@ -24,7 +24,7 @@ import (
 
 type rangeResultSet struct {
 	fdb.RangeResult
-	obj *kv.Object
+	obj kv.Object
 	*fdb.RangeIterator
 	document.KeyCoder
 	offset uint
@@ -72,14 +72,11 @@ func (rs *rangeResultSet) Next() bool {
 	if err != nil {
 		return false
 	}
-	rs.obj = &kv.Object{
-		Key:   key,
-		Value: irs.Value,
-	}
+	rs.obj = kv.NewObject(key, irs.Value)
 	return true
 }
 
-func (rs *rangeResultSet) Object() *kv.Object {
+func (rs *rangeResultSet) Object() kv.Object {
 	return rs.obj
 }
 

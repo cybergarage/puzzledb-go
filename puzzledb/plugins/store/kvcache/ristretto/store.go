@@ -90,14 +90,14 @@ func (store *Store) Transact(write bool) (kv.Transaction, error) {
 }
 
 // SetCache sets a cache for the specified key.
-func (store *Store) SetCache(obj *kv.Object) error {
-	key := obj.Key
+func (store *Store) SetCache(obj kv.Object) error {
+	key := obj.Key()
 	b, err := store.EncodeKey(key)
 	if err != nil {
 		return err
 	}
-	if !store.Cache.Set(b, obj.Value, 0) {
-		return kvcache.NewErrSetCache(obj.Key)
+	if !store.Cache.Set(b, obj.Value(), 0) {
+		return kvcache.NewErrSetCache(key)
 	}
 	return nil
 }

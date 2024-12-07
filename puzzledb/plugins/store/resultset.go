@@ -42,7 +42,7 @@ func (rs *resultSet) Next() bool {
 		return false
 	}
 	kvObj := rs.kvRs.Object()
-	obj, err := rs.decoder.DecodeDocument(bytes.NewReader(kvObj.Value))
+	obj, err := rs.decoder.DecodeDocument(bytes.NewReader(kvObj.Value()))
 	if err != nil {
 		return false
 	}

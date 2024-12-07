@@ -118,11 +118,8 @@ func (s *Store) CreateDatabase(ctx context.Context, name string) error {
 		return err
 	}
 
-	kvObj := kv.Object{
-		Key:   kvDBKey,
-		Value: objBytes.Bytes(),
-	}
-	err = txn.Set(&kvObj)
+	kvObj := kv.NewObject(kvDBKey, objBytes.Bytes())
+	err = txn.Set(kvObj)
 	if err != nil {
 		if err := txn.Cancel(); err != nil {
 			return err
@@ -166,7 +163,7 @@ func (s *Store) GetDatabase(ctx context.Context, name string) (store.Database, e
 		return nil, err
 	}
 
-	dbOptsObj, err := s.DecodeDocument(bytes.NewReader(kvDBObj.Value))
+	dbOptsObj, err := s.DecodeDocument(bytes.NewReader(kvDBObj.Value()))
 	if err != nil {
 		return nil, err
 	}
@@ -285,7 +282,7 @@ func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 	dbs := make([]store.Database, 0)
 	for kvRs.Next() {
 		kvObj := kvRs.Object()
-		kvKeys := kvObj.Key.Elements()
+		kvKeys := kvObj.Key().Elements()
 		kvKeyLen := len(kvKeys)
 		if kvKeyLen == 0 {
 			continue
@@ -296,7 +293,7 @@ func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 			continue
 		}
 
-		dbOptsObj, err := s.DecodeDocument(bytes.NewReader(kvObj.Value))
+		dbOptsObj, err := s.DecodeDocument(bytes.NewReader(kvObj.Value()))
 		if err != nil {
 			return nil, err
 		}

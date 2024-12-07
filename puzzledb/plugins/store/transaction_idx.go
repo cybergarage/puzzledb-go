@@ -32,11 +32,8 @@ func (txn *transaction) InsertIndex(ctx context.Context, idxKey store.Key, docKe
 		return err
 	}
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
-	kvObj := kv.Object{
-		Key:   kvIdxKey,
-		Value: kvDocKeyBytes,
-	}
-	return txn.kv.Set(&kvObj)
+	kvObj := kv.NewObject(kvIdxKey, kvDocKeyBytes)
+	return txn.kv.Set(kvObj)
 }
 
 // RemoveIndex removes the specified secondary index.
