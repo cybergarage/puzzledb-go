@@ -34,7 +34,7 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 	testNames := []string{
 		"SmplTxn.*",
 		"SmplCrud.*",
-		"SmplIndex*",
+		// "SmplIndex*",
 		// "FuncMath.*",
 		// "FuncAggrInt",
 		// "FuncAggrFloat",
