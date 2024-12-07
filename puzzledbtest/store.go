@@ -15,18 +15,21 @@
 package puzzledbtest
 
 import (
+	"bytes"
+	"fmt"
 	"strings"
 
+	dockv "github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
-	"github.com/cybergarage/puzzledb-go/puzzledb/util"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
-// Store represents a store.
+// Store represents a document store.
 type Store struct {
 	store.Service
 }
 
-// NewStoreWith creates a new store with the given service.
+// NewStoreWith creates a new store with the given object.
 func NewStoreWith(service store.Service) *Store {
 	return &Store{
 		Service: service,
@@ -34,19 +37,77 @@ func NewStoreWith(service store.Service) *Store {
 }
 
 // Dump returns a string representation of the store.
-func (store *Store) Dump() []string {
-	dumpStore, err := util.NewStoreWith(store.Service)
-	if err != nil {
-		return []string{}
+func (s *Store) Dump() ([]string, error) {
+	lines := []string{}
+
+	docStore, ok := s.Service.(*store.Store)
+	if !ok {
+		return lines, fmt.Errorf("invalid store")
 	}
-	lines, err := dumpStore.Dump()
+
+	kvStore := docStore.KvStore()
+	tx, err := kvStore.Transact(false)
 	if err != nil {
-		return []string{}
+		return lines, err
 	}
-	return lines
+
+	keys := []kv.Key{
+		kv.NewKeyWith(kv.DatabaseKeyHeader, kv.Key{}),
+		kv.NewKeyWith(kv.CollectionKeyHeader, kv.Key{}),
+		kv.NewKeyWith(kv.PrimaryIndexHeader, kv.Key{}),
+		kv.NewKeyWith(kv.SecondaryIndexHeader, kv.Key{}),
+		kv.NewKeyWith(kv.DocumentKeyHeader, kv.Key{}),
+	}
+
+	for _, key := range keys {
+		rs, err := tx.GetRange(key)
+		if err != nil {
+			continue
+		}
+		for rs.Next() {
+			obj, err := rs.Object()
+			if err != nil {
+				continue
+			}
+			keys := obj.Key().Elements()
+			keyHeaderBytes, ok := keys[0].([]byte)
+			if !ok {
+				lines = append(lines, fmt.Sprintf("%v: %v", keys[1:], obj.Value()))
+			}
+			keyHeader := dockv.NewKeyHeaderFrom(keyHeaderBytes)
+
+			switch keyHeader.Type() {
+			case dockv.DatabaseObject, dockv.CollectionObject, dockv.DocumentObject:
+				r := bytes.NewReader(obj.Value())
+				val, err := docStore.DecodeDocument(r)
+				if err != nil {
+					lines = append(lines, fmt.Sprintf("%v %v: %v", keyHeader, keys[1:], obj.Value()))
+					continue
+				}
+				lines = append(lines, fmt.Sprintf("%v %v: %v", keyHeader, keys[1:], val))
+			case dockv.IndexObject:
+				idxKeys, err := docStore.DecodeKey(obj.Value())
+				if err != nil {
+					lines = append(lines, fmt.Sprintf("%v %v: %v", keyHeader, keys[1:], obj.Value()))
+					continue
+				}
+				idxKeyHederBytes, ok := idxKeys[0].([]byte)
+				if !ok {
+					lines = append(lines, fmt.Sprintf("%v %v: %v", keyHeader, keys[1:], idxKeys))
+				}
+				idxKeyHeder := dockv.NewKeyHeaderFrom(idxKeyHederBytes)
+				lines = append(lines, fmt.Sprintf("%v %v: %v %v", keyHeader, keys[1:], idxKeyHeder, idxKeys[1:]))
+			}
+		}
+	}
+	return lines, tx.Commit()
 }
 
 // String returns a string representation of the store.
-func (store *Store) String() string {
-	return strings.Join(store.Dump(), "\n")
+func (s *Store) String() string {
+	lines, err := s.Dump()
+	if err != nil {
+		return ""
+	}
+	return strings.Join(lines, "\n")
 }
