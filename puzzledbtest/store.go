@@ -15,92 +15,38 @@
 package puzzledbtest
 
 import (
-	"bytes"
-	"fmt"
+	"strings"
 
-	dockv "github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
-	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
+	"github.com/cybergarage/puzzledb-go/puzzledb/util"
 )
 
+// Store represents a store.
 type Store struct {
 	store.Service
 }
 
+// NewStoreWith creates a new store with the given service.
 func NewStoreWith(service store.Service) *Store {
 	return &Store{
 		Service: service,
 	}
 }
 
-func (s *Store) String() string {
-	out := ""
-
-	docStore, ok := s.Service.(*store.Store)
-	if !ok {
-		return out
-	}
-
-	kvStore := docStore.KvStore()
-	tx, err := kvStore.Transact(false)
+// Dump returns a string representation of the store.
+func (store *Store) Dump() []string {
+	dumpStore, err := util.NewStoreWith(store.Service)
 	if err != nil {
-		return out
+		return []string{}
 	}
-
-	keys := []kv.Key{
-		kv.NewKeyWith(kv.DatabaseKeyHeader, kv.Key{}),
-		kv.NewKeyWith(kv.CollectionKeyHeader, kv.Key{}),
-		kv.NewKeyWith(kv.PrimaryIndexHeader, kv.Key{}),
-		kv.NewKeyWith(kv.SecondaryIndexHeader, kv.Key{}),
-		kv.NewKeyWith(kv.DocumentKeyHeader, kv.Key{}),
-	}
-
-	for _, key := range keys {
-		rs, err := tx.GetRange(key)
-		if err != nil {
-			continue
-		}
-		for rs.Next() {
-			obj, err := rs.Object()
-			if err != nil {
-				continue
-			}
-			keys := obj.Key().Elements()
-			keyHeaderBytes, ok := keys[0].([]byte)
-			if !ok {
-				out += fmt.Sprintf("%v: %v\n", keys[1:], obj.Value())
-			}
-			keyHeader := dockv.NewKeyHeaderFrom(keyHeaderBytes)
-
-			switch keyHeader.Type() {
-			case dockv.DatabaseObject, dockv.CollectionObject, dockv.DocumentObject:
-				r := bytes.NewReader(obj.Value())
-				val, err := docStore.DecodeDocument(r)
-				if err != nil {
-					out += fmt.Sprintf("%v %v: %v\n", keyHeader, keys[1:], obj.Value())
-					continue
-				}
-				out += fmt.Sprintf("%v %v: %v\n", keyHeader, keys[1:], val)
-			case dockv.IndexObject:
-				idxKeys, err := docStore.DecodeKey(obj.Value())
-				if err != nil {
-					out += fmt.Sprintf("%v %v: %v\n", keyHeader, keys[1:], obj.Value())
-					continue
-				}
-				idxKeyHederBytes, ok := idxKeys[0].([]byte)
-				if !ok {
-					out += fmt.Sprintf("%v %v: %v\n", keyHeader, keys[1:], idxKeys)
-				}
-				idxKeyHeder := dockv.NewKeyHeaderFrom(idxKeyHederBytes)
-				out += fmt.Sprintf("%v %v: %v %v\n", keyHeader, keys[1:], idxKeyHeder, idxKeys[1:])
-			}
-		}
-	}
-
-	err = tx.Commit()
+	lines, err := dumpStore.Dump()
 	if err != nil {
-		return out
+		return []string{}
 	}
+	return lines
+}
 
-	return out
+// String returns a string representation of the store.
+func (store *Store) String() string {
+	return strings.Join(store.Dump(), "\n")
 }
