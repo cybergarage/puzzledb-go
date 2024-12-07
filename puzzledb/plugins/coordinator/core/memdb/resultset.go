@@ -78,12 +78,3 @@ func (rs *resultSet) Next() bool {
 func (rs *resultSet) Object() coordinator.Object {
 	return rs.obj
 }
-
-// Objects returns all objects in the resultset.
-func (rs *resultSet) Objects() []coordinator.Object {
-	objs := []coordinator.Object{}
-	for rs.Next() {
-		objs = append(objs, rs.Object())
-	}
-	return objs
-}
