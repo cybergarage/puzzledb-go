@@ -21,3 +21,5 @@ The key-value store is a collection of key-value records, where each record is a
 |====
 include::csv/kv-store-category.csv[]
 |====
+
+The combination of object and index element name and value is repeated by the index format.
