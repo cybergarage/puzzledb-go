@@ -27,7 +27,7 @@ func NewDocumentKeyForSchema(dbName string, schema document.Schema, colName stri
 	if err != nil {
 		return nil, err
 	}
-	return document.NewKeyWith(dbName, schema.Name(), keyVal), nil
+	return document.NewKeyWith(dbName, schema.Name(), colName, keyVal), nil
 }
 
 // NewDocumentKeyFromIndex returns a key for the specified index.
@@ -41,6 +41,7 @@ func NewDocumentKeyFromIndex(dbName string, schema document.Schema, idx document
 		if !ok {
 			return nil, newErrObjectInvalid(objMap)
 		}
+		objKey = append(objKey, name)
 		objKey = append(objKey, v)
 	}
 	return objKey, nil
@@ -71,6 +72,7 @@ func NewDocumentKeyFromObject(dbName string, schema document.Schema, obj documen
 		}
 		prIdx = firstElemIdx
 	}
+
 	return NewDocumentKeyFromIndex(dbName, schema, prIdx, obj)
 }
 
