@@ -14,8 +14,8 @@
 
 package coordinator
 
-// ReadAll reads all objects from the result set.
-func ReadAll(rs ResultSet) ([]Object, error) {
+// ReadAllObjects reads all objects from the result set.
+func ReadAllObjects(rs ResultSet) ([]Object, error) {
 	objs := []Object{}
 	for rs.Next() {
 		objs = append(objs, rs.Object())
