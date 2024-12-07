@@ -238,19 +238,21 @@ The key header begins with a 1-byte identifier for the key type, enabling key ty
 
 The key-value store is a collection of key-value records, where each record is a key-value pair, consisting of a header as the key. The key-value store supports the following categories of key-value records:
 
-<table style="width:100%;">
+<table>
 <colgroup>
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: left;">Category</th>
 <th style="text-align: left;">Key Order</th>
+<th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
@@ -264,12 +266,14 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"><p>1</p></td>
 <td style="text-align: left;"><p>2</p></td>
 <td style="text-align: left;"><p>3</p></td>
+<td style="text-align: left;"><p>4</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Database</p></td>
 <td style="text-align: left;"><p>Header (D)</p></td>
-<td style="text-align: left;"><p>Database</p></td>
+<td style="text-align: left;"><p>Database Name</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Options)</p></td>
@@ -277,26 +281,29 @@ The key-value store is a collection of key-value records, where each record is a
 <tr>
 <td style="text-align: left;"><p>Collection</p></td>
 <td style="text-align: left;"><p>Header (C)</p></td>
-<td style="text-align: left;"><p>Database</p></td>
-<td style="text-align: left;"><p>Collection</p></td>
+<td style="text-align: left;"><p>Database Name</p></td>
+<td style="text-align: left;"><p>Collection Name</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Schema)</p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Object</p></td>
 <td style="text-align: left;"><p>Header (O)</p></td>
-<td style="text-align: left;"><p>Database</p></td>
-<td style="text-align: left;"><p>Collection</p></td>
-<td style="text-align: left;"><p>Element</p></td>
+<td style="text-align: left;"><p>Database Name</p></td>
+<td style="text-align: left;"><p>Collection Name</p></td>
+<td style="text-align: left;"><p>Element Name</p></td>
+<td style="text-align: left;"><p>Element Value</p></td>
 <td style="text-align: left;"><p>CBOR (Object)</p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Index</p></td>
 <td style="text-align: left;"><p>Header (I)</p></td>
-<td style="text-align: left;"><p>Database</p></td>
-<td style="text-align: left;"><p>Collection</p></td>
-<td style="text-align: left;"><p>Element</p></td>
-<td style="text-align: left;"><p>Tuple (Key)</p></td>
+<td style="text-align: left;"><p>Database Name</p></td>
+<td style="text-align: left;"><p>Collection Name</p></td>
+<td style="text-align: left;"><p>Element Name</p></td>
+<td style="text-align: left;"><p>Element Value</p></td>
+<td style="text-align: left;"><p>Tuple (Primary Key)</p></td>
 </tr>
 </tbody>
 </table>
