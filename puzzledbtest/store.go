@@ -61,8 +61,10 @@ func (s *Store) String() string {
 			continue
 		}
 		for rs.Next() {
-			obj := rs.Object()
-
+			obj, err := rs.Object()
+			if err != nil {
+				continue
+			}
 			keys := obj.Key().Elements()
 			keyHeaderBytes, ok := keys[0].([]byte)
 			if !ok {

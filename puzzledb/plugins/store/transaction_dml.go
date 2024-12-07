@@ -51,7 +51,10 @@ func (txn *transaction) ListCollections(ctx context.Context) ([]store.Collection
 	}
 	cols := make([]store.Collection, 0)
 	for rs.Next() {
-		kvObj := rs.Object()
+		kvObj, err := rs.Object()
+		if err != nil {
+			return nil, err
+		}
 		obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value()))
 		if err != nil {
 			return nil, err
@@ -94,7 +97,10 @@ func (txn *transaction) GetCollection(ctx context.Context, name string) (store.C
 	if !kvRs.Next() {
 		return nil, store.NewErrSchemaNotExist(name)
 	}
-	kvObj := kvRs.Object()
+	kvObj, err := kvRs.Object()
+	if err != nil {
+		return nil, err
+	}
 	obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value()))
 	if err != nil {
 		return nil, err

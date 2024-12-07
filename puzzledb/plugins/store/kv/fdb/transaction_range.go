@@ -43,6 +43,7 @@ func newRangeResultSetWith(coder document.KeyCoder, rs fdb.RangeResult, offset u
 		obj:           nil}
 }
 
+// Next moves the cursor forward next object from its current position.
 func (rs *rangeResultSet) Next() bool {
 	if kv.NoLimit < rs.limit && uint(rs.limit) <= rs.nRead {
 		return false
@@ -76,8 +77,9 @@ func (rs *rangeResultSet) Next() bool {
 	return true
 }
 
-func (rs *rangeResultSet) Object() kv.Object {
-	return rs.obj
+// Object returns the current object in the result set.
+func (rs *rangeResultSet) Object() (kv.Object, error) {
+	return rs.obj, nil
 }
 
 // GetRange returns a result set of the specified key.

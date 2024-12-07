@@ -74,6 +74,6 @@ func (rs *resultSet) Next() bool {
 }
 
 // Object returns an object in the current position.
-func (rs *resultSet) Object() kv.Object {
-	return rs.obj
+func (rs *resultSet) Object() (kv.Object, error) {
+	return rs.obj, nil
 }

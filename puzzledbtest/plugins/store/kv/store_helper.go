@@ -133,7 +133,14 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Errorf("key (%v) is not found", key)
 			return
 		}
-		obj := rs.Object()
+
+		obj, err := rs.Object()
+		if err != nil {
+			cancel(t, txn)
+			t.Error(err)
+			return
+		}
+
 		if !bytes.Equal(obj.Value(), vals[n]) {
 			cancel(t, txn)
 			t.Errorf("%s != %s", obj.Value(), vals[n])
@@ -178,7 +185,13 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 				t.Errorf("key (%v) object is not found", keys[n])
 				return
 			}
-			obj := rs.Object()
+
+			obj, err := rs.Object()
+			if err != nil {
+				cancel(t, txn)
+				t.Error(err)
+				return
+			}
 
 			idx := n
 			if orderOpt.Order == kv.OrderDesc {
@@ -227,7 +240,13 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 					t.Errorf("key (%v) object is not found", keys[n])
 					return
 				}
-				obj := rs.Object()
+
+				obj, err := rs.Object()
+				if err != nil {
+					cancel(t, txn)
+					t.Error(err)
+					return
+				}
 
 				idx := n
 				if orderOpt.Order == kv.OrderDesc {
@@ -283,7 +302,13 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 					t.Errorf("key (%v) object is not found", keys[n])
 					return
 				}
-				obj := rs.Object()
+
+				obj, err := rs.Object()
+				if err != nil {
+					cancel(t, txn)
+					t.Error(err)
+					return
+				}
 
 				idx := n + offset
 				if orderOpt.Order == kv.OrderDesc {
@@ -383,7 +408,12 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Errorf("key (%v) is not found", key)
 			return
 		}
-		obj := rs.Object()
+		obj, err := rs.Object()
+		if err != nil {
+			cancel(t, txn)
+			t.Error(err)
+			return
+		}
 		if !bytes.Equal(obj.Value(), vals[n]) {
 			cancel(t, txn)
 			t.Errorf("%s != %s", obj.Value(), vals[n])

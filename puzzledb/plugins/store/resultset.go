@@ -24,14 +24,12 @@ import (
 
 type resultSet struct {
 	kvRs    kv.ResultSet
-	doc     store.Document
 	decoder document.Decoder
 }
 
 func newResultSet(decoder document.Decoder, rs kv.ResultSet) store.ResultSet {
 	return &resultSet{
 		kvRs:    rs,
-		doc:     nil,
 		decoder: decoder,
 	}
 }
@@ -41,16 +39,18 @@ func (rs *resultSet) Next() bool {
 	if !rs.kvRs.Next() {
 		return false
 	}
-	kvObj := rs.kvRs.Object()
-	obj, err := rs.decoder.DecodeDocument(bytes.NewReader(kvObj.Value()))
-	if err != nil {
-		return false
-	}
-	rs.doc = store.NewDocument(kvObj.Key(), obj)
 	return true
 }
 
 // Document returns the current object in the result set.
 func (rs *resultSet) Document() (store.Document, error) {
-	return rs.doc, nil
+	kvObj, err := rs.kvRs.Object()
+	if err != nil {
+		return nil, err
+	}
+	obj, err := rs.decoder.DecodeDocument(bytes.NewReader(kvObj.Value()))
+	if err != nil {
+		return nil, err
+	}
+	return store.NewDocument(kvObj.Key(), obj), nil
 }
