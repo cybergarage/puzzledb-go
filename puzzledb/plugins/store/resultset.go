@@ -54,12 +54,3 @@ func (rs *resultSet) Next() bool {
 func (rs *resultSet) Object() store.Object {
 	return rs.obj
 }
-
-// Objects returns all objects in the resultset.
-func (rs *resultSet) Objects() []store.Object {
-	objs := []store.Object{}
-	for rs.Next() {
-		objs = append(objs, rs.Object())
-	}
-	return objs
-}
