@@ -175,7 +175,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rsObjs, err := store.ReadAll(rs)
+		rsObjs, err := store.ReadAllObjects(rs)
 		if err != nil {
 			t.Error(err)
 			return
@@ -413,7 +413,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rsObjs, err := store.ReadAll(rs)
+		rsObjs, err := store.ReadAllObjects(rs)
 		if err != nil {
 			t.Error(err)
 			return
@@ -468,7 +468,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rsObjs, err := store.ReadAll(rs)
+		rsObjs, err := store.ReadAllObjects(rs)
 		if err != nil {
 			t.Error(err)
 			return

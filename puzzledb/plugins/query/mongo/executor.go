@@ -192,7 +192,7 @@ func (service *Service) findDocumentObjects(ctx context.Context, txn store.Trans
 					if err != nil {
 						return nil, err
 					}
-					objs, err = store.ReadAll(rs)
+					objs, err = store.ReadAllObjects(rs)
 					if err != nil {
 						return nil, err
 					}
@@ -201,7 +201,7 @@ func (service *Service) findDocumentObjects(ctx context.Context, txn store.Trans
 					if err != nil {
 						return nil, err
 					}
-					objs, err = store.ReadAll(rs)
+					objs, err = store.ReadAllObjects(rs)
 					if err != nil {
 						return nil, err
 					}
@@ -216,7 +216,7 @@ func (service *Service) findDocumentObjects(ctx context.Context, txn store.Trans
 		if err != nil {
 			return nil, err
 		}
-		objs, err := store.ReadAll(rs)
+		objs, err := store.ReadAllObjects(rs)
 		if err != nil {
 			return nil, err
 		}

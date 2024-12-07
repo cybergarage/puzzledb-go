@@ -42,7 +42,7 @@ func (txn *Transaction) GetKeyObjects(ctx context.Context, key string) ([]any, e
 	if err != nil {
 		return nil, err
 	}
-	return store.ReadAll(rs)
+	return store.ReadAllObjects(rs)
 }
 
 // GetKeyObject returns the object with the specified key.
@@ -53,7 +53,7 @@ func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, erro
 		return nil, err
 	}
 
-	objs, err := store.ReadAll(rs)
+	objs, err := store.ReadAllObjects(rs)
 	if err != nil {
 		return nil, err
 	}
