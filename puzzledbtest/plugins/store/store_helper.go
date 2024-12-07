@@ -175,7 +175,11 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rsObjs := rs.Objects()
+		rsObjs, err := store.ReadAll(rs)
+		if err != nil {
+			t.Error(err)
+			return
+		}
 		if len(rsObjs) != 1 {
 			cancel(t, txn)
 			t.Errorf("objs != 1 (%d)", len(rsObjs))
@@ -391,7 +395,11 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rsObjs := rs.Objects()
+		rsObjs, err := store.ReadAll(rs)
+		if err != nil {
+			t.Error(err)
+			return
+		}
 		if len(rsObjs) != 1 {
 			cancel(t, txn)
 			t.Errorf("objs != 1 (%d)", len(rsObjs))
@@ -442,7 +450,11 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-		rsObjs := rs.Objects()
+		rsObjs, err := store.ReadAll(rs)
+		if err != nil {
+			t.Error(err)
+			return
+		}
 		if len(rsObjs) != 0 {
 			cancel(t, txn)
 			t.Errorf("objs != 0 (%d)", len(rsObjs))
