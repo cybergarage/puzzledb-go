@@ -1,6 +1,6 @@
-Category,Key Order,,,,Value
-,0,1,2,3,
-Database,Header (D),Database,-,-,CBOR (Options)
-Collection,Header \(C),Database,Collection,-,CBOR (Schema)
-Object,Header (O),Database,Collection,Element,CBOR (Object)
-Index,Header (I),Database,Collection,Element,Tuple (Key)
+Category,Key Order,,,,,Value
+,0,1,2,3,4,
+Database,Header (D),Database Name,-,-,-,CBOR (Options)
+Collection,Header \(C),Database Name,Collection Name,-,-,CBOR (Schema)
+Object,Header (O),Database Name,Collection Name,Element Name,Element Value,CBOR (Object)
+Index,Header (I),Database Name,Collection Name,Element Name,Element Value,Tuple (Primary Key)
