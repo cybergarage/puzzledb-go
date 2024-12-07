@@ -42,7 +42,7 @@ func (txn *Transaction) GetKeyObjects(ctx context.Context, key string) ([]any, e
 	if err != nil {
 		return nil, err
 	}
-	return rs.Objects(), nil
+	return store.ReadAll(rs)
 }
 
 // GetKeyObject returns the object with the specified key.
@@ -53,7 +53,10 @@ func (txn *Transaction) GetKeyObject(ctx context.Context, key string) (any, erro
 		return nil, err
 	}
 
-	objs := rs.Objects()
+	objs, err := store.ReadAll(rs)
+	if err != nil {
+		return nil, err
+	}
 	if len(objs) == 0 {
 		return nil, document.NewErrObjectNotExist(docKey)
 	}

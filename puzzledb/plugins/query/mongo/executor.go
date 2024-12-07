@@ -192,13 +192,19 @@ func (service *Service) findDocumentObjects(ctx context.Context, txn store.Trans
 					if err != nil {
 						return nil, err
 					}
-					objs = rs.Objects()
+					objs, err = store.ReadAll(rs)
+					if err != nil {
+						return nil, err
+					}
 				} else {
 					rs, err := txn.FindObjectsByIndex(ctx, idxKey)
 					if err != nil {
 						return nil, err
 					}
-					objs = rs.Objects()
+					objs, err = store.ReadAll(rs)
+					if err != nil {
+						return nil, err
+					}
 				}
 				matchedDocs = append(matchedDocs, objs...)
 			}
@@ -206,12 +212,14 @@ func (service *Service) findDocumentObjects(ctx context.Context, txn store.Trans
 	} else {
 		// Finds all documents
 		idxKey := service.createDocumentAllKey(txn, q.Database(), q.Collection())
-		var objs []document.Object
 		rs, err := txn.FindObjects(ctx, idxKey)
 		if err != nil {
 			return nil, err
 		}
-		objs = rs.Objects()
+		objs, err := store.ReadAll(rs)
+		if err != nil {
+			return nil, err
+		}
 		matchedDocs = append(matchedDocs, objs...)
 	}
 	return matchedDocs, nil

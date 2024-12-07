@@ -1,4 +1,4 @@
-// Copyright (C) 2022 The PuzzleDB Authors.
+// Copyright (C) 2024 The PuzzleDB Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
 
 package store
 
-// ResultSet represents a result set which includes query execution results.
-type ResultSet interface {
-	// Next moves the cursor forward next object from its current position.
-	Next() bool
-	// Object returns an object in the current position.
-	Object() Object
-	// Object returns all objects in the result set.
-	// Objects() []Object
+// ReadAll reads all objects from the result set.
+func ReadAll(rs ResultSet) ([]Object, error) {
+	objs := []Object{}
+	for rs.Next() {
+		objs = append(objs, rs.Object())
+	}
+	return objs, nil
 }
