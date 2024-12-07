@@ -248,8 +248,11 @@ func (service *Service) DeleteDocument(ctx context.Context, conn Conn, txn store
 		return err
 	}
 	for rs.Next() {
-		docObj := rs.Object()
-		obj, err := document.NewMapObjectFrom(docObj)
+		rsDoc, err := rs.Document()
+		if err != nil {
+			return err
+		}
+		obj, err := document.NewMapObjectFrom(rsDoc.Object())
 		if err != nil {
 			return err
 		}

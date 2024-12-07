@@ -549,8 +549,11 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 
 	nUpdated := 0
 	for rs.Next() {
-		docObj := rs.Object()
-		err := service.UpdateObject(ctx, conn, txn, col, docObj, updateCols)
+		rsDoc, err := rs.Document()
+		if err != nil {
+			return nil, err
+		}
+		err = service.UpdateObject(ctx, conn, txn, col, rsDoc.Object(), updateCols)
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
@@ -629,8 +632,11 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
 		for rs.Next() {
-			docObj := rs.Object()
-			obj, err := document.NewMapObjectFrom(docObj)
+			rsDoc, err := rs.Document()
+			if err != nil {
+				return nil, err
+			}
+			obj, err := document.NewMapObjectFrom(rsDoc.Object())
 			if err != nil {
 				return nil, err
 			}

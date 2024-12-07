@@ -14,10 +14,10 @@
 
 package store
 
-// ResultSet represents a result set which includes query execution results.
-type ResultSet interface {
-	// Next moves the cursor forward next object from its current position.
-	Next() bool
-	// Document returns a document in the current cursor.
-	Document() (Document, error)
+// Document represents a store document.
+type Document interface {
+	// Key returns a key of the document.
+	Key() Key
+	// Object returns a object of the document.
+	Object() Object
 }

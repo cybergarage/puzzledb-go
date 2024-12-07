@@ -14,10 +14,26 @@
 
 package store
 
-// ResultSet represents a result set which includes query execution results.
-type ResultSet interface {
-	// Next moves the cursor forward next object from its current position.
-	Next() bool
-	// Document returns a document in the current cursor.
-	Document() (Document, error)
+type doc struct {
+	key Key
+	obj Object
+}
+
+// NewDocument returns a new document.
+func NewDocument(key Key, obj Object) Document {
+	doc := &doc{
+		key: key,
+		obj: obj,
+	}
+	return doc
+}
+
+// Key returns a key of the document.
+func (doc *doc) Key() Key {
+	return doc.key
+}
+
+// Object returns a object of the document.
+func (doc *doc) Object() Object {
+	return doc.obj
 }

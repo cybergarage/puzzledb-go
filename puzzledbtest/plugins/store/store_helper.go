@@ -224,13 +224,19 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				t.Errorf("key (%v) object is not found", keys[n])
 				return
 			}
-			obj := rs.Object()
+			doc, err := rs.Document()
+			if err != nil {
+				cancel(t, txn)
+				t.Error(err)
+				return
+			}
 
 			idx := n
 			if orderOpt.Order == store.OrderDesc {
 				idx = len(keys) - n - 1
 			}
 
+			obj := doc.Object()
 			if err := deepEqual(obj, objs[idx]); err != nil {
 				cancel(t, txn)
 				t.Error(err)
@@ -267,13 +273,19 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 					t.Errorf("key (%v) object is not found", keys[n])
 					return
 				}
-				obj := rs.Object()
+				doc, err := rs.Document()
+				if err != nil {
+					cancel(t, txn)
+					t.Error(err)
+					return
+				}
 
 				idx := n
 				if orderOpt.Order == store.OrderDesc {
 					idx = len(keys) - n - 1
 				}
 
+				obj := doc.Object()
 				if err := deepEqual(obj, objs[idx]); err != nil {
 					cancel(t, txn)
 					t.Error(err)
@@ -317,13 +329,19 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 					t.Errorf("key (%v) object is not found", keys[n])
 					return
 				}
-				obj := rs.Object()
+				doc, err := rs.Document()
+				if err != nil {
+					cancel(t, txn)
+					t.Error(err)
+					return
+				}
 
 				idx := n + offset
 				if orderOpt.Order == store.OrderDesc {
 					idx = len(keys) - n - 1 - offset
 				}
 
+				obj := doc.Object()
 				if err := deepEqual(obj, objs[idx]); err != nil {
 					cancel(t, txn)
 					// FIXME: This test is failed when order is desc.

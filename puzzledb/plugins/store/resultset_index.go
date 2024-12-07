@@ -26,7 +26,7 @@ type indexResultSet struct {
 	txn     *transaction
 	kvRs    kv.ResultSet
 	kvIdxRs kv.ResultSet
-	obj     store.Object
+	doc     store.Document
 	document.KeyDecoder
 	document.Decoder
 }
@@ -36,7 +36,7 @@ func newIndexResultSet(txn *transaction, keyDecoder document.KeyDecoder, docDeco
 		txn:        txn,
 		kvRs:       rs,
 		kvIdxRs:    nil,
-		obj:        nil,
+		doc:        nil,
 		KeyDecoder: keyDecoder,
 		Decoder:    docDecoder,
 	}
@@ -86,11 +86,11 @@ func (rs *indexResultSet) nextIndex() bool {
 	if err != nil {
 		return false
 	}
-	rs.obj = obj
+	rs.doc = store.NewDocument(kvObj.Key(), obj)
 	return true
 }
 
-// Object returns an object in the current position.
-func (rs *indexResultSet) Object() store.Object {
-	return rs.obj
+// Document returns the current object in the result set.
+func (rs *indexResultSet) Document() (store.Document, error) {
+	return rs.doc, nil
 }
