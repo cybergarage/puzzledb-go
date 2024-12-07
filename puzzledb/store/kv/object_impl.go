@@ -14,10 +14,26 @@
 
 package kv
 
-// ResultSet represents a result set which includes query execution results.
-type ResultSet interface {
-	// Next moves the cursor forward next object from its current position.
-	Next() bool
-	// Object returns an object in the current position.
-	Object() Object
+type object struct {
+	key   Key
+	value []byte
+}
+
+// NewObject returns a new object.
+func NewObject(key Key, value []byte) Object {
+	obj := &object{
+		key:   key,
+		value: value,
+	}
+	return obj
+}
+
+// Key returns a key of the object.
+func (obj *object) Key() Key {
+	return obj.key
+}
+
+// Value returns a value of the object.
+func (obj *object) Value() []byte {
+	return obj.value
 }

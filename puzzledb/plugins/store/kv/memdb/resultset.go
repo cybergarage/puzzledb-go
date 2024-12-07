@@ -24,7 +24,7 @@ import (
 type resultSet struct {
 	document.KeyCoder
 	it     memdb.ResultIterator
-	obj    *kv.Object
+	obj    kv.Object
 	offset uint
 	limit  int
 	nRead  uint
@@ -69,14 +69,11 @@ func (rs *resultSet) Next() bool {
 	if err != nil {
 		return false
 	}
-	rs.obj = &kv.Object{
-		Key:   key,
-		Value: doc.Value,
-	}
+	rs.obj = kv.NewObject(key, doc.Value)
 	return true
 }
 
 // Object returns an object in the current position.
-func (rs *resultSet) Object() *kv.Object {
+func (rs *resultSet) Object() kv.Object {
 	return rs.obj
 }

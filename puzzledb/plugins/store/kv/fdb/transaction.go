@@ -36,19 +36,19 @@ func newTransaction(txn fdb.Transaction, coder document.KeyCoder) kv.Transaction
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
-func (txn *transaction) Set(obj *kv.Object) error {
+func (txn *transaction) Set(obj kv.Object) error {
 	now := time.Now()
-	keyBytes, err := txn.EncodeKey(obj.Key)
+	keyBytes, err := txn.EncodeKey(obj.Key())
 	if err != nil {
 		return err
 	}
-	txn.Transaction.Set(fdb.Key(keyBytes), obj.Value)
+	txn.Transaction.Set(fdb.Key(keyBytes), obj.Value())
 	mWriteLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return nil
 }
 
 // Get returns a key-value object of the specified key.
-func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
+func (txn *transaction) Get(key kv.Key) (kv.Object, error) {
 	now := time.Now()
 	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
@@ -64,10 +64,7 @@ func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
 		return nil, kv.NewErrObjectNotExist(key)
 	}
 	mReadLatency.Observe(float64(time.Since(now).Milliseconds()))
-	return &kv.Object{
-		Key:   key,
-		Value: val,
-	}, nil
+	return kv.NewObject(key, val), nil
 }
 
 // Remove removes the specified key-value object.

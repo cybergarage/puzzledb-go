@@ -34,11 +34,8 @@ func (txn *transaction) InsertObject(ctx context.Context, docKey store.Key, obj 
 		return err
 	}
 	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
-	kvObj := kv.Object{
-		Key:   kvDocKey,
-		Value: encObj.Bytes(),
-	}
-	return txn.kv.Set(&kvObj)
+	kvObj := kv.NewObject(kvDocKey, encObj.Bytes())
+	return txn.kv.Set(kvObj)
 }
 
 // FindDocuments returns a result set matching the specified key.
@@ -66,11 +63,8 @@ func (txn *transaction) UpdateObject(ctx context.Context, docKey store.Key, obj 
 		return err
 	}
 	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
-	kvObj := kv.Object{
-		Key:   kvDocKey,
-		Value: encObj.Bytes(),
-	}
-	return txn.kv.Set(&kvObj)
+	kvObj := kv.NewObject(kvDocKey, encObj.Bytes())
+	return txn.kv.Set(kvObj)
 }
 
 // RemoveDocument removes a document object with the specified primary key.

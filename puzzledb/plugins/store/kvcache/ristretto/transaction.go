@@ -31,8 +31,8 @@ func NewTransaction(txn kv.Transaction, store *Store) kv.Transaction {
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
-func (txn *Transaction) Set(obj *kv.Object) error {
-	key := obj.Key
+func (txn *Transaction) Set(obj kv.Object) error {
+	key := obj.Key()
 	if txn.IsRegisteredCacheKey(key) {
 		err := txn.SetCache(obj)
 		if err != nil {
@@ -43,7 +43,7 @@ func (txn *Transaction) Set(obj *kv.Object) error {
 }
 
 // Get returns a key-value object of the specified key.
-func (txn *Transaction) Get(key kv.Key) (*kv.Object, error) {
+func (txn *Transaction) Get(key kv.Key) (kv.Object, error) {
 	if txn.IsRegisteredCacheKey(key) {
 		txn.Store.IncrementRequestCount()
 		mRequestTotal.Inc()

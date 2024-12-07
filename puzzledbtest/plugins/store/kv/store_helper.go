@@ -78,10 +78,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Error(err)
 			return
 		}
-		obj := &kv.Object{
-			Key:   key,
-			Value: vals[n],
-		}
+		obj := kv.NewObject(key, vals[n])
 		if err := txn.Set(obj); err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -107,9 +104,9 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Error(err)
 			return
 		}
-		if !bytes.Equal(obj.Value, vals[n]) {
+		if !bytes.Equal(obj.Value(), vals[n]) {
 			cancel(t, txn)
-			t.Errorf("%s != %s", obj.Value, vals[n])
+			t.Errorf("%s != %s", obj.Value(), vals[n])
 		}
 		if err := txn.Commit(); err != nil {
 			t.Error(err)
@@ -137,9 +134,9 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			return
 		}
 		obj := rs.Object()
-		if !bytes.Equal(obj.Value, vals[n]) {
+		if !bytes.Equal(obj.Value(), vals[n]) {
 			cancel(t, txn)
-			t.Errorf("%s != %s", obj.Value, vals[n])
+			t.Errorf("%s != %s", obj.Value(), vals[n])
 			return
 		}
 		if rs.Next() {
@@ -188,14 +185,14 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 				idx = testKeyCount - n - 1
 			}
 
-			if !obj.Key.Equals(keys[idx]) {
+			if !obj.Key().Equals(keys[idx]) {
 				cancel(t, txn)
 				t.Errorf("%s != %s", obj.Key, keys[idx])
 				return
 			}
-			if !bytes.Equal(obj.Value, vals[idx]) {
+			if !bytes.Equal(obj.Value(), vals[idx]) {
 				cancel(t, txn)
-				t.Errorf("%s != %s", obj.Value, vals[idx])
+				t.Errorf("%s != %s", obj.Value(), vals[idx])
 				return
 			}
 		}
@@ -237,14 +234,14 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 					idx = testKeyCount - n - 1
 				}
 
-				if !obj.Key.Equals(keys[idx]) {
+				if !obj.Key().Equals(keys[idx]) {
 					cancel(t, txn)
 					t.Errorf("%s != %s", obj.Key, keys[idx])
 					return
 				}
-				if !bytes.Equal(obj.Value, vals[idx]) {
+				if !bytes.Equal(obj.Value(), vals[idx]) {
 					cancel(t, txn)
-					t.Errorf("%s != %s", obj.Value, vals[idx])
+					t.Errorf("%s != %s", obj.Value(), vals[idx])
 					return
 				}
 			}
@@ -293,14 +290,14 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 					idx = testKeyCount - n - 1 - offset
 				}
 
-				if !obj.Key.Equals(keys[idx]) {
+				if !obj.Key().Equals(keys[idx]) {
 					cancel(t, txn)
 					t.Errorf("%s != %s", obj.Key, keys[idx])
 					return
 				}
-				if !bytes.Equal(obj.Value, vals[idx]) {
+				if !bytes.Equal(obj.Value(), vals[idx]) {
 					cancel(t, txn)
-					t.Errorf("%s != %s", obj.Value, vals[idx])
+					t.Errorf("%s != %s", obj.Value(), vals[idx])
 					return
 				}
 			}
@@ -330,10 +327,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Error(err)
 			return
 		}
-		obj := &kv.Object{
-			Key:   key,
-			Value: vals[n],
-		}
+		obj := kv.NewObject(key, vals[n])
 		if err := txn.Set(obj); err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -359,9 +353,9 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Error(err)
 			return
 		}
-		if !bytes.Equal(obj.Value, vals[n]) {
+		if !bytes.Equal(obj.Value(), vals[n]) {
 			cancel(t, txn)
-			t.Errorf("%s != %s", obj.Value, vals[n])
+			t.Errorf("%s != %s", obj.Value(), vals[n])
 			return
 		}
 		if err := txn.Commit(); err != nil {
@@ -390,9 +384,9 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			return
 		}
 		obj := rs.Object()
-		if !bytes.Equal(obj.Value, vals[n]) {
+		if !bytes.Equal(obj.Value(), vals[n]) {
 			cancel(t, txn)
-			t.Errorf("%s != %s", obj.Value, vals[n])
+			t.Errorf("%s != %s", obj.Value(), vals[n])
 			return
 		}
 		if rs.Next() {

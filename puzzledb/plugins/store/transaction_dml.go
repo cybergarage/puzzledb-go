@@ -35,11 +35,8 @@ func (txn *transaction) setCollection(ctx context.Context, col store.Collection)
 	if err != nil {
 		return err
 	}
-	kvObj := kv.Object{
-		Key:   kvSchemaKey,
-		Value: encSchema.Bytes(),
-	}
-	return txn.kv.Set(&kvObj)
+	kvObj := kv.NewObject(kvSchemaKey, encSchema.Bytes())
+	return txn.kv.Set(kvObj)
 }
 
 // ListCollections returns the all collection in the database.
@@ -55,7 +52,7 @@ func (txn *transaction) ListCollections(ctx context.Context) ([]store.Collection
 	cols := make([]store.Collection, 0)
 	for rs.Next() {
 		kvObj := rs.Object()
-		obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value))
+		obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value()))
 		if err != nil {
 			return nil, err
 		}
@@ -98,7 +95,7 @@ func (txn *transaction) GetCollection(ctx context.Context, name string) (store.C
 		return nil, store.NewErrSchemaNotExist(name)
 	}
 	kvObj := kvRs.Object()
-	obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value))
+	obj, err := txn.DecodeDocument(bytes.NewReader(kvObj.Value()))
 	if err != nil {
 		return nil, err
 	}

@@ -14,17 +14,10 @@
 
 package kv
 
-// Object represents a key-value object.
-type Object struct {
-	Key   Key
-	Value []byte
-}
-
-// NewObject returns a new object.
-func NewObject(key Key, value []byte) *Object {
-	obj := &Object{
-		Key:   key,
-		Value: value,
-	}
-	return obj
+// Object reprease a key-value object.
+type Object interface {
+	// Key returns a key of the object.
+	Key() Key
+	// Value returns a value of the object.
+	Value() []byte
 }

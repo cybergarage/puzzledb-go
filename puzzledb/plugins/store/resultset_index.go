@@ -54,7 +54,7 @@ func (rs *indexResultSet) Next() bool {
 		return false
 	}
 	kvIdxObj := rs.kvRs.Object()
-	kvIdx, err := rs.txn.DecodeKey(kvIdxObj.Value)
+	kvIdx, err := rs.txn.DecodeKey(kvIdxObj.Value())
 	if err != nil {
 		return false
 	}
@@ -82,7 +82,7 @@ func (rs *indexResultSet) nextIndex() bool {
 	if kvObj == nil {
 		return false
 	}
-	obj, err := rs.txn.DecodeDocument(bytes.NewReader(kvObj.Value))
+	obj, err := rs.txn.DecodeDocument(bytes.NewReader(kvObj.Value()))
 	if err != nil {
 		return false
 	}

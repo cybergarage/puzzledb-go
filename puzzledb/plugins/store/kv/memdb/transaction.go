@@ -39,22 +39,22 @@ func newTransaction(txn *memdb.Txn, coder document.KeyCoder) *transaction {
 }
 
 // Set stores a key-value object. If the key already holds some value, it is overwritten.
-func (txn *transaction) Set(obj *kv.Object) error {
+func (txn *transaction) Set(obj kv.Object) error {
 	now := time.Now()
-	keyBytes, err := txn.EncodeKey(obj.Key)
+	keyBytes, err := txn.EncodeKey(obj.Key())
 	if err != nil {
 		return err
 	}
 	doc := &Document{
 		Key:   string(keyBytes),
-		Value: obj.Value,
+		Value: obj.Value(),
 	}
 	mWriteLatency.Observe(float64(time.Since(now).Milliseconds()))
 	return txn.Txn.Insert(tableName, doc)
 }
 
 // Get returns a key-value object of the specified key.
-func (txn *transaction) Get(key kv.Key) (*kv.Object, error) {
+func (txn *transaction) Get(key kv.Key) (kv.Object, error) {
 	now := time.Now()
 	keyBytes, err := txn.EncodeKey(key)
 	if err != nil {
@@ -117,13 +117,13 @@ func (txn *transaction) Remove(key kv.Key) error {
 	if err != nil {
 		return err
 	}
-	keyBytes, err := txn.EncodeKey(obj.Key)
+	keyBytes, err := txn.EncodeKey(obj.Key())
 	if err != nil {
 		return err
 	}
 	doc := &Document{
 		Key:   string(keyBytes),
-		Value: obj.Value,
+		Value: obj.Value(),
 	}
 	err = txn.Txn.Delete(tableName, doc)
 	if err != nil {
