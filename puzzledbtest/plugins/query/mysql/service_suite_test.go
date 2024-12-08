@@ -31,15 +31,31 @@ func TestMySQLTestSuite(t *testing.T) {
 
 	client := sqltest.NewMySQLClient()
 
-	testNames := []string{
+	testRegexes := []string{
 		"SmplTxn.*",
 		// "SmplIndex*",
 		"SmplCrud.*",
 		"YcsbWorkload",
 	}
 
-	if err := sqltest.RunEmbedSuites(t, client, testNames...); err != nil {
-		t.Logf("\n%s", server.Store().String())
+	var databaseDump string
+	dumpDatabase := func(*sqltest.Suite, *sqltest.ScenarioTest, error) {
+		databaseDump = server.Store().String()
+	}
+
+	suite, err := sqltest.NewSuiteWith(
+		sqltest.WithSuiteEmbeds(),
+		sqltest.WithSuiteRegexes(testRegexes...),
+		sqltest.WithSuiteClient(client),
+		sqltest.WithSuiteErrorHandler(dumpDatabase),
+	)
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = suite.Test(t)
+	if err != nil {
+		t.Logf("\n%s", databaseDump)
 	}
 
 	err = server.Stop()
