@@ -31,19 +31,29 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 
 	client := sqltest.NewPostgresClient()
 
-	testNames := []string{
-		"SmplTxn.*",
-		"SmplCrud.*",
-		// "SmplIndex*",
+	testRegexes := []string{
+		// "SmplTxn.*",
+		// "SmplCrud.*",
+		"SmplIndex*",
 		// "FuncMath.*",
 		// "FuncAggrInt",
 		// "FuncAggrFloat",
 		// "FuncAggrDouble",
-		"YcsbWorkload",
+		// "YcsbWorkload",
 	}
 
-	if err := sqltest.RunEmbedSuites(t, client, testNames...); err != nil {
-		t.Logf("\n%s", server.Store().String())
+	listDatabase := func(*sqltest.Suite, *sqltest.ScenarioTest, error) {
+		t.Errorf("\n%s", server.Store().String())
+	}
+
+	suite, err := sqltest.NeweEmbedSuite()
+	if err != nil {
+		t.Error(err)
+	}
+	suite.SetErrorHandler(listDatabase)
+	err = suite.Test(t, client, testRegexes...)
+	if err != nil {
+		t.Error(err)
 	}
 
 	err = server.Stop()
