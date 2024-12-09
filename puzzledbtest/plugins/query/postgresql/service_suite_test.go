@@ -35,6 +35,10 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 		"SmplTxn.*",
 		"SmplCrud.*",
 		// "SmplIndex*",
+		"SmplIndexText",
+		// "SmplIndexInt",
+		// "SmplIndexFloat",
+		"SmplIndexDouble",
 		// "FuncMath.*",
 		// "FuncAggrInt",
 		// "FuncAggrFloat",
@@ -43,8 +47,13 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 	}
 
 	var databaseDump string
-	dumpDatabase := func(*sqltest.Suite, *sqltest.ScenarioTest, error) {
+	dumpDatabase := func(*sqltest.Suite, *sqltest.ScenarioRunner, error) {
 		databaseDump = server.Store().String()
+	}
+
+	stepHander := func(scenario *sqltest.Scenario, n int, query string, err error) {
+		t.Logf("[%d]: %s", n, query)
+		t.Logf("\n%s", server.Store().String())
 	}
 
 	suite, err := sqltest.NewSuiteWith(
@@ -52,6 +61,7 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 		sqltest.WithSuiteRegexes(testRegexes...),
 		sqltest.WithSuiteClient(client),
 		sqltest.WithSuiteErrorHandler(dumpDatabase),
+		sqltest.WithSuiteStepHandler(stepHander),
 	)
 	if err != nil {
 		t.Error(err)
