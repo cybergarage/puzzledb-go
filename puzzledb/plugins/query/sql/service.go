@@ -128,7 +128,7 @@ func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, tx
 func (service *Service) InsertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, prKey document.Key) error {
 	insertSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index, prKey document.Key) error {
 		dbName := conn.Database()
-		secKey, err := NewDocumentKeyFromIndex(dbName, schema, idx, obj)
+		secKey, err := NewDocumentKeyFromIndexes(dbName, schema.Name(), obj, idx)
 		if err != nil {
 			return err
 		}
@@ -152,7 +152,7 @@ func (service *Service) InsertSecondaryIndexes(ctx context.Context, conn Conn, t
 func (service *Service) RemoveSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject) error {
 	removeSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index) error {
 		dbName := conn.Database()
-		secKey, err := NewDocumentKeyFromIndex(dbName, schema, idx, obj)
+		secKey, err := NewDocumentKeyFromIndexes(dbName, schema.Name(), obj, idx)
 		if err != nil {
 			return err
 		}

@@ -30,19 +30,21 @@ func NewDocumentKeyForSchema(dbName string, schema document.Schema, colName stri
 	return document.NewKeyWith(dbName, schema.Name(), colName, keyVal), nil
 }
 
-// NewDocumentKeyFromIndex returns a key for the specified index.
-func NewDocumentKeyFromIndex(dbName string, schema document.Schema, idx document.Index, objMap document.MapObject) (document.Key, error) {
+// NewDocumentKeyFromIndexes returns a key for the specified index.
+func NewDocumentKeyFromIndexes(dbName string, colName string, objMap document.MapObject, idxes ...document.Index) (document.Key, error) {
 	objKey := document.NewKey()
 	objKey = append(objKey, dbName)
-	objKey = append(objKey, schema.Name())
-	for _, elem := range idx.Elements() {
-		name := elem.Name()
-		v, ok := objMap[name]
-		if !ok {
-			return nil, newErrObjectInvalid(objMap)
+	objKey = append(objKey, colName)
+	for _, idx := range idxes {
+		for _, elem := range idx.Elements() {
+			name := elem.Name()
+			v, ok := objMap[name]
+			if !ok {
+				return nil, newErrObjectInvalid(objMap)
+			}
+			objKey = append(objKey, name)
+			objKey = append(objKey, v)
 		}
-		objKey = append(objKey, name)
-		objKey = append(objKey, v)
 	}
 	return objKey, nil
 }
@@ -73,7 +75,7 @@ func NewDocumentKeyFromObject(dbName string, schema document.Schema, obj documen
 		prIdx = firstElemIdx
 	}
 
-	return NewDocumentKeyFromIndex(dbName, schema, prIdx, obj)
+	return NewDocumentKeyFromIndexes(dbName, schema.Name(), obj, prIdx)
 }
 
 // NewDocumentKeyFromCond returns a key for the specified condition.
