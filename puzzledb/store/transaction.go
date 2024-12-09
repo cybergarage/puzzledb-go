@@ -59,11 +59,11 @@ type CollectionOperation interface {
 // IndexOperation represents a secondary index operation.
 type IndexOperation interface {
 	// InsertIndex puts a secondary index with the primary key.
-	InsertIndex(ctx context.Context, idxKey Key, key Key) error
+	InsertIndex(ctx context.Context, idxKey Key) error
 	// RemoveIndex removes the specified secondary index.
 	RemoveIndex(ctx context.Context, idxKey Key) error
 	// FindObjectsByIndex returns a result set matching the specified index key.
-	FindObjectsByIndex(ctx context.Context, indexKey Key, opts ...Option) (ResultSet, error)
+	FindObjectsByIndex(ctx context.Context, idxKey Key, opts ...Option) (ResultSet, error)
 	// TruncateIndexes removes all secondary indexes.
 	TruncateIndexes(ctx context.Context) error
 }

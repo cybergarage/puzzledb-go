@@ -38,8 +38,11 @@ func (service *Service) createObjectKey(txn store.Transaction, database string, 
 	return service.createDocumentKey(txn, database, collection, ObjectID, objID)
 }
 
-func (service *Service) createidxKey(txn store.Transaction, database string, collection string, key string, val any) document.Key {
-	return service.createDocumentKey(txn, database, collection, key, val)
+func (service *Service) createidxKey(txn store.Transaction, database string, collection string, idxKey string, idxVal any, prKey any, prVal any) document.Key {
+	if prKey == nil {
+		return document.NewKeyWith(database, collection, idxKey, idxVal)
+	}
+	return document.NewKeyWith(database, collection, idxKey, idxVal, prKey, prVal)
 }
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
@@ -104,7 +107,7 @@ func (service *Service) insertDocument(ctx context.Context, txn store.Transactio
 
 	// Creates the secondary indexes for the all elements
 
-	err = service.insertDocumentIndexes(ctx, txn, q.Database(), q.Collection(), docKey, doc)
+	err = service.insertDocumentIndexes(ctx, txn, q.Database(), q.Collection(), objID, doc)
 	if err != nil {
 		return err
 	}
@@ -112,14 +115,14 @@ func (service *Service) insertDocument(ctx context.Context, txn store.Transactio
 	return err
 }
 
-func (service *Service) insertDocumentIndexes(ctx context.Context, txn store.Transaction, db string, col string, docKey document.Key, v any) error {
+func (service *Service) insertDocumentIndexes(ctx context.Context, txn store.Transaction, db string, col string, docKey any, v any) error {
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for secKey, secVal := range vmap {
 			if secKey == ObjectID {
 				continue
 			}
-			err := service.insertDocumentIndex(ctx, txn, db, col, secKey, secVal, docKey)
+			err := service.insertDocumentIndex(ctx, txn, db, col, secKey, secVal, docKey, v)
 			if err != nil {
 				return err
 			}
@@ -129,9 +132,9 @@ func (service *Service) insertDocumentIndexes(ctx context.Context, txn store.Tra
 	return newErrBSONTypeNotSupported(v)
 }
 
-func (service *Service) insertDocumentIndex(ctx context.Context, txn store.Transaction, db string, col string, secKey string, secVal any, docKey document.Key) error {
-	idxKey := service.createidxKey(txn, db, col, secKey, secVal)
-	return txn.InsertIndex(ctx, idxKey, docKey)
+func (service *Service) insertDocumentIndex(ctx context.Context, txn store.Transaction, db string, col string, secKey string, secVal any, docKey any, docVal any) error {
+	idxKey := service.createidxKey(txn, db, col, secKey, secVal, docKey, docVal)
+	return txn.InsertIndex(ctx, idxKey)
 }
 
 // Find hadles 'find' query of OP_MSG or OP_QUERY.
@@ -335,7 +338,7 @@ func (service *Service) updateDocumentByQuery(ctx context.Context, txn store.Tra
 		if err != nil {
 			return err
 		}
-		err = service.insertDocumentIndexes(ctx, txn, q.Database(), q.Collection(), docKey, updateDoc)
+		err = service.insertDocumentIndexes(ctx, txn, q.Database(), q.Collection(), objID, updateDoc)
 		if err != nil {
 			return err
 		}
@@ -436,7 +439,7 @@ func (service *Service) deleteUpdateDocumentIndexes(ctx context.Context, txn sto
 		if err != nil {
 			continue
 		}
-		idxKey := service.createidxKey(txn, db, col, updateBSONKey, updateBSONVal.Data)
+		idxKey := service.createidxKey(txn, db, col, updateBSONKey, updateBSONVal.Data, nil, nil)
 		err = txn.RemoveIndex(ctx, idxKey)
 		if err != nil {
 			return err
@@ -460,6 +463,6 @@ func (service *Service) deleteDocumentIndexes(ctx context.Context, txn store.Tra
 }
 
 func (service *Service) deleteDocumentIndex(ctx context.Context, txn store.Transaction, db string, col string, key string, val any) error {
-	idxKey := service.createidxKey(txn, db, col, key, val)
+	idxKey := service.createidxKey(txn, db, col, key, val, nil, nil)
 	return txn.RemoveIndex(ctx, idxKey)
 }
