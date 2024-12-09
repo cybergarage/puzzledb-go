@@ -32,9 +32,9 @@ func TestMySQLTestSuite(t *testing.T) {
 	client := sqltest.NewMySQLClient()
 
 	testRegexes := []string{
-		"SmplTxn.*",
-		// "SmplIndex*",
-		"SmplCrud.*",
+		// "SmplTxn.*",
+		"SmplIndex*",
+		// "SmplCrud.*",
 		// "YcsbWorkload",
 	}
 
