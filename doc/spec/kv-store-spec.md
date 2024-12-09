@@ -57,20 +57,24 @@ Since both services may use the same key-value store implementation, the key-val
 
 ## Store Key-Value Specification
 
-<table>
+<table style="width:100%;">
 <colgroup>
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: left;">Category</th>
 <th style="text-align: left;">Key Order</th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
@@ -86,12 +90,16 @@ Since both services may use the same key-value store implementation, the key-val
 <td style="text-align: left;"><p>2</p></td>
 <td style="text-align: left;"><p>3</p></td>
 <td style="text-align: left;"><p>4</p></td>
+<td style="text-align: left;"><p>5</p></td>
+<td style="text-align: left;"><p>6</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Database</p></td>
 <td style="text-align: left;"><p>Header (D)</p></td>
 <td style="text-align: left;"><p>Database Name</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -104,6 +112,8 @@ Since both services may use the same key-value store implementation, the key-val
 <td style="text-align: left;"><p>Collection Name</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Schema)</p></td>
 </tr>
 <tr>
@@ -111,8 +121,10 @@ Since both services may use the same key-value store implementation, the key-val
 <td style="text-align: left;"><p>Header (O)</p></td>
 <td style="text-align: left;"><p>Database Name</p></td>
 <td style="text-align: left;"><p>Collection Name</p></td>
-<td style="text-align: left;"><p>Element Name</p></td>
-<td style="text-align: left;"><p>Element Value</p></td>
+<td style="text-align: left;"><p>Primary Element Name</p></td>
+<td style="text-align: left;"><p>Primary Element Value</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Object)</p></td>
 </tr>
 <tr>
@@ -120,9 +132,11 @@ Since both services may use the same key-value store implementation, the key-val
 <td style="text-align: left;"><p>Header (I)</p></td>
 <td style="text-align: left;"><p>Database Name</p></td>
 <td style="text-align: left;"><p>Collection Name</p></td>
-<td style="text-align: left;"><p>Element Name</p></td>
-<td style="text-align: left;"><p>Element Value</p></td>
-<td style="text-align: left;"><p>Tuple (Primary Key)</p></td>
+<td style="text-align: left;"><p>Secondary Element Name</p></td>
+<td style="text-align: left;"><p>Secondary Element Value</p></td>
+<td style="text-align: left;"><p>Primary Element Name</p></td>
+<td style="text-align: left;"><p>Primary Element Name</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
 </tbody>
 </table>

@@ -223,11 +223,11 @@ PuzzleDB represents all database objects such as data objects, schema objects, a
 
 # Key Object
 
-In PuzzleDB, records, schemas, and indices are all represented as key-value pairs. This section explains the format of the key object.
+In PuzzleDB, records, schemas, and indices are all represented as key-value pairs. This section details the format of the key object.
 
 ## Key Header Specification
 
-The all key object has a header that reprents the key category, version and stored value type. The key header is a 2-byte header that is prepended to every key in the key-value store. The key header is reserved as follows:
+Every key object includes a header that specifies the key category, version, and the stored value type. The key header is a 2-byte field prepended to every key in the key-value store and is structured as follows:
 
 <table>
 <colgroup>
@@ -266,26 +266,30 @@ The all key object has a header that reprents the key category, version and stor
 </tbody>
 </table>
 
-The key header begins with a 1-byte identifier for the key type, enabling key type-based searching. Duplication is tolerated because a value type is reserved for each key type.
+The key header starts with a 1-byte identifier representing the key type, enabling efficient key type-based searching. While duplication is permitted, a specific value type is reserved for each key type.
 
 ## Key Categories
 
-The key-value store is a collection of key-value records, where each record is a key-value pair, consisting of a header as the key. The key-value store supports the following categories of key-value records:
+The key-value store consists of key-value records, where each record is defined by a key-value pair and includes a header as the key. The store supports the following categories of key-value records:
 
-<table>
+<table style="width:100%;">
 <colgroup>
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: left;">Category</th>
 <th style="text-align: left;">Key Order</th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
 <th style="text-align: left;"></th>
@@ -301,12 +305,16 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"><p>2</p></td>
 <td style="text-align: left;"><p>3</p></td>
 <td style="text-align: left;"><p>4</p></td>
+<td style="text-align: left;"><p>5</p></td>
+<td style="text-align: left;"><p>6</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Database</p></td>
 <td style="text-align: left;"><p>Header (D)</p></td>
 <td style="text-align: left;"><p>Database Name</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -319,6 +327,8 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"><p>Collection Name</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Schema)</p></td>
 </tr>
 <tr>
@@ -326,8 +336,10 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"><p>Header (O)</p></td>
 <td style="text-align: left;"><p>Database Name</p></td>
 <td style="text-align: left;"><p>Collection Name</p></td>
-<td style="text-align: left;"><p>Element Name</p></td>
-<td style="text-align: left;"><p>Element Value</p></td>
+<td style="text-align: left;"><p>Primary Element Name</p></td>
+<td style="text-align: left;"><p>Primary Element Value</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>CBOR (Object)</p></td>
 </tr>
 <tr>
@@ -335,14 +347,16 @@ The key-value store is a collection of key-value records, where each record is a
 <td style="text-align: left;"><p>Header (I)</p></td>
 <td style="text-align: left;"><p>Database Name</p></td>
 <td style="text-align: left;"><p>Collection Name</p></td>
-<td style="text-align: left;"><p>Element Name</p></td>
-<td style="text-align: left;"><p>Element Value</p></td>
-<td style="text-align: left;"><p>Tuple (Primary Key)</p></td>
+<td style="text-align: left;"><p>Secondary Element Name</p></td>
+<td style="text-align: left;"><p>Secondary Element Value</p></td>
+<td style="text-align: left;"><p>Primary Element Name</p></td>
+<td style="text-align: left;"><p>Primary Element Name</p></td>
+<td style="text-align: left;"><p>-</p></td>
 </tr>
 </tbody>
 </table>
 
-The combination of object and index element name and value is repeated by the index format.
+Primary keys and secondary indices can compose one or multiple columns. Although omitted in the above table, the combination of the element name and value for both objects and indices is repeated depending on the index format. Additionally, since the index stores the primary key in its key section, its value section remains empty.
 
 ### Document (Value) Object
 
