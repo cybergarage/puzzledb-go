@@ -132,7 +132,7 @@ func (service *Service) InsertSecondaryIndexes(ctx context.Context, conn Conn, t
 		if err != nil {
 			return err
 		}
-		return txn.InsertIndex(ctx, secKey, prKey)
+		return txn.InsertIndex(ctx, secKey)
 	}
 
 	prIdx, err := schema.PrimaryIndex()

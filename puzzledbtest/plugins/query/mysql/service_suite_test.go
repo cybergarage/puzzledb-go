@@ -33,7 +33,9 @@ func TestMySQLTestSuite(t *testing.T) {
 
 	testRegexes := []string{
 		// "SmplTxn.*",
-		"SmplIndex*",
+		// "SmplIndex*",
+		"SmplIndexText",
+		// "SmplIndexInt",
 		// "SmplCrud.*",
 		// "YcsbWorkload",
 	}

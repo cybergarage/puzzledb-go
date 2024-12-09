@@ -22,17 +22,12 @@ import (
 )
 
 // InsertIndex puts a secondary index with the primary key.
-func (txn *transaction) InsertIndex(ctx context.Context, idxKey store.Key, docKey store.Key) error {
+func (txn *transaction) InsertIndex(ctx context.Context, idxKey store.Key) error {
 	ctx.StartSpan("InsertIndex")
 	defer ctx.FinishSpan()
 
-	kvDocKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
-	kvDocKeyBytes, err := txn.EncodeKey(kvDocKey)
-	if err != nil {
-		return err
-	}
 	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
-	kvObj := kv.NewObject(kvIdxKey, kvDocKeyBytes)
+	kvObj := kv.NewObject(kvIdxKey, nil)
 	return txn.kv.Set(kvObj)
 }
 
