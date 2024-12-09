@@ -86,17 +86,7 @@ func (s *Store) Dump() ([]string, error) {
 				}
 				lines = append(lines, fmt.Sprintf("%v %v: %v", keyHeader, keys[1:], val))
 			case dockv.IndexObject:
-				idxKeys, err := docStore.DecodeKey(obj.Value())
-				if err != nil {
-					lines = append(lines, fmt.Sprintf("%v %v: %v", keyHeader, keys[1:], obj.Value()))
-					continue
-				}
-				idxKeyHederBytes, ok := idxKeys[0].([]byte)
-				if !ok {
-					lines = append(lines, fmt.Sprintf("%v %v: %v", keyHeader, keys[1:], idxKeys))
-				}
-				idxKeyHeder := dockv.NewKeyHeaderFrom(idxKeyHederBytes)
-				lines = append(lines, fmt.Sprintf("%v %v: %v %v", keyHeader, keys[1:], idxKeyHeder, idxKeys[1:]))
+				lines = append(lines, fmt.Sprintf("%v %v:", keyHeader, keys[1:]))
 			}
 		}
 	}
