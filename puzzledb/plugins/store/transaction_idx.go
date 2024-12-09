@@ -56,7 +56,7 @@ func (txn *transaction) FindObjectsByIndex(ctx context.Context, idxKey store.Key
 	if err != nil {
 		return nil, err
 	}
-	return newIndexResultSet(txn, txn.KeyCoder, txn.Coder, kvIdxRs), nil
+	return newIndexResultSet(txn, txn.KeyCoder, txn.Coder, idxKey, kvIdxRs), nil
 }
 
 // TruncateIndexes removes all secondary indexes.

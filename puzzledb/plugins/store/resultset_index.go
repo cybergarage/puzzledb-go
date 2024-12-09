@@ -15,28 +15,27 @@
 package store
 
 import (
-	"bytes"
+	"fmt"
 
+	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
 )
 
 type indexResultSet struct {
-	txn     *transaction
-	kvRs    kv.ResultSet
-	kvIdxRs kv.ResultSet
-	doc     store.Document
+	txn      *transaction
+	kvIdxKey store.Key
+	kvIdxRs  kv.ResultSet
 	document.KeyDecoder
 	document.Decoder
 }
 
-func newIndexResultSet(txn *transaction, keyDecoder document.KeyDecoder, docDecoder document.Decoder, rs kv.ResultSet) store.ResultSet {
+func newIndexResultSet(txn *transaction, keyDecoder document.KeyDecoder, docDecoder document.Decoder, idxKey store.Key, rs kv.ResultSet) store.ResultSet {
 	return &indexResultSet{
 		txn:        txn,
-		kvRs:       rs,
-		kvIdxRs:    nil,
-		doc:        nil,
+		kvIdxKey:   idxKey,
+		kvIdxRs:    rs,
 		KeyDecoder: keyDecoder,
 		Decoder:    docDecoder,
 	}
@@ -44,36 +43,6 @@ func newIndexResultSet(txn *transaction, keyDecoder document.KeyDecoder, docDeco
 
 // Next moves the cursor forward next object from its current resultset position.
 func (rs *indexResultSet) Next() bool {
-	// First, checks the current index resultset.
-	if rs.kvIdxRs != nil {
-		return rs.nextIndex()
-	}
-
-	// Next, checks the current resultset when the current index resultset is nil.
-	if !rs.kvRs.Next() {
-		return false
-	}
-	kvIdxObj, err := rs.kvRs.Object()
-	if err != nil {
-		return false
-	}
-	kvIdx, err := rs.txn.DecodeKey(kvIdxObj.Value())
-	if err != nil {
-		return false
-	}
-	kvIdxRs, err := rs.txn.kv.GetRange(kvIdx)
-	if err != nil {
-		return false
-	}
-	rs.kvIdxRs = kvIdxRs
-	if rs.nextIndex() {
-		return true
-	}
-	return rs.Next()
-}
-
-// nextIndex moves the cursor forward next object from the current index resultset.
-func (rs *indexResultSet) nextIndex() bool {
 	if rs.kvIdxRs == nil {
 		return false
 	}
@@ -81,19 +50,35 @@ func (rs *indexResultSet) nextIndex() bool {
 		rs.kvIdxRs = nil
 		return false
 	}
-	kvObj, err := rs.kvIdxRs.Object()
-	if err != nil {
-		return false
-	}
-	obj, err := rs.txn.DecodeDocument(bytes.NewReader(kvObj.Value()))
-	if err != nil {
-		return false
-	}
-	rs.doc = store.NewDocument(kvObj.Key(), obj)
 	return true
 }
 
 // Document returns the current object in the result set.
 func (rs *indexResultSet) Document() (store.Document, error) {
-	return rs.doc, nil
+	kvIdxObj, err := rs.kvIdxRs.Object()
+	if err != nil {
+		return nil, err
+	}
+	kvIdxKey := kvIdxObj.Key()
+	if len(kvIdxKey) < (len(rs.kvIdxKey) + (1 /* header */)) {
+		return nil, fmt.Errorf("invalid index key: %v", kvIdxKey)
+	}
+
+	// Compose the document primary key from the kv index key.
+	docPrKey := document.NewKeyWith(kvIdxKey[1], kvIdxKey[2])
+	docPrKey = append(docPrKey, kvIdxKey[(len(rs.kvIdxKey)+(1 /* header */)):]...)
+
+	// Find the document object by the primary key.
+	docPrRs, err := rs.txn.FindObjects(context.NewContext(), docPrKey)
+	if err != nil {
+		return nil, err
+	}
+	if !docPrRs.Next() {
+		return nil, fmt.Errorf("not found: %v", docPrKey)
+	}
+	docPrObj, err := docPrRs.Document()
+	if err != nil {
+		return nil, err
+	}
+	return docPrObj, nil
 }
