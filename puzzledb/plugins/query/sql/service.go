@@ -126,21 +126,25 @@ func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, tx
 
 // InsertSecondaryIndexes inserts secondary indexes for the specified object.
 func (service *Service) InsertSecondaryIndexes(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, prKey document.Key) error {
-	insertSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, idx document.Index, prKey document.Key) error {
+	insertSecondaryIndex := func(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj document.MapObject, secIdx document.Index, prIdx document.Index, prKey document.Key) error {
 		dbName := conn.Database()
-		secKey, err := NewDocumentKeyFromIndexes(dbName, schema.Name(), obj, idx)
+		secKey, err := NewDocumentKeyFromIndexes(dbName, schema.Name(), obj, secIdx, prIdx)
 		if err != nil {
 			return err
 		}
 		return txn.InsertIndex(ctx, secKey, prKey)
 	}
 
-	idxes, err := schema.SecondaryIndexes()
+	prIdx, err := schema.PrimaryIndex()
 	if err != nil {
 		return err
 	}
-	for _, idx := range idxes {
-		err := insertSecondaryIndex(ctx, conn, txn, schema, obj, idx, prKey)
+	secIdxes, err := schema.SecondaryIndexes()
+	if err != nil {
+		return err
+	}
+	for _, secIdx := range secIdxes {
+		err := insertSecondaryIndex(ctx, conn, txn, schema, obj, secIdx, prIdx, prKey)
 		if err != nil {
 			return err
 		}
