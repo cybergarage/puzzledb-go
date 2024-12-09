@@ -640,7 +640,7 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 			if err != nil {
 				return nil, err
 			}
-			objKey, err := NewDocumentKeyFromIndex(dbName, col, prIdx, obj)
+			objKey, err := NewDocumentKeyFromIndexes(dbName, col.Name(), obj, prIdx)
 			if err != nil {
 				return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}

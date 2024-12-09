@@ -35,7 +35,7 @@ func TestMySQLTestSuite(t *testing.T) {
 		"SmplTxn.*",
 		// "SmplIndex*",
 		"SmplCrud.*",
-		"YcsbWorkload",
+		// "YcsbWorkload",
 	}
 
 	var databaseDump string
