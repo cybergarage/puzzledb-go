@@ -17,27 +17,30 @@
       - Added support for new queries
     - PostgreSQL plug-in
       - Added support for new queries
-- Update storage implemetations to support option parameters
 
 ## v1.3.x (2024-xx-xx)
 - New features
-  - TLS Support
-    - Supported MySQL plug-in
-    - Supported PostgreSQL plug-in
   - Authenticator plug-ins
     - Added password authenticator implementations
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
-- Updatede
+
+## v1.3.3 (2024-xx-xx)
+- New features
+  - TLS Support
+    - Supported MySQL plug-in
+  - Authenticator plug-ins
+    - Added password authenticator implementations
+      - Supported MySQL plug-in
+      - Supported MongoDB plug-in
+- Improvements
   - Query plug-ins
     - MySQL plug-in
-      - Added support for new queries
-    - MongoDB plug-in
-      - Added support for new queries
-    - Redis plug-in
-      - Added support for new queries
-    - PostgreSQL plug-in
-      - Added support for new queries
+      - Updated to go-mysql v.1.1
+  - Store plug-ins
+    - memdb plug-in to use custom indexer
+  - Coordinator plug-ins
+    - memdb plug-in to use custom indexer
 
 ## v1.3.2 (2024-05-22)
 - New features
