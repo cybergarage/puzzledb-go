@@ -15,8 +15,6 @@
 package memdb
 
 import (
-	"errors"
-
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store/kv"
@@ -36,56 +34,6 @@ type Database struct {
 	document.KeyCoder
 }
 
-// Document represents a document.
-type Document struct {
-	Key   []byte
-	Value []byte
-}
-
-// BinaryFieldIndexer is a custom field indexer for binary keys.
-type BinaryFieldIndexer struct {
-	Field string
-}
-
-// FromArgs extracts the binary key from the arguments.
-func (indexer *BinaryFieldIndexer) FromArgs(args ...interface{}) ([]byte, error) {
-	if len(args) < 1 {
-		return nil, errors.New("invalid arguments")
-	}
-	_, bytes, err := indexer.FromObject(args[0])
-	return bytes, err
-}
-
-// FromObject extracts the binary key from the object.
-func (indexer *BinaryFieldIndexer) FromObject(obj any) (bool, []byte, error) {
-	binKey, ok := obj.([]byte)
-	if ok {
-		return true, binKey, nil
-	}
-	doc, ok := obj.(*Document)
-	if ok {
-		return true, doc.Key, nil
-	}
-	return false, nil, nil
-}
-
-// PrefixFromArgs returns the prefix of the key.
-func (indexer *BinaryFieldIndexer) PrefixFromArgs(args ...interface{}) ([]byte, error) {
-	if len(args) < 1 {
-		return nil, errors.New("invalid arguments")
-	}
-	obj := args[0]
-	binKey, ok := obj.([]byte)
-	if ok {
-		return binKey, nil
-	}
-	doc, ok := obj.(*Document)
-	if ok {
-		return doc.Key, nil
-	}
-	return nil, errors.New("invalid object")
-}
-
 // NewDatabaseWith returns a new database.
 func NewDatabaseWith(coder document.KeyCoder) (*Database, error) {
 	schema := &memdb.DBSchema{
@@ -97,9 +45,7 @@ func NewDatabaseWith(coder document.KeyCoder) (*Database, error) {
 						Name:         idName,
 						AllowMissing: false,
 						Unique:       true,
-						Indexer: &BinaryFieldIndexer{
-							Field: idFieldName,
-						},
+						Indexer:      &BinaryFieldIndexer{},
 					},
 				},
 			},
