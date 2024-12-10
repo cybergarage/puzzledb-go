@@ -69,10 +69,7 @@ func (coord *Coordinator) Start() error {
 						Name:         idName,
 						AllowMissing: false,
 						Unique:       true,
-						Indexer: &memdb.StringFieldIndex{
-							Field:     idFieldName,
-							Lowercase: true,
-						},
+						Indexer:      &BinaryFieldIndexer{},
 					},
 				},
 			},
