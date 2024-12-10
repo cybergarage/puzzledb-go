@@ -32,8 +32,8 @@ type DatabaseOperation interface {
 	CreateCollection(ctx context.Context, col Collection) error
 	// UpdateCollection updates the specified collection in the database.
 	UpdateCollection(ctx context.Context, col Collection) error
-	// GetCollection returns the specified collection in the database.
-	GetCollection(ctx context.Context, name string) (Collection, error)
+	// LookupCollection returns the specified collection in the database.
+	LookupCollection(ctx context.Context, name string) (Collection, error)
 	// RemoveCollection removes the specified collection in the database.
 	RemoveCollection(ctx context.Context, name string) error
 	// TruncateCollections removes all collections in the database.

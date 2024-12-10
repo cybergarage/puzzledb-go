@@ -227,7 +227,7 @@ func (service *Service) Copy(conn postgresql.Conn, stmt stmt.Copy) (protocol.Res
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
-	col, err := txn.GetCollection(ctx, stmt.TableName())
+	col, err := txn.LookupCollection(ctx, stmt.TableName())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
@@ -271,7 +271,7 @@ func (service *Service) CopyData(conn postgresql.Conn, stmt stmt.Copy, stream *p
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
-	col, err := txn.GetCollection(ctx, stmt.TableName())
+	col, err := txn.LookupCollection(ctx, stmt.TableName())
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
