@@ -46,7 +46,7 @@ func (txn *transaction) Set(obj kv.Object) error {
 		return err
 	}
 	doc := &Document{
-		Key:   string(keyBytes),
+		Key:   keyBytes,
 		Value: obj.Value(),
 	}
 	mWriteLatency.Observe(float64(time.Since(now).Milliseconds()))
@@ -60,7 +60,7 @@ func (txn *transaction) Get(key kv.Key) (kv.Object, error) {
 	if err != nil {
 		return nil, err
 	}
-	it, err := txn.Txn.Get(tableName, idName, string(keyBytes))
+	it, err := txn.Txn.Get(tableName, idName, keyBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -98,9 +98,9 @@ func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, e
 
 	var it memdb.ResultIterator
 	if order != kv.OrderDesc {
-		it, err = txn.Txn.Get(tableName, idName+prefix, string(keyBytes))
+		it, err = txn.Txn.Get(tableName, idName+prefix, keyBytes)
 	} else {
-		it, err = txn.Txn.GetReverse(tableName, idName+prefix, string(keyBytes))
+		it, err = txn.Txn.GetReverse(tableName, idName+prefix, keyBytes)
 	}
 	if err != nil {
 		return nil, err
@@ -122,7 +122,7 @@ func (txn *transaction) Remove(key kv.Key) error {
 		return err
 	}
 	doc := &Document{
-		Key:   string(keyBytes),
+		Key:   keyBytes,
 		Value: obj.Value(),
 	}
 	err = txn.Txn.Delete(tableName, doc)
@@ -141,7 +141,7 @@ func (txn *transaction) RemoveRange(key kv.Key) error {
 	if err != nil {
 		return err
 	}
-	_, err = txn.Txn.DeleteAll(tableName, idName+prefix, string(keyBytes))
+	_, err = txn.Txn.DeleteAll(tableName, idName+prefix, keyBytes)
 	if err != nil {
 		if errors.Is(err, memdb.ErrNotFound) {
 			return kv.NewErrObjectNotExist(key)
