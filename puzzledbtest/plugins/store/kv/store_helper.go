@@ -200,7 +200,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 
 			if !obj.Key().Equals(keys[idx]) {
 				cancel(t, txn)
-				t.Errorf("%s != %s", obj.Key, keys[idx])
+				t.Errorf("%s != %s", obj.Key(), keys[idx])
 				return
 			}
 			if !bytes.Equal(obj.Value(), vals[idx]) {
@@ -255,7 +255,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 
 				if !obj.Key().Equals(keys[idx]) {
 					cancel(t, txn)
-					t.Errorf("%s != %s", obj.Key, keys[idx])
+					t.Errorf("%s != %s", obj.Key(), keys[idx])
 					return
 				}
 				if !bytes.Equal(obj.Value(), vals[idx]) {
@@ -317,7 +317,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 
 				if !obj.Key().Equals(keys[idx]) {
 					cancel(t, txn)
-					t.Errorf("%s != %s", obj.Key, keys[idx])
+					t.Errorf("%s != %s", obj.Key(), keys[idx])
 					return
 				}
 				if !bytes.Equal(obj.Value(), vals[idx]) {
