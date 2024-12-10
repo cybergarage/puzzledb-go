@@ -84,9 +84,9 @@ func (txn *transaction) UpdateCollection(ctx context.Context, col store.Collecti
 	return txn.setCollection(ctx, col)
 }
 
-// GetCollection returns the specified collection in the database.
-func (txn *transaction) GetCollection(ctx context.Context, name string) (store.Collection, error) {
-	ctx.StartSpan("GetCollection")
+// LookupCollection returns the specified collection in the database.
+func (txn *transaction) LookupCollection(ctx context.Context, name string) (store.Collection, error) {
+	ctx.StartSpan("LookupCollection")
 	defer ctx.FinishSpan()
 
 	kvSchemaKey := txn.createSchemaKey(name)

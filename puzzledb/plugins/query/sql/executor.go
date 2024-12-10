@@ -183,7 +183,7 @@ func (service *Service) CreateTable(conn Conn, stmt sql.CreateTable) error {
 	}
 
 	tblName := stmt.TableName()
-	_, err = txn.GetCollection(ctx, tblName)
+	_, err = txn.LookupCollection(ctx, tblName)
 	if err == nil {
 		if err := txn.Cancel(ctx); err != nil {
 			return err
@@ -240,7 +240,7 @@ func (service *Service) AlterTable(conn Conn, stmt sql.AlterTable) error {
 		return err
 	}
 
-	schema, err := txn.GetCollection(ctx, tblName)
+	schema, err := txn.LookupCollection(ctx, tblName)
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
@@ -367,7 +367,7 @@ func (service *Service) DropTable(conn Conn, stmt sql.DropTable) error {
 	tables := stmt.Tables()
 	for _, table := range tables {
 		tblName := table.TableName()
-		_, err = txn.GetCollection(ctx, tblName)
+		_, err = txn.LookupCollection(ctx, tblName)
 		if err != nil {
 			if stmt.IfExists() {
 				continue
@@ -419,7 +419,7 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 
 	// Gets the specified collection.
 
-	col, err := txn.GetCollection(ctx, stmt.TableName())
+	col, err := txn.LookupCollection(ctx, stmt.TableName())
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
@@ -485,7 +485,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 
 	table := tables[0]
 	tableName := table.TableName()
-	col, err := txn.GetCollection(ctx, tableName)
+	col, err := txn.LookupCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
@@ -534,7 +534,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 	// Gets the specified collection.
 
 	tableName := stmt.TableName()
-	col, err := txn.GetCollection(ctx, tableName)
+	col, err := txn.LookupCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
@@ -596,7 +596,7 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 	// Gets the specified collection.
 
 	tableName := stmt.TableName()
-	col, err := txn.GetCollection(ctx, tableName)
+	col, err := txn.LookupCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
