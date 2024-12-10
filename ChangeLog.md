@@ -25,14 +25,10 @@
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
-## v1.3.3 (2024-xx-xx)
+## v1.3.3 (2024-12-xx)
 - New features
   - TLS Support
     - Supported MySQL plug-in
-  - Authenticator plug-ins
-    - Added password authenticator implementations
-      - Supported MySQL plug-in
-      - Supported MongoDB plug-in
 - Improvements
   - Query plug-ins
     - MySQL plug-in
