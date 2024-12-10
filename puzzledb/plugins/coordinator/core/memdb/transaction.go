@@ -19,11 +19,6 @@ import (
 	"github.com/hashicorp/go-memdb"
 )
 
-type Document struct {
-	Key   string
-	Value []byte
-}
-
 type transaction struct {
 	coordinator.KeyCoder
 	*memdb.Txn
@@ -53,7 +48,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 		return err
 	}
 	doc := &Document{
-		Key:   string(keyBytes),
+		Key:   keyBytes,
 		Value: obj.Bytes(),
 	}
 	err = txn.Txn.Insert(tableName, doc)
@@ -99,9 +94,9 @@ func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option
 
 	var it memdb.ResultIterator
 	if order != coordinator.OrderDesc {
-		it, err = txn.Txn.Get(tableName, idName+prefix, string(keyBytes))
+		it, err = txn.Txn.Get(tableName, idName+prefix, keyBytes)
 	} else {
-		it, err = txn.Txn.GetReverse(tableName, idName+prefix, string(keyBytes))
+		it, err = txn.Txn.GetReverse(tableName, idName+prefix, keyBytes)
 	}
 	if err != nil {
 		return nil, err
@@ -116,7 +111,7 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 	if err != nil {
 		return err
 	}
-	_, err = txn.Txn.DeleteAll(tableName, idName, string(keyBytes))
+	_, err = txn.Txn.DeleteAll(tableName, idName, keyBytes)
 	if err != nil {
 		return err
 	}
