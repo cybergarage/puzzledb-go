@@ -38,11 +38,10 @@ func (service *Service) createObjectKey(txn store.Transaction, database string, 
 	return service.createDocumentKey(txn, database, collection, ObjectID, objID)
 }
 
-func (service *Service) createidxKey(txn store.Transaction, database string, collection string, idxKey string, idxVal any, prKey any, prVal any) document.Key {
-	if prKey == nil {
-		return document.NewKeyWith(database, collection, idxKey, idxVal)
-	}
-	return document.NewKeyWith(database, collection, idxKey, idxVal, prKey, prVal)
+func (service *Service) createidxKey(txn store.Transaction, database string, collection string, idxKeys ...any) document.Key {
+	keys := []any{database, collection}
+	keys = append(keys, idxKeys...)
+	return document.NewKeyWith(keys...)
 }
 
 // Insert hadles OP_INSERT and 'insert' query of OP_MSG or OP_QUERY.
@@ -115,14 +114,14 @@ func (service *Service) insertDocument(ctx context.Context, txn store.Transactio
 	return err
 }
 
-func (service *Service) insertDocumentIndexes(ctx context.Context, txn store.Transaction, db string, col string, docKey any, v any) error {
+func (service *Service) insertDocumentIndexes(ctx context.Context, txn store.Transaction, db string, col string, objID any, v any) error {
 	switch vmap := v.(type) { //nolint:all
 	case map[string]any:
 		for secKey, secVal := range vmap {
 			if secKey == ObjectID {
 				continue
 			}
-			err := service.insertDocumentIndex(ctx, txn, db, col, secKey, secVal, docKey, v)
+			err := service.insertDocumentIndex(ctx, txn, db, col, secKey, secVal, ObjectID, objID)
 			if err != nil {
 				return err
 			}
@@ -132,8 +131,8 @@ func (service *Service) insertDocumentIndexes(ctx context.Context, txn store.Tra
 	return newErrBSONTypeNotSupported(v)
 }
 
-func (service *Service) insertDocumentIndex(ctx context.Context, txn store.Transaction, db string, col string, secKey string, secVal any, docKey any, docVal any) error {
-	idxKey := service.createidxKey(txn, db, col, secKey, secVal, docKey, docVal)
+func (service *Service) insertDocumentIndex(ctx context.Context, txn store.Transaction, db string, col string, secKey string, secVal any, objIDKey any, objIDVal any) error {
+	idxKey := service.createidxKey(txn, db, col, secKey, secVal, objIDKey, objIDVal)
 	return txn.InsertIndex(ctx, idxKey)
 }
 
