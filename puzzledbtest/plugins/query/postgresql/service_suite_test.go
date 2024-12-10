@@ -34,11 +34,7 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 	testRegexes := []string{
 		"SmplTxn.*",
 		"SmplCrud.*",
-		// "SmplIndex*",
-		"SmplIndexText",
-		// "SmplIndexInt",
-		// "SmplIndexFloat",
-		"SmplIndexDouble",
+		"SmplIndex*",
 		// "FuncMath.*",
 		// "FuncAggrInt",
 		// "FuncAggrFloat",
@@ -52,8 +48,8 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 	}
 
 	stepHander := func(scenario *sqltest.Scenario, n int, query string, err error) {
-		t.Logf("[%d]: %s", n, query)
-		t.Logf("\n%s", server.Store().String())
+		// t.Logf("[%d]: %s", n, query)
+		// t.Logf("\n%s", server.Store().String())
 	}
 
 	suite, err := sqltest.NewSuiteWith(
