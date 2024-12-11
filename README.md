@@ -94,7 +94,7 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
 -   Benchmarking
 
-    -   [puzzledb-bench](https://github.com/cybergarage/puzzledb-go/puzzledb-bench)
+    -   [puzzledb-bench](https://github.com/cybergarage/puzzledb-bench)
 
 -   Distribution
 
@@ -165,3 +165,5 @@ PuzzleDB is being developed in collaboration with the following Cybergarage proj
 -   [go-sqltest](https://github.com/cybergarage/go-sqltest)
 
 -   [go-tracing](https://github.com/cybergarage/go-tracing)
+
+-   [go-sasl](https://github.com/cybergarage/go-sasl)
