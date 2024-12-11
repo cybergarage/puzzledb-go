@@ -1,0 +1,5 @@
+Category,Value Types
+Database,0:reserved 1:CBOR
+Collection,0:reserved 1:CBOR
+Document,0:reserved 1:CBOR
+Index,0:reserved 1:Primary 2:Secondary

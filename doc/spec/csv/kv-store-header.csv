@@ -1,4 +1,4 @@
 Field Name,Size (bits),Description,Example Value
 Key category,8,The record key type,D:Database  C:Collection O:Document I:Index
 Version,4,The version number,0:reserved 1:Current
-Value type,4,The record value type,0:reserved 1:CBOR
+Value type,4,The record value type,(Defined for each key category)
