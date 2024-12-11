@@ -298,7 +298,7 @@ The key-value store consists of key-value records, where each record is defined 
 <td style="text-align: left;"><p>CBOR (Schema)</p></td>
 </tr>
 <tr>
-<td style="text-align: left;"><p>Object</p></td>
+<td style="text-align: left;"><p>Document</p></td>
 <td style="text-align: left;"><p>Header (O)</p></td>
 <td style="text-align: left;"><p>Database Name</p></td>
 <td style="text-align: left;"><p>Collection Name</p></td>
