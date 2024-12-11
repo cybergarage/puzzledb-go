@@ -29,24 +29,19 @@
 - New Features
   - Query Plug-ins
     - MySQL Plug-in
-      - Added TLS support.
-      - Supported `CREATE INDEX` and `DROP INDEX` by converting them to `ALTER TABLE`.
-    - PostgreSQL Plug-in
-      - Supported `CREATE INDEX` and `DROP INDEX` by converting them to `ALTER TABLE`.
-- Improvements
+      - Standardized the PostgreSQL plugin and implementation during the upgrade to go-mysql v1.1      - Added TLS support      - Supported `CREATE INDEX` and `DROP INDEX` by converting them to `ALTER TABLE`    - PostgreSQL Plug-in
+      - Supported `CREATE INDEX` and `DROP INDEX` by converting them to `ALTER TABLE`- Improvements
   - Store Plug-ins
     - Document Store Plug-ins
-      - Updated the format and implementation of secondary indexes.
-    - KV Store Plug-ins
-      - Enhanced the `memdb` plug-in to use a custom indexer.
-  - Coordinator Plug-ins
-    - Enhanced the `memdb` plug-in to use a custom indexer.
+      - Updated the format and implementation of secondary indexes    - KV Store Plug-ins
+      - Enhanced the `memdb` plug-in to use a custom indexer  - Coordinator Plug-ins
+    - Enhanced the `memdb` plug-in to use a custom indexer
 
 ## v1.3.3 (2024-08-22)
 - Improvements
   - Query Plug-ins
   　- TLS support settings
-  
+
 ## v1.3.2 (2024-05-22)
 - New features
   - TLS Support
@@ -94,8 +89,7 @@
       - Upgraded go-postgresql to update the protocol message reader
 - Changed
   - Docker image
-    - Change to FoundationDB plug-in as default store.
-
+    - Change to FoundationDB plug-in as default store
 ## v1.1.0 (2023-10-20)
 - New features
   - Query plug-ins
