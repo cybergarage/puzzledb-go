@@ -25,18 +25,22 @@
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
-## v1.3.3 (2024-12-xx)
-- New features
-  - TLS Support
-    - Supported MySQL plug-in
+## v1.3.3 (2024-12-11)
+- New Features
+  - Query Plug-ins
+    - MySQL Plug-in
+      - Added TLS support.
+      - Supported `CREATE INDEX` and `DROP INDEX` by converting them to `ALTER TABLE`.
+    - PostgreSQL Plug-in
+      - Supported `CREATE INDEX` and `DROP INDEX` by converting them to `ALTER TABLE`.
 - Improvements
-  - Query plug-ins
-    - MySQL plug-in
-      - Updated to go-mysql v.1.1
-  - Store plug-ins
-    - memdb plug-in to use custom indexer
-  - Coordinator plug-ins
-    - memdb plug-in to use custom indexer
+  - Store Plug-ins
+    - Document Store Plug-ins
+      - Updated the format and implementation of secondary indexes.
+    - KV Store Plug-ins
+      - Enhanced the `memdb` plug-in to use a custom indexer.
+  - Coordinator Plug-ins
+    - Enhanced the `memdb` plug-in to use a custom indexer.
 
 ## v1.3.2 (2024-05-22)
 - New features
