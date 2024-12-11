@@ -25,7 +25,7 @@
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
-## v1.3.3 (2024-12-11)
+## v1.3.4 (2024-12-11)
 - New Features
   - Query Plug-ins
     - MySQL Plug-in
@@ -42,6 +42,11 @@
   - Coordinator Plug-ins
     - Enhanced the `memdb` plug-in to use a custom indexer.
 
+## v1.3.3 (2024-08-22)
+- Improvements
+  - Query Plug-ins
+  　- TLS support settings
+  
 ## v1.3.2 (2024-05-22)
 - New features
   - TLS Support
