@@ -30,7 +30,6 @@ type KeyHeader = kv.KeyHeader
 var DatabaseKeyHeader = kv.DatabaseKeyHeader
 var CollectionKeyHeader = kv.CollectionKeyHeader
 var DocumentKeyHeader = kv.DocumentKeyHeader
-var PrimaryIndexHeader = kv.PrimaryIndexHeader
 var SecondaryIndexHeader = kv.SecondaryIndexHeader
 
 // NewKeyWith returns a new key from the specified header and key elements.

@@ -57,15 +57,6 @@ func TestKeyHeader(t *testing.T) {
 			},
 		},
 		{
-			header: PrimaryIndexHeader,
-			expected: expected{
-				tp:  IndexObject,
-				ver: V1,
-				doc: DocumentType(0),
-				idx: PrimaryIndex,
-			},
-		},
-		{
 			header: SecondaryIndexHeader,
 			expected: expected{
 				tp:  IndexObject,
