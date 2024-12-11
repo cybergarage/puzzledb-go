@@ -54,7 +54,7 @@ func (s *Store) Dump() ([]string, error) {
 	keys := []kv.Key{
 		kv.NewKeyWith(kv.DatabaseKeyHeader, kv.Key{}),
 		kv.NewKeyWith(kv.CollectionKeyHeader, kv.Key{}),
-		kv.NewKeyWith(kv.SecondaryIndexHeader, kv.Key{}),
+		kv.NewKeyWith(kv.IndexKeyHeader, kv.Key{}),
 		kv.NewKeyWith(kv.DocumentKeyHeader, kv.Key{}),
 	}
 

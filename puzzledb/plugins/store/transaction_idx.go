@@ -26,7 +26,7 @@ func (txn *transaction) InsertIndex(ctx context.Context, idxKey store.Key) error
 	ctx.StartSpan("InsertIndex")
 	defer ctx.FinishSpan()
 
-	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
+	kvIdxKey := kv.NewKeyWith(kv.IndexKeyHeader, idxKey)
 	kvObj := kv.NewObject(kvIdxKey, nil)
 	return txn.kv.Set(kvObj)
 }
@@ -36,7 +36,7 @@ func (txn *transaction) RemoveIndex(ctx context.Context, idxKey store.Key) error
 	ctx.StartSpan("RemoveIndex")
 	defer ctx.FinishSpan()
 
-	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
+	kvIdxKey := kv.NewKeyWith(kv.IndexKeyHeader, idxKey)
 	return wrapKeyNotExistError(idxKey, txn.kv.Remove(kvIdxKey))
 }
 
@@ -45,7 +45,7 @@ func (txn *transaction) FindObjectsByIndex(ctx context.Context, idxKey store.Key
 	ctx.StartSpan("FindDocumentsByIndex")
 	defer ctx.FinishSpan()
 
-	kvIdxKey := kv.NewKeyWith(kv.SecondaryIndexHeader, idxKey)
+	kvIdxKey := kv.NewKeyWith(kv.IndexKeyHeader, idxKey)
 	kvOpts := NewKvOptionsWith(opts...)
 	kvIdxRs, err := txn.kv.GetRange(kvIdxKey, kvOpts...)
 	if err != nil {
@@ -59,6 +59,6 @@ func (txn *transaction) TruncateIndexes(ctx context.Context) error {
 	ctx.StartSpan("TruncateIndexes")
 	defer ctx.FinishSpan()
 
-	kvSchemaKey := kv.NewKeyWith(kv.SecondaryIndexHeader, document.NewKeyWith(txn.Database().Name()))
+	kvSchemaKey := kv.NewKeyWith(kv.IndexKeyHeader, document.NewKeyWith(txn.Database().Name()))
 	return txn.kv.RemoveRange(kvSchemaKey)
 }
