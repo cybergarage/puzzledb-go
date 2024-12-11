@@ -57,7 +57,7 @@ func TestKeyHeader(t *testing.T) {
 			},
 		},
 		{
-			header: SecondaryIndexHeader,
+			header: IndexKeyHeader,
 			expected: expected{
 				tp:  IndexObject,
 				ver: V1,

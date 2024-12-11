@@ -46,7 +46,7 @@ func TestConfig(t *testing.T) {
 
 	testKeys = []kv.Key{
 		kv.NewKeyWith(kv.DocumentKeyHeader, document.NewKey()),
-		kv.NewKeyWith(kv.SecondaryIndexHeader, document.NewKey()),
+		kv.NewKeyWith(kv.IndexKeyHeader, document.NewKey()),
 	}
 
 	for _, testKey := range testKeys {
