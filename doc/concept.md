@@ -255,13 +255,13 @@ Every key object includes a header that specifies the key category, version, and
 <td style="text-align: left;"><p>Version</p></td>
 <td style="text-align: left;"><p>4</p></td>
 <td style="text-align: left;"><p>The version number</p></td>
-<td style="text-align: left;"><p>0:reserved 1-7</p></td>
+<td style="text-align: left;"><p>0:reserved 1:Current</p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Value type</p></td>
 <td style="text-align: left;"><p>4</p></td>
 <td style="text-align: left;"><p>The record value type</p></td>
-<td style="text-align: left;"><p>0:reserved 1:CBOR 1:PRIMARY 2:SECONDARY</p></td>
+<td style="text-align: left;"><p>0:reserved 1:CBOR</p></td>
 </tr>
 </tbody>
 </table>
