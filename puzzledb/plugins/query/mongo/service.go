@@ -79,8 +79,8 @@ func (service *Service) Start() error {
 		service.SetPort(port)
 	}
 
-	tlsConfig, ok := service.BaseService.TLSConfig()
-	if ok {
+	tlsConfig, err := service.TLSConfig()
+	if err != nil {
 		service.Server.SetTLSConfig(tlsConfig)
 	} else {
 		service.Server.SetTLSConfig(nil)
