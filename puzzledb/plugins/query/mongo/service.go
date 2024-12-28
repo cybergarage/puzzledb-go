@@ -22,7 +22,7 @@ import (
 )
 
 type Service struct {
-	*mongo.Server
+	mongo.Server
 	*query.BaseService
 	*Coder
 }
@@ -79,9 +79,11 @@ func (service *Service) Start() error {
 		service.SetPort(port)
 	}
 
-	tlsConfig, ok := service.TLSConfig()
+	tlsConfig, ok := service.BaseService.TLSConfig()
 	if ok {
 		service.Server.SetTLSConfig(tlsConfig)
+	} else {
+		service.Server.SetTLSConfig(nil)
 	}
 
 	if err := service.Server.Start(); err != nil {
