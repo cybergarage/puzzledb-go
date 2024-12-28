@@ -13,7 +13,7 @@ require (
 	github.com/cybergarage/go-mysql v1.1.3
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.6.2
-	github.com/cybergarage/go-redis v1.5.4
+	github.com/cybergarage/go-redis v1.5.5-0.20241228175003-4382f1d60157
 	github.com/cybergarage/go-safecast v1.2.5
 	github.com/cybergarage/go-sqlparser v1.4.2
 	github.com/cybergarage/go-sqltest v1.4.3
