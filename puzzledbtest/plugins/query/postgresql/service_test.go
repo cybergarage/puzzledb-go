@@ -121,7 +121,6 @@ func RunAuthenticatorTest(t *testing.T, server *puzzledbtest.Server, testDBName 
 	if err != nil {
 		t.Error(err)
 	}
-
 }
 
 // RunTLSSessionTest tests the TLS session.
