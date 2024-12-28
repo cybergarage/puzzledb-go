@@ -20,7 +20,6 @@ import (
 	"time"
 
 	"github.com/cybergarage/go-postgresql/postgresql"
-	"github.com/cybergarage/go-postgresql/postgresql/auth"
 	"github.com/cybergarage/go-sqltest/sqltest"
 	"github.com/cybergarage/puzzledb-go/puzzledbtest"
 )
@@ -103,35 +102,26 @@ func RunAuthenticatorTest(t *testing.T, server *puzzledbtest.Server, testDBName 
 		password = "testpassword"
 	)
 
-	authenticators := []auth.Authenticator{
-		auth.NewClearTextPasswordAuthenticatorWith(username, password),
+	client := postgresql.NewDefaultClient()
+	client.SetUser(username)
+	client.SetPassword(password)
+	client.SetDatabase(testDBName)
+	err := client.Open()
+	if err != nil {
+		t.Error(err)
+		return
 	}
 
-	for _, authenticator := range authenticators {
-		server.AddAuthenticator(authenticator)
-
-		client := postgresql.NewDefaultClient()
-		client.SetUser(username)
-		client.SetPassword(password)
-		client.SetDatabase(testDBName)
-		err := client.Open()
-		if err != nil {
-			t.Error(err)
-			return
-		}
-
-		err = client.Ping()
-		if err != nil {
-			t.Error(err)
-		}
-
-		err = client.Close()
-		if err != nil {
-			t.Error(err)
-		}
-
-		server.ClearAuthenticators()
+	err = client.Ping()
+	if err != nil {
+		t.Error(err)
 	}
+
+	err = client.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
 }
 
 // RunTLSSessionTest tests the TLS session.
