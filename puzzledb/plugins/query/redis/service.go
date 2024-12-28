@@ -22,7 +22,7 @@ import (
 
 // Service represents a new Redis service instance.
 type Service struct {
-	*redis.Server
+	redis.Server
 	*query.BaseService
 }
 
@@ -59,9 +59,9 @@ func (service *Service) Start() error {
 	tlsPort, err := service.GetServiceConfigTLSPort()
 	if err == nil && (0 < tlsPort) {
 		service.SetTLSPort(tlsPort)
-		tlsConfig, ok := service.TLSConfig()
-		if ok {
-			service.Server.SetTLSConfig(tlsConfig)
+		tlsConfig, err := service.TLSConfig()
+		if err == nil {
+			service.SetTLSConfig(tlsConfig)
 		}
 	}
 
