@@ -15,8 +15,6 @@
 package query
 
 import (
-	"crypto/tls"
-
 	"github.com/cybergarage/go-logger/log"
 	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
@@ -36,7 +34,6 @@ type BaseService struct {
 	coordinator coordinator.Coordinator
 	store       store.Store
 	auth.AuthManager
-	tlsConfig *tls.Config
 }
 
 // NewBaseService returns a new query base service.
@@ -46,7 +43,6 @@ func NewBaseService() *BaseService {
 		store:       nil,
 		coordinator: nil,
 		AuthManager: nil,
-		tlsConfig:   nil,
 	}
 	return server
 }
@@ -192,17 +188,4 @@ func (service *BaseService) SetAuthManager(mgr auth.AuthManager) {
 // Authenticators returns all authenticators.
 func (service *BaseService) Authenticators() []auth.Authenticator {
 	return []auth.Authenticator{}
-}
-
-// SetTLSConfig sets the TLS configuration.
-func (service *BaseService) SetTLSConfig(tlsConfig *tls.Config) {
-	service.tlsConfig = tlsConfig
-}
-
-// TLSConfig returns the TLS configuration.
-func (service *BaseService) TLSConfig() (*tls.Config, bool) {
-	if service.tlsConfig == nil {
-		return nil, false
-	}
-	return service.tlsConfig, true
 }
