@@ -72,6 +72,8 @@ type Service interface {
 	SetTracer(t tracer.Tracer)
 	// SetPort sets the listen port.
 	SetPort(port int)
-	// SetTLSConfig sets the TLS configuration.
+	// SetTLSConfig sets a TLS configuration.
 	SetTLSConfig(tlsConfig *tls.Config)
+	// TLSConfig returns a TLS configuration from the configuration.
+	TLSConfig() (*tls.Config, error)
 }
