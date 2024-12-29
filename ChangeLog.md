@@ -25,6 +25,10 @@
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
+## v1.3.5 (2024-12-XX)
+- Improvements
+  - Updated authenticator interface
+
 ## v1.3.4 (2024-12-11)
 - New Features
   - Query Plug-ins
