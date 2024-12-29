@@ -58,8 +58,6 @@ type CoordinatorService interface {
 type AuthenticatorService interface {
 	// SetAuthManager sets the auth manager.
 	SetAuthManager(mgr auth.AuthManager)
-	// Authenticators returns all authenticators.
-	Authenticators() []auth.Authenticator
 }
 
 // Service represents a query service.

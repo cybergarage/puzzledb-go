@@ -15,16 +15,10 @@
 package auth
 
 import (
-	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 // Service represents a document store service interface.
 type Service interface {
 	plugins.Service
-}
-
-// PasswordAuthenticator is an interface for password authenticator.
-type PasswordAuthenticatorService interface {
-	CreatePasswordAuthenticatorWithConfig(config Config) (auth.PasswordAuthenticator, error)
 }

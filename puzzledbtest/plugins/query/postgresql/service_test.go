@@ -157,6 +157,4 @@ func RunTLSSessionTest(t *testing.T, server *puzzledbtest.Server, testDBName str
 	if err != nil {
 		t.Error(err)
 	}
-
-	server.ClearAuthenticators()
 }

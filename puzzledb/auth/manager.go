@@ -16,10 +16,4 @@ package auth
 
 // AuthManager represent an authenticator manager interface.
 type AuthManager interface {
-	// AddAuthenticator adds a new authenticator.
-	AddAuthenticator(authenticator Authenticator)
-	// ClearAuthenticators clears all authenticators.
-	ClearAuthenticators()
-	// AuthenticatePassword authenticates a user with a password.
-	AuthenticatePassword(conn Conn, username string, password string) (bool, error)
 }

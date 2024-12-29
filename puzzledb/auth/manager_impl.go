@@ -16,44 +16,9 @@ package auth
 
 // authManagerImpl represent an authenticator manager.
 type authManagerImpl struct {
-	authenticators []Authenticator
 }
 
 // NewAuthManager returns a new authenticator manager.
 func NewAuthManager() AuthManager {
-	manager := &authManagerImpl{
-		authenticators: make([]Authenticator, 0),
-	}
-	return manager
-}
-
-// Authenticators returns all authenticators.
-func (mgr *authManagerImpl) Authenticators() []Authenticator {
-	return mgr.authenticators
-}
-
-// AddAuthenticator adds a new authenticator.
-func (mgr *authManagerImpl) AddAuthenticator(authenticator Authenticator) {
-	mgr.authenticators = append(mgr.authenticators, authenticator)
-}
-
-// ClearAuthenticators clears all authenticators.
-func (mgr *authManagerImpl) ClearAuthenticators() {
-	mgr.authenticators = make([]Authenticator, 0)
-}
-
-// AuthenticatePassword authenticates a user with a password.
-func (mgr *authManagerImpl) AuthenticatePassword(conn Conn, username string, password string) (bool, error) {
-	for _, authenticator := range mgr.authenticators {
-		if passwordAuthenticator, ok := authenticator.(PasswordAuthenticator); ok {
-			ok, err := passwordAuthenticator.AuthenticatePassword(conn, username, password)
-			if err != nil {
-				return false, err
-			}
-			if ok {
-				return true, nil
-			}
-		}
-	}
-	return false, nil
+	return &authManagerImpl{}
 }
