@@ -45,11 +45,11 @@ func TestMongoService(t *testing.T) {
 
 	client := shell.NewClient()
 
-	if server.IsTLSEnabled() {
-		client.SetTLSEnabled(true)
-		client.SetTLSCertificateKeyFile(TestClientCertFile)
-		client.SetTLSCAFile(TestClientCAFile)
-	}
+	// if server.IsTLSEnabled() {
+	// 	client.SetTLSEnabled(true)
+	// 	client.SetTLSCertificateKeyFile(TestClientCertFile)
+	// 	client.SetTLSCAFile(TestClientCAFile)
+	// }
 
 	err = client.Open()
 	if err != nil {
