@@ -14,11 +14,19 @@
 
 package auth
 
+import (
+	"github.com/cybergarage/go-authenticator/auth"
+)
+
 // authManagerImpl represent an authenticator manager.
 type authManagerImpl struct {
+	auth.Manager
 }
 
 // NewAuthManager returns a new authenticator manager.
 func NewAuthManager() AuthManager {
-	return &authManagerImpl{}
+	manager := &authManagerImpl{
+		Manager: auth.NewManager(),
+	}
+	return manager
 }

@@ -14,6 +14,11 @@
 
 package auth
 
-// AuthManager represent an authenticator manager interface.
+import (
+	"github.com/cybergarage/go-authenticator/auth"
+)
+
+// AuthManager represent an authenticator manager.
 type AuthManager interface {
+	auth.Manager
 }
