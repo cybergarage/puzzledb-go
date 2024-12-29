@@ -30,7 +30,6 @@ include::auth/methods.csv[]
 
 O:Supported, X:Unsupported, -:Not yes supported
 
-
 == References
 
 === PostgreSQL
