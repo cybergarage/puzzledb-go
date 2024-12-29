@@ -1,13 +1,6 @@
 Method,Parameter,PostgreSQL,MySQL,MongoDB,Redis
-password,user,O,-,-,X
+Plain,user,O,-,-,O
 ,password,O,-,-,O
-,database,O,-,-,X
-,address,O,-,-,X
-md5,user,-,-,-,-
-,password,-,-,-,-
-,database,-,-,-,-
-,address,-,-,-,-
-crypt,user,-,-,-,-
-,password,-,-,-,-
-,database,-,-,-,-
-,address,-,-,-,-
+SCRAM-SHA-256,user,-,-,O,-
+,password,-,-,O,-
+Certificate (TLS),common name,O,O,O,O
