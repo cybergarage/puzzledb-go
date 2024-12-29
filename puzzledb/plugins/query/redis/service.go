@@ -33,7 +33,6 @@ func NewService() query.Service {
 		BaseService: query.NewBaseService(),
 	}
 	service.Server.SetCommandHandler(service)
-	service.Server.SetAuthCommandHandler(service)
 	return service
 }
 
