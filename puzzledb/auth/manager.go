@@ -18,6 +18,15 @@ import (
 	"github.com/cybergarage/go-authenticator/auth"
 )
 
+// CredentialAuthenticator represent a credential authenticator.
+type CredentialAuthenticator = auth.CredentialAuthenticator
+
+// CredentialStore represent a credential store.
+type CredentialStore = auth.CredentialStore
+
+// CertificateAuthenticator represent a certificate authenticator.
+type CertificateAuthenticator = auth.CertificateAuthenticator
+
 // AuthManager represent an authenticator manager.
 type AuthManager interface {
 	auth.Manager
