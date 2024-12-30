@@ -23,8 +23,8 @@ import (
 // Service represents a document store service interface.
 type Service interface {
 	plugins.Service
-	// LookupCredential returns the credential for the query.
-	LookupCredential(q auth.Query) (auth.Credential, bool, error)
+	// VerifyCredential verifies the client credential.
+	VerifyCredential(conn auth.Conn, q auth.Query) (bool, error)
 	// VerifyCertificate verifies the client certificate.
 	VerifyCertificate(conn tls.Conn) (bool, error)
 }
