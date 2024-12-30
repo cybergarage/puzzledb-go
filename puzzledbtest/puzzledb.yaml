@@ -6,7 +6,7 @@ pprof:
   port: 6060
 auth:
   enabled: false
-  type: password
+  type: plain
   user: admin
   password: password
 tls:
