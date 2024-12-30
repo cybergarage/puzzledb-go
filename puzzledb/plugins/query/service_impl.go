@@ -16,7 +16,6 @@ package query
 
 import (
 	"github.com/cybergarage/go-logger/log"
-	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/coordinator"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 	docStore "github.com/cybergarage/puzzledb-go/puzzledb/plugins/store"
@@ -33,7 +32,6 @@ type BaseService struct {
 	plugins.Config
 	coordinator coordinator.Coordinator
 	store       store.Store
-	auth.AuthManager
 }
 
 // NewBaseService returns a new query base service.
@@ -42,7 +40,6 @@ func NewBaseService() *BaseService {
 		Config:      plugins.NewConfig(),
 		store:       nil,
 		coordinator: nil,
-		AuthManager: nil,
 	}
 	return server
 }
@@ -178,9 +175,4 @@ func (service *BaseService) SetStore(store store.Store) {
 // Store returns the store.
 func (service *BaseService) Store() store.Store {
 	return service.store
-}
-
-// SetAuthManager sets the auth manager.
-func (service *BaseService) SetAuthManager(mgr auth.AuthManager) {
-	service.AuthManager = mgr
 }
