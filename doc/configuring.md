@@ -14,7 +14,7 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
       port: 6060
     auth:
       enabled: false
-      type: password
+      type: plain
       user: admin
       password: password
     tls:
