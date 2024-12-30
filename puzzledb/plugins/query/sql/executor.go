@@ -37,7 +37,7 @@ func (service *Service) Begin(conn Conn, stmt sql.Begin) error {
 	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func (service *Service) Commit(conn Conn, stmt sql.Commit) error {
 	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -104,7 +104,7 @@ func (service *Service) Rollback(conn Conn, stmt sql.Rollback) error {
 	ctx := conn.SpanContext()
 
 	dbName := conn.Database()
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -132,7 +132,7 @@ func (service *Service) CreateDatabase(conn Conn, stmt sql.CreateDatabase) error
 
 	dbName := stmt.DatabaseName()
 
-	_, err := service.Store().GetDatabase(ctx, dbName)
+	_, err := service.Store().LookupDatabase(ctx, dbName)
 	if err == nil {
 		if stmt.IfNotExists() {
 			return nil
@@ -170,7 +170,7 @@ func (service *Service) CreateTable(conn Conn, stmt sql.CreateTable) error {
 
 	// Check if the database exists.
 
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -228,7 +228,7 @@ func (service *Service) AlterTable(conn Conn, stmt sql.AlterTable) error {
 
 	// Check if the database exists.
 
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -316,7 +316,7 @@ func (service *Service) DropDatabase(conn Conn, stmt sql.DropDatabase) error {
 
 	// Check if the database exists.
 
-	_, err := service.Store().GetDatabase(ctx, dbName)
+	_, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		if stmt.IfExists() {
 			return nil
@@ -349,7 +349,7 @@ func (service *Service) DropTable(conn Conn, stmt sql.DropTable) error {
 
 	// Check if the database exists.
 
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		if stmt.IfExists() {
 			return nil
@@ -405,7 +405,7 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 	// Gets the specified database.
 
 	dbName := conn.Database()
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return err
 	}
@@ -469,7 +469,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 	// Gets the specified database.
 
 	dbName := conn.Database()
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -519,7 +519,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 	// Gets the specified database.
 
 	dbName := conn.Database()
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -581,7 +581,7 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 	// Gets the specified database.
 
 	dbName := conn.Database()
-	db, err := service.Store().GetDatabase(ctx, dbName)
+	db, err := service.Store().LookupDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}

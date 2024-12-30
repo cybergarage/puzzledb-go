@@ -59,9 +59,9 @@ func (service *Service) MessageRespond(msg mongo.OpMessage) {
 }
 
 // GetDatabase returns the database with the specified name.
-func (service *Service) GetDatabase(ctx context.Context, name string) (store.Database, error) {
+func (service *Service) LookupDatabase(ctx context.Context, name string) (store.Database, error) {
 	store := service.Store()
-	db, err := store.GetDatabase(ctx, name)
+	db, err := store.LookupDatabase(ctx, name)
 	if err == nil {
 		return db, nil
 	}
@@ -69,7 +69,7 @@ func (service *Service) GetDatabase(ctx context.Context, name string) (store.Dat
 	if err != nil {
 		return nil, err
 	}
-	return store.GetDatabase(ctx, name)
+	return store.LookupDatabase(ctx, name)
 }
 
 // Start starts the service.

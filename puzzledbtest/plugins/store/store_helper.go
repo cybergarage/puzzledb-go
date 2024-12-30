@@ -80,7 +80,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 		return
 	}
 
-	db, err := service.GetDatabase(ctx, testDBName)
+	db, err := service.LookupDatabase(ctx, testDBName)
 	if err != nil {
 		t.Error(err)
 		return
