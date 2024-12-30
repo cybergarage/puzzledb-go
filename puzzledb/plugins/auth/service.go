@@ -15,10 +15,16 @@
 package auth
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
+	"github.com/cybergarage/puzzledb-go/puzzledb/auth/tls"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 // Service represents a document store service interface.
 type Service interface {
 	plugins.Service
+	// LookupCredential returns the credential for the query.
+	LookupCredential(q auth.Query) (auth.Credential, bool, error)
+	// VerifyCertificate verifies the client certificate.
+	VerifyCertificate(conn tls.Conn) (bool, error)
 }
