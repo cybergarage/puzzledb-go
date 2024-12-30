@@ -24,20 +24,20 @@ type AuthenticatorType int
 const (
 	// AuthenticatorTypeNone represents an authenticator type of none.
 	AuthenticatorTypeNone AuthenticatorType = iota
-	// AuthenticatorTypePassword represents an authenticator type of password.
-	AuthenticatorTypePassword
+	// AuthenticatorTypePlain represents an authenticator type of plain.
+	AuthenticatorTypePlain
 )
 
 const (
-	// AuthenticatorTypePasswordString represents an authenticator type of password as a string.
-	AuthenticatorTypePasswordString = "password"
+	// AuthenticatorTypePlainString represents an authenticator type of plain.
+	AuthenticatorTypePlainString = "plain"
 )
 
 // NewAuthenticatorTypeFrom returns an authenticator type from the specified string.
 func NewAuthenticatorTypeFrom(str string) (AuthenticatorType, error) {
 	switch str { // nolint:gocritic
-	case AuthenticatorTypePasswordString:
-		return AuthenticatorTypePassword, nil
+	case AuthenticatorTypePlainString:
+		return AuthenticatorTypePlain, nil
 	}
 	return AuthenticatorTypeNone, fmt.Errorf("%w authenticator type: %s", ErrInvalid, str)
 }
@@ -45,8 +45,8 @@ func NewAuthenticatorTypeFrom(str string) (AuthenticatorType, error) {
 // String returns a string representation of the authenticator type.
 func (t AuthenticatorType) String() string {
 	switch t {
-	case AuthenticatorTypePassword:
-		return AuthenticatorTypePasswordString
+	case AuthenticatorTypePlain:
+		return AuthenticatorTypePlainString
 	case AuthenticatorTypeNone:
 		return ""
 	}
