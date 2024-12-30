@@ -51,7 +51,7 @@ func (service *Service) Insert(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	defer ctx.FinishSpan()
 	now := time.Now()
 
-	db, err := service.GetDatabase(ctx, q.Database())
+	db, err := service.LookupDatabase(ctx, q.Database())
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -143,7 +143,7 @@ func (service *Service) Find(conn *mongo.Conn, q *mongo.Query) ([]bson.Document,
 	defer ctx.FinishSpan()
 	now := time.Now()
 
-	db, err := service.GetDatabase(ctx, q.Database())
+	db, err := service.LookupDatabase(ctx, q.Database())
 	if err != nil {
 		return nil, mongo.NewQueryError(q)
 	}
@@ -250,7 +250,7 @@ func (service *Service) Update(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	defer ctx.FinishSpan()
 	now := time.Now()
 
-	db, err := service.GetDatabase(ctx, q.Database())
+	db, err := service.LookupDatabase(ctx, q.Database())
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}
@@ -353,7 +353,7 @@ func (service *Service) Delete(conn *mongo.Conn, q *mongo.Query) (int32, error) 
 	defer ctx.FinishSpan()
 	now := time.Now()
 
-	db, err := service.GetDatabase(ctx, q.Database())
+	db, err := service.LookupDatabase(ctx, q.Database())
 	if err != nil {
 		return 0, mongo.NewQueryError(q)
 	}

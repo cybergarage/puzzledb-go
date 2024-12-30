@@ -28,7 +28,7 @@ type Store interface {
 	// CreateDatabase creates a new database.
 	CreateDatabase(ctx context.Context, name string) error
 	// GetDatabase retruns the specified database.
-	GetDatabase(ctx context.Context, name string) (Database, error)
+	LookupDatabase(ctx context.Context, name string) (Database, error)
 	// RemoveDatabase removes the specified database.
 	RemoveDatabase(ctx context.Context, name string) error
 	// ListDatabases returns the all databases.

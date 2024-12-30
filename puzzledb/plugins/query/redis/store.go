@@ -23,10 +23,10 @@ import (
 )
 
 // GetDatabase returns the database with the specified ID.
-func (service *Service) GetDatabase(ctx context.Context, dbid redis.DatabaseID) (store.Database, error) {
+func (service *Service) LookupDatabase(ctx context.Context, dbid redis.DatabaseID) (store.Database, error) {
 	store := service.Store()
 	name := strconv.Itoa(dbid)
-	db, err := store.GetDatabase(ctx, name)
+	db, err := store.LookupDatabase(ctx, name)
 	if err == nil {
 		return db, nil
 	}
@@ -34,13 +34,13 @@ func (service *Service) GetDatabase(ctx context.Context, dbid redis.DatabaseID) 
 	if err != nil {
 		return nil, err
 	}
-	return store.GetDatabase(ctx, name)
+	return store.LookupDatabase(ctx, name)
 }
 
 // TransactDatabase returns a transaction for the database with the specified ID.
 func (service *Service) TransactDatabase(ctx context.Context, conn *Conn, write bool) (*Transaction, error) {
 	dbid := conn.Database()
-	db, err := service.GetDatabase(ctx, dbid)
+	db, err := service.LookupDatabase(ctx, dbid)
 	if err != nil {
 		return nil, err
 	}

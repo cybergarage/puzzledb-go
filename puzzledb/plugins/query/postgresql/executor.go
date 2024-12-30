@@ -212,7 +212,7 @@ func (service *Service) Copy(conn postgresql.Conn, stmt stmt.Copy) (protocol.Res
 	store := service.Store()
 
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := store.LookupDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}
@@ -256,7 +256,7 @@ func (service *Service) CopyData(conn postgresql.Conn, stmt stmt.Copy, stream *p
 	store := service.Store()
 
 	dbName := conn.Database()
-	db, err := store.GetDatabase(ctx, dbName)
+	db, err := store.LookupDatabase(ctx, dbName)
 	if err != nil {
 		return nil, err
 	}

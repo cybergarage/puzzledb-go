@@ -139,7 +139,7 @@ func (s *Store) CreateDatabase(ctx context.Context, name string) error {
 }
 
 // GetDatabase retruns the specified database.
-func (s *Store) GetDatabase(ctx context.Context, name string) (store.Database, error) {
+func (s *Store) LookupDatabase(ctx context.Context, name string) (store.Database, error) {
 	ctx.StartSpan("GetDatabase")
 	defer ctx.FinishSpan()
 
@@ -190,7 +190,7 @@ func (s *Store) RemoveDatabase(ctx context.Context, name string) error {
 	ctx.StartSpan("RemoveDatabase")
 	defer ctx.FinishSpan()
 
-	db, err := s.GetDatabase(ctx, name)
+	db, err := s.LookupDatabase(ctx, name)
 	if err != nil {
 		return err
 	}
