@@ -15,22 +15,34 @@
 package auth
 
 import (
+	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
+	"github.com/cybergarage/puzzledb-go/puzzledb/auth/tls"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
-type BaseService struct {
+type service struct {
 	plugins.Config
 }
 
 // NewBaseService returns a new query base service.
-func NewBaseService() *BaseService {
-	server := &BaseService{
+func NewBaseService() *service {
+	server := &service{
 		Config: plugins.NewConfig(),
 	}
 	return server
 }
 
 // ServiceType returns the plug-in service type.
-func (service *BaseService) ServiceType() plugins.ServiceType {
+func (service *service) ServiceType() plugins.ServiceType {
 	return plugins.AuthenticatorService
+}
+
+// LookupCredential returns the credential for the query.
+func LookupCredential(q auth.Query) (auth.Credential, bool, error) {
+	return nil, false, nil
+}
+
+// VerifyCertificate verifies the client certificate.
+func (service *service) VerifyCertificate(conn tls.Conn) (bool, error) {
+	return true, nil
 }
