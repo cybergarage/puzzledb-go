@@ -24,8 +24,8 @@ type service struct {
 	plugins.Config
 }
 
-// NewBaseService returns a new query base service.
-func NewBaseService() *service {
+// NewService returns a new query base service.
+func NewService() Service {
 	server := &service{
 		Config: plugins.NewConfig(),
 	}
@@ -37,12 +37,25 @@ func (service *service) ServiceType() plugins.ServiceType {
 	return plugins.AuthenticatorService
 }
 
-// LookupCredential returns the credential for the query.
-func LookupCredential(q auth.Query) (auth.Credential, bool, error) {
-	return nil, false, nil
+// ServiceName returns the plug-in service name.
+func (service *service) ServiceName() string {
+	return "auth"
+}
+
+// VerifyCredential verifies the client credential.
+func (service *service) VerifyCredential(conn auth.Conn, q auth.Query) (bool, error) {
+	return true, nil
 }
 
 // VerifyCertificate verifies the client certificate.
 func (service *service) VerifyCertificate(conn tls.Conn) (bool, error) {
 	return true, nil
+}
+
+func (service *service) Start() error {
+	return nil
+}
+
+func (service *service) Stop() error {
+	return nil
 }
