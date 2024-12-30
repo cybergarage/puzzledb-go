@@ -54,6 +54,6 @@ func (store *Store) Start() error {
 }
 
 // Stop stops this memdb.
-func (store Store) Stop() error {
+func (store *Store) Stop() error {
 	return nil
 }
