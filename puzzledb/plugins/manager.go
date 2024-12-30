@@ -127,7 +127,7 @@ func (mgr *Manager) Start() error {
 }
 
 // Stop stops all plug-in services.
-func (mgr Manager) Stop() error {
+func (mgr *Manager) Stop() error {
 	log.Infof("plug-ins terminating...")
 	var lastErr error
 	for _, service := range mgr.services {

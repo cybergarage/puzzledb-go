@@ -161,6 +161,6 @@ func (store *Store) Start() error {
 }
 
 // Stop stops the ristretto store.
-func (store Store) Stop() error {
+func (store *Store) Stop() error {
 	return nil
 }

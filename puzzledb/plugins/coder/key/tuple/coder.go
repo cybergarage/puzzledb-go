@@ -68,6 +68,6 @@ func (s *Coder) Start() error {
 }
 
 // Stop stops this coder.
-func (s Coder) Stop() error {
+func (s *Coder) Stop() error {
 	return nil
 }
