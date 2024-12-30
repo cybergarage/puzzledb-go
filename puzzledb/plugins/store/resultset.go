@@ -36,10 +36,7 @@ func newResultSet(decoder document.Decoder, rs kv.ResultSet) store.ResultSet {
 
 // Next moves the cursor forward next object from its current position.
 func (rs *resultSet) Next() bool {
-	if !rs.kvRs.Next() {
-		return false
-	}
-	return true
+	return rs.kvRs.Next()
 }
 
 // Document returns the current object in the result set.
