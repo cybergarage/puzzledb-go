@@ -30,6 +30,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
+	auth_plugin "github.com/cybergarage/puzzledb-go/puzzledb/plugins/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/document/cbor"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coder/key/tuple"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins/coordinator"
@@ -149,6 +150,7 @@ func (server *Server) reloadEmbeddedPlugins() error {
 		opentracing.NewService(),
 		prometheus.NewService(),
 		NewGrpcServiceWith(server),
+		auth_plugin.NewService(),
 		server.actor,
 	}
 
