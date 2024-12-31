@@ -273,6 +273,20 @@ func (mgr *PluginManager) DefaultTracingService() (tracer.Service, error) {
 	return service, nil
 }
 
+// DefaultAuthenticatorService returns the default authenticator service.
+func (mgr *PluginManager) DefaultAuthenticatorService() (auth.Service, error) {
+	services := []auth.Service{}
+	for _, service := range mgr.EnabledServicesByType(plugins.AuthenticatorService) {
+		if s, ok := service.(auth.Service); ok {
+			services = append(services, s)
+		}
+	}
+	if len(services) == 0 {
+		return nil, plugins.NewErrDefaultServiceNotFound(plugins.AuthenticatorService)
+	}
+	return services[len(services)-1], nil
+}
+
 // EnabledKeyCoderServices returns enabled key coder services.
 func (mgr *PluginManager) EnabledKeyCoderServices() []key.Service {
 	services := []key.Service{}
@@ -344,17 +358,6 @@ func (mgr *PluginManager) EnabledTracingServices() []tracer.Service {
 	services := []tracer.Service{}
 	for _, service := range mgr.EnabledServicesByType(plugins.TracingService) {
 		if s, ok := service.(tracer.Service); ok {
-			services = append(services, s)
-		}
-	}
-	return services
-}
-
-// EnabledMetricsServices returns enabled metrics services.
-func (mgr *PluginManager) EnabledAuthenticatorServices() []auth.Service {
-	services := []auth.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.AuthenticatorService) {
-		if s, ok := service.(auth.Service); ok {
 			services = append(services, s)
 		}
 	}
