@@ -285,6 +285,13 @@ func (server *Server) setupPlugins() error {
 		tlsConfig = nil
 	}
 
+	// Authenticator service
+
+	authService, err := server.DefaultAuthenticatorService()
+	if err != nil {
+		return nil
+	}
+
 	// Query services
 
 	if services, err := server.QueryServices(); err != nil {
@@ -295,6 +302,9 @@ func (server *Server) setupPlugins() error {
 			service.SetStore(defaultStore)
 			service.SetTracer(defaultTracer)
 			service.SetTLSConfig(tlsConfig)
+
+			service.SetCertificateAuthenticator(authService)
+			service.SetCredentialAuthenticator(authService)
 
 			err := defaultCoodinator.AddObserver(service)
 			if err != nil {
