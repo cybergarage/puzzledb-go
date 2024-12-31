@@ -56,8 +56,8 @@ type CoordinatorService interface {
 
 // AuthenticatorService represents an authenticator interface for query service.
 type AuthenticatorService interface {
-	// SetCredentialStore sets the credential store.
-	SetCredentialStore(auth.CredentialStore)
+	// SetCredentialAuthenticator sets the credential authenticator.
+	SetCredentialAuthenticator(auth.CredentialAuthenticator)
 	// SetCredentialAuthenticator sets the credential authenticator.
 	SetCertificateAuthenticator(auth.CertificateAuthenticator)
 }
