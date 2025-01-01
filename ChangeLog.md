@@ -25,9 +25,14 @@
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
-## v1.3.5 (2024-12-XX)
+## v1.3.5 (2025-01-01)
 - Improvements
   - Updated authenticator interface
+- Updated
+  - PostgreSQL plug-in
+  - MySQL plug-in
+  - MongoDB plug-in
+  - Redis plug-in
 
 ## v1.3.4 (2024-12-11)
 - New Features
