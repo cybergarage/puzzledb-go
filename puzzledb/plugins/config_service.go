@@ -24,7 +24,7 @@ func (conf *configImpl) GetServiceTypeConfig(serviceType ServiceType, item strin
 	if conf.Config == nil {
 		return nil, NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfigObject(path...)
+	return conf.LookupConfigObject(path...)
 }
 
 // GetServiceTypeConfigString returns a string value for the specified name in the service type.
@@ -33,7 +33,7 @@ func (conf *configImpl) GetServiceTypeConfigString(serviceType ServiceType, item
 	if conf.Config == nil {
 		return "", NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfigString(path...)
+	return conf.LookupConfigString(path...)
 }
 
 // GetServiceTypeConfigInt returns an integer value for the specified name in the service type.
@@ -42,7 +42,7 @@ func (conf *configImpl) GetServiceTypeConfigInt(serviceType ServiceType, item st
 	if conf.Config == nil {
 		return 0, NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfigInt(path...)
+	return conf.LookupConfigInt(path...)
 }
 
 // GetServiceTypeConfigBool returns a boolean value for the specified name in the service type.
@@ -51,7 +51,7 @@ func (conf *configImpl) GetServiceTypeConfigBool(serviceType ServiceType, item s
 	if conf.Config == nil {
 		return false, NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfigBool(path...)
+	return conf.LookupConfigBool(path...)
 }
 
 // IsServiceTypeConfigEnabled returns true if the service type is enabled.
@@ -84,7 +84,7 @@ func (conf *configImpl) GetServiceConfig(service Service, paths ...string) (any,
 	if conf.Config == nil {
 		return nil, NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfigObject(path...)
+	return conf.LookupConfigObject(path...)
 }
 
 // GetServiceConfigString returns a string value for the specified name in the service.
@@ -93,7 +93,7 @@ func (conf *configImpl) GetServiceConfigString(service Service, paths ...string)
 	if conf.Config == nil {
 		return "", NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfigString(path...)
+	return conf.LookupConfigString(path...)
 }
 
 // GetServiceConfigInt returns an integer value for the specified name in the service.
@@ -102,7 +102,7 @@ func (conf *configImpl) GetServiceConfigInt(service Service, paths ...string) (i
 	if conf.Config == nil {
 		return 0, NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfigInt(path...)
+	return conf.LookupConfigInt(path...)
 }
 
 // GetServiceConfigBool returns a boolean value for the specified name in the service.
@@ -111,7 +111,7 @@ func (conf *configImpl) GetServiceConfigBool(service Service, paths ...string) (
 	if conf.Config == nil {
 		return false, NewErrCounfigNotFound(path)
 	}
-	return conf.GetConfigBool(path...)
+	return conf.LookupConfigBool(path...)
 }
 
 // IsServiceConfigEnabled returns true if the service is enabled.
