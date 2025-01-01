@@ -11,7 +11,7 @@ plugins:
     plain:
       -
         enabled: false
-        user: admin
+        username: admin
         password: password
   system:
     grpc:
