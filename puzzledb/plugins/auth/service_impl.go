@@ -15,6 +15,8 @@
 package auth
 
 import (
+	"regexp"
+
 	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/auth/tls"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
@@ -22,12 +24,16 @@ import (
 
 type service struct {
 	plugins.Config
+	credStore        map[string]auth.Credential
+	commonNameRegexp []*regexp.Regexp
 }
 
 // NewService returns a new query base service.
 func NewService() Service {
 	server := &service{
-		Config: plugins.NewConfig(),
+		Config:           plugins.NewConfig(),
+		credStore:        map[string]auth.Credential{},
+		commonNameRegexp: []*regexp.Regexp{},
 	}
 	return server
 }
@@ -42,17 +48,106 @@ func (service *service) ServiceName() string {
 	return "auth"
 }
 
+func (service *service) SetCommonNameRegexps(regexps ...string) error {
+	for _, re := range regexps {
+		r, err := regexp.Compile(re)
+		if err != nil {
+			return err
+		}
+		service.commonNameRegexp = append(service.commonNameRegexp, r)
+	}
+	return nil
+}
+
+// SetCredential sets a credential.
+func (service *service) SetCredentials(creds ...auth.Credential) error {
+	for _, cred := range creds {
+		service.credStore[cred.Username()] = cred
+	}
+	return nil
+}
+
+// LookupCredential looks up a credential.
+func (service *service) LookupCredential(q auth.Query) (auth.Credential, bool, error) {
+	user := q.Username()
+	cred, ok := service.credStore[user]
+	return cred, ok, nil
+}
+
 // VerifyCredential verifies the client credential.
 func (service *service) VerifyCredential(conn auth.Conn, q auth.Query) (bool, error) {
+	if len(service.credStore) == 0 {
+		return true, nil
+	}
+
+	cred, ok, err := service.LookupCredential(q)
+	if !ok {
+		return false, err
+	}
+	if q.Username() != cred.Username() {
+		return false, nil
+	}
+	if q.Password() != cred.Password() {
+		return false, nil
+	}
+
 	return true, nil
 }
 
 // VerifyCertificate verifies the client certificate.
 func (service *service) VerifyCertificate(conn tls.Conn) (bool, error) {
-	return true, nil
+	if len(service.commonNameRegexp) == 0 {
+		return true, nil
+	}
+	for _, cert := range conn.ConnectionState().PeerCertificates {
+		for _, re := range service.commonNameRegexp {
+			if re.MatchString(cert.Subject.CommonName) {
+				return true, nil
+			}
+		}
+	}
+	return false, nil
 }
 
 func (service *service) Start() error {
+	service.credStore = map[string]auth.Credential{}
+	service.commonNameRegexp = []*regexp.Regexp{}
+
+	// Setup authenticator configuration
+	// acConfigs, err := auth.NewConfigWith(config, ConfigAuth)
+	// if err != nil {
+	// 	return err
+	// }
+
+	// Generate authenticators each the configuration
+	// for _, acConfig := range acConfigs {
+	// 	if !acConfig.Enabled {
+	// 		continue
+	// 	}
+	/*
+		_, err := auth.NewAuthenticatorTypeFrom(acConfig.Type)
+		if err != nil {
+			return err
+		}
+	*/
+	/*
+		for _, service := range server.EnabledAuthenticatorServices() {
+			switch acType { // nolint:exhaustive,gocritic
+			case auth.AuthenticatorTypePassword:
+				service, ok := service.(auth_service.PasswordAuthenticatorService)
+				if !ok {
+					continue
+				}
+				ac, err := service.CreatePasswordAuthenticatorWithConfig(acConfig)
+				if err != nil {
+					return err
+				}
+				server.AddAuthenticator(ac)
+			}
+		}
+	*/
+	// }
+
 	return nil
 }
 
