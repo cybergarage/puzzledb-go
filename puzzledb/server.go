@@ -289,7 +289,7 @@ func (server *Server) setupPlugins() error {
 
 	authService, err := server.DefaultAuthenticatorService()
 	if err != nil {
-		return nil
+		return err
 	}
 
 	// Query services
