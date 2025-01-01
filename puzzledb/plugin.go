@@ -159,11 +159,11 @@ func (mgr *PluginManager) TracingServices() ([]tracer.Service, error) {
 // AuthenticatorServices returns authenticator services.
 func (mgr *PluginManager) AuthenticatorServices() ([]auth.Service, error) {
 	services := []auth.Service{}
-	for _, service := range mgr.ServicesByType(plugins.AuthenticatorService) {
+	for _, service := range mgr.ServicesByType(plugins.AuthService) {
 		if s, ok := service.(auth.Service); ok {
 			services = append(services, s)
 		} else {
-			return nil, newErrInvalidService(service, plugins.AuthenticatorService)
+			return nil, newErrInvalidService(service, plugins.AuthService)
 		}
 	}
 	return services, nil
@@ -276,13 +276,13 @@ func (mgr *PluginManager) DefaultTracingService() (tracer.Service, error) {
 // DefaultAuthenticatorService returns the default authenticator service.
 func (mgr *PluginManager) DefaultAuthenticatorService() (auth.Service, error) {
 	services := []auth.Service{}
-	for _, service := range mgr.EnabledServicesByType(plugins.AuthenticatorService) {
+	for _, service := range mgr.EnabledServicesByType(plugins.AuthService) {
 		if s, ok := service.(auth.Service); ok {
 			services = append(services, s)
 		}
 	}
 	if len(services) == 0 {
-		return nil, plugins.NewErrDefaultServiceNotFound(plugins.AuthenticatorService)
+		return nil, plugins.NewErrDefaultServiceNotFound(plugins.AuthService)
 	}
 	return services[len(services)-1], nil
 }
