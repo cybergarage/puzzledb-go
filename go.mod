@@ -10,7 +10,7 @@ require (
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.8
 	github.com/cybergarage/go-mongo v1.2.2
-	github.com/cybergarage/go-mysql v1.1.3
+	github.com/cybergarage/go-mysql v1.1.4
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.6.2
 	github.com/cybergarage/go-redis v1.5.5
