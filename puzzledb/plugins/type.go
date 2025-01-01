@@ -43,8 +43,8 @@ const (
 	TracingService ServiceType = 0x09 | ExclusiveServiceType
 	// MetricsService represents a metrics service.
 	MetricsService ServiceType = 0x0A
-	// AuthenticatorService represents an authenticator service.
-	AuthenticatorService ServiceType = 0x0B
+	// AuthService represents an authenticator service.
+	AuthService ServiceType = 0x0B
 	// ExtendService represents an uncategorized service.
 	ExtendService ServiceType = 0x0F
 )
@@ -60,7 +60,7 @@ func ServiceTypes() []ServiceType {
 		StoreKvService,
 		StoreKvCacheService,
 		CoordinatorService,
-		AuthenticatorService,
+		AuthService,
 		TracingService,
 		MetricsService,
 		ExtendService,
@@ -95,8 +95,8 @@ func (t ServiceType) String() string {
 		return "tracer"
 	case MetricsService:
 		return "metrics"
-	case AuthenticatorService:
-		return "authenticator"
+	case AuthService:
+		return "auth"
 	case ExtendService:
 		return "extend"
 	default:
