@@ -38,48 +38,48 @@ type ConfigBase interface {
 
 // RootConfig represents a root configuration interface.
 type RootConfig interface {
-	// GetTLSConfig returns a TLS configuration.
-	GetTLSConfig() (tls.Config, error)
+	// LookupTLSConfig returns a TLS configuration.
+	LookupTLSConfig() (tls.Config, error)
 }
 
 // ServiceTypeConfig represents a configuration interface for service type.
 type ServiceTypeConfig interface {
-	// GetServiceTypeConfig returns a value for the specified name in the service type.
-	GetServiceTypeConfig(serviceType ServiceType, item string) (any, error)
-	// GetServiceTypeConfigString returns a string value for the specified name in the service type.
-	GetServiceTypeConfigString(serviceType ServiceType, item string) (string, error)
-	// GetServiceTypeConfigInt returns an integer value for the specified name in the service type.
-	GetServiceTypeConfigInt(serviceType ServiceType, item string) (int, error)
-	// GetServiceTypeConfigBool returns a boolean value for the specified name in the service type.
-	GetServiceTypeConfigBool(serviceType ServiceType, item string) (bool, error)
+	// LookupServiceTypeConfig returns a value for the specified name in the service type.
+	LookupServiceTypeConfig(serviceType ServiceType, item string) (any, error)
+	// LookupServiceTypeConfigString returns a string value for the specified name in the service type.
+	LookupServiceTypeConfigString(serviceType ServiceType, item string) (string, error)
+	// LookupServiceTypeConfigInt returns an integer value for the specified name in the service type.
+	LookupServiceTypeConfigInt(serviceType ServiceType, item string) (int, error)
+	// LookupServiceTypeConfigBool returns a boolean value for the specified name in the service type.
+	LookupServiceTypeConfigBool(serviceType ServiceType, item string) (bool, error)
 }
 
 // ServiceTypeExtConfig represents an extension configuration interface for service type.
 type ServiceTypeExtConfig interface {
 	// IsServiceTypeConfigEnabled returns true if the service type is enabled.
 	IsServiceTypeConfigEnabled(serviceType ServiceType) bool
-	// GetServiceTypeConfigPort returns a port number for the service type.
-	GetServiceTypeDefault(serviceType ServiceType) (string, error)
+	// LookupServiceTypeConfigPort returns a port number for the service type.
+	LookupServiceTypeDefault(serviceType ServiceType) (string, error)
 }
 
 // ServiceConfig represents a configuration interface for service.
 type ServiceConfig interface {
-	// GetServiceConfig returns a value for the specified name in the service.
-	GetServiceConfig(service Service, paths ...string) (any, error)
-	// GetServiceConfigString returns a string value for the specified name in the service.
-	GetServiceConfigString(service Service, paths ...string) (string, error)
-	// GetServiceConfigInt returns an integer value for the specified name in the service.
-	GetServiceConfigInt(service Service, paths ...string) (int, error)
-	// GetServiceConfigBool returns a boolean value for the specified name in the service.
-	GetServiceConfigBool(service Service, paths ...string) (bool, error)
+	// LookupServiceConfig returns a value for the specified name in the service.
+	LookupServiceConfig(service Service, paths ...string) (any, error)
+	// LookupServiceConfigString returns a string value for the specified name in the service.
+	LookupServiceConfigString(service Service, paths ...string) (string, error)
+	// LookupServiceConfigInt returns an integer value for the specified name in the service.
+	LookupServiceConfigInt(service Service, paths ...string) (int, error)
+	// LookupServiceConfigBool returns a boolean value for the specified name in the service.
+	LookupServiceConfigBool(service Service, paths ...string) (bool, error)
 }
 
 // ServiceExtConfig represents an extension configuration interface for service.
 type ServiceExtConfig interface {
 	// IsServiceConfigEnabled returns true if the service is enabled.
 	IsServiceConfigEnabled(service Service) bool
-	// GetServiceConfigPort returns a port number for the service.
-	GetServiceConfigPort(service Service) (int, error)
+	// LookupServiceConfigPort returns a port number for the service.
+	LookupServiceConfigPort(service Service) (int, error)
 }
 
 // Config represents a plug-in configuration interface.

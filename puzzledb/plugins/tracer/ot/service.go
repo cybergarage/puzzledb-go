@@ -36,9 +36,9 @@ func (service *Service) ServiceName() string {
 	return "opentracing"
 }
 
-// GetServiceEndpoint returns the service endpoint.
-func (service *Service) GetServiceEndpoint() (string, error) {
-	e, err := service.GetServiceConfigString(service, tracer_plugin.EndpointConfig)
+// LookupServiceEndpoint returns the service endpoint.
+func (service *Service) LookupServiceEndpoint() (string, error) {
+	e, err := service.LookupServiceConfigString(service, tracer_plugin.EndpointConfig)
 	if err != nil {
 		return "", err
 	}
@@ -47,7 +47,7 @@ func (service *Service) GetServiceEndpoint() (string, error) {
 
 // Start starts the service.
 func (service *Service) Start() error {
-	endpoint, err := service.GetServiceEndpoint()
+	endpoint, err := service.LookupServiceEndpoint()
 	if err == nil {
 		service.SetEndpoint(endpoint)
 	}

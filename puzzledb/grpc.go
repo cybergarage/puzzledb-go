@@ -89,7 +89,7 @@ func (service *gRPCService) SetPort(port int) {
 // Start starts the service.
 func (service *gRPCService) Start() error {
 	var err error
-	port, err := service.GetServiceConfigPort(service)
+	port, err := service.LookupServiceConfigPort(service)
 	if err == nil {
 		service.SetPort(port)
 	}

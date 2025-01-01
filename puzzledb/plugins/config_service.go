@@ -18,8 +18,8 @@ func newServiceTypeConfigPath(serviceType ServiceType, item string) []string {
 	return []string{ConfigPlugins, serviceType.String(), item}
 }
 
-// GetServiceTypeConfig returns a value for the specified name in the service type.
-func (conf *configImpl) GetServiceTypeConfig(serviceType ServiceType, item string) (any, error) {
+// LookupServiceTypeConfig returns a value for the specified name in the service type.
+func (conf *configImpl) LookupServiceTypeConfig(serviceType ServiceType, item string) (any, error) {
 	path := newServiceTypeConfigPath(serviceType, item)
 	if conf.Config == nil {
 		return nil, NewErrCounfigNotFound(path)
@@ -27,8 +27,8 @@ func (conf *configImpl) GetServiceTypeConfig(serviceType ServiceType, item strin
 	return conf.LookupConfigObject(path...)
 }
 
-// GetServiceTypeConfigString returns a string value for the specified name in the service type.
-func (conf *configImpl) GetServiceTypeConfigString(serviceType ServiceType, item string) (string, error) {
+// LookupServiceTypeConfigString returns a string value for the specified name in the service type.
+func (conf *configImpl) LookupServiceTypeConfigString(serviceType ServiceType, item string) (string, error) {
 	path := newServiceTypeConfigPath(serviceType, item)
 	if conf.Config == nil {
 		return "", NewErrCounfigNotFound(path)
@@ -36,8 +36,8 @@ func (conf *configImpl) GetServiceTypeConfigString(serviceType ServiceType, item
 	return conf.LookupConfigString(path...)
 }
 
-// GetServiceTypeConfigInt returns an integer value for the specified name in the service type.
-func (conf *configImpl) GetServiceTypeConfigInt(serviceType ServiceType, item string) (int, error) {
+// LookupServiceTypeConfigInt returns an integer value for the specified name in the service type.
+func (conf *configImpl) LookupServiceTypeConfigInt(serviceType ServiceType, item string) (int, error) {
 	path := newServiceTypeConfigPath(serviceType, item)
 	if conf.Config == nil {
 		return 0, NewErrCounfigNotFound(path)
@@ -45,8 +45,8 @@ func (conf *configImpl) GetServiceTypeConfigInt(serviceType ServiceType, item st
 	return conf.LookupConfigInt(path...)
 }
 
-// GetServiceTypeConfigBool returns a boolean value for the specified name in the service type.
-func (conf *configImpl) GetServiceTypeConfigBool(serviceType ServiceType, item string) (bool, error) {
+// LookupServiceTypeConfigBool returns a boolean value for the specified name in the service type.
+func (conf *configImpl) LookupServiceTypeConfigBool(serviceType ServiceType, item string) (bool, error) {
 	path := newServiceTypeConfigPath(serviceType, item)
 	if conf.Config == nil {
 		return false, NewErrCounfigNotFound(path)
@@ -56,16 +56,16 @@ func (conf *configImpl) GetServiceTypeConfigBool(serviceType ServiceType, item s
 
 // IsServiceTypeConfigEnabled returns true if the service type is enabled.
 func (conf *configImpl) IsServiceTypeConfigEnabled(serviceType ServiceType) bool {
-	enabled, err := conf.GetServiceTypeConfigBool(serviceType, ConfigEnabled)
+	enabled, err := conf.LookupServiceTypeConfigBool(serviceType, ConfigEnabled)
 	if err != nil {
 		return true
 	}
 	return enabled
 }
 
-// GetServiceTypeConfigPort returns a port number for the service type.
-func (conf *configImpl) GetServiceTypeDefault(serviceType ServiceType) (string, error) {
-	def, err := conf.GetServiceTypeConfigString(serviceType, ConfigDefault)
+// LookupServiceTypeConfigPort returns a port number for the service type.
+func (conf *configImpl) LookupServiceTypeDefault(serviceType ServiceType) (string, error) {
+	def, err := conf.LookupServiceTypeConfigString(serviceType, ConfigDefault)
 	if err != nil {
 		return "", err
 	}
@@ -78,8 +78,8 @@ func newServiceConfigPath(service Service, paths ...string) []string {
 	return servicePaths
 }
 
-// GetServiceConfig returns a value for the specified name in the service.
-func (conf *configImpl) GetServiceConfig(service Service, paths ...string) (any, error) {
+// LookupServiceConfig returns a value for the specified name in the service.
+func (conf *configImpl) LookupServiceConfig(service Service, paths ...string) (any, error) {
 	path := newServiceConfigPath(service, paths...)
 	if conf.Config == nil {
 		return nil, NewErrCounfigNotFound(path)
@@ -87,8 +87,8 @@ func (conf *configImpl) GetServiceConfig(service Service, paths ...string) (any,
 	return conf.LookupConfigObject(path...)
 }
 
-// GetServiceConfigString returns a string value for the specified name in the service.
-func (conf *configImpl) GetServiceConfigString(service Service, paths ...string) (string, error) {
+// LookupServiceConfigString returns a string value for the specified name in the service.
+func (conf *configImpl) LookupServiceConfigString(service Service, paths ...string) (string, error) {
 	path := newServiceConfigPath(service, paths...)
 	if conf.Config == nil {
 		return "", NewErrCounfigNotFound(path)
@@ -96,8 +96,8 @@ func (conf *configImpl) GetServiceConfigString(service Service, paths ...string)
 	return conf.LookupConfigString(path...)
 }
 
-// GetServiceConfigInt returns an integer value for the specified name in the service.
-func (conf *configImpl) GetServiceConfigInt(service Service, paths ...string) (int, error) {
+// LookupServiceConfigInt returns an integer value for the specified name in the service.
+func (conf *configImpl) LookupServiceConfigInt(service Service, paths ...string) (int, error) {
 	path := newServiceConfigPath(service, paths...)
 	if conf.Config == nil {
 		return 0, NewErrCounfigNotFound(path)
@@ -105,8 +105,8 @@ func (conf *configImpl) GetServiceConfigInt(service Service, paths ...string) (i
 	return conf.LookupConfigInt(path...)
 }
 
-// GetServiceConfigBool returns a boolean value for the specified name in the service.
-func (conf *configImpl) GetServiceConfigBool(service Service, paths ...string) (bool, error) {
+// LookupServiceConfigBool returns a boolean value for the specified name in the service.
+func (conf *configImpl) LookupServiceConfigBool(service Service, paths ...string) (bool, error) {
 	path := newServiceConfigPath(service, paths...)
 	if conf.Config == nil {
 		return false, NewErrCounfigNotFound(path)
@@ -116,16 +116,16 @@ func (conf *configImpl) GetServiceConfigBool(service Service, paths ...string) (
 
 // IsServiceConfigEnabled returns true if the service is enabled.
 func (conf *configImpl) IsServiceConfigEnabled(service Service) bool {
-	enabled, err := conf.GetServiceConfigBool(service, ConfigEnabled)
+	enabled, err := conf.LookupServiceConfigBool(service, ConfigEnabled)
 	if err != nil {
 		return true
 	}
 	return enabled
 }
 
-// GetServiceConfigPort returns a port number for the service.
-func (conf *configImpl) GetServiceConfigPort(service Service) (int, error) {
-	port, err := conf.GetServiceConfigInt(service, ConfigPort)
+// LookupServiceConfigPort returns a port number for the service.
+func (conf *configImpl) LookupServiceConfigPort(service Service) (int, error) {
+	port, err := conf.LookupServiceConfigInt(service, ConfigPort)
 	if err != nil {
 		return 0, err
 	}

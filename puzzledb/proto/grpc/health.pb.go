@@ -112,7 +112,7 @@ func (*HealthCheckRequest) Descriptor() ([]byte, []int) {
 	return file_health_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *HealthCheckRequest) GetService() string {
+func (x *HealthCheckRequest) LookupService() string {
 	if x != nil {
 		return x.Service
 	}

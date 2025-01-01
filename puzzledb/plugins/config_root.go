@@ -18,7 +18,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/tls"
 )
 
-// GetTLSConfig returns a TLS configuration.
-func (conf *configImpl) GetTLSConfig() (tls.Config, error) {
+// LookupTLSConfig returns a TLS configuration.
+func (conf *configImpl) LookupTLSConfig() (tls.Config, error) {
 	return tls.NewConfigWith(conf.Config, ConfigTLS)
 }

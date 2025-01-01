@@ -19,18 +19,18 @@ const (
 	requirepass = "requirepass"
 )
 
-// GetServiceConfigRequirepass returns the requirepass value of the service.
-func (service *Service) GetServiceConfigRequirepass() (string, error) {
-	passwd, err := service.GetServiceConfigString(service, requirepass)
+// LookupServiceConfigRequirepass returns the requirepass value of the service.
+func (service *Service) LookupServiceConfigRequirepass() (string, error) {
+	passwd, err := service.LookupServiceConfigString(service, requirepass)
 	if err != nil {
 		return "", err
 	}
 	return passwd, nil
 }
 
-// GetServiceConfigTLSPort returns the TLS port value of the service.
-func (service *Service) GetServiceConfigTLSPort() (int, error) {
-	port, err := service.GetServiceConfigInt(service, tlsPort)
+// LookupServiceConfigTLSPort returns the TLS port value of the service.
+func (service *Service) LookupServiceConfigTLSPort() (int, error) {
+	port, err := service.LookupServiceConfigInt(service, tlsPort)
 	if err != nil {
 		return 0, err
 	}

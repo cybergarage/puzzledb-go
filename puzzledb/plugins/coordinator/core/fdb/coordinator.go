@@ -59,7 +59,7 @@ func (coord *Coordinator) Transact() (coordinator.Transaction, error) {
 
 // GetClusterFile returns the cluster file configuration.
 func (coord *Coordinator) GetClusterFile() (string, error) {
-	e, err := coord.GetServiceConfigString(coord, ClusterFile)
+	e, err := coord.LookupServiceConfigString(coord, ClusterFile)
 	if err != nil {
 		return "", err
 	}
