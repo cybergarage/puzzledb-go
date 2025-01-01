@@ -70,7 +70,7 @@ func (store *Store) Transact(write bool) (kvStore.Transaction, error) {
 
 // GetClusterFile returns the cluster file configuration.
 func (store *Store) GetClusterFile() (string, error) {
-	e, err := store.GetServiceConfigString(store, ClusterFile)
+	e, err := store.LookupServiceConfigString(store, ClusterFile)
 	if err != nil {
 		return "", err
 	}

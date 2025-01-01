@@ -46,7 +46,7 @@ func (service *Service) ServiceName() string {
 
 // Start starts the service.
 func (service *Service) Start() error {
-	port, err := service.GetServiceConfigPort(service)
+	port, err := service.LookupServiceConfigPort(service)
 	if err == nil {
 		service.SetPort(port)
 	}

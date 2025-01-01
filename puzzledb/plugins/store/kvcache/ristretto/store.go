@@ -48,7 +48,7 @@ func (store *Store) ServiceName() string {
 }
 
 func (store *Store) GetNumCounters() (int64, error) {
-	v, err := store.GetServiceConfigInt(store, NumCounters)
+	v, err := store.LookupServiceConfigInt(store, NumCounters)
 	if err != nil {
 		return DefaultNumCounters, nil //nolint: nilerr
 	}
@@ -56,7 +56,7 @@ func (store *Store) GetNumCounters() (int64, error) {
 }
 
 func (store *Store) GetMaxCost() (int64, error) {
-	v, err := store.GetServiceConfigInt(store, MaxCost)
+	v, err := store.LookupServiceConfigInt(store, MaxCost)
 	if err != nil {
 		return DefaultMaxCost, nil //nolint: nilerr
 	}
@@ -64,7 +64,7 @@ func (store *Store) GetMaxCost() (int64, error) {
 }
 
 func (store *Store) GeBufferItems() (int64, error) {
-	v, err := store.GetServiceConfigInt(store, BufferItems)
+	v, err := store.LookupServiceConfigInt(store, BufferItems)
 	if err != nil {
 		return DefaultBufferItems, nil //nolint: nilerr
 	}
@@ -72,7 +72,7 @@ func (store *Store) GeBufferItems() (int64, error) {
 }
 
 func (store *Store) GeMetrics() (bool, error) {
-	v, err := store.GetServiceConfigBool(store, Metrics)
+	v, err := store.LookupServiceConfigBool(store, Metrics)
 	if err != nil {
 		return DefalutMetrics, nil //nolint: nilerr
 	}
