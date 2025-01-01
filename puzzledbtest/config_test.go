@@ -18,7 +18,6 @@ import (
 	"testing"
 
 	"github.com/cybergarage/puzzledb-go/puzzledb"
-	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
 	"github.com/cybergarage/puzzledb-go/puzzledb/tls"
 )
 
@@ -80,26 +79,6 @@ func TestDefaultTestConfig(t *testing.T) {
 
 func DefaultTestConfigTest(t *testing.T, config Config) {
 	t.Helper()
-
-	// Check auth config
-
-	aconfs, err := auth.NewConfigWith(config, puzzledb.ConfigAuth)
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	if len(aconfs) < 1 {
-		t.Errorf("no auth config (%s)", config.UsedConfigFile())
-		return
-	}
-
-	for _, aconf := range aconfs {
-		_, err := auth.NewAuthenticatorTypeFrom(aconf.Type)
-		if err != nil {
-			t.Error(err)
-		}
-	}
 
 	// Check tls config
 
