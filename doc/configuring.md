@@ -20,9 +20,10 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
     plugins:
       auth:
         plain:
-          enabled: false
-          user: admin
-          password: password
+          -
+            enabled: false
+            user: admin
+            password: password
       system:
         grpc:
           enabled: true
