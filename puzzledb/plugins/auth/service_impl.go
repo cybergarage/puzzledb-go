@@ -40,7 +40,7 @@ func NewService() Service {
 
 // ServiceType returns the plug-in service type.
 func (service *service) ServiceType() plugins.ServiceType {
-	return plugins.AuthenticatorService
+	return plugins.AuthService
 }
 
 // ServiceName returns the plug-in service name.
@@ -109,48 +109,36 @@ func (service *service) VerifyCertificate(conn tls.Conn) (bool, error) {
 	return false, nil
 }
 
+// Start starts the service.
 func (service *service) Start() error {
 	service.credStore = map[string]auth.Credential{}
 	service.commonNameRegexp = []*regexp.Regexp{}
 
-	// Setup authenticator configuration
-	// acConfigs, err := auth.NewConfigWith(config, ConfigAuth)
-	// if err != nil {
-	// 	return err
-	// }
+	plainConfigs, err := auth.NewPlainConfigFrom(
+		service,
+		plugins.ConfigPlugins,
+		service.ServiceType().String(),
+		auth.AuthenticatorTypePlainString,
+	)
+	if err != nil {
+		return err
+	}
 
-	// Generate authenticators each the configuration
-	// for _, acConfig := range acConfigs {
-	// 	if !acConfig.Enabled {
-	// 		continue
-	// 	}
-	/*
-		_, err := auth.NewAuthenticatorTypeFrom(acConfig.Type)
-		if err != nil {
-			return err
+	for _, plainConfig := range plainConfigs {
+		if !plainConfig.Enabled {
+			continue
 		}
-	*/
-	/*
-		for _, service := range server.EnabledAuthenticatorServices() {
-			switch acType { // nolint:exhaustive,gocritic
-			case auth.AuthenticatorTypePassword:
-				service, ok := service.(auth_service.PasswordAuthenticatorService)
-				if !ok {
-					continue
-				}
-				ac, err := service.CreatePasswordAuthenticatorWithConfig(acConfig)
-				if err != nil {
-					return err
-				}
-				server.AddAuthenticator(ac)
-			}
-		}
-	*/
-	// }
+		cred := auth.NewCredential(
+			auth.WithCredentialUsername(plainConfig.Username),
+			auth.WithCredentialPassword(plainConfig.Password),
+		)
+		service.SetCredentials(cred)
+	}
 
 	return nil
 }
 
+// Stop stops the service.
 func (service *service) Stop() error {
 	return nil
 }
