@@ -18,17 +18,16 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 )
 
-// Config represents a configuration for authenticator.
-type Config struct {
-	Type     string `mapstructure:"type"`
+// PlainConfig represents a plain configuration for authenticator.
+type PlainConfig struct {
 	Enabled  bool   `mapstructure:"enabled"`
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
 }
 
-// NewConfigWith returns a new configuration for authenticator with the specified configuration.
-func NewConfigWith(config config.Config, path ...string) ([]Config, error) {
-	var configs []Config
+// NewPlainConfigFrom returns a new plain authenticator configuration from the specified configuration.
+func NewPlainConfigFrom(config config.Config, path ...string) ([]PlainConfig, error) {
+	var configs []PlainConfig
 	err := config.UnmarshallConfig(path, &configs)
 	return configs, err
 }
