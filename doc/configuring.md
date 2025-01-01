@@ -22,7 +22,7 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
         plain:
           -
             enabled: false
-            user: admin
+            username: admin
             password: password
       system:
         grpc:
