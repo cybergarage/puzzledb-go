@@ -316,43 +316,6 @@ func (server *Server) setupPlugins() error {
 	return nil
 }
 
-func (server *Server) setupAuthenticators(config Config) error {
-	// Setup authenticator configuration
-	acConfigs, err := auth.NewConfigWith(config, ConfigAuth)
-	if err != nil {
-		return err
-	}
-
-	// Generate authenticators each the configuration
-	for _, acConfig := range acConfigs {
-		if !acConfig.Enabled {
-			continue
-		}
-		_, err := auth.NewAuthenticatorTypeFrom(acConfig.Type)
-		if err != nil {
-			return err
-		}
-		/*
-			for _, service := range server.EnabledAuthenticatorServices() {
-				switch acType { // nolint:exhaustive,gocritic
-				case auth.AuthenticatorTypePassword:
-					service, ok := service.(auth_service.PasswordAuthenticatorService)
-					if !ok {
-						continue
-					}
-					ac, err := service.CreatePasswordAuthenticatorWithConfig(acConfig)
-					if err != nil {
-						return err
-					}
-					server.AddAuthenticator(ac)
-				}
-			}
-		*/
-	}
-
-	return nil
-}
-
 // Start starts the server.
 func (server *Server) Start() error { //nolint:gocognit
 	// Setup logger
@@ -404,10 +367,6 @@ func (server *Server) Start() error { //nolint:gocognit
 	}
 
 	if err := server.setupPlugins(); err != nil {
-		return err
-	}
-
-	if err := server.setupAuthenticators(server.Config); err != nil {
 		return err
 	}
 
