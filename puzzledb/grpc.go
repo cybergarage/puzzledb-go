@@ -157,7 +157,7 @@ func (service *gRPCService) ListConfig(context.Context, *pb.ListConfigRequest) (
 }
 
 func (service *gRPCService) GetConfig(ctx context.Context, req *pb.GetConfigRequest) (*pb.GetConfigResponse, error) {
-	v, err := service.Config.GetConfigObject(req.GetName())
+	v, err := service.Config.LookupConfigObject(req.GetName())
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.GetName()))
 	}

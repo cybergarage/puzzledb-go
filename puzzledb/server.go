@@ -320,10 +320,10 @@ func (server *Server) setupPlugins() error {
 func (server *Server) Start() error { //nolint:gocognit
 	// Setup logger
 
-	ok, _ := server.Config.GetConfigBool(ConfigLogger, ConfigEnabled)
+	ok, _ := server.Config.LookupConfigBool(ConfigLogger, ConfigEnabled)
 	if ok {
 		level := log.LevelInfo
-		levelStr, err := server.Config.GetConfigString(ConfigLogger, ConfigLevel)
+		levelStr, err := server.Config.LookupConfigString(ConfigLogger, ConfigLevel)
 		if err == nil {
 			level = log.GetLevelFromString(levelStr)
 		}
@@ -342,9 +342,9 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	// Setup pprof
 
-	ok, _ = server.Config.GetConfigBool(ConfigPprof, ConfigEnabled)
+	ok, _ = server.Config.LookupConfigBool(ConfigPprof, ConfigEnabled)
 	if ok && !server.pprofStarted {
-		port, err := server.Config.GetConfigInt(ConfigPprof, ConfigPort)
+		port, err := server.Config.LookupConfigInt(ConfigPprof, ConfigPort)
 		if err != nil {
 			return err
 		}

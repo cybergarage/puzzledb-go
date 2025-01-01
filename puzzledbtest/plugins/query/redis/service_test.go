@@ -180,7 +180,7 @@ func TestTLSServer(t *testing.T) {
 	if tlsConfig, ok := server.TLSConfig(); ok {
 		clientOpts.TLSConfig = tlsConfig
 	}
-	tlsPort, err := server.GetConfigInt("plugins", "query", "redis", "tls_port")
+	tlsPort, err := server.LookupConfigInt("plugins", "query", "redis", "tls_port")
 	if err != nil {
 		t.Error(err)
 		return

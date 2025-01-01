@@ -41,8 +41,8 @@ func (conf *viperConfig) UsedConfigFile() string {
 	return viper.ConfigFileUsed()
 }
 
-// GetConfigObject returns a object value for the specified path.
-func (conf *viperConfig) GetConfigObject(paths ...string) (any, error) {
+// LookupConfigObject returns a object value for the specified path.
+func (conf *viperConfig) LookupConfigObject(paths ...string) (any, error) {
 	path := NewPathWith(paths...)
 	v := viper.Get(path)
 	if v == nil {
@@ -51,8 +51,8 @@ func (conf *viperConfig) GetConfigObject(paths ...string) (any, error) {
 	return v, nil
 }
 
-// GetConfigString returns a string value for the specified path.
-func (conf *viperConfig) GetConfigString(paths ...string) (string, error) {
+// LookupConfigString returns a string value for the specified path.
+func (conf *viperConfig) LookupConfigString(paths ...string) (string, error) {
 	path := NewPathWith(paths...)
 	v := viper.GetString(path)
 	if len(v) == 0 {
@@ -61,8 +61,8 @@ func (conf *viperConfig) GetConfigString(paths ...string) (string, error) {
 	return v, nil
 }
 
-// GetConfigInt returns an integer value for the specified path.
-func (conf *viperConfig) GetConfigInt(paths ...string) (int, error) {
+// LookupConfigInt returns an integer value for the specified path.
+func (conf *viperConfig) LookupConfigInt(paths ...string) (int, error) {
 	path := NewPathWith(paths...)
 	v := viper.GetInt(path)
 	if v == 0 {
@@ -71,8 +71,8 @@ func (conf *viperConfig) GetConfigInt(paths ...string) (int, error) {
 	return v, nil
 }
 
-// GetConfigBool returns a boolean value for the specified path.
-func (conf *viperConfig) GetConfigBool(paths ...string) (bool, error) {
+// LookupConfigBool returns a boolean value for the specified path.
+func (conf *viperConfig) LookupConfigBool(paths ...string) (bool, error) {
 	path := NewPathWith(paths...)
 	v := viper.GetString(path)
 	if len(v) == 0 {

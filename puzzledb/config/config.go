@@ -18,14 +18,14 @@ package config
 type Config interface {
 	// UseConfigFile uses the specified file as the configuration.
 	UsedConfigFile() string
-	// GetConfigObject returns a object value for the specified path.
-	GetConfigObject(paths ...string) (any, error)
-	// GetConfigString returns a string value for the specified path.
-	GetConfigString(paths ...string) (string, error)
-	// GetConfigInt returns an integer value for the specified path.
-	GetConfigInt(paths ...string) (int, error)
-	// GetConfigBool returns a boolean value for the specified path.
-	GetConfigBool(paths ...string) (bool, error)
+	// LookupConfigObject returns a object value for the specified path.
+	LookupConfigObject(paths ...string) (any, error)
+	// LookupConfigString returns a string value for the specified path.
+	LookupConfigString(paths ...string) (string, error)
+	// LookupConfigInt returns an integer value for the specified path.
+	LookupConfigInt(paths ...string) (int, error)
+	// LookupConfigBool returns a boolean value for the specified path.
+	LookupConfigBool(paths ...string) (bool, error)
 	// UnmarshallConfig unmarshalls the specified path object to the specified object.
 	UnmarshallConfig(paths []string, v any) error
 	// SetConfigObject sets a object value to the specified path.
