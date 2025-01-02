@@ -25,6 +25,11 @@
       - Supported MySQL plug-in
       - Supported MongoDB plug-in
 
+## v1.3.6 (2025-01-XX)
+- Fixed
+  - MongoDB plug-in
+    - Fixed to enable TLS configuration
+
 ## v1.3.5 (2025-01-01)
 - Improvements
   - Updated authenticator interface
