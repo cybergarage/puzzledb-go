@@ -80,9 +80,11 @@ func (service *Service) Start() error {
 	}
 
 	tlsConfig, err := service.TLSConfig()
-	if err != nil {
+	if err == nil {
+		service.Server.SetTLSEnabled(true)
 		service.Server.SetTLSConfig(tlsConfig)
 	} else {
+		service.Server.SetTLSEnabled(false)
 		service.Server.SetTLSConfig(nil)
 	}
 
