@@ -92,8 +92,12 @@ unittest:
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
 image:
-	docker image build -t${BIN_SERVER_DOCKER_TAG} -t${BIN_SERVER_DOCKER_TAG_LATEST} .
+	docker image build -t${BIN_SERVER_DOCKER_TAG_LATEST} .
 	docker push ${BIN_SERVER_DOCKER_TAG_LATEST}
+
+image-push:
+	docker image build -t${BIN_SERVER_DOCKER_TAG}
+	docker push ${BIN_SERVER_DOCKER_TAG}
 
 build:
 	go build -v -gcflags=${GCFLAGS} -ldflags=${LDFLAGS} ${BINS}
