@@ -166,4 +166,6 @@ PuzzleDB is being developed in collaboration with the following Cybergarage proj
 
 -   [go-tracing](https://github.com/cybergarage/go-tracing)
 
+-   [go-authenticator](https://github.com/cybergarage/go-authenticator)
+
 -   [go-sasl](https://github.com/cybergarage/go-sasl)
