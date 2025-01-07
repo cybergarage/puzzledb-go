@@ -103,4 +103,4 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
 
 You can override the configuration file location by setting the PUZZLEDB environment variable. PuzzleDB assumes that the environment variable matches the following format: PUZZLEDB + "\_" + the key name in ALL CAPS.
 
-For example, if the environment variable `PUZZLEDB_LOGGING_ENABLED` is set, then PuzzleDB will override the `logging:enabled` setting.
+For example, if the environment variable `PUZZLEDB_LOGGER_ENABLED` is set, then PuzzleDB will override the `logging:enabled` setting.
