@@ -95,7 +95,7 @@ image:
 	docker image build -t${BIN_SERVER_DOCKER_TAG_LATEST} .
 	docker push ${BIN_SERVER_DOCKER_TAG_LATEST}
 
-image-push:
+image-push: image
 	docker image build -t${BIN_SERVER_DOCKER_TAG}
 	docker push ${BIN_SERVER_DOCKER_TAG}
 
