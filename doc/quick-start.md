@@ -1,6 +1,6 @@
 # Quick Start
 
-This chapter shows you how to get started with PuzzleDB quickly: you can start a standalone PuzzleDB server with Docker and use Redis, MongoDB or MySQL CLI commands to insert and read sample data.
+This chapter shows you how to get started with PuzzleDB quickly: you can start a standalone PuzzleDB server with Docker and use MySQL, PostgreSQL, Redis or MongoDB  CLI commands to insert and read sample data.
 
 ## Starting PuzzleDB Server
 
