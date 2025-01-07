@@ -62,7 +62,7 @@ image:doc/img/roadmap.png[doc/img/roadmap]
 = Developer Guides
 
 * References
-** link:https://pkg.go.dev/github.com/cybergarage/puzzledb-go[go-Reference]
+** link:https://pkg.go.dev/github.com/cybergarage/puzzledb-go[go-reference]
 * Contributing (Planning)
 ** link:doc/coding_guideline.md[Coding Guidelines]
 * Building and Testing
