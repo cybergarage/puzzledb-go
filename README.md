@@ -104,7 +104,7 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
 -   References
 
-    -   [go-Reference](https://pkg.go.dev/github.com/cybergarage/puzzledb-go)
+    -   [go-reference](https://pkg.go.dev/github.com/cybergarage/puzzledb-go)
 
 -   Contributing (Planning)
 
