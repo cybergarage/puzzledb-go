@@ -12,8 +12,8 @@ require (
 	github.com/cybergarage/go-mongo v1.2.2
 	github.com/cybergarage/go-mysql v1.2.0
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.6.2
-	github.com/cybergarage/go-redis v1.5.5
+	github.com/cybergarage/go-postgresql v1.6.3-0.20250116105152-dde3dd01a0ae
+	github.com/cybergarage/go-redis v1.5.6-0.20250116105240-1434745fc532
 	github.com/cybergarage/go-safecast v1.2.5
 	github.com/cybergarage/go-sqlparser v1.4.2
 	github.com/cybergarage/go-sqltest v1.4.3
