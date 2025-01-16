@@ -6,11 +6,11 @@ toolchain go1.23.0
 
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20240515141712-4645713e4138
-	github.com/cybergarage/go-authenticator v1.0.2
+	github.com/cybergarage/go-authenticator v1.0.3
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.8
 	github.com/cybergarage/go-mongo v1.2.2
-	github.com/cybergarage/go-mysql v1.1.4
+	github.com/cybergarage/go-mysql v1.2.0
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.6.2
 	github.com/cybergarage/go-redis v1.5.5
@@ -35,7 +35,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
-	github.com/cybergarage/go-sasl v1.2.3 // indirect
+	github.com/cybergarage/go-sasl v1.2.4 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
