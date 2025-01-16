@@ -144,28 +144,28 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
 PuzzleDB is being developed in collaboration with the following Cybergarage projects:
 
--   [go-cbor](https://github.com/cybergarage/go-cbor)
+-   [go-postgresql](https://github.com/cybergarage/go-postgresql) ![go postgresql](https://img.shields.io/github/v/tag/cybergarage/go-postgresql)
 
--   [go-logger](https://github.com/cybergarage/go-logger)
+-   [go-mysql](https://github.com/cybergarage/go-mysql) ![go mysql](https://img.shields.io/github/v/tag/cybergarage/go-mysql)
 
--   [go-mongo](https://github.com/cybergarage/go-mongo)
+-   [go-redis](https://github.com/cybergarage/go-redis) ![go redis](https://img.shields.io/github/v/tag/cybergarage/go-redis)
 
--   [go-mysql](https://github.com/cybergarage/go-mysql)
+-   [go-mongo](https://github.com/cybergarage/go-mongo) ![go mongo](https://img.shields.io/github/v/tag/cybergarage/go-mongo)
 
--   [go-pict](https://github.com/cybergarage/go-pict)
+-   [go-cbor](https://github.com/cybergarage/go-cbor) ![go cbor](https://img.shields.io/github/v/tag/cybergarage/go-cbor)
 
--   [go-postgresql](https://github.com/cybergarage/go-postgresql)
+-   [go-logger](https://github.com/cybergarage/go-logger) ![go logger](https://img.shields.io/github/v/tag/cybergarage/go-logger)
 
--   [go-redis](https://github.com/cybergarage/go-redis)
+-   [go-safecast](https://github.com/cybergarage/go-safecast) ![go safecast](https://img.shields.io/github/v/tag/cybergarage/go-safecast)
 
--   [go-safecast](https://github.com/cybergarage/go-safecast)
+-   [go-sqlparser](https://github.com/cybergarage/go-sqlparser) ![go sqlparser](https://img.shields.io/github/v/tag/cybergarage/go-sqlparser)
 
--   [go-sqlparser](https://github.com/cybergarage/go-sqlparser)
+-   [go-tracing](https://github.com/cybergarage/go-tracing) ![go tracing](https://img.shields.io/github/v/tag/cybergarage/go-tracing)
 
--   [go-sqltest](https://github.com/cybergarage/go-sqltest)
+-   [go-authenticator](https://github.com/cybergarage/go-authenticator) ![go authenticator](https://img.shields.io/github/v/tag/cybergarage/go-authenticator)
 
--   [go-tracing](https://github.com/cybergarage/go-tracing)
+-   [go-sasl](https://github.com/cybergarage/go-sasl) ![go sasl](https://img.shields.io/github/v/tag/cybergarage/go-sasl)
 
--   [go-authenticator](https://github.com/cybergarage/go-authenticator)
+-   [go-sqltest](https://github.com/cybergarage/go-sqltest) ![go sqltest](https://img.shields.io/github/v/tag/cybergarage/go-sqltest)
 
--   [go-sasl](https://github.com/cybergarage/go-sasl)
+-   [go-pict](https://github.com/cybergarage/go-pict) ![go pict](https://img.shields.io/github/v/tag/cybergarage/go-pict)
