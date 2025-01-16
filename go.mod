@@ -2,8 +2,6 @@ module github.com/cybergarage/puzzledb-go
 
 go 1.23
 
-toolchain go1.23.0
-
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20240515141712-4645713e4138
 	github.com/cybergarage/go-authenticator v1.0.3
