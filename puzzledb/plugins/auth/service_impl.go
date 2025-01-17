@@ -108,6 +108,7 @@ func (service *service) Start() error {
 		return err
 	}
 
+	creds := []auth.Credential{}
 	for _, plainConfig := range plainConfigs {
 		if !plainConfig.Enabled {
 			continue
@@ -116,8 +117,9 @@ func (service *service) Start() error {
 			auth.WithCredentialUsername(plainConfig.Username),
 			auth.WithCredentialPassword(plainConfig.Password),
 		)
-		service.SetCredentials(cred)
+		creds = append(creds, cred)
 	}
+	service.SetCredentials(creds...)
 
 	return nil
 }
