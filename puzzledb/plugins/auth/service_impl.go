@@ -24,18 +24,21 @@ import (
 
 type service struct {
 	plugins.Config
+	auth.AuthManager
 	credStore        map[string]auth.Credential
 	commonNameRegexp []*regexp.Regexp
 }
 
 // NewService returns a new query base service.
 func NewService() Service {
-	server := &service{
+	service := &service{
+		AuthManager:      auth.NewAuthManager(),
 		Config:           plugins.NewConfig(),
 		credStore:        map[string]auth.Credential{},
 		commonNameRegexp: []*regexp.Regexp{},
 	}
-	return server
+	service.AuthManager.SetCredentialStore(service)
+	return service
 }
 
 // ServiceType returns the plug-in service type.
@@ -48,6 +51,7 @@ func (service *service) ServiceName() string {
 	return "auth"
 }
 
+// SetCommonNameRegexps sets common name regular expressions.
 func (service *service) SetCommonNameRegexps(regexps ...string) error {
 	for _, re := range regexps {
 		r, err := regexp.Compile(re)
@@ -72,26 +76,6 @@ func (service *service) LookupCredential(q auth.Query) (auth.Credential, bool, e
 	user := q.Username()
 	cred, ok := service.credStore[user]
 	return cred, ok, nil
-}
-
-// VerifyCredential verifies the client credential.
-func (service *service) VerifyCredential(conn auth.Conn, q auth.Query) (bool, error) {
-	if len(service.credStore) == 0 {
-		return true, nil
-	}
-
-	cred, ok, err := service.LookupCredential(q)
-	if !ok {
-		return false, err
-	}
-	if q.Username() != cred.Username() {
-		return false, nil
-	}
-	if q.Password() != cred.Password() {
-		return false, nil
-	}
-
-	return true, nil
 }
 
 // VerifyCertificate verifies the client certificate.
