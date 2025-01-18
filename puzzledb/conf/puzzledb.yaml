@@ -11,9 +11,9 @@ tls:
   ca_files: [ca.pem]
 plugins:
   auth:
+    enabled: false
     plain:
       -
-        enabled: false
         username: admin
         password: password
   system:

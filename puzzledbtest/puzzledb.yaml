@@ -8,9 +8,9 @@ tls:
   enabled: true
 plugins:
   auth:
+    enabled: false
     plain:
       -
-        enabled: false
         username: admin
         password: password
   system:
