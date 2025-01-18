@@ -98,6 +98,11 @@ func (service *service) Start() error {
 	service.credStore = map[string]auth.Credential{}
 	service.commonNameRegexp = []*regexp.Regexp{}
 
+	ok := service.IsServiceTypeConfigEnabled(plugins.AuthService)
+	if !ok {
+		return nil
+	}
+
 	plainConfigs, err := auth.NewPlainConfigFrom(
 		service,
 		plugins.ConfigPlugins,
@@ -110,9 +115,6 @@ func (service *service) Start() error {
 
 	creds := []auth.Credential{}
 	for _, plainConfig := range plainConfigs {
-		if !plainConfig.Enabled {
-			continue
-		}
 		cred := auth.NewCredential(
 			auth.WithCredentialUsername(plainConfig.Username),
 			auth.WithCredentialPassword(plainConfig.Password),

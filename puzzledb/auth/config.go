@@ -20,7 +20,6 @@ import (
 
 // PlainConfig represents a plain configuration for authenticator.
 type PlainConfig struct {
-	Enabled  bool   `mapstructure:"enabled"`
 	Username string `mapstructure:"username"`
 	Password string `mapstructure:"password"`
 }
