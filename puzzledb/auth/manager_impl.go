@@ -15,18 +15,67 @@
 package auth
 
 import (
+	"regexp"
+
 	"github.com/cybergarage/go-authenticator/auth"
+	"github.com/cybergarage/go-authenticator/auth/tls"
 )
 
-// authManagerImpl represent an authenticator manager.
+// authManagerImpl represent an authenticator authManagerImpl.
 type authManagerImpl struct {
 	auth.Manager
+	credStore        map[string]auth.Credential
+	commonNameRegexp []*regexp.Regexp
 }
 
-// NewAuthManager returns a new authenticator manager.
+// NewAuthManager returns a new authenticator authManagerImpl.
 func NewAuthManager() AuthManager {
-	manager := &authManagerImpl{
-		Manager: auth.NewManager(),
+	authManagerImpl := &authManagerImpl{
+		Manager:          auth.NewManager(),
+		credStore:        map[string]auth.Credential{},
+		commonNameRegexp: []*regexp.Regexp{},
 	}
-	return manager
+	return authManagerImpl
+}
+
+// SetCommonNameRegexps sets common name regular expressions.
+func (mgr *authManagerImpl) SetCommonNameRegexps(regexps ...string) error {
+	for _, re := range regexps {
+		r, err := regexp.Compile(re)
+		if err != nil {
+			return err
+		}
+		mgr.commonNameRegexp = append(mgr.commonNameRegexp, r)
+	}
+	return nil
+}
+
+// SetCredential sets a credential.
+func (mgr *authManagerImpl) SetCredentials(creds ...auth.Credential) error {
+	for _, cred := range creds {
+		mgr.credStore[cred.Username()] = cred
+	}
+	return nil
+}
+
+// LookupCredential looks up a credential.
+func (mgr *authManagerImpl) LookupCredential(q auth.Query) (auth.Credential, bool, error) {
+	user := q.Username()
+	cred, ok := mgr.credStore[user]
+	return cred, ok, nil
+}
+
+// VerifyCertificate verifies the client certificate.
+func (mgr *authManagerImpl) VerifyCertificate(conn tls.Conn) (bool, error) {
+	if len(mgr.commonNameRegexp) == 0 {
+		return true, nil
+	}
+	for _, cert := range conn.ConnectionState().PeerCertificates {
+		for _, re := range mgr.commonNameRegexp {
+			if re.MatchString(cert.Subject.CommonName) {
+				return true, nil
+			}
+		}
+	}
+	return false, nil
 }

@@ -16,6 +16,7 @@ package auth
 
 import (
 	"github.com/cybergarage/go-authenticator/auth"
+	"github.com/cybergarage/go-authenticator/auth/tls"
 )
 
 // CredentialAuthenticator represent a credential authenticator.
@@ -29,5 +30,14 @@ type CertificateAuthenticator = auth.CertificateAuthenticator
 
 // AuthManager represent an authenticator manager.
 type AuthManager interface {
-	auth.Manager
+	// SetCommonNameRegexps sets common name regular expressions.
+	SetCommonNameRegexps(regexps ...string) error
+	// SetCredential sets a credential.
+	SetCredentials(creds ...auth.Credential) error
+	// LookupCredential looks up a credential.
+	LookupCredential(q auth.Query) (Credential, bool, error)
+	// VerifyCredential verifies the client credential.
+	VerifyCredential(conn Conn, q Query) (bool, error)
+	// VerifyCertificate verifies the client certificate.
+	VerifyCertificate(conn tls.Conn) (bool, error)
 }

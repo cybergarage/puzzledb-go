@@ -15,29 +15,21 @@
 package auth
 
 import (
-	"regexp"
-
 	"github.com/cybergarage/puzzledb-go/puzzledb/auth"
-	"github.com/cybergarage/puzzledb-go/puzzledb/auth/tls"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
 )
 
 type service struct {
 	plugins.Config
 	auth.AuthManager
-	credStore        map[string]auth.Credential
-	commonNameRegexp []*regexp.Regexp
 }
 
 // NewService returns a new query base service.
 func NewService() Service {
 	service := &service{
-		AuthManager:      auth.NewAuthManager(),
-		Config:           plugins.NewConfig(),
-		credStore:        map[string]auth.Credential{},
-		commonNameRegexp: []*regexp.Regexp{},
+		AuthManager: auth.NewAuthManager(),
+		Config:      plugins.NewConfig(),
 	}
-	service.AuthManager.SetCredentialStore(service)
 	return service
 }
 
@@ -51,53 +43,8 @@ func (service *service) ServiceName() string {
 	return "auth"
 }
 
-// SetCommonNameRegexps sets common name regular expressions.
-func (service *service) SetCommonNameRegexps(regexps ...string) error {
-	for _, re := range regexps {
-		r, err := regexp.Compile(re)
-		if err != nil {
-			return err
-		}
-		service.commonNameRegexp = append(service.commonNameRegexp, r)
-	}
-	return nil
-}
-
-// SetCredential sets a credential.
-func (service *service) SetCredentials(creds ...auth.Credential) error {
-	for _, cred := range creds {
-		service.credStore[cred.Username()] = cred
-	}
-	return nil
-}
-
-// LookupCredential looks up a credential.
-func (service *service) LookupCredential(q auth.Query) (auth.Credential, bool, error) {
-	user := q.Username()
-	cred, ok := service.credStore[user]
-	return cred, ok, nil
-}
-
-// VerifyCertificate verifies the client certificate.
-func (service *service) VerifyCertificate(conn tls.Conn) (bool, error) {
-	if len(service.commonNameRegexp) == 0 {
-		return true, nil
-	}
-	for _, cert := range conn.ConnectionState().PeerCertificates {
-		for _, re := range service.commonNameRegexp {
-			if re.MatchString(cert.Subject.CommonName) {
-				return true, nil
-			}
-		}
-	}
-	return false, nil
-}
-
 // Start starts the service.
 func (service *service) Start() error {
-	service.credStore = map[string]auth.Credential{}
-	service.commonNameRegexp = []*regexp.Regexp{}
-
 	ok := service.IsServiceTypeConfigEnabled(plugins.AuthService)
 	if !ok {
 		return nil
