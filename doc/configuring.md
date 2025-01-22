@@ -19,9 +19,9 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
       ca_files: [ca.pem]
     plugins:
       auth:
+        enabled: false
         plain:
           -
-            enabled: false
             username: admin
             password: password
       system:
