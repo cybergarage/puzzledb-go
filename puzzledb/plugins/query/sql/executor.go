@@ -163,7 +163,7 @@ func (service *Service) CreateTable(conn Conn, stmt sql.CreateTable) error {
 
 	// Get the collection definition from the schema.
 
-	col, err := NewDocumentSchemaFrom(stmt)
+	schema, err := NewDocumentSchemaFrom(stmt)
 	if err != nil {
 		return err
 	}
@@ -194,7 +194,7 @@ func (service *Service) CreateTable(conn Conn, stmt sql.CreateTable) error {
 		return newErrSchemaExist(stmt.TableName())
 	}
 
-	err = txn.CreateCollection(ctx, col)
+	err = txn.CreateCollection(ctx, schema)
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
