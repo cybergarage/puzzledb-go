@@ -17,6 +17,10 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 include::model/all.csv[]
 |====
 
+=== See also
+
+- https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/query/sql/type.go[plugins.query.sql.NewDocumentElementTypeFrom()]
+
 == Key-Value Object Model
 
 PuzzleDB stores all database objects into key-value objects, and the key-value model is the core data model of PuzzleDB. The key-value model is a simple data model that stores data as a collection of key-value pairs. The key-value model is a flexible and scalable data model that can be used to store and retrieve data efficiently.
