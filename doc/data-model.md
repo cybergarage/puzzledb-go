@@ -185,6 +185,8 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 
 -   [plugins.query.sql.NewDocumentElementTypeFrom()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/query/sql/type.go)
 
+-   [plugins.query.mongo.BSONEncoder::EncodeBSON()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/query/mongo/encoder.go)
+
 ## Key-Value Object Model
 
 PuzzleDB stores all database objects into key-value objects, and the key-value model is the core data model of PuzzleDB. The key-value model is a simple data model that stores data as a collection of key-value pairs. The key-value model is a flexible and scalable data model that can be used to store and retrieve data efficiently.
@@ -359,7 +361,11 @@ The key-value store consists of key-value records, where each record is defined 
 
 Primary keys and secondary indices may comprise one or more columns. Although omitted in the table above, the combination of the element name and value for both objects and indices is repeated based on the index format. Additionally, since the primary key is stored in the key section of an index, the value section remains empty.
 
-### Document (Value) Object
+### See also
+
+-   [plugins.coder.key.tuple.Coder::EncodeKey()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/key/tuple/coder.go)
+
+## Document (Value) Object
 
 The document model is not natively implemented and is currently built on a key-value model with a coder plugin module. PuzzleDB provides a default coder, the CBOR (Concise Binary Object Representation ) plug-in module as the default coder.
 
@@ -446,6 +452,10 @@ PuzzleDB encodes a document data with a coder and stores it as a key-value data.
 </tr>
 </tbody>
 </table>
+
+### See also
+
+-   [plugins.coder.document.cbor.Coder::EncodeDocument()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/document/cbor/coder.go)
 
 ## References
 
