@@ -39,7 +39,7 @@ func TestMySQLTestSuite(t *testing.T) {
 	}
 
 	var databaseDump string
-	dumpDatabase := func(*sqltest.Suite, *sqltest.ScenarioRunner, error) {
+	dumpDatabase := func(*sqltest.Suite, *sqltest.ScenarioTester, error) {
 		databaseDump = server.Store().String()
 	}
 
