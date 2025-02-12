@@ -8,12 +8,12 @@ require (
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.8
 	github.com/cybergarage/go-mongo v1.2.2
-	github.com/cybergarage/go-mysql v1.2.1-0.20250118064636-8de8b4032fda
+	github.com/cybergarage/go-mysql v1.1.1
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.6.3-0.20250117031116-997b2e4e05e1
+	github.com/cybergarage/go-postgresql v1.6.0
 	github.com/cybergarage/go-redis v1.5.6-0.20250116105240-1434745fc532
 	github.com/cybergarage/go-safecast v1.2.5
-	github.com/cybergarage/go-sqlparser v1.4.2
+	github.com/cybergarage/go-sqlparser v1.4.2-0.20250212093351-db918bb4200f
 	github.com/cybergarage/go-sqltest v1.4.4-0.20250127084521-e8f91ecf16ca
 	github.com/cybergarage/go-tracing v1.1.4
 	github.com/dgraph-io/ristretto v0.1.1
