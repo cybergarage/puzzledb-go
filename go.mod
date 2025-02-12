@@ -4,16 +4,16 @@ go 1.23
 
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20240515141712-4645713e4138
-	github.com/cybergarage/go-authenticator v1.0.4-0.20250117134344-237f11cccedd
+	github.com/cybergarage/go-authenticator v1.0.4
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.8
 	github.com/cybergarage/go-mongo v1.2.2
-	github.com/cybergarage/go-mysql v1.1.1
+	github.com/cybergarage/go-mysql v1.1.1-0.20250212125519-e94c5739dd12
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.6.0
 	github.com/cybergarage/go-redis v1.5.6-0.20250116105240-1434745fc532
 	github.com/cybergarage/go-safecast v1.2.5
-	github.com/cybergarage/go-sqlparser v1.4.2-0.20250212093351-db918bb4200f
+	github.com/cybergarage/go-sqlparser v1.4.2-0.20250212123148-1f62983f9221
 	github.com/cybergarage/go-sqltest v1.4.4-0.20250127084521-e8f91ecf16ca
 	github.com/cybergarage/go-tracing v1.1.4
 	github.com/dgraph-io/ristretto v0.1.1
@@ -33,7 +33,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
-	github.com/cybergarage/go-sasl v1.2.5-0.20250117134242-297ede4735ca // indirect
+	github.com/cybergarage/go-sasl v1.2.5 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
