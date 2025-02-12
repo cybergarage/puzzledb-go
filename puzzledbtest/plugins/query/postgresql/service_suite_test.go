@@ -43,7 +43,7 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 	}
 
 	var databaseDump string
-	dumpDatabase := func(*sqltest.Suite, *sqltest.ScenarioTester, error) {
+	dumpDatabase := func(*sqltest.Suite, *sqltest.ScenarioRunner, error) {
 		databaseDump = server.Store().String()
 	}
 
