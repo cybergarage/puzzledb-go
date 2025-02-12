@@ -73,8 +73,6 @@ github.com/cybergarage/go-mysql v1.1.1-0.20250212125519-e94c5739dd12 h1:38Yx2e5d
 github.com/cybergarage/go-mysql v1.1.1-0.20250212125519-e94c5739dd12/go.mod h1:SINhth1oEzqXqqpFx61/zFbVRFwq9C6YA5EWBMyKTEU=
 github.com/cybergarage/go-pict v1.0.0 h1:ruJAusVb7J0Hm+G8xiBJZanzROX2wBcNtExzv4ECLWk=
 github.com/cybergarage/go-pict v1.0.0/go.mod h1:rdjVxfqG/Jl6ehdt+brSOvGbiRKgU+Ihvr7p9O/gde0=
-github.com/cybergarage/go-postgresql v1.6.0 h1:TDDa42R+qnYkQaVigHufC/qmbWukWiD3F0SnCnu+HKg=
-github.com/cybergarage/go-postgresql v1.6.0/go.mod h1:BI8NdyeBNBVbA5PoOTrEz8oUBSDVv/wiht+9P+0xGPQ=
 github.com/cybergarage/go-postgresql v1.6.1-0.20250212094326-b06580d83bdf h1:scIJkE77CUaJyGKPBrhRwHWXHiImZ9Sm13HlS9cm8+8=
 github.com/cybergarage/go-postgresql v1.6.1-0.20250212094326-b06580d83bdf/go.mod h1:IPrerortds29brQoU4CxWGGrNf8q78ZaRYt/WaJcwcc=
 github.com/cybergarage/go-redis v1.5.6-0.20250116105240-1434745fc532 h1:lgL75aU6j9Xd7qZS49WeHjSwXwpJmYZa/1/Uk0qGFIA=
@@ -85,8 +83,8 @@ github.com/cybergarage/go-sasl v1.2.5 h1:p/n77BpKwRSSZr0+4ANytDcQxAfZmI/izIxJ2+k
 github.com/cybergarage/go-sasl v1.2.5/go.mod h1:tgAGdhINFMElVjU/C2Ly6LkPDblUFpfQ8l8/0QoANVI=
 github.com/cybergarage/go-sqlparser v1.4.2-0.20250212123148-1f62983f9221 h1:gJdaI+Pyw2f5/IS/eqqazcA2oKsJ8/C5S7hOAV1F3RY=
 github.com/cybergarage/go-sqlparser v1.4.2-0.20250212123148-1f62983f9221/go.mod h1:v8E4svUnzNc+uUBBP9w+eiKuzFatfrl1zxlRkDCZfwY=
-github.com/cybergarage/go-sqltest v1.4.4-0.20250127084521-e8f91ecf16ca h1:9VXBzTWj917uUp5JHeHsNZBCbhzhe2nQQvBWeJu7eTw=
-github.com/cybergarage/go-sqltest v1.4.4-0.20250127084521-e8f91ecf16ca/go.mod h1:uLTd0XC1N+gcxfgH6UvX1Z53glj90qVv3wgYOtdYLP4=
+github.com/cybergarage/go-sqltest v1.4.3 h1:nWzlz0yVlqbdnBT6kYStN9P+70tcwTJeelWX1YXCxBM=
+github.com/cybergarage/go-sqltest v1.4.3/go.mod h1:SRIIHpeCehkJHqcxr9+0jnw6unM2N0wEEE+x/SdE87o=
 github.com/cybergarage/go-tracing v1.1.4 h1:J/9U1fDB0uGfRx1O4MQl8qgBDCZzNIFoPKYbhRPRoIo=
 github.com/cybergarage/go-tracing v1.1.4/go.mod h1:nG0apSs80pTvlBgYHvGIKpGyoM6mHHxfzkqcb9/vHZ8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
