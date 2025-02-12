@@ -570,7 +570,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 	}
 
 	return resultset.NewResultSet(
-		resultset.WithRowsAffected(uint64(nUpdated)),
+		resultset.WithResultSetRowsAffected(uint64(nUpdated)),
 	), nil
 }
 
@@ -662,7 +662,7 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 	}
 
 	return resultset.NewResultSet(
-		resultset.WithRowsAffected(uint64(nDeleted)),
+		resultset.WithResultSetRowsAffected(uint64(nDeleted)),
 	), nil
 }
 
