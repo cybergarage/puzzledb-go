@@ -67,6 +67,8 @@ github.com/cybergarage/go-cbor v1.3.1 h1:61g2rEctWZ6E/WcPPUrzSIiYg7WA+HpylmdkS/2
 github.com/cybergarage/go-cbor v1.3.1/go.mod h1:VyebR1sGtiReKBYOEDf4Sm6hFXiX6PS2mgdGbk63sBY=
 github.com/cybergarage/go-logger v1.3.8 h1:Law2nkLjH5tJDNISMVUjT7F46x4DaZuBUyWULMs30zY=
 github.com/cybergarage/go-logger v1.3.8/go.mod h1:a7B/AZjPoA1W8EU/458vdCv6YWtRJI7Q9rofUcZjiho=
+github.com/cybergarage/go-logger v1.3.9 h1:X6P9HJYJc5TSn+CrOwcub3VspvVrlt/WMT++f8G+XjA=
+github.com/cybergarage/go-logger v1.3.9/go.mod h1:SU5vzAFJOTs89JXk+Jn89RaNmcR07parcJgnW4e8aDw=
 github.com/cybergarage/go-mongo v1.2.2 h1:21SXy7AlHjyADy7uwZL82e6C1CIHEIWAbX3e6uKVunk=
 github.com/cybergarage/go-mongo v1.2.2/go.mod h1:Kw4mvjgIeIydz5TzkUSJuJSxgvs2/pqHR5NijG46lxg=
 github.com/cybergarage/go-mysql v1.1.1-0.20250212125519-e94c5739dd12 h1:38Yx2e5dG6zoAexZKrnSvBUHvQuzqvTqyx5KMVQRyUQ=
