@@ -22,23 +22,23 @@ import (
 // NewDocumentElementFrom returns a new element with the specified column.
 func NewDocumentElementTypeFrom(sqlType query.DataType) (document.ElementType, error) {
 	switch sqlType { // nolint: exhaustive
-	case query.TinyIntData:
+	case query.TinyIntType:
 		return document.Int8Type, nil
-	case query.SmallIntData:
+	case query.SmallIntType:
 		return document.Int16Type, nil
-	case query.IntData:
+	case query.IntType:
 		return document.Int32Type, nil
-	case query.BigIntData:
+	case query.BigIntType:
 		return document.Int64Type, nil
-	case query.FloatData:
+	case query.FloatType:
 		return document.Float32Type, nil
-	case query.DoubleData:
+	case query.DoubleType:
 		return document.Float64Type, nil
-	case query.TextData, query.VarCharData, query.CharData:
+	case query.TextType, query.VarCharType, query.CharType:
 		return document.StringType, nil
-	case query.BlobData, query.VarBinaryData:
+	case query.BlobType, query.VarBinaryType:
 		return document.BinaryType, nil
-	case query.DateTimeData, query.TimeStampData:
+	case query.DateTimeType, query.TimeStampType:
 		return document.DatetimeType, nil
 	default:
 		return 0, newErrNotSupported(sqlType.String())
@@ -49,23 +49,23 @@ func NewDocumentElementTypeFrom(sqlType query.DataType) (document.ElementType, e
 func NewQueryDataTypeFrom(elemType document.ElementType) (query.DataType, error) {
 	switch elemType {
 	case document.Int8Type:
-		return query.TinyIntData, nil
+		return query.TinyIntType, nil
 	case document.Int16Type:
-		return query.SmallIntData, nil
+		return query.SmallIntType, nil
 	case document.Int32Type:
-		return query.IntData, nil
+		return query.IntType, nil
 	case document.Int64Type:
-		return query.BigIntData, nil
+		return query.BigIntType, nil
 	case document.Float32Type:
-		return query.FloatData, nil
+		return query.FloatType, nil
 	case document.Float64Type:
-		return query.DoubleData, nil
+		return query.DoubleType, nil
 	case document.StringType:
-		return query.TextData, nil
+		return query.TextType, nil
 	case document.BinaryType:
-		return query.BlobData, nil
+		return query.BlobType, nil
 	case document.DatetimeType:
-		return query.TimeStampData, nil
+		return query.TimeStampType, nil
 	case document.ArrayType, document.MapType, document.BoolType:
 		return 0, newErrNotSupported(elemType)
 	default:
