@@ -53,7 +53,7 @@ func TestMongoService(t *testing.T) {
 
 	err = client.Open()
 	if err != nil {
-		t.Skipf(err.Error())
+		t.Skip(err.Error())
 		return
 	}
 
