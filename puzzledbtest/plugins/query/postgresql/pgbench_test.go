@@ -51,7 +51,7 @@ func BenchmarkPgBench(b *testing.B) {
 		output, err := cmd.CombinedOutput()
 		if err != nil {
 			b.Skip(err)
-			b.Skipf(string(output))
+			b.Skip(string(output))
 			return
 		}
 		b.Log(string(output))
