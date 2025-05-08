@@ -6,16 +6,16 @@ require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20240515141712-4645713e4138
 	github.com/cybergarage/go-authenticator v1.0.4
 	github.com/cybergarage/go-cbor v1.3.1
-	github.com/cybergarage/go-logger v1.3.9
+	github.com/cybergarage/go-logger v1.3.10
 	github.com/cybergarage/go-mongo v1.2.2
-	github.com/cybergarage/go-mysql v1.1.1-0.20250212125519-e94c5739dd12
+	github.com/cybergarage/go-mysql v1.3.1-0.20250507143819-9ca1bb6ff147
 	github.com/cybergarage/go-pict v1.0.0
-	github.com/cybergarage/go-postgresql v1.6.1-0.20250212094326-b06580d83bdf
+	github.com/cybergarage/go-postgresql v1.6.1-0.20250507143456-60fed5554d4c
 	github.com/cybergarage/go-redis v1.5.6-0.20250116105240-1434745fc532
-	github.com/cybergarage/go-safecast v1.2.5
-	github.com/cybergarage/go-sqlparser v1.5.1-0.20250417105919-f3349375c686
-	github.com/cybergarage/go-sqltest v1.4.3
-	github.com/cybergarage/go-tracing v1.1.4
+	github.com/cybergarage/go-safecast v1.2.7
+	github.com/cybergarage/go-sqlparser v1.5.1-0.20250501135422-b8abcf9e4fd9
+	github.com/cybergarage/go-sqltest v1.5.1-0.20250507063239-62b3aa6171e6
+	github.com/cybergarage/go-tracing v1.1.5
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/google/uuid v1.6.0
 	github.com/hashicorp/go-memdb v1.3.2
@@ -39,7 +39,7 @@ require (
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible // indirect
-	github.com/go-sql-driver/mysql v1.8.1 // indirect
+	github.com/go-sql-driver/mysql v1.9.0 // indirect
 	github.com/golang/glog v1.2.4 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
@@ -78,17 +78,17 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
-	go.opentelemetry.io/otel v1.33.0 // indirect
+	go.opentelemetry.io/otel v1.35.0 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.15.1 // indirect
-	go.opentelemetry.io/otel/metric v1.33.0 // indirect
+	go.opentelemetry.io/otel/metric v1.35.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.31.0 // indirect
-	go.opentelemetry.io/otel/trace v1.33.0 // indirect
-	go.uber.org/atomic v1.10.0 // indirect
+	go.opentelemetry.io/otel/trace v1.35.0 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.35.0 // indirect
-	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
+	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0 // indirect
 	golang.org/x/net v0.36.0 // indirect
-	golang.org/x/sync v0.11.0 // indirect
+	golang.org/x/sync v0.13.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241230172942-26aa7a208def // indirect
