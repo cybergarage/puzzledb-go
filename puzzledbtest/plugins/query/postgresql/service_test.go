@@ -52,7 +52,6 @@ func TestPostgreSQLServer(t *testing.T) {
 
 			client := sqltest.NewPostgresClient()
 
-			client.SetDatabase("postgres")
 			err := client.Open()
 			if err != nil {
 				t.Error(err)
@@ -73,6 +72,14 @@ func TestPostgreSQLServer(t *testing.T) {
 			// Run tests
 
 			testFunc.fn(t, server, testDBName)
+
+			// Drop the test database
+
+			err = client.Open()
+			if err != nil {
+				t.Error(err)
+				return
+			}
 
 			err = client.DropDatabase(testDBName)
 			if err != nil {
