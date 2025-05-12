@@ -159,7 +159,7 @@ func (service *gRPCService) ListConfig(context.Context, *pb.ListConfigRequest) (
 func (service *gRPCService) GetConfig(ctx context.Context, req *pb.GetConfigRequest) (*pb.GetConfigResponse, error) {
 	v, err := service.Config.LookupConfigObject(req.GetName())
 	if err != nil {
-		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.GetName()))
+		return nil, status.Errorf(codes.NotFound, "%s not found", req.GetName())
 	}
 	res := pb.GetConfigResponse{} //nolint:exhaustruct
 	res.Value = fmt.Sprintf("%v", v)
@@ -203,7 +203,7 @@ func (service *gRPCService) GetMetric(ctx context.Context, req *pb.GetMetricRequ
 			}
 		}
 	}
-	return nil, status.Errorf(codes.NotFound, fmt.Sprintf("%s not found", req.GetName()))
+	return nil, status.Errorf(codes.NotFound, "%s not found", req.GetName())
 }
 
 func (service *gRPCService) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*pb.StatusResponse, error) {
