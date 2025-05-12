@@ -48,7 +48,7 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 		databaseDump = server.Store().String()
 	}
 
-	stepHander := func(scenario *sqltest.Scenario, n int, query string, err error) {
+	stepHander := func(scenario *sqltest.Scenario, n int, query *sqltest.Query, err error) {
 		// t.Logf("[%d]: %s", n, query)
 		// t.Logf("\n%s", server.Store().String())
 	}
