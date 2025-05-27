@@ -17,6 +17,7 @@ package sql
 import (
 	"errors"
 
+	"github.com/cybergarage/go-sqlparser/sql/fn"
 	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
@@ -196,13 +197,19 @@ func (service *Service) UpdateObject(ctx context.Context, conn Conn, txn store.T
 		updateColName := updateCol.Name()
 
 		var updateVal any
-		if fn, ok := updateCol.IsFunction(); ok {
-			v, err := fn.Execute(updateCol, docObj)
-			if err != nil {
-				return err
+		updateVal = nil
+
+		if fx, ok := updateCol.Function(); ok {
+			if executor, err := fx.Executor(); err == nil {
+				v, err := executor.Execute(fn.NewMapWithMap(docObj))
+				if err != nil {
+					return err
+				}
+				updateVal = v
 			}
-			updateVal = v
-		} else {
+		}
+
+		if updateVal == nil {
 			if !updateCol.HasValue() {
 				continue
 			}
