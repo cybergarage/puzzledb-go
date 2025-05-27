@@ -26,10 +26,10 @@ jobs:
 
     - name: Set up FoundationDB
       run: |
-         sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.57/foundationdb-clients_7.3.57-1_amd64.deb
-         sudo apt install -y /tmp/foundationdb-clients_7.3.57-1_amd64.deb
-         sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.57/foundationdb-server_7.3.57-1_amd64.deb
-         sudo apt install -y /tmp/foundationdb-server_7.3.57-1_amd64.deb
+         sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.67/foundationdb-clients_7.3.67-1_amd64.deb
+         sudo apt install -y /tmp/foundationdb-clients_7.3.67-1_amd64.deb
+         sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.67/foundationdb-server_7.3.67-1_amd64.deb
+         sudo apt install -y /tmp/foundationdb-server_7.3.67-1_amd64.deb
          sudo service foundationdb start
 
     - name: Test

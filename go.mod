@@ -3,7 +3,7 @@ module github.com/cybergarage/puzzledb-go
 go 1.24
 
 require (
-	github.com/apple/foundationdb/bindings/go v0.0.0-20240515141712-4645713e4138
+	github.com/apple/foundationdb/bindings/go v0.0.0-20250501205732-f0ed69ea389a
 	github.com/cybergarage/go-authenticator v1.0.4
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.10

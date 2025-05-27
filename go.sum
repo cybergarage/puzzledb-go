@@ -6,6 +6,8 @@ github.com/antlr4-go/antlr/v4 v4.13.1 h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYW
 github.com/antlr4-go/antlr/v4 v4.13.1/go.mod h1:GKmUxMtwp6ZgGwZSva4eWPC5mS6vUAmOABFgjdkM7Nw=
 github.com/apple/foundationdb/bindings/go v0.0.0-20240515141712-4645713e4138 h1:I6u42+SoLXTuA4MR9aYEPoYxvnU1Bz1rw/rb0RtgMmo=
 github.com/apple/foundationdb/bindings/go v0.0.0-20240515141712-4645713e4138/go.mod h1:OMVSB21p9+xQUIqlGizHPZfjK+SHws1ht+ZytVDoz9U=
+github.com/apple/foundationdb/bindings/go v0.0.0-20250501205732-f0ed69ea389a h1:3Ho3R3JAPU/fbtgFuYsZTBGgISoDqB0FxN5XabpzaEE=
+github.com/apple/foundationdb/bindings/go v0.0.0-20250501205732-f0ed69ea389a/go.mod h1:OMVSB21p9+xQUIqlGizHPZfjK+SHws1ht+ZytVDoz9U=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
