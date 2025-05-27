@@ -424,23 +424,23 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
-	// Inserts the object using the primary key
+	// Inserts multiple objects.
+	for _, value := range stmt.Values() {
+		// Inserts the object using the primary key
+		docKey, docObj, err := NewDocumentObjectFromInsertColumns(dbName, col, stmt, value.Columns())
+		if err != nil {
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		}
+		err = txn.InsertObject(ctx, docKey, docObj)
+		if err != nil {
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		}
 
-	docKey, docObj, err := NewDocumentObjectFromInsert(dbName, col, stmt)
-	if err != nil {
-		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
-	}
-
-	err = txn.InsertObject(ctx, docKey, docObj)
-	if err != nil {
-		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
-	}
-
-	// Inserts the secondary indexes.
-
-	err = service.InsertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
-	if err != nil {
-		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		// Inserts the secondary indexes.
+		err = service.InsertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
+		if err != nil {
+			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
+		}
 	}
 
 	// Commits the transaction if the transaction is auto commit.
