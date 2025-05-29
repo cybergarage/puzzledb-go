@@ -16,7 +16,6 @@ package sql
 
 import (
 	"github.com/cybergarage/go-sqlparser/sql"
-	"github.com/cybergarage/go-sqlparser/sql/query"
 	"github.com/cybergarage/go-sqlparser/sql/query/response/resultset"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
@@ -38,9 +37,10 @@ func NewResultSetFrom(storeDB store.Database, storeCol store.Collection, storeRs
 	if err != nil {
 		return nil, err
 	}
-	rs.schema = resultset.NewSchemaFrom(
-		query.NewDatabaseWith(rs.storeDB.Name()),
-		schema,
+	rs.schema = resultset.NewSchema(
+		resultset.WithSchemaDatabaseName(rs.storeDB.Name()),
+		resultset.WithSchemaTableName(schema.TableName()),
+		resultset.WithSchemaColumns(resultset.NewColumnsFrom(schema.Columns())),
 	)
 	return rs, nil
 }
