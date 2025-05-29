@@ -169,7 +169,7 @@ func (service *Service) Select(conn postgresql.Conn, stmt stmt.Select) (protocol
 
 	mSelectLatency.Observe(float64(time.Since(now).Milliseconds()))
 
-	return query.NewResponseFromResultSet(stmt, rs)
+	return query.NewResponseFromResultSet(rs)
 }
 
 // Update handles a UPDATE query.
