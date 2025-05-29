@@ -64,7 +64,7 @@ func (rs *resultSet) Schema() resultset.Schema {
 }
 
 // RowsAffected returns the number of rows affected.
-func (rs *resultSet) RowsAffected() uint64 {
+func (rs *resultSet) RowsAffected() uint {
 	return 0
 }
 
