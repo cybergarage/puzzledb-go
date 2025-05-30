@@ -509,7 +509,11 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 		return nil, err
 	}
 
-	return NewResultSetFrom(db, col, rs)
+	return NewResultSetFrom(
+		WithResultSetDatabase(db),
+		WithResultSetCollection(col),
+		WithResultSetStoreResultSet(rs),
+	)
 }
 
 // Update handles a UPDATE query.

@@ -20,28 +20,58 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+type ResultSetOption func(rs *resultSet) error
+
 type resultSet struct {
 	storeDB store.Database
 	schema  resultset.Schema
 	storeRs store.ResultSet
 }
 
+// WithResultSetDatabase sets the result set database.
+func WithResultSetDatabase(db store.Database) ResultSetOption {
+	return func(rs *resultSet) error {
+		rs.storeDB = db
+		return nil
+	}
+}
+
+// WithResultSetStoreResultSet sets the store result set.
+func WithResultSetStoreResultSet(storeRs store.ResultSet) ResultSetOption {
+	return func(rs *resultSet) error {
+		rs.storeRs = storeRs
+		return nil
+	}
+}
+
+// WithResultSetCollection sets the result set collection.
+func WithResultSetCollection(col store.Collection) ResultSetOption {
+	return func(rs *resultSet) error {
+		schema, err := NewQuerySchemaFrom(col)
+		if err != nil {
+			return err
+		}
+		rs.schema = resultset.NewSchema(
+			resultset.WithSchemaDatabaseName(rs.storeDB.Name()),
+			resultset.WithSchemaTableName(schema.TableName()),
+			resultset.WithSchemaColumns(resultset.NewColumnsFrom(schema.Columns())),
+		)
+		return nil
+	}
+}
+
 // NewResultSet returns a new result set.
-func NewResultSetFrom(storeDB store.Database, storeCol store.Collection, storeRs store.ResultSet) (sql.ResultSet, error) {
+func NewResultSetFrom(opts ...ResultSetOption) (sql.ResultSet, error) {
 	rs := &resultSet{
-		storeDB: storeDB,
+		storeDB: nil,
 		schema:  nil,
-		storeRs: storeRs,
+		storeRs: nil,
 	}
-	schema, err := NewQuerySchemaFrom(storeCol)
-	if err != nil {
-		return nil, err
+	for _, opt := range opts {
+		if err := opt(rs); err != nil {
+			return nil, err
+		}
 	}
-	rs.schema = resultset.NewSchema(
-		resultset.WithSchemaDatabaseName(rs.storeDB.Name()),
-		resultset.WithSchemaTableName(schema.TableName()),
-		resultset.WithSchemaColumns(resultset.NewColumnsFrom(schema.Columns())),
-	)
 	return rs, nil
 }
 
