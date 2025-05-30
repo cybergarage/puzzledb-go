@@ -2,5 +2,8 @@
   "settings" : "https://github.com/golang/vscode-go/blob/master/docs/settings.md",
   "go.buildFlags":[
      "-ldflags=-checklinkname=0"
+  ],
+  "go.testFlags":[
+     "-timeout=5m"
   ]
 }
