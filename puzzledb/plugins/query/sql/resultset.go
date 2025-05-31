@@ -25,17 +25,8 @@ import (
 type ResultSetOption func(rs *resultSet) error
 
 type resultSet struct {
-	storeDB store.Database
 	schema  resultset.Schema
 	storeRs store.ResultSet
-}
-
-// WithResultSetDatabase sets the result set database.
-func WithResultSetDatabase(db store.Database) ResultSetOption {
-	return func(rs *resultSet) error {
-		rs.storeDB = db
-		return nil
-	}
 }
 
 // WithResultSetStoreResultSet sets the store result set.
@@ -64,7 +55,6 @@ func WithResultSetSelectors(selectors query.Selectors) ResultSetOption {
 // NewResultSet returns a new result set.
 func NewResultSetFrom(opts ...ResultSetOption) (sql.ResultSet, error) {
 	rs := &resultSet{
-		storeDB: nil,
 		schema:  nil,
 		storeRs: nil,
 	}
