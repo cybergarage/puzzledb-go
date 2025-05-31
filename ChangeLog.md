@@ -19,16 +19,21 @@
       - Added support for new queries
 
 ## v1.3.x (2024-xx-xx)
-- New features
-  - Authenticator plug-ins
-    - Added password authenticator implementations
-      - Supported MySQL plug-in
-      - Supported MongoDB plug-in
+### New features
+- Enhanced `sql.Service.Insert()` to support inserting multiple objects at once.
+- Added `sql.ResultSetOption` type for flexible result set configuration.
 
-## v1.3.6 (2025-01-XX)
-- Fixed
-  - MongoDB plug-in
-    - Fixed to enable TLS configuration
+## v1.3.6 (2025-05-31)
+### New features
+- Enhanced `sql.Service.Insert()` to support inserting multiple objects at once.
+- Added `sql.ResultSetOption` type for flexible result set configuration.
+### Improved
+- Updated FoundationDB from 7.3.57 to 7.3.67.
+- Updated dependencies (`go-sqlparser`, `go-sqltest`, etc.)
+- Updated test functions (`TestPostgreSQLServer`, `TestPostgreSQLTestSuite`, `TestMySQLTestSuite`) for compatibility with the latest `go-sqltest`.
+- Various minor bug fixes and refactoring.
+### Fixed
+- Fixed warnings related to non-constant format strings.
 
 ## v1.3.5 (2025-01-01)
 - Improvements
