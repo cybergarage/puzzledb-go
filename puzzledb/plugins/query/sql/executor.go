@@ -503,15 +503,28 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 		err = errors.Join(err, service.CommitTransaction(ctx, conn, db, txn))
 	}
 
-	// Returs result set.
+	// Return if errors occuet
 
 	if err != nil {
 		return nil, err
 	}
 
+	// Schema
+
+	selectors := stmt.Selectors()
+	if selectors.IsAsterisk() {
+		selectors, err = NewSelectorsFromCollection(col)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Returs result set.
+
 	return NewResultSetFrom(
 		WithResultSetDatabase(db),
 		WithResultSetCollection(col),
+		WithResultSetSelectors(selectors),
 		WithResultSetStoreResultSet(rs),
 	)
 }
