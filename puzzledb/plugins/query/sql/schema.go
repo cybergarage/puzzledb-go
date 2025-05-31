@@ -17,7 +17,9 @@ package sql
 import (
 	"github.com/cybergarage/go-sqlparser/sql"
 	"github.com/cybergarage/go-sqlparser/sql/query"
+	"github.com/cybergarage/go-sqlparser/sql/query/response/resultset"
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
+	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
 // NewDocumentSchemaFrom creates a new schema from the specified schema object.
@@ -84,5 +86,18 @@ func NewQuerySchemaFrom(doc document.Schema) (query.Schema, error) {
 		doc.Name(),
 		query.WithSchemaColumns(columns),
 		query.WithSchemaIndexes(indexes),
+	), nil
+}
+
+// NewResultSetSchemaFrom creates a resultset new schema from the specified schema object.
+func NewResultSetSchemaFrom(dbName string, col store.Collection) (resultset.Schema, error) {
+	schema, err := NewQuerySchemaFrom(col)
+	if err != nil {
+		return nil, err
+	}
+	return resultset.NewSchema(
+		resultset.WithSchemaDatabaseName(dbName),
+		resultset.WithSchemaTableName(schema.TableName()),
+		resultset.WithSchemaColumns(resultset.NewColumnsFrom(schema.Columns())),
 	), nil
 }
