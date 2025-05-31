@@ -58,7 +58,7 @@ func NewDocumentSchemaFrom(stmt sql.CreateTable) (document.Schema, error) {
 func NewQuerySchemaFrom(doc document.Schema) (query.Schema, error) {
 	columns := query.NewColumns()
 	for _, elem := range doc.Elements() {
-		column, err := NewQueryColumnFrom(elem)
+		column, err := NewQueryColumnFromElement(elem)
 		if err != nil {
 			return nil, err
 		}

@@ -23,7 +23,7 @@ import (
 func NewSelectorsFromCollection(doc document.Collection) (query.Selectors, error) {
 	selectors := query.NewSelectors()
 	for _, elem := range doc.Elements() {
-		column, err := NewQueryColumnFrom(elem)
+		column, err := NewQueryColumnFromElement(elem)
 		if err != nil {
 			return nil, err
 		}
