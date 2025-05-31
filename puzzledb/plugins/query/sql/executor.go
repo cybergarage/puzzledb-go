@@ -519,11 +519,16 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 		}
 	}
 
+	rsSchema, err := NewResultSetSchemaFrom(dbName, collection)
+	if err != nil {
+		return nil, err
+	}
+
 	// Returs result set.
 
 	return NewResultSetFrom(
 		WithResultSetDatabase(db),
-		WithResultSetCollection(collection),
+		WithResultSetSchema(rsSchema),
 		WithResultSetSelectors(selectors),
 		WithResultSetStoreResultSet(rs),
 	)

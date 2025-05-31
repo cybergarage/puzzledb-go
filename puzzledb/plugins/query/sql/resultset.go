@@ -46,18 +46,10 @@ func WithResultSetStoreResultSet(storeRs store.ResultSet) ResultSetOption {
 	}
 }
 
-// WithResultSetCollection sets the result set collection.
-func WithResultSetCollection(col store.Collection) ResultSetOption {
+// WithResultSetSchema sets the result set schema.
+func WithResultSetSchema(schema resultset.Schema) ResultSetOption {
 	return func(rs *resultSet) error {
-		schema, err := NewQuerySchemaFrom(col)
-		if err != nil {
-			return err
-		}
-		rs.schema = resultset.NewSchema(
-			resultset.WithSchemaDatabaseName(rs.storeDB.Name()),
-			resultset.WithSchemaTableName(schema.TableName()),
-			resultset.WithSchemaColumns(resultset.NewColumnsFrom(schema.Columns())),
-		)
+		rs.schema = schema
 		return nil
 	}
 }
