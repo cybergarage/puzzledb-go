@@ -26,7 +26,7 @@ func NewDocumentSchemaFrom(stmt sql.CreateTable) (document.Schema, error) {
 	s.SetName(stmt.TableName())
 	// Add elements
 	for _, col := range stmt.Schema().Columns() {
-		e, err := NewDocumentElementFrom(col)
+		e, err := NewDocumentElementFromColumn(col)
 		if err != nil {
 			return nil, err
 		}

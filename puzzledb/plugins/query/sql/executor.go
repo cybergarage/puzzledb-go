@@ -246,7 +246,7 @@ func (service *Service) AlterTable(conn Conn, stmt sql.AlterTable) error {
 	}
 
 	if column, ok := stmt.AddColumn(); ok {
-		elem, err := NewDocumentElementFrom(column)
+		elem, err := NewDocumentElementFromColumn(column)
 		if err != nil {
 			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
@@ -485,14 +485,14 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 
 	table := tables[0]
 	tableName := table.TableName()
-	col, err := txn.LookupCollection(ctx, tableName)
+	collection, err := txn.LookupCollection(ctx, tableName)
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
 
 	// Selects the specified objects.
 
-	rs, err := service.SelectDocumentObjects(ctx, conn, txn, col, stmt.Where(), stmt.OrderBy(), stmt.Limit())
+	rs, err := service.SelectDocumentObjects(ctx, conn, txn, collection, stmt.Where(), stmt.OrderBy(), stmt.Limit())
 	if err != nil {
 		err = errors.Join(err, service.CancelTransactionWithError(ctx, conn, db, txn, err))
 	}
@@ -513,7 +513,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 
 	selectors := stmt.Selectors()
 	if selectors.IsAsterisk() {
-		selectors, err = NewSelectorsFromCollection(col)
+		selectors, err = NewSelectorsFromCollection(collection)
 		if err != nil {
 			return nil, err
 		}
@@ -523,7 +523,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 
 	return NewResultSetFrom(
 		WithResultSetDatabase(db),
-		WithResultSetCollection(col),
+		WithResultSetCollection(collection),
 		WithResultSetSelectors(selectors),
 		WithResultSetStoreResultSet(rs),
 	)
