@@ -15,11 +15,13 @@
 package sql
 
 import (
+	"github.com/cybergarage/go-mysql/mysql/query"
 	"github.com/cybergarage/go-sqlparser/sql"
 	"github.com/cybergarage/go-sqlparser/sql/query/response/resultset"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
+// ResultSetOption defines a function type for configuring a result set.
 type ResultSetOption func(rs *resultSet) error
 
 type resultSet struct {
@@ -56,6 +58,13 @@ func WithResultSetCollection(col store.Collection) ResultSetOption {
 			resultset.WithSchemaTableName(schema.TableName()),
 			resultset.WithSchemaColumns(resultset.NewColumnsFrom(schema.Columns())),
 		)
+		return nil
+	}
+}
+
+// WithResultSetSelectors sets the result set selectors.
+func WithResultSetSelectors(selectors query.Selectors) ResultSetOption {
+	return func(rs *resultSet) error {
 		return nil
 	}
 }
