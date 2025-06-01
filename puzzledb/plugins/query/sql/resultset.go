@@ -15,7 +15,6 @@
 package sql
 
 import (
-	"github.com/cybergarage/go-mysql/mysql/query"
 	"github.com/cybergarage/go-sqlparser/sql"
 	"github.com/cybergarage/go-sqlparser/sql/query/response/resultset"
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
@@ -41,13 +40,6 @@ func WithResultSetStoreResultSet(storeRs store.ResultSet) ResultSetOption {
 func WithResultSetSchema(schema resultset.Schema) ResultSetOption {
 	return func(rs *resultSet) error {
 		rs.schema = schema
-		return nil
-	}
-}
-
-// WithResultSetSelectors sets the result set selectors.
-func WithResultSetSelectors(selectors query.Selectors) ResultSetOption {
-	return func(rs *resultSet) error {
 		return nil
 	}
 }

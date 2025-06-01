@@ -528,7 +528,6 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 
 	return NewResultSetFrom(
 		WithResultSetSchema(rsSchema),
-		WithResultSetSelectors(selectors),
 		WithResultSetStoreResultSet(rs),
 	)
 }
