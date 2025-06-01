@@ -519,7 +519,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 		}
 	}
 
-	rsSchema, err := NewResultSetSchemaFrom(dbName, collection)
+	rsSchema, err := NewResultSetSchemaFrom(dbName, collection, selectors)
 	if err != nil {
 		return nil, err
 	}

@@ -89,7 +89,7 @@ func NewQuerySchemaFrom(doc document.Schema) (query.Schema, error) {
 }
 
 // NewResultSetSchemaFrom creates a resultset new schema from the specified schema object.
-func NewResultSetSchemaFrom(dbName string, docSchema document.Schema) (resultset.Schema, error) {
+func NewResultSetSchemaFrom(dbName string, docSchema document.Schema, selectors query.Selectors) (resultset.Schema, error) {
 	schema, err := NewQuerySchemaFrom(docSchema)
 	if err != nil {
 		return nil, err
