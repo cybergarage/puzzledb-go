@@ -36,10 +36,7 @@ func TestPostgreSQLTestSuite(t *testing.T) {
 		"SmplTxn.*",
 		"SmplCrud.*",
 		"SmplIndex*",
-		// "FuncMath.*",
-		// "FuncAggrInt",
-		// "FuncAggrFloat",
-		// "FuncAggrDouble",
+		"FuncMath.*",
 		"YcsbWorkload",
 	}
 
