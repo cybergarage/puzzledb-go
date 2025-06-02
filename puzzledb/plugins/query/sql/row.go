@@ -29,16 +29,6 @@ func NewRowFromObject(schema resultset.Schema, obj document.Object) (resultset.R
 	rowObj := make(map[string]any, 0)
 	for _, selector := range selectors {
 		name := selector.Name()
-		if fx, ok := selector.Function(); ok {
-			if executor, err := fx.Executor(); err == nil {
-				value, err := executor.Execute(objMap)
-				if err != nil {
-					return nil, err
-				}
-				rowObj[name] = value
-				continue
-			}
-		}
 		value, ok := objMap[name]
 		if ok {
 			rowObj[name] = value
