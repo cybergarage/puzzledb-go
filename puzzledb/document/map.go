@@ -15,7 +15,7 @@
 package document
 
 // MapObject represents a map object.
-type MapObject map[string]any
+type MapObject = map[string]any
 
 // NewMapObjectFrom returns a new map object from the specified object.
 func NewMapObjectFrom(anyObj any) (MapObject, error) {

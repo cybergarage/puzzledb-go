@@ -27,6 +27,7 @@ var (
 	ErrNotSupported = errors.New("not supported")
 	ErrInvalid      = errors.New("invalid")
 	ErrNotEqual     = errors.New("not equal")
+	ErrNotFound     = errors.New("not found")
 )
 
 // Common error functions

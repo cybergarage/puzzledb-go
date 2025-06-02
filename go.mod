@@ -13,7 +13,7 @@ require (
 	github.com/cybergarage/go-postgresql v1.6.4
 	github.com/cybergarage/go-redis v1.5.6
 	github.com/cybergarage/go-safecast v1.3.2
-	github.com/cybergarage/go-sqlparser v1.6.0
+	github.com/cybergarage/go-sqlparser v1.6.1-0.20250602031259-8b540e8701b6
 	github.com/cybergarage/go-sqltest v1.6.1
 	github.com/cybergarage/go-tracing v1.1.5
 	github.com/dgraph-io/ristretto v0.2.0

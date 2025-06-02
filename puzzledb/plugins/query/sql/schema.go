@@ -94,34 +94,9 @@ func NewResultSetSchemaFrom(dbName string, docSchema document.Schema, selectors 
 	if err != nil {
 		return nil, err
 	}
-
-	// Use name and function from selectors and data type and constraint from schema columns.
-	rsColumns := []resultset.Column{}
-	for _, selector := range selectors {
-		columnName := selector.Name()
-		schemaColumn, err := schema.Columns().LookupColumn(columnName)
-		if err != nil {
-			return nil, err
-		}
-		opts := []resultset.ColumnOption{
-			resultset.WithColumnType(schemaColumn.DataType()),
-			resultset.WithColumnConstraint(schemaColumn.Constraint()),
-		}
-		if schemaColumn.IsFunction() {
-			columnName = schemaColumn.String()
-			fn, ok := schemaColumn.Function()
-			if ok {
-				opts = append(opts, resultset.WithColumnFunction(fn))
-			}
-		}
-		opts = append(opts, resultset.WithColumnName(columnName))
-		rsColumn := resultset.NewColumn(opts...)
-		rsColumns = append(rsColumns, rsColumn)
-	}
-
 	return resultset.NewSchema(
 		resultset.WithSchemaDatabaseName(dbName),
-		resultset.WithSchemaTableName(schema.TableName()),
-		resultset.WithSchemaColumns(rsColumns),
+		resultset.WithSchemaQuerySchema(schema),
+		resultset.WithSchemaSelectors(selectors),
 	), nil
 }
