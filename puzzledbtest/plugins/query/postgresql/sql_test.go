@@ -35,6 +35,7 @@ func TestPostgreSQLTest(t *testing.T) {
 	testNames := []string{
 		// "SmplTxnInt",
 		// "FuncMathInt",
+		// "FuncMathDouble",
 		// "FuncAggrInt",
 		// "FuncAggrFloat",
 		// "FuncAggrDouble",
