@@ -48,6 +48,6 @@ func NewRowFromObject(schema resultset.Schema, obj document.Object) (resultset.R
 	}
 	return resultset.NewRow(
 		resultset.WithRowSchema(schema),
-		resultset.WithRowObject(objMap),
+		resultset.WithRowObject(rowObj),
 	), nil
 }
