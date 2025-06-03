@@ -535,19 +535,19 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 
 	// Return an aggregated result set
 
-	tblSchema, err := NewQuerySchemaFrom(collection)
+	seedSchema, err := NewQuerySchemaFrom(collection)
 	if err != nil {
 		return nil, err
 	}
 
-	aggrSchema := resultset.NewSchema(
+	seedRsSchema := resultset.NewSchema(
 		resultset.WithSchemaDatabaseName(dbName),
-		resultset.WithSchemaTableSchema(tblSchema),
+		resultset.WithSchemaTableSchema(seedSchema),
 		resultset.WithSchemaSelectors(stmt.Selectors()),
 	)
 
-	arrgRs, err := NewResultSetFrom(
-		WithResultSetSchema(aggrSchema),
+	seedRs, err := NewResultSetFrom(
+		WithResultSetSchema(seedRsSchema),
 		WithResultSetStoreResultSet(rs),
 	)
 
@@ -556,8 +556,8 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 	}
 
 	return resultset.NewAggregatedResultSetFrom(
-		arrgRs,
-		tblSchema,
+		seedRs,
+		seedSchema,
 		selectors,
 		stmt.GroupBy(),
 	)
