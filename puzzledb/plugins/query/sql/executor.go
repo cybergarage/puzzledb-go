@@ -419,7 +419,7 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 
 	// Gets the specified collection.
 
-	col, err := txn.LookupCollection(ctx, stmt.TableName())
+	collection, err := txn.LookupCollection(ctx, stmt.TableName())
 	if err != nil {
 		return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
@@ -427,7 +427,7 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 	// Inserts multiple objects.
 	for _, value := range stmt.Values() {
 		// Inserts the object using the primary key
-		docKey, docObj, err := NewDocumentObjectFromInsertColumns(dbName, col, stmt, value.Columns())
+		docKey, docObj, err := NewDocumentObjectFromInsertColumns(dbName, collection, stmt, value.Columns())
 		if err != nil {
 			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
@@ -437,7 +437,7 @@ func (service *Service) Insert(conn Conn, stmt sql.Insert) error {
 		}
 
 		// Inserts the secondary indexes.
-		err = service.InsertSecondaryIndexes(ctx, conn, txn, col, docObj, docKey)
+		err = service.InsertSecondaryIndexes(ctx, conn, txn, collection, docObj, docKey)
 		if err != nil {
 			return service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
@@ -519,16 +519,47 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 		}
 	}
 
-	rsSchema, err := NewResultSetSchemaFrom(dbName, collection, selectors)
+	// Returs result set.
+
+	if !selectors.HasAggregator() {
+		rsSchema, err := NewResultSetSchemaFrom(dbName, collection, selectors)
+		if err != nil {
+			return nil, err
+		}
+
+		return NewResultSetFrom(
+			WithResultSetSchema(rsSchema),
+			WithResultSetStoreResultSet(rs),
+		)
+	}
+
+	// Return an aggregated result set
+
+	tblSchema, err := NewQuerySchemaFrom(collection)
 	if err != nil {
 		return nil, err
 	}
 
-	// Returs result set.
+	aggrSchema := resultset.NewSchema(
+		resultset.WithSchemaDatabaseName(dbName),
+		resultset.WithSchemaTableSchema(tblSchema),
+		resultset.WithSchemaSelectors(stmt.Selectors()),
+	)
 
-	return NewResultSetFrom(
-		WithResultSetSchema(rsSchema),
+	arrgRs, err := NewResultSetFrom(
+		WithResultSetSchema(aggrSchema),
 		WithResultSetStoreResultSet(rs),
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resultset.NewAggregatedResultSetFrom(
+		arrgRs,
+		tblSchema,
+		selectors,
+		stmt.GroupBy(),
 	)
 }
 
