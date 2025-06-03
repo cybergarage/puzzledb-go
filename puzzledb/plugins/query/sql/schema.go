@@ -96,7 +96,7 @@ func NewResultSetSchemaFrom(dbName string, docSchema document.Schema, selectors 
 	}
 	return resultset.NewSchema(
 		resultset.WithSchemaDatabaseName(dbName),
-		resultset.WithSchemaQuerySchema(schema),
+		resultset.WithSchemaTableSchema(schema),
 		resultset.WithSchemaSelectors(selectors),
 	), nil
 }
