@@ -23,6 +23,12 @@
 - Enhanced `sql.Service.Insert()` to support inserting multiple objects at once.
 - Added `sql.ResultSetOption` type for flexible result set configuration.
 
+## v1.3.7 (2025-06-XX)
+### Improved
+- Update math and aggregation functions
+  - PostgreSQL plug-in
+  - MySQL plug-in
+
 ## v1.3.6 (2025-05-31)
 ### New features
 - Enhanced `sql.Service.Insert()` to support inserting multiple objects at once.
