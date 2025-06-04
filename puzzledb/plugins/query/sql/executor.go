@@ -556,10 +556,10 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 	}
 
 	return resultset.NewAggregatedResultSetFrom(
-		seedRs,
-		seedSchema,
-		selectors,
-		stmt.GroupBy(),
+		resultset.WithAggregatedResultSetTableSchema(seedSchema),
+		resultset.WithAggregatedResultSetSelectors(selectors),
+		resultset.WithAggregatedResultSetGroupBy(stmt.GroupBy()),
+		resultset.WithAggregatedResultSetSource(seedRs),
 	)
 }
 
