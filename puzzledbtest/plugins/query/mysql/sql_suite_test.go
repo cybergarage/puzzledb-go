@@ -36,6 +36,8 @@ func TestMySQLTestSuite(t *testing.T) {
 		"SmplTxn.*",
 		"SmplCrud.*",
 		"SmplIndex*",
+		"FuncAggr.*",
+		"FuncMath.*",
 		"YcsbWorkload",
 	}
 
