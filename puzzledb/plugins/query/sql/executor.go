@@ -543,7 +543,7 @@ func (service *Service) Select(conn Conn, stmt sql.Select) (sql.ResultSet, error
 	seedRsSchema := resultset.NewSchema(
 		resultset.WithSchemaDatabaseName(dbName),
 		resultset.WithSchemaTableSchema(seedSchema),
-		resultset.WithSchemaSelectors(stmt.Selectors()),
+		resultset.WithSchemaSelectors(seedSchema.Selectors()),
 	)
 
 	seedRs, err := NewResultSetFrom(
