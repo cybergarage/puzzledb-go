@@ -31,6 +31,8 @@ github.com/cybergarage/go-mysql v1.3.1-0.20250529024826-bf3e45261b65 h1:KI9MIQqe
 github.com/cybergarage/go-mysql v1.3.1-0.20250529024826-bf3e45261b65/go.mod h1:7If7b+vvfe/4WuteSxoGgF4PGQ+bJ2f762D7ghoEJ1o=
 github.com/cybergarage/go-mysql v1.3.1 h1:Rb9QENtEZ4jo6KjnFjrxtDa0zZjU/vbhBIEhspoSu04=
 github.com/cybergarage/go-mysql v1.3.1/go.mod h1:SkW1FjHeNtvIVMUNYdZmoKwXX94IkmQC4FKLbl2gckM=
+github.com/cybergarage/go-mysql v1.3.2-0.20250608142800-176d460b696f h1:XO2tYtEFOPJcaVYO5F029Pp2RFbVtp+wtcqiNV/0h9Y=
+github.com/cybergarage/go-mysql v1.3.2-0.20250608142800-176d460b696f/go.mod h1:350rFM/DkcvY2HxXX0am5twA/YqPqzYT62KI9Iw1L2Q=
 github.com/cybergarage/go-pict v1.0.0 h1:ruJAusVb7J0Hm+G8xiBJZanzROX2wBcNtExzv4ECLWk=
 github.com/cybergarage/go-pict v1.0.0/go.mod h1:rdjVxfqG/Jl6ehdt+brSOvGbiRKgU+Ihvr7p9O/gde0=
 github.com/cybergarage/go-postgresql v1.6.1-0.20250512091034-76951fef5b60 h1:GV37MOfIOZzTrO1JSDWmMym88/wXzIht5ihEcJtEnvc=
@@ -41,6 +43,8 @@ github.com/cybergarage/go-postgresql v1.6.1-0.20250529024805-309461946708 h1:xhw
 github.com/cybergarage/go-postgresql v1.6.1-0.20250529024805-309461946708/go.mod h1:4SWHkoN3JrPLjbmSjSN4zuFHkGP/aevD3Gizjuxo0RU=
 github.com/cybergarage/go-postgresql v1.6.4 h1:MgTgsksLhWc8Zq7bvrouLQVl6BMniImjuaKS0h5OGJE=
 github.com/cybergarage/go-postgresql v1.6.4/go.mod h1:Z8zjXhjKP5A5L1Ns50mH39lNOE+trDkkvtivynEje5Y=
+github.com/cybergarage/go-postgresql v1.6.5 h1:TdfCnYAWAq7hxvTzeH22fr9LKjqiMMeynClKq4m8/yM=
+github.com/cybergarage/go-postgresql v1.6.5/go.mod h1:lL4aoj/8fQUJFFiRCAWX85N7JT2JnUw2BnU6F79td4o=
 github.com/cybergarage/go-redis v1.5.6-0.20250116105240-1434745fc532 h1:lgL75aU6j9Xd7qZS49WeHjSwXwpJmYZa/1/Uk0qGFIA=
 github.com/cybergarage/go-redis v1.5.6-0.20250116105240-1434745fc532/go.mod h1:dym9ImDfEGNt/9C7no/kUm+wF7Fd0WgzVdoWcHYCtDk=
 github.com/cybergarage/go-redis v1.5.6 h1:EGlrUbB0uNSWsMB4dvy0IINhNAqowWAs7D/xR6Er0Zk=
@@ -73,6 +77,7 @@ github.com/cybergarage/go-sqlparser v1.6.1-0.20250603145850-ae3ba3e11cf0 h1:3wRY
 github.com/cybergarage/go-sqlparser v1.6.1-0.20250603145850-ae3ba3e11cf0/go.mod h1:x7ajXODJWm3xEtotGqKHGThwwAOC5RzFEw29ZkSGhlg=
 github.com/cybergarage/go-sqlparser v1.6.1-0.20250604031527-f0b8e15d36b3 h1:uCBpNoRtuOZ9SdvXlBXp6lVGbYSPamwx3JnpW0ychpQ=
 github.com/cybergarage/go-sqlparser v1.6.1-0.20250604031527-f0b8e15d36b3/go.mod h1:x7ajXODJWm3xEtotGqKHGThwwAOC5RzFEw29ZkSGhlg=
+github.com/cybergarage/go-sqlparser v1.6.1-0.20250606094815-4145233181d1/go.mod h1:x7ajXODJWm3xEtotGqKHGThwwAOC5RzFEw29ZkSGhlg=
 github.com/cybergarage/go-sqltest v1.5.2-0.20250512073238-6581281332cf h1:5Qt25KG4hicnFsamKKmup9tX/vqsy5Ty/5V5pQfwptI=
 github.com/cybergarage/go-sqltest v1.5.2-0.20250512073238-6581281332cf/go.mod h1:3qomdH0LNBJD0F6WCCRx+LGUXN4uOMrtseubeM3UPgc=
 github.com/cybergarage/go-sqltest v1.6.1-0.20250517122858-9b30b1904ce4 h1:mdpSwqoJkkgOBNNd1D9TXoZQC2bD6GfynaY1/WAp/5w=
@@ -81,6 +86,7 @@ github.com/cybergarage/go-sqltest v1.6.1-0.20250522120145-343a6f820843/go.mod h1
 github.com/cybergarage/go-sqltest v1.6.1-0.20250528133732-64ba8482da6f h1:M/3SGMQyJ9Mpeh+DVxkcNvQeH1IPkxXAu07nDIx/nUU=
 github.com/cybergarage/go-sqltest v1.6.1-0.20250528133732-64ba8482da6f/go.mod h1:3qomdH0LNBJD0F6WCCRx+LGUXN4uOMrtseubeM3UPgc=
 github.com/cybergarage/go-sqltest v1.6.1/go.mod h1:3qomdH0LNBJD0F6WCCRx+LGUXN4uOMrtseubeM3UPgc=
+github.com/cybergarage/go-sqltest v1.6.2-0.20250606100156-a91df13ec312/go.mod h1:3qomdH0LNBJD0F6WCCRx+LGUXN4uOMrtseubeM3UPgc=
 github.com/cybergarage/go-tracing v1.1.5 h1:woJLmGqTcRVpRQlOB3GqOwhujdZYUoIRr+XmdN3vhKg=
 github.com/cybergarage/go-tracing v1.1.5/go.mod h1:IhFImrr4JiKX88SPNyCPklWSlJdGFW2VdvyjsTcWs1Q=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
