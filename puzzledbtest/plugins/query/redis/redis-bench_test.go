@@ -24,7 +24,7 @@ import (
 )
 
 func BenchmarkRedisBench(b *testing.B) {
-	log.SetStdoutDebugEnbled(true)
+	log.EnableStdoutDebug(true)
 
 	server := puzzledbtest.NewServer()
 	err := server.Start()
