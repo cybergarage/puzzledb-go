@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20250501205732-f0ed69ea389a
-	github.com/cybergarage/go-authenticator v1.0.4
+	github.com/cybergarage/go-authenticator v1.0.5
 	github.com/cybergarage/go-cbor v1.3.1
 	github.com/cybergarage/go-logger v1.3.11
 	github.com/cybergarage/go-mongo v1.2.2
@@ -33,7 +33,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
-	github.com/cybergarage/go-sasl v1.2.5 // indirect
+	github.com/cybergarage/go-sasl v1.2.6 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
