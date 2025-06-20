@@ -6,7 +6,7 @@ COPY . /puzzledb
 WORKDIR /puzzledb
 
 RUN apt-get update && \
-    apt-get install -y wget adduser && \
+    apt-get install -y wget adduser g++ build-essential && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN LATEST_GO_VERSION=$(wget -qO- 'https://go.dev/VERSION?m=text' | head -n 1) && \
@@ -24,9 +24,8 @@ RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/
     apt install /tmp/foundationdb-server_7.3.67-1_amd64.deb &&  \
     rm /tmp/*.deb
 
-RUN go mod tidy
-RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
-RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
+RUN CGO_ENABLED=1 go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
+RUN CGO_ENABLED=1 go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
 
 COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
