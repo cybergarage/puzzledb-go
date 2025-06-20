@@ -40,6 +40,8 @@ then
    #helpFunction
 fi
 
+echo ""
+
 # Begin script in case all parameters are correct
 echo "OPERATING SYSTEM  = $paramOS"
 echo "ARCHITECTURE      = $paramARCH"
@@ -82,10 +84,10 @@ echo "Download file url [$server_file_url]"
 
 echo ""
 
-wget --directory-prefix=/tmp $client_file_url &&  \
-apt install "/tmp/$client_file" &&  \
+wget --directory-prefix=/tmp $client_file_url
+apt install "/tmp/$client_file"
 
-wget --directory-prefix=/tmp $file_url &&  \
-apt install "/tmp/$server_file" &&  \
+wget --directory-prefix=/tmp $server_file_url
+apt install "/tmp/$server_file"
 
 rm /tmp/*.deb
