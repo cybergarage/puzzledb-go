@@ -49,8 +49,8 @@ echo "ARCHITECTURE      = $paramARCH"
 version=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/apple/foundationdb/releases/latest)
 version=${version##*/}
 
-client_filename="foundationdb-clients_${version##*/}-1_$paramARCH$file_extension"
-server_filename="foundationdb-server_${version##*/}-1_$paramARCH$file_extension"
+client_filename="foundationdb-clients_${version##*/}-1_$paramARCH"
+server_filename="foundationdb-server_${version##*/}-1_$paramARCH"
 
 echo "Latest version for FoundationDB [$version]"
 
