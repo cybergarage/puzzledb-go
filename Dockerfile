@@ -24,7 +24,6 @@ RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/
     apt install /tmp/foundationdb-server_7.3.67-1_amd64.deb &&  \
     rm /tmp/*.deb
 
-RUN go get github.com/apple/foundationdb/bindings/go@63035b5c3ecb65a615126cf3d62e36df58a9c994
 RUN go mod tidy
 RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
 RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
