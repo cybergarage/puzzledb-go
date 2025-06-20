@@ -14,6 +14,7 @@ RUN LATEST_GO_VERSION=$(wget -qO- 'https://go.dev/VERSION?m=text' | head -n 1) &
     rm -rf /usr/local/go && \
     tar -C /usr/local -xzf /tmp/go.tar.gz && \
     rm /tmp/go.tar.gz
+ENV PATH="/usr/local/go/bin:${PATH}"
 
 RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.67/foundationdb-clients_7.3.67-1_amd64.deb &&  \
     apt install /tmp/foundationdb-clients_7.3.67-1_amd64.deb &&  \
