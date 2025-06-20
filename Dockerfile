@@ -6,12 +6,14 @@ COPY . /puzzledb
 WORKDIR /puzzledb
 
 RUN apt-get update && \
-    apt-get install -y snapd wget adduser && \
+    apt-get install -y wget adduser && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install latest Go using snap
-RUN snap install go --classic
-ENV PATH="/snap/bin:${PATH}"
+RUN LATEST_GO_VERSION=$(wget -qO- 'https://go.dev/VERSION?m=text' | head -n 1) && \
+    wget https://go.dev/dl/${LATEST_GO_VERSION}.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
+    rm -rf /usr/local/go && \
+    tar -C /usr/local -xzf /tmp/go.tar.gz && \
+    rm /tmp/go.tar.gz
 
 RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.67/foundationdb-clients_7.3.67-1_amd64.deb &&  \
     apt install /tmp/foundationdb-clients_7.3.67-1_amd64.deb &&  \
