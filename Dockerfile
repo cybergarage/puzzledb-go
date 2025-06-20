@@ -1,4 +1,9 @@
-FROM ubuntu:24.04
+FROM ubuntu:24.04 AS foundationdb
+
+ARG BUILDOS
+ARG TARGETPLATFORM
+ARG TARGETARCH
+ARG TARGETOS
 
 USER root
 
@@ -6,12 +11,18 @@ COPY . /puzzledb
 WORKDIR /puzzledb
 
 RUN apt-get update && \
-    apt-get install -y golang wget adduser && \
+    apt-get install -y curl wget 
+
+RUN ./foundationdb.sh -a "$TARGETARCH" -o "$TARGETOS"
+
+FROM foundationdb AS golang
+
+RUN apt-get install -y golang adduser && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN foundationdb.sh
+FROM golang AS puzzledb-build
 
-RUN go get github.com/apple/foundationdb/bindings/go@63035b5c3ecb65a615126cf3d62e36df58a9c994
+RUN go get github.com/apple/foundationdb/bindings/go@v0.0.0-20250616221319-fffa38913379
 RUN go mod tidy
 RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
 RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
