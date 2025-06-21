@@ -1,4 +1,9 @@
-FROM ubuntu:24.04
+FROM ubuntu:24.04 AS foundationdb
+
+ARG BUILDOS
+ARG TARGETPLATFORM
+ARG TARGETARCH
+ARG TARGETOS
 
 USER root
 
@@ -6,8 +11,7 @@ COPY . /puzzledb
 WORKDIR /puzzledb
 
 RUN apt-get update && \
-    apt-get install -y wget adduser g++ build-essential && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get install -y curl wget adduser g++ build-essential
 
 RUN LATEST_GO_VERSION=$(wget -qO- 'https://go.dev/VERSION?m=text' | head -n 1) && \
     wget https://go.dev/dl/${LATEST_GO_VERSION}.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
@@ -16,13 +20,14 @@ RUN LATEST_GO_VERSION=$(wget -qO- 'https://go.dev/VERSION?m=text' | head -n 1) &
     rm /tmp/go.tar.gz
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.67/foundationdb-clients_7.3.67-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-clients_7.3.67-1_amd64.deb &&  \
-    rm /tmp/*.deb
+RUN ./foundationdb.sh -a "$TARGETARCH" -o "$TARGETOS"
 
-RUN wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/7.3.67/foundationdb-server_7.3.67-1_amd64.deb &&  \
-    apt install /tmp/foundationdb-server_7.3.67-1_amd64.deb &&  \
-    rm /tmp/*.deb
+FROM foundationdb AS golang
+
+RUN apt-get install -y golang adduser && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+FROM golang AS puzzledb-build
 
 RUN CGO_ENABLED=1 go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
 RUN CGO_ENABLED=1 go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
