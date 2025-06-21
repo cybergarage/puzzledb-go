@@ -91,7 +91,7 @@ unittest:
 	${PKG}/... ${TEST_PKG}/...
 	go tool cover -html=${PKG_COVER}.out -o ${PKG_COVER}.html
 
-image:
+image: test
 	docker image build -t${BIN_SERVER_DOCKER_TAG_LATEST} -t${BIN_SERVER_DOCKER_TAG} .
 	docker push ${BIN_SERVER_DOCKER_TAG_LATEST}
 

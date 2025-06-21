@@ -11,7 +11,14 @@ COPY . /puzzledb
 WORKDIR /puzzledb
 
 RUN apt-get update && \
-    apt-get install -y curl wget 
+    apt-get install -y curl wget adduser g++ build-essential
+
+RUN LATEST_GO_VERSION=$(wget -qO- 'https://go.dev/VERSION?m=text' | head -n 1) && \
+    wget https://go.dev/dl/${LATEST_GO_VERSION}.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
+    rm -rf /usr/local/go && \
+    tar -C /usr/local -xzf /tmp/go.tar.gz && \
+    rm /tmp/go.tar.gz
+ENV PATH="/usr/local/go/bin:${PATH}"
 
 RUN ./foundationdb.sh -a "$TARGETARCH" -o "$TARGETOS"
 
@@ -22,10 +29,8 @@ RUN apt-get install -y golang adduser && \
 
 FROM golang AS puzzledb-build
 
-RUN go get github.com/apple/foundationdb/bindings/go@v0.0.0-20250616221319-fffa38913379
-RUN go mod tidy
-RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
-RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
+RUN CGO_ENABLED=1 go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
+RUN CGO_ENABLED=1 go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
 
 COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /

@@ -34,8 +34,6 @@ jobs:
 
     - name: Test
       run: |
-          go get github.com/apple/foundationdb/bindings/go@63035b5c3ecb65a615126cf3d62e36df58a9c994
-          go mod tidy
           CGO_ENABLED=1 make certs && make unittest
 
     - name: Upload coverage reports to Codecov
