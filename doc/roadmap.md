@@ -6,354 +6,354 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 ## v2.0.0
 
--   New features
+- New features
 
-    -   ❏ GUI Console
+  - ❏ GUI Console
 
-    -   ❏ Added TLS with mTLS Support
+  - ❏ Added TLS with mTLS Support
 
--   New plug-ins
+- New plug-ins
 
-    -   Enterprise plug-ins
+  - Enterprise plug-ins
 
-        -   ❏ Added QoS plug-ins
+    - ❏ Added QoS plug-ins
 
-    -   Security plug-ins
+  - Security plug-ins
 
-        -   ❏ Added Audit plug-ins
+    - ❏ Added Audit plug-ins
 
-        -   ❏ Added Encrypt plug-ins
+    - ❏ Added Encrypt plug-ins
 
 ## v1.4.x
 
--   Kubernetes features
+- Kubernetes features
 
-    -   ❏ Operator
+  - ❏ Operator
 
--   New plug-ins
+- New plug-ins
 
-    -   Storage plug-ins
+  - Storage plug-ins
 
-        -   ❏ Added JunoDB plug-in
+    - ❏ Added JunoDB plug-in
 
-        -   ❏ Added TiKV plug-in
+    - ❏ Added TiKV plug-in
 
-    -   Coordinator plug-ins
+  - Coordinator plug-ins
 
-        -   ❏ Added etcd plug-in
+    - ❏ Added etcd plug-in
 
-    -   Metrics plug-ins
+  - Metrics plug-ins
 
-        -   ❏ Added Graphite plug-in
+    - ❏ Added Graphite plug-in
 
-            -   Improvements
+      - Improvements
 
--   Plug-in improvements
+- Plug-in improvements
 
-    -   Query plug-ins
+  - Query plug-ins
 
-        -   MySQL plug-in
+    - MySQL plug-in
 
-            -   Supported queries
+      - Supported queries
 
-                -   ❏ ALTER TABLE
+        - ❏ ALTER TABLE
 
-                -   ❏ CREATE INDEX
+        - ❏ CREATE INDEX
 
-                -   ❏ LIMIT and ORDER BY in SELECT queries
+        - ❏ LIMIT and ORDER BY in SELECT queries
 
-        -   MongoDB plug-in
+    - MongoDB plug-in
 
-            -   Supported queries
+      - Supported queries
 
-                -   ❏ createIndex (Only single field and Comound indexes)
+        - ❏ createIndex (Only single field and Comound indexes)
 
-            -   Disabled features
+      - Disabled features
 
-                -   ❏ Auto Indexing
+        - ❏ Auto Indexing
 
 ## v1.3.3 (2024-05-20)
 
--   New features
+- New features
 
-    -   ✓ TLS Support
+  - ✓ TLS Support
 
-        -   ❏ Supported MySQL plug-in
+    - ❏ Supported MySQL plug-in
 
-    -   Security plug-ins
+  - Security plug-ins
 
-        -   ✓ Added authenticator plug-ins
+    - ✓ Added authenticator plug-ins
 
-            -   ✓ Added clear text password plug-ins
+      - ✓ Added clear text password plug-ins
 
-                -   ❏ Supported MySQL plug-in
+        - ❏ Supported MySQL plug-in
 
-                -   ❏ Supported MongoDB plug-in
+        - ❏ Supported MongoDB plug-in
 
 ## v1.3.2 (2024-05-20)
 
--   New features
+- New features
 
-    -   ✓ TLS Support
+  - ✓ TLS Support
 
-        -   ✓ Supported MongoDB plug-in
+    - ✓ Supported MongoDB plug-in
 
 ## v1.3.1 (2024-05-19)
 
--   New features
+- New features
 
-    -   ✓ TLS Support
+  - ✓ TLS Support
 
-        -   ✓ Supported PostgreSQL plug-in
+    - ✓ Supported PostgreSQL plug-in
 
-        -   ✓ Supported Redis plug-in
+    - ✓ Supported Redis plug-in
 
 ## v1.3.0 (2023-12-30)
 
--   New features
+- New features
 
-    -   Security plug-ins
+  - Security plug-ins
 
-        -   ✓ Added authenticator plug-ins
+    - ✓ Added authenticator plug-ins
 
-            -   ✓ Added clear text password plug-ins
+      - ✓ Added clear text password plug-ins
 
-                -   ✓ Supported PostgreSQL plug-in
+        - ✓ Supported PostgreSQL plug-in
 
-                -   ✓ Supported Redis plug-in
+        - ✓ Supported Redis plug-in
 
--   Improvements
+- Improvements
 
-    -   Query plug-ins
+  - Query plug-ins
 
-        -   Redis plug-in
+    - Redis plug-in
 
-            -   Supported queries
+      - Supported queries
 
-                -   ✓ HASH commands
+        - ✓ HASH commands
 
-    -   Updated storage format
+  - Updated storage format
 
 ## v1.2.0 (2023-11-15)
 
--   New features
+- New features
 
-    -   Distributed plug-ins
+  - Distributed plug-ins
 
-        -   ✓ Cache Storage plug-ins
+    - ✓ Cache Storage plug-ins
 
-            -   Enabled cache store plug-in (ristretto) as default
+      - Enabled cache store plug-in (ristretto) as default
 
--   Updates
+- Updates
 
-    -   Redis plug-in
+  - Redis plug-in
 
-        -   Support new commands
+    - Support new commands
 
-            -   ✓ DEL and EXISTS
+      - ✓ DEL and EXISTS
 
--   Improvements
+- Improvements
 
-    -   Updated to set service metrics to prometheus
+  - Updated to set service metrics to prometheus
 
-        -   Query plug-ins
+    - Query plug-ins
 
-            -   PostgreSQL, MySQL, Redis and Mongo
+      - PostgreSQL, MySQL, Redis and Mongo
 
-        -   Storage plug-ins
+    - Storage plug-ins
 
-            -   Cache store (ristretto)
+      - Cache store (ristretto)
 
--   Fixed
+- Fixed
 
-    -   PostgreSQL plug-in
+  - PostgreSQL plug-in
 
-        -   ✓ Fixed transaction hangup using copy commands
+    - ✓ Fixed transaction hangup using copy commands
 
-        -   ✓ Fixed to run pgbench on Ubuntu platforms
+    - ✓ Fixed to run pgbench on Ubuntu platforms
 
 ## v1.1.0 (2023-10-20)
 
--   New features
+- New features
 
-    -   Query plug-ins
+  - Query plug-ins
 
-        -   MySQL plug-in
+    - MySQL plug-in
 
-            -   Support transaction control statements
+      - Support transaction control statements
 
-                -   ✓ BEGIN, COMMIT and ROLLBACK
+        - ✓ BEGIN, COMMIT and ROLLBACK
 
-        -   PostgreSQL plug-in
+    - PostgreSQL plug-in
 
-            -   Support transaction control statements
+      - Support transaction control statements
 
-                -   ✓ BEGIN, COMMIT and ROLLBACK
+        - ✓ BEGIN, COMMIT and ROLLBACK
 
-    -   ✓ Enable pprof
+  - ✓ Enable pprof
 
--   Improvements
+- Improvements
 
-    -   PostgreSQL plug-in
+  - PostgreSQL plug-in
 
-        -   Supported basic aggregate functions
+    - Supported basic aggregate functions
 
-            -   ✓ COUNT, SUM, AVG, MIN and MAX
+      - ✓ COUNT, SUM, AVG, MIN and MAX
 
-        -   Supported basic math functions
+    - Supported basic math functions
 
-            -   ✓ ABS, CEIL and FLOOR
+      - ✓ ABS, CEIL and FLOOR
 
-        -   Supported new data types
+    - Supported new data types
 
-            -   ✓ TIMESTAMP
+      - ✓ TIMESTAMP
 
-        -   Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+    - Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
 
-        -   ✓ Enabled PICT based scenario tests of go-sqltest
+    - ✓ Enabled PICT based scenario tests of go-sqltest
 
-        -   Supported new statements
+    - Supported new statements
 
-            -   ✓ TRUNCATE, VACCUM and COPY
+      - ✓ TRUNCATE, VACCUM and COPY
 
-        -   Supported pgbench workload
+    - Supported pgbench workload
 
-    -   MySQL plug-in
+  - MySQL plug-in
 
-        -   Supported new data types
+    - Supported new data types
 
-            -   ✓ DATETIME and TIMESTAMP
+      - ✓ DATETIME and TIMESTAMP
 
-        -   Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+    - Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
 
-        -   Enabled PICT based scenario tests of go-sqltest
+    - Enabled PICT based scenario tests of go-sqltest
 
 ## v1.0.0 (2023-08-30)
 
--   New plug-ins
+- New plug-ins
 
-    -   Query plug-ins
+  - Query plug-ins
 
-        -   ✓ Added PostgreSQL plug-in
+    - ✓ Added PostgreSQL plug-in
 
-    -   Coordinator plug-ins
+  - Coordinator plug-ins
 
-        -   ✓ Added FoundationDB plug-in
+    - ✓ Added FoundationDB plug-in
 
-    -   Storage plug-ins
+  - Storage plug-ins
 
-        -   Key-Value Store plug-ins
+    - Key-Value Store plug-ins
 
-            -   ✓ Added FoundationDB plug-in
+      - ✓ Added FoundationDB plug-in
 
-            -   ✓ Added cache store plug-in
+      - ✓ Added cache store plug-in
 
--   Improvements
+- Improvements
 
-    -   CLI Utilities
+  - CLI Utilities
 
-        -   ✓ Added status commands to [puzzledb-cli](cmd/cli/puzzledb-cli.md)
+    - ✓ Added status commands to [puzzledb-cli](cmd/cli/puzzledb-cli.md)
 
-    -   Storage plug-ins
+  - Storage plug-ins
 
-        -   Key-Value Store plug-ins
+    - Key-Value Store plug-ins
 
-            -   ✓ Update store interface to Support limit and order options in Range queries
+      - ✓ Update store interface to Support limit and order options in Range queries
 
-            -   memdb plug-in
+      - memdb plug-in
 
-                -   ✓ Support limit and order options in Range queries
+        - ✓ Support limit and order options in Range queries
 
-            -   FoundationDB plug-in
+      - FoundationDB plug-in
 
-                -   ✓ Support limit and order options in Range queries
+        - ✓ Support limit and order options in Range queries
 
-        -   Document store plug-in
+    - Document store plug-in
 
-            -   ✓ Support limit and order options in Range queries based on key-value Store plug-ins
+      - ✓ Support limit and order options in Range queries based on key-value Store plug-ins
 
 ## v0.9.0 (2023-05-07)
 
--   New features
+- New features
 
-    -   CLI Utilities
+  - CLI Utilities
 
-        -   ✓ Added [puzzledb-cli](cmd/cli/puzzledb-cli.md)
+    - ✓ Added [puzzledb-cli](cmd/cli/puzzledb-cli.md)
 
-    -   Operator APIs
+  - Operator APIs
 
-        -   ✓ Added gRPC services for operator APIs and CLI utilities.
+    - ✓ Added gRPC services for operator APIs and CLI utilities.
 
-        -   ✓ Added Prometheus metrics expoter
+    - ✓ Added Prometheus metrics expoter
 
-    -   Configuration support
+  - Configuration support
 
-        -   ✓ Added support for configuration with environment variables.
+    - ✓ Added support for configuration with environment variables.
 
-        -   ✓ Added support for configuration with puzzledb.yaml.
+    - ✓ Added support for configuration with puzzledb.yaml.
 
--   New plug-ins
+- New plug-ins
 
-    -   Coordinator plug-ins
+  - Coordinator plug-ins
 
-        -   ✓ Added memdb plug-in
+    - ✓ Added memdb plug-in
 
-    -   Distributed tracer plug-ins
+  - Distributed tracer plug-ins
 
-        -   ✓ Added OpenTelemetry plug-in
+    - ✓ Added OpenTelemetry plug-in
 
-        -   ✓ Added OpenTracing plug-in
+    - ✓ Added OpenTracing plug-in
 
--   Plug-in improvements
+- Plug-in improvements
 
-    -   Coder plug-ins
+  - Coder plug-ins
 
-        -   Key coder plug-ins
+    - Key coder plug-ins
 
-            -   Tuple plug-in
+      - Tuple plug-in
 
-                -   Fix encoder not to panic on Ubuntu 20.04
+        - Fix encoder not to panic on Ubuntu 20.04
 
-    -   Query plug-ins
+  - Query plug-ins
 
-        -   ✓ MySQL plug-in
+    - ✓ MySQL plug-in
 
-            -   Supported queries
+      - Supported queries
 
-                -   ✓ DROP DATABASE
+        - ✓ DROP DATABASE
 
-                -   ✓ DROP TABLE
+        - ✓ DROP TABLE
 
 ## v0.8.0 (2023-04-10)
 
--   Initial public release
+- Initial public release
 
--   Initial release plug-ins
+- Initial release plug-ins
 
-    -   Query plug-ins
+  - Query plug-ins
 
-        -   ✓ MySQL plug-in
+    - ✓ MySQL plug-in
 
-        -   ✓ Redis plug-in
+    - ✓ Redis plug-in
 
-        -   ✓ MongoDB plug-in
+    - ✓ MongoDB plug-in
 
-    -   Storage plug-ins
+  - Storage plug-ins
 
-        -   Document store plug-in
+    - Document store plug-in
 
-            -   ✓ Key-Value store plug-in
+      - ✓ Key-Value store plug-in
 
-        -   Key-Value Store plug-ins
+    - Key-Value Store plug-ins
 
-            -   ✓ memdb plug-in
+      - ✓ memdb plug-in
 
-    -   Coder plug-ins
+  - Coder plug-ins
 
-        -   Document coder plug-ins
+    - Document coder plug-ins
 
-            -   ✓ CBOR coder plug-in
+      - ✓ CBOR coder plug-in
 
-        -   Key coder plug-ins
+    - Key coder plug-ins
 
-            -   ✓ Tuple plug-in
+      - ✓ Tuple plug-in

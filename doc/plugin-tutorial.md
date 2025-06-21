@@ -101,6 +101,14 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>etcd (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -112,14 +120,6 @@ For the plugin services specified in the standards listed in the following table
 <td style="text-align: left;"><p>ZooKeeper (Planning)</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-</tr>
-<tr>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><p>FoundationDB (Planning)</p></td>
-<td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>-</p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Coder</p></td>

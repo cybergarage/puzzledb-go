@@ -12,25 +12,25 @@ In contrast, PuzzleDB has loosely coupled the query API, data model, and storage
 
 ## References
 
--   [FoundationDB](https://www.foundationdb.org/)
+- [FoundationDB](https://www.foundationdb.org/)
 
-    -   [Layer Concept — FoundationDB](https://apple.github.io/foundationdb/layer-concept.html)
+  - [Layer Concept — FoundationDB](https://apple.github.io/foundationdb/layer-concept.html)
 
-    -   [Announcing FoundationDB Document Layer](https://www.foundationdb.org/blog/announcing-document-layer/)
+  - [Announcing FoundationDB Document Layer](https://www.foundationdb.org/blog/announcing-document-layer/)
 
 <!-- -->
 
--   [Google Cloud Spanner](https://cloud.google.com/spanner/)
+- [Google Cloud Spanner](https://cloud.google.com/spanner/)
 
-    -   [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
+  - [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
 
-    -   [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
+  - [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
 
-    -   [F1: a distributed SQL database that scales: Proceedings of the VLDB Endowment: Vol 6, No 11](https://dl.acm.org/doi/10.14778/2536222.2536232)
+  - [F1: a distributed SQL database that scales: Proceedings of the VLDB Endowment: Vol 6, No 11](https://dl.acm.org/doi/10.14778/2536222.2536232)
 
-    -   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
+  - [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
 
-    -   [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)
+  - [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)
 
 # Data Model
 
@@ -217,9 +217,9 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 
 ### See also
 
--   [plugins.query.sql.NewDocumentElementTypeFrom()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/query/sql/type.go)
+- [plugins.query.sql.NewDocumentElementTypeFrom()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/query/sql/type.go)
 
--   [plugins.query.mongo.BSONEncoder::EncodeBSON()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/query/mongo/encoder.go)
+- [plugins.query.mongo.BSONEncoder::EncodeBSON()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/query/mongo/encoder.go)
 
 ## Key-Value Object Model
 
@@ -397,7 +397,7 @@ Primary keys and secondary indices may comprise one or more columns. Although om
 
 ### See also
 
--   [plugins.coder.key.tuple.Coder::EncodeKey()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/key/tuple/coder.go)
+- [plugins.coder.key.tuple.Coder::EncodeKey()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/key/tuple/coder.go)
 
 ## Document (Value) Object
 
@@ -489,19 +489,19 @@ PuzzleDB encodes a document data with a coder and stores it as a key-value data.
 
 ### See also
 
--   [plugins.coder.document.cbor.Coder::EncodeDocument()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/document/cbor/coder.go)
+- [plugins.coder.document.cbor.Coder::EncodeDocument()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/document/cbor/coder.go)
 
 ## References
 
--   [A technical overview of Azure Cosmos DB | Azure Blog and Updates | Microsoft Azure](https://azure.microsoft.com/en-gb/blog/a-technical-overview-of-azure-cosmos-db/)
+- [A technical overview of Azure Cosmos DB | Azure Blog and Updates | Microsoft Azure](https://azure.microsoft.com/en-gb/blog/a-technical-overview-of-azure-cosmos-db/)
 
-    -   [Azure Cosmos DB conceptual whitepapers](https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers)
+  - [Azure Cosmos DB conceptual whitepapers](https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers)
 
-    -   [Schema-Agnostic Indexing with Azure DocumentDB](https://www.vldb.org/pvldb/vol8/p1668-shukla.pdf)
+  - [Schema-Agnostic Indexing with Azure DocumentDB](https://www.vldb.org/pvldb/vol8/p1668-shukla.pdf)
 
 <!-- -->
 
--   [CBOR — Concise Binary Object Representation | Overview](http://cbor.io/)
+- [CBOR — Concise Binary Object Representation | Overview](http://cbor.io/)
 
 # Storage Concepts
 
@@ -523,33 +523,33 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 
 ## References
 
--   [FoundationDB](https://www.foundationdb.org/)
+- [FoundationDB](https://www.foundationdb.org/)
 
-    -   [Layer Concept — FoundationDB](https://apple.github.io/foundationdb/layer-concept.html)
+  - [Layer Concept — FoundationDB](https://apple.github.io/foundationdb/layer-concept.html)
 
-    -   [Announcing FoundationDB Document Layer](https://www.foundationdb.org/blog/announcing-document-layer/)
-
-<!-- -->
-
--   [Google Cloud Spanner](https://cloud.google.com/spanner/)
-
-    -   [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
-
-    -   [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
-
-    -   [F1: a distributed SQL database that scales: Proceedings of the VLDB Endowment: Vol 6, No 11](https://dl.acm.org/doi/10.14778/2536222.2536232)
-
-    -   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
-
-    -   [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)
+  - [Announcing FoundationDB Document Layer](https://www.foundationdb.org/blog/announcing-document-layer/)
 
 <!-- -->
 
--   [A technical overview of Azure Cosmos DB | Azure Blog and Updates | Microsoft Azure](https://azure.microsoft.com/en-gb/blog/a-technical-overview-of-azure-cosmos-db/)
+- [Google Cloud Spanner](https://cloud.google.com/spanner/)
 
-    -   [Azure Cosmos DB conceptual whitepapers](https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers)
+  - [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
 
-    -   [Schema-Agnostic Indexing with Azure DocumentDB](https://www.vldb.org/pvldb/vol8/p1668-shukla.pdf)
+  - [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
+
+  - [F1: a distributed SQL database that scales: Proceedings of the VLDB Endowment: Vol 6, No 11](https://dl.acm.org/doi/10.14778/2536222.2536232)
+
+  - [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
+
+  - [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)
+
+<!-- -->
+
+- [A technical overview of Azure Cosmos DB | Azure Blog and Updates | Microsoft Azure](https://azure.microsoft.com/en-gb/blog/a-technical-overview-of-azure-cosmos-db/)
+
+  - [Azure Cosmos DB conceptual whitepapers](https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers)
+
+  - [Schema-Agnostic Indexing with Azure DocumentDB](https://www.vldb.org/pvldb/vol8/p1668-shukla.pdf)
 
 # Consistency Model
 
@@ -575,19 +575,19 @@ The coordinator service provides distributed synchronization and coordination fo
 
 ## References
 
--   Coordinator Services
+- Coordinator Services
 
-    -   [The Chubby lock service for loosely-coupled distributed systems](https://research.google/pubs/pub41344/)
+  - [The Chubby lock service for loosely-coupled distributed systems](https://research.google/pubs/pub41344/)
 
-    -   [Apache ZooKeeper](https://zookeeper.apache.org/)
+  - [Apache ZooKeeper](https://zookeeper.apache.org/)
 
-    -   [Consul by HashiCorp](https://www.consul.io/)
+  - [Consul by HashiCorp](https://www.consul.io/)
 
-    -   [etcd by CoreOS](https://etcd.io/)
+  - [etcd by CoreOS](https://etcd.io/)
 
--   [Distributed Coordination. How distributed systems reach consensus | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/distributed-coordination-5eb8eabb2ff)
+- [Distributed Coordination. How distributed systems reach consensus | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/distributed-coordination-5eb8eabb2ff)
 
--   [Apache Zookeeper vs etcd3. A comparison between distributed… | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/apache-curator-vs-etcd3-9c1362600b26)
+- [Apache Zookeeper vs etcd3. A comparison between distributed… | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/apache-curator-vs-etcd3-9c1362600b26)
 
 # Authentication Methods
 
@@ -603,21 +603,21 @@ The authenticator manager supports multiple authentication methods, including us
 
 PuzzleDB supports the following authentication methods for the query plugins.
 
--   Plain
+- Plain
 
--   SCRAM-SHA-256
+- SCRAM-SHA-256
 
--   Certificate (TLS Client Certificate)
+- Certificate (TLS Client Certificate)
 
--   MD5 (Not yes supported)
+- MD5 (Not yes supported)
 
--   Crypt (Not yes supported)
+- Crypt (Not yes supported)
 
--   LDAP (Not yes supported)
+- LDAP (Not yes supported)
 
--   PAM (Not yes supported)
+- PAM (Not yes supported)
 
--   Kerberos (Not yes supported)
+- Kerberos (Not yes supported)
 
 ## Supported Authentication Methods
 
@@ -692,33 +692,33 @@ O:Supported, X:Unsupported, -:Not yes supported
 
 ### PostgreSQL
 
--   [PostgreSQL: Documentation: Authentication Methods](https://www.postgresql.org/docs/current/auth-methods.html)
+- [PostgreSQL: Documentation: Authentication Methods](https://www.postgresql.org/docs/current/auth-methods.html)
 
-    -   [PostgreSQL: Documentation: The pg\_hba.conf File](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
+  - [PostgreSQL: Documentation: The pg\_hba.conf File](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
 
 ## MySQL
 
--   [MySQL: Connection Phase](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html)
+- [MySQL: Connection Phase](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html)
 
--   [MySQL: Authentication Methods](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html)
+- [MySQL: Authentication Methods](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html)
 
-    -   [MySQL: Old Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html#page_protocol_connection_phase_authentication_methods_old_password_authentication)
+  - [MySQL: Old Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html#page_protocol_connection_phase_authentication_methods_old_password_authentication)
 
-    -   [MySQL: Native Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods_native_password_authentication.html)
+  - [MySQL: Native Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods_native_password_authentication.html)
 
 ## MongoDB
 
--   [Security — MongoDB Manual](https://www.mongodb.com/docs/manual/security/)
+- [Security — MongoDB Manual](https://www.mongodb.com/docs/manual/security/)
 
-    -   [Authentication — MongoDB Manual](https://www.mongodb.com/docs/manual/core/authentication/)
+  - [Authentication — MongoDB Manual](https://www.mongodb.com/docs/manual/core/authentication/)
 
-    -   [Configure Database User Authentication — MongoDB Atlas](https://www.mongodb.com/docs/atlas/security/config-db-auth/)
+  - [Configure Database User Authentication — MongoDB Atlas](https://www.mongodb.com/docs/atlas/security/config-db-auth/)
 
 ## Redis
 
--   [Security – Redis](https://redis.io/docs/management/security/)
+- [Security – Redis](https://redis.io/docs/management/security/)
 
-    -   [AUTH | Redis](https://redis.io/commands/auth/)
+  - [AUTH | Redis](https://redis.io/commands/auth/)
 
 # Plug-In Concepts
 
@@ -814,6 +814,14 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>etcd (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -825,14 +833,6 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>ZooKeeper (Planning)</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-</tr>
-<tr>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><p>FoundationDB (Planning)</p></td>
-<td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>-</p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Coder</p></td>
@@ -941,9 +941,9 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 </tbody>
 </table>
 
--   Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
+- Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
 
--   Dependency: Indicates other plug-in service types required to run the plug-in service.
+- Dependency: Indicates other plug-in service types required to run the plug-in service.
 
 ## Plug-In Interfaces
 
@@ -989,22 +989,22 @@ PuzzleDB defines the metrics service interface to support any metrics servicel s
 
 ## References
 
--   [FoundationDB](https://www.foundationdb.org/)
+- [FoundationDB](https://www.foundationdb.org/)
 
-    -   [Layer Concept — FoundationDB](https://apple.github.io/foundationdb/layer-concept.html)
+  - [Layer Concept — FoundationDB](https://apple.github.io/foundationdb/layer-concept.html)
 
-    -   [Announcing FoundationDB Document Layer](https://www.foundationdb.org/blog/announcing-document-layer/)
+  - [Announcing FoundationDB Document Layer](https://www.foundationdb.org/blog/announcing-document-layer/)
 
 <!-- -->
 
--   [Google Cloud Spanner](https://cloud.google.com/spanner/)
+- [Google Cloud Spanner](https://cloud.google.com/spanner/)
 
-    -   [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
+  - [Whitepapers | Cloud Spanner | Google Cloud](https://cloud.google.com/spanner/docs/whitepapers)
 
-    -   [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
+  - [What is Cloud Spanner? A gcpsketchnote cheat sheet | Google Cloud Blog](https://cloud.google.com/blog/en/topics/developers-practitioners/what-cloud-spanner?hl=en)
 
-    -   [F1: a distributed SQL database that scales: Proceedings of the VLDB Endowment: Vol 6, No 11](https://dl.acm.org/doi/10.14778/2536222.2536232)
+  - [F1: a distributed SQL database that scales: Proceedings of the VLDB Endowment: Vol 6, No 11](https://dl.acm.org/doi/10.14778/2536222.2536232)
 
-    -   [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
+  - [Spanner: Google’s Globally-Distributed Database](https://research.google/pubs/pub39966/)
 
-    -   [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)
+  - [Spanner: Becoming a SQL System](https://dl.acm.org/doi/10.1145/3035918.3056103)

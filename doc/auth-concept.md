@@ -12,21 +12,21 @@ The authenticator manager supports multiple authentication methods, including us
 
 PuzzleDB supports the following authentication methods for the query plugins.
 
--   Plain
+- Plain
 
--   SCRAM-SHA-256
+- SCRAM-SHA-256
 
--   Certificate (TLS Client Certificate)
+- Certificate (TLS Client Certificate)
 
--   MD5 (Not yes supported)
+- MD5 (Not yes supported)
 
--   Crypt (Not yes supported)
+- Crypt (Not yes supported)
 
--   LDAP (Not yes supported)
+- LDAP (Not yes supported)
 
--   PAM (Not yes supported)
+- PAM (Not yes supported)
 
--   Kerberos (Not yes supported)
+- Kerberos (Not yes supported)
 
 ## Supported Authentication Methods
 
@@ -101,30 +101,30 @@ O:Supported, X:Unsupported, -:Not yes supported
 
 ### PostgreSQL
 
--   [PostgreSQL: Documentation: Authentication Methods](https://www.postgresql.org/docs/current/auth-methods.html)
+- [PostgreSQL: Documentation: Authentication Methods](https://www.postgresql.org/docs/current/auth-methods.html)
 
-    -   [PostgreSQL: Documentation: The pg\_hba.conf File](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
+  - [PostgreSQL: Documentation: The pg\_hba.conf File](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
 
 ## MySQL
 
--   [MySQL: Connection Phase](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html)
+- [MySQL: Connection Phase](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html)
 
--   [MySQL: Authentication Methods](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html)
+- [MySQL: Authentication Methods](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html)
 
-    -   [MySQL: Old Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html#page_protocol_connection_phase_authentication_methods_old_password_authentication)
+  - [MySQL: Old Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods.html#page_protocol_connection_phase_authentication_methods_old_password_authentication)
 
-    -   [MySQL: Native Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods_native_password_authentication.html)
+  - [MySQL: Native Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods_native_password_authentication.html)
 
 ## MongoDB
 
--   [Security — MongoDB Manual](https://www.mongodb.com/docs/manual/security/)
+- [Security — MongoDB Manual](https://www.mongodb.com/docs/manual/security/)
 
-    -   [Authentication — MongoDB Manual](https://www.mongodb.com/docs/manual/core/authentication/)
+  - [Authentication — MongoDB Manual](https://www.mongodb.com/docs/manual/core/authentication/)
 
-    -   [Configure Database User Authentication — MongoDB Atlas](https://www.mongodb.com/docs/atlas/security/config-db-auth/)
+  - [Configure Database User Authentication — MongoDB Atlas](https://www.mongodb.com/docs/atlas/security/config-db-auth/)
 
 ## Redis
 
--   [Security – Redis](https://redis.io/docs/management/security/)
+- [Security – Redis](https://redis.io/docs/management/security/)
 
-    -   [AUTH | Redis](https://redis.io/commands/auth/)
+  - [AUTH | Redis](https://redis.io/commands/auth/)

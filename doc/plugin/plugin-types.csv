@@ -6,9 +6,9 @@ Query,-,Query handler services,Redis,O,Store (Document)
 ,,,MySQL,O,Store (Document)
 ,,,PostgreSQL,O,Store (Document)
 Coordinator,-,Coordination services,memdb,X,-
+,,,FoundationDB,O,-
 ,,,etcd (Planning),O,-
 ,,,ZooKeeper (Planning),,
-,,,FoundationDB (Planning),O,-
 Coder,Document,Document coder services,CBOR,O,-
 ,Key,Key coder services,Tuple,O,-
 Store,Document,Doument store services,Key-value based store,O,"Store (Key-value), Coder (Document), Coder (Key)"

@@ -187,10 +187,10 @@ Currently, PuzzleDB automatically indexes all sigle fields of inserted and updat
 
 ## References
 
--   [Conceptual whitepapers - Azure Cosmos DB | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers)
+- [Conceptual whitepapers - Azure Cosmos DB | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers)
 
--   [Azure Cosmos DB indexing policies | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/index-policy)
+- [Azure Cosmos DB indexing policies | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/index-policy)
 
--   [Schema-Agnostic Indexing with Azure DocumentDB](https://www.microsoft.com/en-us/research/publication/schema-agnostic-indexing-azure-documentdb/)
+- [Schema-Agnostic Indexing with Azure DocumentDB](https://www.microsoft.com/en-us/research/publication/schema-agnostic-indexing-azure-documentdb/)
 
--   [Manage indexing in Azure Cosmos DB for MongoDB | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/indexing)
+- [Manage indexing in Azure Cosmos DB for MongoDB | Microsoft Learn](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/indexing)

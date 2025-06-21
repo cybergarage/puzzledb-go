@@ -84,6 +84,14 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"><p>-</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><p>etcd (Planning)</p></td>
 <td style="text-align: left;"><p>O</p></td>
 <td style="text-align: left;"><p>-</p></td>
@@ -95,14 +103,6 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 <td style="text-align: left;"><p>ZooKeeper (Planning)</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-</tr>
-<tr>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><p>FoundationDB (Planning)</p></td>
-<td style="text-align: left;"><p>O</p></td>
-<td style="text-align: left;"><p>-</p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Coder</p></td>
@@ -211,9 +211,9 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 </tbody>
 </table>
 
--   Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
+- Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
 
--   Dependency: Indicates other plug-in service types required to run the plug-in service.
+- Dependency: Indicates other plug-in service types required to run the plug-in service.
 
 ## Plug-In Interfaces
 

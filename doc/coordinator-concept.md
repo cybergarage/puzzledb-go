@@ -10,16 +10,16 @@ The coordinator service provides distributed synchronization and coordination fo
 
 ## References
 
--   Coordinator Services
+- Coordinator Services
 
-    -   [The Chubby lock service for loosely-coupled distributed systems](https://research.google/pubs/pub41344/)
+  - [The Chubby lock service for loosely-coupled distributed systems](https://research.google/pubs/pub41344/)
 
-    -   [Apache ZooKeeper](https://zookeeper.apache.org/)
+  - [Apache ZooKeeper](https://zookeeper.apache.org/)
 
-    -   [Consul by HashiCorp](https://www.consul.io/)
+  - [Consul by HashiCorp](https://www.consul.io/)
 
-    -   [etcd by CoreOS](https://etcd.io/)
+  - [etcd by CoreOS](https://etcd.io/)
 
--   [Distributed Coordination. How distributed systems reach consensus | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/distributed-coordination-5eb8eabb2ff)
+- [Distributed Coordination. How distributed systems reach consensus | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/distributed-coordination-5eb8eabb2ff)
 
--   [Apache Zookeeper vs etcd3. A comparison between distributed… | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/apache-curator-vs-etcd3-9c1362600b26)
+- [Apache Zookeeper vs etcd3. A comparison between distributed… | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/apache-curator-vs-etcd3-9c1362600b26)
