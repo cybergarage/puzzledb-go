@@ -203,10 +203,16 @@ doc: doc-touch $(docs) cmd-docs
 
 #
 # FoundationDB
+# https://github.com/apple/foundationdb/tree/main/bindings/go 
 #
 
 fdb-latest:
 	@curl -s https://api.github.com/repos/apple/foundationdb/releases/latest | jq -r .tag_name
+
+fdb-update:
+	@fdb_ver=$$(curl -s https://api.github.com/repos/apple/foundationdb/releases/latest | jq -r .tag_name); \
+	echo "Update FoundationDB to version $$fdb_ver" \
+	go get github.com/apple/foundationdb/bindings/go@$$fdb_ver
 
 #
 # Protos
