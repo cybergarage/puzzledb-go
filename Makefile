@@ -177,29 +177,36 @@ watchlint:
 
 DOC_CLI_ROOT=doc/cmd/cli
 DOC_CLI_BIN=puzzledb-cli-doc
-doc_cmd_cli:
+doc-cmd-cli:
 	go build -o ${DOC_CLI_ROOT}/${DOC_CLI_BIN} ${MODULE_ROOT}/${DOC_CLI_ROOT}
 	pushd ${DOC_CLI_ROOT} && ./${DOC_CLI_BIN} && popd
 	git add ${DOC_CLI_ROOT}/*.md
 
 DOC_SERVER_ROOT=doc/cmd/server
 DOC_SERVER_BIN=puzzledb-server-doc
-doc_cmd_server:
+doc-cmd-server:
 	go build -o ${DOC_SERVER_ROOT}/${DOC_SERVER_BIN} ${MODULE_ROOT}/${DOC_SERVER_ROOT}
 	pushd ${DOC_SERVER_ROOT} && ./${DOC_SERVER_BIN} && popd
 	git add ${DOC_SERVER_ROOT}/*.md
 
-cmd_docs: doc_cmd_cli doc_cmd_server
+cmd-docs: doc-cmd-cli doc-cmd-server
 
 %.md : %.adoc
 	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
 csvs := $(wildcard doc/*/*.csv doc/*/*/*.csv)
 docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc doc/*/*.adoc))
-doc_touch: $(csvs)
+doc-touch: $(csvs)
 	touch doc/*.adoc doc/*/*.adoc
 
-doc: doc_touch $(docs) cmd_docs
+doc: doc-touch $(docs) cmd-docs
 	@sed -e "s/(img\//(doc\/img\//g" README_.md > README.md && rm README_.md
+
+#
+# FoundationDB
+#
+
+fdb-latest:
+	@curl -s https://api.github.com/repos/apple/foundationdb/releases/latest | jq -r .tag_name
 
 #
 # Protos
