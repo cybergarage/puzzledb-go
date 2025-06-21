@@ -55,6 +55,8 @@ BINS=\
 
 BENCHMARK_ENVS=$(shell echo "PUZZLEDB_LOGGER_ENABLED=true PUZZLEDB_LOGGER_LEVEL=info PUZZLEDB_PPROF_ENABLED=false PUZZLEDB_TRACER_ENABLED=false")
 
+FDB_VER=$(shell curl -s https://api.github.com/repos/apple/foundationdb/releases/latest | jq -r .tag_name)
+
 .PHONY: test unittest format vet lint clean docker cmd certs
 .IGNORE: lint
 
@@ -206,13 +208,14 @@ doc: doc-touch $(docs) cmd-docs
 # https://github.com/apple/foundationdb/tree/main/bindings/go 
 #
 
-fdb-latest:
-	@curl -s https://api.github.com/repos/apple/foundationdb/releases/latest | jq -r .tag_name
+fdb-ver:
+	@echo "FoundationDB v${FDB_VER} (latest)"
+	@fdbcli -v
 
 fdb-update:
-	@fdb_ver=$$(curl -s https://api.github.com/repos/apple/foundationdb/releases/latest | jq -r .tag_name); \
-	echo "Update FoundationDB to version $$fdb_ver" \
-	go get github.com/apple/foundationdb/bindings/go@$$fdb_ver
+	@echo "Update FoundationDB to version v${FDB_VER}"
+	go get -u github.com/apple/foundationdb/bindings/go@${FDB_VER}
+	git commit -m "Update FoundationDB to version v${FDB_VER}" go.*
 
 #
 # Protos
