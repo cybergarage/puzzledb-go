@@ -46,8 +46,7 @@ echo ""
 echo "OPERATING SYSTEM  = $paramOS"
 echo "ARCHITECTURE      = $paramARCH"
 
-version=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/apple/foundationdb/releases/latest)
-version=${version##*/}
+version=7.3.63
 
 client_filename="foundationdb-clients_${version##*/}-1_$paramARCH"
 server_filename="foundationdb-server_${version##*/}-1_$paramARCH"
