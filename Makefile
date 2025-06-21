@@ -216,8 +216,9 @@ fdb-update:
 	@echo "Update FoundationDB to version v${FDB_VER}"
 	go get -u github.com/apple/foundationdb/bindings/go@${FDB_VER}
 	sed -i .bak -e 's/FDB_VER: .*/FDB_VER: ${FDB_VER}/g' .github/workflows/make.yml
-	rm -f .github/workflows/make.yml.bak
-	git commit -m "Update FoundationDB to version v${FDB_VER}" go.* .github/workflows/make.yml
+	sed -i .bak -e 's/version=.*/version=${FDB_VER}/g' scripts/fdb_install.sh
+	rm -f .github/workflows/*.bak scripts/*.bak
+	git commit -m "Update FoundationDB to version v${FDB_VER}" go.* .github/workflows/make.yml scripts/fdb_install.sh
 
 #
 # Protos
