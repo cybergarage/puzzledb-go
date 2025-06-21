@@ -11,20 +11,19 @@ COPY . /puzzledb
 WORKDIR /puzzledb
 
 RUN apt-get update && \
-    apt-get install -y curl wget adduser g++ build-essential
+    apt-get install -y curl wget adduser build-essential
 
-RUN ./foundationdb.sh -a "$TARGETARCH" -o "$TARGETOS"
+RUN ./scripts/fdb_install.sh -a "$TARGETARCH" -o "$TARGETOS"
 
-# Install latest Go for the target OS and architecture
-RUN LATEST_GO_VERSION=$(wget -qO- 'https://go.dev/VERSION?m=text' | head -n 1) && \
-    wget https://go.dev/dl/${LATEST_GO_VERSION}.${TARGETOS}-${TARGETARCH}.tar.gz -O /tmp/go.tar.gz && \
-    rm -rf /usr/local/go && \
-    tar -C /usr/local -xzf /tmp/go.tar.gz && \
-    rm /tmp/go.tar.gz
+RUN LATEST_GO_VER=$(wget -qO- 'https://go.dev/VERSION?m=text' | head -n 1) && \
+    LATEST_GO_PKG=${LATEST_GO_VER}.${TARGETOS}-${TARGETARCH}.tar.gz && \ 
+    wget https://go.dev/dl/${LATEST_GO_PKG} -O ${LATEST_GO_PKG} && \
+    tar -C /usr/local -xzf ${LATEST_GO_PKG} && \
+    rm ${LATEST_GO_PKG}
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-RUN go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
-RUN go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
+RUN CGO_ENABLED=1 go build -o /puzzledb-server github.com/cybergarage/puzzledb-go/cmd/puzzledb-server
+RUN CGO_ENABLED=1 go build -o /puzzledb-cli github.com/cybergarage/puzzledb-go/cmd/puzzledb-cli
 
 COPY ./puzzledb/conf/puzzledb.yaml /
 COPY ./docker/entrypoint.sh /
