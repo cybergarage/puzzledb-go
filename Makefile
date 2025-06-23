@@ -209,8 +209,8 @@ doc: doc-touch $(docs) cmd-docs
 #
 
 fdb-ver:
-	@echo "FoundationDB v${FDB_VER} (latest)"
 	@fdbcli -v
+	@echo "FoundationDB v${FDB_VER} (latest)"
 
 fdb-update:
 	@echo "Update FoundationDB to version v${FDB_VER}"
