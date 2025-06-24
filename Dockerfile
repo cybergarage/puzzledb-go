@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS foundationdb
+FROM ubuntu:24.04 AS base-image
 
 ARG BUILDOS
 ARG TARGETPLATFORM
