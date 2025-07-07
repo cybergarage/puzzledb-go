@@ -18,11 +18,6 @@
     - PostgreSQL plug-in
       - Added support for new queries
 
-## v1.3.x (2024-xx-xx)
-### New features
-- Enhanced `sql.Service.Insert()` to support inserting multiple objects at once.
-- Added `sql.ResultSetOption` type for flexible result set configuration.
-
 ## v1.3.7 (2025-06-XX)
 ### Improved
 - Update math and aggregation functions
