@@ -203,6 +203,10 @@ doc-touch: $(csvs)
 doc: doc-touch $(docs) cmd-docs
 	@sed -e "s/(img\//(doc\/img\//g" README_.md > README.md && rm README_.md
 
+godoc:
+	go install golang.org/x/tools/cmd/godoc@latest
+	godoc -http=:6060 -play
+
 #
 # FoundationDB
 # https://github.com/apple/foundationdb/tree/main/bindings/go 
