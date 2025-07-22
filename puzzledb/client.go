@@ -19,7 +19,7 @@ import (
 	"net"
 	"strconv"
 
-	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
+	pb "github.com/cybergarage/puzzledb-go/puzzledb/api/gen/go/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

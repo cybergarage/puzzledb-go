@@ -22,11 +22,11 @@ import (
 	"strings"
 
 	"github.com/cybergarage/go-logger/log"
+	pb "github.com/cybergarage/puzzledb-go/puzzledb/api/gen/go/v1"
 	"github.com/cybergarage/puzzledb-go/puzzledb/cluster"
 	"github.com/cybergarage/puzzledb-go/puzzledb/config"
 	pc "github.com/cybergarage/puzzledb-go/puzzledb/context"
 	"github.com/cybergarage/puzzledb-go/puzzledb/plugins"
-	pb "github.com/cybergarage/puzzledb-go/puzzledb/proto/grpc"
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
