@@ -57,7 +57,7 @@ BENCHMARK_ENVS=$(shell echo "PUZZLEDB_LOGGER_ENABLED=true PUZZLEDB_LOGGER_LEVEL=
 
 FDB_VER=$(shell curl -s https://api.github.com/repos/apple/foundationdb/releases/latest | jq -r .tag_name)
 
-.PHONY: test unittest format vet lint clean docker cmd certs
+.PHONY: test unittest format vet lint clean docker cmd certs proto protopkg
 .IGNORE: lint
 
 all: test
@@ -228,16 +228,16 @@ fdb-update:
 # Protos
 #
 
-PKG_PROTO_ROOT=${PKG_SRC_ROOT}/proto
+PKG_PROTO_ROOT=${PKG_SRC_ROOT}/api
 protopkg:
 	go get -u google.golang.org/protobuf
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest	
-%.pb.go : %.proto
-	protoc -I=${PKG_PROTO_ROOT} --go_out=paths=source_relative:${PKG_PROTO_ROOT}/grpc --go-grpc_out=paths=source_relative:${PKG_PROTO_ROOT}/grpc $<
-protos=$(shell find ${PKG_SRC_ROOT} -name '*.proto')
+%.pb.go : %.proto protopkg
+	protoc -I=${PKG_PROTO_ROOT}/proto/v1 --go_out=paths=source_relative:${PKG_PROTO_ROOT}/gen/go/v1 --go-grpc_out=paths=source_relative:${PKG_PROTO_ROOT}/gen/go/v1 --plugin=protoc-gen-go=${GOBIN}/protoc-gen-go --plugin=protoc-gen-go-grpc=${GOBIN}/protoc-gen-go-grpc $<
+protos=$(shell find ${PKG_PROTO_ROOT} -name '*.proto')
 pbs=$(protos:.proto=.pb.go)
-proto: $(pbs)
+proto: protopkg $(pbs)
 
 #
 # Testing
