@@ -98,6 +98,17 @@ func (service *gRPCService) Start() error {
 	if err != nil {
 		return err
 	}
+
+	loggingUnaryInterceptor := func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+		resp, err := handler(ctx, req)
+		if err == nil {
+			log.Infof("gRPC Request: %s", info.FullMethod)
+		} else {
+			log.Errorf("gRPC Request: %s", info.FullMethod)
+		}
+		return resp, err
+	}
+
 	service.grpcServer = grpc.NewServer(grpc.UnaryInterceptor(loggingUnaryInterceptor))
 	pb.RegisterStoreServer(service.grpcServer, service)
 	pb.RegisterConfigServer(service.grpcServer, service)
@@ -125,18 +136,6 @@ func (service *gRPCService) Stop() error {
 	log.Infof("gRPC server (%s) terminated", addr)
 
 	return nil
-}
-
-func loggingUnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
-	resp, err := handler(ctx, req)
-
-	if err == nil {
-		log.Infof("gRPC Request: %s", info.FullMethod)
-	} else {
-		log.Errorf("gRPC Request: %s", info.FullMethod)
-	}
-
-	return resp, err
 }
 
 func (service *gRPCService) Check(context.Context, *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
