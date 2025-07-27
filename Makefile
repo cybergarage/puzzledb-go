@@ -183,6 +183,7 @@ doc-cmd-cli:
 	go build -o ${DOC_CLI_ROOT}/${DOC_CLI_BIN} ${MODULE_ROOT}/${DOC_CLI_ROOT}
 	pushd ${DOC_CLI_ROOT} && ./${DOC_CLI_BIN} && popd
 	git add ${DOC_CLI_ROOT}/*.md
+	git commit ${DOC_CLI_ROOT}/*.md -m "Update command documentation for ${PKG_VER}"
 
 DOC_SERVER_ROOT=doc/cmd/server
 DOC_SERVER_BIN=puzzledb-server-doc
@@ -190,6 +191,7 @@ doc-cmd-server:
 	go build -o ${DOC_SERVER_ROOT}/${DOC_SERVER_BIN} ${MODULE_ROOT}/${DOC_SERVER_ROOT}
 	pushd ${DOC_SERVER_ROOT} && ./${DOC_SERVER_BIN} && popd
 	git add ${DOC_SERVER_ROOT}/*.md
+	git commit ${DOC_SERVER_ROOT}/*.md -m "Update command documentation for ${PKG_VER}"
 
 cmd-docs: doc-cmd-cli doc-cmd-server
 
