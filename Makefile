@@ -174,10 +174,26 @@ watchlint:
 	fswatch -o . -e ".*" -i "\\.go$$" | xargs -I{} make lint
 
 #
+# Protos
+#
+
+PKG_PROTO_ROOT=${PKG_SRC_ROOT}/api
+protopkg:
+	go get -u google.golang.org/protobuf
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest	
+%.pb.go : %.proto protopkg
+	protoc -I=${PKG_PROTO_ROOT}/proto/v1 --go_out=paths=source_relative:${PKG_PROTO_ROOT}/gen/go/v1 --go-grpc_out=paths=source_relative:${PKG_PROTO_ROOT}/gen/go/v1 --plugin=protoc-gen-go=${GOBIN}/protoc-gen-go --plugin=protoc-gen-go-grpc=${GOBIN}/protoc-gen-go-grpc $<
+protos=$(shell find ${PKG_PROTO_ROOT} -name '*.proto')
+pbs=$(protos:.proto=.pb.go)
+proto: protopkg $(pbs)
+
+#
 # Document
 #
 
-DOC_CLI_ROOT=doc/cmd/cli
+DOC_ROOT=doc
+DOC_CLI_ROOT=${DOC_ROOT}/cmd/cli
 DOC_CLI_BIN=puzzledb-cli-doc
 doc-cmd-cli:
 	go build -o ${DOC_CLI_ROOT}/${DOC_CLI_BIN} ${MODULE_ROOT}/${DOC_CLI_ROOT}
@@ -192,6 +208,14 @@ doc-cmd-server:
 	pushd ${DOC_SERVER_ROOT} && ./${DOC_SERVER_BIN} && popd
 	git add ${DOC_SERVER_ROOT}/*.md
 	git commit ${DOC_SERVER_ROOT}/*.md -m "Update command documentation for ${PKG_VER}"
+
+doc-proto:
+	go install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
+	protoc --doc_out=./${DOC_ROOT} --doc_opt=markdown,grpc-api.md \
+		--proto_path=${PKG_PROTO_ROOT}/proto/v1 \
+		$(shell find ${PKG_PROTO_ROOT}/proto/v1 -name "*.proto")
+	-git add ${DOC_ROOT}/grpc-api.md
+	-git commit ${DOC_ROOT}/grpc-api.md -m "Update proto documentation"
 
 cmd-docs: doc-cmd-cli doc-cmd-server
 
@@ -225,21 +249,6 @@ fdb-update:
 	sed -i .bak -e 's/version=.*/version=${FDB_VER}/g' scripts/fdb_install.sh
 	rm -f .github/workflows/*.bak scripts/*.bak
 	git commit -m "Update FoundationDB to version v${FDB_VER}" go.* .github/workflows/make.yml scripts/fdb_install.sh
-
-#
-# Protos
-#
-
-PKG_PROTO_ROOT=${PKG_SRC_ROOT}/api
-protopkg:
-	go get -u google.golang.org/protobuf
-	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest	
-%.pb.go : %.proto protopkg
-	protoc -I=${PKG_PROTO_ROOT}/proto/v1 --go_out=paths=source_relative:${PKG_PROTO_ROOT}/gen/go/v1 --go-grpc_out=paths=source_relative:${PKG_PROTO_ROOT}/gen/go/v1 --plugin=protoc-gen-go=${GOBIN}/protoc-gen-go --plugin=protoc-gen-go-grpc=${GOBIN}/protoc-gen-go-grpc $<
-protos=$(shell find ${PKG_PROTO_ROOT} -name '*.proto')
-pbs=$(protos:.proto=.pb.go)
-proto: protopkg $(pbs)
 
 #
 # Testing
