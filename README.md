@@ -90,6 +90,8 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
   - [CLI (puzzledb-cli)](doc/cmd/cli/puzzledb-cli.md)
 
+  - [gRPC API](doc/grpc-api.md)
+
   - [Distributed Tracing](doc/tracing.md)
 
 - Benchmarking

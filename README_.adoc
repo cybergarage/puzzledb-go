@@ -53,6 +53,7 @@ image:doc/img/roadmap.png[doc/img/roadmap]
 ** link:doc/configuring.md[Configuring PullzeDB]
 * Operation
 ** link:doc/cmd/cli/puzzledb-cli.md[CLI (puzzledb-cli)]
+** link:doc/grpc-api.md[gRPC API]
 ** link:doc/tracing.md[Distributed Tracing]
 * Benchmarking
 ** link:https://github.com/cybergarage/puzzledb-bench[puzzledb-bench]
