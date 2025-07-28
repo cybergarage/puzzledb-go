@@ -142,7 +142,7 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
 # Related Projects
 
-PuzzleDB is being developed in collaboration with the following Cybergarage projects:
+PuzzleDB is developed in collaboration with the following Cybergarage projects:
 
 - [go-postgresql](https://github.com/cybergarage/go-postgresql) ![go postgresql](https://img.shields.io/github/v/tag/cybergarage/go-postgresql)
 
