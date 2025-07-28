@@ -57,7 +57,7 @@ BENCHMARK_ENVS=$(shell echo "PUZZLEDB_LOGGER_ENABLED=true PUZZLEDB_LOGGER_LEVEL=
 
 FDB_VER=$(shell curl -s https://api.github.com/repos/apple/foundationdb/releases/latest | jq -r .tag_name)
 
-.PHONY: test unittest format vet lint clean docker cmd certs proto protopkg
+.PHONY: test unittest format vet lint clean docker cmd certs proto protopkg doc-proto
 .IGNORE: lint
 
 all: test
@@ -213,8 +213,8 @@ doc-proto:
 	go install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
 	protoc --doc_out=./${DOC_ROOT} --doc_opt=markdown,grpc-api.md \
 		--proto_path=${PKG_PROTO_ROOT}/proto/v1 \
+		--plugin=protoc-gen-doc=${GOBIN}/protoc-gen-doc \
 		$(shell find ${PKG_PROTO_ROOT}/proto/v1 -name "*.proto")
-	-git add ${DOC_ROOT}/grpc-api.md
 	-git commit ${DOC_ROOT}/grpc-api.md -m "Update proto documentation"
 
 cmd-docs: doc-cmd-cli doc-cmd-server
@@ -226,7 +226,7 @@ docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc doc/*/*.adoc))
 doc-touch: $(csvs)
 	touch doc/*.adoc doc/*/*.adoc
 
-doc: doc-touch $(docs) cmd-docs
+doc: doc-touch $(docs) cmd-docs doc-proto
 	@sed -e "s/(img\//(doc\/img\//g" README_.md > README.md && rm README_.md
 
 godoc:
