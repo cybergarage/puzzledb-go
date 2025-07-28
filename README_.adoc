@@ -83,7 +83,7 @@ image:doc/img/roadmap.png[doc/img/roadmap]
 
 = Related Projects
 
-PuzzleDB is being developed in collaboration with the following Cybergarage projects:
+PuzzleDB is developed in collaboration with the following Cybergarage projects:
 
 * link:https://github.com/cybergarage/go-postgresql[go-postgresql] image:https://img.shields.io/github/v/tag/cybergarage/go-postgresql[]
 * link:https://github.com/cybergarage/go-mysql[go-mysql] image:https://img.shields.io/github/v/tag/cybergarage/go-mysql[]
