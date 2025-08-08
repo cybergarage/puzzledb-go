@@ -5,14 +5,14 @@ go 1.24
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20250221231555-5140696da2df
 	github.com/cybergarage/go-authenticator v1.0.5
-	github.com/cybergarage/go-cbor v1.3.1
+	github.com/cybergarage/go-cbor v1.3.2
 	github.com/cybergarage/go-logger v1.3.11
 	github.com/cybergarage/go-mongo v1.2.2
 	github.com/cybergarage/go-mysql v1.3.2-0.20250608142800-176d460b696f
 	github.com/cybergarage/go-pict v1.0.0
 	github.com/cybergarage/go-postgresql v1.6.5
 	github.com/cybergarage/go-redis v1.5.6
-	github.com/cybergarage/go-safecast v1.3.3
+	github.com/cybergarage/go-safecast v1.3.4
 	github.com/cybergarage/go-sqlparser v1.6.1-0.20250617035917-ed0ae4240277
 	github.com/cybergarage/go-sqltest v1.6.2-0.20250606100156-a91df13ec312
 	github.com/cybergarage/go-tracing v1.1.5
