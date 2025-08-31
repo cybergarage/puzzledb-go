@@ -1,6 +1,6 @@
 module github.com/cybergarage/puzzledb-go
 
-go 1.22
+go 1.25
 
 require (
 	github.com/apple/foundationdb/bindings/go v0.0.0-20250221231555-5140696da2df
