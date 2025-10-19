@@ -1,16 +1,18 @@
-# Plug-In Concepts
+# Plugin Concepts
 
-PuzzleDB is a pluggable database that amalgamates various components. It defines a pluggable component interface following a layering concept similar to FoundationDB. PuzzleDB separates the query layer and data model from the storage layer. The most basic storage layer is defined as a simple key-value store, much like FoundationDB and early Google Spanner.
+PuzzleDB is a pluggable database composed of modular components. Interfaces follow a layering concept similar to FoundationDB: query and data model layers are separated from an ordered key‑value storage layer.
 
-![architecture](img/architecture.png)
+<figure>
+<img src="img/architecture.png" alt="architecture" />
+</figure>
 
-PuzzleDB defines the coordinator and storage function interfaces to operate as standalone and distributed databases. Running with distributed coordinator and storage plug-ins, PuzzleDB functions as a distributed multi-API and multi-model database.
+Coordinator and storage interfaces allow standalone or distributed operation. With distributed plugins enabled, PuzzleDB becomes a multi‑API, multi‑model database.
 
-# Plug-In Service Types
+# Plugin Service Types
 
-PuzzleDB offers various types of plug-ins, including query, storage, and coordinator. These are categorized based on their support for distributed operations and their dependencies on other plug-ins. System plug-ins, responsible for managing configuration data and coordinating distributed nodes, are always activated by default. The database optimizes storage, retrieval, and update operations through a query interface that supports any database protocol, and a storage interface that employs an ordered key-value store, thereby maintaining consistency in distributed environments.
+PuzzleDB offers several plugin categories (query, storage, coordinator, system). They are classified by distributed capability and dependency requirements. System plugins (configuration, coordination) are always active by default. Query plugins expose database protocols; storage plugins implement an ordered key‑value store to maintain consistency in distributed environments.
 
-PuzzleDB provides default plug-in services that include query, storage, and coordinator plug-ins and defines the default plug-in types as follows:
+PuzzleDB provides default query, storage, coordinator, tracing, and metrics plugins. Types are defined below:
 
 <table style="width:100%;">
 <colgroup>
@@ -219,51 +221,51 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 </tbody>
 </table>
 
-- Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
+- Distributed: Whether the plugin supports distributed operation (non‑distributed ones serve standalone or testing use cases).
 
-- Dependency: Indicates other plug-in service types required to run the plug-in service.
+- Dependency: Other plugin types required for activation.
 
-## Plug-In Interfaces
+## Plugin Interfaces
 
-PuzzleDB defines the plug-in categories and interfaces based on the following concepts.
+PuzzleDB defines plugin categories and interfaces as follows.
 
-### System Plug-Ins
+### System Plugins
 
-System plug-ins are used to manage the PuzzleDB system. They are used to manage the configuration data, synchronization, and coordination of distributed PuzzleDB nodes. System plug-ins are used to manage and synchronize the distributed PuzzleDB nodes.
+System plugins manage configuration, synchronization, and coordination of distributed PuzzleDB nodes.
 
-Unlike other plugins, system plugins are always activated as default plugins. Some, such as the gRPC plugin, work independently, while others, such as the Actor service, depend on other plugins to function.
+These are always activated by default. Some (e.g., gRPC) are independent; others (e.g., Actor) depend on additional plugins.
 
 ### Query Interface
 
-Redis, MongoDB, and MySQL are popular database management systems, each with its own communication protocol for handling database queries. These protocols enable clients to interact with the database server, performing various operations such as inserting, updating, retrieving, or deleting data.
+Redis, MongoDB, MySQL, and PostgreSQL each use distinct wire protocols for handling queries. PuzzleDB’s query interface aims to support any database protocol with a minimal abstraction.
 
-PuzzleDB defines the query interface to support any database protocol such as Redis, MongoDB, and MySQL protocols. The query interface is kept to a minimal specification to support a wide variety of database protocols.
+The abstraction is intentionally minimal to ease implementation of additional protocols.
 
 ### Storage Interface
 
-PuzzleDB defines the storage interface as an ordered key-value store, similar to early Google Spanner and FoundationDB. PuzzleDB expects its storage plugin components to be implemented based on an ordered key-value store, in contrast to unordered hash-like key-value stores found in MongoDB and Cassandra. The implementation should be based on ACID-compliant ordered key-value stores.
+The storage interface is an ACID‑compliant ordered key‑value abstraction (similar to early Spanner / FoundationDB), enabling efficient range operations and strong consistency.
 
-FoundationDB and early Google Spanner utilize ordered key-value stores to support their unique features and capabilities in managing large-scale distributed databases. By organizing the keys in a sorted manner, these databases can optimize storage, retrieval, and update operations. This ordered structure also enables the databases to maintain consistency and achieve high performance in distributed environments.
+Ordered storage optimizes range scans, point lookups, and transactional workloads in large‑scale distributed environments.
 
-Ordered key-value stores are a fundamental component of the storage layers in distributed databases like FoundationDB and Google Spanner. By maintaining keys in a sorted order, these systems can efficiently handle range queries and optimize various operations in large-scale distributed environments.
+Maintaining keys in sorted order enables efficient range queries and predictable performance.
 
 ### Coordinator Interface
 
-Coordinator services, such as Zookeeper and etcd, are distributed systems that play a crucial role in managing the configuration data, synchronization, and coordination of distributed applications. They are designed to handle the challenges of maintaining consistency and ensuring high availability in distributed environments.
+Coordinator plugins integrate external services (ZooKeeper, etcd, Consul) for cluster membership, leader election, and distributed state.
 
-The coordinator service provides distributed synchronization and coordination for PuzzleDB nodes. It is used to manage the distributed PuzzleDB nodes and synchronize the states of the nodes. The coordinator service plug-in is used to manage and synchronize the distributed PuzzleDB nodes.
+They provide synchronization and coordination primitives for PuzzleDB nodes.
 
 ### Tracer Interface
 
-Distributed tracing is a monitoring technique for analyzing and troubleshooting distributed systems like microservices and cloud-based applications. It tracks requests as they flow through various services, identifying bottlenecks and performance issues. Unique trace IDs tag requests, and spans represent each step in the request lifecycle. Visualization tools display interactions between components, aiding in issue detection and system optimization. Distributed tracing is essential for modern software systems, helping improve performance and reliability.
+Tracing plugins implement distributed trace collection (e.g., OpenTelemetry, OpenTracing) for end‑to‑end request analysis and latency diagnostics.
 
-PuzzleDB defines the tracer service interface to support any distributed tracing protocol such as OpenTracing and OpenTelemetry. The tracer interface is kept to a minimal specification to support a wide variety of tracer protocols.
+The tracer interface is minimal to facilitate implementation of diverse tracing backends.
 
 ### Metrics Interface
 
-Metric service is a tool or platform used for collecting, storing, and analyzing metric data. Metric data is time-series data that describes the behavior and performance of a system or application over time. Metric services allow organizations to monitor their systems and applications in real-time, gain insights into performance trends, and detect and troubleshoot issues.
+Metrics plugins collect, store, and export time‑series performance data for monitoring and alerting.
 
-PuzzleDB defines the metrics service interface to support any metrics servicel such as Prometheus and Graphite. The metrics interface is kept to a minimal specification to support a wide variety of metrics services.
+The metrics interface is minimal to enable integration with systems like Prometheus or Graphite.
 
 ## References
 

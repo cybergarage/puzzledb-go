@@ -1,21 +1,21 @@
-= Coding Guidelines
+== Coding Guidelines
 
-== Style Guidelines
+=== Style Guidelines
 
-=== Linting Compliance
+==== Linting Compliance
 
-All contributors should use the following linting utilities to fix all warnings:
+All contributors should use the following linting utilities and resolve reported issues:
 
 - https://golang.org/cmd/vet/[go vet]
 - https://github.com/golangci/golangci-lint[GolangCI-Lint]
 
-For detailed linting rules regarding https://github.com/golangci/golangci-lint[GolangCI-Lint], refer to the following configuration file:
+For detailed GolangCI-Lint rules, see the configuration file:
 
 ```
 .golangci.yml
 ```
 
-== References
+=== References
 
 - https://golang.org/doc/effective_go.html#interface-names[Effective Go]
 - https://github.com/golang/go/wiki/CodeReviewComments[Go Code Review Comments]

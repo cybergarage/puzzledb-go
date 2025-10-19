@@ -1,78 +1,76 @@
-= Roadmap
+== Roadmap
 
-PuzzleDB is currently in a technical preview release. Currently,
-PuzzleDB is in the process of developing and testing a distributed
-plugin for the next release. The development roadmap for PuzzleDB is shown below.
+PuzzleDB is in a technical preview phase. A distributed plugin stack is under active development. The roadmap is outlined below.
 
 image:img/roadmap.png[doc/img/roadmap]
 
 == v2.0.0
 * New features
 ** [ ] GUI Console
-** [ ] Added TLS with mTLS Support
+** [ ] TLS with mTLS support
 * New plug-ins
 ** Enterprise plug-ins
-*** [ ] Added QoS plug-ins
+*** [ ] QoS plugins
 ** Security plug-ins
-*** [ ] Added Audit plug-ins
-*** [ ] Added Encrypt plug-ins
+*** [ ] Audit plugins
+*** [ ] Encryption plugins
 
 == v1.4.x
 ** Kubernetes features
 *** [ ] Operator
 ** New plug-ins
-*** Storage plug-ins
-**** [ ] Added JunoDB plug-in
-**** [ ] Added TiKV plug-in
-*** Coordinator plug-ins
-**** [ ] Added etcd plug-in
-*** Metrics plug-ins
-**** [ ] Added Graphite plug-in
+*** Storage plugins
+**** [ ] JunoDB plugin
+**** [ ] TiKV plugin
+*** Coordinator plugins
+**** [ ] etcd plugin
+*** Metrics plugins
+**** [ ] Graphite plugin
 * Improvements
 ** Plug-in improvements
-*** Query plug-ins
-**** MySQL plug-in
+*** Query plugins
+**** MySQL plugin
 ***** Supported queries
 ****** [ ] ALTER TABLE
 ****** [ ] CREATE INDEX
-****** [ ] LIMIT and ORDER BY in SELECT queries
-**** MongoDB plug-in
+****** [ ] LIMIT / ORDER BY in SELECT queries
+**** MongoDB plugin
 ***** Supported queries
-****** [ ] createIndex (Only single field and Comound indexes)
+****** [ ] createIndex (single field & compound indexes)
 ***** Disabled features
-****** [ ] Auto Indexing
+****** [ ] Auto indexing
 
 == v1.3.3 (2024-05-20)
 * New features
 ** [*] TLS Support
-*** [ ] Supported MySQL plug-in
+*** [ ] MySQL plugin support
 ** Security plug-ins
-*** [*] Added authenticator plug-ins
-**** [*] Added clear text password plug-ins
-***** [ ] Supported MySQL plug-in
-***** [ ] Supported MongoDB plug-in
+*** [*] Authenticator plugins
+**** [*] Clear text password
+***** [ ] MySQL plugin
+***** [ ] MongoDB plugin
 
 == v1.3.2 (2024-05-20)
 * New features
 ** [*] TLS Support
-*** [*] Supported MongoDB plug-in
+*** [*] MongoDB plugin
 
 == v1.3.1 (2024-05-19)
 * New features
 ** [*] TLS Support
-*** [*] Supported PostgreSQL plug-in
-*** [*] Supported Redis plug-in
+*** [*] PostgreSQL plugin
+*** [*] Redis plugin
 
 == v1.3.0 (2023-12-30)
 * New features
 ** Security plug-ins
-*** [*] Added authenticator plug-ins
-**** [*] Added clear text password plug-ins
-***** [*] Supported PostgreSQL plug-in
-***** [*] Supported Redis plug-in
+*** [*] Authenticator plugins
+**** [*] Clear text password
+***** [*] PostgreSQL plugin
+***** [*] Redis plugin
 * Improvements
 ** Query plug-ins
-*** Redis plug-in
+*** Redis plugin
 **** Supported queries
 ***** [*] HASH commands
 ** Updated storage format
@@ -80,98 +78,89 @@ image:img/roadmap.png[doc/img/roadmap]
 == v1.2.0 (2023-11-15)
 * New features
 ** Distributed plug-ins
-*** [*] Cache Storage plug-ins
-**** Enabled cache store plug-in (ristretto) as default
+*** [*] Cache storage plugins
+**** Ristretto cache store (default)
 * Updates
-** Redis plug-in
-*** Support new commands
-**** [*] DEL and EXISTS
+** Redis plugin
+*** Supported new commands
+**** [*] DEL, EXISTS
 * Improvements
-** Updated to set service metrics to prometheus
-*** Query plug-ins
-**** PostgreSQL, MySQL, Redis and Mongo
-*** Storage plug-ins
-**** Cache store (ristretto) 
+** Service metrics exported to Prometheus
+*** Query: PostgreSQL, MySQL, Redis, Mongo
+*** Storage: Ristretto cache
 * Fixed
-** PostgreSQL plug-in
-*** [*] Fixed transaction hangup using copy commands
-*** [*] Fixed to run pgbench on Ubuntu platforms
+** PostgreSQL plugin
+*** [*] Fixed transaction hang using COPY
+*** [*] pgbench runs on Ubuntu
 
 == v1.1.0 (2023-10-20)
 * New features
 ** Query plug-ins
-*** MySQL plug-in
-**** Support transaction control statements
-***** [*] BEGIN, COMMIT and ROLLBACK
-*** PostgreSQL plug-in
-**** Support transaction control statements
-***** [*] BEGIN, COMMIT and ROLLBACK
-** [*] Enable pprof
+*** MySQL plugin
+**** Transaction control: [*] BEGIN, COMMIT, ROLLBACK
+*** PostgreSQL plugin
+**** Transaction control: [*] BEGIN, COMMIT, ROLLBACK
+** [*] pprof enabled
 * Improvements
-** PostgreSQL plug-in
-*** Supported basic aggregate functions
-**** [*] COUNT, SUM, AVG, MIN and MAX
-*** Supported basic math functions
-**** [*] ABS, CEIL and FLOOR
-*** Supported new data types
-**** [*] TIMESTAMP
-*** Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
-*** [*] Enabled PICT based scenario tests of go-sqltest
-*** Supported new statements
-**** [*] TRUNCATE, VACCUM and COPY
-*** Supported pgbench workload
-** MySQL plug-in
-*** Supported new data types
-**** [*] DATETIME and TIMESTAMP
-*** Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
-*** Enabled PICT based scenario tests of go-sqltest
+** PostgreSQL plugin
+*** Aggregate: [*] COUNT, SUM, AVG, MIN, MAX
+*** Math: [*] ABS, CEIL, FLOOR
+*** Data types: [*] TIMESTAMP
+*** Improved schema validation (INSERT/SELECT/UPDATE/DELETE)
+*** PICT-based scenario tests (go-sqltest)
+*** Statements: [*] TRUNCATE, VACUUM, COPY
+*** pgbench workload supported
+** MySQL plugin
+*** Data types: [*] DATETIME, TIMESTAMP
+*** Improved schema validation (INSERT/SELECT/UPDATE/DELETE)
+*** PICT-based scenario tests (go-sqltest)
 
 == v1.0.0 (2023-08-30)
 * New plug-ins
 ** Query plug-ins
-*** [*] Added PostgreSQL plug-in
+*** [*] PostgreSQL plugin
 ** Coordinator plug-ins
-*** [*] Added FoundationDB plug-in
+*** [*] FoundationDB plugin
 ** Storage plug-ins
 *** Key-Value Store plug-ins
-**** [*] Added FoundationDB plug-in
-**** [*] Added cache store plug-in
+**** [*] FoundationDB plugin
+**** [*] Cache store plugin
 * Improvements
 ** CLI Utilities
-*** [*] Added status commands to link:cmd/cli/puzzledb-cli.md[puzzledb-cli]
+*** [*] Status commands (link:cmd/cli/puzzledb-cli.md[puzzledb-cli])
 ** Storage plug-ins
 *** Key-Value Store plug-ins
-**** [*] Update store interface to Support limit and order options in Range queries
-**** memdb plug-in
-***** [*] Support limit and order options in Range queries
-**** FoundationDB plug-in
-***** [*] Support limit and order options in Range queries
-*** Document store plug-in
-**** [*] Support limit and order options in Range queries based on key-value Store plug-ins
+**** [*] Range query limit & order options (interface)
+**** memdb plugin
+***** [*] Range query limit & order options
+**** FoundationDB plugin
+***** [*] Range query limit & order options
+*** Document store plugin
+**** [*] Range query limit & order options based on key‑value store plugins
 
 == v0.9.0 (2023-05-07)
 * New features
 ** CLI Utilities
-*** [*] Added link:cmd/cli/puzzledb-cli.md[puzzledb-cli]
+*** [*] CLI (link:cmd/cli/puzzledb-cli.md[puzzledb-cli])
 ** Operator APIs
-*** [*] Added gRPC services for operator APIs and CLI utilities.
-*** [*] Added Prometheus metrics expoter
+*** [*] gRPC services for operator APIs / CLI
+*** [*] Prometheus metrics exporter
 ** Configuration support
-*** [*] Added support for configuration with environment variables.
-*** [*] Added support for configuration with puzzledb.yaml.
+*** [*] Configuration via environment variables
+*** [*] Configuration via puzzledb.yaml
 * New plug-ins
 ** Coordinator plug-ins
-*** [*] Added memdb plug-in
+*** [*] memdb plugin
 ** Distributed tracer plug-ins
-*** [*] Added OpenTelemetry plug-in
-*** [*] Added OpenTracing plug-in
+*** [*] OpenTelemetry plugin
+*** [*] OpenTracing plugin
 * Plug-in improvements
 ** Coder plug-ins
 *** Key coder plug-ins
 **** Tuple plug-in
-***** Fix encoder not to panic on Ubuntu 20.04
+***** Fixed encoder panic on Ubuntu 20.04
 ** Query plug-ins
-*** [*] MySQL plug-in
+*** [*] MySQL plugin
 **** Supported queries
 ***** [*] DROP DATABASE
 ***** [*] DROP TABLE 
@@ -179,18 +168,18 @@ image:img/roadmap.png[doc/img/roadmap]
 == v0.8.0 (2023-04-10)
 
 * Initial public release
-* Initial release plug-ins
-** Query plug-ins
-*** [*] MySQL plug-in
-*** [*] Redis plug-in
-*** [*] MongoDB plug-in
-** Storage plug-ins
-*** Document store plug-in
-**** [*] Key-Value store plug-in
-*** Key-Value Store plug-ins
-**** [*] memdb plug-in
-** Coder plug-ins
-***  Document coder plug-ins
-**** [*] CBOR coder plug-in
-*** Key coder plug-ins
-**** [*] Tuple plug-in
+* Initial release plugins
+** Query plugins
+*** [*] MySQL plugin
+*** [*] Redis plugin
+*** [*] MongoDB plugin
+** Storage plugins
+*** Document store plugin
+**** [*] Key-Value store plugin
+*** Key-Value store plugins
+**** [*] memdb plugin
+** Coder plugins
+*** Document coder plugins
+**** [*] CBOR coder plugin
+*** Key coder plugins
+**** [*] Tuple plugin

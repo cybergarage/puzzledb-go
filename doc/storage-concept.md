@@ -1,20 +1,20 @@
 # Storage Concepts
 
-In PuzzleDB, the storage plugins are expected to be implemented as transaction-enabled, ordered sharding NoSQL storage systems, similar to Google Spanner or FoundationDB.
+Storage plugins should provide transaction‑enabled, ordered, sharded NoSQL capabilities (similar to Google Spanner or FoundationDB).
 
 ## Ordered Key-Value Store
 
-PuzzleDB defines its storage interface as an ordered key-value store, akin to early Google Spanner and FoundationDB. PuzzleDB expects its storage plugin components to be implemented based on an ordered key-value store, in contrast to unordered hash-like key-value stores found in MongoDB and Cassandra. The implementation should be based on ACID-compliant ordered key-value stores.
+PuzzleDB defines its storage interface as an ACID‑compliant ordered key‑value store (similar to early Spanner / FoundationDB), contrasting with unordered hash‑based stores.
 
-FoundationDB and early Google Spanner utilize ordered key-value stores to support their unique features and capabilities in managing large-scale distributed databases. By organizing the keys in a sorted manner, these databases can optimize storage, retrieval, and update operations. This ordered structure also enables the databases to maintain consistency and achieve high performance in distributed environments.
+Ordered stores optimize range scans, point lookups, and transactional semantics in large‑scale distributed deployments.
 
-Ordered key-value stores are a fundamental component of the storage layers in distributed databases like FoundationDB and Google Spanner. By maintaining keys in a sorted order, these systems can efficiently handle range queries and optimize various operations in large-scale distributed environments.
+Sorted keys enable efficient range queries and predictable operational performance.
 
 ## Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently. PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
+PuzzleDB’s logical layer is a document model encoded onto the ordered key‑value substrate. All objects (data, schema, indexes) are documents persisted as key‑value entries.
 
-PuzzleDB is a multi-data model database and the core data model is a document model like CosmosDB. PuzzleDB is a pluggable database that combines modules, and the storage layer modules must be as expressive as JSON or BSON like ARS (Atom-Record-Sequence) of CosmosDB. For more detailed information about PuzzleDB’s data model, it is recommended to refer to the [Data Model](data-model.md) documents.
+The document model must be expressive (JSON/BSON level) similar to CosmosDB’s ARS. See [Data Model](data-model.md) for details.
 
 ## References
 

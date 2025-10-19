@@ -1,18 +1,18 @@
 # Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently. PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
+PuzzleDB is a multi‑model database. The core logical model is a document model layered atop an ordered key‑value store. All objects (data, schema, indexes) are represented as documents and ultimately persisted as key‑value pairs.
 
 <figure>
 <img src="img/storage.png" alt="storage" />
 </figure>
 
-PuzzleDB defines a plug-in interface to the Key-Value store, which allows importing small local in-memory databases like memdb or large distributed databases like FoundationDB or TiKV.
+PuzzleDB defines a storage plugin interface enabling use of local in‑memory stores (e.g. memdb) or large distributed stores (e.g. FoundationDB, TiKV).
 
 ## Document Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model like CosmosDB. PuzzleDB is a pluggable database that combines modules, and the storage layer modules must be as expressive as JSON or BSON like ARS (Atom-Record-Sequence) of CosmosDB.
+The document model must be expressive (JSON / BSON level) similar to ARS (Atom‑Record‑Sequence) in CosmosDB.
 
-PuzzleDB is a multi-model database, which converts any data models such as relational and document database models into the PuzzleDB data model as follows:
+PuzzleDB maps external data models (relational, document, key‑value) into its internal document representation:
 
 <table style="width:100%;">
 <colgroup>
@@ -189,9 +189,9 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 
 ## Key-Value Object Model
 
-PuzzleDB stores all database objects into key-value objects, and the key-value model is the core data model of PuzzleDB. The key-value model is a simple data model that stores data as a collection of key-value pairs. The key-value model is a flexible and scalable data model that can be used to store and retrieve data efficiently.
+The ordered key‑value model underpins all persisted objects. It provides flexible, scalable storage and efficient range operations.
 
-PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as key-value objects.
+All higher‑level objects are encoded as documents and stored as key‑value entries.
 
 # Key Object
 
@@ -365,11 +365,11 @@ Primary keys and secondary indices may comprise one or more columns. Although om
 
 - [plugins.coder.key.tuple.Coder::EncodeKey()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/key/tuple/coder.go)
 
-## Document (Value) Object
+### Document (Value) Object
 
-The document model is not natively implemented and is currently built on a key-value model with a coder plugin module. PuzzleDB provides a default coder, the CBOR (Concise Binary Object Representation ) plug-in module as the default coder.
+The document abstraction is realized via coder plugins layered on key‑value storage. The default coder uses CBOR (Concise Binary Object Representation).
 
-PuzzleDB encodes a document data with a coder and stores it as a key-value data. The relationship between the default coder, CBOR data model, and the document data model is shown below.
+Documents are encoded using the active coder (CBOR by default) and persisted as key‑value entries. The relationship between the document model and CBOR encoding is shown below.
 
 <table>
 <colgroup>
@@ -453,11 +453,11 @@ PuzzleDB encodes a document data with a coder and stores it as a key-value data.
 </tbody>
 </table>
 
-### See also
+#### See also
 
 - [plugins.coder.document.cbor.Coder::EncodeDocument()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/document/cbor/coder.go)
 
-## References
+### References
 
 - [A technical overview of Azure Cosmos DB | Azure Blog and Updates | Microsoft Azure](https://azure.microsoft.com/en-gb/blog/a-technical-overview-of-azure-cosmos-db/)
 

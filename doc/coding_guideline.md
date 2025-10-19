@@ -4,13 +4,13 @@
 
 ### Linting Compliance
 
-All contributors should use the following linting utilities to fix all warnings:
+All contributors should use the following linting utilities and resolve reported issues:
 
 - [go vet](https://golang.org/cmd/vet/)
 
 - [GolangCI-Lint](https://github.com/golangci/golangci-lint)
 
-For detailed linting rules regarding [GolangCI-Lint](https://github.com/golangci/golangci-lint), refer to the following configuration file:
+For detailed GolangCI-Lint rules, see the configuration file:
 
     .golangci.yml
 

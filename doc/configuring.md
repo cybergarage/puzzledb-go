@@ -1,10 +1,10 @@
 # Configuring PuzzleDB
 
-PuzzleDB is configured using a configuration file. The configuration file is a YAML file, and you can override the configuration by setting environment variables.
+PuzzleDB is configured using a YAML file; settings can be overridden through environment variables.
 
 ## Configuration File (puzzledb.yaml)
 
-The configuration file is divided into sections. Each section is a YAML map. PuzzleDB will activate a default configuration if a configuration file is not specified or if there is no puzzledb.yaml in the local directory. The following is the default configuration file:
+The configuration file is divided into sections (YAML maps). A default configuration is activated if no file is specified and `puzzledb.yaml` is absent in the working directory. The default is shown below:
 
     logger:
       enabled: true
@@ -101,6 +101,6 @@ The configuration file is divided into sections. Each section is a YAML map. Puz
 
 ## Environment Variables
 
-You can override the configuration file location by setting the PUZZLEDB environment variable. PuzzleDB assumes that the environment variable matches the following format: PUZZLEDB + "\_" + the key name in ALL CAPS.
+Define environment variables matching `PUZZLEDB_<UPPERCASE_KEY>` to override individual settings. (The configuration file path itself can also be overridden.)
 
-For example, if the environment variable `PUZZLEDB_LOGGER_ENABLED` is set, then PuzzleDB will override the `logging:enabled` setting.
+Example: `PUZZLEDB_LOGGER_ENABLED=true` overrides `logging.enabled`.

@@ -1,30 +1,30 @@
 # Roadmap
 
-PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in the process of developing and testing a distributed plugin for the next release. The development roadmap for PuzzleDB is shown below.
+PuzzleDB is in a technical preview phase. A distributed plugin stack is under active development. The roadmap is outlined below.
 
 ![doc/img/roadmap](img/roadmap.png)
 
-## v2.0.0
+# v2.0.0
 
 - New features
 
   - ❏ GUI Console
 
-  - ❏ Added TLS with mTLS Support
+  - ❏ TLS with mTLS support
 
 - New plug-ins
 
   - Enterprise plug-ins
 
-    - ❏ Added QoS plug-ins
+    - ❏ QoS plugins
 
   - Security plug-ins
 
-    - ❏ Added Audit plug-ins
+    - ❏ Audit plugins
 
-    - ❏ Added Encrypt plug-ins
+    - ❏ Encryption plugins
 
-## v1.4.x
+# v1.4.x
 
 - Kubernetes features
 
@@ -32,27 +32,27 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
 - New plug-ins
 
-  - Storage plug-ins
+  - Storage plugins
 
-    - ❏ Added JunoDB plug-in
+    - ❏ JunoDB plugin
 
-    - ❏ Added TiKV plug-in
+    - ❏ TiKV plugin
 
-  - Coordinator plug-ins
+  - Coordinator plugins
 
-    - ❏ Added etcd plug-in
+    - ❏ etcd plugin
 
-  - Metrics plug-ins
+  - Metrics plugins
 
-    - ❏ Added Graphite plug-in
+    - ❏ Graphite plugin
 
       - Improvements
 
 - Plug-in improvements
 
-  - Query plug-ins
+  - Query plugins
 
-    - MySQL plug-in
+    - MySQL plugin
 
       - Supported queries
 
@@ -60,73 +60,73 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         - ❏ CREATE INDEX
 
-        - ❏ LIMIT and ORDER BY in SELECT queries
+        - ❏ LIMIT / ORDER BY in SELECT queries
 
-    - MongoDB plug-in
+    - MongoDB plugin
 
       - Supported queries
 
-        - ❏ createIndex (Only single field and Comound indexes)
+        - ❏ createIndex (single field & compound indexes)
 
       - Disabled features
 
-        - ❏ Auto Indexing
+        - ❏ Auto indexing
 
-## v1.3.3 (2024-05-20)
+# v1.3.3 (2024-05-20)
 
 - New features
 
   - ✓ TLS Support
 
-    - ❏ Supported MySQL plug-in
+    - ❏ MySQL plugin support
 
   - Security plug-ins
 
-    - ✓ Added authenticator plug-ins
+    - ✓ Authenticator plugins
 
-      - ✓ Added clear text password plug-ins
+      - ✓ Clear text password
 
-        - ❏ Supported MySQL plug-in
+        - ❏ MySQL plugin
 
-        - ❏ Supported MongoDB plug-in
+        - ❏ MongoDB plugin
 
-## v1.3.2 (2024-05-20)
-
-- New features
-
-  - ✓ TLS Support
-
-    - ✓ Supported MongoDB plug-in
-
-## v1.3.1 (2024-05-19)
+# v1.3.2 (2024-05-20)
 
 - New features
 
   - ✓ TLS Support
 
-    - ✓ Supported PostgreSQL plug-in
+    - ✓ MongoDB plugin
 
-    - ✓ Supported Redis plug-in
+# v1.3.1 (2024-05-19)
 
-## v1.3.0 (2023-12-30)
+- New features
+
+  - ✓ TLS Support
+
+    - ✓ PostgreSQL plugin
+
+    - ✓ Redis plugin
+
+# v1.3.0 (2023-12-30)
 
 - New features
 
   - Security plug-ins
 
-    - ✓ Added authenticator plug-ins
+    - ✓ Authenticator plugins
 
-      - ✓ Added clear text password plug-ins
+      - ✓ Clear text password
 
-        - ✓ Supported PostgreSQL plug-in
+        - ✓ PostgreSQL plugin
 
-        - ✓ Supported Redis plug-in
+        - ✓ Redis plugin
 
 - Improvements
 
   - Query plug-ins
 
-    - Redis plug-in
+    - Redis plugin
 
       - Supported queries
 
@@ -134,175 +134,157 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
   - Updated storage format
 
-## v1.2.0 (2023-11-15)
+# v1.2.0 (2023-11-15)
 
 - New features
 
   - Distributed plug-ins
 
-    - ✓ Cache Storage plug-ins
+    - ✓ Cache storage plugins
 
-      - Enabled cache store plug-in (ristretto) as default
+      - Ristretto cache store (default)
 
 - Updates
 
-  - Redis plug-in
+  - Redis plugin
 
-    - Support new commands
+    - Supported new commands
 
-      - ✓ DEL and EXISTS
+      - ✓ DEL, EXISTS
 
 - Improvements
 
-  - Updated to set service metrics to prometheus
+  - Service metrics exported to Prometheus
 
-    - Query plug-ins
+    - Query: PostgreSQL, MySQL, Redis, Mongo
 
-      - PostgreSQL, MySQL, Redis and Mongo
-
-    - Storage plug-ins
-
-      - Cache store (ristretto)
+    - Storage: Ristretto cache
 
 - Fixed
 
-  - PostgreSQL plug-in
+  - PostgreSQL plugin
 
-    - ✓ Fixed transaction hangup using copy commands
+    - ✓ Fixed transaction hang using COPY
 
-    - ✓ Fixed to run pgbench on Ubuntu platforms
+    - ✓ pgbench runs on Ubuntu
 
-## v1.1.0 (2023-10-20)
+# v1.1.0 (2023-10-20)
 
 - New features
 
   - Query plug-ins
 
-    - MySQL plug-in
+    - MySQL plugin
 
-      - Support transaction control statements
+      - Transaction control: \[\*\] BEGIN, COMMIT, ROLLBACK
 
-        - ✓ BEGIN, COMMIT and ROLLBACK
+    - PostgreSQL plugin
 
-    - PostgreSQL plug-in
+      - Transaction control: \[\*\] BEGIN, COMMIT, ROLLBACK
 
-      - Support transaction control statements
-
-        - ✓ BEGIN, COMMIT and ROLLBACK
-
-  - ✓ Enable pprof
+  - ✓ pprof enabled
 
 - Improvements
 
-  - PostgreSQL plug-in
+  - PostgreSQL plugin
 
-    - Supported basic aggregate functions
+    - Aggregate: \[\*\] COUNT, SUM, AVG, MIN, MAX
 
-      - ✓ COUNT, SUM, AVG, MIN and MAX
+    - Math: \[\*\] ABS, CEIL, FLOOR
 
-    - Supported basic math functions
+    - Data types: \[\*\] TIMESTAMP
 
-      - ✓ ABS, CEIL and FLOOR
+    - Improved schema validation (INSERT/SELECT/UPDATE/DELETE)
 
-    - Supported new data types
+    - PICT-based scenario tests (go-sqltest)
 
-      - ✓ TIMESTAMP
+    - Statements: \[\*\] TRUNCATE, VACUUM, COPY
 
-    - Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
+    - pgbench workload supported
 
-    - ✓ Enabled PICT based scenario tests of go-sqltest
+  - MySQL plugin
 
-    - Supported new statements
+    - Data types: \[\*\] DATETIME, TIMESTAMP
 
-      - ✓ TRUNCATE, VACCUM and COPY
+    - Improved schema validation (INSERT/SELECT/UPDATE/DELETE)
 
-    - Supported pgbench workload
+    - PICT-based scenario tests (go-sqltest)
 
-  - MySQL plug-in
-
-    - Supported new data types
-
-      - ✓ DATETIME and TIMESTAMP
-
-    - Improved schema validation for INSERT, SELECT, UPDATE, and DELETE queries
-
-    - Enabled PICT based scenario tests of go-sqltest
-
-## v1.0.0 (2023-08-30)
+# v1.0.0 (2023-08-30)
 
 - New plug-ins
 
   - Query plug-ins
 
-    - ✓ Added PostgreSQL plug-in
+    - ✓ PostgreSQL plugin
 
   - Coordinator plug-ins
 
-    - ✓ Added FoundationDB plug-in
+    - ✓ FoundationDB plugin
 
   - Storage plug-ins
 
     - Key-Value Store plug-ins
 
-      - ✓ Added FoundationDB plug-in
+      - ✓ FoundationDB plugin
 
-      - ✓ Added cache store plug-in
+      - ✓ Cache store plugin
 
 - Improvements
 
   - CLI Utilities
 
-    - ✓ Added status commands to [puzzledb-cli](cmd/cli/puzzledb-cli.md)
+    - ✓ Status commands ([puzzledb-cli](cmd/cli/puzzledb-cli.md))
 
   - Storage plug-ins
 
     - Key-Value Store plug-ins
 
-      - ✓ Update store interface to Support limit and order options in Range queries
+      - ✓ Range query limit & order options (interface)
 
-      - memdb plug-in
+      - memdb plugin
 
-        - ✓ Support limit and order options in Range queries
+        - ✓ Range query limit & order options
 
-      - FoundationDB plug-in
+      - FoundationDB plugin
 
-        - ✓ Support limit and order options in Range queries
+        - ✓ Range query limit & order options
 
-    - Document store plug-in
+    - Document store plugin
 
-      - ✓ Support limit and order options in Range queries based on key-value Store plug-ins
+      - ✓ Range query limit & order options based on key‑value store plugins
 
-## v0.9.0 (2023-05-07)
+# v0.9.0 (2023-05-07)
 
 - New features
 
   - CLI Utilities
 
-    - ✓ Added [puzzledb-cli](cmd/cli/puzzledb-cli.md)
+    - ✓ CLI ([puzzledb-cli](cmd/cli/puzzledb-cli.md))
 
   - Operator APIs
 
-    - ✓ Added gRPC services for operator APIs and CLI utilities.
+    - ✓ gRPC services for operator APIs / CLI
 
-    - ✓ Added Prometheus metrics expoter
+    - ✓ Prometheus metrics exporter
 
   - Configuration support
 
-    - ✓ Added support for configuration with environment variables.
+    - ✓ Configuration via environment variables
 
-    - ✓ Added support for configuration with puzzledb.yaml.
+    - ✓ Configuration via puzzledb.yaml
 
 - New plug-ins
 
   - Coordinator plug-ins
 
-    - ✓ Added memdb plug-in
+    - ✓ memdb plugin
 
   - Distributed tracer plug-ins
 
-    - ✓ Added OpenTelemetry plug-in
+    - ✓ OpenTelemetry plugin
 
-    - ✓ Added OpenTracing plug-in
+    - ✓ OpenTracing plugin
 
 - Plug-in improvements
 
@@ -312,11 +294,11 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
       - Tuple plug-in
 
-        - Fix encoder not to panic on Ubuntu 20.04
+        - Fixed encoder panic on Ubuntu 20.04
 
   - Query plug-ins
 
-    - ✓ MySQL plug-in
+    - ✓ MySQL plugin
 
       - Supported queries
 
@@ -324,36 +306,36 @@ PuzzleDB is currently in a technical preview release. Currently, PuzzleDB is in 
 
         - ✓ DROP TABLE
 
-## v0.8.0 (2023-04-10)
+# v0.8.0 (2023-04-10)
 
 - Initial public release
 
-- Initial release plug-ins
+- Initial release plugins
 
-  - Query plug-ins
+  - Query plugins
 
-    - ✓ MySQL plug-in
+    - ✓ MySQL plugin
 
-    - ✓ Redis plug-in
+    - ✓ Redis plugin
 
-    - ✓ MongoDB plug-in
+    - ✓ MongoDB plugin
 
-  - Storage plug-ins
+  - Storage plugins
 
-    - Document store plug-in
+    - Document store plugin
 
-      - ✓ Key-Value store plug-in
+      - ✓ Key-Value store plugin
 
-    - Key-Value Store plug-ins
+    - Key-Value store plugins
 
-      - ✓ memdb plug-in
+      - ✓ memdb plugin
 
-  - Coder plug-ins
+  - Coder plugins
 
-    - Document coder plug-ins
+    - Document coder plugins
 
-      - ✓ CBOR coder plug-in
+      - ✓ CBOR coder plugin
 
-    - Key coder plug-ins
+    - Key coder plugins
 
-      - ✓ Tuple plug-in
+      - ✓ Tuple plugin

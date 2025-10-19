@@ -1,6 +1,6 @@
-= Design Concepts
+== Design Concepts
 
-PuzzleDB has a unique approach in the NewSQL field by using a simple key-value foundation for data model, indexes, and queries, enabling high scalability and ACID transactions.This section describes the architecture and design concepts of PuzzleDB.
+PuzzleDB applies a NewSQL-style architecture built on an ordered key-value foundation for its data model, indexes, and queries—enabling high scalability with ACID transactions. This section outlines the core architecture and design concepts.
 
 :toc:
 

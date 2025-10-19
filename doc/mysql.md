@@ -1,16 +1,16 @@
 # MySQL Compatibility
 
-PuzzleDB supports MySQL commands based on [go-mysql](https://github.com/cybergarage/go-mysql), a database framework that makes it easy to implement MySQL compatible servers using Go.
+PuzzleDB supports the MySQL protocol via [go-mysql](https://github.com/cybergarage/go-mysql), a framework for implementing MySQL‑compatible servers in Go.
 
 <figure>
 <img src="https://raw.githubusercontent.com/cybergarage/go-mysql/main/doc/img/framework.png" alt="framework" />
 </figure>
 
-The [go-mysql](https://github.com/cybergarage/go-mysql) framework automatically handles the MySQL protocol and system commands. Therefore, PuzzleDB achieves MySQL compatibility by implementing only simply handling DDL (Data Definition Language) and DML (Data Manipulation Language) query commands.
+The framework handles protocol and system commands; PuzzleDB focuses on implementing core DDL and DML query handling.
 
 ## Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts [MySQL data types](https://dev.mysql.com/doc/refman/8.0/en/data-types.html) into the PuzzleDB data model as follows:
+PuzzleDB converts [MySQL data types](https://dev.mysql.com/doc/refman/8.0/en/data-types.html) into its internal document model as follows:
 
 <table>
 <colgroup>
@@ -87,9 +87,9 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 </tbody>
 </table>
 
-## Supported commands
+## Supported Commands
 
-PuzzleDB currently supports [MySQL statements](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html) in stages. This section describes the status of Redis command support in PuzzleDB.
+PuzzleDB incrementally supports [MySQL statements](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html). Current status:
 
 ### Data Definition Statements
 

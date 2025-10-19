@@ -1,16 +1,16 @@
 # PostgreSQL Compatibility
 
-PuzzleDB supports PostgreSQL commands based on [go-postgresql](https://github.com/cybergarage/go-postgresql), a database framework that makes it easy to implement PostgreSQL compatible servers using Go.
+PuzzleDB supports the PostgreSQL protocol via [go-postgresql](https://github.com/cybergarage/go-postgresql), a framework for implementing PostgreSQL‑compatible servers in Go.
 
 <figure>
 <img src="https://raw.githubusercontent.com/cybergarage/go-postgresql/master/doc/img/framework.png" alt="framework" />
 </figure>
 
-The [go-postgresql](https://github.com/cybergarage/go-postgresql) framework automatically handles the PostgreSQL protocol and system commands. Therefore, PuzzleDB achieves PostgreSQL compatibility by implementing only simply handling DDL (Data Definition Language) and DML (Data Manipulation Language) query commands.
+The framework handles protocol and system commands; PuzzleDB focuses on implementing primary DDL and DML query processing.
 
 ## Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts [PostgreSQL: Data Types](https://www.postgresql.org/docs/current/datatype.html) into the PuzzleDB data model as follows:
+PuzzleDB maps [PostgreSQL data types](https://www.postgresql.org/docs/current/datatype.html) into its internal document model as follows:
 
 <table>
 <colgroup>
@@ -83,9 +83,9 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 </tbody>
 </table>
 
-## Supported commands
+## Supported Commands
 
-PuzzleDB currently supports [PostgreSQL: Basic Statements](https://www.postgresql.org/docs/current/plpgsql-statements.html) in stages. This section describes the status of Redis command support in PuzzleDB.
+PuzzleDB incrementally supports [PostgreSQL statements](https://www.postgresql.org/docs/current/plpgsql-statements.html). Current status:
 
 ### Data Definition Statements
 

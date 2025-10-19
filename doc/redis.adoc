@@ -1,39 +1,39 @@
-= Redis Compatibility
+== Redis Compatibility
 
-PuzzleDB supports Redis commands based on https://github.com/cybergarage/go-redis[go-redis], a database framework that makes it easy to implement Redis compatible servers using Go.
+PuzzleDB supports the Redis protocol via https://github.com/cybergarage/go-redis[go-redis], a framework for implementing Redis‑compatible servers in Go.
 
 image::https://raw.githubusercontent.com/cybergarage/go-redis/main/doc/img/framework.png[]
 
-The https://github.com/cybergarage/go-redis[go-redis] framework automatically handles the Redis protocol and system commands such as PING and SELECT. Therefore, PuzzleDB achieves Redis compatibility by implementing only user commands such as SET and GET.
+The framework handles protocol and system commands (e.g., PING, SELECT); PuzzleDB implements user commands (e.g., SET, GET).
 
-== Data Model
+=== Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts Redis data model into the PuzzleDB data model as follows:
+PuzzleDB converts the Redis data model into its internal representation:
 
 [format="csv", options="header, autowidth"]
 |====
 include::model/redis.csv[]
 |====
 
-== Supported Commands
+=== Supported Commands
 
-PuzzleDB currently supports https://redis.io/commands/[Redis commands] in stages. This section describes the status of Redis command support in PuzzleDB.
+PuzzleDB incrementally supports https://redis.io/commands/[Redis commands]. Current status:
 
-=== Connection Commands
+==== Connection Commands
 
 [format="csv", options="header, autowidth"]
 |====
 include::redis/connection.csv[]
 |====
 
-=== Generic Commands
+==== Generic Commands
 
 [format="csv", options="header, autowidth"]
 |====
 include::redis/generic.csv[]
 |====
 
-=== String Commands
+==== String Commands
 
 [format="csv", options="header, autowidth"]
 |====

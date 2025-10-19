@@ -1,16 +1,22 @@
-# Authentication Methods
+# Authentication
 
-PuzzleDB includes a authenticator manager to manage the authentication for the query plugins.
+PuzzleDB includes an authenticator manager that manages authentication for query plugins.
 
 <figure>
 <img src="img/authenticator.png" alt="authenticator" />
 </figure>
 
-The authenticator manager supports multiple authentication methods, including username and password authentication, SASL (Simple Authentication and Security Layer) authentication, and certificate-based authentication.
+The authenticator manager supports multiple methods including:
 
-## Authentication Plugins
+- Username/password
 
-PuzzleDB supports the following authentication methods for the query plugins.
+- SASL (Simple Authentication and Security Layer)
+
+- Certificate-based (mTLS client certificate)
+
+## Authentication Plugin Summary
+
+PuzzleDB currently supports the following authentication mechanisms for query plugins.
 
 - Plain
 
@@ -18,19 +24,19 @@ PuzzleDB supports the following authentication methods for the query plugins.
 
 - Certificate (TLS Client Certificate)
 
-- MD5 (Not yes supported)
+- MD5 (Not yet supported)
 
-- Crypt (Not yes supported)
+- Crypt (Not yet supported)
 
-- LDAP (Not yes supported)
+- LDAP (Not yet supported)
 
-- PAM (Not yes supported)
+- PAM (Not yet supported)
 
-- Kerberos (Not yes supported)
+- Kerberos (Not yet supported)
 
-## Supported Authentication Methods
+## Supported Methods Matrix
 
-PuzzleDB supports the following authentication methods for the query plugins.
+The following matrix shows supported methods per plugin.
 
 <table style="width:100%;">
 <colgroup>
@@ -95,7 +101,7 @@ PuzzleDB supports the following authentication methods for the query plugins.
 </tbody>
 </table>
 
-O:Supported, X:Unsupported, -:Not yes supported
+O: Supported, X: Unsupported, -: Not yet supported
 
 ## References
 
@@ -105,7 +111,7 @@ O:Supported, X:Unsupported, -:Not yes supported
 
   - [PostgreSQL: Documentation: The pg\_hba.conf File](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
 
-## MySQL
+### MySQL
 
 - [MySQL: Connection Phase](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html)
 
@@ -115,7 +121,7 @@ O:Supported, X:Unsupported, -:Not yes supported
 
   - [MySQL: Native Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods_native_password_authentication.html)
 
-## MongoDB
+### MongoDB
 
 - [Security — MongoDB Manual](https://www.mongodb.com/docs/manual/security/)
 
@@ -123,7 +129,7 @@ O:Supported, X:Unsupported, -:Not yes supported
 
   - [Configure Database User Authentication — MongoDB Atlas](https://www.mongodb.com/docs/atlas/security/config-db-auth/)
 
-## Redis
+### Redis
 
 - [Security – Redis](https://redis.io/docs/management/security/)
 

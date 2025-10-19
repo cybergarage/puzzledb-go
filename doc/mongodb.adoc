@@ -1,50 +1,50 @@
-= MongoDB Comptibility
+== MongoDB Compatibility
 
-PuzzleDB supports MongoDB API based on https://github.com/cybergarage/go-mongo[go-mongo], a database framework that makes it easy to implement MongoDB compatible servers using Go.
+PuzzleDB supports a MongoDB API via https://github.com/cybergarage/go-mongo[go-mongo], a framework for implementing MongoDB‑compatible servers in Go.
 
 image::https://raw.githubusercontent.com/cybergarage/go-mongo/master/doc/img/framework.png[]
 
-The https://github.com/cybergarage/go-mongo[go-mongo] framework automatically handles the MongoDB protocol and system commands. Therefore, PuzzleDB achieves MongoDB compatibility by implementing only user query commands.
+The framework handles protocol and system commands; PuzzleDB focuses on implementing user query commands.
 
-== Data Model
+=== Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts MongoDB data model, https://bsonspec.org/[BSON (Binary JSON)], into the PuzzleDB data model as follows:
+PuzzleDB converts MongoDB's https://bsonspec.org/[BSON] model into its internal representation:
 
 [format="csv", options="header, autowidth"]
 |====
 include::model/mongodb.csv[]
 |====
 
-== Supported Commands
+=== Supported Commands
 
-PuzzleDB currently supports https://www.mongodb.com/docs/manual/reference/command/[MongoDB database commands] in stages. This section describes the status of MongoDB command support in PuzzleDB.
+PuzzleDB incrementally supports https://www.mongodb.com/docs/manual/reference/command/[MongoDB database commands]. Current status:
 
-=== Diagnostic Commands
+==== Diagnostic Commands
 
 [format="csv", options="header, autowidth"]
 |====
 include::mongo/diagnostic.csv[]
 |====
 
-=== Replication Commands
+==== Replication Commands
 
 [format="csv", options="header, autowidth"]
 |====
 include::mongo/replication.csv[]
 |====
 
-=== Query and Write Operation Commands
+==== Query and Write Operation Commands
 
 [format="csv", options="header, autowidth"]
 |====
 include::mongo/query.csv[]
 |====
 
-== Indexing
+=== Indexing
 
-Currently, PuzzleDB automatically indexes all sigle fields of inserted and updated documents by default, as CosmosDB does. In the future, PuzzleDB will support indexing of only the specified fields like MongoDB or more smart indexing like CosmosDB.
+Currently PuzzleDB automatically indexes all single fields of inserted and updated documents (similar to CosmosDB). Future versions will allow selective indexing and more adaptive strategies.
 
-== References
+=== References
 
 - https://learn.microsoft.com/en-us/azure/cosmos-db/whitepapers[Conceptual whitepapers - Azure Cosmos DB | Microsoft Learn]
 - https://learn.microsoft.com/en-us/azure/cosmos-db/index-policy[Azure Cosmos DB indexing policies | Microsoft Learn]

@@ -1,16 +1,16 @@
-# MongoDB Comptibility
+# MongoDB Compatibility
 
-PuzzleDB supports MongoDB API based on [go-mongo](https://github.com/cybergarage/go-mongo), a database framework that makes it easy to implement MongoDB compatible servers using Go.
+PuzzleDB supports a MongoDB API via [go-mongo](https://github.com/cybergarage/go-mongo), a framework for implementing MongoDB‑compatible servers in Go.
 
 <figure>
 <img src="https://raw.githubusercontent.com/cybergarage/go-mongo/master/doc/img/framework.png" alt="framework" />
 </figure>
 
-The [go-mongo](https://github.com/cybergarage/go-mongo) framework automatically handles the MongoDB protocol and system commands. Therefore, PuzzleDB achieves MongoDB compatibility by implementing only user query commands.
+The framework handles protocol and system commands; PuzzleDB focuses on implementing user query commands.
 
 ## Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model; PuzzleDB converts MongoDB data model, [BSON (Binary JSON)](https://bsonspec.org/), into the PuzzleDB data model as follows:
+PuzzleDB converts MongoDB’s [BSON](https://bsonspec.org/) model into its internal representation:
 
 <table>
 <colgroup>
@@ -77,7 +77,7 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 
 ## Supported Commands
 
-PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/docs/manual/reference/command/) in stages. This section describes the status of MongoDB command support in PuzzleDB.
+PuzzleDB incrementally supports [MongoDB database commands](https://www.mongodb.com/docs/manual/reference/command/). Current status:
 
 ### Diagnostic Commands
 
@@ -183,7 +183,7 @@ PuzzleDB currently supports [MongoDB database commands](https://www.mongodb.com/
 
 ## Indexing
 
-Currently, PuzzleDB automatically indexes all sigle fields of inserted and updated documents by default, as CosmosDB does. In the future, PuzzleDB will support indexing of only the specified fields like MongoDB or more smart indexing like CosmosDB.
+Currently PuzzleDB automatically indexes all single fields of inserted and updated documents (similar to CosmosDB). Future versions will allow selective indexing and more adaptive strategies.
 
 ## References
 

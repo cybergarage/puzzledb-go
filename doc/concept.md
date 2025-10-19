@@ -1,16 +1,16 @@
 # Design Concepts
 
-PuzzleDB has a unique approach in the NewSQL field by using a simple key-value foundation for data model, indexes, and queries, enabling high scalability and ACID transactions.This section describes the architecture and design concepts of PuzzleDB.
+PuzzleDB applies a NewSQL-style architecture built on an ordered key-value foundation for its data model, indexes, and queries—enabling high scalability with ACID transactions. This section outlines the core architecture and design concepts.
 
 # Layer Concept
 
-PuzzleDB adopts a unique approach similar to FoundationDB and early Google Spanner. It offers high scalability and ACID transactions while constructing its data model, indexes, and query processing on a foundation of simple key-value storage without any query functionality.
+PuzzleDB adopts an approach similar to FoundationDB and early Google Spanner: high scalability and ACID transactions built atop a simple ordered key‑value substrate without embedded query functionality.
 
 ![layer concept](img/layer_concept.png)
 
-In contrast, PuzzleDB has loosely coupled the query API, data model, and storage engine, enabling users to build their database with a suitable combination for their specific use cases and workloads. In PuzzleDB, not only are records represented as key-value pairs, but schemas and indices are also represented as key-value data.
+PuzzleDB loosely couples the query APIs, data model, and storage engine, enabling tailored compositions for specific workloads. Records, schemas, and indexes are all materialized as key‑value data.
 
-## References
+# References
 
 - [FoundationDB](https://www.foundationdb.org/)
 
@@ -34,19 +34,19 @@ In contrast, PuzzleDB has loosely coupled the query API, data model, and storage
 
 # Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently. PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
+PuzzleDB is a multi‑model database. The core logical model is a document model layered atop an ordered key‑value store. All objects (data, schema, indexes) are represented as documents and ultimately persisted as key‑value pairs.
 
 <figure>
 <img src="img/storage.png" alt="storage" />
 </figure>
 
-PuzzleDB defines a plug-in interface to the Key-Value store, which allows importing small local in-memory databases like memdb or large distributed databases like FoundationDB or TiKV.
+PuzzleDB defines a storage plugin interface enabling use of local in‑memory stores (e.g. memdb) or large distributed stores (e.g. FoundationDB, TiKV).
 
 ## Document Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model like CosmosDB. PuzzleDB is a pluggable database that combines modules, and the storage layer modules must be as expressive as JSON or BSON like ARS (Atom-Record-Sequence) of CosmosDB.
+The document model must be expressive (JSON / BSON level) similar to ARS (Atom‑Record‑Sequence) in CosmosDB.
 
-PuzzleDB is a multi-model database, which converts any data models such as relational and document database models into the PuzzleDB data model as follows:
+PuzzleDB maps external data models (relational, document, key‑value) into its internal document representation:
 
 <table style="width:100%;">
 <colgroup>
@@ -223,9 +223,9 @@ PuzzleDB is a multi-model database, which converts any data models such as relat
 
 ## Key-Value Object Model
 
-PuzzleDB stores all database objects into key-value objects, and the key-value model is the core data model of PuzzleDB. The key-value model is a simple data model that stores data as a collection of key-value pairs. The key-value model is a flexible and scalable data model that can be used to store and retrieve data efficiently.
+The ordered key‑value model underpins all persisted objects. It provides flexible, scalable storage and efficient range operations.
 
-PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as key-value objects.
+All higher‑level objects are encoded as documents and stored as key‑value entries.
 
 # Key Object
 
@@ -399,11 +399,11 @@ Primary keys and secondary indices may comprise one or more columns. Although om
 
 - [plugins.coder.key.tuple.Coder::EncodeKey()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/key/tuple/coder.go)
 
-## Document (Value) Object
+### Document (Value) Object
 
-The document model is not natively implemented and is currently built on a key-value model with a coder plugin module. PuzzleDB provides a default coder, the CBOR (Concise Binary Object Representation ) plug-in module as the default coder.
+The document abstraction is realized via coder plugins layered on key‑value storage. The default coder uses CBOR (Concise Binary Object Representation).
 
-PuzzleDB encodes a document data with a coder and stores it as a key-value data. The relationship between the default coder, CBOR data model, and the document data model is shown below.
+Documents are encoded using the active coder (CBOR by default) and persisted as key‑value entries. The relationship between the document model and CBOR encoding is shown below.
 
 <table>
 <colgroup>
@@ -487,11 +487,11 @@ PuzzleDB encodes a document data with a coder and stores it as a key-value data.
 </tbody>
 </table>
 
-### See also
+#### See also
 
 - [plugins.coder.document.cbor.Coder::EncodeDocument()](https://github.com/cybergarage/puzzledb-go/blob/main/puzzledb/plugins/coder/document/cbor/coder.go)
 
-## References
+### References
 
 - [A technical overview of Azure Cosmos DB | Azure Blog and Updates | Microsoft Azure](https://azure.microsoft.com/en-gb/blog/a-technical-overview-of-azure-cosmos-db/)
 
@@ -503,25 +503,25 @@ PuzzleDB encodes a document data with a coder and stores it as a key-value data.
 
 - [CBOR — Concise Binary Object Representation | Overview](http://cbor.io/)
 
-# Storage Concepts
+## Storage Concepts
 
-In PuzzleDB, the storage plugins are expected to be implemented as transaction-enabled, ordered sharding NoSQL storage systems, similar to Google Spanner or FoundationDB.
+Storage plugins should provide transaction‑enabled, ordered, sharded NoSQL capabilities (similar to Google Spanner or FoundationDB).
 
-## Ordered Key-Value Store
+### Ordered Key-Value Store
 
-PuzzleDB defines its storage interface as an ordered key-value store, akin to early Google Spanner and FoundationDB. PuzzleDB expects its storage plugin components to be implemented based on an ordered key-value store, in contrast to unordered hash-like key-value stores found in MongoDB and Cassandra. The implementation should be based on ACID-compliant ordered key-value stores.
+PuzzleDB defines its storage interface as an ACID‑compliant ordered key‑value store (similar to early Spanner / FoundationDB), contrasting with unordered hash‑based stores.
 
-FoundationDB and early Google Spanner utilize ordered key-value stores to support their unique features and capabilities in managing large-scale distributed databases. By organizing the keys in a sorted manner, these databases can optimize storage, retrieval, and update operations. This ordered structure also enables the databases to maintain consistency and achieve high performance in distributed environments.
+Ordered stores optimize range scans, point lookups, and transactional semantics in large‑scale distributed deployments.
 
-Ordered key-value stores are a fundamental component of the storage layers in distributed databases like FoundationDB and Google Spanner. By maintaining keys in a sorted order, these systems can efficiently handle range queries and optimize various operations in large-scale distributed environments.
+Sorted keys enable efficient range queries and predictable operational performance.
 
-## Data Model
+### Data Model
 
-PuzzleDB is a multi-data model database and the core data model is a document model, and the document model is constructed based on a key value model currently. PuzzleDB represents all database objects such as data objects, schema objects, and index objects as document data. Document data are ultimately stored as Key-Value objects.
+PuzzleDB’s logical layer is a document model encoded onto the ordered key‑value substrate. All objects (data, schema, indexes) are documents persisted as key‑value entries.
 
-PuzzleDB is a multi-data model database and the core data model is a document model like CosmosDB. PuzzleDB is a pluggable database that combines modules, and the storage layer modules must be as expressive as JSON or BSON like ARS (Atom-Record-Sequence) of CosmosDB. For more detailed information about PuzzleDB’s data model, it is recommended to refer to the [Data Model](data-model.md) documents.
+The document model must be expressive (JSON/BSON level) similar to CosmosDB’s ARS. See [Data Model](data-model.md) for details.
 
-## References
+### References
 
 - [FoundationDB](https://www.foundationdb.org/)
 
@@ -551,29 +551,31 @@ PuzzleDB is a multi-data model database and the core data model is a document mo
 
   - [Schema-Agnostic Indexing with Azure DocumentDB](https://www.vldb.org/pvldb/vol8/p1668-shukla.pdf)
 
-# Consistency Model
+## Consistency Model
 
-PuzzleDB is a multi-data model database; PuzzleDB is a pluggable database that combines modules, and the storage layer modules are expected to satisfy ACID-like interfaces.
+PuzzleDB is a multi‑data‑model database; storage layer modules are expected to satisfy ACID semantics through a common interface.
 
-PuzzleDB defines the top-level storage plug-in as a document model interface, and the storage interface consists of transaction and document interfaces.
+PuzzleDB defines its top-level storage plugin as a document model interface composed of transaction and document primitives.
 
 <figure>
 <img src="img/consistency_model.png" alt="consistency model" />
 </figure>
 
-While developers can omit the interface and implement the storage plug-ins based on non-ACID storage, such as contingent consistency model storage, PuzzleDB expects that storage modules are implemented based on ACID storages.
+While non‑ACID backends could be implemented, PuzzleDB strongly recommends ACID‑compliant ordered key‑value storage for correctness and predictable consistency.
 
-# Coordinator Concept
+## Coordinator Concept
 
-Coordinator services, such as Zookeeper and etcd, are distributed systems that play a crucial role in managing configuration data, synchronization, and coordination of distributed applications. They are designed to address the challenges of maintaining consistency and ensuring high availability in distributed environments.
+Coordinator services (e.g., ZooKeeper, etcd, Consul) manage configuration, synchronization, and coordination for distributed applications, helping maintain consistency and availability.
 
-In distributed mode, PuzzleDB operates under the assumption that it will be launched as multiple distributed instances. Each plugin service (such as query plugins) running on each instance should be coordinated using the coordinator service plugin.
+In distributed mode PuzzleDB runs as multiple instances. Each plugin service across instances is coordinated via the configured coordinator plugin.
 
-![architecture](img/architecture.png)
+<figure>
+<img src="img/architecture.png" alt="architecture" />
+</figure>
 
-The coordinator service provides distributed synchronization and coordination for PuzzleDB nodes. It is used to manage the distributed PuzzleDB nodes and synchronize the states of the nodes. The coordinator service plug-in is used to manage and synchronize the distributed PuzzleDB nodes.
+The coordinator plugin provides synchronization, membership management, and state propagation for PuzzleDB nodes.
 
-## References
+### References
 
 - Coordinator Services
 
@@ -589,19 +591,25 @@ The coordinator service provides distributed synchronization and coordination fo
 
 - [Apache Zookeeper vs etcd3. A comparison between distributed… | by Imesha Sudasingha | Medium](https://loneidealist.medium.com/apache-curator-vs-etcd3-9c1362600b26)
 
-# Authentication Methods
+## Authentication
 
-PuzzleDB includes a authenticator manager to manage the authentication for the query plugins.
+PuzzleDB includes an authenticator manager that manages authentication for query plugins.
 
 <figure>
 <img src="img/authenticator.png" alt="authenticator" />
 </figure>
 
-The authenticator manager supports multiple authentication methods, including username and password authentication, SASL (Simple Authentication and Security Layer) authentication, and certificate-based authentication.
+The authenticator manager supports multiple methods including:
 
-## Authentication Plugins
+- Username/password
 
-PuzzleDB supports the following authentication methods for the query plugins.
+- SASL (Simple Authentication and Security Layer)
+
+- Certificate-based (mTLS client certificate)
+
+### Authentication Plugin Summary
+
+PuzzleDB currently supports the following authentication mechanisms for query plugins.
 
 - Plain
 
@@ -609,19 +617,19 @@ PuzzleDB supports the following authentication methods for the query plugins.
 
 - Certificate (TLS Client Certificate)
 
-- MD5 (Not yes supported)
+- MD5 (Not yet supported)
 
-- Crypt (Not yes supported)
+- Crypt (Not yet supported)
 
-- LDAP (Not yes supported)
+- LDAP (Not yet supported)
 
-- PAM (Not yes supported)
+- PAM (Not yet supported)
 
-- Kerberos (Not yes supported)
+- Kerberos (Not yet supported)
 
-## Supported Authentication Methods
+### Supported Methods Matrix
 
-PuzzleDB supports the following authentication methods for the query plugins.
+The following matrix shows supported methods per plugin.
 
 <table style="width:100%;">
 <colgroup>
@@ -686,17 +694,17 @@ PuzzleDB supports the following authentication methods for the query plugins.
 </tbody>
 </table>
 
-O:Supported, X:Unsupported, -:Not yes supported
+O: Supported, X: Unsupported, -: Not yet supported
 
-## References
+### References
 
-### PostgreSQL
+#### PostgreSQL
 
 - [PostgreSQL: Documentation: Authentication Methods](https://www.postgresql.org/docs/current/auth-methods.html)
 
   - [PostgreSQL: Documentation: The pg\_hba.conf File](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
 
-## MySQL
+#### MySQL
 
 - [MySQL: Connection Phase](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html)
 
@@ -706,7 +714,7 @@ O:Supported, X:Unsupported, -:Not yes supported
 
   - [MySQL: Native Password Authentication](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase_authentication_methods_native_password_authentication.html)
 
-## MongoDB
+#### MongoDB
 
 - [Security — MongoDB Manual](https://www.mongodb.com/docs/manual/security/)
 
@@ -714,25 +722,27 @@ O:Supported, X:Unsupported, -:Not yes supported
 
   - [Configure Database User Authentication — MongoDB Atlas](https://www.mongodb.com/docs/atlas/security/config-db-auth/)
 
-## Redis
+#### Redis
 
 - [Security – Redis](https://redis.io/docs/management/security/)
 
   - [AUTH | Redis](https://redis.io/commands/auth/)
 
-# Plug-In Concepts
+## Plugin Concepts
 
-PuzzleDB is a pluggable database that amalgamates various components. It defines a pluggable component interface following a layering concept similar to FoundationDB. PuzzleDB separates the query layer and data model from the storage layer. The most basic storage layer is defined as a simple key-value store, much like FoundationDB and early Google Spanner.
+PuzzleDB is a pluggable database composed of modular components. Interfaces follow a layering concept similar to FoundationDB: query and data model layers are separated from an ordered key‑value storage layer.
 
-![architecture](img/architecture.png)
+<figure>
+<img src="img/architecture.png" alt="architecture" />
+</figure>
 
-PuzzleDB defines the coordinator and storage function interfaces to operate as standalone and distributed databases. Running with distributed coordinator and storage plug-ins, PuzzleDB functions as a distributed multi-API and multi-model database.
+Coordinator and storage interfaces allow standalone or distributed operation. With distributed plugins enabled, PuzzleDB becomes a multi‑API, multi‑model database.
 
-# Plug-In Service Types
+## Plugin Service Types
 
-PuzzleDB offers various types of plug-ins, including query, storage, and coordinator. These are categorized based on their support for distributed operations and their dependencies on other plug-ins. System plug-ins, responsible for managing configuration data and coordinating distributed nodes, are always activated by default. The database optimizes storage, retrieval, and update operations through a query interface that supports any database protocol, and a storage interface that employs an ordered key-value store, thereby maintaining consistency in distributed environments.
+PuzzleDB offers several plugin categories (query, storage, coordinator, system). They are classified by distributed capability and dependency requirements. System plugins (configuration, coordination) are always active by default. Query plugins expose database protocols; storage plugins implement an ordered key‑value store to maintain consistency in distributed environments.
 
-PuzzleDB provides default plug-in services that include query, storage, and coordinator plug-ins and defines the default plug-in types as follows:
+PuzzleDB provides default query, storage, coordinator, tracing, and metrics plugins. Types are defined below:
 
 <table style="width:100%;">
 <colgroup>
@@ -941,53 +951,53 @@ PuzzleDB provides default plug-in services that include query, storage, and coor
 </tbody>
 </table>
 
-- Distributed: Indicates whether the plug-in service supports distributed operation. The non-distributed plug-ins are provided for standalone operation or for internal testing of PuzzleDB.
+- Distributed: Whether the plugin supports distributed operation (non‑distributed ones serve standalone or testing use cases).
 
-- Dependency: Indicates other plug-in service types required to run the plug-in service.
+- Dependency: Other plugin types required for activation.
 
-## Plug-In Interfaces
+### Plugin Interfaces
 
-PuzzleDB defines the plug-in categories and interfaces based on the following concepts.
+PuzzleDB defines plugin categories and interfaces as follows.
 
-### System Plug-Ins
+#### System Plugins
 
-System plug-ins are used to manage the PuzzleDB system. They are used to manage the configuration data, synchronization, and coordination of distributed PuzzleDB nodes. System plug-ins are used to manage and synchronize the distributed PuzzleDB nodes.
+System plugins manage configuration, synchronization, and coordination of distributed PuzzleDB nodes.
 
-Unlike other plugins, system plugins are always activated as default plugins. Some, such as the gRPC plugin, work independently, while others, such as the Actor service, depend on other plugins to function.
+These are always activated by default. Some (e.g., gRPC) are independent; others (e.g., Actor) depend on additional plugins.
 
-### Query Interface
+#### Query Interface
 
-Redis, MongoDB, and MySQL are popular database management systems, each with its own communication protocol for handling database queries. These protocols enable clients to interact with the database server, performing various operations such as inserting, updating, retrieving, or deleting data.
+Redis, MongoDB, MySQL, and PostgreSQL each use distinct wire protocols for handling queries. PuzzleDB’s query interface aims to support any database protocol with a minimal abstraction.
 
-PuzzleDB defines the query interface to support any database protocol such as Redis, MongoDB, and MySQL protocols. The query interface is kept to a minimal specification to support a wide variety of database protocols.
+The abstraction is intentionally minimal to ease implementation of additional protocols.
 
-### Storage Interface
+#### Storage Interface
 
-PuzzleDB defines the storage interface as an ordered key-value store, similar to early Google Spanner and FoundationDB. PuzzleDB expects its storage plugin components to be implemented based on an ordered key-value store, in contrast to unordered hash-like key-value stores found in MongoDB and Cassandra. The implementation should be based on ACID-compliant ordered key-value stores.
+The storage interface is an ACID‑compliant ordered key‑value abstraction (similar to early Spanner / FoundationDB), enabling efficient range operations and strong consistency.
 
-FoundationDB and early Google Spanner utilize ordered key-value stores to support their unique features and capabilities in managing large-scale distributed databases. By organizing the keys in a sorted manner, these databases can optimize storage, retrieval, and update operations. This ordered structure also enables the databases to maintain consistency and achieve high performance in distributed environments.
+Ordered storage optimizes range scans, point lookups, and transactional workloads in large‑scale distributed environments.
 
-Ordered key-value stores are a fundamental component of the storage layers in distributed databases like FoundationDB and Google Spanner. By maintaining keys in a sorted order, these systems can efficiently handle range queries and optimize various operations in large-scale distributed environments.
+Maintaining keys in sorted order enables efficient range queries and predictable performance.
 
-### Coordinator Interface
+#### Coordinator Interface
 
-Coordinator services, such as Zookeeper and etcd, are distributed systems that play a crucial role in managing the configuration data, synchronization, and coordination of distributed applications. They are designed to handle the challenges of maintaining consistency and ensuring high availability in distributed environments.
+Coordinator plugins integrate external services (ZooKeeper, etcd, Consul) for cluster membership, leader election, and distributed state.
 
-The coordinator service provides distributed synchronization and coordination for PuzzleDB nodes. It is used to manage the distributed PuzzleDB nodes and synchronize the states of the nodes. The coordinator service plug-in is used to manage and synchronize the distributed PuzzleDB nodes.
+They provide synchronization and coordination primitives for PuzzleDB nodes.
 
-### Tracer Interface
+#### Tracer Interface
 
-Distributed tracing is a monitoring technique for analyzing and troubleshooting distributed systems like microservices and cloud-based applications. It tracks requests as they flow through various services, identifying bottlenecks and performance issues. Unique trace IDs tag requests, and spans represent each step in the request lifecycle. Visualization tools display interactions between components, aiding in issue detection and system optimization. Distributed tracing is essential for modern software systems, helping improve performance and reliability.
+Tracing plugins implement distributed trace collection (e.g., OpenTelemetry, OpenTracing) for end‑to‑end request analysis and latency diagnostics.
 
-PuzzleDB defines the tracer service interface to support any distributed tracing protocol such as OpenTracing and OpenTelemetry. The tracer interface is kept to a minimal specification to support a wide variety of tracer protocols.
+The tracer interface is minimal to facilitate implementation of diverse tracing backends.
 
-### Metrics Interface
+#### Metrics Interface
 
-Metric service is a tool or platform used for collecting, storing, and analyzing metric data. Metric data is time-series data that describes the behavior and performance of a system or application over time. Metric services allow organizations to monitor their systems and applications in real-time, gain insights into performance trends, and detect and troubleshoot issues.
+Metrics plugins collect, store, and export time‑series performance data for monitoring and alerting.
 
-PuzzleDB defines the metrics service interface to support any metrics servicel such as Prometheus and Graphite. The metrics interface is kept to a minimal specification to support a wide variety of metrics services.
+The metrics interface is minimal to enable integration with systems like Prometheus or Graphite.
 
-## References
+### References
 
 - [FoundationDB](https://www.foundationdb.org/)
 
