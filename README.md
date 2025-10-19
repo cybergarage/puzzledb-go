@@ -1,44 +1,46 @@
-![doc/img/logo](doc/img/logo.png)
+<figure>
+<img src="doc/img/logo.png" alt="PuzzleDB" />
+</figure>
 
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/cybergarage/puzzledb-go) [![Go](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg)](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml) [![go-Reference](https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg)](https://pkg.go.dev/github.com/cybergarage/puzzledb-go) [![go-Report Card](https://img.shields.io/badge/go%20report-A%2B-brightgreen)](https://goreportcard.com/report/github.com/cybergarage/puzzledb-go) [![codecov](https://codecov.io/gh/cybergarage/puzzledb-go/branch/main/graph/badge.svg?token=C3Q82XPE44)](https://codecov.io/gh/cybergarage/puzzledb-go)
 
-PuzzleDB aspires to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version has been developed in the Go language.
+PuzzleDB is a high-performance, distributed, cloud‑native, multi‑API, multi‑model database (Technology Preview) implemented in Go.
 
 # What is PuzzleDB
 
-PuzzleDB is a multi-data model database capable of handling key-value, relational, and document models. Additionally, PuzzleDB is a multi-interface database, compatible with existing database protocols such as PostgreSQL, MySQL, Redis, and MongoDB.
+PuzzleDB is a multi‑data‑model database capable of handling key‑value, relational, and document models. It is also multi‑interface, speaking existing protocols (PostgreSQL, MySQL, Redis, MongoDB).
 
 ![concept](doc/img/concept.png)
 
-PuzzleDB is a distributed database framework supporting various data models and protocols. It is designed as a flexible, scalable, and efficient database framework suitable for various environments.
+PuzzleDB is a distributed framework supporting diverse models and protocols, designed for flexibility, scalability, and efficiency.
 
 ![system](doc/img/system.png)
 
-PuzzleDB accommodates existing query protocols such as PostgreSQL, MySQL, MongoDB, and Redis within a distributed, pluggable database framework. Consequently, developers can seamlessly start using PuzzleDB as a scalable, high-performance distributed database with existing database client drivers, eliminating any learning curve.
+By accommodating existing query protocols, developers can adopt PuzzleDB with standard client drivers and minimal learning curve.
 
 ## Key Features
 
-PuzzleDB has the following features:
+PuzzleDB provides:
 
-- Flexibility: PuzzleDB allows for extensibility through its plugin architecture and pluggable modules for queries, data models, storage, and more.
+- Extensibility – Modular plugin architecture for queries, models, storage, coordination, tracing, metrics.
 
-- Scalability: PuzzleDB seamlessly transitions from an in-memory standalone storage plugin module to a scalable, shared-nothing, horizontally distributed database using an ordered distributed key-value store plugin module.
+- Scalability – Seamless path from local in‑memory to shared‑nothing horizontal distribution via ordered key‑value storage.
 
-- Facility: PuzzleDB supports major database model and protocol plugin modules, such as PostgreSQL, Redis, MongoDB, and MySQL, simplifying application migration.
+- Compatibility – Supports major database protocol plugins (PostgreSQL, Redis, MongoDB, MySQL) easing migration.
 
-- Safety: PuzzleDB offers ACID-compliant plugin modules, enabling the development of intuitive and secure applications.
+- Reliability – ACID‑compliant storage and transaction semantics for correctness.
 
-- Efficiency: PuzzleDB manages various database data models, including key-value, document, and relational, by consolidating them into a single core model.
+- Consolidation – Unified internal model representing key‑value, document, and relational data efficiently.
 
 # Get Started
 
-See the following guide to learn about how to get started.
+Start with the quick start guide:
 
 - [Quick Start](doc/quick-start.md)
 
-# How does PuzzleDB work?
+# Architecture & Concepts
 
-For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
+Core architecture and design documents:
 
 - [Design Concepts](doc/concept.md)
 
@@ -54,11 +56,11 @@ For information on the concept and architecture of PuzzleDB, refer to the follow
 
   - [Authentication Concept](doc/auth-concept.md)
 
-  - [Plug-In Concept](doc/plugin-concept.md)
+  - [Plugin Concept](doc/plugin-concept.md)
 
 # Supported Protocols
 
-PuzzleDB supports the following protocols:
+PuzzleDB currently supports the following database protocols:
 
 - Compatibility
 
@@ -72,7 +74,7 @@ PuzzleDB supports the following protocols:
 
 # Roadmap
 
-PuzzleDB is currently in a technical preview release stage. At present, it is in the process of developing and testing a distributed plugin for the upcoming release. The development roadmap for PuzzleDB is outlined below.
+PuzzleDB is in a technical preview stage. A distributed plugin stack is under active development. See roadmap:
 
 ![doc/img/roadmap](doc/img/roadmap.png)
 
@@ -84,7 +86,7 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
     - [puzzledb-server](doc/cmd/server/puzzledb-server.md)
 
-  - [Configuring PullzeDB](doc/configuring.md)
+  - [Configuring PuzzleDB](doc/configuring.md)
 
 - Operation
 
@@ -116,15 +118,15 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
   - [Build on macOS](doc/build-on-macos.md)
 
-  - [Build on Ubuntu](doc/build-on-macos.md)
+  - [Build on Ubuntu](doc/build-on-ubuntu.md)
 
 - Extending PuzzleDB
 
-  - [Plug-In Concept](doc/plugin-concept.md)
+  - [Plugin Concept](doc/plugin-concept.md)
 
-  - [Plug-in Services](doc/plugin-types.md)
+  - [Plugin Services](doc/plugin-types.md)
 
-    - [Building User Plug-ins](doc/plugin-tutorial.md)
+    - [Building User Plugins](doc/plugin-tutorial.md)
 
 - Specification
 
@@ -134,11 +136,11 @@ PuzzleDB is currently in a technical preview release stage. At present, it is in
 
     - [Coordinator Key-Value Store Specification](doc/spec/coordinator-spec.md)
 
-  - Store Specification
+  - Store Specifications
 
     - [Store Key-Value Specification](doc/spec/store-kv-spec.md)
 
-  - Transversed Specifications
+  - Transverse Specifications
 
     - [Key-Value Store Specification](doc/spec/kv-store-spec.md)
 

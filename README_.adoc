@@ -1,4 +1,4 @@
-image:doc/img/logo.png[doc/img/logo]
+image::doc/img/logo.png[PuzzleDB]
 
 image:https://img.shields.io/github/v/tag/cybergarage/puzzledb-go[GitHub tag (latest SemVer)]
 https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml[image:https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg[Go]]
@@ -6,19 +6,19 @@ https://pkg.go.dev/github.com/cybergarage/puzzledb-go[image:https://pkg.go.dev/b
 https://goreportcard.com/report/github.com/cybergarage/puzzledb-go[image:https://img.shields.io/badge/go%20report-A%2B-brightgreen[go-Report Card]]
 https://codecov.io/gh/cybergarage/puzzledb-go[image:https://codecov.io/gh/cybergarage/puzzledb-go/branch/main/graph/badge.svg?token=C3Q82XPE44[codecov]]
 
-PuzzleDB aspires to be a high-performance, distributed, cloud-native, multi-API, multi-model database. This Technology Preview version has been developed in the Go language.
+PuzzleDB is a high-performance, distributed, cloud‑native, multi‑API, multi‑model database (Technology Preview) implemented in Go.
 
 include::doc/whatis.adoc[]
 
-= Get Started
+== Get Started
 
-See the following guide to learn about how to get started.
+Start with the quick start guide:
 
 * link:doc/quick-start.md[Quick Start]
 
-= How does PuzzleDB work?
+== Architecture & Concepts
 
-For information on the concept and architecture of PuzzleDB, refer to the following concept documents:
+Core architecture and design documents:
 
 * link:doc/concept.md[Design Concepts]
 ** link:doc/layer-concept.md[Layer Concept]
@@ -27,11 +27,11 @@ For information on the concept and architecture of PuzzleDB, refer to the follow
 ** link:doc/consistency-model.md[Consistency Model]
 ** link:doc/coordinator-concept.md[Coordinator Concept]
 ** link:doc/auth-concept.md[Authentication Concept]
-** link:doc/plugin-concept.md[Plug-In Concept]
+** link:doc/plugin-concept.md[Plugin Concept]
 
-= Supported Protocols
+== Supported Protocols
 
-PuzzleDB supports the following protocols:
+PuzzleDB currently supports the following database protocols:
 
 * Compatibility
 ** link:doc/postgresql.md[PostgreSQL]
@@ -39,18 +39,18 @@ PuzzleDB supports the following protocols:
 ** link:doc/mongodb.md[MongoDB]
 ** link:doc/redis.md[Redis]
 
-= Roadmap
+== Roadmap
 
-PuzzleDB is currently in a technical preview release stage. At present, it is in the process of developing and testing a distributed plugin for the upcoming release. The development roadmap for PuzzleDB is outlined below.
+PuzzleDB is in a technical preview stage. A distributed plugin stack is under active development. See roadmap:
 
 image:doc/img/roadmap.png[doc/img/roadmap]
 
-= User Guides
+== User Guides
 
 * Get Started
 ** link:doc/quick-start.md[Quick Start]
 *** link:doc/cmd/server/puzzledb-server.md[puzzledb-server]
-** link:doc/configuring.md[Configuring PullzeDB]
+** link:doc/configuring.md[Configuring PuzzleDB]
 * Operation
 ** link:doc/cmd/cli/puzzledb-cli.md[CLI (puzzledb-cli)]
 ** link:doc/grpc-api.md[gRPC API]
@@ -60,7 +60,7 @@ image:doc/img/roadmap.png[doc/img/roadmap]
 * Distribution
 ** link:https://hub.docker.com/repository/docker/cybergarage/puzzledb/general[Docker Hub (cybergarage/puzzledb)]
 
-= Developer Guides
+== Developer Guides
 
 * References
 ** link:https://pkg.go.dev/github.com/cybergarage/puzzledb-go[go-reference]
@@ -68,21 +68,21 @@ image:doc/img/roadmap.png[doc/img/roadmap]
 ** link:doc/coding_guideline.md[Coding Guidelines]
 * Building and Testing
 ** link:doc/build-on-macos.md[Build on macOS]
-** link:doc/build-on-macos.md[Build on Ubuntu]
+** link:doc/build-on-ubuntu.md[Build on Ubuntu]
 * Extending PuzzleDB
-** link:doc/plugin-concept.md[Plug-In Concept]
-** link:doc/plugin-types.md[Plug-in Services]
-*** link:doc/plugin-tutorial.md[Building User Plug-ins]
+** link:doc/plugin-concept.md[Plugin Concept]
+** link:doc/plugin-types.md[Plugin Services]
+*** link:doc/plugin-tutorial.md[Building User Plugins]
 * Specification
 ** link:doc/spec/coordinator-spec.md[Coordinator Specification]
 *** link:doc/spec/coordinator-msg-spec.md[Coordinator Messaging Specification]
 *** link:doc/spec/coordinator-spec.md[Coordinator Key-Value Store Specification]
-** Store Specification
+** Store Specifications
 *** link:doc/spec/store-kv-spec.md[Store Key-Value Specification]
-** Transversed Specifications
+** Transverse Specifications
 *** link:doc/spec/kv-store-spec.md[Key-Value Store Specification]
 
-= Related Projects
+== Related Projects
 
 PuzzleDB is developed in collaboration with the following Cybergarage projects:
 
