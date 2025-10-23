@@ -218,6 +218,22 @@ Standard plugin service types are listed below; refer to reserved interfaces in 
 <td style="text-align: left;"></td>
 </tr>
 <tr>
+<td style="text-align: left;"><p>Job</p></td>
+<td style="text-align: left;"><p>-</p></td>
+<td style="text-align: left;"><p>Job services</p></td>
+<td style="text-align: left;"><p>memdb</p></td>
+<td style="text-align: left;"><p>X</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>FoundationDB</p></td>
+<td style="text-align: left;"><p>O</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
 <td style="text-align: left;"><p>Extend</p></td>
 <td style="text-align: left;"><p>-</p></td>
 <td style="text-align: left;"><p>User-defined services</p></td>

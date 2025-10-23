@@ -21,4 +21,6 @@ Tracer,-,Distributed tracing services,OpenTelemetry,O,
 ,,,OpenTracing,O,
 Metric,-,Metrics services,Prometheus,O,
 ,,,Graphite (Planning),O,
+Job,-,Job services,memdb,X,
+,,,FoundationDB,O,
 Extend,-,User-defined services,-,-,-
