@@ -45,6 +45,8 @@ const (
 	MetricsService ServiceType = 0x0A
 	// AuthService represents an authenticator service.
 	AuthService ServiceType = 0x0B
+	// JobService represents a job service.
+	JobService ServiceType = 0x0C
 	// ExtendService represents an uncategorized service.
 	ExtendService ServiceType = 0x0F
 )
@@ -63,6 +65,7 @@ func ServiceTypes() []ServiceType {
 		AuthService,
 		TracingService,
 		MetricsService,
+		JobService,
 		ExtendService,
 	}
 }
@@ -97,6 +100,8 @@ func (t ServiceType) String() string {
 		return "metrics"
 	case AuthService:
 		return "auth"
+	case JobService:
+		return "job"
 	case ExtendService:
 		return "extend"
 	default:
