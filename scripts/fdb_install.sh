@@ -46,7 +46,7 @@ echo ""
 echo "OPERATING SYSTEM  = $paramOS"
 echo "ARCHITECTURE      = $paramARCH"
 
-version=7.3.63
+version=7.3.69
 
 client_filename="foundationdb-clients_${version##*/}-1_$paramARCH"
 server_filename="foundationdb-server_${version##*/}-1_$paramARCH"

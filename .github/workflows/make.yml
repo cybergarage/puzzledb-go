@@ -26,7 +26,7 @@ jobs:
 
     - name: Set up FoundationDB
       env:
-        FDB_VER: 7.3.63
+        FDB_VER: 7.3.69
       run: |
          sudo wget --directory-prefix=/tmp https://github.com/apple/foundationdb/releases/download/${FDB_VER}/foundationdb-clients_${FDB_VER}-1_amd64.deb
          sudo apt install -y /tmp/foundationdb-clients_${FDB_VER}-1_amd64.deb
