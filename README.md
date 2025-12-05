@@ -43,19 +43,9 @@ Start with the quick start guide:
 Core architecture and design documents:
 
 - [Design Concepts](doc/concept.md)
-
-  - [Layer Concept](doc/layer-concept.md)
-
-  - [Data Model](doc/data-model.md)
-
   - [Storage Concept](doc/storage-concept.md)
-
   - [Consistency Model](doc/consistency-model.md)
-
   - [Coordinator Concept](doc/coordinator-concept.md)
-
-  - [Authentication Concept](doc/auth-concept.md)
-
   - [Plugin Concept](doc/plugin-concept.md)
 
 # Supported Protocols
