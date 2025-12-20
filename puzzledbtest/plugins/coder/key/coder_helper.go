@@ -60,7 +60,12 @@ func KeyCoderTest(t *testing.T, coder document.KeyCoder) {
 		key := document.NewKey()
 		for n, pictParam := range pict.Params() {
 			pictElem := pictCase[n]
-			kv, err := pictElem.CastType(string(pictParam))
+			pictType, err := pictParam.Type()
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			kv, err := pictElem.CastTo(pictType)
 			if err != nil {
 				t.Error(err)
 				return

@@ -108,7 +108,12 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 		key := document.NewKey()
 		key = append(key, n) // Added a number to sort by order
 		for n, pictParam := range pict.Params() {
-			kv, err := pictCase[n].CastType(string(pictParam))
+			pictType, err := pictParam.Type()
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			kv, err := pictCase[n].CastTo(pictType)
 			if err != nil {
 				t.Error(err)
 				return
@@ -122,14 +127,19 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	for n, pictCase := range pict.Cases() {
 		obj := map[string]any{}
 		for n, pictParam := range pict.Params() {
-			name := string(pictParam)
-			pictElem := pictCase[n]
-			v, err := pictElem.CastType(name)
+			pictName := pictParam.Name()
+			pictType, err := pictParam.Type()
 			if err != nil {
 				t.Error(err)
 				return
 			}
-			obj[name] = v
+			pictElem := pictCase[n]
+			v, err := pictElem.CastTo(pictType)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			obj[pictName] = v
 		}
 		objs[n] = obj
 	}
@@ -369,9 +379,13 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 	for n, pictCase := range pict.Cases() {
 		obj := []any{}
 		for n, pictParam := range pict.Params() {
-			name := string(pictParam)
+			pictType, err := pictParam.Type()
+			if err != nil {
+				t.Error(err)
+				return
+			}
 			pictElem := pictCase[n]
-			v, err := pictElem.CastType(name)
+			v, err := pictElem.CastTo(pictType)
 			if err != nil {
 				t.Error(err)
 				return
