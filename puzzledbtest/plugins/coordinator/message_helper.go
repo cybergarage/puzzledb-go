@@ -87,7 +87,7 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 
 	msgs := []coordinator.Message{}
 	expectedTotalMessageValue := 0
-	for n := 0; n < 10; n++ {
+	for n := range 10 {
 		obj := &testMessage{
 			Value: n,
 		}
@@ -120,7 +120,7 @@ func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
 
 	// Wait messages
 
-	for n := 0; n < 10; n++ {
+	for range 10 {
 		if len(observer.receivedMsgs) == len(msgs) {
 			break
 		}

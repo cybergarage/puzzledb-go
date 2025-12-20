@@ -26,14 +26,14 @@ func TestContext(t *testing.T) {
 
 	ctx := NewContextWith(tracer.NullTracer.StartSpan("root"))
 
-	for n := 0; n < loopCnt; n++ {
+	for n := range loopCnt {
 		name := fmt.Sprintf("span%d", n)
 		if !ctx.StartSpan(name) {
 			t.Errorf("ctx.StartSpan(%v)", name)
 		}
 	}
 
-	for n := 0; n < loopCnt; n++ {
+	for n := range loopCnt {
 		name := fmt.Sprintf("span%d", n)
 		if !ctx.FinishSpan() {
 			t.Errorf("ctx.FinishSpan(%v)", name)

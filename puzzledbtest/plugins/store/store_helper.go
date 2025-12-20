@@ -228,7 +228,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			return
 		}
 
-		for n := 0; n < len(keys); n++ {
+		for n := range keys {
 			if !rs.Next() {
 				cancel(t, txn)
 				t.Errorf("key (%v) object is not found", keys[n])
@@ -277,7 +277,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				return
 			}
 
-			for n := 0; n < limit; n++ {
+			for n := range limit {
 				if !rs.Next() {
 					cancel(t, txn)
 					t.Errorf("key (%v) object is not found", keys[n])
@@ -333,7 +333,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				return
 			}
 
-			for n := 0; n < (len(keys) - offset); n++ {
+			for n := range len(keys) - offset {
 				if !rs.Next() {
 					cancel(t, txn)
 					t.Errorf("key (%v) object is not found", keys[n])

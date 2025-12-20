@@ -57,7 +57,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 
 	keys := make([]document.Key, testKeyCount)
 	vals := make([][]byte, testKeyCount)
-	for n := 0; n < testKeyCount; n++ {
+	for n := range testKeyCount {
 		keys[n] = document.NewKeyWith(testKeyPrefix, fmt.Sprintf("key%d", n))
 		vals[n] = make([]byte, testValBufMax)
 		binary.LittleEndian.PutUint64(vals[n], uint64(n))
@@ -179,7 +179,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			return
 		}
 
-		for n := 0; n < testKeyCount; n++ {
+		for n := range testKeyCount {
 			if !rs.Next() {
 				cancel(t, txn)
 				t.Errorf("key (%v) object is not found", keys[n])
@@ -234,7 +234,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 				return
 			}
 
-			for n := 0; n < limit; n++ {
+			for n := range limit {
 				if !rs.Next() {
 					cancel(t, txn)
 					t.Errorf("key (%v) object is not found", keys[n])
@@ -281,7 +281,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 	// Selects all inserted test objects by range with desc order and offset options
 
 	for _, orderOpt := range orderOpts {
-		for offset := 0; offset < testKeyCount; offset++ {
+		for offset := range testKeyCount {
 			txn, err := kvStore.Transact(false)
 			if err != nil {
 				t.Error(err)
@@ -296,7 +296,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 				return
 			}
 
-			for n := 0; n < (testKeyCount - offset); n++ {
+			for n := range testKeyCount - offset {
 				if !rs.Next() {
 					cancel(t, txn)
 					t.Errorf("key (%v) object is not found", keys[n])
@@ -342,7 +342,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 
 	// Updates inserted test object values.
 
-	for n := 0; n < testKeyCount; n++ {
+	for n := range testKeyCount {
 		binary.LittleEndian.PutUint64(vals[n], rand.Uint64())
 	}
 
