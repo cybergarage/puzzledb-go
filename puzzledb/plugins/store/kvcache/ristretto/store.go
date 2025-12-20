@@ -141,16 +141,17 @@ func (store *Store) Start() error {
 		return err
 	}
 	conf := &ristretto.Config{
-		NumCounters:        numCounters,
-		MaxCost:            maxCost,
-		BufferItems:        bufferItems,
-		Metrics:            metrics,
-		OnEvict:            nil,
-		OnReject:           nil,
-		OnExit:             nil,
-		KeyToHash:          nil,
-		Cost:               nil,
-		IgnoreInternalCost: false,
+		NumCounters:            numCounters,
+		MaxCost:                maxCost,
+		BufferItems:            bufferItems,
+		Metrics:                metrics,
+		OnEvict:                nil,
+		OnReject:               nil,
+		OnExit:                 nil,
+		KeyToHash:              nil,
+		Cost:                   nil,
+		IgnoreInternalCost:     false,
+		TtlTickerDurationInSec: 1,
 	}
 	cache, err := ristretto.NewCache(conf)
 	if err != nil {
