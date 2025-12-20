@@ -26,11 +26,11 @@ type resultSet struct {
 	it     memdb.ResultIterator
 	obj    kv.Object
 	offset uint
-	limit  int
+	limit  uint
 	nRead  uint
 }
 
-func newResultSetWith(coder document.KeyCoder, it memdb.ResultIterator, offset uint, limit int) kv.ResultSet {
+func newResultSetWith(coder document.KeyCoder, it memdb.ResultIterator, offset uint, limit uint) kv.ResultSet {
 	return &resultSet{
 		KeyCoder: coder,
 		it:       it,

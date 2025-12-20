@@ -24,12 +24,12 @@ func NewKvOptionsWith(opts ...store.Option) []kv.Option {
 	kvOpts := []kv.Option{}
 	for _, opt := range opts {
 		switch v := opt.(type) {
-		case *store.OffsetOption:
-			kvOpts = append(kvOpts, kv.NewOffsetOption(v.Offset))
-		case *store.LimitOption:
-			kvOpts = append(kvOpts, kv.NewLimitOption(v.Limit))
-		case *store.OrderOption:
-			kvOpts = append(kvOpts, kv.NewOrderOptionWith(v.Order))
+		case store.Offset:
+			kvOpts = append(kvOpts, kv.Offset(v))
+		case store.Limit:
+			kvOpts = append(kvOpts, kv.Limit(v))
+		case store.Order:
+			kvOpts = append(kvOpts, kv.Order(v))
 		}
 	}
 	return kvOpts

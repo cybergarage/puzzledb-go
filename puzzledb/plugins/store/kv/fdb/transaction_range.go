@@ -28,11 +28,11 @@ type rangeResultSet struct {
 	*fdb.RangeIterator
 	document.KeyCoder
 	offset uint
-	limit  int
+	limit  uint
 	nRead  uint
 }
 
-func newRangeResultSetWith(coder document.KeyCoder, rs fdb.RangeResult, offset uint, limit int) kv.ResultSet {
+func newRangeResultSetWith(coder document.KeyCoder, rs fdb.RangeResult, offset uint, limit uint) kv.ResultSet {
 	return &rangeResultSet{
 		KeyCoder:      coder,
 		RangeResult:   rs,
@@ -45,7 +45,7 @@ func newRangeResultSetWith(coder document.KeyCoder, rs fdb.RangeResult, offset u
 
 // Next moves the cursor forward next object from its current position.
 func (rs *rangeResultSet) Next() bool {
-	if kv.NoLimit < rs.limit && uint(rs.limit) <= rs.nRead {
+	if kv.NoLimit < rs.limit && rs.limit <= rs.nRead {
 		return false
 	}
 
@@ -96,16 +96,16 @@ func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, e
 	}
 
 	offset := uint(0)
-	limit := -1
+	limit := uint(0)
 	reverseOrder := false
 	for _, opt := range opts {
 		switch v := opt.(type) {
-		case *kv.OffsetOption:
-			offset = v.Offset
-		case *kv.LimitOption:
-			limit = v.Limit
-		case *kv.OrderOption:
-			if v.Order == kv.OrderDesc {
+		case kv.Offset:
+			offset = uint(v)
+		case kv.Limit:
+			limit = uint(v)
+		case kv.Order:
+			if v == kv.OrderDesc {
 				reverseOrder = true
 			}
 		}

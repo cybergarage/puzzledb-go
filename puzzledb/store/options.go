@@ -17,31 +17,23 @@ package store
 // Option represents a option.
 type Option = any
 
-// OffsetOption represents an offset option.
-type OffsetOption struct {
-	Offset uint
-}
+// Offset represents an offset option.
+type Offset uint
 
 // NoOffset represents a no offset option.
 var NoOffset = uint(0)
 
-// NewLimitOption returns a new offset option.
-func NewOffsetOption(offset uint) *OffsetOption {
-	return &OffsetOption{
-		Offset: offset,
-	}
+// NewLimit returns a new offset option.
+func NewOffset(offset uint) Offset {
+	return Offset(offset)
 }
 
-// LimitOption represents a limit option.
-type LimitOption struct {
-	Limit int
-}
+// Limit represents a limit option.
+type Limit uint
 
-// NewLimitOptionWith returns a new limit option.
-func NewLimitOptionWith(limit int) *LimitOption {
-	return &LimitOption{
-		Limit: limit,
-	}
+// NewLimit returns a new limit option.
+func NewLimit(limit int) Limit {
+	return Limit(limit)
 }
 
 // Order represents a order.
@@ -56,32 +48,3 @@ const (
 	OrderAsc  = Order(1)
 	OrderDesc = Order(2)
 )
-
-// OrderOption represents a order option.
-type OrderOption struct {
-	Order Order
-}
-
-var orderOptionNone = &OrderOption{
-	Order: OrderNone,
-}
-
-var orderOptionAsc = &OrderOption{
-	Order: OrderAsc,
-}
-
-var orderOptionDesc = &OrderOption{
-	Order: OrderDesc,
-}
-
-// NewOrderOptionWith returns a new order option.
-func NewOrderOptionWith(order Order) *OrderOption {
-	switch order {
-	case OrderAsc:
-		return orderOptionAsc
-	case OrderDesc:
-		return orderOptionDesc
-	default:
-		return orderOptionNone
-	}
-}

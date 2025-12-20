@@ -208,8 +208,8 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 
 	// Gets all objects by range with order options
 
-	orderOpts := []*store.OrderOption{
-		store.NewOrderOptionWith(store.OrderAsc),
+	orderOpts := []store.Order{
+		store.OrderAsc,
 		/// FIXME: store.NewOrderOptionWith(store.OrderAsc, store.OrderDesc),
 		// store.NewOrderOptionWith(store.OrderDesc),
 	}
@@ -242,7 +242,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			}
 
 			idx := n
-			if orderOpt.Order == store.OrderDesc {
+			if orderOpt == store.OrderDesc {
 				idx = len(keys) - n - 1
 			}
 
@@ -270,7 +270,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				return
 			}
 			key := document.NewKey()
-			rs, err := txn.FindObjects(ctx, key, orderOpt, store.NewLimitOptionWith(limit))
+			rs, err := txn.FindObjects(ctx, key, orderOpt, store.Limit(limit))
 			if err != nil {
 				cancel(t, txn)
 				t.Error(err)
@@ -291,7 +291,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				}
 
 				idx := n
-				if orderOpt.Order == store.OrderDesc {
+				if orderOpt == store.OrderDesc {
 					idx = len(keys) - n - 1
 				}
 
@@ -326,7 +326,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				return
 			}
 			key := document.NewKey()
-			rs, err := txn.FindObjects(ctx, key, orderOpt, store.NewOrderOptionWith(offset))
+			rs, err := txn.FindObjects(ctx, key, orderOpt, store.Offset(offset))
 			if err != nil {
 				cancel(t, txn)
 				t.Error(err)
@@ -347,7 +347,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				}
 
 				idx := n + offset
-				if orderOpt.Order == store.OrderDesc {
+				if orderOpt == store.OrderDesc {
 					idx = len(keys) - n - 1 - offset
 				}
 

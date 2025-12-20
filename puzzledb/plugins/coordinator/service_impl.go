@@ -123,7 +123,7 @@ func (coord *serviceImpl) getLatestMessages(txn coordinator.Transaction) (coordi
 	key := coordinator.NewMessageScanKey()
 	rs, err := txn.GetRange(
 		key,
-		coordinator.NewOrderOptionWith(coordinator.OrderDesc))
+		coordinator.OrderDesc)
 	return rs, err
 }
 

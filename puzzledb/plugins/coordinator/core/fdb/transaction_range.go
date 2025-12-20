@@ -25,11 +25,11 @@ type rangeResultSet struct {
 	obj coordinator.Object
 	*fdb.RangeIterator
 	offset uint
-	limit  int
+	limit  uint
 	nRead  uint
 }
 
-func newRangeResultSet(key coordinator.Key, rs fdb.RangeResult, offset uint, limit int) coordinator.ResultSet {
+func newRangeResultSet(key coordinator.Key, rs fdb.RangeResult, offset uint, limit uint) coordinator.ResultSet {
 	return &rangeResultSet{
 		Key:           key,
 		RangeResult:   rs,
@@ -83,16 +83,16 @@ func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option
 	}
 
 	offset := uint(0)
-	limit := -1
+	limit := uint(0)
 	reverseOrder := false
 	for _, opt := range opts {
 		switch v := opt.(type) {
-		case *coordinator.OffsetOption:
-			offset = v.Offset
-		case *coordinator.LimitOption:
-			limit = v.Limit
-		case *coordinator.OrderOption:
-			if v.Order == coordinator.OrderDesc {
+		case coordinator.Offset:
+			offset = uint(v)
+		case coordinator.Limit:
+			limit = uint(v)
+		case coordinator.Order:
+			if v == coordinator.OrderDesc {
 				reverseOrder = true
 			}
 		}

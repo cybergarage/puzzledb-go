@@ -159,9 +159,9 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 
 	// Selects all inserted test objects by range with order options
 
-	orderOpts := []*kv.OrderOption{
-		kv.NewOrderOptionWith(kv.OrderAsc),
-		kv.NewOrderOptionWith(kv.OrderDesc),
+	orderOpts := []kv.Order{
+		kv.OrderAsc,
+		kv.OrderDesc,
 	}
 
 	for _, orderOpt := range orderOpts {
@@ -194,7 +194,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			}
 
 			idx := n
-			if orderOpt.Order == kv.OrderDesc {
+			if orderOpt == kv.OrderDesc {
 				idx = testKeyCount - n - 1
 			}
 
@@ -227,7 +227,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			}
 
 			prefixKey := document.NewKeyWith(testKeyPrefix)
-			rs, err := txn.GetRange(prefixKey, orderOpt, kv.NewLimitOption(limit))
+			rs, err := txn.GetRange(prefixKey, orderOpt, kv.NewLimit(limit))
 			if err != nil {
 				cancel(t, txn)
 				t.Error(err)
@@ -249,7 +249,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 				}
 
 				idx := n
-				if orderOpt.Order == kv.OrderDesc {
+				if orderOpt == kv.OrderDesc {
 					idx = testKeyCount - n - 1
 				}
 
@@ -289,7 +289,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			}
 
 			prefixKey := document.NewKeyWith(testKeyPrefix)
-			rs, err := txn.GetRange(prefixKey, orderOpt, kv.NewOffsetOption(uint(offset)))
+			rs, err := txn.GetRange(prefixKey, orderOpt, kv.NewOffset(uint(offset)))
 			if err != nil {
 				cancel(t, txn)
 				t.Error(err)
@@ -311,7 +311,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 				}
 
 				idx := n + offset
-				if orderOpt.Order == kv.OrderDesc {
+				if orderOpt == kv.OrderDesc {
 					idx = testKeyCount - n - 1 - offset
 				}
 

@@ -83,16 +83,16 @@ func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, e
 	}
 
 	offset := uint(0)
-	limit := int(-1)
+	limit := uint(0)
 	order := kv.OrderNone
 	for _, opt := range opts {
 		switch v := opt.(type) {
-		case *kv.OffsetOption:
-			offset = v.Offset
-		case *kv.LimitOption:
-			limit = v.Limit
-		case *kv.OrderOption:
-			order = v.Order
+		case kv.Offset:
+			offset = uint(v)
+		case kv.Limit:
+			limit = uint(v)
+		case kv.Order:
+			order = v
 		}
 	}
 
