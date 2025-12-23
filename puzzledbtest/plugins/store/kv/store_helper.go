@@ -122,7 +122,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := txn.GetRange(key)
+		rs, err := txn.Scan(key)
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -172,7 +172,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 
 		prefixKey := document.NewKeyWith(testKeyPrefix)
-		rs, err := txn.GetRange(prefixKey, orderOpt)
+		rs, err := txn.Scan(prefixKey, orderOpt)
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -227,7 +227,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			}
 
 			prefixKey := document.NewKeyWith(testKeyPrefix)
-			rs, err := txn.GetRange(prefixKey, orderOpt, kv.NewLimit(limit))
+			rs, err := txn.Scan(prefixKey, orderOpt, kv.NewLimit(limit))
 			if err != nil {
 				cancel(t, txn)
 				t.Error(err)
@@ -289,7 +289,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			}
 
 			prefixKey := document.NewKeyWith(testKeyPrefix)
-			rs, err := txn.GetRange(prefixKey, orderOpt, kv.NewOffset(uint(offset)))
+			rs, err := txn.Scan(prefixKey, orderOpt, kv.NewOffset(uint(offset)))
 			if err != nil {
 				cancel(t, txn)
 				t.Error(err)
@@ -397,7 +397,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := txn.GetRange(key)
+		rs, err := txn.Scan(key)
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)
@@ -485,7 +485,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			t.Error(err)
 			return
 		}
-		rs, err := txn.GetRange(key)
+		rs, err := txn.Scan(key)
 		if err != nil {
 			cancel(t, txn)
 			t.Error(err)

@@ -72,8 +72,8 @@ func (txn *transaction) Get(key kv.Key) (kv.Object, error) {
 	return rs.Object()
 }
 
-// GetRange returns a result set of the specified key.
-func (txn *transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, error) {
+// Scan returns the result set for the specified key.
+func (txn *transaction) Scan(key kv.Key, opts ...kv.Option) (kv.ResultSet, error) {
 	now := time.Now()
 
 	var err error

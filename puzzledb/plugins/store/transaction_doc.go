@@ -45,7 +45,7 @@ func (txn *transaction) FindObjects(ctx context.Context, docKey store.Key, opts 
 
 	kvIdxKey := kv.NewKeyWith(kv.DocumentKeyHeader, docKey)
 	kvOpts := NewKvOptionsWith(opts...)
-	kvRs, err := txn.kv.GetRange(kvIdxKey, kvOpts...)
+	kvRs, err := txn.kv.Scan(kvIdxKey, kvOpts...)
 	if err != nil {
 		return nil, err
 	}

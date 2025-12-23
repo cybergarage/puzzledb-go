@@ -79,7 +79,7 @@ func (txn *Transaction) Get(key kv.Key) (kv.Object, error) {
 	return obj, nil
 }
 
-// GetRange returns a result set of the specified key.
-func (txn *Transaction) GetRange(key kv.Key, opts ...kv.Option) (kv.ResultSet, error) {
-	return txn.Transaction.GetRange(key, opts...)
+// Scan returns the result set for the specified key.
+func (txn *Transaction) Scan(key kv.Key, opts ...kv.Option) (kv.ResultSet, error) {
+	return txn.Transaction.Scan(key, opts...)
 }

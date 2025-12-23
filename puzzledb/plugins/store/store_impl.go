@@ -272,7 +272,7 @@ func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 	}
 
 	kvDBKey := kv.NewKeyWith(kv.DatabaseKeyHeader, document.Key{})
-	kvRs, err := txn.GetRange(kvDBKey)
+	kvRs, err := txn.Scan(kvDBKey)
 	if err != nil {
 		return nil, errors.Join(err, txn.Cancel())
 	}

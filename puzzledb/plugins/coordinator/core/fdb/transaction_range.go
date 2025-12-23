@@ -71,8 +71,8 @@ func (rs *rangeResultSet) Object() coordinator.Object {
 	return rs.obj
 }
 
-// GetRange gets the result set for the specified key.
-func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
+// Scan returns the result set for the specified key.
+func (txn *transaction) Scan(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
 	keyBytes, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return nil, err

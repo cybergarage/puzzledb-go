@@ -59,7 +59,7 @@ func (s *Store) Dump() ([]string, error) {
 	}
 
 	for _, key := range keys {
-		rs, err := tx.GetRange(key)
+		rs, err := tx.Scan(key)
 		if err != nil {
 			continue
 		}

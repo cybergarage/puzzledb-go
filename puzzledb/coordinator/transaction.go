@@ -20,8 +20,8 @@ type Transaction interface {
 	Set(obj Object) error
 	// Get gets the object for the specified key.
 	Get(key Key) (Object, error)
-	// GetRange gets the result set for the specified key.
-	GetRange(key Key, opts ...Option) (ResultSet, error)
+	// Scan returns the result set for the specified key.
+	Scan(key Key, opts ...Option) (ResultSet, error)
 	// Remove removes the object for the specified key.
 	Remove(key Key) error
 	// Commit commits this transaction.

@@ -22,8 +22,8 @@ type Transaction interface {
 	Set(obj Object) error
 	// Get returns a key-value object of the specified key.
 	Get(key Key) (Object, error)
-	// GetRange returns a result set of the specified key.
-	GetRange(key Key, opts ...Option) (ResultSet, error)
+	// Scan returns the result set for the specified key.
+	Scan(key Key, opts ...Option) (ResultSet, error)
 	// Remove removes the specified key-value object.
 	Remove(key Key) error
 	// RemoveRange removes the specified key-value objects.

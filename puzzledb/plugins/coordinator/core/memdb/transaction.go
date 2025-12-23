@@ -61,7 +61,7 @@ func (txn *transaction) Set(obj coordinator.Object) error {
 
 // Get gets the object for the specified key.
 func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
-	rs, err := txn.GetRange(key)
+	rs, err := txn.Scan(key)
 	if err != nil {
 		return nil, err
 	}
@@ -71,8 +71,8 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 	return rs.Object(), nil
 }
 
-// GetRange gets the result set for the specified key.
-func (txn *transaction) GetRange(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
+// Scan returns the result set for the specified key.
+func (txn *transaction) Scan(key coordinator.Key, opts ...coordinator.Option) (coordinator.ResultSet, error) {
 	keyBytes, err := txn.KeyCoder.EncodeKey(key)
 	if err != nil {
 		return nil, err

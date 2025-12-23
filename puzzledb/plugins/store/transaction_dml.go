@@ -45,7 +45,7 @@ func (txn *transaction) ListCollections(ctx context.Context) ([]store.Collection
 	defer ctx.FinishSpan()
 
 	colSearchKey := kv.NewKeyWith(kv.CollectionKeyHeader, document.NewKeyWith(txn.Database().Name()))
-	rs, err := txn.kv.GetRange(colSearchKey)
+	rs, err := txn.kv.Scan(colSearchKey)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func (txn *transaction) LookupCollection(ctx context.Context, name string) (stor
 	defer ctx.FinishSpan()
 
 	kvSchemaKey := txn.createSchemaKey(name)
-	kvRs, err := txn.kv.GetRange(kvSchemaKey)
+	kvRs, err := txn.kv.Scan(kvSchemaKey)
 	if err != nil {
 		return nil, err
 	}
