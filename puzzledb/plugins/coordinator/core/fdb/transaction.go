@@ -72,7 +72,7 @@ func (txn *transaction) Remove(key coordinator.Key) error {
 
 // Truncate removes all objects.
 func (txn *transaction) Truncate() error {
-	for _, prefix := range coordinator.GetAllHeaderPrefixes() {
+	for _, prefix := range coordinator.HeaderPrefixes() {
 		key := coordinator.NewKeyWith(prefix)
 		keyBytes, err := txn.KeyCoder.EncodeKey(key)
 		if err != nil {

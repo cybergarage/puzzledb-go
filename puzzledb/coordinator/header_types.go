@@ -51,8 +51,8 @@ func TypeFromHeaderByte(b byte) byte {
 	return (b & 0x07)
 }
 
-// GetAllHeaderTypes returns all header types.
-func GetAllHeaderTypes() []HeaderType {
+// HeaderTypes returns all header types.
+func HeaderTypes() []HeaderType {
 	return []HeaderType{
 		StateHeaderObject,
 		MessageHeaderObject,
@@ -60,8 +60,8 @@ func GetAllHeaderTypes() []HeaderType {
 	}
 }
 
-// GetAllHeaderPrefixes returns all header prefixes.
-func GetAllHeaderPrefixes() [][]byte {
+// HeaderPrefixes returns all header prefixes.
+func HeaderPrefixes() [][]byte {
 	return [][]byte{
 		StateObjectKeyHeader[:],
 		MessageObjectKeyHeader[:],
