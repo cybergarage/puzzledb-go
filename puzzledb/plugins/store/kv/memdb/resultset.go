@@ -77,3 +77,8 @@ func (rs *resultSet) Next() bool {
 func (rs *resultSet) Object() (kv.Object, error) {
 	return rs.obj, nil
 }
+
+// Close closes the result set and releases any resources.
+func (rs *resultSet) Close() error {
+	return nil
+}

@@ -65,6 +65,7 @@ func (txn *transaction) Get(key coordinator.Key) (coordinator.Object, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rs.Close()
 	if !rs.Next() {
 		return nil, coordinator.NewKeyNotExistError(key)
 	}

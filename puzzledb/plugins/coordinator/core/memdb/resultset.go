@@ -78,3 +78,8 @@ func (rs *resultSet) Next() bool {
 func (rs *resultSet) Object() coordinator.Object {
 	return rs.obj
 }
+
+// Close closes the result set and releases any resources.
+func (rs *resultSet) Close() error {
+	return nil
+}

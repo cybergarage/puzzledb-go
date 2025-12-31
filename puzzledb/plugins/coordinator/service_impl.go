@@ -132,6 +132,7 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 	if err != nil {
 		return err
 	}
+	defer rs.Close()
 
 	localClock := coord.Clock()
 
@@ -173,6 +174,7 @@ func (coord *serviceImpl) getLatestMessageClock(txn coordinator.Transaction) (cl
 	if err != nil {
 		return 0, err
 	}
+	defer rs.Close()
 
 	if !rs.Next() {
 		return 0, nil
@@ -276,6 +278,7 @@ func (coord *serviceImpl) GetClusterState(name string) (cluster.Cluster, error) 
 	if err != nil {
 		return nil, errors.Join(err, txn.Cancel())
 	}
+	defer rs.Close()
 
 	nodes := []cluster.Node{}
 	for rs.Next() {

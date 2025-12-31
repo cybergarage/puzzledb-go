@@ -258,6 +258,7 @@ func (service *Service) DeleteDocument(ctx context.Context, conn Conn, txn store
 	if err != nil {
 		return err
 	}
+	defer rs.Close()
 	for rs.Next() {
 		rsDoc, err := rs.Document()
 		if err != nil {

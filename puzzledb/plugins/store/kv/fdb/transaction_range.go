@@ -122,3 +122,8 @@ func (txn *transaction) Scan(key kv.Key, opts ...kv.Option) (kv.ResultSet, error
 
 	return newRangeResultSetWith(txn.KeyCoder, rs, offset, limit), nil
 }
+
+// Close closes the result set and releases any resources.
+func (rs *rangeResultSet) Close() error {
+	return nil
+}

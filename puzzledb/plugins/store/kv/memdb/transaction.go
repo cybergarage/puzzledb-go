@@ -65,6 +65,7 @@ func (txn *transaction) Get(key kv.Key) (kv.Object, error) {
 		return nil, err
 	}
 	rs := newResultSetWith(txn.KeyCoder, it, 0, kv.NoLimit)
+	defer rs.Close()
 	if !rs.Next() {
 		return nil, kv.NewErrObjectNotExist(key)
 	}

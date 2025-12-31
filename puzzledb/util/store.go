@@ -109,6 +109,7 @@ func (store *Store) DumpCollection(ctx context.Context, db store.Database, col s
 	if err != nil {
 		return allLines, err
 	}
+	defer rs.Close()
 	for rs.Next() {
 		doc, err := rs.Document()
 		if err != nil {

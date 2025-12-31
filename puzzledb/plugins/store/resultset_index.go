@@ -82,3 +82,14 @@ func (rs *indexResultSet) Document() (store.Document, error) {
 	}
 	return docPrObj, nil
 }
+
+// Close closes the result set and releases any resources.
+func (rs *indexResultSet) Close() error {
+	if rs.kvIdxRs != nil {
+		if err := rs.kvIdxRs.Close(); err != nil {
+			return err
+		}
+		rs.kvIdxRs = nil
+	}
+	return nil
+}

@@ -51,3 +51,8 @@ func (rs *resultSet) Document() (store.Document, error) {
 	}
 	return store.NewDocument(kvObj.Key(), obj), nil
 }
+
+// Close closes the result set and releases any resources.
+func (rs *resultSet) Close() error {
+	return rs.kvRs.Close()
+}

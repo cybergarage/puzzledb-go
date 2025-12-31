@@ -49,6 +49,7 @@ func (txn *transaction) ListCollections(ctx context.Context) ([]store.Collection
 	if err != nil {
 		return nil, err
 	}
+	defer rs.Close()
 	cols := make([]store.Collection, 0)
 	for rs.Next() {
 		kvObj, err := rs.Object()
@@ -94,6 +95,7 @@ func (txn *transaction) LookupCollection(ctx context.Context, name string) (stor
 	if err != nil {
 		return nil, err
 	}
+	defer kvRs.Close()
 	if !kvRs.Next() {
 		return nil, store.NewErrSchemaNotExist(name)
 	}

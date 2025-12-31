@@ -227,7 +227,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			t.Error(err)
 			return
 		}
-
+		defer rs.Close()
 		for n := range keys {
 			if !rs.Next() {
 				cancel(t, txn)
@@ -276,6 +276,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				t.Error(err)
 				return
 			}
+			defer rs.Close()
 
 			for n := range limit {
 				if !rs.Next() {
@@ -332,6 +333,7 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				t.Error(err)
 				return
 			}
+			defer rs.Close()
 
 			for n := range len(keys) - offset {
 				if !rs.Next() {

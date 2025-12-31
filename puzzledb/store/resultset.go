@@ -20,4 +20,6 @@ type ResultSet interface {
 	Next() bool
 	// Document returns a document in the current cursor.
 	Document() (Document, error)
+	// Close closes the result set and releases any resources.
+	Close() error
 }

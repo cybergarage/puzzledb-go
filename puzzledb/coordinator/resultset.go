@@ -20,4 +20,6 @@ type ResultSet interface {
 	Next() bool
 	// Object returns an object in the current position.
 	Object() Object
+	// Close closes the result set and releases any resources.
+	Close() error
 }

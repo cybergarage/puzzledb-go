@@ -597,6 +597,7 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 	if err != nil {
 		return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 	}
+	defer rs.Close()
 
 	nUpdated := 0
 	for rs.Next() {
@@ -678,6 +679,7 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 		}
+		defer rs.Close()
 		prIdx, err := col.PrimaryIndex()
 		if err != nil {
 			return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)

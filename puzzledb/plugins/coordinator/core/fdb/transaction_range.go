@@ -105,3 +105,8 @@ func (txn *transaction) Scan(key coordinator.Key, opts ...coordinator.Option) (c
 	rs := txn.Transaction.GetRange(r, ro)
 	return newRangeResultSet(key, rs, offset, limit), nil
 }
+
+// Close closes the result set and releases any resources.
+func (rs *rangeResultSet) Close() error {
+	return nil
+}

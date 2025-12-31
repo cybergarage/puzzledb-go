@@ -276,6 +276,7 @@ func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 	if err != nil {
 		return nil, errors.Join(err, txn.Cancel())
 	}
+	defer kvRs.Close()
 
 	dbs := make([]store.Database, 0)
 	for kvRs.Next() {

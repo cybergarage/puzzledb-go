@@ -63,8 +63,13 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		binary.LittleEndian.PutUint64(vals[n], uint64(n))
 	}
 
-	cancel := func(t *testing.T, txn kv.Transaction) {
+	cancel := func(t *testing.T, txn kv.Transaction, rs kv.ResultSet) {
 		t.Helper()
+		if rs != nil {
+			if err := rs.Close(); err != nil {
+				t.Error(err)
+			}
+		}
 		if err := txn.Cancel(); err != nil {
 			t.Error(err)
 		}
@@ -80,7 +85,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 		obj := kv.NewObject(key, vals[n])
 		if err := txn.Set(obj); err != nil {
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Error(err)
 			return
 		}
@@ -100,12 +105,12 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 		obj, err := txn.Get(key)
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Error(err)
 			return
 		}
 		if !bytes.Equal(obj.Value(), vals[n]) {
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Errorf("%s != %s", obj.Value(), vals[n])
 		}
 		if err := txn.Commit(); err != nil {
@@ -124,30 +129,32 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 		rs, err := txn.Scan(key)
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Error(err)
 			return
 		}
+		defer rs.Close()
+
 		if !rs.Next() {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Errorf("key (%v) is not found", key)
 			return
 		}
 
 		obj, err := rs.Object()
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Error(err)
 			return
 		}
 
 		if !bytes.Equal(obj.Value(), vals[n]) {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Errorf("%s != %s", obj.Value(), vals[n])
 			return
 		}
 		if rs.Next() {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Errorf("other key (%v) is found", key)
 			return
 		}
@@ -174,21 +181,21 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		prefixKey := document.NewKeyWith(testKeyPrefix)
 		rs, err := txn.Scan(prefixKey, orderOpt)
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Error(err)
 			return
 		}
 
 		for n := range testKeyCount {
 			if !rs.Next() {
-				cancel(t, txn)
+				cancel(t, txn, rs)
 				t.Errorf("key (%v) object is not found", keys[n])
 				return
 			}
 
 			obj, err := rs.Object()
 			if err != nil {
-				cancel(t, txn)
+				cancel(t, txn, rs)
 				t.Error(err)
 				return
 			}
@@ -199,12 +206,12 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			}
 
 			if !obj.Key().Equals(keys[idx]) {
-				cancel(t, txn)
+				cancel(t, txn, rs)
 				t.Errorf("%s != %s", obj.Key(), keys[idx])
 				return
 			}
 			if !bytes.Equal(obj.Value(), vals[idx]) {
-				cancel(t, txn)
+				cancel(t, txn, rs)
 				t.Errorf("%s != %s", obj.Value(), vals[idx])
 				return
 			}
@@ -229,21 +236,21 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			prefixKey := document.NewKeyWith(testKeyPrefix)
 			rs, err := txn.Scan(prefixKey, orderOpt, kv.NewLimit(limit))
 			if err != nil {
-				cancel(t, txn)
+				cancel(t, txn, rs)
 				t.Error(err)
 				return
 			}
 
 			for n := range limit {
 				if !rs.Next() {
-					cancel(t, txn)
+					cancel(t, txn, rs)
 					t.Errorf("key (%v) object is not found", keys[n])
 					return
 				}
 
 				obj, err := rs.Object()
 				if err != nil {
-					cancel(t, txn)
+					cancel(t, txn, rs)
 					t.Error(err)
 					return
 				}
@@ -254,19 +261,19 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 				}
 
 				if !obj.Key().Equals(keys[idx]) {
-					cancel(t, txn)
+					cancel(t, txn, rs)
 					t.Errorf("%s != %s", obj.Key(), keys[idx])
 					return
 				}
 				if !bytes.Equal(obj.Value(), vals[idx]) {
-					cancel(t, txn)
+					cancel(t, txn, rs)
 					t.Errorf("%s != %s", obj.Value(), vals[idx])
 					return
 				}
 			}
 
 			if rs.Next() {
-				cancel(t, txn)
+				cancel(t, txn, rs)
 				t.Errorf("Too many result sets (%d) ", limit)
 				return
 			}
@@ -291,21 +298,22 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 			prefixKey := document.NewKeyWith(testKeyPrefix)
 			rs, err := txn.Scan(prefixKey, orderOpt, kv.NewOffset(uint(offset)))
 			if err != nil {
-				cancel(t, txn)
+				cancel(t, txn, rs)
 				t.Error(err)
 				return
 			}
+			defer rs.Close()
 
 			for n := range testKeyCount - offset {
 				if !rs.Next() {
-					cancel(t, txn)
+					cancel(t, txn, rs)
 					t.Errorf("key (%v) object is not found", keys[n])
 					return
 				}
 
 				obj, err := rs.Object()
 				if err != nil {
-					cancel(t, txn)
+					cancel(t, txn, rs)
 					t.Error(err)
 					return
 				}
@@ -316,19 +324,19 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 				}
 
 				if !obj.Key().Equals(keys[idx]) {
-					cancel(t, txn)
+					cancel(t, txn, rs)
 					t.Errorf("%s != %s", obj.Key(), keys[idx])
 					return
 				}
 				if !bytes.Equal(obj.Value(), vals[idx]) {
-					cancel(t, txn)
+					cancel(t, txn, rs)
 					t.Errorf("%s != %s", obj.Value(), vals[idx])
 					return
 				}
 			}
 
 			if rs.Next() {
-				cancel(t, txn)
+				cancel(t, txn, rs)
 				t.Errorf("Too many result sets (%d) ", offset)
 				return
 			}
@@ -354,7 +362,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 		obj := kv.NewObject(key, vals[n])
 		if err := txn.Set(obj); err != nil {
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Error(err)
 			return
 		}
@@ -374,12 +382,12 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 		obj, err := txn.Get(key)
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Error(err)
 			return
 		}
 		if !bytes.Equal(obj.Value(), vals[n]) {
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Errorf("%s != %s", obj.Value(), vals[n])
 			return
 		}
@@ -399,28 +407,28 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 		rs, err := txn.Scan(key)
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Error(err)
 			return
 		}
 		if !rs.Next() {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Errorf("key (%v) is not found", key)
 			return
 		}
 		obj, err := rs.Object()
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Error(err)
 			return
 		}
 		if !bytes.Equal(obj.Value(), vals[n]) {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Errorf("%s != %s", obj.Value(), vals[n])
 			return
 		}
 		if rs.Next() {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Errorf("other key (%v) is found", key)
 			return
 		}
@@ -440,7 +448,7 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 		err = txn.Remove(key)
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Error(err)
 			return
 		}
@@ -461,13 +469,13 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		_, err = txn.Get(key)
 		if err == nil {
 			t.Errorf("key (%v) is found", key)
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Error(err)
 			return
 		}
 		if !errors.Is(err, kv.ErrNotExist) {
 			t.Errorf("key (%v): %s", key, err.Error())
-			cancel(t, txn)
+			cancel(t, txn, nil)
 			t.Error(err)
 			return
 		}
@@ -487,12 +495,12 @@ func StoreTest(t *testing.T, kvStore kvPlugins.Service) {
 		}
 		rs, err := txn.Scan(key)
 		if err != nil {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Error(err)
 			return
 		}
 		if rs.Next() {
-			cancel(t, txn)
+			cancel(t, txn, rs)
 			t.Errorf("key (%v) is not removed", key)
 			return
 		}

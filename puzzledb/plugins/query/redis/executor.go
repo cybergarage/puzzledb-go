@@ -74,6 +74,9 @@ func (service *Service) Exists(conn *Conn, keys []string) (*Message, error) {
 		if rs.Next() {
 			existCount++
 		}
+		if err := rs.Close(); err != nil {
+			return nil, err
+		}
 	}
 
 	err = txn.Commit(ctx)
