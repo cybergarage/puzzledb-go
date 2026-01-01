@@ -160,6 +160,9 @@ func (coord *serviceImpl) notifyUpdateMessages(txn coordinator.Transaction) erro
 
 		coord.SetReceivedClock(msgObj.MsgClock)
 	}
+	if err := rs.Err(); err != nil {
+		return err
+	}
 
 	for _, msg := range msgs {
 		log.Infof("RECV message: %s %s (%d)", msg.From().Host(), msg.Event().String(), msg.Clock())
@@ -177,7 +180,7 @@ func (coord *serviceImpl) getLatestMessageClock(txn coordinator.Transaction) (cl
 	defer rs.Close()
 
 	if !rs.Next() {
-		return 0, nil
+		return 0, rs.Err()
 	}
 
 	msgObj := coordinator.NewMessageObject()
@@ -294,6 +297,10 @@ func (coord *serviceImpl) GetClusterState(name string) (cluster.Cluster, error) 
 			return nil, errors.Join(err, txn.Cancel())
 		}
 		nodes = append(nodes, node)
+	}
+
+	if err := rs.Err(); err != nil {
+		return nil, errors.Join(err, txn.Cancel())
 	}
 
 	err = txn.Commit()

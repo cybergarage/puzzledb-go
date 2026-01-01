@@ -20,6 +20,8 @@ type ResultSet interface {
 	Next() bool
 	// Document returns a document in the current cursor.
 	Document() (Document, error)
+	// Err returns the error, if any, that was encountered during iteration.
+	Err() error
 	// Close closes the result set and releases any resources.
 	Close() error
 }

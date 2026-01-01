@@ -273,5 +273,8 @@ func (service *Service) DeleteDocument(ctx context.Context, conn Conn, txn store
 			return err
 		}
 	}
+	if err := rs.Err(); err != nil {
+		return err
+	}
 	return nil
 }

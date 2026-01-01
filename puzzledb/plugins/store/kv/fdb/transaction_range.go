@@ -82,6 +82,11 @@ func (rs *rangeResultSet) Object() (kv.Object, error) {
 	return rs.obj, nil
 }
 
+// Err returns the error, if any, that was encountered during iteration.
+func (rs *rangeResultSet) Err() error {
+	return nil
+}
+
 // Scan returns the result set for the specified key.
 func (txn *transaction) Scan(key kv.Key, opts ...kv.Option) (kv.ResultSet, error) {
 	now := time.Now()

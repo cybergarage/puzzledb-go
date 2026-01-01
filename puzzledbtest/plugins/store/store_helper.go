@@ -310,6 +310,11 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 				return
 			}
 
+			if err := rs.Err(); err != nil {
+				t.Error(err)
+				return
+			}
+
 			if err := txn.Commit(ctx); err != nil {
 				t.Error(err)
 				return
@@ -365,6 +370,11 @@ func DocumentStoreCRUDTest(t *testing.T, service plugins.Service) {
 			if rs.Next() {
 				cancel(t, txn)
 				t.Errorf("Too many result sets (%d) ", offset)
+				return
+			}
+
+			if err := rs.Err(); err != nil {
+				t.Error(err)
 				return
 			}
 

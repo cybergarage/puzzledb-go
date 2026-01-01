@@ -66,6 +66,9 @@ func (txn *transaction) ListCollections(ctx context.Context) ([]store.Collection
 		}
 		cols = append(cols, col)
 	}
+	if err := rs.Err(); err != nil {
+		return nil, err
+	}
 	return cols, nil
 }
 

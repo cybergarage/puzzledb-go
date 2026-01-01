@@ -117,5 +117,8 @@ func (store *Store) DumpCollection(ctx context.Context, db store.Database, col s
 		}
 		allLines = append(allLines, fmt.Sprintf("[%s]: %s", doc.Key(), doc.Object()))
 	}
+	if err := rs.Err(); err != nil {
+		return allLines, err
+	}
 	return allLines, nil
 }

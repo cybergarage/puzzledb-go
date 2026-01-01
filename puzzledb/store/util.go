@@ -24,5 +24,8 @@ func ReadAllObjects(rs ResultSet) ([]Object, error) {
 		}
 		objs = append(objs, doc.Object())
 	}
+	if err := rs.Err(); err != nil {
+		return nil, err
+	}
 	return objs, nil
 }

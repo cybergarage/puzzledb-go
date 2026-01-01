@@ -88,6 +88,9 @@ func (s *Store) Dump() ([]string, error) {
 				lines = append(lines, fmt.Sprintf("%v %v:", keyHeader, keys[1:]))
 			}
 		}
+		if err := rs.Err(); err != nil {
+			return lines, err
+		}
 		if err := rs.Close(); err != nil {
 			return lines, err
 		}

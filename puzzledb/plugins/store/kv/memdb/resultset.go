@@ -78,6 +78,11 @@ func (rs *resultSet) Object() (kv.Object, error) {
 	return rs.obj, nil
 }
 
+// Err returns the error, if any, that was encountered during iteration.
+func (rs *resultSet) Err() error {
+	return nil
+}
+
 // Close closes the result set and releases any resources.
 func (rs *resultSet) Close() error {
 	return nil

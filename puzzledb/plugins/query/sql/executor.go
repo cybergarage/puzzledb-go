@@ -611,6 +611,9 @@ func (service *Service) Update(conn Conn, stmt sql.Update) (sql.ResultSet, error
 		}
 		nUpdated++
 	}
+	if err := rs.Err(); err != nil {
+		return nil, err
+	}
 
 	// Commits the transaction if the transaction is auto commit.
 
@@ -702,6 +705,9 @@ func (service *Service) Delete(conn Conn, stmt sql.Delete) (sql.ResultSet, error
 				return nil, service.CancelTransactionWithError(ctx, conn, db, txn, err)
 			}
 			nDeleted++
+		}
+		if err := rs.Err(); err != nil {
+			return nil, err
 		}
 	}
 

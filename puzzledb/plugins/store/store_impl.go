@@ -315,6 +315,10 @@ func (s *Store) ListDatabases(ctx context.Context) ([]store.Database, error) {
 		dbs = append(dbs, db)
 	}
 
+	if err := kvRs.Err(); err != nil {
+		return nil, errors.Join(err, txn.Cancel())
+	}
+
 	err = txn.Commit()
 	if err != nil {
 		return nil, errors.Join(err, txn.Cancel())

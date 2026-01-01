@@ -20,6 +20,8 @@ type ResultSet interface {
 	Next() bool
 	// Object returns an object in the current cursor.
 	Object() (Object, error)
+	// Err returns the error, if any, that was encountered during iteration.
+	Err() error
 	// Close closes the result set and releases any resources.
 	Close() error
 }

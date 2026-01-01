@@ -83,6 +83,14 @@ func (rs *indexResultSet) Document() (store.Document, error) {
 	return docPrObj, nil
 }
 
+// Err returns the error, if any, that was encountered during iteration.
+func (rs *indexResultSet) Err() error {
+	if rs.kvIdxRs != nil {
+		return rs.kvIdxRs.Err()
+	}
+	return nil
+}
+
 // Close closes the result set and releases any resources.
 func (rs *indexResultSet) Close() error {
 	if rs.kvIdxRs != nil {
