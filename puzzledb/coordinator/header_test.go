@@ -56,13 +56,13 @@ func TestKeyHeader(t *testing.T) {
 			t.Errorf("%v != %v", key.header.Version(), key.expected.ver)
 		}
 		if key.expected.doc != DocumentType(0) {
-			if key.header.DocumentType() != key.expected.doc {
-				t.Errorf("%v != %v", key.header.DocumentType(), key.expected.doc)
+			if key.header.ObjectType() != key.expected.doc {
+				t.Errorf("%v != %v", key.header.ObjectType(), key.expected.doc)
 			}
 		}
 		if key.expected.idx != IndexType(0) {
-			if key.header.IndexType() != key.expected.idx {
-				t.Errorf("%v != %v", key.header.IndexType(), key.expected.idx)
+			if key.header.SubType() != key.expected.idx {
+				t.Errorf("%v != %v", key.header.SubType(), key.expected.idx)
 			}
 		}
 	}

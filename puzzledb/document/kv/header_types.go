@@ -19,7 +19,7 @@ const (
 )
 
 const (
-	CBOR = DocumentType(1)
+	CBOR = ObjectType(1)
 )
 
 const (
@@ -30,8 +30,8 @@ const (
 )
 
 const (
-	PrimaryIndex   = IndexType(1)
-	SecondaryIndex = IndexType(2)
+	PrimaryIndex   = ObjectSubType(1)
+	SecondaryIndex = ObjectSubType(2)
 )
 
 var DatabaseKeyHeader = [2]byte{byte(DatabaseObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}

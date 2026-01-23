@@ -18,8 +18,8 @@ import "fmt"
 
 type HeaderType byte
 
-// DocumentType represents a document type.
-type DocumentType byte
+// ObjectType represents an object type.
+type ObjectType byte
 
 // KeyHeader represents a header for all keys.
 type KeyHeader [2]byte
@@ -27,8 +27,8 @@ type KeyHeader [2]byte
 // Version represents a version.
 type Version byte
 
-// IndexType represents an index type.
-type IndexType byte
+// ObjectSubType represents an index type.
+type ObjectSubType byte
 
 // NewKeyHeader creates a new key header from the specified bytes.
 func NewKeyHeaderFrom(b []byte) KeyHeader {
@@ -47,14 +47,14 @@ func (header KeyHeader) Version() Version {
 	return VertionFromHeaderByte(header[1])
 }
 
-// DocumentType returns a document type.
-func (header KeyHeader) DocumentType() DocumentType {
-	return DocumentType(TypeFromHeaderByte(header[1]))
+// ObjectType returns an object type.
+func (header KeyHeader) ObjectType() ObjectType {
+	return ObjectType(TypeFromHeaderByte(header[1]))
 }
 
 // IndexType returns an index type.
-func (header KeyHeader) IndexType() IndexType {
-	return IndexType(TypeFromHeaderByte(header[1]))
+func (header KeyHeader) SubType() ObjectSubType {
+	return ObjectSubType(TypeFromHeaderByte(header[1]))
 }
 
 // Bytes returns a byte array.

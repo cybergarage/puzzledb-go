@@ -47,13 +47,13 @@ func (header KeyHeader) Version() Version {
 	return VertionFromHeaderByte(header[1])
 }
 
-// DocumentType returns a document type.
-func (header KeyHeader) DocumentType() DocumentType {
+// ObjectType returns an object type.
+func (header KeyHeader) ObjectType() DocumentType {
 	return DocumentType(TypeFromHeaderByte(header[1]))
 }
 
 // IndexType returns an index type.
-func (header KeyHeader) IndexType() IndexType {
+func (header KeyHeader) SubType() IndexType {
 	return IndexType(TypeFromHeaderByte(header[1]))
 }
 
