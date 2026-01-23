@@ -5,7 +5,7 @@ helpFunction()
    echo ""
    echo "Usage: $0 -a paramARCH -o paramOS"
    echo -e "\t-a Enter the CPU architecture (amd64, x86_64, aarch64)"
-   echo -e "\t-o Enter the Operating System targeted"
+   echo -e "\t-o Enter the Operating System targeted (linux, darwin, win)"
    echo ""
    exit 1 # Exit script after printing help
 }
