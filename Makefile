@@ -247,13 +247,13 @@ fdb-update:
 	go get -u github.com/apple/foundationdb/bindings/go@${FDB_VER}
 	@if [ "$$(uname)" = "Darwin" ]; then \
 		sed -i .bak -e 's/FDB_VER: .*/FDB_VER: ${FDB_VER}/g' .github/workflows/make.yml; \
-		sed -i .bak -e 's/version=.*/version=${FDB_VER}/g' scripts/fdb_install.sh; \
+		sed -i .bak -e 's/version=.*/version=${FDB_VER}/g' scripts/fdb_install; \
 	else \
 		sed -i.bak -e 's/FDB_VER: .*/FDB_VER: ${FDB_VER}/g' .github/workflows/make.yml; \
-		sed -i.bak -e 's/version=.*/version=${FDB_VER}/g' scripts/fdb_install.sh; \
+		sed -i.bak -e 's/version=.*/version=${FDB_VER}/g' scripts/fdb_install; \
 	fi
 	rm -f .github/workflows/*.bak scripts/*.bak
-	-git commit -m "Update FoundationDB to version v${FDB_VER}" go.* .github/workflows/make.yml scripts/fdb_install.sh
+	-git commit -m "Update FoundationDB to version v${FDB_VER}" go.* .github/workflows/make.yml scripts/fdb_install
 
 #
 # Testing
