@@ -224,16 +224,16 @@ Every key object includes a header that specifies the key category, version, and
 <td style="text-align: left;"><p>D:Database C:Collection O:Document I:Index</p></td>
 </tr>
 <tr>
+<td style="text-align: left;"><p>Version</p></td>
+<td style="text-align: left;"><p>4</p></td>
+<td style="text-align: left;"><p>The record format version</p></td>
+<td style="text-align: left;"><p>(Defined for each key category)</p></td>
+</tr>
+<tr>
 <td style="text-align: left;"><p>Format</p></td>
 <td style="text-align: left;"><p>4</p></td>
 <td style="text-align: left;"><p>The record object format</p></td>
 <td style="text-align: left;"><p>(Defined for each key category)</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Version</p></td>
-<td style="text-align: left;"><p>4</p></td>
-<td style="text-align: left;"><p>The record format version</p></td>
-<td style="text-align: left;"><p>0:reserved 1:Current</p></td>
 </tr>
 </tbody>
 </table>
@@ -248,7 +248,7 @@ Key headers start with a one-byte identifier that indicates the type of key, ena
 <thead>
 <tr>
 <th style="text-align: left;">Category</th>
-<th style="text-align: left;">Value Types</th>
+<th style="text-align: left;">Format Types</th>
 </tr>
 </thead>
 <tbody>
