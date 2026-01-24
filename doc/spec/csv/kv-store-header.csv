@@ -1,4 +1,4 @@
 Field Name,Size (bits),Description,Example Value
 Category,8,The record object category ,D:Database  C:Collection O:Document I:Index
+Version,4,The record format version,(Defined for each key category)
 Format,4,The record object format,(Defined for each key category)
-Version,4,The record format version,0:reserved 1:Current

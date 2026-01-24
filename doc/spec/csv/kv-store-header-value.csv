@@ -1,4 +1,4 @@
-Category,Value Types
+Category,Format Types
 Database,0:reserved 1:CBOR
 Collection,0:reserved 1:CBOR
 Document,0:reserved 1:CBOR
