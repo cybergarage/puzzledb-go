@@ -221,6 +221,7 @@ cmd-docs: doc-cmd-cli doc-cmd-server
 
 %.md : %.adoc
 	asciidoctor -b docbook -a leveloffset=+1 -o - $< | pandoc -t markdown_strict --wrap=none -f docbook > $@
+	-git commit $@ $< -m "Update doc: $<"
 csvs := $(wildcard doc/*/*.csv doc/*/*/*.csv)
 docs := $(patsubst %.adoc,%.md,$(wildcard *.adoc doc/*.adoc doc/*/*.adoc))
 doc-touch: $(csvs)
