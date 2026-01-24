@@ -21,9 +21,6 @@ import (
 // Category represents an object category.
 type Category byte
 
-// Format represents an object format.
-type Format byte
-
 // KeyHeader represents a header for all keys.
 type KeyHeader [2]byte
 
@@ -49,7 +46,7 @@ func (header KeyHeader) Version() Version {
 
 // DocumentFormat returns a document format.
 func (header KeyHeader) Format() Format {
-	return Format(FormatFromHeaderByte(header[1]))
+	return Format(NewFormatFromHeaderByte(header[1]))
 }
 
 // IndexFormat returns an index format.

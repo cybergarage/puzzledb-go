@@ -53,12 +53,12 @@ func (header KeyHeader) Version() Version {
 
 // DocumentFormat returns a document format.
 func (header KeyHeader) Format() DocumentFormat {
-	return DocumentFormat(FormatFromHeaderByte(header[1]))
+	return DocumentFormat(kv.NewFormatFromHeaderByte(header[1]))
 }
 
 // IndexFormat returns an index format.
 func (header KeyHeader) IndexFormat() IndexFormat {
-	return IndexFormat(FormatFromHeaderByte(header[1]))
+	return IndexFormat(kv.NewFormatFromHeaderByte(header[1]))
 }
 
 // Bytes returns a byte array.

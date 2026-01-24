@@ -39,10 +39,6 @@ var (
 	JobObjectKeyHeader     = [2]byte{byte(JobHeaderObject), byte(byte(CBOR) | V1.HeaderByte())}
 )
 
-func FormatFromHeaderByte(b byte) byte {
-	return (b & 0x07)
-}
-
 // HeaderTypes returns all header types.
 func HeaderTypes() []ObjectCategory {
 	return []ObjectCategory{
