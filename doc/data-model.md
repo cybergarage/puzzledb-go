@@ -218,22 +218,22 @@ Every key object includes a header that specifies the key category, version, and
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><p>Key category</p></td>
+<td style="text-align: left;"><p>Category</p></td>
 <td style="text-align: left;"><p>8</p></td>
-<td style="text-align: left;"><p>The record key type</p></td>
+<td style="text-align: left;"><p>The record object category</p></td>
 <td style="text-align: left;"><p>D:Database C:Collection O:Document I:Index</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>Format</p></td>
+<td style="text-align: left;"><p>4</p></td>
+<td style="text-align: left;"><p>The record object format</p></td>
+<td style="text-align: left;"><p>(Defined for each key category)</p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Version</p></td>
 <td style="text-align: left;"><p>4</p></td>
-<td style="text-align: left;"><p>The version number</p></td>
+<td style="text-align: left;"><p>The record format version</p></td>
 <td style="text-align: left;"><p>0:reserved 1:Current</p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p>Value type</p></td>
-<td style="text-align: left;"><p>4</p></td>
-<td style="text-align: left;"><p>The record value type</p></td>
-<td style="text-align: left;"><p>(Defined for each key category)</p></td>
 </tr>
 </tbody>
 </table>
