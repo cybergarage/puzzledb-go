@@ -75,7 +75,7 @@ func (s *Store) Dump() ([]string, error) {
 			}
 			keyHeader := dockv.NewKeyHeaderFrom(keyHeaderBytes)
 
-			switch keyHeader.Type() {
+			switch keyHeader.Category() {
 			case dockv.DatabaseObject, dockv.CollectionObject, dockv.DocumentObject:
 				r := bytes.NewReader(obj.Value())
 				val, err := docStore.DecodeDocument(r)

@@ -21,8 +21,8 @@ import (
 // Key represents a key in the key-value store.
 type Key = kv.Key
 
-// KeyHeader represents a key header in the key-value store.
-type HeaderType = kv.HeaderType
+// ObjectCategory represents an object category in the key-value store.
+type ObjectCategory = kv.Category
 
 // KeyHeader represents a header for all keys.
 type KeyHeader = kv.KeyHeader

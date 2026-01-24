@@ -20,10 +20,10 @@ import (
 
 func TestKeyHeader(t *testing.T) {
 	type expected struct {
-		tp  HeaderType
+		tp  Category
 		ver Version
-		doc ObjectType
-		idx ObjectSubType
+		doc Format
+		idx IndexFormat
 	}
 	testKeyHeaders := []struct {
 		header   KeyHeader
@@ -35,7 +35,7 @@ func TestKeyHeader(t *testing.T) {
 				tp:  DatabaseObject,
 				ver: V1,
 				doc: CBOR,
-				idx: ObjectSubType(0),
+				idx: IndexFormat(0),
 			},
 		},
 		{
@@ -44,7 +44,7 @@ func TestKeyHeader(t *testing.T) {
 				tp:  CollectionObject,
 				ver: V1,
 				doc: CBOR,
-				idx: ObjectSubType(0),
+				idx: IndexFormat(0),
 			},
 		},
 		{
@@ -53,7 +53,7 @@ func TestKeyHeader(t *testing.T) {
 				tp:  DocumentObject,
 				ver: V1,
 				doc: CBOR,
-				idx: ObjectSubType(0),
+				idx: IndexFormat(0),
 			},
 		},
 		{
@@ -61,26 +61,26 @@ func TestKeyHeader(t *testing.T) {
 			expected: expected{
 				tp:  IndexObject,
 				ver: V1,
-				doc: ObjectType(0),
+				doc: Format(0),
 				idx: SecondaryIndex,
 			},
 		},
 	}
 	for _, key := range testKeyHeaders {
-		if key.header.Type() != key.expected.tp {
-			t.Errorf("%v != %v", key.header.Type(), key.expected.tp)
+		if key.header.Category() != key.expected.tp {
+			t.Errorf("%v != %v", key.header.Category(), key.expected.tp)
 		}
 		if key.header.Version() != key.expected.ver {
 			t.Errorf("%v != %v", key.header.Version(), key.expected.ver)
 		}
-		if key.expected.doc != ObjectType(0) {
-			if key.header.ObjectType() != key.expected.doc {
-				t.Errorf("%v != %v", key.header.ObjectType(), key.expected.doc)
+		if key.expected.doc != Format(0) {
+			if key.header.Format() != key.expected.doc {
+				t.Errorf("%v != %v", key.header.Format(), key.expected.doc)
 			}
 		}
-		if key.expected.idx != ObjectSubType(0) {
-			if key.header.SubType() != key.expected.idx {
-				t.Errorf("%v != %v", key.header.SubType(), key.expected.idx)
+		if key.expected.idx != IndexFormat(0) {
+			if key.header.IndexFormat() != key.expected.idx {
+				t.Errorf("%v != %v", key.header.IndexFormat(), key.expected.idx)
 			}
 		}
 	}

@@ -20,10 +20,10 @@ import (
 
 func TestKeyHeader(t *testing.T) {
 	type expected struct {
-		tp  HeaderType
+		tp  ObjectCategory
 		ver Version
-		doc DocumentType
-		idx IndexType
+		doc DocumentFormat
+		idx IndexFormat
 	}
 	testKeyHeaders := []struct {
 		header   KeyHeader
@@ -35,7 +35,7 @@ func TestKeyHeader(t *testing.T) {
 				tp:  StateHeaderObject,
 				ver: V1,
 				doc: CBOR,
-				idx: IndexType(0),
+				idx: IndexFormat(0),
 			},
 		},
 		{
@@ -44,25 +44,25 @@ func TestKeyHeader(t *testing.T) {
 				tp:  MessageHeaderObject,
 				ver: V1,
 				doc: CBOR,
-				idx: IndexType(0),
+				idx: IndexFormat(0),
 			},
 		},
 	}
 	for _, key := range testKeyHeaders {
-		if key.header.Type() != key.expected.tp {
-			t.Errorf("%v != %v", key.header.Type(), key.expected.tp)
+		if key.header.Category() != key.expected.tp {
+			t.Errorf("%v != %v", key.header.Category(), key.expected.tp)
 		}
 		if key.header.Version() != key.expected.ver {
 			t.Errorf("%v != %v", key.header.Version(), key.expected.ver)
 		}
-		if key.expected.doc != DocumentType(0) {
-			if key.header.ObjectType() != key.expected.doc {
-				t.Errorf("%v != %v", key.header.ObjectType(), key.expected.doc)
+		if key.expected.doc != DocumentFormat(0) {
+			if key.header.Format() != key.expected.doc {
+				t.Errorf("%v != %v", key.header.Format(), key.expected.doc)
 			}
 		}
-		if key.expected.idx != IndexType(0) {
-			if key.header.SubType() != key.expected.idx {
-				t.Errorf("%v != %v", key.header.SubType(), key.expected.idx)
+		if key.expected.idx != IndexFormat(0) {
+			if key.header.IndexFormat() != key.expected.idx {
+				t.Errorf("%v != %v", key.header.IndexFormat(), key.expected.idx)
 			}
 		}
 	}

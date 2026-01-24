@@ -19,19 +19,19 @@ const (
 )
 
 const (
-	CBOR = ObjectType(1)
+	CBOR = Format(1)
 )
 
 const (
-	DatabaseObject   = HeaderType('D')
-	CollectionObject = HeaderType('C')
-	DocumentObject   = HeaderType('O')
-	IndexObject      = HeaderType('I')
+	DatabaseObject   = Category('D')
+	CollectionObject = Category('C')
+	DocumentObject   = Category('O')
+	IndexObject      = Category('I')
 )
 
 const (
-	PrimaryIndex   = ObjectSubType(1)
-	SecondaryIndex = ObjectSubType(2)
+	PrimaryIndex   = IndexFormat(1)
+	SecondaryIndex = IndexFormat(2)
 )
 
 var DatabaseKeyHeader = [2]byte{byte(DatabaseObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}

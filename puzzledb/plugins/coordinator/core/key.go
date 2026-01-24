@@ -19,6 +19,6 @@ import (
 )
 
 const (
-	CoordinatorObject  = kv.HeaderType('C')
-	NotificationObject = kv.HeaderType('N')
+	CoordinatorObject  = kv.ObjectCategory('C')
+	NotificationObject = kv.ObjectCategory('N')
 )

@@ -14,21 +14,24 @@
 
 package kv
 
-import "fmt"
+import (
+	"fmt"
+)
 
-type HeaderType byte
+// Category represents an object category.
+type Category byte
 
-// ObjectType represents an object type.
-type ObjectType byte
+// Format represents an object format.
+type Format byte
 
 // KeyHeader represents a header for all keys.
 type KeyHeader [2]byte
 
-// Version represents a version.
+// Version represents a format version.
 type Version byte
 
-// ObjectSubType represents an index type.
-type ObjectSubType byte
+// IndexFormat represents an index format.
+type IndexFormat byte
 
 // NewKeyHeader creates a new key header from the specified bytes.
 func NewKeyHeaderFrom(b []byte) KeyHeader {
@@ -37,9 +40,9 @@ func NewKeyHeaderFrom(b []byte) KeyHeader {
 	return header
 }
 
-// Type returns a header type.
-func (header KeyHeader) Type() HeaderType {
-	return HeaderType(header[0])
+// Category returns an object category.
+func (header KeyHeader) Category() Category {
+	return Category(header[0])
 }
 
 // Version returns a version.
@@ -47,14 +50,14 @@ func (header KeyHeader) Version() Version {
 	return VertionFromHeaderByte(header[1])
 }
 
-// ObjectType returns an object type.
-func (header KeyHeader) ObjectType() ObjectType {
-	return ObjectType(TypeFromHeaderByte(header[1]))
+// DocumentFormat returns a document format.
+func (header KeyHeader) Format() Format {
+	return Format(TypeFromHeaderByte(header[1]))
 }
 
-// IndexType returns an index type.
-func (header KeyHeader) SubType() ObjectSubType {
-	return ObjectSubType(TypeFromHeaderByte(header[1]))
+// IndexFormat returns an index format.
+func (header KeyHeader) IndexFormat() IndexFormat {
+	return IndexFormat(header.Format())
 }
 
 // Bytes returns a byte array.
@@ -64,5 +67,5 @@ func (header KeyHeader) Bytes() []byte {
 
 // String returns a string.
 func (header KeyHeader) String() string {
-	return fmt.Sprintf("%c %02x", header.Type(), header[1])
+	return fmt.Sprintf("%c %02x", header.Category(), header[1])
 }

@@ -19,18 +19,18 @@ const (
 )
 
 const (
-	CBOR = DocumentType(1)
+	CBOR = DocumentFormat(1)
 )
 
 const (
-	StateHeaderObject   = HeaderType('S')
-	MessageHeaderObject = HeaderType('M')
-	JobHeaderObject     = HeaderType('J')
+	StateHeaderObject   = ObjectCategory('S')
+	MessageHeaderObject = ObjectCategory('M')
+	JobHeaderObject     = ObjectCategory('J')
 )
 
 const (
-	PrimaryIndex   = IndexType(1)
-	SecondaryIndex = IndexType(2)
+	PrimaryIndex   = IndexFormat(1)
+	SecondaryIndex = IndexFormat(2)
 )
 
 var (
@@ -52,8 +52,8 @@ func TypeFromHeaderByte(b byte) byte {
 }
 
 // HeaderTypes returns all header types.
-func HeaderTypes() []HeaderType {
-	return []HeaderType{
+func HeaderTypes() []ObjectCategory {
+	return []ObjectCategory{
 		StateHeaderObject,
 		MessageHeaderObject,
 		JobHeaderObject,
