@@ -34,19 +34,11 @@ const (
 	SecondaryIndex = IndexFormat(2)
 )
 
-var DatabaseKeyHeader = [2]byte{byte(DatabaseObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-var CollectionKeyHeader = [2]byte{byte(CollectionObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-var DocumentKeyHeader = [2]byte{byte(DocumentObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-var IndexKeyHeader = [2]byte{byte(IndexObject), byte(byte(SecondaryIndex) | HeaderByteFromVersion(V1))}
+var DatabaseKeyHeader = [2]byte{byte(DatabaseObject), byte(byte(CBOR) | V1.HeaderByte())}
+var CollectionKeyHeader = [2]byte{byte(CollectionObject), byte(byte(CBOR) | V1.HeaderByte())}
+var DocumentKeyHeader = [2]byte{byte(DocumentObject), byte(byte(CBOR) | V1.HeaderByte())}
+var IndexKeyHeader = [2]byte{byte(IndexObject), byte(byte(SecondaryIndex) | V1.HeaderByte())}
 
-func HeaderByteFromVersion(v Version) byte {
-	return (byte(v<<4) & 0x70)
-}
-
-func VertionFromHeaderByte(b byte) Version {
-	return Version((b >> 4) & 0x07)
-}
-
-func TypeFromHeaderByte(b byte) byte {
+func FormatFromHeaderByte(b byte) byte {
 	return (b & 0x07)
 }

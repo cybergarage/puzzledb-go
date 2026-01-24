@@ -14,7 +14,11 @@
 
 package coordinator
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
+)
 
 type ObjectCategory byte
 
@@ -25,7 +29,7 @@ type DocumentFormat byte
 type KeyHeader [2]byte
 
 // Version represents a version.
-type Version byte
+type Version = kv.Version
 
 // IndexFormat represents an index format.
 type IndexFormat byte
@@ -44,17 +48,17 @@ func (header KeyHeader) Category() ObjectCategory {
 
 // Version returns a version.
 func (header KeyHeader) Version() Version {
-	return VertionFromHeaderByte(header[1])
+	return kv.NewVersionFromHeaderByte(header[1])
 }
 
 // DocumentFormat returns a document format.
 func (header KeyHeader) Format() DocumentFormat {
-	return DocumentFormat(TypeFromHeaderByte(header[1]))
+	return DocumentFormat(FormatFromHeaderByte(header[1]))
 }
 
 // IndexFormat returns an index format.
 func (header KeyHeader) IndexFormat() IndexFormat {
-	return IndexFormat(TypeFromHeaderByte(header[1]))
+	return IndexFormat(FormatFromHeaderByte(header[1]))
 }
 
 // Bytes returns a byte array.

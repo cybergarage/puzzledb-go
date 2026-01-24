@@ -34,20 +34,12 @@ const (
 )
 
 var (
-	StateObjectKeyHeader   = [2]byte{byte(StateHeaderObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-	MessageObjectKeyHeader = [2]byte{byte(MessageHeaderObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
-	JobObjectKeyHeader     = [2]byte{byte(JobHeaderObject), byte(byte(CBOR) | HeaderByteFromVersion(V1))}
+	StateObjectKeyHeader   = [2]byte{byte(StateHeaderObject), byte(byte(CBOR) | V1.HeaderByte())}
+	MessageObjectKeyHeader = [2]byte{byte(MessageHeaderObject), byte(byte(CBOR) | V1.HeaderByte())}
+	JobObjectKeyHeader     = [2]byte{byte(JobHeaderObject), byte(byte(CBOR) | V1.HeaderByte())}
 )
 
-func HeaderByteFromVersion(v Version) byte {
-	return (byte(v<<4) & 0x70)
-}
-
-func VertionFromHeaderByte(b byte) Version {
-	return Version((b >> 4) & 0x07)
-}
-
-func TypeFromHeaderByte(b byte) byte {
+func FormatFromHeaderByte(b byte) byte {
 	return (b & 0x07)
 }
 

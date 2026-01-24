@@ -27,9 +27,6 @@ type Format byte
 // KeyHeader represents a header for all keys.
 type KeyHeader [2]byte
 
-// Version represents a format version.
-type Version byte
-
 // IndexFormat represents an index format.
 type IndexFormat byte
 
@@ -47,12 +44,12 @@ func (header KeyHeader) Category() Category {
 
 // Version returns a version.
 func (header KeyHeader) Version() Version {
-	return VertionFromHeaderByte(header[1])
+	return NewVersionFromHeaderByte(header[1])
 }
 
 // DocumentFormat returns a document format.
 func (header KeyHeader) Format() Format {
-	return Format(TypeFromHeaderByte(header[1]))
+	return Format(FormatFromHeaderByte(header[1]))
 }
 
 // IndexFormat returns an index format.
