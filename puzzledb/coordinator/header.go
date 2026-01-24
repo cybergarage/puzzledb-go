@@ -15,18 +15,17 @@
 package coordinator
 
 import (
-	"fmt"
-
 	"github.com/cybergarage/puzzledb-go/puzzledb/document/kv"
 )
 
-type ObjectCategory byte
+// Category represents a header category.
+type Category = kv.Category
 
-// DocumentFormat represents a document format.
-type DocumentFormat byte
+// Format represents a document format.
+type Format = kv.Format
 
 // KeyHeader represents a header for all keys.
-type KeyHeader [2]byte
+type KeyHeader = kv.KeyHeader
 
 // Version represents a version.
 type Version = kv.Version
@@ -39,34 +38,4 @@ func NewKeyHeaderFrom(b []byte) KeyHeader {
 	var header KeyHeader
 	copy(header[:], b)
 	return header
-}
-
-// Category returns an object category.
-func (header KeyHeader) Category() ObjectCategory {
-	return ObjectCategory(header[0])
-}
-
-// Version returns a version.
-func (header KeyHeader) Version() Version {
-	return kv.NewVersionFromHeaderByte(header[1])
-}
-
-// DocumentFormat returns a document format.
-func (header KeyHeader) Format() DocumentFormat {
-	return DocumentFormat(kv.NewFormatFromHeaderByte(header[1]))
-}
-
-// IndexFormat returns an index format.
-func (header KeyHeader) IndexFormat() IndexFormat {
-	return IndexFormat(kv.NewFormatFromHeaderByte(header[1]))
-}
-
-// Bytes returns a byte array.
-func (header KeyHeader) Bytes() []byte {
-	return header[:]
-}
-
-// String returns a string.
-func (header KeyHeader) String() string {
-	return fmt.Sprintf("%c %02x", header.Category(), header[1])
 }

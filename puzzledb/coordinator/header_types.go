@@ -19,13 +19,13 @@ const (
 )
 
 const (
-	CBOR = DocumentFormat(1)
+	CBOR = Format(1)
 )
 
 const (
-	StateHeaderObject   = ObjectCategory('S')
-	MessageHeaderObject = ObjectCategory('M')
-	JobHeaderObject     = ObjectCategory('J')
+	StateHeaderObject   = Category('S')
+	MessageHeaderObject = Category('M')
+	JobHeaderObject     = Category('J')
 )
 
 const (
@@ -40,8 +40,8 @@ var (
 )
 
 // HeaderTypes returns all header types.
-func HeaderTypes() []ObjectCategory {
-	return []ObjectCategory{
+func HeaderTypes() []Category {
+	return []Category{
 		StateHeaderObject,
 		MessageHeaderObject,
 		JobHeaderObject,

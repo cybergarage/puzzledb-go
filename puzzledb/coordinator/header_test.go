@@ -20,9 +20,9 @@ import (
 
 func TestKeyHeader(t *testing.T) {
 	type expected struct {
-		tp  ObjectCategory
+		tp  Category
 		ver Version
-		doc DocumentFormat
+		doc Format
 		idx IndexFormat
 	}
 	testKeyHeaders := []struct {
@@ -55,7 +55,7 @@ func TestKeyHeader(t *testing.T) {
 		if key.header.Version() != key.expected.ver {
 			t.Errorf("%v != %v", key.header.Version(), key.expected.ver)
 		}
-		if key.expected.doc != DocumentFormat(0) {
+		if key.expected.doc != Format(0) {
 			if key.header.Format() != key.expected.doc {
 				t.Errorf("%v != %v", key.header.Format(), key.expected.doc)
 			}
