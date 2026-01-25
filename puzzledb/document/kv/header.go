@@ -25,7 +25,7 @@ type Category byte
 type KeyHeader [2]byte
 
 // IndexFormat represents an index format.
-type IndexFormat byte
+type IndexFormat = Format
 
 // NewKeyHeader creates a new key header from the specified bytes.
 func NewKeyHeaderFrom(b []byte) KeyHeader {
