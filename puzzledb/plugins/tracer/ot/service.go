@@ -24,7 +24,7 @@ type Service struct {
 	*tracer_plugin.BaseService
 }
 
-// NewTracer returns a new tracer service.
+// NewService returns a new tracer service.
 func NewService() *Service {
 	return &Service{
 		BaseService: tracer_plugin.NewBaseServiceWith(ot.NewTracer()),

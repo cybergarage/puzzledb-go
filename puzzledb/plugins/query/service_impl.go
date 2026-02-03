@@ -80,7 +80,7 @@ func (service *BaseService) PostDatabaseCreateMessage(database string) error {
 	return service.postDatabaseMessage(coordinator.UpdatedEvent, database)
 }
 
-// PostDatabaseDeleteMessage posts a update database message to the coordinator.
+// PostDatabaseUpdateMessage posts an update database message to the coordinator.
 func (service *BaseService) PostDatabaseUpdateMessage(database string) error {
 	return service.postDatabaseMessage(coordinator.UpdatedEvent, database)
 }
@@ -112,7 +112,7 @@ func (service *BaseService) PostCollectionCreateMessage(database string, collect
 	return service.postCollectionMessage(coordinator.UpdatedEvent, database, collection)
 }
 
-// PostCollectionDeleteMessage posts a update collection message to the coordinator.
+// PostCollectionUpdateMessage posts an update collection message to the coordinator.
 func (service *BaseService) PostCollectionUpdateMessage(database string, collection string) error {
 	return service.postCollectionMessage(coordinator.UpdatedEvent, database, collection)
 }

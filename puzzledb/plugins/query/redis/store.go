@@ -22,7 +22,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/store"
 )
 
-// GetDatabase returns the database with the specified ID.
+// LookupDatabase returns the database with the specified ID.
 func (service *Service) LookupDatabase(ctx context.Context, dbid redis.DatabaseID) (store.Database, error) {
 	store := service.Store()
 	name := strconv.Itoa(dbid)

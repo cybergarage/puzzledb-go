@@ -35,11 +35,11 @@ func deepEqual(x, y any) error {
 	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
 		return nil
 	}
-	return fmt.Errorf("%v != %v", x, y) // nolint:goerr113
+	return fmt.Errorf("%v != %v", x, y)
 }
 
-// nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func KeyCoderTest(t *testing.T, coder document.KeyCoder) {
+// KeyCoderTest runs key coder conformance tests against the specified coder.
+func KeyCoderTest(t *testing.T, coder document.KeyCoder) { //nolint:gocognit,gci,gocyclo,gosec,maintidx
 	t.Helper()
 
 	pict := pict.NewParserWithBytes(testKeyTypes)

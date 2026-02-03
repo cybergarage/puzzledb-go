@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// nolint:gocognit
+// Package sql provides SQL query execution helpers for PuzzleDB.
 package sql
 
 import (
@@ -341,7 +341,7 @@ func (service *Service) DropDatabase(conn Conn, stmt sql.DropDatabase) error {
 	return nil
 }
 
-// DropIndex handles a DROP INDEX query.
+// DropTable handles a DROP TABLE query.
 func (service *Service) DropTable(conn Conn, stmt sql.DropTable) error {
 	ctx := conn.SpanContext()
 

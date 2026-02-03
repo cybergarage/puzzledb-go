@@ -44,7 +44,7 @@ func WithResultSetSchema(schema resultset.Schema) ResultSetOption {
 	}
 }
 
-// NewResultSet returns a new result set.
+// NewResultSetFrom returns a new result set.
 func NewResultSetFrom(opts ...ResultSetOption) (sql.ResultSet, error) {
 	rs := &resultSet{
 		schema:  nil,

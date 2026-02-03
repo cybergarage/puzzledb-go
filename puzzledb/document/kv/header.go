@@ -27,7 +27,7 @@ type KeyHeader [2]byte
 // IndexFormat represents an index format.
 type IndexFormat = Format
 
-// NewKeyHeader creates a new key header from the specified bytes.
+// NewKeyHeaderFrom creates a new key header from the specified bytes.
 func NewKeyHeaderFrom(b []byte) KeyHeader {
 	var header KeyHeader
 	copy(header[:], b)
@@ -44,7 +44,7 @@ func (header KeyHeader) Version() Version {
 	return NewVersionFromHeaderByte(header[1])
 }
 
-// DocumentFormat returns a document format.
+// Format returns a document format.
 func (header KeyHeader) Format() Format {
 	return Format(NewFormatFromHeaderByte(header[1]))
 }

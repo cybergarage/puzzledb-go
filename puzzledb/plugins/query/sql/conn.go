@@ -30,7 +30,7 @@ type Database struct {
 // DatabaseMap represents a database map.
 type DatabaseMap map[string]*Database
 
-// NewDatabase returns a new database.
+// NewDatabaseMap returns a new database map.
 func NewDatabaseMap() DatabaseMap {
 	return make(DatabaseMap)
 }
@@ -38,7 +38,7 @@ func NewDatabaseMap() DatabaseMap {
 // ConnectionMap represents a connection map.
 type ConnectionMap map[string]DatabaseMap
 
-// NewConnection returns a new connection.
+// NewConnectionMap returns a new connection map.
 func NewConnectionMap() ConnectionMap {
 	return make(ConnectionMap)
 }

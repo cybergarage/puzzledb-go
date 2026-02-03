@@ -25,7 +25,7 @@ type BaseStore struct {
 	document.KeyCoder
 }
 
-// NewBaseStore returns a new base store instance.
+// NewBaseStoreWith returns a new base store instance.
 func NewBaseStoreWith(coder document.KeyCoder) *BaseStore {
 	return &BaseStore{
 		Config:   plugins.NewConfig(),

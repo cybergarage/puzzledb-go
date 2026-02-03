@@ -18,7 +18,7 @@ import (
 	"strings"
 )
 
-// NewPath returns a new path with the specified elements.
+// NewPathWith returns a new path with the specified elements.
 func NewPathWith(elems ...string) string {
 	return strings.Join(elems, Sep)
 }

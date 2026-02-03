@@ -33,7 +33,7 @@ type Version = kv.Version
 // IndexFormat represents an index format.
 type IndexFormat = kv.Format
 
-// NewKeyHeader creates a new key header from the specified bytes.
+// NewKeyHeaderFrom creates a new key header from the specified bytes.
 func NewKeyHeaderFrom(b []byte) KeyHeader {
 	var header KeyHeader
 	copy(header[:], b)

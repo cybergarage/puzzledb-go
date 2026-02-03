@@ -120,8 +120,8 @@ func updateCoordinatorObjects(objs []coordinator.Object) ([]coordinator.Object, 
 	return objs, nil
 }
 
-// nolint:goerr113, gocognit, gci, gocyclo, gosec, maintidx
-func CoordinatorStoreTest(t *testing.T, coord core.CoordinatorService) {
+// CoordinatorStoreTest runs coordinator store conformance tests against the specified service.
+func CoordinatorStoreTest(t *testing.T, coord core.CoordinatorService) { //nolint:gocognit,gci,gocyclo,gosec,maintidx
 	t.Helper()
 
 	coord.SetKeyCoder(newTestKeyCoder())

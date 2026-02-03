@@ -138,7 +138,7 @@ func (s *Store) CreateDatabase(ctx context.Context, name string) error {
 	return nil
 }
 
-// GetDatabase retruns the specified database.
+// LookupDatabase returns the specified database.
 func (s *Store) LookupDatabase(ctx context.Context, name string) (store.Database, error) {
 	ctx.StartSpan("GetDatabase")
 	defer ctx.FinishSpan()

@@ -58,7 +58,7 @@ func (service *Service) MessageRespond(msg mongo.OpMessage) {
 	// log.Hexdump(log.LevelInfo, msg.Bytes())
 }
 
-// GetDatabase returns the database with the specified name.
+// LookupDatabase returns the database with the specified name.
 func (service *Service) LookupDatabase(ctx context.Context, name string) (store.Database, error) {
 	store := service.Store()
 	db, err := store.LookupDatabase(ctx, name)

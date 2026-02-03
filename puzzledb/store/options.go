@@ -23,7 +23,7 @@ type Offset uint
 // NoOffset represents a no offset option.
 var NoOffset = uint(0)
 
-// NewLimit returns a new offset option.
+// NewOffset returns a new offset option.
 func NewOffset(offset uint) Offset {
 	return Offset(offset)
 }

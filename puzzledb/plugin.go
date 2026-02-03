@@ -34,7 +34,7 @@ type PluginManager struct {
 	*plugins.Manager
 }
 
-// NewPluginManager returns a new PluginManager.
+// NewPluginManagerWith returns a new PluginManager.
 func NewPluginManagerWith(mgr *plugins.Manager) *PluginManager {
 	return &PluginManager{
 		Manager: mgr,

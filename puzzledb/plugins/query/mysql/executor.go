@@ -101,7 +101,7 @@ func (service *Service) DropDatabase(conn Conn, stmt sql.DropDatabase) (Response
 	return protocol.NewResponseWithError(service.Service.DropDatabase(conn, stmt))
 }
 
-// DropIndex handles a DROP INDEX query.
+// DropTable handles a DROP TABLE query.
 func (service *Service) DropTable(conn Conn, stmt sql.DropTable) (Response, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropTable")

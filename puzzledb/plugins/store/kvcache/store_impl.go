@@ -30,7 +30,7 @@ type BaseStore struct {
 	hitCnt int64
 }
 
-// NewStore returns a new FoundationDB store instance.
+// NewBaseStore returns a new key-value cache store instance.
 func NewBaseStore() *BaseStore {
 	return &BaseStore{
 		Config:      plugins.NewConfig(),
@@ -66,12 +66,12 @@ func (store *BaseStore) CacheRequestCount() int64 {
 	return store.reqCnt
 }
 
-// CacheMissCount returns the number of cache misses.
+// CacheHitCount returns the number of cache hits.
 func (store *BaseStore) CacheHitCount() int64 {
 	return store.hitCnt
 }
 
-// CacheMissCount returns the number of cache misses.
+// CacheHitRate returns the cache hit rate.
 func (store *BaseStore) CacheHitRate() float64 {
 	return float64(store.hitCnt) / float64(store.reqCnt)
 }

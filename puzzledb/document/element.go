@@ -17,22 +17,22 @@ package document
 type ElementType int8
 
 const (
-	// 0x0x (Reserved).
-	// 0x1x (Reserved - Collection).
+	// ArrayType (0x10) represents an array element type.
 	ArrayType ElementType = 0x10
-	MapType   ElementType = 0x11
-	// 0x20 Integer.
+	// MapType (0x11) represents a map element type.
+	MapType ElementType = 0x11
+	// Int8Type (0x20) represents an 8-bit integer element type.
 	Int8Type  ElementType = 0x20
 	Int16Type ElementType = 0x21
 	Int32Type ElementType = 0x22
 	Int64Type ElementType = 0x23
-	// 0x30 StringType.
+	// StringType (0x30) represents a string element type.
 	StringType ElementType = 0x30
 	BinaryType ElementType = 0x31
-	// 0x40 Floating-point.
+	// Float32Type (0x40) represents a 32-bit floating-point element type.
 	Float32Type ElementType = 0x40
 	Float64Type ElementType = 0x41
-	// 0x70 Special.
+	// DatetimeType (0x70) represents a datetime element type.
 	DatetimeType ElementType = 0x70
 	BoolType     ElementType = 0x71
 )

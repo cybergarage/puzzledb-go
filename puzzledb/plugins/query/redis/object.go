@@ -19,7 +19,7 @@ import "github.com/cybergarage/go-redis/redis"
 // HashObject represents a hash object.
 type HashObject map[string]string
 
-// nolint: ifshort
+// Set sets the specified field to the hash object and returns 1 if the field was newly created.
 func (obj HashObject) Set(field string, val string, opt redis.HSetOption) int {
 	_, hasKey := obj[field]
 	if opt.NX && hasKey {

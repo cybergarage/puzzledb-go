@@ -42,7 +42,7 @@ func deepEqual(x, y any) error {
 	if fmt.Sprintf("%v", x) == fmt.Sprintf("%v", y) {
 		return nil
 	}
-	return fmt.Errorf("%v != %v", x, y) // nolint:goerr113
+	return fmt.Errorf("%v != %v", x, y)
 }
 
 //nolint:gosec,cyclop,gocognit,gocyclo,maintidx

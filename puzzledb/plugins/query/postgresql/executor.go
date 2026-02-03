@@ -126,7 +126,7 @@ func (service *Service) DropDatabase(conn postgresql.Conn, stmt stmt.DropDatabas
 	return protocol.NewCommandCompleteResponsesWith(stmt.String())
 }
 
-// DropIndex handles a DROP INDEX query.
+// DropTable handles a DROP TABLE query.
 func (service *Service) DropTable(conn postgresql.Conn, stmt stmt.DropTable) (protocol.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("DropTable")
@@ -247,7 +247,7 @@ func (service *Service) Copy(conn postgresql.Conn, stmt stmt.Copy) (protocol.Res
 	return postgresql.NewCopyInResponsesFrom(stmt, schema)
 }
 
-// Copy handles a COPY DATA protocol.
+// CopyData handles a COPY DATA protocol.
 func (service *Service) CopyData(conn postgresql.Conn, stmt stmt.Copy, stream *postgresql.CopyStream) (protocol.Responses, error) {
 	ctx := context.NewContextWith(conn.SpanContext())
 	ctx.StartSpan("CopyData")

@@ -19,7 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewDocumentElementFrom returns a new element with the specified column.
+// NewDocumentElementTypeFrom returns a document element type from the specified SQL data type.
 func NewDocumentElementTypeFrom(sqlType query.DataType) (document.ElementType, error) {
 	switch sqlType { // nolint: exhaustive
 	case query.TinyIntType:

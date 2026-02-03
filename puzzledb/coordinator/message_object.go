@@ -113,7 +113,7 @@ func (obj *MessageObject) Type() MessageType {
 	return MessageType(obj.MsgType)
 }
 
-// EventType returns the message event type.
+// Event returns the message event type.
 func (obj *MessageObject) Event() EventType {
 	return EventType(obj.EvtType)
 }

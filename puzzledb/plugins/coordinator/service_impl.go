@@ -41,7 +41,7 @@ type serviceImpl struct {
 	ctxCancel context.CancelFunc
 }
 
-// NewService returns a new coordinator service with the specified core coordinator service.
+// NewServiceWith returns a new coordinator service with the specified core coordinator service.
 func NewServiceWith(service core.CoordinatorService) Service {
 	ctx, cancel := context.WithCancel(context.Background())
 	return &serviceImpl{

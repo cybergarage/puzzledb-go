@@ -101,7 +101,7 @@ func (service *Service) CancelTransactionWithError(ctx context.Context, conn Con
 	return err
 }
 
-// SelectDatabaseObjects returns a result set of the specified database objects.
+// SelectDocumentObjects returns a result set of the specified document objects.
 func (service *Service) SelectDocumentObjects(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, cond query.Condition, orderby query.OrderBy, limit query.Limit) (store.ResultSet, error) {
 	docKey, docKeyType, err := NewDocumentKeyFromCond(conn.Database(), schema, cond)
 	if err != nil {
@@ -178,7 +178,7 @@ func (service *Service) RemoveSecondaryIndexes(ctx context.Context, conn Conn, t
 	return lastErr
 }
 
-// UpdateDocument updates the specified object.
+// UpdateObject updates the specified object.
 func (service *Service) UpdateObject(ctx context.Context, conn Conn, txn store.Transaction, schema document.Schema, obj any, updateCols query.Columns) error {
 	docObj, err := document.NewMapObjectFrom(obj)
 	if err != nil {

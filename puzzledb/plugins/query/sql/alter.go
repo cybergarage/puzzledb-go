@@ -19,7 +19,7 @@ import (
 	"github.com/cybergarage/puzzledb-go/puzzledb/document"
 )
 
-// NewAlterAddColumnSchemaWith creates a new schema with the specified alter index.
+// NewAlterAddIndexSchemaWith creates a new schema with the specified index definition.
 func NewAlterAddIndexSchemaWith(schema document.Schema, addIndex query.Index) (document.Schema, error) {
 	newIndexType, err := NewDocumentIndexTypeFrom(addIndex.Type())
 	if err != nil {

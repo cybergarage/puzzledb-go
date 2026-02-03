@@ -30,12 +30,12 @@ func NewCacheConfig() *CacheConfig {
 	}
 }
 
-// RegisterCacheKeyPrefix registers a key header for the cache store.
+// RegisterCacheKeyHeader registers a key header for the cache store.
 func (conf *CacheConfig) RegisterCacheKeyHeader(header kv.KeyHeader) {
 	conf.keyPrefixMap[header[0]] = true
 }
 
-// UnregisterCacheKeyPrefix unregisters a key header for the cache store.
+// UnregisterCacheKeyHeader unregisters a key header for the cache store.
 func (conf *CacheConfig) UnregisterCacheKeyHeader(header kv.KeyHeader) {
 	delete(conf.keyPrefixMap, header[0])
 }
