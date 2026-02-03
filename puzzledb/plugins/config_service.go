@@ -73,7 +73,8 @@ func (conf *configImpl) LookupServiceTypeDefault(serviceType ServiceType) (strin
 }
 
 func newServiceConfigPath(service Service, paths ...string) []string {
-	servicePaths := []string{ConfigPlugins, service.ServiceType().String(), service.ServiceName()}
+	servicePaths := make([]string, 0, 3+len(paths))
+	servicePaths = append(servicePaths, ConfigPlugins, service.ServiceType().String(), service.ServiceName())
 	servicePaths = append(servicePaths, paths...)
 	return servicePaths
 }

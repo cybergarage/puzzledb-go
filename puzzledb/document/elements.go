@@ -24,7 +24,7 @@ func (elems Elements) Len() int {
 
 // Names returns the element names.
 func (elems Elements) Names() []string {
-	names := []string{}
+	names := make([]string, 0, len(elems))
 	for _, elem := range elems {
 		names = append(names, elem.Name())
 	}

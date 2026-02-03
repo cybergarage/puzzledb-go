@@ -39,7 +39,8 @@ func (service *Service) createObjectKey(txn store.Transaction, database string, 
 }
 
 func (service *Service) createidxKey(txn store.Transaction, database string, collection string, idxKeys ...any) document.Key {
-	keys := []any{database, collection}
+	keys := make([]any, 0, 2+len(idxKeys))
+	keys = append(keys, database, collection)
 	keys = append(keys, idxKeys...)
 	return document.NewKeyWith(keys...)
 }
