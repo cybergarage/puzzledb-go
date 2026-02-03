@@ -15,9 +15,10 @@
 package key
 
 import (
+	"crypto/rand"
 	_ "embed"
 	"fmt"
-	"math/rand"
+	"math/big"
 	"reflect"
 	"testing"
 
@@ -38,6 +39,17 @@ func deepEqual(x, y any) error {
 	return fmt.Errorf("%v != %v", x, y)
 }
 
+func cryptoIntn(n int) (int, error) {
+	if n <= 0 {
+		return 0, fmt.Errorf("n must be positive: %d", n)
+	}
+	v, err := rand.Int(rand.Reader, big.NewInt(int64(n)))
+	if err != nil {
+		return 0, err
+	}
+	return int(v.Int64()), nil
+}
+
 // KeyCoderTest runs key coder conformance tests against the specified coder.
 func KeyCoderTest(t *testing.T, coder document.KeyCoder) { //nolint:gocognit,gci,gocyclo,gosec,maintidx
 	t.Helper()
@@ -51,7 +63,10 @@ func KeyCoderTest(t *testing.T, coder document.KeyCoder) { //nolint:gocognit,gci
 	shuffleKey := func(key document.Key) {
 		n := len(key)
 		for i := n - 1; i > 0; i-- {
-			j := rand.Intn(i + 1)
+			j, err := cryptoIntn(i + 1)
+			if err != nil {
+				t.Fatal(err)
+			}
 			key[i], key[j] = key[j], key[i]
 		}
 	}
@@ -114,8 +129,12 @@ func KeyCoderTest(t *testing.T, coder document.KeyCoder) { //nolint:gocognit,gci
 		}
 
 		// Random reduced key
-
-		kn := rand.Intn(len(key)-1) + 1
+		kn, err := cryptoIntn(len(key) - 1)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		kn++
 		key = key[:kn]
 
 		kb, err = coder.EncodeKey(key)
