@@ -18,6 +18,7 @@ import (
 	"context"
 	"errors"
 	"math/rand"
+	"slices"
 	"time"
 
 	"github.com/cybergarage/go-cbor/cbor"
@@ -60,10 +61,8 @@ func (coord *serviceImpl) SetNode(node cluster.Node) {
 
 // AddObserver adds the specified observer.
 func (coord *serviceImpl) AddObserver(newObserver coordinator.Observer) error {
-	for _, observer := range coord.observers {
-		if observer == newObserver {
-			return nil
-		}
+	if slices.Contains(coord.observers, newObserver) {
+		return nil
 	}
 	coord.observers = append(coord.observers, newObserver)
 	return nil

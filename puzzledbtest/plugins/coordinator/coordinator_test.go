@@ -24,7 +24,7 @@ import (
 )
 
 func TestCoordinators(t *testing.T) {
-	log.SetSharedLogger(log.NewStdoutLogger(log.LevelInfo))
+	log.SetDefault(log.NewStdoutLogger(log.LevelInfo))
 
 	mgr := puzzledbtest.NewPluginManager()
 

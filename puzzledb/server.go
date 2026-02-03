@@ -325,11 +325,15 @@ func (server *Server) Start() error { //nolint:gocognit
 		level := log.LevelInfo
 		levelStr, err := server.Config.LookupConfigString(ConfigLogger, ConfigLevel)
 		if err == nil {
-			level = log.GetLevelFromString(levelStr)
+			var err error
+			level, err = log.NewLevelFromString(levelStr)
+			if err != nil {
+				return err
+			}
 		}
-		log.SetSharedLogger(log.NewStdoutLogger(level))
+		log.SetDefault(log.NewStdoutLogger(level))
 	} else {
-		log.SetSharedLogger(nil)
+		log.SetDefault(nil)
 	}
 
 	// Output version
@@ -338,7 +342,10 @@ func (server *Server) Start() error { //nolint:gocognit
 
 	// Output logger settings
 
-	log.Infof("logger (%s) started", log.GetLevelString(log.GetSharedLogger().Level()))
+	logger := log.Default()
+	if logger != nil {
+		log.Infof("logger (%s) started", logger.Level().String())
+	}
 
 	// Setup pprof
 

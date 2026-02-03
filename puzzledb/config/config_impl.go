@@ -110,12 +110,12 @@ func (conf *viperConfig) SetConfigInt(paths []string, v int) error {
 
 // String returns a string representation of the configuration.
 func (conf *viperConfig) String() string {
-	var s string
+	var s strings.Builder
 	keys := viper.AllKeys()
 	sort.Strings(keys)
 	for _, key := range keys {
 		value := viper.Get(key)
-		s += fmt.Sprintf("%s: %v\n", key, value)
+		s.WriteString(fmt.Sprintf("%s: %v\n", key, value))
 	}
-	return strings.TrimSuffix(s, "\n")
+	return strings.TrimSuffix(s.String(), "\n")
 }

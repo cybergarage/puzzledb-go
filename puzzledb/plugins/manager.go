@@ -146,7 +146,7 @@ func (mgr *Manager) Stop() error {
 
 // String returns a string representation of the plug-in manager.
 func (mgr *Manager) String() string {
-	var s string
+	var s strings.Builder
 	for _, servieType := range ServiceTypes() {
 		defaultService, _ := mgr.DefaultService(servieType)
 		names := []string{}
@@ -170,7 +170,7 @@ func (mgr *Manager) String() string {
 		if len(names) == 0 {
 			continue
 		}
-		s += fmt.Sprintf("- %s (%s)\n", servieType.String(), strings.Join(names, ", "))
+		s.WriteString(fmt.Sprintf("- %s (%s)\n", servieType.String(), strings.Join(names, ", ")))
 	}
-	return strings.TrimSuffix(s, "\n")
+	return strings.TrimSuffix(s.String(), "\n")
 }

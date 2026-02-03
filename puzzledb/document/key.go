@@ -16,6 +16,7 @@ package document
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Key represents an unique key for a document object.
@@ -84,9 +85,9 @@ func (key Key) Equals(other Key) bool {
 
 // String returns a string representation of the key.
 func (key Key) String() string {
-	var s string
+	var s strings.Builder
 	for _, elem := range key {
-		s += fmt.Sprintf("%v", elem)
+		s.WriteString(fmt.Sprintf("%v", elem))
 	}
-	return s
+	return s.String()
 }

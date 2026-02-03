@@ -15,7 +15,7 @@
 package store
 
 // DatabaseOptions represents a database options.
-type DatabaseOptions = map[string]interface{}
+type DatabaseOptions = map[string]any
 
 // Database represents a database interface.
 type Database interface {

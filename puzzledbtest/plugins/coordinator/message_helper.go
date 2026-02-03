@@ -15,6 +15,7 @@
 package coordinator
 
 import (
+	"slices"
 	"sync"
 	"testing"
 	"time"
@@ -59,12 +60,7 @@ func (observer *testObserver) OnMessageReceived(msg coordinator.Message) {
 }
 
 func (observer *testObserver) IsEventReceived(msg coordinator.Message) bool {
-	for _, receivedMsg := range observer.receivedMsgs {
-		if msg.Equals(receivedMsg) {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(observer.receivedMsgs, msg.Equals)
 }
 
 func CoordinatorMessageTest(t *testing.T, coords []plugin.Service) {
