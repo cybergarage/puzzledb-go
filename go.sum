@@ -27,6 +27,8 @@ github.com/cybergarage/go-pict v1.0.2 h1:zDRXx1Uy4GX+SsDIt49GjaaLSqv2biJNPUmffpx
 github.com/cybergarage/go-pict v1.0.2/go.mod h1:eeEV4Pti9HwcrOrbUygpCu4j9F5I1cny8FHpBzkkyJ0=
 github.com/cybergarage/go-postgresql v1.6.5 h1:TdfCnYAWAq7hxvTzeH22fr9LKjqiMMeynClKq4m8/yM=
 github.com/cybergarage/go-postgresql v1.6.5/go.mod h1:lL4aoj/8fQUJFFiRCAWX85N7JT2JnUw2BnU6F79td4o=
+github.com/cybergarage/go-postgresql v1.6.6-0.20260505041223-f4b4db203649 h1:qM4xr/nT9c4qPzuQiSh8heYhZwu/PJ3IraXXP0Z8Le0=
+github.com/cybergarage/go-postgresql v1.6.6-0.20260505041223-f4b4db203649/go.mod h1:1UaLyr4PDPK581Mu+IbF9k5DS2Y/qc2ROCzPCDNgOpo=
 github.com/cybergarage/go-redis v1.5.6 h1:EGlrUbB0uNSWsMB4dvy0IINhNAqowWAs7D/xR6Er0Zk=
 github.com/cybergarage/go-redis v1.5.6/go.mod h1:TYc3+9tKXdtszQPqXnRDfaW00OkYcTP4kSY7SH2tb0Q=
 github.com/cybergarage/go-safecast v1.3.5 h1:dCroj5TEEhwLVMGCzWQgQLBrtbSWTb8JNw/8UQMtt1E=
@@ -35,8 +37,12 @@ github.com/cybergarage/go-sasl v1.2.6 h1:O963Aa5S9vmUUH4wR2UQiBTilEc0UGysykPiZRe
 github.com/cybergarage/go-sasl v1.2.6/go.mod h1:ForFfY1+iVolRK0wo/OweuD+x8z4y3Cg8tTNlxDcGF0=
 github.com/cybergarage/go-sqlparser v1.6.1-0.20250617035917-ed0ae4240277 h1:PmyP2/BX9TVNu7NuKL9yheIXyWax7vKNYN0Iqd5NCEY=
 github.com/cybergarage/go-sqlparser v1.6.1-0.20250617035917-ed0ae4240277/go.mod h1:x7ajXODJWm3xEtotGqKHGThwwAOC5RzFEw29ZkSGhlg=
+github.com/cybergarage/go-sqlparser v1.6.1-0.20251127121345-13c5a03ca55c h1:6WUS3xzGkMOmIVvd71rFs9Fh+fkZAzsXhVzxbmwcI8o=
+github.com/cybergarage/go-sqlparser v1.6.1-0.20251127121345-13c5a03ca55c/go.mod h1:KFvkIUhrTPvNshCwpMb/45uIRH79Q4XHbcb6QP3O+3M=
 github.com/cybergarage/go-sqltest v1.6.2-0.20250606100156-a91df13ec312 h1:A+id5AyZhJUQMsZeBLyoK7joiIVOVC+pv/CI7jM260g=
 github.com/cybergarage/go-sqltest v1.6.2-0.20250606100156-a91df13ec312/go.mod h1:3qomdH0LNBJD0F6WCCRx+LGUXN4uOMrtseubeM3UPgc=
+github.com/cybergarage/go-sqltest v1.6.2-0.20251103145359-271a22450d34 h1:J2xG21JIePmukb/iVylV8OB4Ezp8EhyCbqoRrxwFiog=
+github.com/cybergarage/go-sqltest v1.6.2-0.20251103145359-271a22450d34/go.mod h1:mXqUqXXwlpSv3e4hGcKrREh7flnjaPIBkJEKX6MKBpU=
 github.com/cybergarage/go-tracing v1.1.7 h1:4R+MmdO7++u5H69Fe27nV1yD0WEnY8BxA4OPEPaUa6Q=
 github.com/cybergarage/go-tracing v1.1.7/go.mod h1:86BJYOdV1bnDwYXq+nTXGIcky2wnSbk7TyDQSDpHwRQ=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -91,6 +97,8 @@ github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 h1:iCEnooe7Ulw
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761/go.mod h1:5TJZWKEWniPve33vlWYSoGYefn3gLQRzjfDlhSJ9ZKM=
 github.com/jackc/pgx/v5 v5.7.4 h1:9wKznZrhWa2QiHL+NjTSPP6yjl3451BX3imWDnokYlg=
 github.com/jackc/pgx/v5 v5.7.4/go.mod h1:ncY89UGWxg82EykZUwSpUKEfccBGGYq1xjrOpsbsfGQ=
+github.com/jackc/pgx/v5 v5.9.2 h1:3ZhOzMWnR4yJ+RW1XImIPsD1aNSz4T4fyP7zlQb56hw=
+github.com/jackc/pgx/v5 v5.9.2/go.mod h1:mal1tBGAFfLHvZzaYh77YS/eC6IX9OWbRV1QIIM0Jn4=
 github.com/jackc/puddle/v2 v2.2.2 h1:PR8nw+E/1w0GLuRFSmiioY6UooMp6KJv0/61nB7icHo=
 github.com/jackc/puddle/v2 v2.2.2/go.mod h1:vriiEXHvEE654aYKXXjOvZM39qJ0q+azkZFrfEOc3H4=
 github.com/klauspost/compress v1.18.0 h1:c/Cqfb0r+Yi+JtIEq73FWXVkRonBlf0CRNYc8Zttxdo=
