@@ -39,7 +39,7 @@ jobs:
           CGO_ENABLED=1 make certs && make unittest
 
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v7
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: puzzledb-cover.out
