@@ -4,79 +4,92 @@
 
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/cybergarage/puzzledb-go) [![Go](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml/badge.svg)](https://github.com/cybergarage/puzzledb-go/actions/workflows/make.yml) [![go-Reference](https://pkg.go.dev/badge/github.com/cybergarage/puzzledb-go.svg)](https://pkg.go.dev/github.com/cybergarage/puzzledb-go) [![go-Report Card](https://img.shields.io/badge/go%20report-A%2B-brightgreen)](https://goreportcard.com/report/github.com/cybergarage/puzzledb-go) [![codecov](https://codecov.io/gh/cybergarage/puzzledb-go/branch/main/graph/badge.svg?token=C3Q82XPE44)](https://codecov.io/gh/cybergarage/puzzledb-go)
 
-PuzzleDB is a high-performance, distributed, cloud‑native, multi‑API, multi‑model database (Technology Preview) implemented in Go.
+# PuzzleDB for Go
 
-# What is PuzzleDB
+PuzzleDB is a **technology preview** of a multi-protocol, multi-model database implemented in Go. It explores how PostgreSQL, MySQL, Redis, and MongoDB protocol frontends can share database services through a modular plugin architecture.
 
-PuzzleDB is a multi‑data‑model database capable of handling key‑value, relational, and document models. It is also multi‑interface, speaking existing protocols (PostgreSQL, MySQL, Redis, MongoDB).
+Use it to experiment with database internals, protocol adapters, and storage backends. Protocol support is incremental: accepting a client connection does not imply full query, command, transaction, or behavioral compatibility with the original database. This preview does not establish production readiness or performance guarantees.
 
-![concept](doc/img/concept.png)
+## Features and architecture
 
-PuzzleDB is a distributed framework supporting diverse models and protocols, designed for flexibility, scalability, and efficiency.
+- Query plugins implement PostgreSQL, MySQL, Redis, and MongoDB protocol frontends.
+- Data-model and encoding layers support work on key-value, relational, and document data.
+- Storage and coordination plugins include in-memory and FoundationDB implementations.
+- Additional plugin services cover authentication, caching, metrics, and tracing.
+- Server and CLI entrypoints live in [`cmd/`](cmd/); core services and plugins live in [`puzzledb/`](puzzledb/).
 
-![system](doc/img/system.png)
+![PuzzleDB concept](doc/img/concept.png)
 
-By accommodating existing query protocols, developers can adopt PuzzleDB with standard client drivers and minimal learning curve.
+Requests enter through a protocol plugin and use shared model, encoding, and storage interfaces. The plugin boundaries allow backends and supporting services to evolve independently. Storage durability and transaction behavior depend on the selected backend and configuration; do not assume identical semantics across protocols.
 
-## Key Features
+![PuzzleDB system architecture](doc/img/system.png)
 
-PuzzleDB provides:
+## Quick start
 
-- Extensibility – Modular plugin architecture for queries, models, storage, coordination, tracing, metrics.
+With Docker installed, run the preview locally:
 
-- Scalability – Seamless path from local in‑memory to shared‑nothing horizontal distribution via ordered key‑value storage.
+```sh
+docker run --rm -it \
+  -p 127.0.0.1:6379:6379 \
+  -p 127.0.0.1:27017:27017 \
+  -p 127.0.0.1:3306:3306 \
+  -p 127.0.0.1:5432:5432 \
+  cybergarage/puzzledb:latest
+```
 
-- Compatibility – Supports major database protocol plugins (PostgreSQL, Redis, MongoDB, MySQL) easing migration.
+In another terminal, try the Redis frontend with `redis-cli` installed:
 
-- Reliability – ACID‑compliant storage and transaction semantics for correctness.
+```sh
+redis-cli -h 127.0.0.1 -p 6379 SET mykey "Hello"
+redis-cli -h 127.0.0.1 -p 6379 GET mykey
+```
 
-- Consolidation – Unified internal model representing key‑value, document, and relational data efficiently.
+This disposable container is for exploration. See [configuration](doc/configuring.md) before choosing storage or persistence settings. The [quick start](doc/quick-start.md) includes SQL and document examples.
 
-# Get Started
+### Build from source
 
-Start with the quick start guide:
+Use Go 1.25.0 or later, a C toolchain, and the FoundationDB client headers and library required by the Go bindings. The server imports FoundationDB plugins even when you intend to select an in-memory backend. See [`scripts/fdb_install`](scripts/fdb_install) and the platform build guides below for setup context.
 
-- [Quick Start](doc/quick-start.md)
+```sh
+git clone https://github.com/cybergarage/puzzledb-go.git
+cd puzzledb-go
+go build ./cmd/puzzledb-server ./cmd/puzzledb-cli
+go run ./cmd/puzzledb-server
+```
 
-# Architecture & Concepts
+### Protocol scope
 
-Core architecture and design documents:
+Check the protocol-specific documentation before trying a workload:
 
-- [Design Concepts](doc/concept.md)
+| Frontend | Support details |
+| --- | --- |
+| PostgreSQL | [Queries and compatibility](doc/postgresql.md) |
+| MySQL | [Queries and compatibility](doc/mysql.md) |
+| Redis | [Commands and compatibility](doc/redis.md) |
+| MongoDB | [Commands and compatibility](doc/mongodb.md) |
 
-  - [Layer Concept](doc/layer-concept.md)
+## Development and testing
 
-  - [Data Model](doc/data-model.md)
+After installing the build dependencies, run the Go suites directly:
 
-  - [Storage Concept](doc/storage-concept.md)
+```sh
+go test -v -p 1 -timeout 60m ./puzzledb/... ./puzzledbtest/...
+```
 
-  - [Consistency Model](doc/consistency-model.md)
+Integration suites may require backend services and test certificates; see [`puzzledbtest/`](puzzledbtest/) and [`puzzledbtest/certs/Makefile`](puzzledbtest/certs/Makefile). The repository's `make unittest` target also generates coverage reports. `make test` includes formatting and linting; its formatting prerequisite regenerates and commits the version file, so review the [Makefile](Makefile) before using it in a working checkout.
 
-  - [Coordinator Concept](doc/coordinator-concept.md)
+## Architecture and design guides
 
-  - [Authentication Concept](doc/auth-concept.md)
+- [Design concepts](doc/concept.md) and [layers](doc/layer-concept.md)
+- [Data model](doc/data-model.md) and [storage](doc/storage-concept.md)
+- [Consistency](doc/consistency-model.md) and [coordination](doc/coordinator-concept.md)
+- [Authentication](doc/auth-concept.md) and [plugins](doc/plugin-concept.md)
 
-  - [Plugin Concept](doc/plugin-concept.md)
+## Roadmap and limitations
 
-# Supported Protocols
+The distributed plugin stack is under development. The roadmap describes direction rather than a promise that every illustrated capability is complete. Evaluate supported operations, failure behavior, and persistence for your own experiments.
 
-PuzzleDB currently supports the following database protocols:
-
-- Compatibility
-
-  - [PostgreSQL](doc/postgresql.md)
-
-  - [MySQL](doc/mysql.md)
-
-  - [MongoDB](doc/mongodb.md)
-
-  - [Redis](doc/redis.md)
-
-# Roadmap
-
-PuzzleDB is in a technical preview stage. A distributed plugin stack is under active development. See roadmap:
-
-![doc/img/roadmap](doc/img/roadmap.png)
+![PuzzleDB roadmap](doc/img/roadmap.png)
 
 # User Guides
 
